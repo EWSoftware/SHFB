@@ -8,6 +8,7 @@
 // The event uses the new TransformedTopicEventArgs as the event arguments.
 // 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
 // 04/27/2014 - EFW - Added support for a "transforming topic" event that happens prior to transformation
+// 01/18/2022 - EFW - Replaced the transformed/transforming events with more generic applying/applied changes events
 
 using System;
 using System.Collections.Generic;
@@ -165,7 +166,7 @@ namespace Sandcastle.Tools.BuildComponents
                 throw new ArgumentNullException(nameof(document));
 
             // Raise a component event to signal that the topic is about to be transformed
-            this.OnComponentEvent(new TransformingTopicEventArgs(key, document));
+            this.OnComponentEvent(new ApplyingChangesEventArgs(this.GroupId, "XSL Transform Component", key, document));
 
             foreach(Transform transform in transforms)
             {
@@ -238,7 +239,7 @@ namespace Sandcastle.Tools.BuildComponents
             }
 
             // Raise a component event to signal that the topic has been transformed
-            this.OnComponentEvent(new TransformedTopicEventArgs(key, document));
+            this.OnComponentEvent(new AppliedChangesEventArgs(this.GroupId, "XSL Transform Component", key, document));
         }
         #endregion
     }

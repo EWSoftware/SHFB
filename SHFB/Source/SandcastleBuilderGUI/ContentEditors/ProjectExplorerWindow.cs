@@ -702,7 +702,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             // If the document is already open, just activate it
             foreach(IDockContent content in this.DockPanel.Contents)
-                if(String.Compare(content.DockHandler.ToolTipText, fullName, StringComparison.OrdinalIgnoreCase) == 0)
+                if(String.Equals(content.DockHandler.ToolTipText, fullName, StringComparison.OrdinalIgnoreCase))
                 {
                     content.DockHandler.Activate();
                     return;
@@ -1388,7 +1388,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             // If the document is already open, just activate it
             foreach(IDockContent content in this.DockPanel.Contents)
-                if(String.Compare(content.DockHandler.ToolTipText, fullName, StringComparison.OrdinalIgnoreCase) == 0)
+                if(String.Equals(content.DockHandler.ToolTipText, fullName, StringComparison.OrdinalIgnoreCase))
                 {
                     content.DockHandler.Activate();
                     return;
@@ -2445,8 +2445,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     else
                         newPath = Path.Combine(basePath, file.Substring(rootFolder.Length));
 
-                    if((rootFolder != null || dropEffect == 2) &&
-                      String.Compare(file, newPath, StringComparison.OrdinalIgnoreCase) == 0)
+                    if((rootFolder != null || dropEffect == 2) && file.Equals(newPath, StringComparison.OrdinalIgnoreCase))
                     {
                         MessageBox.Show("Files cannot be copied onto themselves", Constants.AppName,
                             MessageBoxButtons.OK, MessageBoxIcon.Exclamation);

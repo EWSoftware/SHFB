@@ -133,7 +133,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 Topic found = null;
 
                 foreach(Topic t in this)
-                    if(String.Compare(t.Id, id, StringComparison.OrdinalIgnoreCase) == 0)
+                    if(String.Equals(t.Id, id, StringComparison.OrdinalIgnoreCase))
                     {
                         found = t;
                         break;

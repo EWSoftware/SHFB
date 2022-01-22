@@ -82,7 +82,7 @@ namespace HtmlToMamlConversion
                     return 2;
                 }
 
-                if(String.Compare(sourceFolder, destFolder, StringComparison.OrdinalIgnoreCase) == 0)
+                if(sourceFolder.Equals(destFolder, StringComparison.OrdinalIgnoreCase))
                 {
                     Console.WriteLine("Destination folder cannot match source folder");
                     return 3;

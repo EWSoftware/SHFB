@@ -192,7 +192,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                 // If the document is already open, just activate it
                 foreach(IDockContent content in this.DockPanel.Documents)
-                    if(String.Compare(content.DockHandler.ToolTipText, fullName, StringComparison.OrdinalIgnoreCase) == 0)
+                    if(String.Equals(content.DockHandler.ToolTipText, fullName, StringComparison.OrdinalIgnoreCase))
                     {
                         content.DockHandler.Activate();
                         return;

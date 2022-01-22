@@ -160,8 +160,8 @@ namespace SandcastleBuilder.Utils
         public bool HasMetadata(string name)
         {
             // Build Action is the name, not metadata.  Include is an attribute, not metadata.
-            if(String.Compare(name, BuildItemMetadata.BuildAction, StringComparison.OrdinalIgnoreCase) == 0 ||
-              String.Compare(name, BuildItemMetadata.IncludePath, StringComparison.OrdinalIgnoreCase) == 0)
+            if(String.Equals(name, BuildItemMetadata.BuildAction, StringComparison.OrdinalIgnoreCase) ||
+              String.Equals(name, BuildItemMetadata.IncludePath, StringComparison.OrdinalIgnoreCase))
                 return true;
 
             return item.HasMetadata(name);
@@ -175,11 +175,11 @@ namespace SandcastleBuilder.Utils
         public string GetMetadata(string name)
         {
             // Build Action is the name, not metadata
-            if(String.Compare(name, BuildItemMetadata.BuildAction, StringComparison.OrdinalIgnoreCase) == 0)
+            if(String.Equals(name, BuildItemMetadata.BuildAction, StringComparison.OrdinalIgnoreCase))
                 return item.ItemType;
 
             // Include is an attribute, not metadata
-            if(String.Compare(name, BuildItemMetadata.IncludePath, StringComparison.OrdinalIgnoreCase) == 0)
+            if(String.Equals(name, BuildItemMetadata.IncludePath, StringComparison.OrdinalIgnoreCase))
                 return item.UnevaluatedInclude;
 
             return item.GetMetadataValue(name);
@@ -193,7 +193,7 @@ namespace SandcastleBuilder.Utils
         public void SetMetadata(string name, string value)
         {
             // Build Action is the name, not metadata
-            if(String.Compare(name, BuildItemMetadata.BuildAction, StringComparison.OrdinalIgnoreCase) == 0)
+            if(String.Equals(name, BuildItemMetadata.BuildAction, StringComparison.OrdinalIgnoreCase))
             {
                 item.ItemType = value;
                 this.OnPropertyChanged(name);
@@ -201,7 +201,7 @@ namespace SandcastleBuilder.Utils
             }
 
             // Include is an attribute, not metadata
-            if(String.Compare(name, BuildItemMetadata.IncludePath, StringComparison.OrdinalIgnoreCase) == 0)
+            if(String.Equals(name, BuildItemMetadata.IncludePath, StringComparison.OrdinalIgnoreCase))
             {
                 item.UnevaluatedInclude = value;
                 this.OnPropertyChanged(name);

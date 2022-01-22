@@ -143,7 +143,7 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         public void WriteMessage(MessageLevel level, string message, params object[] args)
         {
             if(level != MessageLevel.Ignore && this.BuildAssembler != null)
-                this.BuildAssembler.WriteMessage(this.GetType(), level, null, (args.Length == 0) ? message :
+                this.BuildAssembler.WriteMessage(this.GetType(), level, null, (args == null || args.Length == 0) ? message :
                     String.Format(CultureInfo.CurrentCulture, message, args));
         }
 
@@ -160,7 +160,7 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         public void WriteMessage(string key, MessageLevel level, string message, params object[] args)
         {
             if(level != MessageLevel.Ignore && this.BuildAssembler != null)
-                this.BuildAssembler.WriteMessage(this.GetType(), level, key, (args.Length == 0) ? message :
+                this.BuildAssembler.WriteMessage(this.GetType(), level, key, (args == null || args.Length == 0) ? message :
                     String.Format(CultureInfo.CurrentCulture, message, args));
         }
         #endregion

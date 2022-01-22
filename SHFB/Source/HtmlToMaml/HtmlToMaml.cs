@@ -848,8 +848,7 @@ namespace HtmlToMamlConversion
                     inPageLink, ".htm</linkUri>\r\n", target, "</externalLink>");
 
             // Only use the link text if it doesn't match the topic title
-            if(!String.IsNullOrEmpty(linkText) && String.Compare(WebUtility.HtmlDecode(linkText), topic.Title,
-              StringComparison.OrdinalIgnoreCase) != 0)
+            if(!String.IsNullOrEmpty(linkText) && !WebUtility.HtmlDecode(linkText).Equals(topic.Title, StringComparison.OrdinalIgnoreCase))
                 return String.Concat("<link xlink:href=\"", topic.Id, inPageLink, "\">", linkText, "</link>");
 
             return String.Concat("<link xlink:href=\"", topic.Id, inPageLink, "\" />");

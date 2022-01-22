@@ -66,69 +66,69 @@ which can be used to achieve a similar effect.</para>
 <code language="xml" title=" ">
 &lt;para&gt;This link takes you to &lt;link xlink:href="#Row3Cell1"&gt;Row 3, Cell 1&lt;/link&gt;
 in the first table.&lt;/para&gt;
-      
+
 &lt;table&gt;
   &lt;title&gt;A Simple Table with Title and Headers&lt;/title&gt;
   &lt;tableHeader&gt;
-  	&lt;row&gt;
-  	  &lt;entry&gt;&lt;para&gt;Header 1&lt;/para&gt;&lt;/entry&gt;
-  	  &lt;entry&gt;&lt;para&gt;Header 2&lt;/para&gt;&lt;/entry&gt;
-  	  &lt;entry&gt;&lt;para&gt;Header 3&lt;/para&gt;&lt;/entry&gt;
-  	&lt;/row&gt;
+    &lt;row&gt;
+      &lt;entry&gt;&lt;para&gt;Header 1&lt;/para&gt;&lt;/entry&gt;
+      &lt;entry&gt;&lt;para&gt;Header 2&lt;/para&gt;&lt;/entry&gt;
+      &lt;entry&gt;&lt;para&gt;Header 3&lt;/para&gt;&lt;/entry&gt;
+    &lt;/row&gt;
   &lt;/tableHeader&gt;
   &lt;row&gt;
-  	  &lt;entry&gt;&lt;para&gt;Row 1, Cell 1&lt;/para&gt;&lt;/entry&gt;
-  	  &lt;entry&gt;&lt;para&gt;Row 1, Cell 2&lt;/para&gt;&lt;/entry&gt;
-  	  &lt;entry&gt;&lt;para&gt;Row 1, Cell 3&lt;/para&gt;&lt;/entry&gt;
+    &lt;entry&gt;&lt;para&gt;Row 1, Cell 1&lt;/para&gt;&lt;/entry&gt;
+    &lt;entry&gt;&lt;para&gt;Row 1, Cell 2&lt;/para&gt;&lt;/entry&gt;
+    &lt;entry&gt;&lt;para&gt;Row 1, Cell 3&lt;/para&gt;&lt;/entry&gt;
   &lt;/row&gt;
   &lt;row&gt;
-  	  &lt;entry&gt;&lt;para&gt;Row 2, Cell 1&lt;/para&gt;&lt;/entry&gt;
-  	  &lt;entry&gt;&lt;para&gt;Row 2, Cell 2&lt;/para&gt;&lt;/entry&gt;
-  	  &lt;entry&gt;&lt;para&gt;Row 2, Cell 3&lt;/para&gt;&lt;/entry&gt;
+    &lt;entry&gt;&lt;para&gt;Row 2, Cell 1&lt;/para&gt;&lt;/entry&gt;
+    &lt;entry&gt;&lt;para&gt;Row 2, Cell 2&lt;/para&gt;&lt;/entry&gt;
+    &lt;entry&gt;&lt;para&gt;Row 2, Cell 3&lt;/para&gt;&lt;/entry&gt;
   &lt;/row&gt;
   &lt;row&gt;
-  	  &lt;entry address="Row3Cell1"&gt;&lt;para&gt;This entry has an &lt;codeInline&gt;address&lt;/codeInline&gt;
+    &lt;entry address="Row3Cell1"&gt;&lt;para&gt;This entry has an &lt;codeInline&gt;address&lt;/codeInline&gt;
 attribute that can be used as a link target.&lt;/para&gt;&lt;/entry&gt;
-  	  &lt;entry&gt;&lt;para&gt;Row 3, Cell 2&lt;/para&gt;&lt;/entry&gt;
-  	  &lt;entry&gt;&lt;para&gt;Row 3, Cell 3&lt;/para&gt;&lt;/entry&gt;
+    &lt;entry&gt;&lt;para&gt;Row 3, Cell 2&lt;/para&gt;&lt;/entry&gt;
+    &lt;entry&gt;&lt;para&gt;Row 3, Cell 3&lt;/para&gt;&lt;/entry&gt;
   &lt;/row&gt;
 &lt;/table&gt;
 
 &lt;table&gt;
   &lt;tableHeader&gt;
-  	&lt;row&gt;
-	  &lt;entry&gt;&lt;para&gt;&amp;#160;&lt;/para&gt;&lt;/entry&gt;
-	  &lt;entry&gt;&lt;para&gt;A Nested Table Example&lt;/para&gt;&lt;/entry&gt;
-  	&lt;/row&gt;
+    &lt;row&gt;
+      &lt;entry&gt;&lt;para&gt;&amp;#160;&lt;/para&gt;&lt;/entry&gt;
+      &lt;entry&gt;&lt;para&gt;A Nested Table Example&lt;/para&gt;&lt;/entry&gt;
+    &lt;/row&gt;
   &lt;/tableHeader&gt;
   &lt;row&gt;
     &lt;entry&gt;&lt;mediaLink&gt;&lt;image
        xlink:href="98a8a8b7-c374-40c7-902a-91c947bf107c"/&gt;
-       &lt;/mediaLink&gt;&lt;/entry&gt;
+       &lt;/mediaLink&gt;
+    &lt;/entry&gt;
     &lt;entry&gt;
-		&lt;table&gt;
-		  &lt;row&gt;
-		  	&lt;entry&gt;&lt;para&gt;Cell 1&lt;/para&gt;&lt;/entry&gt;
-		  	&lt;entry&gt;&lt;para&gt;Cell 2&lt;/para&gt;&lt;/entry&gt;
-		  	&lt;entry&gt;&lt;para&gt;Cell 3&lt;/para&gt;&lt;/entry&gt;
-		  	&lt;entry&gt;&lt;para&gt;Cell 4&lt;/para&gt;&lt;/entry&gt;
-		  &lt;/row&gt;
-		  &lt;row&gt;
-		  	&lt;entry&gt;&lt;para&gt;Cell 5&lt;/para&gt;&lt;/entry&gt;
-		  	&lt;entry&gt;&lt;para&gt;Cell 6&lt;/para&gt;&lt;/entry&gt;
-		  	&lt;entry&gt;&lt;para&gt;Cell 7&lt;/para&gt;&lt;/entry&gt;
-		  	&lt;entry&gt;&lt;para&gt;Cell 8&lt;/para&gt;&lt;/entry&gt;
-		  &lt;/row&gt;
-		  &lt;row&gt;
-		  	&lt;entry&gt;&lt;para&gt;Cell 9&lt;/para&gt;&lt;/entry&gt;
-		  	&lt;entry&gt;&lt;para&gt;Cell 10&lt;/para&gt;&lt;/entry&gt;
-		  	&lt;entry&gt;&lt;para&gt;Cell 11&lt;/para&gt;&lt;/entry&gt;
-		  	&lt;entry&gt;&lt;para&gt;Cell 12&lt;/para&gt;&lt;/entry&gt;
-		  &lt;/row&gt;
-		&lt;/table&gt;
+      &lt;table&gt;
+        &lt;row&gt;
+          &lt;entry&gt;&lt;para&gt;Cell 1&lt;/para&gt;&lt;/entry&gt;
+          &lt;entry&gt;&lt;para&gt;Cell 2&lt;/para&gt;&lt;/entry&gt;
+          &lt;entry&gt;&lt;para&gt;Cell 3&lt;/para&gt;&lt;/entry&gt;
+          &lt;entry&gt;&lt;para&gt;Cell 4&lt;/para&gt;&lt;/entry&gt;
+        &lt;/row&gt;
+        &lt;row&gt;
+          &lt;entry&gt;&lt;para&gt;Cell 5&lt;/para&gt;&lt;/entry&gt;
+          &lt;entry&gt;&lt;para&gt;Cell 6&lt;/para&gt;&lt;/entry&gt;
+          &lt;entry&gt;&lt;para&gt;Cell 7&lt;/para&gt;&lt;/entry&gt;
+          &lt;entry&gt;&lt;para&gt;Cell 8&lt;/para&gt;&lt;/entry&gt;
+        &lt;/row&gt;
+        &lt;row&gt;
+          &lt;entry&gt;&lt;para&gt;Cell 9&lt;/para&gt;&lt;/entry&gt;
+          &lt;entry&gt;&lt;para&gt;Cell 10&lt;/para&gt;&lt;/entry&gt;
+          &lt;entry&gt;&lt;para&gt;Cell 11&lt;/para&gt;&lt;/entry&gt;
+          &lt;entry&gt;&lt;para&gt;Cell 12&lt;/para&gt;&lt;/entry&gt;
+        &lt;/row&gt;
+      &lt;/table&gt;
 
-		&lt;para&gt;The table above doesn't have a
-&lt;codeInline&gt;tableHeader&lt;/codeInline&gt;.&lt;/para&gt;
+      &lt;para&gt;The table above doesn't have a &lt;codeInline&gt;tableHeader&lt;/codeInline&gt;.&lt;/para&gt;
     &lt;/entry&gt;
   &lt;/row&gt;
 &lt;/table&gt;
@@ -141,7 +141,7 @@ attribute that can be used as a link target.&lt;/para&gt;&lt;/entry&gt;
       <content>
 <para>This link takes you to <link xlink:href="#Row3Cell1">Row 3, Cell 1</link>
 in the first table.</para>
-      
+
 <table>
   <title>A Simple Table with Title and Headers</title>
   <tableHeader>
@@ -202,8 +202,7 @@ attribute that can be used as a link target.</para></entry>
 		  </row>
 		</table>
 
-		<para>The table above doesn't have a
-<codeInline>tableHeader</codeInline>.</para>
+		<para>The table above doesn't have a <codeInline>tableHeader</codeInline>.</para>
     </entry>
   </row>
 </table>

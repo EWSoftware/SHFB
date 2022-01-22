@@ -117,7 +117,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             if(String.IsNullOrWhiteSpace(templateText))
                 return templateText ?? String.Empty;
 
-            if(args.Length != 0)
+            if(args != null && args.Length != 0)
                 templateText = String.Format(CultureInfo.InvariantCulture, templateText, args);
 
             try

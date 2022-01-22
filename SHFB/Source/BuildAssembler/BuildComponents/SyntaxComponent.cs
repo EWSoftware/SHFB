@@ -329,10 +329,13 @@ namespace Sandcastle.Tools.BuildComponents
             int order;
 
             // Don't bother if not a transforming event or not in our group
-            if(!(e is TransformingTopicEventArgs tt) || ((BuildComponentCore)sender).GroupId != this.GroupId)
+            if(!(e is ApplyingChangesEventArgs ac) || ac.GroupId != this.GroupId ||
+              ac.ComponentId != "XSL Transform Component")
+            {
                 return;
+            }
 
-            XmlDocument document = tt.Document;
+            XmlDocument document = ac.Document;
             XPathNavigator root, navDoc = document.CreateNavigator();
             List<CodeSnippetGroup> allGroups = new List<CodeSnippetGroup>();
             List<List<CodeSnippet>> extraGroups = new List<List<CodeSnippet>>();
@@ -352,7 +355,7 @@ namespace Sandcastle.Tools.BuildComponents
 
                 if(root == null)
                 {
-                    this.WriteMessage(tt.Key, MessageLevel.Warn, "Root content node not found.  Cannot group " +
+                    this.WriteMessage(ac.Key, MessageLevel.Warn, "Root content node not found.  Cannot group " +
                         "and sort code snippets.");
                     return;
                 }

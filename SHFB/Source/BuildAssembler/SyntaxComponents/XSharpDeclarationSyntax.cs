@@ -82,7 +82,7 @@ namespace Sandcastle.Tools.SyntaxGenerators
                 throw new ArgumentNullException(nameof(writer));
 
             string name = reflection.Evaluate(apiNameExpression).ToString();
-            InFunctionsClass = (String.Compare(name, "Functions", StringComparison.OrdinalIgnoreCase) == 0);
+            InFunctionsClass = name.Equals("Functions", StringComparison.OrdinalIgnoreCase);
             bool isAbstract = (bool)reflection.Evaluate(apiIsAbstractTypeExpression);
             bool isSealed = (bool)reflection.Evaluate(apiIsSealedTypeExpression);
             bool isSerializable = (bool)reflection.Evaluate(apiIsSerializableTypeExpression);

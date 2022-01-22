@@ -58,8 +58,7 @@
 <ComponentConfig id="IntelliSense Component" enabled="True"><component id="IntelliSense Component"><output includeNamespaces="true" namespacesFile="NamespacesTest" folder="{@OutputFolder}" boundedCapacity="0" /></component></ComponentConfig>
 <ComponentConfig id="Syntax Component" enabled="False"><component id="Syntax Component"><syntax input="/document/reference" output="/document/syntax" renderReferenceLinks="true" /><generators>
     {@SyntaxFilters}
-</generators><containerElement name="codeSnippetGroup" addNoExampleTabs="true" includeOnSingleSnippets="true" groupingEnabled="{@CodeSnippetGrouping}" /><configurations><generator id="Visual Basic"><includeLineContinuation value="true" /></generator><generator id="Visual Basic Usage"><includeLineContinuation value="false" /></generator><generator id="Managed C++" /><generator id="C#" /><generator id="F#" /><generator id="J#" /><generator id="JScript" /><generator id="JavaScript" /><generator id="XAML Usage" /><generator id="ASP.NET" /><generator id="X#" /></configurations></component></ComponentConfig>
-<ComponentConfig id="RawDocumentDumpComponent" enabled="True"><component id="RawDocumentDumpComponent"><dumpPath value="{@WorkingFolder}\RawDocs" /></component></ComponentConfig></ComponentConfigurations>
+</generators><containerElement name="codeSnippetGroup" addNoExampleTabs="true" includeOnSingleSnippets="true" groupingEnabled="{@CodeSnippetGrouping}" /><configurations><generator id="Visual Basic"><includeLineContinuation value="true" /></generator><generator id="Visual Basic Usage"><includeLineContinuation value="false" /></generator><generator id="Managed C++" /><generator id="C#" /><generator id="F#" /><generator id="J#" /><generator id="JScript" /><generator id="JavaScript" /><generator id="XAML Usage" /><generator id="ASP.NET" /><generator id="X#" /></configurations></component></ComponentConfig></ComponentConfigurations>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\TestDoc.csproj" />
     </DocumentationSources>
@@ -150,7 +149,8 @@
     <NamespaceGrouping>True</NamespaceGrouping>
     <CatalogName>
     </CatalogName>
-    <ComponentPath>..\..\..\..\DotNet\RawDocumentDumpComponent\bin\Debug\netstandard2.0\</ComponentPath>
+    <ComponentPath>
+    </ComponentPath>
     <WebsiteSdkLinkType>Msdn</WebsiteSdkLinkType>
     <HtmlSdkLinkType>Msdn</HtmlSdkLinkType>
     <IncludeFavorites>False</IncludeFavorites>

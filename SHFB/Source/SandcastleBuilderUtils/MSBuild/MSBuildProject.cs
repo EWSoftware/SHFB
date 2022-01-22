@@ -150,12 +150,13 @@ namespace SandcastleBuilder.Utils.MSBuild
                     assemblyName = assemblyName.Trim();
 
                     // The values are case insensitive
-                    if(String.Compare(outputType, "Library", StringComparison.OrdinalIgnoreCase) == 0)
+                    if(String.Equals(outputType, "Library", StringComparison.OrdinalIgnoreCase))
                         assemblyName += ".dll";
                     else
-                        if(String.Compare(outputType, "Exe", StringComparison.OrdinalIgnoreCase) == 0 ||
-                          String.Compare(outputType, "WinExe", StringComparison.OrdinalIgnoreCase) == 0 ||
-                          String.Compare(outputType, "AppContainerExe", StringComparison.OrdinalIgnoreCase) == 0)
+                    {
+                        if(String.Equals(outputType, "Exe", StringComparison.OrdinalIgnoreCase) ||
+                          String.Equals(outputType, "WinExe", StringComparison.OrdinalIgnoreCase) ||
+                          String.Equals(outputType, "AppContainerExe", StringComparison.OrdinalIgnoreCase))
                         {
                             string ext = ".exe";
 
@@ -175,10 +176,13 @@ namespace SandcastleBuilder.Utils.MSBuild
                             assemblyName += ext;
                         }
                         else
-                            if(String.Compare(outputType, "winmdobj", StringComparison.OrdinalIgnoreCase) == 0)
+                        {
+                            if(String.Equals(outputType, "winmdobj", StringComparison.OrdinalIgnoreCase))
                                 assemblyName += ".winmd";
                             else
                                 assemblyName = null;
+                        }
+                    }
 
                     if(assemblyName != null)
                         if(Path.IsPathRooted(outputPath))
@@ -214,7 +218,7 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                         // Set TargetFramework if necessary as some people use it to as a variable in other paths
                         // to references etc. when multi-targeting.
-                        if(!String.IsNullOrWhiteSpace(targetFramework) && !properties.Keys.Contains("TargetFramework"))
+                        if(!String.IsNullOrWhiteSpace(targetFramework) && !properties.ContainsKey("TargetFramework"))
                         {
                             this.ProjectFile.SetProperty("TargetFramework", targetFramework);
                             this.ProjectFile.ReevaluateIfNecessary();

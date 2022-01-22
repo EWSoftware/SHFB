@@ -131,3 +131,9 @@ dotnet_diagnostic.IDE0057.severity = none
 
 # IDE0063: Use simple 'using' statement
 dotnet_diagnostic.IDE0063.severity = none
+
+# CA1845: Use span-based 'string.Concat'
+dotnet_diagnostic.CA1845.severity = none
+
+# CA1846: Prefer 'AsSpan' over 'Substring'
+dotnet_diagnostic.CA1846.severity = none

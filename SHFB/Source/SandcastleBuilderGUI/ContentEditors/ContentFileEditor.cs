@@ -264,7 +264,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     extension = extension.Substring(1);
 
                 foreach(string entry in matchList)
-                    if(entry.Length != 0 && String.Compare(entry, extension, StringComparison.OrdinalIgnoreCase) == 0)
+                    if(entry.Length != 0 && entry.Equals(extension, StringComparison.OrdinalIgnoreCase))
                         return true;
             }
 

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : GenerateInheritedDocs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/07/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 01/20/2022
+// Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the build task that scans XML comments files for <inheritdoc /> tags and produces a new
 // XML comments file containing the inherited documentation for use by Sandcastle.
@@ -402,7 +402,8 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                 foreach(var m in memberStack.ToArray())
                     sb.AppendFormat(CultureInfo.InvariantCulture, " <-- {0}: {1}", idx--, m);
 
-                this.Log.LogWarning(null, "GID0009", null, null, 0, 0, 0, 0, sb);
+                // NOTE: Use an explicit conversion for the string builder or it picks the wrong overload here
+                this.Log.LogWarning(null, "GID0009", null, null, 0, 0, 0, 0, sb.ToString());
                 return;
             }
 

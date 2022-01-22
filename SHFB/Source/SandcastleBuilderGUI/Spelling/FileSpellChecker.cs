@@ -256,8 +256,8 @@ namespace SandcastleBuilder.Gui.Spelling
                         break;
                 }
                 else
-                    if(priorWord.Length != 0 && String.Compare(text.Substring(priorWord.Start, priorWord.Length),
-                      currentWord, StringComparison.OrdinalIgnoreCase) == 0 &&
+                    if(priorWord.Length != 0 && text.Substring(priorWord.Start, priorWord.Length).Equals(currentWord,
+                      StringComparison.OrdinalIgnoreCase) &&
                       IsAllWhitespace(text, priorWord.Start + priorWord.Length, word.Start - 1))
                     {
                         se = new SpellingEventArgs(currentWord, location.ToPoint(text, textIdx));

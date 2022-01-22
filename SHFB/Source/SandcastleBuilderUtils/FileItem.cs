@@ -188,8 +188,7 @@ namespace SandcastleBuilder.Utils
                     if(path != newPath)
                     {
                         // If the file exists and it isn't just a case change, disallow it
-                        if(File.Exists(newPath) && String.Compare(path, newPath,
-                          StringComparison.OrdinalIgnoreCase) != 0)
+                        if(File.Exists(newPath) && !path.Equals(newPath, StringComparison.OrdinalIgnoreCase))
                             throw new ArgumentException("A file with that name already exists in the project folder");
 
                         File.Move(path, newPath);
@@ -205,13 +204,12 @@ namespace SandcastleBuilder.Utils
 
                 newPath = Path.Combine(Path.GetDirectoryName(path), value);
 
-                if(Directory.Exists(newPath) && String.Compare(path, newPath,
-                  StringComparison.OrdinalIgnoreCase) != 0)
+                if(Directory.Exists(newPath) && !path.Equals(newPath, StringComparison.OrdinalIgnoreCase))
                     throw new ArgumentException("A folder with that name already exists in the project folder");
 
                 // To allow renaming a folder by changing its case, move it to a temporary name first and then
                 // the new name.
-                if(String.Compare(path, newPath, StringComparison.OrdinalIgnoreCase) == 0)
+                if(path.Equals(newPath, StringComparison.OrdinalIgnoreCase))
                 {
                     tempPath = Guid.NewGuid().ToString();
                     Directory.Move(path, tempPath);

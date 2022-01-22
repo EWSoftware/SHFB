@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/24/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 01/18/2022
+// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to search for <code> XML comment tags and colorize the code
 // within them.  It can also include code from an external file or a region within the file.
@@ -738,7 +738,8 @@ namespace Sandcastle.Tools.BuildComponents
                     }
 
                     // Raise an event to indicate that a file was created
-                    OnComponentEvent(new FileCreatedEventArgs(destStylesheet, true));
+                    OnComponentEvent(new FileCreatedEventArgs(this.GroupId, "Code Block Component", null,
+                        destStylesheet, true));
 
                     if(!File.Exists(destScriptFile))
                     {
@@ -746,7 +747,8 @@ namespace Sandcastle.Tools.BuildComponents
                         File.SetAttributes(destScriptFile, FileAttributes.Normal);
                     }
 
-                    OnComponentEvent(new FileCreatedEventArgs(destScriptFile, true));
+                    OnComponentEvent(new FileCreatedEventArgs(this.GroupId, "Code Block Component", null,
+                        destScriptFile, true));
                 }
             }
 
@@ -923,13 +925,14 @@ namespace Sandcastle.Tools.BuildComponents
             XmlAttribute attr;
 
             // Don't bother if not a transform event, not in our group, or if the topic contained no code blocks
-            if(!(e is TransformedTopicEventArgs tt) || ((BuildComponentCore)sender).GroupId != this.GroupId ||
-              !topicCodeBlocks.TryGetValue(tt.Key, out Dictionary<string, XmlNode> colorizedCodeBlocks))
+            if(!(e is AppliedChangesEventArgs ac) || ac.GroupId != this.GroupId ||
+              ac.ComponentId != "XSL Transform Component" ||
+              !topicCodeBlocks.TryGetValue(ac.Key, out Dictionary<string, XmlNode> colorizedCodeBlocks))
             {
                 return;
             }
 
-            topicCodeBlocks.Remove(tt.Key);
+            topicCodeBlocks.Remove(ac.Key);
 
             if(!isOpenXml && !isMarkdown)
             {
@@ -937,22 +940,22 @@ namespace Sandcastle.Tools.BuildComponents
                 hasColorizedCodeBlocks = true;
 
                 // Find the <head> section
-                head = tt.Document.SelectSingleNode("html/head");
+                head = ac.Document.SelectSingleNode("html/head");
 
                 if(head == null)
                 {
-                    base.WriteMessage(tt.Key, MessageLevel.Error, "<head> section not found!  Could not insert links.");
+                    base.WriteMessage(ac.Key, MessageLevel.Error, "<head> section not found!  Could not insert links.");
                     return;
                 }
 
                 // Add the link to the style sheet
-                node = tt.Document.CreateNode(XmlNodeType.Element, "link", null);
+                node = ac.Document.CreateNode(XmlNodeType.Element, "link", null);
 
-                attr = tt.Document.CreateAttribute("type");
+                attr = ac.Document.CreateAttribute("type");
                 attr.Value = "text/css";
                 node.Attributes.Append(attr);
 
-                attr = tt.Document.CreateAttribute("rel");
+                attr = ac.Document.CreateAttribute("rel");
                 attr.Value = "stylesheet";
                 node.Attributes.Append(attr);
 
@@ -963,9 +966,9 @@ namespace Sandcastle.Tools.BuildComponents
                 head.AppendChild(node);
 
                 // Add the link to the script
-                node = tt.Document.CreateNode(XmlNodeType.Element, "script", null);
+                node = ac.Document.CreateNode(XmlNodeType.Element, "script", null);
 
-                attr = tt.Document.CreateAttribute("type");
+                attr = ac.Document.CreateAttribute("type");
                 attr.Value = "text/javascript";
                 node.Attributes.Append(attr);
 
@@ -981,7 +984,7 @@ namespace Sandcastle.Tools.BuildComponents
             // The "local-name()" part of the query is for the VS2010 and Open XML styles which add a namespace
             // to the element.  I could have created a context for the namespace but this is quick and it works
             // for all cases.
-            foreach(XmlNode codeContainer in tt.Document.SelectNodes(
+            foreach(XmlNode codeContainer in ac.Document.SelectNodes(
               "//pre[starts-with(.,'@@_SHFB_')]|//*[(local-name() = 'pre' or local-name() = 't') and starts-with(.,'@@_SHFB_')]"))
             {
                 XmlNode placeholder = codeContainer;
@@ -993,7 +996,7 @@ namespace Sandcastle.Tools.BuildComponents
                         // Make sure spacing is preserved
                         if(placeholder.Attributes["xml:space"] == null)
                         {
-                            attr = tt.Document.CreateAttribute("xml:space");
+                            attr = ac.Document.CreateAttribute("xml:space");
                             attr.Value = "preserve";
                             placeholder.Attributes.Append(attr);
                         }
@@ -1017,7 +1020,7 @@ namespace Sandcastle.Tools.BuildComponents
                             span.InnerText = String.Empty;
                 }
                 else
-                    this.WriteMessage(tt.Key, MessageLevel.Warn, "Unable to locate colorized code for placeholder: " +
+                    this.WriteMessage(ac.Key, MessageLevel.Warn, "Unable to locate colorized code for placeholder: " +
                         placeholder.InnerText);
             }
         }

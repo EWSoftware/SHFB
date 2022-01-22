@@ -161,7 +161,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                 foreach(TocEntry t in this)
                 {
-                    if(String.Compare(t.Id, id, StringComparison.OrdinalIgnoreCase) == 0)
+                    if(String.Equals(t.Id, id, StringComparison.OrdinalIgnoreCase))
                         return t;
 
                     found = t.Children[id];

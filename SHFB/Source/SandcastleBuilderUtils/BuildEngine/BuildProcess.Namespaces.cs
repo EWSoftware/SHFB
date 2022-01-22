@@ -478,7 +478,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 var children = kv.Value.Children;
 
                 for(int idx = 0; idx < children.Count; idx++)
-                    if(groups.Keys.Contains(children[idx]))
+                    if(groups.ContainsKey(children[idx]))
                         children[idx] = "G" + children[idx].Substring(1);
             }
 

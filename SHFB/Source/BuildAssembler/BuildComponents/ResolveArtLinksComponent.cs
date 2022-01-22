@@ -252,7 +252,8 @@ namespace Sandcastle.Tools.BuildComponents
                         File.SetAttributes(kv.Key, FileAttributes.Normal);
 
                         // Raise an event to indicate that a file was created
-                        OnComponentEvent(new FileCreatedEventArgs(kv.Key, true));
+                        OnComponentEvent(new FileCreatedEventArgs(this.GroupId, "Resolve Art Links Component",
+                            null, kv.Key, true));
                     }
                     else
                         this.WriteMessage(MessageLevel.Warn, "The file '{0}' for the art target '{1}' " +

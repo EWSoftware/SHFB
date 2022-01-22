@@ -432,7 +432,7 @@ namespace SandcastleBuilder.Utils
             minLength = Math.Min(baseParts.Length, absParts.Length);
 
             for(idx = 0; idx < minLength; idx++)
-                if(String.Compare(baseParts[idx], absParts[idx], StringComparison.OrdinalIgnoreCase) != 0)
+                if(!baseParts[idx].Equals(absParts[idx], StringComparison.OrdinalIgnoreCase))
                     break;
 
             // Use the absolute path if there's nothing in common (i.e. they are on different drives or network
@@ -634,7 +634,7 @@ namespace SandcastleBuilder.Utils
 
             FilePath otherPath = obj as FilePath;
 
-            return (String.Compare(this.Path, otherPath.Path, StringComparison.OrdinalIgnoreCase) == 0 &&
+            return (String.Equals(this.Path, otherPath.Path, StringComparison.OrdinalIgnoreCase) &&
               this.IsFixedPath == otherPath.IsFixedPath);
         }
         #endregion

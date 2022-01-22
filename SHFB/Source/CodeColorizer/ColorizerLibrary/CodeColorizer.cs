@@ -1453,7 +1453,7 @@ namespace ColorizerLibrary
                         CultureInfo.InvariantCulture);
 
                 // This is used to determine whether to render the colorized code in a <span> or a <pre> tag
-                inBox = (String.Compare(tag, "pre", StringComparison.OrdinalIgnoreCase) == 0);
+                inBox = tag.Equals("pre", StringComparison.OrdinalIgnoreCase);
 
                 // Tidy up the block by stripping any common leading whitespace and converting tabs to spaces
                 matchText = StripLeadingWhitespace(match.Groups[8].Value, tabSize, outliningLocal, out regions);
@@ -1470,7 +1470,7 @@ namespace ColorizerLibrary
                 matchText = StripLeadingWhitespace(matchText, tabSize, outliningLocal, out regions);
 
                 // This is used to determine whether to render the colorized code in a <span> or a <pre> tag
-                inBox = (String.Compare(tag, "pre", StringComparison.OrdinalIgnoreCase) == 0);
+                inBox = tag.Equals("pre", StringComparison.OrdinalIgnoreCase);
 
                 // If keeping see tags, replace them with a marker character so that they aren't colorized
                 if(keepSeeTagsLocal)

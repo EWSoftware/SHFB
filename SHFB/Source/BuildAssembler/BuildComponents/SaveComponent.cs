@@ -293,7 +293,7 @@ namespace Sandcastle.Tools.BuildComponents
                     }
 
                     // Raise an event to indicate that a file was created
-                    this.OnComponentEvent(new FileCreatedEventArgs(path, true));
+                    this.OnComponentEvent(new FileCreatedEventArgs(this.GroupId, "Save Component", kv.Key, path, true));
                 }
             }
             catch(IOException e)

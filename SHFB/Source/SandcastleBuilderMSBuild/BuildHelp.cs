@@ -580,25 +580,33 @@ namespace SandcastleBuilder.MSBuild
             // Always log errors and warnings
             if(m.Success)
             {
-                if(String.Compare(m.Groups[3].Value, "warning", StringComparison.OrdinalIgnoreCase) == 0)
-                    Log.LogWarning(null, m.Groups[4].Value, m.Groups[4].Value,
-                        m.Groups[1].Value, 0, 0, 0, 0, m.Groups[5].Value.Trim());
+                if(m.Groups[3].Value.Equals("warning", StringComparison.OrdinalIgnoreCase))
+                {
+                    Log.LogWarning(null, m.Groups[4].Value, m.Groups[4].Value, m.Groups[1].Value, 0, 0, 0, 0,
+                        m.Groups[5].Value.Trim());
+                }
                 else
-                    if(String.Compare(m.Groups[3].Value, "error", StringComparison.OrdinalIgnoreCase) == 0)
-                    Log.LogError(null, m.Groups[4].Value, m.Groups[4].Value,
-                        m.Groups[1].Value, 0, 0, 0, 0, m.Groups[5].Value.Trim());
-                else
-                    Log.LogMessage(MessageImportance.High, value.Message);
+                {
+                    if(m.Groups[3].Value.Equals("error", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Log.LogError(null, m.Groups[4].Value, m.Groups[4].Value, m.Groups[1].Value, 0, 0, 0, 0,
+                            m.Groups[5].Value.Trim());
+                    }
+                    else
+                        Log.LogMessage(MessageImportance.High, value.Message);
+                }
             }
             else
-                if(this.Verbose)
-                Log.LogMessage(MessageImportance.High, value.Message);
-            else
             {
-                // If not doing verbose logging, show warnings and let MSBuild filter them out if not
-                // wanted.  Errors will kill the build so we don't have to deal with them here.
-                if(reWarning.IsMatch(value.Message))
-                    Log.LogWarning(value.Message);
+                if(this.Verbose)
+                    Log.LogMessage(MessageImportance.High, value.Message);
+                else
+                {
+                    // If not doing verbose logging, show warnings and let MSBuild filter them out if not
+                    // wanted.  Errors will kill the build so we don't have to deal with them here.
+                    if(reWarning.IsMatch(value.Message))
+                        Log.LogWarning(value.Message);
+                }
             }
 
             if(value.StepChanged)
