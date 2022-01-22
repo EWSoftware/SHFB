@@ -27,7 +27,7 @@
 			installerName="SandcastleHelpFileBuilder.msi"/>
 
 		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage">
-			<package name="SHFBVisualStudioPackage_VS2017AndLater.vsix"
+			<package name="SHFBVisualStudioPackage_VS2017And2019.vsix"
 				id="c997d569-ee8e-4947-a46f-9a0717ce39a0" supportedVersions="15,16" />
 			<package name="SHFBVisualStudioPackage_VS2022AndLater.vsix"
 				id="SHFB.A8C96335-DAF7-4D30-89E2-B004400E4525" supportedVersions="17" />

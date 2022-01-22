@@ -1093,7 +1093,7 @@
 
 IF NOT EXIST "$(SolutionDir)..\..\Deployment\InstallResources" MD "$(SolutionDir)..\..\Deployment\InstallResources"
 
-Copy "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)..\..\Deployment\InstallResources\SHFBVisualStudioPackage_VS2017AndLater.vsix"
+Copy "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)..\..\Deployment\InstallResources\SHFBVisualStudioPackage_VS2017And2019.vsix"
 
 :Exit
 </PostBuildEvent>
