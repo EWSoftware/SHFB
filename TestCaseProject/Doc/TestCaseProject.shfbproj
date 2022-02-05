@@ -3,8 +3,8 @@
   <!-- Import the common props to support NuGet restore -->
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <!-- A framework version is required for NuGet restore, this can be any valid version -->
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <!-- A framework version is required by Visual Studio.  It can be any version with a targeting pack installed. -->
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <!-- The configuration and platform will be used to determine which
          assemblies to include from solution and project documentation
          sources -->
@@ -53,12 +53,47 @@
           <colorizer syntaxFile="{@CoreComponentsFolder}Colorizer\highlight.xml" styleFile="{@CoreComponentsFolder}Colorizer\highlight.xsl" stylesheet="{@CoreComponentsFolder}Colorizer\highlight.css" scriptFile="{@CoreComponentsFolder}Colorizer\highlight.js" disabled="{@DisableCodeBlockComponent}" language="cs" tabSize="0" numberLines="false" outlining="true" keepSeeTags="false" defaultTitle="true" />
         </component>
       </ComponentConfig>
-<ComponentConfig id="API Token Resolution" enabled="True"><component id="API Token Resolution">{@TokenFiles}
-<replace elements="/*//token" item="string(.)" /></component></ComponentConfig>
-<ComponentConfig id="IntelliSense Component" enabled="True"><component id="IntelliSense Component"><output includeNamespaces="true" namespacesFile="NamespacesTest" folder="{@OutputFolder}" boundedCapacity="0" /></component></ComponentConfig>
-<ComponentConfig id="Syntax Component" enabled="False"><component id="Syntax Component"><syntax input="/document/reference" output="/document/syntax" renderReferenceLinks="true" /><generators>
+      <ComponentConfig id="API Token Resolution" enabled="True">
+        <component id="API Token Resolution">{@TokenFiles}
+<replace elements="/*//token" item="string(.)" /></component>
+      </ComponentConfig>
+      <ComponentConfig id="IntelliSense Component" enabled="True">
+        <component id="IntelliSense Component">
+          <output includeNamespaces="true" namespacesFile="NamespacesTest" folder="{@OutputFolder}" boundedCapacity="0" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="Syntax Component" enabled="False">
+        <component id="Syntax Component">
+          <syntax input="/document/reference" output="/document/syntax" renderReferenceLinks="true" />
+          <generators>
     {@SyntaxFilters}
-</generators><containerElement name="codeSnippetGroup" addNoExampleTabs="true" includeOnSingleSnippets="true" groupingEnabled="{@CodeSnippetGrouping}" /><configurations><generator id="Visual Basic"><includeLineContinuation value="true" /></generator><generator id="Visual Basic Usage"><includeLineContinuation value="false" /></generator><generator id="Managed C++" /><generator id="C#" /><generator id="F#" /><generator id="J#" /><generator id="JScript" /><generator id="JavaScript" /><generator id="XAML Usage" /><generator id="ASP.NET" /><generator id="X#" /></configurations></component></ComponentConfig></ComponentConfigurations>
+</generators>
+          <containerElement name="codeSnippetGroup" addNoExampleTabs="true" includeOnSingleSnippets="true" groupingEnabled="{@CodeSnippetGrouping}" />
+          <configurations>
+            <generator id="Visual Basic">
+              <includeLineContinuation value="true" />
+            </generator>
+            <generator id="Visual Basic Usage">
+              <includeLineContinuation value="false" />
+            </generator>
+            <generator id="Managed C++" />
+            <generator id="C#" />
+            <generator id="F#" />
+            <generator id="J#" />
+            <generator id="JScript" />
+            <generator id="JavaScript" />
+            <generator id="XAML Usage" />
+            <generator id="ASP.NET" />
+            <generator id="X#" />
+          </configurations>
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="Pre-transform Document Dump Component" enabled="True">
+        <component id="Pre-transform Document Dump Component">
+          <dumpPath value="{@WorkingFolder}\RawDocs" />
+        </component>
+      </ComponentConfig>
+    </ComponentConfigurations>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\TestDoc.csproj" />
     </DocumentationSources>
@@ -95,7 +130,7 @@
       <PlugInConfig id="Additional Content Only" enabled="False">
         <configuration />
       </PlugInConfig>
-      <PlugInConfig id="Bibliography Support" enabled="False">
+      <PlugInConfig id="Bibliography Support" enabled="True">
         <configuration>
           <bibliography path="C:\GH\SHFB\TestCaseProject\Doc\Bibliography.xml" />
         </configuration>
@@ -106,7 +141,7 @@
     </PlugInConfigurations>
     <ApiFilter>
     </ApiFilter>
-    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <HelpFileFormat>HtmlHelp1, MSHelpViewer</HelpFileFormat>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <Major>1</Major>
     <Minor>20</Minor>

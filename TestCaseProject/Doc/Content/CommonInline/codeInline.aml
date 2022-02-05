@@ -28,6 +28,39 @@ Use a &lt;codeInline&gt;foreach&lt;/codeInline&gt; loop to iterate over the coll
       </content>
     </section>
 
+		<section>
+			<title>Language Keyword Test</title>
+			<content>
+				<para>Test of the <codeInline>languageKeyword</codeInline> element which doesn't seem to have been used
+or referenced anywhere before but does exist: <languageKeyword>null</languageKeyword>,
+<languageKeyword>Nothing</languageKeyword>, <languageKeyword>nullptr</languageKeyword>,
+<languageKeyword>static</languageKeyword>, <languageKeyword>Shared</languageKeyword>,
+<languageKeyword>virtual</languageKeyword>, <languageKeyword>Overridable</languageKeyword>,
+<languageKeyword>true</languageKeyword>, <languageKeyword>True</languageKeyword>,
+<languageKeyword>false</languageKeyword>, <languageKeyword>False</languageKeyword>,
+<languageKeyword>abstract</languageKeyword>, <languageKeyword>MustInherit</languageKeyword>,
+<languageKeyword>sealed</languageKeyword>, <languageKeyword>NotInheritable</languageKeyword>,
+<languageKeyword>async</languageKeyword>, <languageKeyword>Async</languageKeyword>,
+<languageKeyword>await</languageKeyword>, <languageKeyword>Await</languageKeyword>,
+<languageKeyword>async/await</languageKeyword>, <languageKeyword>Async/Await</languageKeyword>,
+<languageKeyword>UnknownKeyword1</languageKeyword>, <languageKeyword>UnknownKeyword2</languageKeyword>.
+			</para>
+
+				<code language="cs">
+					Need a code block for the languageKeyword elements to change based on the selected language.
+				</code>
+				<code language="vb">
+					Need a code block for the languageKeyword elements to change based on the selected language.
+				</code>
+				<code language="fs">
+					Need a code block for the languageKeyword elements to change based on the selected language.
+				</code>
+				<code language="cpp">
+					Need a code block for the languageKeyword elements to change based on the selected language.
+				</code>
+			</content>
+		</section>
+		
     <relatedTopics>
       <link xlink:href="b96d95c0-ec3c-4846-998a-4b43548bfa0e" />
       <link xlink:href="65e7e30a-ba03-4e10-b1f2-763a613b6e27" />

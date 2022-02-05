@@ -2443,6 +2443,9 @@ namespace Sandcastle.Tools
 
                         duplicates.Add((XElement)XNode.ReadFrom(reader));
                         hasDuplicates = true;
+
+                        if(reader.NodeType == XmlNodeType.EndElement)
+                            reader.ReadToFollowing("api");
                     }
                     else
                     {

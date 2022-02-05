@@ -53,5 +53,10 @@
 		<publisher>GitHub.com</publisher>
 		<link>https://GitHub.com/EWSoftware/SHFB/pulse/monthly</link>
 	</reference>
-
+	<reference name="shfb">
+		<title>Sandcastle Help File Builder</title>
+		<author>Eric Woodruff</author>
+		<publisher>GitHub.com</publisher>
+		<link>https://GitHub.com/EWSoftware/SHFB</link>
+	</reference>
 </bibliography>
