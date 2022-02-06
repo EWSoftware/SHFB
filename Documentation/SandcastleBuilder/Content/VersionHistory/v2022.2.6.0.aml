@@ -2,7 +2,8 @@
 <topic id="5491f230-cc0d-4604-8710-c046584907bd" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
-			<para>Release notes for version 2022.1.22.0.</para>
+			<para>Release notes for version 2022.2.6.0.  This release is a minor update to version 2022.1.22.0 which
+originally contained these changes.</para>
 		</introduction>
 
 		<section>
@@ -33,6 +34,17 @@ components and can be used for other tasks besides topic transformation.</para>
 
 					<listItem>
 						<para>Fixed a problem with the GID0009 circular reference warning for inherited documentation.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a condition that caused a failure when merging duplicate API entries in the reflection
+information file</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <codeInline>TargetFrameworkVersion</codeInline> element back to the help file builder
+project templates.  It turns out Visual Studio needs it if the .NET 4.0 targeting pack is not installed to
+prevent it prompting to upgrade the project to one of the installed targeting packs.</para>
 					</listItem>
 
 					<listItem>

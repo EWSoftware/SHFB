@@ -35,7 +35,7 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2013</PresentationStyle>
     <SyntaxFilters>Standard</SyntaxFilters>
-    <HelpFileVersion>2022.1.22.0</HelpFileVersion>
+    <HelpFileVersion>2022.2.6.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -391,7 +391,7 @@
     <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2021.3.29.0.aml" />
     <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2021.4.9.0.aml" />
     <None Include="Content\VersionHistory\v2021.11.7.0.aml" />
-    <None Include="Content\VersionHistory\v2022.1.22.0.aml" />
+    <None Include="Content\VersionHistory\v2022.2.6.0.aml" />
     <None Include="Content\VisualStudio\GoToDefinition.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />
