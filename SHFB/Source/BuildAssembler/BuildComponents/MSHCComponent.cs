@@ -1,7 +1,7 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Build Components
 // File    : MSHCComponent.cs
-// Note    : Copyright 2010-2021 Microsoft Corporation
+// Note    : Copyright 2010-2022 Microsoft Corporation
 //
 // This file contains a modified version of the original MSHCComponent that allows the inclusion of a sortOrder
 // attribute on the table of contents file elements.  This allows the sort order of the elements to be defined
@@ -317,6 +317,20 @@ namespace Sandcastle.Tools.BuildComponents
 
             XmlElement html = document.DocumentElement;
             XmlNode head = html.SelectSingleNode(Help2XPath.Head);
+            
+            // TODO: Paths are hard-coded until we get the presentation style replaced.
+            // Strip the relative path from src and href attribute values for icons, style sheets, and scripts
+            foreach(XmlNode srcHref in html.SelectNodes("//*[@src|@href]"))
+            {
+                var attr = srcHref.Attributes["src"] ?? srcHref.Attributes["href"];
+
+                if(attr.Value.StartsWith("../icons/", StringComparison.OrdinalIgnoreCase) ||
+                  attr.Value.StartsWith("../styles/", StringComparison.OrdinalIgnoreCase) ||
+                  attr.Value.StartsWith("../scripts/", StringComparison.OrdinalIgnoreCase))
+                {
+                    attr.Value = attr.Value.Substring(3);
+                }
+            }
 
             if(head == null)
             {

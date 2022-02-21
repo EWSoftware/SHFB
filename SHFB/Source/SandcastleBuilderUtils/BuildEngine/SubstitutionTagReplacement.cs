@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/01/2021
-// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
+// Updated : 02/20/2022
+// Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
 //
@@ -409,17 +409,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private string HHCPath()
         {
             return currentBuild.Help1CompilerFolder;
-        }
-
-        /// <summary>
-        /// The resource items folder
-        /// </summary>
-        /// <returns>The resource items folder</returns>
-        [SubstitutionTag]
-        private string ResourceItemsFolder()
-        {
-            return FolderPath.TerminatePath(Path.Combine(presentationStyle.ResolvePath(presentationStyle.ResourceItemsPath),
-                currentBuild.LanguageFolder));
         }
 
         /// <summary>
@@ -1275,9 +1264,21 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             replacementValue.Clear();
 
+            // Add resource items files from the presentation style.  These are always listed first so as to
+            // allow the files below to override the stock items.  Files are copied and transformed as they may
+            // contain substitution tags.
+            foreach(string psItemFile in Directory.EnumerateFiles(currentBuild.PresentationStyleResourceItemsFolder, "*.xml"))
+            {
+                replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<content file=\"{0}\" />\r\n",
+                    Path.GetFileName(psItemFile));
+
+                this.TransformTemplate(Path.GetFileName(psItemFile), Path.GetDirectoryName(psItemFile),
+                    currentBuild.WorkingFolder);
+            }
+
             // Add syntax generator resource item files.  All languages are included regardless of the project
             // filter settings since code examples can be in any language.  Files are copied and transformed as
-            // they may contain substitution tags
+            // they may contain substitution tags.
             foreach(string itemFile in ComponentUtilities.SyntaxGeneratorResourceItemFiles(
               currentBuild.ComponentContainer, sandcastleProject.Language))
             {

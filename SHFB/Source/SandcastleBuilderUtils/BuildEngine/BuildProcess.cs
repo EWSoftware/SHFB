@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/01/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 02/20/2022
+// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
 //
@@ -513,7 +513,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             ComponentAssemblyResolver resolver = null;
             Project msBuildProject = null;
             ProjectItem projectItem;
-            string resolvedPath, helpFile, languageFile, scriptFile, hintPath;
+            string resolvedPath, helpFile, scriptFile, hintPath;
             SandcastleProject originalProject = null;
             bool success = true;
 
@@ -827,56 +827,38 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // Transform the shared builder content files
                 language = project.Language;
-                languageFile = Path.Combine(presentationStyle.ResolvePath(presentationStyle.ToolResourceItemsPath),
-                    language.Name + ".xml");
 
                 this.ReportProgress(BuildStep.GenerateSharedContent, "Generating shared content files ({0}, {1})...",
                     language.Name, language.DisplayName);
-
-                if(!File.Exists(languageFile))
-                {
-                    languageFile = Path.Combine(presentationStyle.ResolvePath(presentationStyle.ToolResourceItemsPath),
-                        "en-US.xml");
-
-                    // Warn the user about the default being used
-                    this.ReportWarning("BE0002", "Help file builder content for the '{0}, {1}' language could " +
-                        "not be found.  Using 'en-US, English (US)' defaults.", language.Name, language.DisplayName);
-                }
 
                 // See if the user has translated the Sandcastle resources.  If not found, default to US English.
                 languageFolder = Path.Combine(presentationStyle.ResolvePath(presentationStyle.ResourceItemsPath),
                     language.Name);
 
                 if(Directory.Exists(languageFolder))
-                    languageFolder = language.Name + @"\";
+                    languageFolder = language.Name + Path.DirectorySeparatorChar;
                 else
                 {
                     // Warn the user about the default being used.  The language will still be used for the help
                     // file though.
                     if(language.Name != "en-US")
+                    {
                         this.ReportWarning("BE0003", "Sandcastle shared content for the '{0}, {1}' language " +
                             "could not be found.  Using 'en-US, English (US)' defaults.", language.Name,
                             language.DisplayName);
+                    }
 
-                    languageFolder = String.Empty;
+                    // The English language folder should always exist
+                    languageFolder = "en-US" + Path.DirectorySeparatorChar;
                 }
 
                 if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 {
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                    substitutionTags.TransformTemplate(Path.GetFileName(languageFile),
-                        Path.GetDirectoryName(languageFile), workingFolder);
-                    File.Move(Path.Combine(workingFolder, Path.GetFileName(languageFile)),
-                        Path.Combine(workingFolder, "SHFBContent.xml"));
-
-                    if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
-                        substitutionTags.TransformTemplate("WebsiteContent.xml", Path.GetDirectoryName(languageFile),
-                            workingFolder);
-
                     // Copy the stop word list
-                    languageFile = Path.Combine(ComponentUtilities.CoreComponentsFolder, "Shared",
-                        "StopWordList", Path.GetFileNameWithoutExtension(languageFile) +".txt");
+                    string languageFile = Path.Combine(ComponentUtilities.CoreComponentsFolder, "Shared",
+                        "StopWordList", language.Name + ".txt");
                     File.Copy(languageFile, Path.Combine(workingFolder, "StopWordList.txt"));
                     File.SetAttributes(Path.Combine(workingFolder, "StopWordList.txt"), FileAttributes.Normal);
 

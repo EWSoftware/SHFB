@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ResourceItemEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/20/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 02/20/2022
+// Note    : Copyright 2011-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to edit resource item files
 //
@@ -102,7 +102,7 @@ namespace SandcastleBuilder.WPF.UserControls
         public void LoadResourceItemsFile(string resourceItemsFile, SandcastleProject project)
         {
             PresentationStyleSettings pss = null;
-            string presentationStylePath, shfbStyleContent;
+            string presentationStylePath;
             List<string> syntaxGeneratorFiles = new List<string>();
 
             if(resourceItemsFile == null)
@@ -142,16 +142,12 @@ namespace SandcastleBuilder.WPF.UserControls
 
                 // Get the presentation style folders
                 presentationStylePath = pss.ResolvePath(pss.ResourceItemsPath);
-                shfbStyleContent = pss.ResolvePath(pss.ToolResourceItemsPath);
 
                 // Use the language-specific files if they are present
                 if(Directory.Exists(Path.Combine(presentationStylePath, project.Language.Name)))
                     presentationStylePath = Path.Combine(presentationStylePath, project.Language.Name);
-
-                if(File.Exists(Path.Combine(shfbStyleContent, project.Language.Name + ".xml")))
-                    shfbStyleContent = Path.Combine(shfbStyleContent, project.Language.Name + ".xml");
                 else
-                    shfbStyleContent = Path.Combine(shfbStyleContent, "en-US.xml");
+                    presentationStylePath = Path.Combine(presentationStylePath, "en-US");
 
                 // Load the presentation style content files first followed by the syntax generator files, the
                 // help file builder content items, and then the user's resource item file.
@@ -160,9 +156,6 @@ namespace SandcastleBuilder.WPF.UserControls
 
                 foreach(string file in syntaxGeneratorFiles)
                     this.LoadItemFile(file, false);
-
-                if(File.Exists(shfbStyleContent))
-                    this.LoadItemFile(shfbStyleContent, false);
 
                 this.LoadItemFile(resourceItemFilename, true);
 

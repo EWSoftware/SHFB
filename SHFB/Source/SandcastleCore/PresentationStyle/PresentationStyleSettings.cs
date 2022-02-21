@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PresentationStyleSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/17/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 02/20/2022
+// Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain settings information for a specific presentation style
 //
@@ -95,11 +95,6 @@ namespace Sandcastle.Core.PresentationStyle
         public string ResourceItemsPath { get; protected set; }
 
         /// <summary>
-        /// This is used to get or set the path in which help file builder resource item files are stored
-        /// </summary>
-        public string ToolResourceItemsPath { get; protected set; }
-
-        /// <summary>
         /// This is used to get or set the document model applicator
         /// </summary>
         public IApplyDocumentModel DocumentModelApplicator { get; protected set; }
@@ -159,9 +154,6 @@ namespace Sandcastle.Core.PresentationStyle
 
             if(this.ResourceItemsPath == null)
                 errors.Add(nameof(ResourceItemsPath) + " has not been specified");
-
-            if(this.ToolResourceItemsPath == null)
-                errors.Add(nameof(ToolResourceItemsPath) + " path has not been specified");
 
             if(this.DocumentModelApplicator == null)
                 errors.Add(nameof(DocumentModelApplicator) + " has not been specified");
