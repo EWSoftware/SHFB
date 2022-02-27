@@ -260,9 +260,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 try
                 {
-                    // Switch to the working folder for relative paths in the configuration file
-                    Directory.SetCurrentDirectory(currentBuild.WorkingFolder);
-
                     using(var reader = XmlReader.Create(currentBuild.BuildAssemblerConfigurationFile,
                       new XmlReaderSettings { CloseInput = true }))
                     {
@@ -301,8 +298,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 finally
                 {
                     messageLog.CompleteAdding();
-
-                    Directory.SetCurrentDirectory(currentBuild.ProjectFolder);
                 }
             }, currentBuild.CancellationToken, TaskCreationOptions.None, TaskScheduler.Default);
 

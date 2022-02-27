@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/26/2022
+// Updated : 02/27/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -1236,22 +1236,34 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 commentsFiles = null;
 
-                using(var buildAssembler = new BuildAssemblerInternal(this))
+                try
                 {
-                    // Merge the build component custom configurations
-                    this.MergeComponentConfigurations();
+                    // Switch to the working folder for relative paths in the Build Assembler configuration file
+                    Directory.SetCurrentDirectory(this.WorkingFolder);
 
-                    // Build the help topics
-                    this.ReportProgress(BuildStep.BuildTopics, "Building help topics...");
-
-                    if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
+                    using(var buildAssembler = new BuildAssemblerInternal(this))
                     {
-                        this.ExecutePlugIns(ExecutionBehaviors.Before);
+                        // Merge the build component custom configurations
+                        this.MergeComponentConfigurations();
 
-                        buildAssembler.BuildTopics();
+                        // Build the help topics
+                        this.ReportProgress(BuildStep.BuildTopics, "Building help topics...");
 
-                        this.ExecutePlugIns(ExecutionBehaviors.After);
+                        if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
+                        {
+                            this.ExecutePlugIns(ExecutionBehaviors.Before);
+
+                            buildAssembler.BuildTopics();
+
+                            this.ExecutePlugIns(ExecutionBehaviors.After);
+                        }
                     }
+                }
+                finally
+                {
+                    // Switch back after disposing of the build assembler instance as some components copy
+                    // files to the working folder when shutting down.
+                    Directory.SetCurrentDirectory(this.ProjectFolder);
                 }
 
                 // Combine the conceptual and API intermediate TOC files into one
