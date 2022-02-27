@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/30/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 02/25/2022
+// Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to add additional reference link targets to the Reflection Index Data
 // and Resolve Reference Links build components so that links can be created to other third party help in a
@@ -128,8 +128,6 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="context">The current execution context</param>
         public void Execute(ExecutionContext context)
         {
-            string workingPath, configFilename;
-
             if(context == null)
                 throw new ArgumentNullException(nameof(context));
 
@@ -144,7 +142,7 @@ namespace SandcastleBuilder.PlugIns
                     using(SandcastleProject project = new SandcastleProject(vs.HelpFileProject, true, true))
                     {
                         // We'll use a working folder below the current project's working folder
-                        workingPath = Path.Combine(builder.WorkingFolder,
+                        string workingPath = Path.Combine(builder.WorkingFolder,
                             vs.HelpFileProject.GetHashCode().ToString("X", CultureInfo.InvariantCulture));
 
                         bool success = this.BuildProject(project, workingPath);
@@ -157,10 +155,10 @@ namespace SandcastleBuilder.PlugIns
                             throw new BuilderException("ARL0003", "Unable to build additional target project: " +
                                 project.Filename);
                         }
-                    }
 
-                    // Save the reflection file location as we need it later
-                    vs.ReflectionFilename = Path.Combine(workingPath, "reflection.xml");
+                        // Save the reflection file location as we need it later
+                        vs.ReflectionFilename = Path.Combine(workingPath, "reflection.xml");
+                    }
                 }
 
                 return;
@@ -191,10 +189,8 @@ namespace SandcastleBuilder.PlugIns
             }
 
             // Merge the reflection file info into sancastle.config
-            configFilename = Path.Combine(builder.WorkingFolder, "sandcastle.config");
-
-            if(File.Exists(configFilename))
-                this.MergeReflectionInfo(configFilename);
+            if(File.Exists(builder.BuildAssemblerConfigurationFile))
+                this.MergeReflectionInfo();
         }
 
         /// <summary>
@@ -219,15 +215,14 @@ namespace SandcastleBuilder.PlugIns
         /// <summary>
         /// This is used to merge the reflection file info into the named configuration file.
         /// </summary>
-        /// <param name="configFilename">The configuration filename</param>
-        private void MergeReflectionInfo(string configFilename)
+        private void MergeReflectionInfo()
         {
             XElement target;
             HelpFileFormats helpFormat;
 
-            builder.ReportProgress("\r\nAdding references to {0}...", configFilename);
+            builder.ReportProgress("\r\nAdding references to {0}...", builder.BuildAssemblerConfigurationFile);
 
-            var configFile = XDocument.Load(configFilename);
+            var configFile = XDocument.Load(builder.BuildAssemblerConfigurationFile);
 
             // Add them to the Reflection Index Data component.  There are multiple copies of this component
             // type but we only need the first one.  This only appears in the reference build's configuration
@@ -245,7 +240,7 @@ namespace SandcastleBuilder.PlugIns
             if(component == null)
             {
                 throw new BuilderException("ARL0004", "Unable to locate Reflection Index Data component in " +
-                    configFilename);
+                    builder.BuildAssemblerConfigurationFile);
             }
 
             var lastChild = component.Descendants().Last();
@@ -267,7 +262,7 @@ namespace SandcastleBuilder.PlugIns
             if(matchingComponents.Count == 0)
             {
                 throw new BuilderException("ARL0005", "Unable to locate Resolve Reference Links component in " +
-                    configFilename);
+                    builder.BuildAssemblerConfigurationFile);
             }
 
             foreach(XElement match in matchingComponents)
@@ -315,7 +310,7 @@ namespace SandcastleBuilder.PlugIns
                     }
             }
 
-            configFile.Save(configFilename);
+            configFile.Save(builder.BuildAssemblerConfigurationFile);
         }
         #endregion
 

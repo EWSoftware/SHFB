@@ -14,6 +14,7 @@ attr
 bestfitmapping
 bkeyword
 bool
+Buchner
 byref
 callingconvention
 cctor
@@ -98,6 +99,7 @@ safeprojectname
 sbyte
 seealso
 selflink
+Sergey
 setlasterror
 shfb
 shfbproj
@@ -142,3 +144,4 @@ xpath
 xref
 xs
 xsl
+Zhurikhin

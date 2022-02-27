@@ -14,7 +14,6 @@
 // 12/08/2015 - EFW - Added support for component group ID
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Xml;
 using System.Xml.XPath;
@@ -26,26 +25,13 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
     /// </summary>
     public abstract class BuildComponentCore : IDisposable
     {
-        #region Private data members
-        //=====================================================================
-
-        private static readonly Dictionary<string, object> data = new Dictionary<string, object>();
-
-        #endregion
-
         #region Properties
         //=====================================================================
 
         /// <summary>
         /// This read-only property returns a reference to the build assembler instance using the component
         /// </summary>
-        public BuildAssemblerCore BuildAssembler { get; }
-
-        /// <summary>
-        /// This read-only property returns a static dictionary that can be used to store information shared
-        /// between build components.
-        /// </summary>
-        protected static IDictionary<string, object> Data => data;
+        public IBuildAssembler BuildAssembler { get; }
 
         /// <summary>
         /// This is used to set an optional group ID for use with component events
@@ -62,7 +48,7 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected BuildComponentCore(BuildAssemblerCore buildAssembler)
+        protected BuildComponentCore(IBuildAssembler buildAssembler)
         {
             this.BuildAssembler = buildAssembler;
         }
@@ -117,13 +103,14 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// <param name="document">The document that the build component can modify</param>
         /// <param name="key">The key that uniquely identifies the document</param>
         public abstract void Apply(XmlDocument document, string key);
+
         #endregion
 
         #region Component messaging methods
         //=====================================================================
 
         /// <summary>
-        /// This can be used to raise the <see cref="BuildAssemblerCore.ComponentEvent"/>
+        /// This can be used to raise the <see cref="IBuildAssembler.ComponentEvent"/>
         /// event with the specified event arguments.
         /// </summary>
         /// <param name="e">The event arguments.  This can be <see cref="EventArgs.Empty"/> or a derived event
@@ -142,9 +129,13 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// <param name="args">An optional list of arguments to format into the message</param>
         public void WriteMessage(MessageLevel level, string message, params object[] args)
         {
-            if(level != MessageLevel.Ignore && this.BuildAssembler != null)
-                this.BuildAssembler.WriteMessage(this.GetType(), level, null, (args == null || args.Length == 0) ? message :
+            if(this.BuildAssembler != null)
+            {
+                // If the message has no arguments, use it as is rather than formatting it to avoid issues if it
+                // contains braces which will look like format arguments.
+                this.BuildAssembler.WriteMessage(this.GetType().Name, level, null, args.Length == 0 ? message :
                     String.Format(CultureInfo.CurrentCulture, message, args));
+            }
         }
 
         /// <summary>
@@ -159,9 +150,13 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// the "building topic X" messages are suppressed.</remarks>
         public void WriteMessage(string key, MessageLevel level, string message, params object[] args)
         {
-            if(level != MessageLevel.Ignore && this.BuildAssembler != null)
-                this.BuildAssembler.WriteMessage(this.GetType(), level, key, (args == null || args.Length == 0) ? message :
+            if(this.BuildAssembler != null)
+            {
+                // If the message has no arguments, use it as is rather than formatting it to avoid issues if it
+                // contains braces which will look like format arguments.
+                this.BuildAssembler.WriteMessage(this.GetType().Name, level, key, args.Length == 0 ? message :
                     String.Format(CultureInfo.CurrentCulture, message, args));
+            }
         }
         #endregion
     }

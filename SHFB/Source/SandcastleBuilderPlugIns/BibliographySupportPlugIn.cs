@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : BibliographySupportPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 02/25/2022
+// Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that is used to add bibliography support to the topics
 //
@@ -123,14 +123,12 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="context">The current execution context</param>
         public void Execute(ExecutionContext context)
         {
-            string configFilename = Path.Combine(builder.WorkingFolder, "sandcastle.config");
-
-            if(!File.Exists(configFilename))
+            if(!File.Exists(builder.BuildAssemblerConfigurationFile))
                 return;
 
-            builder.ReportProgress("\r\nAdding bibliography parameter to {0}...", configFilename);
+            builder.ReportProgress("\r\nAdding bibliography parameter to {0}...", builder.BuildAssemblerConfigurationFile);
 
-            var configFile = XDocument.Load(configFilename);
+            var configFile = XDocument.Load(builder.BuildAssemblerConfigurationFile);
 
             // Find the XSL Transform Components in the configuration file and add a new argument to them:
             // <argument key="bibliographyData" value="C:\Path\To\bibliography.xml" />
@@ -139,7 +137,7 @@ namespace SandcastleBuilder.PlugIns
             if(components.Count == 0)
             {
                 throw new BuilderException("BIP0004", "Unable to locate XSL Transform Component configuration in " +
-                    configFilename);
+                    builder.BuildAssemblerConfigurationFile);
             }
 
             foreach(var transform in components)
@@ -149,7 +147,7 @@ namespace SandcastleBuilder.PlugIns
                     new XAttribute("value", bibliographyFile)));
             }
 
-            configFile.Save(configFilename);
+            configFile.Save(builder.BuildAssemblerConfigurationFile);
         }
         #endregion
 

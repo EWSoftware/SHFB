@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/20/2022
+// Updated : 02/26/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -259,6 +259,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public string ReflectionInfoFilename => reflectionFile;
 
         /// <summary>
+        /// This returns the name of the BuildAssembler topic manifest file
+        /// </summary>
+        public string BuildAssemblerManifestFile { get; private set; }
+
+        /// <summary>
+        /// This returns the name of the BuildAssembler configuration file
+        /// </summary>
+        public string BuildAssemblerConfigurationFile { get; private set; }
+
+        /// <summary>
         /// This read-only property returns the framework reflection data dictionary used by the build
         /// </summary>
         public ReflectionDataSetDictionary ReflectionDataSetDictionary => reflectionDataDictionary;
@@ -465,9 +475,39 @@ namespace SandcastleBuilder.Utils.BuildEngine
         internal CompositionContainer ComponentContainer => componentContainer;
 
         /// <summary>
+        /// This read-only property returns the build components that are available for use in the build
+        /// </summary>
+        internal IReadOnlyDictionary<string, BuildComponentFactory> BuildComponents
+        {
+            get
+            {
+                if(buildComponents == null)
+                {
+                    buildComponents = componentContainer.GetExports<BuildComponentFactory,
+                        IBuildComponentMetadata>().GroupBy(c => c.Metadata.Id).Select(g => g.First()).ToDictionary(
+                            key => key.Metadata.Id, value => value.Value);
+                }
+
+                return buildComponents;
+            }
+        }
+
+        /// <summary>
         /// This read-only property returns the syntax generator metadata
         /// </summary>
-        internal IEnumerable<ISyntaxGeneratorMetadata> SyntaxGenerators => syntaxGenerators;
+        internal IEnumerable<ISyntaxGeneratorMetadata> SyntaxGenerators
+        {
+            get
+            {
+                if(syntaxGenerators == null)
+                {
+                    syntaxGenerators = componentContainer.GetExports<ISyntaxGeneratorFactory,
+                        ISyntaxGeneratorMetadata>().Select(sf => sf.Metadata).ToList();
+                }
+
+                return syntaxGenerators;
+            }
+        }
 
         #endregion
 
@@ -513,7 +553,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             ComponentAssemblyResolver resolver = null;
             Project msBuildProject = null;
             ProjectItem projectItem;
-            string resolvedPath, helpFile, scriptFile, hintPath;
+            string helpFile, scriptFile, hintPath;
             SandcastleProject originalProject = null;
             bool success = true;
 
@@ -650,12 +690,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // Get the composition container used to find build components in the rest of the build process
                 componentContainer = ComponentUtilities.CreateComponentContainer(project.ComponentSearchPaths,
                     this.CancellationToken);
-
-                syntaxGenerators = componentContainer.GetExports<ISyntaxGeneratorFactory,
-                    ISyntaxGeneratorMetadata>().Select(sf => sf.Metadata).ToList();
-                buildComponents = componentContainer.GetExports<BuildComponentFactory,
-                    IBuildComponentMetadata>().GroupBy(c => c.Metadata.Id).Select(g => g.First()).ToDictionary(
-                        key => key.Metadata.Id, value => value.Value);
 
                 // Figure out which presentation style to use
                 var style = componentContainer.GetExports<PresentationStyleSettings,
@@ -1163,7 +1197,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // If F# syntax is being generated, add some of the F# namespaces as the syntax sections generate
                 // references to types that may not be there in non-F# projects.
-                if(ComponentUtilities.SyntaxFiltersFrom(syntaxGenerators, project.SyntaxFilters).Any(
+                if(ComponentUtilities.SyntaxFiltersFrom(this.SyntaxGenerators, project.SyntaxFilters).Any(
                   f => f.Id == "F#"))
                 {
                     rn.Add("Microsoft.FSharp.Core");
@@ -1181,38 +1215,43 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     this.ReportProgress("    sandcastle.config");
 
-                    // The configuration varies based on the style.  We'll use a common name (sandcastle.config).
-                    resolvedPath = presentationStyle.ResolvePath(presentationStyle.BuildAssemblerConfiguration);
-                    substitutionTags.TransformTemplate(Path.GetFileName(resolvedPath), Path.GetDirectoryName(resolvedPath),
-                        workingFolder);
+                    // The configuration varies based on the style
+                    this.BuildAssemblerConfigurationFile = presentationStyle.ResolvePath(
+                        presentationStyle.BuildAssemblerConfiguration);
+                    this.BuildAssemblerConfigurationFile = substitutionTags.TransformTemplate(
+                        Path.GetFileName(this.BuildAssemblerConfigurationFile),
+                        Path.GetDirectoryName(this.BuildAssemblerConfigurationFile), workingFolder);
 
-                    if(!Path.GetFileName(resolvedPath).Equals("sandcastle.config", StringComparison.OrdinalIgnoreCase))
+                    // TODO: This bit can go away once BuildAssembler is called directly from within the build engine
+                    if(!Path.GetFileName(this.BuildAssemblerConfigurationFile).Equals(
+                      "sandcastle.config", StringComparison.OrdinalIgnoreCase))
                     {
-                        File.Move(Path.Combine(workingFolder, Path.GetFileName(resolvedPath)),
-                            Path.Combine(workingFolder, "sandcastle.config"));
+                        string tempPath = this.BuildAssemblerConfigurationFile;
+                        this.BuildAssemblerConfigurationFile = Path.Combine(workingFolder, "sandcastle.config");
+                        File.Move(tempPath, this.BuildAssemblerConfigurationFile);
                     }
 
                     this.ExecutePlugIns(ExecutionBehaviors.After);
                 }
 
-                // Merge the build component custom configurations
-                this.MergeComponentConfigurations();
-
                 commentsFiles = null;
 
-                // Build the help topics
-                this.ReportProgress(BuildStep.BuildTopics, "Building help topics...");
-
-                if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
+                using(var buildAssembler = new BuildAssemblerInternal(this))
                 {
-                    scriptFile = substitutionTags.TransformTemplate("BuildTopics.proj", templateFolder,
-                        workingFolder);
+                    // Merge the build component custom configurations
+                    this.MergeComponentConfigurations();
 
-                    this.ExecutePlugIns(ExecutionBehaviors.Before);
-                                        
-                    taskRunner.RunProject("BuildTopics.proj", false);
-                    
-                    this.ExecutePlugIns(ExecutionBehaviors.After);
+                    // Build the help topics
+                    this.ReportProgress(BuildStep.BuildTopics, "Building help topics...");
+
+                    if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
+                    {
+                        this.ExecutePlugIns(ExecutionBehaviors.Before);
+
+                        buildAssembler.BuildTopics();
+
+                        this.ExecutePlugIns(ExecutionBehaviors.After);
+                    }
                 }
 
                 // Combine the conceptual and API intermediate TOC files into one
@@ -1561,7 +1600,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <param name="message">The message to report</param>
         /// <param name="args">A list of arguments to format into the message text</param>
         /// <remarks>This just reports the error.  The caller must abort the build</remarks>
-        private void ReportError(BuildStep step, string errorCode, string message, params object[] args)
+        public void ReportError(BuildStep step, string errorCode, string message, params object[] args)
         {
             string errorMessage = String.Format(CultureInfo.CurrentCulture, message, args);
 
@@ -1576,7 +1615,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <param name="args">A list of arguments to format into the message text</param>
         public void ReportWarning(string warningCode, string message, params object[] args)
         {
-            string warningMessage = String.Format(CultureInfo.CurrentCulture, message, args);
+            // If the message has no arguments, use it as is rather than formatting it to avoid issues if it
+            // contains braces which will look like format arguments.
+            string warningMessage = args.Length == 0 ? message : String.Format(CultureInfo.CurrentCulture, message, args);
 
             this.ReportProgress(this.CurrentBuildStep, "SHFB: Warning {0}: {1}", warningCode, warningMessage);
         }

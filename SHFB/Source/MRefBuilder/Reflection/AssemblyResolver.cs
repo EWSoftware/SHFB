@@ -154,7 +154,7 @@ namespace Sandcastle.Tools.Reflection
         /// <summary>
         /// This is used to get or set the message logger to use to report issues
         /// </summary>
-        public Action<LogLevel, string> MessageLogger { get; set; }
+        public Action<MessageLevel, string> MessageLogger { get; set; }
 
         #endregion
 
@@ -217,20 +217,20 @@ namespace Sandcastle.Tools.Reflection
                 // Import settings from a configuration file?
                 if(!String.IsNullOrEmpty(brs.ConfigurationFile))
                 {
-                    this.MessageLogger(LogLevel.Info, $"Importing settings from: {brs.ConfigurationFile}");
+                    this.MessageLogger(MessageLevel.Info, $"Importing settings from: {brs.ConfigurationFile}");
 
                     importedSettings = BindingRedirectSettings.FromConfigFile(brs.ConfigurationFile);
 
                     foreach(BindingRedirectSettings imported in importedSettings)
                     {
-                        this.MessageLogger(LogLevel.Info,
+                        this.MessageLogger(MessageLevel.Info,
                             $"Loaded assembly binding redirect: {imported}");
                         redirects.Add(imported);
                     }
                 }
                 else
                 {
-                    this.MessageLogger(LogLevel.Info, $"Loaded assembly binding redirect: {brs}");
+                    this.MessageLogger(MessageLevel.Info, $"Loaded assembly binding redirect: {brs}");
                     redirects.Add(brs);
                 }
             }
@@ -304,7 +304,7 @@ namespace Sandcastle.Tools.Reflection
             foreach(BindingRedirectSettings brs in redirects)
                 if(brs.IsRedirectFor(name) && cache.ContainsKey(brs.StrongName))
                 {
-                    this.MessageLogger(LogLevel.Info, $"Using redirect '{brs.StrongName}' in place of '{name}'");
+                    this.MessageLogger(MessageLevel.Info, $"Using redirect '{brs.StrongName}' in place of '{name}'");
 
                     assembly = cache[brs.StrongName];
 
@@ -350,7 +350,7 @@ namespace Sandcastle.Tools.Reflection
                 {
                     assembly = AssemblyNode.GetAssembly(assemblyRef.Location, null, false, false, false, false);
 
-                    this.MessageLogger(LogLevel.Info, $"Using framework redirect '{assembly.StrongName}' in place of '{name}'");
+                    this.MessageLogger(MessageLevel.Info, $"Using framework redirect '{assembly.StrongName}' in place of '{name}'");
 
                     cache.Add(name, assembly);
                     return assembly;
@@ -364,7 +364,7 @@ namespace Sandcastle.Tools.Reflection
                     assembly = cache[key];
                     cache.Add(name, assembly);
 
-                    this.MessageLogger(LogLevel.Info, $"Using automatic redirect '{assembly.StrongName}' in place of '{name}'");
+                    this.MessageLogger(MessageLevel.Info, $"Using automatic redirect '{assembly.StrongName}' in place of '{name}'");
 
                     return assembly;
                 }
@@ -389,7 +389,7 @@ namespace Sandcastle.Tools.Reflection
               StringComparison.Ordinal) && !reference.Name.StartsWith("Microsoft.", StringComparison.Ordinal))
                 OnUnresolvedAssemblyReference(reference, module);
             else
-                this.MessageLogger(LogLevel.Warn,
+                this.MessageLogger(MessageLevel.Warn,
                     $"Ignoring unresolved assembly reference: {reference.Name} ({reference.StrongName}) required by {module.Name}");
 
             return null;

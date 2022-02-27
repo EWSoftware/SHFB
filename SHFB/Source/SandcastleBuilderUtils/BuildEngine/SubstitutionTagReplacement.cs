@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/20/2022
+// Updated : 02/26/2022
 // Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -614,18 +614,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         #region Build category substitution tags
         //=====================================================================
-
-        /// <summary>
-        /// Build assembler verbosity
-        /// </summary>
-        /// <returns>The build assembler verbosity</returns>
-        [SubstitutionTag]
-        private string BuildAssemblerVerbosity()
-        {
-            return (sandcastleProject.BuildAssemblerVerbosity == Utils.BuildAssemblerVerbosity.AllMessages) ? "Info" :
-                (sandcastleProject.BuildAssemblerVerbosity == Utils.BuildAssemblerVerbosity.OnlyWarningsAndErrors) ?
-                "Warn" : "Error";
-        }
 
         /// <summary>
         /// Build assembler Save Component writer task cache capacity

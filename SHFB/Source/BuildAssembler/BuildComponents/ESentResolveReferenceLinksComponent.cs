@@ -27,6 +27,7 @@ using System.IO;
 using System.Reflection;
 using System.Xml.XPath;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
@@ -151,7 +152,7 @@ namespace SandcastleBuilder.Components
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected ESentResolveReferenceLinksComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected ESentResolveReferenceLinksComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion
@@ -185,8 +186,8 @@ namespace SandcastleBuilder.Components
             if(configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
-            if(Data.ContainsKey(SharedMemberUrlCacheId))
-                cache = Data[SharedMemberUrlCacheId] as IDictionary<string, string>;
+            if(this.BuildAssembler.Data.ContainsKey(SharedMemberUrlCacheId))
+                cache = this.BuildAssembler.Data[SharedMemberUrlCacheId] as IDictionary<string, string>;
 
             // If the shared cache already exists, return an instance that uses it.  It is assumed that all
             // subsequent instances will use the same cache.
@@ -236,7 +237,7 @@ namespace SandcastleBuilder.Components
                     else
                         this.WriteMessage(MessageLevel.Info, "{0} cached member ID URL entries exist", cacheCount);
 
-                    Data[SharedMemberUrlCacheId] = resolver.CachedUrls;
+                    this.BuildAssembler.Data[SharedMemberUrlCacheId] = resolver.CachedUrls;
                 }
             }
 

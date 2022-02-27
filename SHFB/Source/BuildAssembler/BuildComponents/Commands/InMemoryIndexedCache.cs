@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.XPath;
 
-using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core;
 
 namespace Sandcastle.Tools.BuildComponents.Commands
 {
@@ -147,6 +147,9 @@ namespace Sandcastle.Tools.BuildComponents.Commands
         public InMemoryIndexedCache(CopyFromIndexComponent component, XmlNamespaceManager context,
           XPathNavigator configuration) : base(component, context, configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             string cacheValue = configuration.GetAttribute("cache", String.Empty);
 
             if(String.IsNullOrWhiteSpace(cacheValue) || !Int32.TryParse(cacheValue, out int size) || size < 1)

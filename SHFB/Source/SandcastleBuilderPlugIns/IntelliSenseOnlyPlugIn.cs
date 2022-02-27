@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : IntelliSenseOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/17/2021
-// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
+// Updated : 02/25/2022
+// Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that can be used to build an IntelliSense XML comments file without a related
 // help file.
@@ -111,9 +111,8 @@ namespace SandcastleBuilder.PlugIns
                 builder.ReportProgress("Removing non-member topics from the build manifest...");
 
                 XmlDocument config = new XmlDocument();
-                string configFile = Path.Combine(builder.WorkingFolder, "manifest.xml");
 
-                config.Load(configFile);
+                config.Load(builder.BuildAssemblerManifestFile);
 
                 XPathNavigator navConfig = config.CreateNavigator();
                 XPathNavigator item = navConfig.SelectSingleNode("topics/topic");
@@ -136,13 +135,12 @@ namespace SandcastleBuilder.PlugIns
                         moreItems = item.MoveToNext();
                 }
 
-                config.Save(configFile);
+                config.Save(builder.BuildAssemblerManifestFile);
 
                 builder.ReportProgress("Removing irrelevant build components from the configuration file...");
 
-                configFile = Path.Combine(builder.WorkingFolder, "sandcastle.config");
                 config = new XmlDocument();
-                config.Load(configFile);
+                config.Load(builder.BuildAssemblerConfigurationFile);
                 navConfig = config.CreateNavigator();
 
                 // Delete the MAML configuration component set if present
@@ -181,7 +179,7 @@ namespace SandcastleBuilder.PlugIns
                     deleteItem.DeleteSelf();
                 }
 
-                config.Save(configFile);
+                config.Save(builder.BuildAssemblerConfigurationFile);
             }
 
             // Ignore all other the steps

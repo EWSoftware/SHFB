@@ -6,7 +6,7 @@
 // Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to convert span style language-specific text elements to
-// the script style elements used in the VS2010 and later styles.
+// the script style elements used in HTML-based presentation styles.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
@@ -32,7 +32,7 @@ namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This component is used to convert the span style language-specific text elements to the script style
-    /// elements used in the VS2010 and later styles.
+    /// elements used in the HTML-based presentation styles.
     /// </summary>
     /// <remarks>An optional <c>scriptFunction</c> configuration element with a <c>name</c> attribute specifying
     /// the JavaScript function to call can be specified.  If omitted, the function name defaults to
@@ -70,7 +70,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected LanguageSpecificTextComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected LanguageSpecificTextComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalContentOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/02/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 02/25/2022
+// Note    : Copyright 2007-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that can be used to build a help file consisting of nothing but additional
 // content items.  It is also useful for proofreading your additional content without having to build all the
@@ -148,8 +148,7 @@ namespace SandcastleBuilder.PlugIns
                 if(context.BuildStep == BuildStep.MergeCustomConfigs &&
                   builder.CurrentProject.HasItems(BuildAction.ContentLayout))
                 {
-                    string configFile = Path.Combine(builder.WorkingFolder, "sandcastle.config");
-                    var config = XDocument.Load(configFile);
+                    var config = XDocument.Load(builder.BuildAssemblerConfigurationFile);
 
                     // Delete the reference configuration component set if present
                     var item = config.XPathSelectElement("//component[@id='Switch Component']/case[@value='API']");
@@ -163,7 +162,7 @@ namespace SandcastleBuilder.PlugIns
                     foreach(var t in allTargets)
                         t.Remove();
 
-                    config.Save(configFile);
+                    config.Save(builder.BuildAssemblerConfigurationFile);
                 }
             }
 

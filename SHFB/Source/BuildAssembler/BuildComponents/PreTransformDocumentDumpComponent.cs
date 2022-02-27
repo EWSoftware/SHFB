@@ -26,6 +26,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
@@ -90,7 +91,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected PreTransformDocumentDumpComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected PreTransformDocumentDumpComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion

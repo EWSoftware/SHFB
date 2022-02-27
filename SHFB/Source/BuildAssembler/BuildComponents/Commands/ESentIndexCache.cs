@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.XPath;
 
-using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core;
 
 using Microsoft.Isam.Esent.Collections.Generic;
 

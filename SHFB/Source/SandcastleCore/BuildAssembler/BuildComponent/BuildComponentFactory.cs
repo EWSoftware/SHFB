@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : BuildComponentFactory.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/06/2021
-// Note    : Copyright 2013-2021, Eric Woodruff, All rights reserved
+// Updated : 02/26/2022
+// Note    : Copyright 2013-2022, Eric Woodruff, All rights reserved
 //
 // This file contains an abstract base class that defines the factory method for build components as well as
 // build tool interaction methods.
@@ -41,8 +41,8 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// </summary>
         /// <value>This may be null when used in a configuration tool which only needs access to the
         /// configuration methods on the factory class.</value>
-        [Import(typeof(BuildAssemblerCore), AllowDefault = true)]
-        protected BuildAssemblerCore BuildAssembler { get; set; }
+        [Import(typeof(IBuildAssembler), AllowDefault = true)]
+        protected IBuildAssembler BuildAssembler { get; set; }
 
         /// <summary>
         /// This read-only property can be overridden to provide a list of build components on which this

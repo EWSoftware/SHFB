@@ -68,7 +68,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected AdditionalHeaderResourcesComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected AdditionalHeaderResourcesComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion

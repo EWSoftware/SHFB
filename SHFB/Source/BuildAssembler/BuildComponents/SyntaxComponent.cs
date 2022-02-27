@@ -23,6 +23,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
@@ -111,7 +112,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
         /// <param name="generatorFactories">The list of available syntax generator factory components</param>
-        protected SyntaxComponent(BuildAssemblerCore buildAssembler,
+        protected SyntaxComponent(IBuildAssembler buildAssembler,
           List<Lazy<ISyntaxGeneratorFactory, ISyntaxGeneratorMetadata>> generatorFactories) : base(buildAssembler)
         {
             this.generatorFactories = generatorFactories ?? throw new ArgumentNullException(nameof(generatorFactories));
@@ -435,7 +436,7 @@ namespace Sandcastle.Tools.BuildComponents
                             {
                                 // If we have a set of shared language IDs, see if it's in there so that we can
                                 // get a human-readable name.  If not, we'll use the language ID as the title.
-                                var languageIds = (IReadOnlyDictionary<string, string>)BuildComponentCore.Data["LanguageIds"];
+                                var languageIds = (IReadOnlyDictionary<string, string>)this.BuildAssembler.Data["LanguageIds"];
 
                                 if(languageIds == null || !languageIds.TryGetValue(snippet.Language, out friendlyName))
                                     friendlyName = snippet.Language;

@@ -55,7 +55,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected CloneComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected CloneComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion

@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.XPath;
 
-using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
 using Microsoft.Isam.Esent.Collections.Generic;

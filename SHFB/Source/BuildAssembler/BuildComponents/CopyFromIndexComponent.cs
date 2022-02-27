@@ -19,6 +19,7 @@ using System.Xml.XPath;
 
 using Sandcastle.Tools.BuildComponents.Commands;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
@@ -87,7 +88,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
         /// <param name="copyComponentFactories">The list of available copy component factory components</param>
-        protected CopyFromIndexComponent(BuildAssemblerCore buildAssembler,
+        protected CopyFromIndexComponent(IBuildAssembler buildAssembler,
           List<Lazy<ICopyComponentFactory, ICopyComponentMetadata>> copyComponentFactories) : base(buildAssembler)
         {
             this.copyComponentFactories = copyComponentFactories;
@@ -155,7 +156,7 @@ namespace Sandcastle.Tools.BuildComponents
                 TimeSpan loadTime = (DateTime.Now - startLoad);
                 this.WriteMessage(MessageLevel.Diagnostic, "Load time: {0} seconds", loadTime.TotalSeconds);
 #endif
-                BuildComponentCore.Data.Add(index.Name, index);
+                this.BuildAssembler.Data.Add(index.Name, index);
             }
 
             // Get the copy commands
@@ -197,7 +198,7 @@ namespace Sandcastle.Tools.BuildComponents
                 if(!String.IsNullOrWhiteSpace(boolValue) && !Boolean.TryParse(boolValue, out ignoreCase))
                     this.WriteMessage(MessageLevel.Error, "The ignoreCase attribute value is not a valid Boolean");
 
-                IndexedCache index = (IndexedCache)BuildComponentCore.Data[sourceName];
+                IndexedCache index = (IndexedCache)this.BuildAssembler.Data[sourceName];
 
                 CopyFromIndexCommand copyCommand = new CopyFromIndexCommand(this, index, keyXPath, sourceXPath,
                     targetXPath, isAttribute, ignoreCase);
@@ -248,7 +249,7 @@ namespace Sandcastle.Tools.BuildComponents
                 {
                     var copyComponent = copyComponentFactory.Value.Create(this);
 
-                    copyComponent.Initialize(componentNode.Clone(), BuildComponentCore.Data);
+                    copyComponent.Initialize(componentNode.Clone(), this.BuildAssembler.Data);
                     components.Add(copyComponent);
                 }
                 catch(Exception ex)
@@ -284,12 +285,14 @@ namespace Sandcastle.Tools.BuildComponents
         {
             // Find and dispose of the index caches we own
             if(disposing)
-                foreach(var cache in BuildComponentCore.Data.Values.OfType<IndexedCache>().Where(
+            {
+                foreach(var cache in this.BuildAssembler.Data.Values.OfType<IndexedCache>().Where(
                   c => c.Component == this))
                 {
                     cache.ReportCacheStatistics();
                     cache.Dispose();
                 }
+            }
 
             base.Dispose(disposing);
         }

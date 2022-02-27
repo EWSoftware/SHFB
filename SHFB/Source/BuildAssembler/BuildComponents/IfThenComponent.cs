@@ -56,7 +56,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected IfThenComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected IfThenComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion

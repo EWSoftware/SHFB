@@ -30,14 +30,6 @@
 
 	<ItemGroup>
 		<None Remove="PresentationStyles.sln.vsspell" />
-		<None Remove="VS2010\Content\es-ES\shared_content.xml" />
-		<None Remove="VS2010\Content\fr-FR\shared_content.xml" />
-		<None Remove="VS2010\Content\it-IT\shared_content.xml" />
-		<None Remove="VS2010\Content\ko-KR\shared_content.xml" />
-		<None Remove="VS2010\Content\pt-BR\shared_content.xml" />
-		<None Remove="VS2010\Content\zh-CHS\shared_content.xml" />
-		<None Remove="VS2013\Content\ko-KR\shared_content.xml" />
-		<None Remove="VS2013\Content\zh-CHS\shared_content.xml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -81,9 +73,6 @@
 		<Content Include="Shared\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="VS2010\**">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
 		<Content Include="VS2013\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -93,8 +82,11 @@
 		<Content Remove="Markdown\**\*.vsspell" />
 		<Content Remove="OpenXml\**\*.vsspell" />
 		<Content Remove="Shared\**\*.vsspell" />
-		<Content Remove="VS2010\**\*.vsspell" />
 		<Content Remove="VS2013\**\*.vsspell" />
+		<Content Remove="Markdown\**\*.cs" />
+		<Content Remove="OpenXml\**\*.cs" />
+		<Content Remove="Shared\**\*.cs" />
+		<Content Remove="VS2013\**\*.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

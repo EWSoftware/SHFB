@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConceptualContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/31/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 02/26/2022
+// Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to hold the conceptual content for a project during a build
 //
@@ -109,13 +109,10 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             if(builder == null)
                 throw new ArgumentNullException(nameof(builder));
 
-            builder.ReportProgress("Copying standard token shared content file...");
-            builder.SubstitutionTags.TransformTemplate("HelpFileBuilderTokens.tokens", builder.TemplateFolder,
-                builder.WorkingFolder);
-
-            builder.ReportProgress("Checking for other token files...");
+            builder.ReportProgress("Checking for token files...");
 
             foreach(var tokenFile in this.TokenFiles)
+            {
                 if(!File.Exists(tokenFile.FullPath))
                 {
                     missingFile = true;
@@ -128,6 +125,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     builder.SubstitutionTags.TransformTemplate(Path.GetFileName(tokenFile.FullPath),
                         Path.GetDirectoryName(tokenFile.FullPath), builder.WorkingFolder);
                 }
+            }
 
             if(missingFile)
                 throw new BuilderException("BE0052", "One or more token files could not be found");
@@ -331,10 +329,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <param name="builder">The build process</param>
         private void MergeConceptualManifest(BuildProcess builder)
         {
-            string conceptualManifest = Path.Combine(builder.WorkingFolder, "ConceptualManifest.xml"),
-                referenceManifest = Path.Combine(builder.WorkingFolder, "manifest.xml");
+            string conceptualManifest = Path.Combine(builder.WorkingFolder, "ConceptualManifest.xml");
 
-            builder.ReportProgress("    Merging topic IDs into manifest.xml");
+            builder.ReportProgress("    Merging topic IDs into reference topic manifest file");
 
             using(var writer = XmlWriter.Create(conceptualManifest, new XmlWriterSettings { Indent = true, CloseOutput = true }))
             {
@@ -345,8 +342,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     foreach(Topic t in tc)
                         t.WriteManifest(writer, builder);
 
-                if(File.Exists(referenceManifest))
-                    foreach(var topic in ComponentUtilities.XmlStreamAxis(referenceManifest, "topic"))
+                if(File.Exists(builder.BuildAssemblerManifestFile))
+                    foreach(var topic in ComponentUtilities.XmlStreamAxis(builder.BuildAssemblerManifestFile, "topic"))
                     {
                         writer.WriteStartElement("topic");
 
@@ -360,10 +357,13 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 writer.WriteEndDocument();
             }
 
-            if(File.Exists(referenceManifest))
-                File.Copy(referenceManifest, Path.ChangeExtension(referenceManifest, "old"), true);
+            if(File.Exists(builder.BuildAssemblerManifestFile))
+            {
+                File.Copy(builder.BuildAssemblerManifestFile, Path.ChangeExtension(
+                    builder.BuildAssemblerManifestFile, "old"), true);
+            }
 
-            File.Copy(conceptualManifest, referenceManifest, true);
+            File.Copy(conceptualManifest, builder.BuildAssemblerManifestFile, true);
             File.Delete(conceptualManifest);
         }
         #endregion

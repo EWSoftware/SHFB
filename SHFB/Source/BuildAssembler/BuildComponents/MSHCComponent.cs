@@ -250,7 +250,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected MSHCComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected MSHCComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion

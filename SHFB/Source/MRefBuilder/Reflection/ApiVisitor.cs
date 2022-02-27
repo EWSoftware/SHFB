@@ -77,7 +77,7 @@ namespace Sandcastle.Tools.Reflection
         /// <summary>
         /// This is used to get or set the message logger to use to report issues
         /// </summary>
-        public Action<LogLevel, string> MessageLogger { get; set; }
+        public Action<MessageLevel, string> MessageLogger { get; set; }
 
         #endregion
 
@@ -235,12 +235,12 @@ namespace Sandcastle.Tools.Reflection
                 {
                     if(!assembly.reader.PdbExists)
                     {
-                        this.MessageLogger(LogLevel.Warn, "The program database (PDB) file associated with " +
+                        this.MessageLogger(MessageLevel.Warn, "The program database (PDB) file associated with " +
                             $"'{filePath}' does not exist or could not be loaded.  Source context information " +
                             "is unavailable.");
                     }
                     else
-                        this.MessageLogger(LogLevel.Info, $"Found a current program database (PDB) file for '{filePath}'.");
+                        this.MessageLogger(MessageLevel.Info, $"Found a current program database (PDB) file for '{filePath}'.");
                 }
             }
         }

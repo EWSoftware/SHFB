@@ -166,14 +166,11 @@ namespace Sandcastle.Core.BuildAssembler
         {
             CustomContext cc = new CustomContext();
 
-            if(keyValuePairs != null)
-            {
-                if(keyValuePairs.Length % 2 != 0)
-                    throw new ArgumentException("There must be a value for every key name specified", nameof(keyValuePairs));
+            if(keyValuePairs.Length % 2 != 0)
+                throw new ArgumentException("There must be a value for every key name specified", nameof(keyValuePairs));
 
-                for(int i = 0; i < keyValuePairs.Length; i += 2)
-                    cc[keyValuePairs[i]] = keyValuePairs[i + 1];
-            }
+            for(int i = 0; i < keyValuePairs.Length; i += 2)
+                cc[keyValuePairs[i]] = keyValuePairs[i + 1];
 
             return document.EvalXPathExpr(expression, cc);
         }

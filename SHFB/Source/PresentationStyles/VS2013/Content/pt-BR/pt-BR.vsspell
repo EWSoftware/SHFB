@@ -5,6 +5,7 @@
   <InheritAdditionalDictionaryFolders>True</InheritAdditionalDictionaryFolders>
   <SelectedLanguages>
     <LanguageName>pt-BR</LanguageName>
+    <LanguageName>en-US</LanguageName>
   </SelectedLanguages>
   <InheritIgnoredClassifications>True</InheritIgnoredClassifications>
   <IgnoredClassifications />
@@ -12,4 +13,5 @@
   <InheritExclusionExpressions>True</InheritExclusionExpressions>
   <InheritIgnoredFilePatterns>True</InheritIgnoredFilePatterns>
   <InheritXmlSettings>True</InheritXmlSettings>
+  <IgnoredWordsFile></IgnoredWordsFile>
 </SpellCheckerConfiguration>

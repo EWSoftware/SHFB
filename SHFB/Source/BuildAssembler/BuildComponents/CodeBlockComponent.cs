@@ -55,6 +55,7 @@ using System.Xml.XPath;
 
 using ColorizerLibrary;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
@@ -272,7 +273,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected CodeBlockComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected CodeBlockComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion
@@ -498,7 +499,7 @@ namespace Sandcastle.Tools.BuildComponents
 
             // Share the language ID mappings so that other components like the Syntax Component can get titles
             // for languages it doesn't know about.
-            BuildComponentCore.Data["LanguageIds"] = colorizer.FriendlyNames;
+            this.BuildAssembler.Data["LanguageIds"] = colorizer.FriendlyNames;
 
             // Create the XPath queries
             var context = new CustomContext();
@@ -821,13 +822,13 @@ namespace Sandcastle.Tools.BuildComponents
             }
             catch(ArgumentException argEx)
             {
-                this.WriteMessage(key, msgLevel, "Possible invalid path '{0}{1}'.  Error: {2}", basePath,
+                this.WriteMessage(key, msgLevel, "Possible invalid path '{0}{1}'.  Cause: {2}", basePath,
                     sourceFile, argEx.Message);
                 return "!ERROR: See log file!";
             }
             catch(IOException ioEx)
             {
-                this.WriteMessage(key, msgLevel, "Unable to load source file '{0}'.  Error: {1}", sourceFile,
+                this.WriteMessage(key, msgLevel, "Unable to load source file '{0}'.  Cause: {1}", sourceFile,
                     ioEx.Message);
                 return "!ERROR: See log file!";
             }
@@ -981,9 +982,8 @@ namespace Sandcastle.Tools.BuildComponents
                 head.AppendChild(node);
             }
 
-            // The "local-name()" part of the query is for the VS2010 and Open XML styles which add a namespace
-            // to the element.  I could have created a context for the namespace but this is quick and it works
-            // for all cases.
+            // The "local-name()" part of the query is for Open XML style which add a namespace to the element.
+            // I could have created a context for the namespace but this is quick and it works for all cases.
             foreach(XmlNode codeContainer in ac.Document.SelectNodes(
               "//pre[starts-with(.,'@@_SHFB_')]|//*[(local-name() = 'pre' or local-name() = 't') and starts-with(.,'@@_SHFB_')]"))
             {

@@ -25,6 +25,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Xml.XPath;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
@@ -131,7 +132,7 @@ namespace SandcastleBuilder.Components
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected ESentCopyFromIndexComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler, null)
+        protected ESentCopyFromIndexComponent(IBuildAssembler buildAssembler) : base(buildAssembler, null)
         {
         }
         #endregion

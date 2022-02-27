@@ -9,8 +9,7 @@
 //
 // This is a customized version for the Sandcastle Help File Builder.  It overrides the CopyCode() function
 // from the Hana, Prototype, and VS2005 presentation styles to remove the line numbering and collapsible
-// region elements.  The VS2010 style does not currently use the CopyCode() function in here as it has its own
-// version for copying the code.
+// region elements.
 //===============================================================================================================
 
 // Expand/collapse a region
