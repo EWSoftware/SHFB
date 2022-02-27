@@ -18,31 +18,6 @@ releases if possible.</para>
 on .NET Core.  It can be cleared in the plug-in settings to send the raw log file in the meantime.</para>
 					</listItem>
 
-					<listItem>
-						<para>The ESent and SQL cached data components currently have some issues.  However, in most cases
-these caching components are no longer necessary and can be removed from the project with no ill effects on
-build performance.</para>
-
-						<list class="bullet">
-							<listItem>
-								<para>Data caches built using the .NET Framework ESent and SQL cached data components cannot be
-used by the .NET Core versions of the same components and vice versa due to differences in the serialized
-framework types.</para>
-							</listItem>
-
-							<listItem>
-								<para>The ESent cached data components are not currently working under .NET Core due to some
-non-serializable types.</para>
-							</listItem>
-
-							<listItem>
-								<para>The SQL cached data components are not currently working under .NET Core due to
-the SQL client types not being supported.</para>
-							</listItem>
-						</list>
-						
-					</listItem>
-
 				</list>
 			</content>
 		</section>

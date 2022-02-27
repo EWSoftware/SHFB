@@ -37,7 +37,7 @@ file formats.</para>
 have been added to store reference link target, MSDN content ID, reflection index, and XML comments index data
 in either an ESENT or a SQL Server database.  These help save memory at the expense of some build time.  In
 extreme cases, project data can also be indexed and cached in a database thus freeing up more memory to the topic
-build process.  See the <link xlink:href="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" /> topic for more information.</para>
+build process.</para>
 
 					</listItem>
 

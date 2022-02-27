@@ -33,7 +33,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
 		<PackageReference Include="System.Text.Json" Version="5.0.2" />
 	</ItemGroup>
 
@@ -43,17 +42,5 @@
 			<Private>False</Private>
 		</ProjectReference>
 		<ProjectReference Include="..\BuildComponentTargets\BuildComponentTargets.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="Esent.Collections">
-			<HintPath>..\..\ReferenceAssemblies\Esent.Collections.dll</HintPath>
-		</Reference>
-		<Reference Include="Esent.Interop">
-			<HintPath>..\..\ReferenceAssemblies\Esent.Interop.dll</HintPath>
-		</Reference>
-		<Reference Include="Esent.Isam">
-			<HintPath>..\..\ReferenceAssemblies\Esent.Isam.dll</HintPath>
-		</Reference>
 	</ItemGroup>
 </Project>

@@ -489,9 +489,8 @@ the root level.</para>
 							</listItem>
 
 							<listItem>
-								<para><link xlink:href="93c452fd-71d4-470e-8d27-ec3d979679a4" /> - This is used to fix up the
-reflection file produced from assemblies created by the <legacyBold>Script#</legacyBold> compiler so that they
-are documented correctly.</para>
+								<para>Script# Reflection File Fixer - This is used to fix up the reflection file produced from
+assemblies created by the <legacyBold>Script#</legacyBold> compiler so that they are documented correctly.</para>
 							</listItem>
 
 							<listItem>

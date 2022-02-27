@@ -115,28 +115,6 @@ implied warranties of merchantability, fitness for a particular purpose and non-
 						<linkTarget>_blank</linkTarget>
 					</externalLink> is Copyright &#169; 2007-2022, Weifen Luo, All Rights Reserved. </para>
 
-				<para>The <externalLink>
-						<linkText>Managed ESENT Library</linkText>
-						<linkUri>https://github.com/microsoft/managedesent</linkUri>
-						<linkTarget>_blank</linkTarget>
-					</externalLink> is Copyright &#169; 2008-2022, Microsoft Corporation, All Rights Reserved.</para>
-
-				<para>
-					<externalLink>
-						<linkText>AjaxDoc</linkText>
-						<linkUri>https://github.com/bleroy/ajaxdoc</linkUri>
-						<linkTarget>_blank</linkTarget>
-					</externalLink> is Copyright &#169; 2006-2022, Bertrand Le Roy, All Rights Reserved.</para>
-
-				<para>NHunSpell is Copyright &#169; 2009-2022 Maierhofer Software, All Rights Reserved</para>
-
-				<para>
-					<externalLink>
-						<linkText>Script#</linkText>
-						<linkUri>https://github.com/NikhilK/scriptsharp</linkUri>
-						<linkTarget>_blank</linkTarget>
-					</externalLink> is Copyright &#169; 2007-2022, Nikhil Kothari, All Rights Reserved.</para>
-
 				<para>
 					<externalLink>
 						<linkText>SBAppLocale</linkText>
