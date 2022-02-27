@@ -1,12 +1,12 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Components
-// File    : PreTransformDocumentDumpComponent.cs
+// File    : TransformDocumentDumpComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/18/2022
+// Updated : 02/27/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
-// This file contains a build component that is used to save the pre-transform document data for use in testing
-// presentation style transformations.
+// This file contains a build component that is used to save the pre-transform and post-transform document data
+// for use in testing presentation style transformations and comparing the output.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
@@ -33,19 +33,21 @@ using Sandcastle.Core.BuildAssembler.BuildComponent;
 namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
-    /// This build component is a development aid.  It is used to save the pre-transform document data for use
-    /// in testing presentation style transformations.
+    /// This build component is a development aid.  It is used to save the pre-transform and post-transform
+    /// document data for use in testing presentation style transformations and comparing the output.
     /// </summary>
-    /// <remarks>This is a presentation style development aid.  It saves the pre-transformed content of each
-    /// document to a file in a .\RawDocs subfolder in the project's working folder.  These files can be used
-    /// for testing presentation style transforms without having to do a full project build.</remarks>
-    public class PreTransformDocumentDumpComponent : BuildComponentCore
+    /// <remarks>This is a presentation style development aid.  It saves the pre-transformed and post-transformed
+    /// content of each document to a file in a .\RawDocs and .TransformedDocs subfolders in the project's
+    /// working folder.  The files in the .\RawDocs folder can be used for testing presentation style transforms
+    /// without having to do a full project build.  The files in the .\TransformedDocs folder can be used to
+    /// compare against new styles or to ensure the content is equivalent to prior output.</remarks>
+    public class TransformDocumentDumpComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
 
         private XmlWriterSettings settings;
-        private string dumpPath;
+        private string rawDocsPath, transformedDocsPath;
 
         #endregion
 
@@ -55,11 +57,12 @@ namespace Sandcastle.Tools.BuildComponents
         /// <summary>
         /// This is used to create a new instance of the build component
         /// </summary>
-        [BuildComponentExport("Pre-transform Document Dump Component", IsVisible = true, Version = AssemblyInfo.ProductVersion,
+        [BuildComponentExport("Transform Document Dump Component", IsVisible = true, Version = AssemblyInfo.ProductVersion,
           Copyright = AssemblyInfo.Copyright, Description = "This is a presentation style development aid.  It " +
-            "saves the pre-transformed content of each document to a file in a .\\RawDocs subfolder in the " +
-            "project's working folder.  These files can be used for testing presentation style transforms " +
-            "without having to do a full project build.")]
+            "saves the pre-transformed content of each document to a file in the .\\RawDocs subfolder and the " +
+            "transformed content to a file in the .\\TransformedDocs subfolder in the project's working folder.  " +
+            "These files can be used for testing presentation style transforms without having to do a full " +
+            "project build and comparing the output.")]
         public sealed class Factory : BuildComponentFactory
         {
             /// <summary>
@@ -76,11 +79,12 @@ namespace Sandcastle.Tools.BuildComponents
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new PreTransformDocumentDumpComponent(this.BuildAssembler);
+                return new TransformDocumentDumpComponent(this.BuildAssembler);
             }
 
             /// <inheritdoc />
-            public override string DefaultConfiguration => @"<dumpPath value=""{@WorkingFolder}\RawDocs"" />";
+            public override string DefaultConfiguration =>
+                @"<dumpPath rawDocs=""{@WorkingFolder}\RawDocs"" transformedDocs=""{@workingFolder}\TransformedDocs"" />";
         }
         #endregion
 
@@ -91,7 +95,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected PreTransformDocumentDumpComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
+        protected TransformDocumentDumpComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion
@@ -114,10 +118,14 @@ namespace Sandcastle.Tools.BuildComponents
             this.WriteMessage(MessageLevel.Info, "[{0}, version {1}]\r\n    RawDocumentDumpComponent Component.  {2}",
                 fvi.ProductName, fvi.ProductVersion, fvi.LegalCopyright);
 
-            dumpPath = configuration.SelectSingleNode("dumpPath").GetAttribute("value", String.Empty);
+            rawDocsPath = configuration.SelectSingleNode("dumpPath").GetAttribute("rawDocs", String.Empty);
+            transformedDocsPath = configuration.SelectSingleNode("dumpPath").GetAttribute("transformedDocs", String.Empty);
 
-            if(!Directory.Exists(dumpPath))
-                Directory.CreateDirectory(dumpPath);
+            if(!Directory.Exists(rawDocsPath))
+                Directory.CreateDirectory(rawDocsPath);
+
+            if(!Directory.Exists(transformedDocsPath))
+                Directory.CreateDirectory(transformedDocsPath);
 
             settings = new XmlWriterSettings
             {
@@ -126,8 +134,9 @@ namespace Sandcastle.Tools.BuildComponents
                 Indent = true
             };
 
-            // Hook up the event handler to save the content just prior to XSL transformation
+            // Hook up the event handler to save the content just prior to XSL transformation and just after
             this.BuildAssembler.ComponentEvent += TransformComponent_TopicTransforming;
+            this.BuildAssembler.ComponentEvent += TransformComponent_TopicTransformed;
         }
 
         /// <summary>
@@ -163,7 +172,44 @@ namespace Sandcastle.Tools.BuildComponents
                     if(ac.Key.IndexOf(c) != -1)
                         filename.Replace(c, '_');
 
-                string xmlFile = Path.Combine(dumpPath, filename.ToString());
+                string xmlFile = Path.Combine(rawDocsPath, filename.ToString());
+
+                if(xmlFile.Length > 250)
+                    xmlFile = xmlFile.Substring(0, 250);
+
+                xmlFile += ".xml";
+
+                using(XmlWriter writer = XmlWriter.Create(xmlFile, settings))
+                {
+                    ac.Document.Save(writer);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Save the transformed content just after transforming but before any other components have made
+        /// changes to it.
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void TransformComponent_TopicTransformed(object sender, EventArgs e)
+        {
+            // Don't bother if not a transformed event or not in our group
+            if(!(e is AppliedChangesEventArgs ac) || ac.GroupId != this.GroupId ||
+              ac.ComponentId != "XSL Transform Component")
+            {
+                return;
+            }
+
+            if(ac.Document != null)
+            {
+                StringBuilder filename = new StringBuilder(ac.Key);
+
+                foreach(char c in Path.GetInvalidFileNameChars())
+                    if(ac.Key.IndexOf(c) != -1)
+                        filename.Replace(c, '_');
+
+                string xmlFile = Path.Combine(transformedDocsPath, filename.ToString());
 
                 if(xmlFile.Length > 250)
                     xmlFile = xmlFile.Substring(0, 250);
