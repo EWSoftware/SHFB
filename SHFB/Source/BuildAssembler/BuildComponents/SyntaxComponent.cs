@@ -64,7 +64,7 @@ namespace Sandcastle.Tools.BuildComponents
 
                 // Place it before the transform component in conceptual builds if not there already
                 this.ConceptualBuildPlacement = new ComponentPlacement(PlacementAction.Before,
-                    "XSL Transform Component");
+                    "Transform Component");
             }
 
             /// <inheritdoc />
@@ -331,7 +331,7 @@ namespace Sandcastle.Tools.BuildComponents
 
             // Don't bother if not a transforming event or not in our group
             if(!(e is ApplyingChangesEventArgs ac) || ac.GroupId != this.GroupId ||
-              ac.ComponentId != "XSL Transform Component")
+              ac.ComponentId != "Transform Component")
             {
                 return;
             }

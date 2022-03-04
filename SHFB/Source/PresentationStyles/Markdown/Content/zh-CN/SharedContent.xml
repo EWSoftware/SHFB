@@ -83,7 +83,7 @@
     <!-- Inserted boilerplate -->
     <item id="definedBy">(由 {0} 定义。)</item>
     <item id="inheritedFrom">(继承自 {0}。)</item>
-    <item id="overridesMember">(重写 {0}.)</item>
+    <item id="overridesMember">(重写 {0})</item>
     <item id="locationInformation">程序集：{0} (模块：{1})</item>
 
     <item id="derivedClasses">派生类</item>
@@ -100,6 +100,7 @@
 		<item id="rootTopicTitleLocalized">命名空间</item>
 
     <item id="topicTitle_namespace">{0} 命名空间</item>
+		<item id="topicTitle_NamespacePlain">{0}</item>
     <item id="topicTitle_namespaceGroup">{0} 命名空间</item>
     <item id="topicTitle_class">{0} 类</item>
     <item id="topicTitle_structure">{0} 结构</item>

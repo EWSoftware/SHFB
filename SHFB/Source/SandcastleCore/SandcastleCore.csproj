@@ -40,6 +40,10 @@
 		<None Include="..\SandcastleLogo.png" Link="SandcastleLogo.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="PresentationStyle\Transformation\Elements\Html\" />
+	</ItemGroup>
+
 	<Target Name="CopyPackage" AfterTargets="Pack">
 		<Exec Command="IF &quot;$(ConfigurationName)&quot;==&quot;Debug&quot; Goto Exit&#xD;&#xA;&#xD;&#xA;IF NOT EXIST &quot;$(SolutionDir)..\..\Deployment\NuGet&quot; MD &quot;$(SolutionDir)..\..\Deployment\NuGet&quot;&#xD;&#xA;&#xD;&#xA;Copy &quot;$(TargetDir)..\*.nupkg&quot; &quot;$(SolutionDir)..\..\Deployment\NuGet&quot;&#xD;&#xA;&#xD;&#xA;:Exit&#xD;&#xA;" />
 	</Target>

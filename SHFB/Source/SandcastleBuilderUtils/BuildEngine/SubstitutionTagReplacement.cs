@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/26/2022
+// Updated : 03/02/2022
 // Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -412,28 +412,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// The HTML Help 1 output folder
-        /// </summary>
-        /// <returns>The HTML Help 1 output folder</returns>
-        [SubstitutionTag]
-        private string Help1Folder()
-        {
-            return ((sandcastleProject.HelpFileFormat & HelpFileFormats.HtmlHelp1) == 0) ? String.Empty :
-                @"Output\" + HelpFileFormats.HtmlHelp1.ToString();
-        }
-
-        /// <summary>
-        /// The website output folder
-        /// </summary>
-        /// <returns>The website output folder</returns>
-        [SubstitutionTag]
-        private string WebsiteFolder()
-        {
-            return ((sandcastleProject.HelpFileFormat & HelpFileFormats.Website) == 0) ? String.Empty :
-                @"Output\" + HelpFileFormats.Website.ToString();
-        }
-
-        /// <summary>
         /// The MEF component locations
         /// </summary>
         /// <returns>The MEF component locations</returns>
@@ -496,24 +474,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private string CodeSnippetGrouping()
         {
             return presentationStyle.SupportsCodeSnippetGrouping.ToString().ToLowerInvariant();
-        }
-
-        /// <summary>
-        /// The Transform Component argument list
-        /// </summary>
-        /// <returns>The Transform Component argument list</returns>
-        [SubstitutionTag]
-        private string TransformComponentArguments()
-        {
-            replacementValue.Clear();
-
-            foreach(var arg in sandcastleProject.TransformComponentArguments)
-                if(arg.Value != null)
-                    replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<argument key=\"{0}\" value=\"{1}\" />\r\n", arg.Key, arg.Value);
-                else
-                    replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<argument key=\"{0}\">{1}</argument>\r\n", arg.Key, arg.Content);
-
-            return replacementValue.ToString();
         }
 
         /// <summary>
@@ -877,19 +837,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
             return ComponentUtilities.SyntaxFilterGeneratorsFrom(currentBuild.SyntaxGenerators,
                 sandcastleProject.SyntaxFilters);
         }
-
-        /// <summary>
-        /// The syntax filter language settings for the Transform Component
-        /// </summary>
-        /// <returns>The syntax filter language settings for the Transform Component.  It is not technically a
-        /// dropdown anymore but I can't be bothered to go change it everywhere.</returns>
-        [SubstitutionTag]
-        private string SyntaxFiltersDropDown()
-        {
-            return ComponentUtilities.SyntaxFilterLanguagesFrom(currentBuild.SyntaxGenerators,
-                sandcastleProject.SyntaxFilters);
-        }
-
         #endregion
 
         #region Help 1 format substitution tags
@@ -1206,11 +1153,58 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// Help 1 project file list
         /// </summary>
         /// <returns>The help 1 project file list</returns>
+        /// <remarks>The help file list is expanded to ensure that we get all additional content including all
+        /// nested subfolders.</remarks>
         [SubstitutionTag]
         private string Help1xProjectFiles()
         {
-            return this.HelpProjectFileList(String.Format(CultureInfo.InvariantCulture, @"{0}Output\{1}",
-                currentBuild.WorkingFolder, HelpFileFormats.HtmlHelp1), HelpFileFormats.HtmlHelp1);
+            string sourceFolder = Path.Combine(currentBuild.WorkingFolder, "Output",
+                HelpFileFormats.HtmlHelp1.ToString()) + Path.DirectorySeparatorChar,
+                filename, checkName;
+
+            if(sourceFolder.IndexOf(',') != -1 || sourceFolder.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
+            {
+                currentBuild.ReportWarning("BE0060", "The file path '{0}' contains a comma or '.h' which may " +
+                    "cause the Help 1 compiler to fail.", sourceFolder);
+            }
+
+            if(currentBuild.ResolvedHtmlHelpName.IndexOf(',') != -1 ||
+                currentBuild.ResolvedHtmlHelpName.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
+            {
+                currentBuild.ReportWarning("BE0060", "The HtmlHelpName property value '{0}' contains a comma " +
+                    "or '.h' which may cause the Help 1 compiler to fail.", currentBuild.ResolvedHtmlHelpName);
+            }
+
+            replacementValue.Clear();
+
+            foreach(string name in Directory.EnumerateFiles(sourceFolder, "*.*", SearchOption.AllDirectories))
+            {
+                filename = checkName = name.Replace(sourceFolder, String.Empty);
+
+                // Ignore the project, index, and TOC files
+                if(checkName.EndsWith(".hhc", StringComparison.OrdinalIgnoreCase) ||
+                    checkName.EndsWith(".hhk", StringComparison.OrdinalIgnoreCase) ||
+                    checkName.EndsWith(".hhp", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                if(checkName.EndsWith(".htm", StringComparison.OrdinalIgnoreCase) ||
+                  checkName.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
+                {
+                    checkName = checkName.Substring(0, checkName.LastIndexOf(".htm", StringComparison.OrdinalIgnoreCase));
+                }
+
+                if(checkName.IndexOf(',') != -1 || checkName.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    currentBuild.ReportWarning("BE0060", "The filename '{0}' contains a comma or '.h' " +
+                        "which may cause the Help 1 compiler to fail.", filename);
+                }
+
+                replacementValue.AppendFormat(CultureInfo.InvariantCulture, "{0}\r\n", filename);
+            }
+
+            return replacementValue.ToString();
         }
 
         /// <summary>
@@ -1423,73 +1417,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<import path=\"{0}\" file=\"{1}\" " +
                         "recurse=\"false\" />\r\n", folder, wildcard);
             }
-
-            return replacementValue.ToString();
-        }
-
-        /// <summary>
-        /// This returns a complete list of files for inclusion in the compiled help file
-        /// </summary>
-        /// <param name="folder">The folder to expand</param>
-        /// <param name="format">The help file format</param>
-        /// <returns>The full list of all files for the help project</returns>
-        /// <remarks>The help file list is expanded to ensure that we get all additional content including all
-        /// nested subfolders.  The <paramref name="format"/> parameter determines the format of the returned
-        /// file list.  For HTML Help 1, it returns a list of the filenames.  For all others, it returns the list
-        /// formatted with the necessary XML markup.</remarks>
-        private string HelpProjectFileList(string folder, HelpFileFormats format)
-        {
-            string itemFormat, filename, checkName, sourceFolder = folder;
-            bool encode;
-
-            if(folder == null)
-                throw new ArgumentNullException(nameof(folder));
-
-            if(folder.Length != 0 && folder[folder.Length - 1] != '\\')
-                folder += @"\";
-
-            if((format & HelpFileFormats.HtmlHelp1) != 0)
-            {
-                if(folder.IndexOf(',') != -1 || folder.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
-                    currentBuild.ReportWarning("BE0060", "The file path '{0}' contains a comma or '.h' which may " +
-                        "cause the Help 1 compiler to fail.", folder);
-
-                if(currentBuild.ResolvedHtmlHelpName.IndexOf(',') != -1 ||
-                  currentBuild.ResolvedHtmlHelpName.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
-                    currentBuild.ReportWarning("BE0060", "The HtmlHelpName property value '{0}' contains a comma " +
-                        "or '.h' which may cause the Help 1 compiler to fail.", currentBuild.ResolvedHtmlHelpName);
-
-                itemFormat = "{0}\r\n";
-                encode = false;
-            }
-            else
-            {
-                itemFormat = "	<File Url=\"{0}\" />\r\n";
-                encode = true;
-            }
-
-            replacementValue.Clear();
-
-            foreach(string name in Directory.EnumerateFiles(sourceFolder, "*.*", SearchOption.AllDirectories))
-                if(!encode)
-                {
-                    filename = checkName = name.Replace(folder, String.Empty);
-
-                    if(checkName.EndsWith(".htm", StringComparison.OrdinalIgnoreCase) ||
-                      checkName.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
-                        checkName = checkName.Substring(0, checkName.LastIndexOf(".htm", StringComparison.OrdinalIgnoreCase));
-
-                    if(checkName.IndexOf(',') != -1 || checkName.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
-                        currentBuild.ReportWarning("BE0060", "The filename '{0}' contains a comma or '.h' " +
-                            "which may cause the Help 1 compiler to fail.", filename);
-
-                    replacementValue.AppendFormat(CultureInfo.InvariantCulture, itemFormat, filename);
-                }
-                else
-                {
-                    replacementValue.AppendFormat(CultureInfo.InvariantCulture, itemFormat,
-                        WebUtility.HtmlEncode(name.Replace(folder, String.Empty)));
-                }
 
             return replacementValue.ToString();
         }

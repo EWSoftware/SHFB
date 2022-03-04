@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/18/2022
+// Updated : 02/28/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to search for <code> XML comment tags and colorize the code
@@ -170,9 +170,9 @@ namespace Sandcastle.Tools.BuildComponents
             public Factory()
             {
                 this.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Before,
-                    "XSL Transform Component");
+                    "Transform Component");
                 this.ConceptualBuildPlacement = new ComponentPlacement(PlacementAction.Before,
-                    "XSL Transform Component");
+                    "Transform Component");
             }
 
             /// <inheritdoc />
@@ -236,7 +236,7 @@ namespace Sandcastle.Tools.BuildComponents
         private CodeColorizer colorizer;    // The code colorizer
 
         // The style sheet, script, and image files to include and the output path
-        private string stylesheet, scriptFile;
+        private string stylesheet, scriptFile, stylesheetAttrPath, scriptFileAttrPath;
 
         // Line numbering, outlining, keep see tags, remove region markers, disabled, files copied, Open XML,
         // and Markdown flags.
@@ -422,6 +422,11 @@ namespace Sandcastle.Tools.BuildComponents
 
                 if(!File.Exists(scriptFile))
                     throw new ArgumentException("Could not find script file: " + scriptFile, nameof(configuration));
+
+                stylesheetAttrPath = Path.Combine(this.BuildAssembler.TopicTransformation.StyleSheetPath,
+                    Path.GetFileName(stylesheet));
+                scriptFileAttrPath = Path.Combine(this.BuildAssembler.TopicTransformation.ScriptPath,
+                    Path.GetFileName(scriptFile));
             }
 
             // Optional attributes
@@ -719,8 +724,14 @@ namespace Sandcastle.Tools.BuildComponents
             {
                 foreach(string outputPath in outputPaths)
                 {
-                    destStylesheet = Path.Combine(outputPath, "styles", Path.GetFileName(stylesheet));
-                    destScriptFile = Path.Combine(outputPath, "scripts", Path.GetFileName(scriptFile));
+                    destStylesheet = Path.Combine(outputPath, stylesheetAttrPath.Replace("../", String.Empty));
+                    destScriptFile = Path.Combine(outputPath, scriptFileAttrPath.Replace("../", String.Empty));
+
+                    if(Path.DirectorySeparatorChar != '/')
+                    {
+                        destStylesheet = destStylesheet.Replace('/', Path.DirectorySeparatorChar);
+                        destScriptFile = destScriptFile.Replace('/', Path.DirectorySeparatorChar);
+                    }
 
                     if(!Directory.Exists(Path.GetDirectoryName(destStylesheet)))
                         Directory.CreateDirectory(Path.GetDirectoryName(destStylesheet));
@@ -927,7 +938,7 @@ namespace Sandcastle.Tools.BuildComponents
 
             // Don't bother if not a transform event, not in our group, or if the topic contained no code blocks
             if(!(e is AppliedChangesEventArgs ac) || ac.GroupId != this.GroupId ||
-              ac.ComponentId != "XSL Transform Component" ||
+              ac.ComponentId != "Transform Component" ||
               !topicCodeBlocks.TryGetValue(ac.Key, out Dictionary<string, XmlNode> colorizedCodeBlocks))
             {
                 return;
@@ -960,9 +971,9 @@ namespace Sandcastle.Tools.BuildComponents
                 attr.Value = "stylesheet";
                 node.Attributes.Append(attr);
 
-                node.InnerXml = String.Format(CultureInfo.InvariantCulture,
-                    "<includeAttribute name='href' item='stylePath'><parameter>{0}</parameter></includeAttribute>",
-                    Path.GetFileName(stylesheet));
+                attr = ac.Document.CreateAttribute("href");
+                attr.Value = stylesheetAttrPath;
+                node.Attributes.Append(attr);
 
                 head.AppendChild(node);
 
@@ -973,11 +984,13 @@ namespace Sandcastle.Tools.BuildComponents
                 attr.Value = "text/javascript";
                 node.Attributes.Append(attr);
 
-                // Script tags cannot be self-closing so set their inner text
-                // to a space so that they render as an opening and a closing tag.
-                node.InnerXml = String.Format(CultureInfo.InvariantCulture,
-                    " <includeAttribute name='src' item='scriptPath'><parameter>{0}</parameter></includeAttribute>",
-                    Path.GetFileName(scriptFile));
+                attr = ac.Document.CreateAttribute("src");
+                attr.Value = scriptFileAttrPath;
+                node.Attributes.Append(attr);
+
+                // Script tags cannot be self-closing so set their inner text to a space so that they render as
+                // an opening and a closing tag.
+                node.InnerXml = " ";
 
                 head.AppendChild(node);
             }

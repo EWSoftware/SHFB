@@ -241,7 +241,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         /// <summary>
         /// This is used to merge the component configurations from the project with the
-        /// <strong>sandcastle.config</strong> file.
+        /// BuildAssembler configuration file.
         /// </summary>
         private void MergeComponentConfigurations()
         {

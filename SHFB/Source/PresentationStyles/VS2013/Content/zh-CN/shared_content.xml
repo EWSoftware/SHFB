@@ -119,6 +119,7 @@
     <item id="topicTitle_method">{0} 方法 {1}</item>
     <item id="topicTitle_methods">{0} 方法</item>
 	  <item id="topicTitle_namespace">{0} 命名空间</item>
+		<item id="topicTitle_NamespacePlain">{0}</item>
     <item id="topicTitle_namespaceGroup">{0} 命名空间</item>
     <item id="topicTitle_properties">{0} 属性</item>
     <item id="topicTitle_property">{0} 属性 {1}</item>
@@ -145,13 +146,13 @@
     <item id="tableTitle_enumeration">枚举</item>
     <item id="tableTitle_event">事件</item>
     <item id="tableTitle_explicitInterfaceImplementation">显式接口实现</item>
-    <item id="tableTitle_extensionMethod">扩展方法</item>
+    <item id="tableTitle_extension">扩展方法</item>
     <item id="tableTitle_field">字段</item>
     <item id="tableTitle_interface">接口</item>
     <item id="tableTitle_method">方法</item>
     <item id="tableTitle_namespace">命名空间</item>
     <item id="tableTitle_operator">运算符</item>
-    <item id="tableTitle_overloadMembers">重载列表</item>
+    <item id="tableTitle_overload">重载列表</item>
     <item id="tableTitle_property">属性</item>
     <item id="tableTitle_structure">结构</item>
 
@@ -185,7 +186,7 @@
   <item id="exposedMembersTableText">{0} 类型公开以下成员。</item>	
   <item id="inheritedFrom">(继承自 {0}。)</item>
 	<item id="noCodeExample"><p>当前没有可用的代码示例，或者可能不支持该语言。</p></item>
-  <item id="overridesMember">(重写 {0}.)</item>
+  <item id="overridesMember">(重写 {0})</item>
 	<item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[本文档仅为初稿，以后可能会有变更。]</p></item>
   <item id="preliminaryText">此 API 尚未最终确定，随时可能调整。</item>
   <item id="sourceCodeLinkText">查看代码</item>
@@ -222,8 +223,8 @@
 	<item id="copyright">{@HtmlEncCopyrightInfo}</item>
 
     <!-- Obsolete API text -->
-    <item id="boilerplate_obsoleteShort"><span><strong>已过时。</strong></span></item>
-    <item id="boilerplate_obsoleteLong"><span><strong>注意：此 API 现在已过时。</strong></span></item>
+    <item id="boilerplate_obsoleteShort"><strong>已过时。</strong><br/></item>
+    <item id="boilerplate_obsoleteLong"><strong>注意：此 API 现在已过时。</strong></item>
 	
 		<!-- See Also section text-->
 		<item id="boilerplate_seeAlsoNamespaceLink">{0} 命名空间</item>
@@ -415,16 +416,17 @@
     <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 9pt; font-weight: bold;">[缺少 "{2}" 的 &lt;{0} name="{1}"/&gt; 文档]</p></item>
     <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 9pt; font-weight: bold;">[在 “{0}” 中缺少 &lt;include&gt; 目标文档。文件：“{1}” 路径：“{2}”]</p></item>
 
-	<!-- Paths.  TODO: Not needed in the new implementation.  Remove once the new classes are in place. -->
-	<item id="iconPath">../icons/{0}</item>
-	<item id="stylePath">../styles/{0}</item>
-	<item id="scriptPath">../scripts/{0}</item>
-
 	<!-- **********************************************************************************************************
 	TODO: Everything below this point appears to not be used or is not needed in the new implementation.  Retaining
 	for now and will remove permanently later after some testing to make sure nothing shows up as missing.
 	-->
+	<![CDATA[
 	
+	<!-- Paths -->
+	<item id="iconPath">../icons/{0}</item>
+	<item id="stylePath">../styles/{0}</item>
+	<item id="scriptPath">../scripts/{0}</item>
+
 	<!-- locale -->
 	<item id="locale">{@Locale}</item>
 	<item id="brandingLocaleCss">branding-{@LocaleMixedCase}.css</item>
@@ -774,4 +776,5 @@
     <item id="meta_mshelp_topicType_developerWhitePaperDocument">kbArticle</item>
     <item id="meta_mshelp_topicType_developerXmlReference">kbSyntax</item>
     <item id="meta_mshelp_topicType_ManagedReference">apiref</item>
+		]]>
 </content>

@@ -119,6 +119,7 @@
 	<item id="topicTitle_method">Metodo {0} {1}</item>
 	<item id="topicTitle_methods">Metodi di {0}</item>
 	<item id="topicTitle_namespace">{0} Namespace</item>
+	<item id="topicTitle_NamespacePlain">{0}</item>
 	<item id="topicTitle_namespaceGroup">{0} Namespace</item>
 	<item id="topicTitle_properties">Proprietà di {0}</item>
 	<item id="topicTitle_property">Proprietà {0} {1}</item>
@@ -145,13 +146,13 @@
 	<item id="tableTitle_enumeration">Enumerazioni</item>
   <item id="tableTitle_event">Eventi</item>
   <item id="tableTitle_explicitInterfaceImplementation">Implementazioni esplicite di interfacce</item>
-  <item id="tableTitle_extensionMethod">Metodi di estensione</item>
+  <item id="tableTitle_extension">Metodi di estensione</item>
   <item id="tableTitle_field">Campi</item>
 	<item id="tableTitle_interface">Interfacce</item>
   <item id="tableTitle_method">Metodi</item>
   <item id="tableTitle_namespace">Namespace</item>
   <item id="tableTitle_operator">Operatori</item>
-	<item id="tableTitle_overloadMembers">Lista degli overload</item>
+	<item id="tableTitle_overload">Lista degli overload</item>
   <item id="tableTitle_property">Proprietà</item>
 	<item id="tableTitle_structure">Strutture</item>
 	
@@ -181,11 +182,11 @@
 	<!-- Miscellaneous page text -->
 	<item id="copyCode">Copy</item>
   <item id="defaultNamespace">( Default Namespace )</item>
-  <item id="definedBy">(Definito da {0}.)</item>
+  <item id="definedBy">(Definito da {0})</item>
   <item id="exposedMembersTableText">Il tipo {0} espone i seguenti membri.</item>	
-	<item id="inheritedFrom">(Ereditato da {0}.)</item>
+	<item id="inheritedFrom">(Ereditato da {0})</item>
 	<item id="noCodeExample"><p>No code example is currently available or this language may not be supported.</p></item>
-	<item id="overridesMember">(Sovrascrive {0}.)</item>
+	<item id="overridesMember">(Sovrascrive {0})</item>
 	<item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Documentazione preliminare soggetta a variazioni.]</p></item>
   <item id="preliminaryText">Questa API è preliminare e soggetta a variazioni.</item>
 	<item id="sourceCodeLinkText">View Source</item>
@@ -222,7 +223,7 @@
 	<item id="copyright">{@HtmlEncCopyrightInfo}</item>
 
 	<!-- Obsolete API text -->
-  <item id="boilerplate_obsoleteShort"><strong>Obsoleto. </strong></item>
+  <item id="boilerplate_obsoleteShort"><strong>Obsoleto.</strong><br/></item>
   <item id="boilerplate_obsoleteLong"><strong>Nota: questa API è obsoleta.</strong></item>
 	
 	<!-- See Also section text-->
@@ -415,15 +416,17 @@
   <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Manca &lt;{0} nome="{1}"/&gt; documentazione per "{2}"]</p></item>
   <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Manca la documentazione di &lt;include&gt; in '{0}'.  File: '{1}' Percorso: '{2}']</p></item>
 	
-	<!-- Paths.  TODO: Not needed in the new implementation.  Remove once the new classes are in place. -->
-	<item id="iconPath">../icons/{0}</item>
-	<item id="stylePath">../styles/{0}</item>
-	<item id="scriptPath">../scripts/{0}</item>
-
 	<!-- **********************************************************************************************************
 	TODO: Everything below this point appears to not be used or is not needed in the new implementation.  Retaining
 	for now and will remove permanently later after some testing to make sure nothing shows up as missing.
 	-->
+	<![CDATA[
+	
+	<!-- Paths -->
+	<item id="iconPath">../icons/{0}</item>
+	<item id="stylePath">../styles/{0}</item>
+	<item id="scriptPath">../scripts/{0}</item>
+
 
 	<item id="title_contracts">Contracts</item>
 	<item id="title_getter">Get</item>
@@ -770,4 +773,5 @@
   <item id="meta_mshelp_topicType_developerWhitePaperDocument">kbArticle</item>
   <item id="meta_mshelp_topicType_developerXmlReference">kbSyntax</item>
   <item id="meta_mshelp_topicType_ManagedReference">apiref</item>
+	]]>
 </content>

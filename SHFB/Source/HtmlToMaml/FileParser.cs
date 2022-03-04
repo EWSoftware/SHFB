@@ -2,8 +2,8 @@
 // System  : HTML to MAML Converter
 // File    : FileParse.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/07/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 03/01/2022
+// Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to parse info out of HTML topics ready for the conversion to MAML.
 //
@@ -39,7 +39,6 @@ namespace HtmlToMamlConversion
         #region Private data members
         //=====================================================================
 
-        private MSHelpAttrCollection helpAttributes;
         private MSHelpKeywordCollection helpKeywords;
 
         private Guid topicId;
@@ -152,11 +151,6 @@ namespace HtmlToMamlConversion
         public string Body => body;
 
         /// <summary>
-        /// This returns the help attributes parsed from the file
-        /// </summary>
-        public MSHelpAttrCollection HelpAttributes => helpAttributes;
-
-        /// <summary>
         /// This returns the help keywords parsed from the file
         /// </summary>
         public MSHelpKeywordCollection HelpKeywords => helpKeywords;
@@ -178,7 +172,6 @@ namespace HtmlToMamlConversion
             Encoding enc = Encoding.Default;
             string content = ReadWithEncoding(filename, ref enc);
 
-            helpAttributes = new MSHelpAttrCollection();
             helpKeywords = new MSHelpKeywordCollection();
             topicId = Guid.Empty;
             title = body = topicAbstract = null;
@@ -218,8 +211,6 @@ namespace HtmlToMamlConversion
             foreach(Match attr in reMSHelpAttr.Matches(content))
                 if(attr.Groups["Name"].Value == "Abstract")
                     topicAbstract = attr.Groups["Value"].Value;
-                else
-                    helpAttributes.Add(attr.Groups["Name"].Value, attr.Groups["Value"].Value);
 
             foreach(Match keyword in reMSHelpKeyword.Matches(content))
                 helpKeywords.Add(new MSHelpKeyword(keyword.Groups["Index"].Value, keyword.Groups["Term"].Value));

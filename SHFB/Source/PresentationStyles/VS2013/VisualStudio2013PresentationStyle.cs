@@ -1,0 +1,73 @@
+﻿//===============================================================================================================
+// System  : Sandcastle Tools Standard Presentation Styles
+// File    : VisualStudio2013PresentationStyle.cs
+// Author  : Eric Woodruff  (Eric@EWoodruff.us)
+// Updated : 02/27/2022
+// Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
+//
+// This file contains the presentation style definition for the Visual Studio 2013 presentation style.
+//
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
+//
+//    Date     Who  Comments
+// ==============================================================================================================
+// 04/13/2014  EFW  Created the code
+//===============================================================================================================
+
+using System;
+using System.Reflection;
+
+using Sandcastle.Core;
+using Sandcastle.Core.PresentationStyle;
+
+namespace Sandcastle.PresentationStyles.VS2013
+{
+    /// <summary>
+    /// This contains the definition for the Visual Studio 2013 presentation style
+    /// </summary>
+    [PresentationStyleExport("VS2013", "VS2013", Version = AssemblyInfo.ProductVersion,
+      Copyright = AssemblyInfo.Copyright, Description = "This style is similar to the one used for Visual " +
+        "Studio 2013 and the now retired MSDN online content.")]
+    public sealed class VisualStudio2013PresentationStyle : PresentationStyleSettings
+    {
+        /// <inheritdoc />
+        public override string Location => ComponentUtilities.AssemblyFolder(Assembly.GetExecutingAssembly());
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public VisualStudio2013PresentationStyle()
+        {
+            // The base path of the presentation style files relative to the assembly's location
+            this.BasePath = "VS2013";
+
+            this.SupportedFormats = HelpFileFormats.HtmlHelp1 | HelpFileFormats.MSHelpViewer |
+                HelpFileFormats.Website;
+
+            this.SupportsNamespaceGrouping = this.SupportsCodeSnippetGrouping = true;
+
+            this.DocumentModelApplicator = new StandardDocumentModel();
+            this.ApiTableOfContentsGenerator = new StandardApiTocGenerator();
+            this.TopicTranformation = new VisualStudio2013Transformation();
+
+            // If relative, these paths are relative to the base path
+            this.ResourceItemsPath = "Content";
+            this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";
+
+            // Note that UNIX based web servers may be case-sensitive with regard to folder and filenames so
+            // match the case of the folder and filenames in the literals to their actual casing on the file
+            // system.
+            this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"icons\*.*"));
+            this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"scripts\*.*"));
+            this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"styles\*.*"));
+            this.ContentFiles.Add(new ContentFiles(HelpFileFormats.Website, null, @"Web\*.*",
+                String.Empty, new[] { ".aspx", ".html", ".htm", ".php" }));
+
+            // Add the plug-in dependencies
+            this.PlugInDependencies.Add(new PlugInDependency("Lightweight Website Style", null));
+        }
+    }
+}

@@ -120,6 +120,7 @@
 	<item id="topicTitle_method">{0} Méthode {1}</item>
 	<item id="topicTitle_methods">{0} Méthodes</item>
 	<item id="topicTitle_namespace">{0} Espace de nom</item>
+	<item id="topicTitle_NamespacePlain">{0}</item>
 	<item id="topicTitle_namespaceGroup">{0} Espaces de noms</item>
 	<item id="topicTitle_properties">{0} Propriétés</item>
 	<item id="topicTitle_property">{0} Propriété {1}</item>
@@ -146,13 +147,13 @@
 	<item id="tableTitle_enumeration">Énumerations</item>
   <item id="tableTitle_event">Événements</item>
   <item id="tableTitle_explicitInterfaceImplementation">Implémnetations d'interface explicite</item>
-  <item id="tableTitle_extensionMethod">Méthodes d'extensions</item>
+  <item id="tableTitle_extension">Méthodes d'extensions</item>
   <item id="tableTitle_field">Champs</item>
 	<item id="tableTitle_interface">Interfaces</item>
   <item id="tableTitle_method">Méthodes</item>
   <item id="tableTitle_namespace">Espace de noms</item>
   <item id="tableTitle_operator">Opérateurs</item>
-	<item id="tableTitle_overloadMembers">Liste de surcharge</item>
+	<item id="tableTitle_overload">Liste de surcharge</item>
   <item id="tableTitle_property">Propriétés</item>
 	<item id="tableTitle_structure">Structures</item>
 
@@ -182,11 +183,11 @@
 	<!-- Miscellaneous page text -->
 	<item id="copyCode">Copie</item>
   <item id="defaultNamespace">( Espace de nom par défaut )</item>
-  <item id="definedBy">(Défini par {0}.)</item>
+  <item id="definedBy">(Défini par {0})</item>
   <item id="exposedMembersTableText">Le type {0} expose les membres suivants.</item>	
-	<item id="inheritedFrom">(Hérité de {0}.)</item>
+	<item id="inheritedFrom">(Hérité de {0})</item>
 	<item id="noCodeExample"><p>Il n'y a pas d'exemple de code disponible actuellement ou le langage n'est pas supporté.</p></item>
-	<item id="overridesMember">(Overrides {0}.)</item>
+	<item id="overridesMember">(Overrides {0})</item>
 	<item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Ceci est une documentation préliminaire, sous réserve de modification.]</p></item>
   <item id="preliminaryText">Cette API est préliminaire et sujet à changements.</item>
 	<item id="sourceCodeLinkText">View Source</item>
@@ -223,7 +224,7 @@
 	<item id="copyright">{@HtmlEncCopyrightInfo}</item>
 	
 	<!-- Obsolete API text -->
-  <item id="boilerplate_obsoleteShort"><strong>Obsolète. </strong></item>
+  <item id="boilerplate_obsoleteShort"><strong>Obsolète.</strong><br/></item>
   <item id="boilerplate_obsoleteLong"><strong>Note: Cette API est maintenant obsolète.</strong></item>
 	
 	<!-- See Also section text-->
@@ -416,15 +417,17 @@
   <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Documentation manquante &lt;{0} name="{1}"/&gt; pour "{2}"]</p></item>
   <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Source de documentation manquante &lt;include&gt; dans '{0}'.  Fichier: '{1}' Chemin: '{2}']</p></item>
 	
-	<!-- Paths.  TODO: Not needed in the new implementation.  Remove once the new classes are in place. -->
-	<item id="iconPath">../icons/{0}</item>
-	<item id="stylePath">../styles/{0}</item>
-	<item id="scriptPath">../scripts/{0}</item>
-
 	<!-- **********************************************************************************************************
 	TODO: Everything below this point appears to not be used or is not needed in the new implementation.  Retaining
 	for now and will remove permanently later after some testing to make sure nothing shows up as missing.
 	-->
+	<![CDATA[
+
+	<!-- Paths -->
+	<item id="iconPath">../icons/{0}</item>
+	<item id="stylePath">../styles/{0}</item>
+	<item id="scriptPath">../scripts/{0}</item>
+
 
 	<item id="title_contracts">Contrats</item>
 	<item id="title_getter">Get</item>
@@ -774,4 +777,5 @@
   <item id="meta_mshelp_topicType_developerWhitePaperDocument">kbArticle</item>
   <item id="meta_mshelp_topicType_developerXmlReference">kbSyntax</item>
   <item id="meta_mshelp_topicType_ManagedReference">apiref</item>
+	]]>
 </content>

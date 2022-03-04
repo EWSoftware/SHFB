@@ -2,8 +2,8 @@
 // System  : HTML to MAML Converter
 // File    : Topic.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/08/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 03/01/2022
+// Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class that represents an individual topic.
 //
@@ -39,7 +39,6 @@ namespace HtmlToMamlConversion
 
         private FilePath sourceFile;
         private readonly TopicCollection subtopics;
-        private MSHelpAttrCollection helpAttributes;
         private MSHelpKeywordCollection helpKeywords;
         private Guid id;
         private string title, body, topicAbstract, revisionNumber;
@@ -132,12 +131,6 @@ namespace HtmlToMamlConversion
         public int SortOrder => sortOrder;
 
         /// <summary>
-        /// Get the help attributes collection
-        /// </summary>
-        /// <value>If null or empty, there are no attributes</value>
-        public MSHelpAttrCollection HelpAttributes => helpAttributes;
-
-        /// <summary>
         /// Get the help keywords collection
         /// </summary>
         /// <value>If null or empty, there are no keywords </value>
@@ -207,7 +200,6 @@ namespace HtmlToMamlConversion
                 defaultTopic = fileParser.IsDefaultTopic;
                 splitToc = fileParser.SplitToc;
                 sortOrder = fileParser.SortOrder;
-                helpAttributes = fileParser.HelpAttributes;
                 helpKeywords = fileParser.HelpKeywords;
             }
 
@@ -234,9 +226,6 @@ namespace HtmlToMamlConversion
 
             if(title != null)
                 xw.WriteAttributeString("title", title);
-
-            if(helpAttributes != null && helpAttributes.Count != 0)
-                helpAttributes.WriteXml(xw, true);
 
             if(helpKeywords != null && helpKeywords.Count != 0)
                 helpKeywords.WriteXml(xw);

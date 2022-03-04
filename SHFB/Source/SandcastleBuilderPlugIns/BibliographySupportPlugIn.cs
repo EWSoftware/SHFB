@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : BibliographySupportPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/25/2022
+// Updated : 02/27/2022
 // Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that is used to add bibliography support to the topics
@@ -23,7 +23,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using System.Xml.XPath;
 
 using Sandcastle.Core;
 
@@ -99,7 +98,7 @@ namespace SandcastleBuilder.PlugIns
             }
 
             if(configuration.IsEmpty)
-                throw new BuilderException("BIP0001", "The Bibliography support plug-in has not been configured yet");
+                throw new BuilderException("BIP0001", "The bibliography support plug-in has not been configured yet");
 
             var node = configuration.Element("bibliography");
 
@@ -123,31 +122,10 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="context">The current execution context</param>
         public void Execute(ExecutionContext context)
         {
-            if(!File.Exists(builder.BuildAssemblerConfigurationFile))
-                return;
+            builder.PresentationStyle.TopicTranformation.BibliographyDataFile = bibliographyFile;
 
-            builder.ReportProgress("\r\nAdding bibliography parameter to {0}...", builder.BuildAssemblerConfigurationFile);
-
-            var configFile = XDocument.Load(builder.BuildAssemblerConfigurationFile);
-
-            // Find the XSL Transform Components in the configuration file and add a new argument to them:
-            // <argument key="bibliographyData" value="C:\Path\To\bibliography.xml" />
-            var components = configFile.XPathSelectElements("//component[@id='XSL Transform Component']/transform").ToList();
-
-            if(components.Count == 0)
-            {
-                throw new BuilderException("BIP0004", "Unable to locate XSL Transform Component configuration in " +
-                    builder.BuildAssemblerConfigurationFile);
-            }
-
-            foreach(var transform in components)
-            {
-                transform.Add(new XElement("argument",
-                    new XAttribute("key", "bibliographyData"),
-                    new XAttribute("value", bibliographyFile)));
-            }
-
-            configFile.Save(builder.BuildAssemblerConfigurationFile);
+            builder.ReportProgress("\r\nThe bibliography file {0} was added to the presentation style transformation",
+                bibliographyFile);
         }
         #endregion
 

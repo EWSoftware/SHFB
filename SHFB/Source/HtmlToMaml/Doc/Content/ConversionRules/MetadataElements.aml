@@ -34,12 +34,10 @@ the supporting content files.</para>
   <section address="HelpAttributes">
       <title>Help Attribute Elements</title>
       <content>
-      	<para>If the parser finds any <codeInline>MSHelp:Attr</codeInline>
-elements, it will extract the attribute name and value and will save them to
-the supporting content files.  If the name of the attribute is "Abstract",
-the content of the attribute is written out to the topic file in the
-<codeInline>summary</codeInline> element.  This element becomes the abstract
-when the topic is compiled for the help file.</para>
+      	<para>If the parser finds an <codeInline>MSHelp:Attr</codeInline> element named Abstract,
+the content of the attribute is written out to the topic file in the <codeInline>summary</codeInline> element.
+This element becomes the abstract when the topic is compiled for the help file.  All other
+<codeInline>MSHelp:Attr</codeInline> elements are ignored.</para>
       </content>
   </section>
   

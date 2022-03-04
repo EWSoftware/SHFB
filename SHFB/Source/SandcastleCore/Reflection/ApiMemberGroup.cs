@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ApiMemberGroup.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/12/2021
-// Note    : Copyright 2021, Eric Woodruff, All rights reserved
+// Updated : 02/17/2022
+// Note    : Copyright 2021-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the enumerated type that defines the groups and subgroups for an API member
 //
@@ -169,6 +169,12 @@ namespace Sandcastle.Core.Reflection
         /// <summary>
         /// An attached events list topic
         /// </summary>
-        AttachedEvents
+        AttachedEvents,
+
+        /// <summary>
+        /// Explicit interface implementation.  This one is just for classifying members when rendering member
+        /// lists.
+        /// </summary>
+        ExplicitInterfaceImplementation
     }
 }

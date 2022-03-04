@@ -98,6 +98,7 @@
 	<item id="rootTopicTitleLocalized">名前空間</item>
 	
 	<item id="topicTitle_namespace">{0} 名前空間</item>
+	<item id="topicTitle_NamespacePlain">{0}</item>
 	<item id="topicTitle_namespaceGroup">{0} 名前空間</item>
 	<item id="topicTitle_class">{0} クラス</item>
 	<item id="topicTitle_structure">{0} 構造体</item>

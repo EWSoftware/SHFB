@@ -196,7 +196,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
                 cancellationTokenSource = new CancellationTokenSource();
 
-                var result = await Task.Run(() => ComponentUtilities.CreateComponentContainer(searchFolders,
+                var result = await Task.Run(() => ComponentUtilities.CreateComponentContainer(searchFolders, null,
                     cancellationTokenSource.Token), cancellationTokenSource.Token).ConfigureAwait(true);
 
                 lock(syncRoot)

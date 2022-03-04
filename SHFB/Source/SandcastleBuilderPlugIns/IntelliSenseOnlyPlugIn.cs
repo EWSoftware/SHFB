@@ -168,8 +168,8 @@ namespace SandcastleBuilder.PlugIns
                 if(item != null)
                     item.DeleteSelf();
 
-                // Remove the XSL Transform Component and everything after it
-                item = navConfig.SelectSingleNode("//component[@id='XSL Transform Component']");
+                // Remove the Transform Component and everything after it
+                item = navConfig.SelectSingleNode("//component[@id='Transform Component']");
                 moreItems = true;
 
                 while(item != null && moreItems)

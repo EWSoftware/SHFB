@@ -56,7 +56,6 @@
 		<None Include="..\..\Deploy\Templates\Build1xHelpFile.proj" Link="Templates\Build1xHelpFile.proj" />
 		<None Include="..\..\Deploy\Templates\BuildHelpViewerFile.proj" Link="Templates\BuildHelpViewerFile.proj" />
 		<None Include="..\..\Deploy\Templates\BuildOpenXmlFile.proj" Link="Templates\BuildOpenXmlFile.proj" />
-		<None Include="..\..\Deploy\Templates\ExtractHtmlInfo.proj" Link="Templates\ExtractHtmlInfo.proj" />
 		<None Include="..\..\Deploy\Templates\GenerateInheritedDocs.config" Link="Templates\GenerateInheritedDocs.config" />
 		<None Include="..\..\Deploy\Templates\GenerateInheritedDocs.proj" Link="Templates\GenerateInheritedDocs.proj" />
 		<None Include="..\..\Deploy\Templates\GenerateMarkdownContent.proj" Link="Templates\GenerateMarkdownContent.proj" />

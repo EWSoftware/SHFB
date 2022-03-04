@@ -53,13 +53,47 @@
           <colorizer syntaxFile="{@CoreComponentsFolder}Colorizer\highlight.xml" styleFile="{@CoreComponentsFolder}Colorizer\highlight.xsl" stylesheet="{@CoreComponentsFolder}Colorizer\highlight.css" scriptFile="{@CoreComponentsFolder}Colorizer\highlight.js" disabled="{@DisableCodeBlockComponent}" language="cs" tabSize="0" numberLines="false" outlining="true" keepSeeTags="false" defaultTitle="true" />
         </component>
       </ComponentConfig>
-<ComponentConfig id="API Token Resolution" enabled="True"><component id="API Token Resolution">{@TokenFiles}
-<replace elements="/*//token" item="string(.)" /></component></ComponentConfig>
-<ComponentConfig id="IntelliSense Component" enabled="True"><component id="IntelliSense Component"><output includeNamespaces="true" namespacesFile="NamespacesTest" folder="{@OutputFolder}" boundedCapacity="0" /></component></ComponentConfig>
-<ComponentConfig id="Syntax Component" enabled="False"><component id="Syntax Component"><syntax input="/document/reference" output="/document/syntax" renderReferenceLinks="true" /><generators>
+      <ComponentConfig id="API Token Resolution" enabled="True">
+        <component id="API Token Resolution">{@TokenFiles}
+<replace elements="/*//token" item="string(.)" /></component>
+      </ComponentConfig>
+      <ComponentConfig id="IntelliSense Component" enabled="True">
+        <component id="IntelliSense Component">
+          <output includeNamespaces="true" namespacesFile="NamespacesTest" folder="{@OutputFolder}" boundedCapacity="0" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="Syntax Component" enabled="False">
+        <component id="Syntax Component">
+          <syntax input="/document/reference" output="/document/syntax" renderReferenceLinks="true" />
+          <generators>
     {@SyntaxFilters}
-</generators><containerElement name="codeSnippetGroup" addNoExampleTabs="true" includeOnSingleSnippets="true" groupingEnabled="{@CodeSnippetGrouping}" /><configurations><generator id="Visual Basic"><includeLineContinuation value="true" /></generator><generator id="Visual Basic Usage"><includeLineContinuation value="false" /></generator><generator id="Managed C++" /><generator id="C#" /><generator id="F#" /><generator id="J#" /><generator id="JScript" /><generator id="JavaScript" /><generator id="XAML Usage" /><generator id="ASP.NET" /><generator id="X#" /></configurations></component></ComponentConfig>
-<ComponentConfig id="Transform Document Dump Component" enabled="True"><component id="Transform Document Dump Component"><dumpPath rawDocs="{@WorkingFolder}\RawDocs" transformedDocs="{@workingFolder}\TransformedDocs" /></component></ComponentConfig></ComponentConfigurations>
+</generators>
+          <containerElement name="codeSnippetGroup" addNoExampleTabs="true" includeOnSingleSnippets="true" groupingEnabled="{@CodeSnippetGrouping}" />
+          <configurations>
+            <generator id="Visual Basic">
+              <includeLineContinuation value="true" />
+            </generator>
+            <generator id="Visual Basic Usage">
+              <includeLineContinuation value="false" />
+            </generator>
+            <generator id="Managed C++" />
+            <generator id="C#" />
+            <generator id="F#" />
+            <generator id="J#" />
+            <generator id="JScript" />
+            <generator id="JavaScript" />
+            <generator id="XAML Usage" />
+            <generator id="ASP.NET" />
+            <generator id="X#" />
+          </configurations>
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="Transform Document Dump Component" enabled="True">
+        <component id="Transform Document Dump Component">
+          <dumpPath rawDocs="{@WorkingFolder}\RawDocs" transformedDocs="{@workingFolder}\TransformedDocs" />
+        </component>
+      </ComponentConfig>
+    </ComponentConfigurations>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\TestDoc.csproj" />
     </DocumentationSources>
@@ -107,7 +141,7 @@
     </PlugInConfigurations>
     <ApiFilter>
     </ApiFilter>
-    <HelpFileFormat>HtmlHelp1, MSHelpViewer</HelpFileFormat>
+    <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <Major>1</Major>
     <Minor>20</Minor>
@@ -133,18 +167,22 @@
     <CatalogVersion>100</CatalogVersion>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <TransformComponentArguments>
-      <Argument Key="logoFile" Value="Sandcastle.jpg" />
-      <Argument Key="logoHeight" Value="" />
-      <Argument Key="logoWidth" Value="" />
-      <Argument Key="logoAltText" Value="Test logo" />
-      <Argument Key="logoPlacement" Value="left" />
-      <Argument Key="logoAlignment" Value="left" />
-      <Argument Key="logoUrl" Value="https://github.com/EWSoftware/SHFB" />
-      <Argument Key="maxVersionParts" Value="" />
-      <Argument Key="defaultLanguage" Value="cs" />
-      <Argument Key="includeEnumValues" Value="true" />
-      <Argument Key="baseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/TestCaseProject/" />
-      <Argument Key="requestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" />
+      <Argument Key="RobotsMetadata" Value="" />
+      <Argument Key="LogoFile" Value="Sandcastle.jpg" />
+      <Argument Key="LogoHeight" Value="" />
+      <Argument Key="LogoWidth" Value="" />
+      <Argument Key="LogoAltText" Value="Test logo" />
+      <Argument Key="LogoPlacement" Value="left" />
+      <Argument Key="LogoAlignment" Value="left" />
+      <Argument Key="LogoUrl" Value="https://github.com/EWSoftware/SHFB" />
+      <Argument Key="MaxVersionParts" Value="" />
+      <Argument Key="DefaultLanguage" Value="cs" />
+      <Argument Key="IncludeEnumValues" Value="true" />
+      <Argument Key="EnumMemberSortOrder" Value="Value" />
+      <Argument Key="FlagsEnumValueFormat" Value="HexValue" />
+      <Argument Key="FlagsEnumSeparatorSize" Value="0" />
+      <Argument Key="BaseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/TestCaseProject/" />
+      <Argument Key="RequestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" />
     </TransformComponentArguments>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>True</NamespaceGrouping>

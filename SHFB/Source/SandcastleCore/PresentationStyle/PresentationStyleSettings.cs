@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PresentationStyleSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/20/2022
+// Updated : 02/27/2022
 // Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain settings information for a specific presentation style
@@ -19,6 +19,7 @@
 // 11/30/2013  EFW  Merged changes from Stazzz to support namespace grouping
 // 01/04/2014  EFW  Moved the code into Sandcastle.Core and made it an abstract base class
 // 05/14/2014  EFW  Added support for defining dependent plug-ins
+// 02/27/2022  EFW  Added support for code-base transformations
 //===============================================================================================================
 
 // Ignore Spelling: Stazzz
@@ -27,6 +28,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
+using Sandcastle.Core.PresentationStyle.Transformation;
 
 namespace Sandcastle.Core.PresentationStyle
 {
@@ -42,7 +45,6 @@ namespace Sandcastle.Core.PresentationStyle
         //=====================================================================
 
         private readonly List<ContentFiles> contentFiles;
-        private readonly List<TransformComponentArgument> transformComponentArgs;
         private readonly List<PlugInDependency> plugInDependencies;
 
         #endregion
@@ -110,9 +112,9 @@ namespace Sandcastle.Core.PresentationStyle
         public string BuildAssemblerConfiguration { get; protected set; }
 
         /// <summary>
-        /// This read-only property returns the transform component arguments if any
+        /// This read-only property returns the topic transformation to use
         /// </summary>
-        public IList<TransformComponentArgument> TransformComponentArguments => transformComponentArgs;
+        public TopicTransformationCore TopicTranformation { get; protected set; }
 
         /// <summary>
         /// This read-only property returns any plug-in dependencies required by the presentation style
@@ -133,7 +135,6 @@ namespace Sandcastle.Core.PresentationStyle
         protected PresentationStyleSettings()
         {
             contentFiles = new List<ContentFiles>();
-            transformComponentArgs = new List<TransformComponentArgument>();
             plugInDependencies = new List<PlugInDependency>();
         }
         #endregion
@@ -160,6 +161,9 @@ namespace Sandcastle.Core.PresentationStyle
 
             if(this.ApiTableOfContentsGenerator == null)
                 errors.Add(nameof(ApiTableOfContentsGenerator) + " has not been specified");
+
+            if(this.TopicTranformation == null)
+                errors.Add(nameof(TopicTranformation) + " has not been specified");
 
             if(String.IsNullOrWhiteSpace(this.BuildAssemblerConfiguration))
                 errors.Add(nameof(BuildAssemblerConfiguration) + " has not been specified");

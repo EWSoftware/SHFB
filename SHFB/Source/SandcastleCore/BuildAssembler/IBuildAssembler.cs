@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : IBuildAssembler.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/26/2022
+// Updated : 02/27/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the interface used to define the common Build Assembler tool methods
@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Xml.XPath;
 
 using Sandcastle.Core.BuildAssembler.BuildComponent;
+using Sandcastle.Core.PresentationStyle.Transformation;
 
 namespace Sandcastle.Core.BuildAssembler
 {
@@ -40,6 +41,11 @@ namespace Sandcastle.Core.BuildAssembler
         /// level will suppress messages below the given level.</value>
         /// <remarks>It is up to the message handler to make use of this property</remarks>
         MessageLevel VerbosityLevel { get; }
+        
+        /// <summary>
+        /// This read-only property returns the topic transformation to use for the presentation style
+        /// </summary>
+        TopicTransformationCore TopicTransformation { get; }
 
         /// <summary>
         /// This read-only property returns the current list of build components

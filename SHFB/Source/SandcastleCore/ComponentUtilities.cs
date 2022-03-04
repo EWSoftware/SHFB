@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/31/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 02/27/2022
+// Note    : Copyright 2007-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class containing properties and methods used to locate and work with build components,
 // plug-ins, syntax generators, and presentation styles.
@@ -254,6 +254,7 @@ namespace Sandcastle.Core
         /// plug-ins, presentation styles, BuildAssembler components, and syntax generators).
         /// </summary>
         /// <param name="folders">An enumerable list of additional folders to search recursively for components.</param>
+        /// <param name="resolver">A component assembly resolver to use or null to use a temporary one</param>
         /// <param name="cancellationToken">An optional cancellation token or null if not supported by the caller.</param>
         /// <returns>The a composition container that contains all of the available components</returns>
         /// <remarks>The following folders are searched in the following order.  If the given folder has not been
@@ -275,21 +276,33 @@ namespace Sandcastle.Core
         /// ID will be used.  As such, assemblies in a folder with a higher search precedence can override
         /// copies in folders lower in the search order.</remarks>
         public static CompositionContainer CreateComponentContainer(IEnumerable<string> folders,
-          CancellationToken cancellationToken)
+          ComponentAssemblyResolver resolver, CancellationToken cancellationToken)
         {
             if(folders == null)
                 throw new ArgumentNullException(nameof(folders));
 
             var catalog = new AggregateCatalog();
             HashSet<string> searchedFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            bool disposeResolver = false;
 
-            using(var resolver = new ComponentAssemblyResolver())
+            try
             {
+                if(resolver == null)
+                {
+                    resolver = new ComponentAssemblyResolver();
+                    disposeResolver = true;
+                }
+
                 foreach(string folder in folders)
                     AddAssemblyCatalogs(catalog, folder, searchedFolders, true, resolver, cancellationToken);
 
                 AddAssemblyCatalogs(catalog, ThirdPartyComponentsFolder, searchedFolders, true, resolver, cancellationToken);
                 AddAssemblyCatalogs(catalog, CoreComponentsFolder, searchedFolders, true, resolver, cancellationToken);
+            }
+            finally
+            {
+                if(disposeResolver)
+                    resolver.Dispose();
             }
 
             return new CompositionContainer(catalog);

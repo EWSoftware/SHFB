@@ -119,6 +119,7 @@
 	<item id="topicTitle_method">{0} メソッド {1}</item>
 	<item id="topicTitle_methods">{0} メソッド</item>
 	<item id="topicTitle_namespace">{0} 名前空間</item>
+	<item id="topicTitle_NamespacePlain">{0}</item>
 	<item id="topicTitle_namespaceGroup">{0} 名前空間</item>
 	<item id="topicTitle_properties">{0} プロパティ</item>
 	<item id="topicTitle_property">{0} プロパティ {1}</item>
@@ -145,13 +146,13 @@
 	<item id="tableTitle_enumeration">列挙体</item>
   <item id="tableTitle_event">イベント</item>
   <item id="tableTitle_explicitInterfaceImplementation">明示的なインターフェイスの実装</item>
-  <item id="tableTitle_extensionMethod">拡張メソッド</item>
+  <item id="tableTitle_extension">拡張メソッド</item>
   <item id="tableTitle_field">フィールド</item>
 	<item id="tableTitle_interface">インターフェイス</item>
   <item id="tableTitle_method">メソッド</item>
   <item id="tableTitle_namespace">名前空間</item>
   <item id="tableTitle_operator">演算子</item>
-	<item id="tableTitle_overloadMembers">オーバーロードの一覧</item>
+	<item id="tableTitle_overload">オーバーロードの一覧</item>
   <item id="tableTitle_property">プロパティ</item>
 	<item id="tableTitle_structure">構造体</item>
 
@@ -222,7 +223,7 @@
 	<item id="copyright">{@HtmlEncCopyrightInfo}</item>
 	
 	<!-- Obsolete API text -->
-  <item id="boilerplate_obsoleteShort"><strong>廃止予定。</strong></item>
+  <item id="boilerplate_obsoleteShort"><strong>廃止予定。</strong><br/></item>
   <item id="boilerplate_obsoleteLong"><strong>注意: このAPIは廃止予定です。</strong></item>
 
 	<!-- See Also section text-->
@@ -415,15 +416,16 @@
   <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">["{2}"に対する&lt;{0} name="{1}"/&gt;がありません</p></item>
   <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">['{0}'で使われている&lt;include&gt;ターゲットドキュメントがありません。File: '{1}' Path: '{2}']</p></item>
 	
-	<!-- Paths.  TODO: Not needed in the new implementation.  Remove once the new classes are in place. -->
-	<item id="iconPath">../icons/{0}</item>
-	<item id="stylePath">../styles/{0}</item>
-	<item id="scriptPath">../scripts/{0}</item>
-
 	<!-- **********************************************************************************************************
 	TODO: Everything below this point appears to not be used or is not needed in the new implementation.  Retaining
 	for now and will remove permanently later after some testing to make sure nothing shows up as missing.
 	-->
+	<![CDATA[
+	
+	<!-- Paths -->
+	<item id="iconPath">../icons/{0}</item>
+	<item id="stylePath">../styles/{0}</item>
+	<item id="scriptPath">../scripts/{0}</item>
 
 	<item id="title_contracts">契約</item>
 	<item id="title_getter">Get</item>
@@ -766,4 +768,5 @@
   <item id="meta_mshelp_topicType_developerWhitePaperDocument">kbArticle</item>
   <item id="meta_mshelp_topicType_developerXmlReference">kbSyntax</item>
   <item id="meta_mshelp_topicType_ManagedReference">apiref</item>
+	]]>
 </content>

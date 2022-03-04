@@ -82,9 +82,9 @@
 	<item id="preliminaryText">Это предварительная документация, которая в будущем может измениться.</item>
 
 	<!-- Inserted boilerplate -->
-	<item id="definedBy">(Определяется {0}.)</item>
-	<item id="inheritedFrom">(Унаследован от {0}.)</item>
-	<item id="overridesMember">(Переопределяет {0}.)</item>
+	<item id="definedBy">(Определяется {0})</item>
+	<item id="inheritedFrom">(Унаследован от {0})</item>
+	<item id="overridesMember">(Переопределяет {0})</item>
 	<item id="locationInformation">Сборка: {0} (Модуль: {1})</item>
  
   <item id="derivedClasses">Производные классы</item>
@@ -101,6 +101,7 @@
 	<item id="rootTopicTitleLocalized">Пространства имен</item>
 
 	<item id="topicTitle_namespace">{0} - пространство имён</item>
+	<item id="topicTitle_NamespacePlain">{0}</item>
 	<item id="topicTitle_namespaceGroup">{0} - пространства имён</item>
 	<item id="topicTitle_class">{0} - класс</item>
 	<item id="topicTitle_structure">{0} - структура</item>

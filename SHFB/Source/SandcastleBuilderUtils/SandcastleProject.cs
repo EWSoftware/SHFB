@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/05/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 02/27/2022
+// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the project class.
 //
@@ -94,7 +94,7 @@ using Microsoft.Build.Evaluation;
 
 using Sandcastle.Core;
 using Sandcastle.Core.Reflection;
-using Sandcastle.Core.PresentationStyle;
+using Sandcastle.Core.PresentationStyle.Transformation;
 
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.ConceptualContent;
@@ -413,7 +413,7 @@ namespace SandcastleBuilder.Utils
         /// <remarks>These are passed as arguments to the XSL transformations used by the <b>BuildAssembler</b>
         /// <c>TransformComponent</c>.</remarks>
         /// <returns>An enumerable list of transform component arguments</returns>
-        public IEnumerable<TransformComponentArgument> TransformComponentArguments
+        public IEnumerable<TransformationArgument> TransformComponentArguments
         {
             get
             {
@@ -429,7 +429,7 @@ namespace SandcastleBuilder.Utils
                         xr.MoveToContent();
 
                         foreach(var arg in XElement.Load(xr, LoadOptions.PreserveWhitespace).Descendants("Argument"))
-                            yield return new TransformComponentArgument(arg);
+                            yield return new TransformationArgument(arg);
                     }
                 }
             }

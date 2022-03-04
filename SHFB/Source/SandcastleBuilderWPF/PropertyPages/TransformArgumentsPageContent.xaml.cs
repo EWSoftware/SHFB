@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TransformArgumentsPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 04/26/2021
-// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
+// Updated : 02/27/2022
+// Note    : Copyright 2017-2022, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Transform Arguments category properties
 //
@@ -28,6 +28,7 @@ using System.Xml.Linq;
 
 using Sandcastle.Core;
 using Sandcastle.Core.PresentationStyle;
+using Sandcastle.Core.PresentationStyle.Transformation;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {
@@ -43,7 +44,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         private string lastStyle;
 
         private ComponentCache componentCache;
-        private TransformComponentArgument currentArg;
+        private TransformationArgument currentArg;
 
         #endregion
 
@@ -53,11 +54,11 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <summary>
         /// This is used to return an enumerable list of the current transformation component arguments
         /// </summary>
-        public IEnumerable<TransformComponentArgument> TransformationArguments
+        public IEnumerable<TransformationArgument> TransformationArguments
         {
             get
             {
-                foreach(TransformComponentArgument tca in lbArguments.Items)
+                foreach(TransformationArgument tca in lbArguments.Items)
                     yield return tca;
             }
         }
@@ -213,7 +214,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 return;
             }
 
-            currentArg = (TransformComponentArgument)lbArguments.SelectedItem;
+            currentArg = (TransformationArgument)lbArguments.SelectedItem;
 
             txtDescription.Text = currentArg.Description;
             chkIsForConceptualBuild.IsChecked = currentArg.IsForConceptualBuild;
@@ -289,7 +290,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         {
             PresentationStyleSettingsNeededEventArgs projectSettings = new PresentationStyleSettingsNeededEventArgs();
             PresentationStyleSettings pss = null;
-            TransformComponentArgument tca, clone;
+            TransformationArgument transformArg, clone;
 
             if(refreshingArgs)
                 return;
@@ -315,7 +316,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
                 var presentationStyleIds = new HashSet<string>();
                 var presentationStyles = new List<Lazy<PresentationStyleSettings, IPresentationStyleMetadata>>();
-                var transformComponentArgs = new Dictionary<string, TransformComponentArgument>();
+                var transformComponentArgs = new Dictionary<string, TransformationArgument>(StringComparer.OrdinalIgnoreCase);
 
                 // There may be duplicate presentation style IDs across the assemblies found.  See
                 // BuildComponentManger.GetComponentContainer() for the folder search precedence.  Only the
@@ -341,8 +342,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
                         foreach(var arg in XElement.Load(xr, LoadOptions.PreserveWhitespace).Descendants("Argument"))
                         {
-                            tca = new TransformComponentArgument(arg);
-                            transformComponentArgs.Add(tca.Key, tca);
+                            transformArg = new TransformationArgument(arg);
+                            transformComponentArgs.Add(transformArg.Key, transformArg);
                         }
                     }
                 }
@@ -370,15 +371,15 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 lastStyle = projectSettings.PresentationStyle;
 
                 // Create an entry for each transform component argument in the presentation style
-                foreach(var arg in pss.TransformComponentArguments)
+                foreach(var arg in pss.TopicTranformation.TransformationArguments.Values)
                 {
                     clone = arg.Clone();
 
                     // Use the value from the project or the cloned default if not present
-                    if(transformComponentArgs.TryGetValue(arg.Key, out tca))
+                    if(transformComponentArgs.TryGetValue(arg.Key, out transformArg))
                     {
-                        clone.Value = tca.Value;
-                        clone.Content = tca.Content;
+                        clone.Value = transformArg.Value;
+                        clone.Content = transformArg.Content;
                     }
 
                     lbArguments.Items.Add(clone);

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2022
+// Updated : 03/02/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -206,6 +206,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// This returns the name of the HTML Help 1 compiler folder determined by the build process
         /// </summary>
         public string Help1CompilerFolder => hhcFolder;
+
+        /// <summary>
+        /// This provides access to the title and keyword HTML extract tool during the
+        /// <see cref="BuildStep.ExtractingHtmlInfo" /> build step.
+        /// </summary>
+        /// <remarks>This can be used by plug-ins to adjust how the tool runs</remarks>
+        public TitleAndKeywordHtmlExtract HtmlExtractTool { get; private set; }
 
         /// <summary>
         /// This returns the name of the folder that contains the reflection data for the selected framework
@@ -689,7 +696,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // Get the composition container used to find build components in the rest of the build process
                 componentContainer = ComponentUtilities.CreateComponentContainer(project.ComponentSearchPaths,
-                    this.CancellationToken);
+                    resolver, this.CancellationToken);
 
                 // Figure out which presentation style to use
                 var style = componentContainer.GetExports<PresentationStyleSettings,
@@ -1213,23 +1220,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 {
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                    this.ReportProgress("    sandcastle.config");
-
                     // The configuration varies based on the style
                     this.BuildAssemblerConfigurationFile = presentationStyle.ResolvePath(
                         presentationStyle.BuildAssemblerConfiguration);
                     this.BuildAssemblerConfigurationFile = substitutionTags.TransformTemplate(
                         Path.GetFileName(this.BuildAssemblerConfigurationFile),
                         Path.GetDirectoryName(this.BuildAssemblerConfigurationFile), workingFolder);
-
-                    // TODO: This bit can go away once BuildAssembler is called directly from within the build engine
-                    if(!Path.GetFileName(this.BuildAssemblerConfigurationFile).Equals(
-                      "sandcastle.config", StringComparison.OrdinalIgnoreCase))
-                    {
-                        string tempPath = this.BuildAssemblerConfigurationFile;
-                        this.BuildAssemblerConfigurationFile = Path.Combine(workingFolder, "sandcastle.config");
-                        File.Move(tempPath, this.BuildAssemblerConfigurationFile);
-                    }
 
                     this.ExecutePlugIns(ExecutionBehaviors.After);
                 }
@@ -1277,14 +1273,21 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
-                        scriptFile = substitutionTags.TransformTemplate("ExtractHtmlInfo.proj", templateFolder,
-                            workingFolder);
+                        var htmlExtract = new TitleAndKeywordHtmlExtract(this)
+                        {
+                            Help1Folder = ((this.CurrentProject.HelpFileFormat & HelpFileFormats.HtmlHelp1) == 0) ?
+                                null : Path.Combine(this.WorkingFolder, "Output", HelpFileFormats.HtmlHelp1.ToString()),
+                            WebsiteFolder = ((this.CurrentProject.HelpFileFormat & HelpFileFormats.Website) == 0) ?
+                                null : Path.Combine(this.WorkingFolder, "Output", HelpFileFormats.Website.ToString()),
+                        };
 
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                        taskRunner.RunProject("ExtractHtmlInfo.proj", true);
+                        htmlExtract.ExtractHtmlInfo();
 
                         this.ExecutePlugIns(ExecutionBehaviors.After);
+
+                        htmlExtract = null;
                     }
                 }
 
@@ -1303,7 +1306,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        substitutionTags.TransformTemplate("Help1x.hhp", templateFolder, workingFolder);
+                        substitutionTags.TransformTemplate("Help1x.hhp", templateFolder,
+                            Path.Combine(this.WorkingFolder, "Output", HelpFileFormats.HtmlHelp1.ToString()));
                         this.ExecutePlugIns(ExecutionBehaviors.After);
                     }
 

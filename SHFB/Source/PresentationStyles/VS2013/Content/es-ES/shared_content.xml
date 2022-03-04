@@ -119,6 +119,7 @@
 	<item id="topicTitle_method">{0} (M&#233;todo {1})</item>
 	<item id="topicTitle_methods">{0} (M&#233;todos)</item>
 	<item id="topicTitle_namespace">{0} (Espacio de nombres)</item>
+	<item id="topicTitle_NamespacePlain">{0}</item>
 	<item id="topicTitle_namespaceGroup">{0} (Espacios de nombres)</item>
 	<item id="topicTitle_properties">{0} (Propiedades)</item>
 	<item id="topicTitle_property">{0} (Propiedad {1})</item>
@@ -145,13 +146,13 @@
 	<item id="tableTitle_enumeration">Enumeraciones</item>
   <item id="tableTitle_event">Eventos</item>
   <item id="tableTitle_explicitInterfaceImplementation">Implementaciones de interaz expl&#237;cita</item>
-  <item id="tableTitle_extensionMethod">M&#233;todos de extensi&#243;</item>
+  <item id="tableTitle_extension">M&#233;todos de extensi&#243;</item>
   <item id="tableTitle_field">Campos</item>
 	<item id="tableTitle_interface">Interfaces</item>
   <item id="tableTitle_method">M&#233;todos</item>
   <item id="tableTitle_namespace">Espacios de nombres</item>
   <item id="tableTitle_operator">Operadores</item>
-	<item id="tableTitle_overloadMembers">Lista de sobrecargas</item>
+	<item id="tableTitle_overload">Lista de sobrecargas</item>
   <item id="tableTitle_property">Propiedades</item>
 	<item id="tableTitle_structure">Estructuras</item>
 
@@ -181,11 +182,11 @@
 	<!-- Miscellaneous page text -->
 	<item id="copyCode">Copy</item>
   <item id="defaultNamespace">( Espacio de nombres predeterminado )</item>
-	<item id="definedBy">(Definido por {0}.)</item>
+	<item id="definedBy">(Definido por {0})</item>
   <item id="exposedMembersTableText">El tipo {0} expone a los siguientes miembros.</item>	
-	<item id="inheritedFrom">(Se hereda de {0}.)</item>
+	<item id="inheritedFrom">(Se hereda de {0})</item>
 	<item id="noCodeExample"><p>No hay ning&#250;n ejemplo de c&#243;digo disponible, o este lenguaje no est&#225; soportado.</p></item>
-	<item id="overridesMember">(Reemplaza a {0}.)</item>
+	<item id="overridesMember">(Reemplaza a {0})</item>
 	<item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Ésta es documentación preliminar y está sujeta a cambios.]</p></item>
   <item id="preliminaryText">Esta API es preliminar y est&#225; sujeta a cambios.</item>
 	<item id="sourceCodeLinkText">View Source</item>
@@ -222,7 +223,7 @@
 	<item id="copyright">{@HtmlEncCopyrightInfo}</item>
 
 	<!-- Obsolete API text -->
-  <item id="boilerplate_obsoleteShort"><strong>Obsoleto. </strong></item>
+  <item id="boilerplate_obsoleteShort"><strong>Obsoleto.</strong><br/></item>
   <item id="boilerplate_obsoleteLong"><strong>Nota: Esta API es obsoleta.</strong></item>
 	
 	<!-- See Also section text-->
@@ -415,15 +416,15 @@
   <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Falta documentaci&#243;n &lt;{0} name="{1}"/&gt; para "{2}"]</p></item>
   <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Falta documentaci&#243;n objetivo &lt;include&gt; en '{0}'.  Archivo: '{1}' Ruta: '{2}']</p></item>
 
-	<!-- Paths.  TODO: Not needed in the new implementation.  Remove once the new classes are in place. -->
-	<item id="iconPath">../icons/{0}</item>
-	<item id="stylePath">../styles/{0}</item>
-	<item id="scriptPath">../scripts/{0}</item>
-
 	<!-- **********************************************************************************************************
 	TODO: Everything below this point appears to not be used or is not needed in the new implementation.  Retaining
 	for now and will remove permanently later after some testing to make sure nothing shows up as missing.
 	-->
+	<![CDATA[
+	<!-- Paths -->
+	<item id="iconPath">../icons/{0}</item>
+	<item id="stylePath">../styles/{0}</item>
+	<item id="scriptPath">../scripts/{0}</item>
 
 	<!-- locale -->
 	<item id="locale">{@Locale}</item>
@@ -769,5 +770,5 @@
   <item id="meta_mshelp_topicType_developerWhitePaperDocument">kbArticle</item>
   <item id="meta_mshelp_topicType_developerXmlReference">kbSyntax</item>
   <item id="meta_mshelp_topicType_ManagedReference">apiref</item>
-
+	]]>
 </content>

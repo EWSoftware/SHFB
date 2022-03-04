@@ -118,7 +118,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 resourceItemFilename = resourceItemsFile;
 
                 using(var container = ComponentUtilities.CreateComponentContainer(project.ComponentSearchPaths,
-                  CancellationToken.None))
+                  null, CancellationToken.None))
                 {
                     var presentationStyles = container.GetExports<PresentationStyleSettings, IPresentationStyleMetadata>();
                     var style = presentationStyles.FirstOrDefault(s => s.Metadata.Id.Equals(

@@ -2,8 +2,8 @@
 // System  : HTML to MAML Converter
 // File    : HtmlToMaml.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/08/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 03/01/2022
+// Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to convert HTML files to MAML.
 //
@@ -518,14 +518,6 @@ namespace HtmlToMamlConversion
                     writer.WriteValue(Path.GetFileNameWithoutExtension(filename));
 
                 writer.WriteEndElement();   // </tableOfContentsTitle>
-
-                foreach(MSHelpAttr attr in topic.HelpAttributes)
-                {
-                    writer.WriteStartElement("attribute");
-                    writer.WriteAttributeString("name", attr.AttributeName);
-                    writer.WriteValue(attr.AttributeValue);
-                    writer.WriteEndElement();
-                }
 
                 foreach(MSHelpKeyword kw in topic.HelpKeywords)
                 {

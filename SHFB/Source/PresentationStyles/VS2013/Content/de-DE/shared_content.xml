@@ -120,6 +120,7 @@
 	<item id="topicTitle_method">{0} Methode {1}</item>
 	<item id="topicTitle_methods">{0} Methoden</item>
 	<item id="topicTitle_namespace">{0} Namensraum</item>
+	<item id="topicTitle_NamespacePlain">{0}</item>
 	<item id="topicTitle_namespaceGroup">{0} Namensräume</item>
 	<item id="topicTitle_properties">{0} Eigenschaften</item>
 	<item id="topicTitle_property">{0} Eigenschaft {1}</item>
@@ -146,13 +147,13 @@
 	<item id="tableTitle_enumeration">Enumerationen</item>
   <item id="tableTitle_event">Ereignisse</item>
   <item id="tableTitle_explicitInterfaceImplementation">Explizite&#160;Schnittstellen&#160;implementierungen</item>
-  <item id="tableTitle_extensionMethod">Erweiterungsmethoden</item>
+  <item id="tableTitle_extension">Erweiterungsmethoden</item>
   <item id="tableTitle_field">Felder</item>
 	<item id="tableTitle_interface">Schnittstellen</item>
   <item id="tableTitle_method">Methoden</item>
   <item id="tableTitle_namespace">Namespaces</item>
   <item id="tableTitle_operator">Operatoren</item>
-	<item id="tableTitle_overloadMembers">Liste&#160;der&#160;Überladungen</item>
+	<item id="tableTitle_overload">Liste&#160;der&#160;Überladungen</item>
   <item id="tableTitle_property">Eigenschaften</item>
 	<item id="tableTitle_structure">Strukturen</item>
 
@@ -182,11 +183,11 @@
 	<!-- Miscellaneous page text -->
 	<item id="copyCode">Copy</item>
   <item id="defaultNamespace">( Standardnamensraum )</item>
-  <item id="definedBy">(Definiert von {0}.)</item>
+  <item id="definedBy">(Definiert von {0})</item>
   <item id="exposedMembersTableText">Der {0} Typ exponiert die folgenden Member.</item>	
-	<item id="inheritedFrom">(Vererbt von {0}.)</item>
+	<item id="inheritedFrom">(Vererbt von {0})</item>
 	<item id="noCodeExample"><p>No code example is currently available or this language may not be supported.</p></item>
-	<item id="overridesMember">(Überschreibt {0}.)</item>
+	<item id="overridesMember">(Überschreibt {0})</item>
 	<item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Diese Seite ist eine Vorabausgabe der Dokumentation und kann in zukünftigen Ausgaben geändert werden. Leere Seiten sind als Platzhalter eingefügt.]</p></item>
   <item id="preliminaryText">Diese API-Dokumentation befindet sich im Entwurf und kann sich noch ändern.</item>
 	<item id="sourceCodeLinkText">View Source</item>
@@ -223,7 +224,7 @@
 	<item id="copyright">{@HtmlEncCopyrightInfo}</item>
 
 	<!-- Obsolete API text -->
-  <item id="boilerplate_obsoleteShort"><strong>Obsolet. </strong></item>
+  <item id="boilerplate_obsoleteShort"><strong>Obsolet.</strong><br/></item>
   <item id="boilerplate_obsoleteLong"><strong>Hinweis: Die API ist nun obsolet.</strong></item>
 	
 	<!-- See Also section text-->
@@ -416,15 +417,15 @@
   <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;{0} name="{1}"/&gt; documentation for "{2}"]</p></item>
   <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;include&gt; target documentation in '{0}'.  File: '{1}' Path: '{2}']</p></item>
 
-	<!-- Paths.  TODO: Not needed in the new implementation.  Remove once the new classes are in place. -->
-	<item id="iconPath">../icons/{0}</item>
-	<item id="stylePath">../styles/{0}</item>
-	<item id="scriptPath">../scripts/{0}</item>
-
 	<!-- **********************************************************************************************************
 	TODO: Everything below this point appears to not be used or is not needed in the new implementation.  Retaining
 	for now and will remove permanently later after some testing to make sure nothing shows up as missing.
 	-->
+	<![CDATA[
+	<!-- Paths -->
+	<item id="iconPath">../icons/{0}</item>
+	<item id="stylePath">../styles/{0}</item>
+	<item id="scriptPath">../scripts/{0}</item>
 
 	<!-- locale -->
 	<item id="locale">{@Locale}</item>
@@ -773,5 +774,5 @@
   <item id="meta_mshelp_topicType_developerWhitePaperDocument">kbArticle</item>
   <item id="meta_mshelp_topicType_developerXmlReference">kbSyntax</item>
   <item id="meta_mshelp_topicType_ManagedReference">apiref</item>
-
+	]]>
 </content>

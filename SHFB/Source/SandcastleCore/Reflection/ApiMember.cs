@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ApiMember.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/11/2021
-// Note    : Copyright 2021, Eric Woodruff, All rights reserved
+// Updated : 02/16/2022
+// Note    : Copyright 2021-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to contain information about an API member entry in a reflection
 // information file.
@@ -54,19 +54,34 @@ namespace Sandcastle.Core.Reflection
         public string Name { get; }
 
         /// <summary>
-        /// This read-only property returns the member's group
+        /// This read-only property returns the member's API group
         /// </summary>
-        public ApiMemberGroup Group { get; }
+        public ApiMemberGroup ApiGroup { get; }
 
         /// <summary>
-        /// This read-only property returns the member's subgroup
+        /// This read-only property returns the member's API subgroup
         /// </summary>
-        public ApiMemberGroup Subgroup { get; }
+        public ApiMemberGroup ApiSubgroup { get; }
 
         /// <summary>
-        /// This read-only property returns the member's sub-subgroup
+        /// This read-only property returns the member's API sub-subgroup
         /// </summary>
-        public ApiMemberGroup SubSubgroup { get; }
+        public ApiMemberGroup ApiSubSubgroup { get; }
+
+        /// <summary>
+        /// This read-only property returns the API topic group
+        /// </summary>
+        public ApiMemberGroup ApiTopicGroup { get; }
+
+        /// <summary>
+        /// This read-only property returns the API topic subgroup
+        /// </summary>
+        public ApiMemberGroup ApiTopicSubgroup { get; }
+
+        /// <summary>
+        /// This read-only property returns the API topic subgroup
+        /// </summary>
+        public ApiMemberGroup ApiTopicSubSubgroup { get; }
 
         /// <summary>
         /// This read-only property returns the member's topic name
@@ -89,15 +104,31 @@ namespace Sandcastle.Core.Reflection
         public ApiMemberGroup TopicSubgroup { get; }
 
         /// <summary>
+        /// This read-only property returns the member's topic sub-subgroup
+        /// </summary>
+        public ApiMemberGroup TopicSubSubgroup { get; }
+
+        /// <summary>
         /// This read-only property returns the member's type topic ID
         /// </summary>
         /// <remarks>This appears on member list topics</remarks>
         public string TypeTopicId { get; }
 
         /// <summary>
+        /// This read-only property returns the member's type API subgroup
+        /// </summary>
+        /// <remarks>This appears on member list topics</remarks>
+        public string TypeApiSubgroup { get; }
+
+        /// <summary>
         /// This read-only property returns the topic filename
         /// </summary>
         public string TopicFilename { get; }
+
+        /// <summary>
+        /// This read-only property returns the overload topic ID if the member is overloaded
+        /// </summary>
+        public string OverloadTopicId { get; }
 
         /// <summary>
         /// This read-only property is used to get the parameter count for methods
@@ -141,27 +172,31 @@ namespace Sandcastle.Core.Reflection
         /// Constructor
         /// </summary>
         /// <param name="apiMember">The XML element containing the reflection information for the API member</param>
-        public ApiMember(XElement apiMember)
+        /// <param name="key">An optional key to use as the member ID if the API member element does not contain it</param>
+        public ApiMember(XElement apiMember, string key)
         {
             if(apiMember == null)
                 throw new ArgumentNullException(nameof(apiMember));
 
             var apiData = apiMember.Element("apidata");
-            var group = apiData?.Attribute("group");
-            var subgroup = apiData?.Attribute("subgroup");
-            var subsubgroup = apiData?.Attribute("subsubgroup");
+            var apiGroup = apiData?.Attribute("group");
+            var apiSubgroup = apiData?.Attribute("subgroup");
+            var apiSubSubgroup = apiData?.Attribute("subsubgroup");
             var topicData = apiMember.Element("topicdata");
             var topicGroup = topicData?.Attribute("group");
             var topicSubgroup = topicData?.Attribute("subgroup");
+            var topicSubSubgroup = topicData?.Attribute("subsubgroup");
             var procedureData = apiMember.Element("proceduredata");
+            var memberData = apiMember.Element("memberdata");
 
-            this.MemberId = (apiMember.Attribute("id") ?? apiMember.Attribute("api")).Value;
-            this.MemberIdWithoutPrefix = this.MemberId.Substring(this.MemberId.IndexOf(':') + 1);
+            this.MemberId = key ?? (apiMember.Attribute("id") ?? apiMember.Attribute("api"))?.Value;
+            this.MemberIdWithoutPrefix = this.MemberId?.Substring(this.MemberId.IndexOf(':') + 1);
             this.Name = apiData?.Attribute("name").Value;
             this.TopicName = topicData?.Attribute("name")?.Value;
             this.TopicEiiName = topicData?.Attribute("eiiName")?.Value;
             this.TopicFilename = apiMember.Element("file")?.Attribute("name")?.Value;
-            this.TypeTopicId = topicData?.Attribute("typeTopicId")?.Value;
+            this.OverloadTopicId = memberData?.Attribute("overload")?.Value;
+
             this.IsExplicitlyImplemented = (procedureData?.Attribute("eii")?.Value ?? String.Empty).Equals(
                 "true", StringComparison.OrdinalIgnoreCase);
 
@@ -180,37 +215,37 @@ namespace Sandcastle.Core.Reflection
 
             ApiMemberGroup g;
 
-            if(group != null)
+            if(apiGroup != null)
             {
-                if(Enum.TryParse(group.Value, true, out g))
-                    this.Group = g;
+                if(Enum.TryParse(apiGroup.Value, true, out g))
+                    this.ApiGroup = g;
                 else
-                    this.Group = ApiMemberGroup.Unknown;
+                    this.ApiGroup = ApiMemberGroup.Unknown;
             }
 
-            if(subgroup != null)
+            if(apiSubgroup != null)
             {
-                if(Enum.TryParse(subgroup.Value, true, out g))
-                    this.Subgroup = g;
+                if(Enum.TryParse(apiSubgroup.Value, true, out g))
+                    this.ApiSubgroup = g;
                 else
-                    this.Subgroup = ApiMemberGroup.Unknown;
+                    this.ApiSubgroup = ApiMemberGroup.Unknown;
             }
             else
             {
                 if(this.MemberId.StartsWith("Overload:", StringComparison.Ordinal))
                 {
-                    this.Subgroup = this.MemberId.Contains(".#ctor") ? ApiMemberGroup.Constructor :
+                    this.ApiSubgroup = this.MemberId.Contains(".#ctor") ? ApiMemberGroup.Constructor :
                         ApiMemberGroup.Method;
-                    this.SubSubgroup = ApiMemberGroup.Overload;
+                    this.ApiSubSubgroup = ApiMemberGroup.Overload;
                 }
             }
 
-            if(subsubgroup != null)
+            if(apiSubSubgroup != null)
             {
-                if(Enum.TryParse(subsubgroup.Value, true, out g))
-                    this.SubSubgroup = g;
+                if(Enum.TryParse(apiSubSubgroup.Value, true, out g))
+                    this.ApiSubSubgroup = g;
                 else
-                    this.SubSubgroup = ApiMemberGroup.Unknown;
+                    this.ApiSubSubgroup = ApiMemberGroup.Unknown;
             }
 
             if(topicGroup != null)
@@ -227,6 +262,37 @@ namespace Sandcastle.Core.Reflection
                     this.TopicSubgroup = g;
                 else
                     this.TopicSubgroup = ApiMemberGroup.Unknown;
+            }
+
+            if(topicSubSubgroup != null)
+            {
+                if(Enum.TryParse(topicSubSubgroup.Value, true, out g))
+                    this.TopicSubSubgroup = g;
+                else
+                    this.TopicSubSubgroup = ApiMemberGroup.Unknown;
+            }
+
+            this.ApiTopicGroup = (this.TopicGroup == ApiMemberGroup.Api) ? this.ApiGroup : this.TopicGroup;
+            this.ApiTopicSubgroup = (this.TopicGroup == ApiMemberGroup.Api) ? this.ApiSubgroup : this.TopicSubgroup;
+            this.ApiTopicSubSubgroup = (this.TopicGroup == ApiMemberGroup.Api) ? this.ApiSubSubgroup : this.TopicSubSubgroup;
+
+            if(this.TopicGroup == ApiMemberGroup.Api && this.ApiGroup == ApiMemberGroup.Type)
+            {
+                this.TypeTopicId = this.MemberId;
+                this.TypeApiSubgroup = apiData.Attribute("subgroup")?.Value;
+            }
+            else
+            {
+                if(topicData?.Attribute("typeTopicId") != null)
+                {
+                    this.TypeTopicId = topicData.Attribute("typeTopicId").Value;
+                    this.TypeApiSubgroup = apiData.Attribute("subgroup")?.Value;
+                }
+                else
+                {
+                    this.TypeTopicId = apiMember.Element("containers")?.Element("type")?.Attribute("api")?.Value;
+                    this.TypeApiSubgroup = apiMember.Element("containers")?.Element("type")?.Element("apidata")?.Attribute("subgroup")?.Value;
+                }
             }
 
             var parameters = apiMember.Element("parameters");

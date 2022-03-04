@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : StandardApiTocGenerator.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/05/2021
-// Note    : Copyright 2021, Eric Woodruff, All rights reserved
+// Updated : 02/27/2022
+// Note    : Copyright 2021-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a standard table of contents for API content
 //
@@ -101,13 +101,13 @@ namespace Sandcastle.Core.PresentationStyle
                             switch(reader.Name)
                             {
                                 case "api":
-                                    var apiMember = new ApiMember((XElement)XNode.ReadFrom(reader));
+                                    var apiMember = new ApiMember((XElement)XNode.ReadFrom(reader), null);
 #if DEBUG
-                                    if(apiMember.Group == ApiMemberGroup.Unknown || apiMember.Subgroup == ApiMemberGroup.Unknown ||
+                                    if(apiMember.ApiGroup == ApiMemberGroup.Unknown || apiMember.ApiSubgroup == ApiMemberGroup.Unknown ||
                                       apiMember.TopicGroup == ApiMemberGroup.Unknown || apiMember.TopicSubgroup == ApiMemberGroup.Unknown)
                                     {
                                         throw new InvalidOperationException("Unknown group value: " + apiMember.MemberId +
-                                            $" - API Data: {apiMember.Group}/{apiMember.Subgroup} Topic Data: {apiMember.TopicGroup} {apiMember.TopicSubgroup}");
+                                            $" - API Data: {apiMember.ApiGroup}/{apiMember.ApiSubgroup} Topic Data: {apiMember.TopicGroup} {apiMember.TopicSubgroup}");
                                     }
 #endif
                                     if(apiMember.TopicGroup == ApiMemberGroup.Root)
@@ -128,7 +128,7 @@ namespace Sandcastle.Core.PresentationStyle
                                         }
                                         else
                                         {
-                                            if(apiMember.Group == ApiMemberGroup.Namespace)
+                                            if(apiMember.ApiGroup == ApiMemberGroup.Namespace)
                                                 namespaces.Add(apiMember);
                                         }
                                     }
@@ -197,7 +197,7 @@ namespace Sandcastle.Core.PresentationStyle
         {
             var member = apiMembers[memberId];
 
-            switch(member.Group)
+            switch(member.ApiGroup)
             {
                 case ApiMemberGroup.Namespace:
                 case ApiMemberGroup.NamespaceGroup:
@@ -216,8 +216,8 @@ namespace Sandcastle.Core.PresentationStyle
                     writer.WriteAttributeString("id", member.MemberId);
                     writer.WriteAttributeString("file", member.TopicFilename);
 
-                    if(member.Subgroup == ApiMemberGroup.Class || member.Subgroup == ApiMemberGroup.Structure ||
-                      member.Subgroup == ApiMemberGroup.Interface)
+                    if(member.ApiSubgroup == ApiMemberGroup.Class || member.ApiSubgroup == ApiMemberGroup.Structure ||
+                      member.ApiSubgroup == ApiMemberGroup.Interface)
                     {
                         AddMemberListTopics(writer, member);
                     }
@@ -243,7 +243,7 @@ namespace Sandcastle.Core.PresentationStyle
             // Only include direct members of the given type.  Ignore inherited members.
             var constructors = apiType.ChildElements.Select(id => apiMembers.ContainsKey(id) ? apiMembers[id] : null).Where(
                 m => m != null && m.MemberIdWithoutPrefix.StartsWith(declaringTypePrefix, StringComparison.Ordinal) &&
-                     m.Subgroup == ApiMemberGroup.Constructor);
+                     m.ApiSubgroup == ApiMemberGroup.Constructor);
 
             // Constructors don't have a containing list topic so we need to get them separately
             foreach(var m in constructors)

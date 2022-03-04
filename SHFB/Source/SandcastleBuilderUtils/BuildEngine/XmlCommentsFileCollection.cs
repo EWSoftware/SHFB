@@ -135,7 +135,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         /// <param name="workingFolder">The working folder path</param>
         /// <param name="forInheritedDocs">True if generating the list for the inherited documentation tool or
-        /// false for sandcastle.config.</param>
+        /// false for the BuildAssembler configuration file.</param>
         /// <returns>The comment file list XML tags</returns>
         internal string CommentFileList(string workingFolder, bool forInheritedDocs)
         {

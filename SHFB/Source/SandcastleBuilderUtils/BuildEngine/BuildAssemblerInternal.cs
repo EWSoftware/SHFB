@@ -25,7 +25,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Globalization;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
@@ -34,6 +33,7 @@ using System.Xml.XPath;
 using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
+using Sandcastle.Core.PresentationStyle.Transformation;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -71,14 +71,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 MessageLevel.Info : (currentBuild.CurrentProject.BuildAssemblerVerbosity == BuildAssemblerVerbosity.OnlyWarningsAndErrors) ?
                 MessageLevel.Warn : MessageLevel.Error;
 
+            // Get the transformation to use and set any transformation argument values
+            this.TopicTransformation = currentBuild.PresentationStyle.TopicTranformation;
+
+            foreach(var arg in currentBuild.CurrentProject.TransformComponentArguments)
+                if(arg.Value != null)
+                    this.TopicTransformation.TransformationArguments[arg.Key].Value = arg.Value;
+                else
+                    this.TopicTransformation.TransformationArguments[arg.Key].Content = arg.Content;
+
             // Add this instance to the component container so that the build component factories can find it
             currentBuild.ComponentContainer.ComposeParts(this);
-
-#if NETCOREAPP3_1_OR_GREATER
-            // TODO: This can go away once we get rid of the XSL transformations in the presentation styles
-            // Allow loading of external URIs in XSL transformations
-            AppContext.SetSwitch("Switch.System.Xml.AllowDefaultResolver", true);
-#endif
         }
         #endregion
 
@@ -116,14 +119,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public MessageLevel VerbosityLevel { get; }
 
         /// <inheritdoc />
+        public TopicTransformationCore TopicTransformation { get; }
+
+        /// <inheritdoc />
         public IEnumerable<BuildComponentCore> BuildComponents => components;
 
         /// <inheritdoc />
         public IDictionary<string, object> Data { get; } = new Dictionary<string, object>();
-
-        // TODO: Add this to the interface once the new stuff is in place so that the TransformComponent can
-        //       get the transformation to use.
-        //public TopicTransformationBase TopicTransformation => currentBuild.TopicTransformation;
 
         /// <inheritdoc />
         public event EventHandler ComponentEvent;
