@@ -45,7 +45,9 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         #region Constructor
         //=====================================================================
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Constructor
+        /// </summary>
         /// <param name="requestExampleUrlArgName">The Request Example URL transformation argument name to use or
         /// null if there isn't one.</param>
         /// <param name="baseSourceCodeUrlArgName">The base source code URL transformation argument name to use

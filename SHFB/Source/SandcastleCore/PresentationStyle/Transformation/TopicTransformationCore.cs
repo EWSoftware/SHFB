@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/03/2022
+// Updated : 03/04/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
@@ -140,6 +140,11 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         public string Locale { get; set; } = "en-US";
 
         /// <summary>
+        /// This read-only property returns the help file formats supported by the presentation style
+        /// </summary>
+        public HelpFileFormats SupportedFormats { get; }
+
+        /// <summary>
         /// This is used to get or set the path to the bibliography data file for the <c>bibliography</c>
         /// and <c>cite</c> elements.
         /// </summary>
@@ -200,12 +205,14 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// <summary>
         /// Constructor
         /// </summary>
-        protected TopicTransformationCore()
+        /// <param name="supportedFormats">The presentation style's supported help file formats</param>
+        protected TopicTransformationCore(HelpFileFormats supportedFormats)
         {
             elementHandlers = new Dictionary<string, Element>();
             languageSpecificText = new Dictionary<string, LanguageSpecificText>();
             transformationArguments = new Dictionary<string, TransformationArgument>(StringComparer.OrdinalIgnoreCase);
 
+            this.SupportedFormats = supportedFormats;
             this.CreateTransformationArguments();
             this.CreateLanguageSpecificText();
             this.CreateElementHandlers();
@@ -495,6 +502,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// <summary>
         /// Render the topic content based on the topic type
         /// </summary>
+        /// <returns>The current topic rendered in the presentation style format</returns>
         protected abstract XDocument RenderTopic();
 
         /// <summary>

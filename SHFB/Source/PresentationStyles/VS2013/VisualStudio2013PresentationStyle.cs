@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013PresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2022
+// Updated : 03/04/2022
 // Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Visual Studio 2013 presentation style.
@@ -51,7 +51,7 @@ namespace Sandcastle.PresentationStyles.VS2013
 
             this.DocumentModelApplicator = new StandardDocumentModel();
             this.ApiTableOfContentsGenerator = new StandardApiTocGenerator();
-            this.TopicTranformation = new VisualStudio2013Transformation();
+            this.TopicTranformation = new VisualStudio2013Transformation(this.SupportedFormats);
 
             // If relative, these paths are relative to the base path
             this.ResourceItemsPath = "Content";

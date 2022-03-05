@@ -82,6 +82,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// and removing leading and trailing whitespace.
         /// </summary>
         /// <param name="text">The text to normalize</param>
+        /// <returns>The normalized string</returns>
         /// <remarks>This is based on the normalize-space() XSLT function implementation in the .NET Framework</remarks>
         public static string NormalizeWhiteSpace(this string text)
         {

@@ -152,7 +152,8 @@
 	</element>
 
 	<!-- Sandcastle extension.  Removed the type attribute so that it contain anything and so that it can be
-	used for inline or block content.  Use of this element is a hack and is best avoided if possible. -->
+	used for inline or block content.  Added support for a contentType attribute.  Use of this element is a
+	hack and is best avoided if possible. -->
 	<element name="markup">
 		<annotation>
 			<documentation>
@@ -163,6 +164,20 @@
 				<doc:type>character</doc:type>
 			</appinfo>
 		</annotation>
+		<complexType mixed="true">
+			<sequence maxOccurs="unbounded">
+				<any processContents="skip" />
+			</sequence>
+			<attribute name="contentType" use="optional">
+				<simpleType>
+					<restriction base="token">
+						<enumeration value="Html"/>
+						<enumeration value="OpenXml"/>
+						<enumeration value="Markdown"/>
+					</restriction>
+				</simpleType>
+			</attribute>
+		</complexType>
 	</element>
 
 	<element name="command">

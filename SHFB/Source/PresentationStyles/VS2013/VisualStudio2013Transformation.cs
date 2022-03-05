@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/03/2022
+// Updated : 03/04/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -24,6 +24,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
 
+using Sandcastle.Core;
 using Sandcastle.Core.PresentationStyle.Transformation;
 using Sandcastle.Core.PresentationStyle.Transformation.Elements;
 using Sandcastle.Core.PresentationStyle.Transformation.Elements.Html;
@@ -42,6 +43,18 @@ namespace Sandcastle.PresentationStyles.VS2013
 
         private readonly Dictionary<CommonStyle, string> commonStyles = new Dictionary<CommonStyle, string>();
 
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="supportedFormats">The help file formats supported by the presentation style</param>
+        public VisualStudio2013Transformation(HelpFileFormats supportedFormats) : base(supportedFormats)
+        {
+        }
         #endregion
 
         #region Topic transformation argument shortcut properties
@@ -139,7 +152,7 @@ namespace Sandcastle.PresentationStyles.VS2013
 
         #endregion
 
-        #region TopicTransformationBase implementation
+        #region TopicTransformationCore implementation
         //=====================================================================
 
         /// <inheritdoc />
