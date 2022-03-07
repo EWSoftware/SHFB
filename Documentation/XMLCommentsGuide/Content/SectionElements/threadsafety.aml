@@ -13,13 +13,19 @@ are safe for use in multi-threaded scenarios.</para>
 
 <code language="xml" title=" ">
 &lt;threadsafety static="true | false" instance="true | false" /&gt;
+
+or
+
+&lt;threadsafety&gt;Add a custom description of the type's thread safety&lt;/threadsafety&gt;
+
 </code>
 
 				<para>The <codeInline>static</codeInline> attribute specifies whether static members of the class or 
 structure are safe for use in multi-threaded operations.  The <codeInline>instance</codeInline> attribute
 specifies whether instance members of the class or structure are safe for use in multi-threaded operations.  If
 neither attribute is specified, it is the same as setting <codeInline>static</codeInline> to true and
-<codeInline>instance</codeInline> to false.</para>
+<codeInline>instance</codeInline> to false.  Inner text can also be specified to describe the thread safety.  If
+inner text is present, the attributes are ignored.</para>
 
 				<alert class="note">
 					<para>This is a custom XML comments element implemented by Sandcastle.  It will not appear in the list

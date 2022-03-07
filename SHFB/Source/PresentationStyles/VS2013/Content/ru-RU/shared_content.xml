@@ -8,7 +8,8 @@
 	<item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
 	<item id="feedback_body">Ваш отзыв будет использован для улучшения качества документации и продукта в целом. Адрес вашей электронной почты не будет использован для других целей и будет удалён, после того как ваш отзыв будет обработан. До окончания работ по обработке вашего отзыва, вы можете связаться с автором для получения дополнительной информации. После его обработки, вы можете получить сообщение об окончании работ по вашему отзыву на указанный адрес электронной почты.</item>
 	<item id="footer_content">{@FooterText}{@Copyright}{@Comments}</item>
-	<item id="websiteAdContent">{@WebsiteAdContent}</item>
+	<!-- This should remain empty unless overridden by the website content file -->
+	<item id="websiteAdContent"></item>
 
 	<item id="comments"><div class="feedbackLink">Отправить комментарий по этой теме в
         <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a></div>

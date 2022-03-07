@@ -257,28 +257,28 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
             switch(transformation.ApiMember)
             {
-                case var t when t.TopicSubgroup == ApiMemberGroup.Interface ||
-                  t.TopicSubgroup == ApiMemberGroup.Constructor ||
-                  t.TopicSubgroup == ApiMemberGroup.Method ||
-                  t.TopicSubgroup == ApiMemberGroup.Delegate ||
-                  t.TopicSubgroup == ApiMemberGroup.Field:
+                case var t when t.ApiTopicSubgroup == ApiMemberGroup.Interface ||
+                  t.ApiTopicSubgroup == ApiMemberGroup.Constructor ||
+                  t.ApiTopicSubgroup == ApiMemberGroup.Method ||
+                  t.ApiTopicSubgroup == ApiMemberGroup.Delegate ||
+                  t.ApiTopicSubgroup == ApiMemberGroup.Field:
                     // Show nothing for page types that cannot be used in XAML
                     break;
 
-                case var t when t.TopicSubgroup == ApiMemberGroup.Class || t.TopicSubgroup == ApiMemberGroup.Structure:
+                case var t when t.ApiTopicSubgroup == ApiMemberGroup.Class || t.ApiTopicSubgroup == ApiMemberGroup.Structure:
                     // Class and structure
                     syntaxBlocks.AddRange(xamlSnippet.Elements("div").Where(
                         d => d.Attribute("class").Value == "xamlObjectElementUsageHeading"));
                     break;
 
-                case var t when t.TopicSubgroup == ApiMemberGroup.Enumeration:
+                case var t when t.ApiTopicSubgroup == ApiMemberGroup.Enumeration:
                     // Enumeration
                     content.Add(new XElement("pre",
                         new XAttribute(XmlSpace, "preserve"),
                         new XElement("include", new XAttribute("item", "enumerationOverviewXamlSyntax"))));
                     break;
 
-                case var t when t.TopicSubgroup == ApiMemberGroup.Property || t.TopicSubSubgroup == ApiMemberGroup.AttachedProperty:
+                case var t when t.ApiTopicSubgroup == ApiMemberGroup.Property || t.TopicSubSubgroup == ApiMemberGroup.AttachedProperty:
                     // Property or attached property
 
                     // Property element usage
@@ -292,7 +292,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                         d => d.Attribute("class").Value == "xamlAttributeUsageHeading"));
                     break;
 
-                case var t when t.TopicSubgroup == ApiMemberGroup.Event || t.TopicSubSubgroup == ApiMemberGroup.AttachedEvent:
+                case var t when t.ApiTopicSubgroup == ApiMemberGroup.Event || t.TopicSubSubgroup == ApiMemberGroup.AttachedEvent:
                     // Event or attached event
                     syntaxBlocks.AddRange(xamlSnippet.Elements("div").Where(
                         d => d.Attribute("class").Value == "xamlAttributeUsageHeading"));

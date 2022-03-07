@@ -7,7 +7,8 @@
 	<item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
 	<item id="feedback_body">ドキュメント開発チームはドキュメントの品質向上にあなたのフィードバックを使用いたします。送信いただいたメールアドレスは他の用途に使用いたしません。問題が解決した後送信されたメールアドレスを破棄いたします。送信いただいた問題の処理において，詳細をお伺いする場合や問題の切り分けのためにコンタクトをとらせていただく場合がございます。</item>
 	<item id="footer_content">{@FooterText}{@Copyright}{@Comments}</item>
-	<item id="websiteAdContent">{@WebsiteAdContent}</item>
+	<!-- This should remain empty unless overridden by the website content file -->
+	<item id="websiteAdContent"></item>
 
 	<item id="comments"><div class="feedbackLink">このトピックに対してコメントを送信
         <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a></div>

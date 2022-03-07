@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" 
-		xmlns:maml="http://ddue.schemas.microsoft.com/authoring/2003/5" 
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+		xmlns:maml="http://ddue.schemas.microsoft.com/authoring/2003/5"
 		xmlns:doc="http://ddue.schemas.microsoft.com/authoring/internal"
-		targetNamespace="http://ddue.schemas.microsoft.com/authoring/2003/5" 
+		targetNamespace="http://ddue.schemas.microsoft.com/authoring/2003/5"
 		elementFormDefault="qualified"
         attributeFormDefault="unqualified"
         >
@@ -11,31 +11,31 @@
 	<annotation>
 		<documentation>
 			This schema definition defines common structure types for the CS Schema.
-			This schema is part of the base layer.			
+			This schema is part of the base layer.
 		</documentation>
 	</annotation>
 
 	<!-- include and import declarations -->
 	<include schemaLocation="base.xsd"/>
-  <!-- Sandcastle fix, required for missing maml:conditions -->
-  <include schemaLocation="conditionSet.xsd"/>
-  <!-- Sandcastle fix, required for missing maml:sectionContentType -->
-  <include schemaLocation="structure.xsd"/>
+	<!-- Sandcastle fix, required for missing maml:conditions -->
+	<include schemaLocation="conditionSet.xsd"/>
+	<!-- Sandcastle fix, required for missing maml:sectionContentType -->
+	<include schemaLocation="structure.xsd"/>
 
-  <complexType name="listType" mixed="false">
-        <choice minOccurs="1" maxOccurs="unbounded">
-            <element ref="maml:listItem"/>
-            <element name="conditionalSection">
-                <complexType>
-                    <sequence>
-                        <element ref="maml:conditions"/>
-                        <element name="conditionalContent" type="maml:listType"/>
-                    </sequence>
-                </complexType>
-            </element>
-        </choice>
-        <attributeGroup ref="maml:contentIdentificationSharingAndConditionGroup"/>
-        <attribute name="class" use="required">
+	<complexType name="listType" mixed="false">
+		<choice minOccurs="1" maxOccurs="unbounded">
+			<element ref="maml:listItem"/>
+			<element name="conditionalSection">
+				<complexType>
+					<sequence>
+						<element ref="maml:conditions"/>
+						<element name="conditionalContent" type="maml:listType"/>
+					</sequence>
+				</complexType>
+			</element>
+		</choice>
+		<attributeGroup ref="maml:contentIdentificationSharingAndConditionGroup"/>
+		<attribute name="class" use="required">
 			<annotation>
 				<documentation>
 					The class attribute describes the type of list.
@@ -49,8 +49,18 @@
 				</restriction>
 			</simpleType>
 		</attribute>
-    </complexType>
-    
+		<attribute name="start" use="optional">
+			<annotation>
+				<documentation>
+					The starting index to use for ordered lists.  Defaults to 1 if omitted.
+				</documentation>
+			</annotation>
+			<simpleType>
+				<restriction base="int" />
+			</simpleType>
+		</attribute>
+	</complexType>
+
 	<!-- element declarations -->
 	<element name="list" type="maml:listType">
 		<annotation>
@@ -58,36 +68,36 @@
 				The list element describes content that should be displayed as a list.
 			</documentation>
 			<appinfo>
-			    <doc:localizable>n/a</doc:localizable>
+				<doc:localizable>n/a</doc:localizable>
 				<doc:type>structure</doc:type>
 			</appinfo>
 		</annotation>
 	</element>
-	
+
 	<element name="listItem" type="maml:sectionContentType">
 		<annotation>
 			<documentation>
-				The listItem element describes an item within a list. The 
+				The listItem element describes an item within a list. The
 				content of the listItem element will be treated as a unit.
 			</documentation>
 			<appinfo>
-			    <doc:localizable>n/a</doc:localizable>
+				<doc:localizable>n/a</doc:localizable>
 				<doc:type>structure</doc:type>
 			</appinfo>
 		</annotation>
 	</element>
-	
+
 	<!-- group declarations -->
 	<group name="structureListGroup">
 		<annotation>
 			<documentation>
 				This group describes the common lists that can be used to describe
-				list data. 
+				list data.
 			</documentation>
-		</annotation>	
+		</annotation>
 		<choice>
 			<element ref="maml:list"/>
 		</choice>
 	</group>
-	
+
 </schema>

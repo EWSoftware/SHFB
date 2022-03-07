@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReturnsElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/11/2022
+// Updated : 03/05/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle returns elements
@@ -61,7 +61,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                 content = contentElement;
             }
 
-            var typeInfo = transformation.ReferenceNode.Element("returns")?.Elements().First();
+            var typeInfo = transformation.ReferenceNode.Element("returns")?.Elements().FirstOrDefault();
 
             if(typeInfo != null)
             {

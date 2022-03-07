@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : MarkupElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/04/2022
+// Updated : 03/05/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the markup element, a parent element that does not itself have any
@@ -86,9 +86,6 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 
             XElement clone = new XElement(element);
 
-            // TODO: This will probably need to handle Open XML separately to retain the Open XML namespaces.
-            // It may be better to only remove the ddue namespace as it is likely to be the only one needing
-            // removal.
             clone.RemoveNamespaces();
 
             foreach(var child in clone.Nodes())

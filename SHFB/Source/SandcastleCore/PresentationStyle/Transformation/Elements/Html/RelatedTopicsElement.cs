@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : RelatedTopicsElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/28/2022
+// Updated : 03/06/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle relatedTopics elements
@@ -52,8 +52,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
             if(element.Elements().Any() || element.Value.NormalizeWhiteSpace().Length != 0)
             {
-                var (title, content) = transformation.CreateSection(element.GenerateUniqueId(), true,
-                    "title_relatedTopics", null);
+                // This has a fixed ID used by the auto-outline element to link to the section
+                var (title, content) = transformation.CreateSection("seeAlso", true, "title_relatedTopics", null);
 
                 transformation.CurrentElement.Add(title);
                 transformation.CurrentElement.Add(content);

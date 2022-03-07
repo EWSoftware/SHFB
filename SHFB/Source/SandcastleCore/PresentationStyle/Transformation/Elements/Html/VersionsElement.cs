@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : NamedSectionElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/13/2022
+// Updated : 03/06/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle versions elements
@@ -21,7 +21,7 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 {
     /// <summary>
     /// This is used to handle <c>versions</c> elements
@@ -63,55 +63,64 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                     content = contentElement;
                 }
 
-                // Show the versions in which the api is supported, if any
-                var notObsolete = element.Elements().Where(v => v.Attribute("obsolete") == null).ToList();
-
-                if(notObsolete.Count != 0)
+                foreach(var v in element.Elements("versions"))
                 {
-                    var include = new XElement("include", new XAttribute("item", $"supportedIn_{notObsolete.Count}"));
-                    content.Add(include);
-
-                    foreach(var version in notObsolete)
+                    if(v.HasElements)
                     {
-                        include.Add(new XElement("parameter",
+                        content.Add(new XElement("h4",
+                                new XAttribute("class", "subHeading"),
                             new XElement("include",
-                                new XAttribute("item", version.Attribute("name").Value))));
+                                new XAttribute("item", v.Attribute("name").Value))));
+
+                        RenderVersionInfo(v, content);
                     }
                 }
+            }
+        }
 
-                // Show the versions in which the API is obsolete with a compiler warning, if any
-                var obsoleteWarning = element.Elements().Where(v => v.Attribute("obsolete")?.Value == "warning").ToList();
+        /// <summary>
+        /// This is used to render the information for each version entry
+        /// </summary>
+        /// <param name="version">The version element</param>
+        /// <param name="content">The content element to which the information is added</param>
+        private static void RenderVersionInfo(XElement version, XElement content)
+        {
+            // Show the versions in which the api is supported, if any
+            var notObsolete = version.Elements().Where(v => v.Attribute("obsolete") == null).ToList();
 
-                if(obsoleteWarning.Count != 0)
+            if(notObsolete.Count != 0)
+            {
+                var include = new XElement("include", new XAttribute("item", $"supportedIn_{notObsolete.Count}"));
+                content.Add(include);
+
+                foreach(var v in notObsolete)
                 {
-                    foreach(var version in notObsolete)
-                    {
-                        content.Add(new XElement("include",
-                            new XAttribute("item", "obsoleteWarning"),
-                            new XElement("parameter",
-                                new XElement("include",
-                                    new XAttribute("item", version.Attribute("name").Value)))));
-                    }
+                    include.Add(new XElement("parameter",
+                        new XElement("include",
+                            new XAttribute("item", v.Attribute("name").Value))));
                 }
+            }
 
-                // Show the versions in which the API is obsolete and does not compile, if any
-                var obsoleteError = element.Elements().Where(v => v.Attribute("obsolete")?.Value == "error").ToList();
-                var lastVersion = element.Elements().Last();
+            // Show the versions in which the API is obsolete with a compiler warning, if any
+            foreach(var v in version.Elements().Where(v => v.Attribute("obsolete")?.Value == "warning"))
+            {
+                content.Add(new XElement("include",
+                    new XAttribute("item", "obsoleteWarning"),
+                    new XElement("parameter",
+                        new XElement("include",
+                            new XAttribute("item", v.Attribute("name").Value)))));
+            }
 
-                if(obsoleteWarning.Count != 0)
-                {
-                    foreach(var version in notObsolete)
-                    {
-                        if(version == lastVersion)
-                        {
-                            content.Add(new XElement("include",
-                                new XAttribute("item", "obsoleteError"),
-                                new XElement("parameter",
-                                    new XElement("include",
-                                        new XAttribute("item", version.Attribute("name").Value)))));
-                        }
-                    }
-                }
+            // Show the version in which the API is obsolete and does not compile, if any
+            var obsoleteError = version.Elements().Where(v => v.Attribute("obsolete")?.Value == "error").LastOrDefault();
+
+            if(obsoleteError != null)
+            {
+                content.Add(new XElement("include",
+                    new XAttribute("item", "obsoleteError"),
+                    new XElement("parameter",
+                        new XElement("include",
+                            new XAttribute("item", obsoleteError.Attribute("name").Value)))));
             }
         }
         #endregion

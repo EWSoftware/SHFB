@@ -171,9 +171,21 @@
 			<attribute name="contentType" use="optional">
 				<simpleType>
 					<restriction base="token">
-						<enumeration value="Html"/>
-						<enumeration value="OpenXml"/>
-						<enumeration value="Markdown"/>
+						<enumeration value="Html">
+							<annotation>
+								<documentation>The content is only rendered in presentation styles supporting HTML and Markdown output.</documentation>
+							</annotation>
+						</enumeration>
+						<enumeration value="OpenXml">
+							<annotation>
+								<documentation>The content is only rendered in presentation styles supporting Open XML output.</documentation>
+							</annotation>
+						</enumeration>
+						<enumeration value="Markdown">
+							<annotation>
+								<documentation>The content is only rendered in presentation styles supporting Markdown output.</documentation>
+							</annotation>
+						</enumeration>
 					</restriction>
 				</simpleType>
 			</attribute>

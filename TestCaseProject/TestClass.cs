@@ -412,7 +412,7 @@ namespace TestDoc
         /// <returns>Returns the sum for the array of double values if the array is
         /// not null and not empty.</returns>
         /// <remarks>
-        /// <p/>Test definition list:
+        /// <para>Test definition list:</para>
         /// <list type="definition">
         /// <item>
         /// <term>maxLen</term>
@@ -445,7 +445,7 @@ namespace TestDoc
         /// </item>
         /// </list>
         /// 
-        /// <p/>Test bullet list with terms and definitions:
+        /// <para>Test bullet list with terms and definitions:</para>
         /// <list type="bullet">
         /// <item>
         /// <term>maxLen</term>
@@ -478,7 +478,7 @@ namespace TestDoc
         /// </item>
         /// </list>
         /// 
-        /// <p/>Test numbered list with terms and definitions:
+        /// <para>Test numbered list with terms and definitions:</para>
         /// <list type="number">
         /// <item>
         /// <term>maxLen</term>
@@ -511,7 +511,7 @@ namespace TestDoc
         /// </item>
         /// </list>
         /// 
-        /// <p/>Test table list with terms and definitions:
+        /// <para>Test table list with terms and definitions:</para>
         /// <list type="table">
         /// <listheader>
         /// <term>Item</term>

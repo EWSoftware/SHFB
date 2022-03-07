@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Handlers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/11/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 03/06/2022
+// Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the element handler methods for the MAML to flow document converter class
 //
@@ -565,12 +565,14 @@ namespace SandcastleBuilder.WPF.Maml
         {
             XAttribute listClass = props.Element.Attribute("class");
             TextMarkerStyle markerStyle = TextMarkerStyle.Disc;
+            int startIndex = 1;
 
             if(listClass != null)
                 switch(listClass.Value)
                 {
                     case "ordered":
                         markerStyle = TextMarkerStyle.Decimal;
+                        startIndex = (int?)props.Element.Attribute("start") ?? 1; 
                         break;
 
                     case "nobullet":
@@ -581,7 +583,7 @@ namespace SandcastleBuilder.WPF.Maml
                         break;
                 }
 
-            props.Converter.AddToBlockContainer(new List { MarkerStyle = markerStyle });
+            props.Converter.AddToBlockContainer(new List { MarkerStyle = markerStyle, StartIndex = startIndex });
         }
 
         /// <summary>

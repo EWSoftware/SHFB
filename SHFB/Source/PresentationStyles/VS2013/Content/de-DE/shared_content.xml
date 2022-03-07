@@ -8,7 +8,8 @@
 	<item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
 	<item id="feedback_body">Ihre Rückmeldung wird für die Verbesserung der Dokumentation und des Produktes genutzt. Ihre Email-Adresse wird zu keinem anderen Zweck benutzt und wird nach der Behebung des gemeldeten Problems gelöscht. Während der Arbeit an dem Problem kann es sein dass Sie per Email kontaktiert werden für weitergehende Details oder Abklärung zur Rückmeldung von Ihnen. Nachdem das Problem eingegrenzt worden ist kann es sein dass Sie eine Email erhalten zur Problembehebung.</item>
 	<item id="footer_content">{@FooterText}{@Copyright}{@Comments}</item>
-	<item id="websiteAdContent">{@WebsiteAdContent}</item>
+	<!-- This should remain empty unless overridden by the website content file -->
+	<item id="websiteAdContent"></item>
 	
 	<item id="comments"><div class="feedbackLink">Senden Sie Kommentare zu diesem Feature an
         <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a></div>

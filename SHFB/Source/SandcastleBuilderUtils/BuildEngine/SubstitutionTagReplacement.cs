@@ -1258,6 +1258,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     currentBuild.WorkingFolder);
             }
 
+            // If generating web content, add the website content override file.  We just transform it and add
+            // it to the working folder.  The website specific part of the build assembler configuration file
+            // will pick it up.
+            if((currentBuild.CurrentProject.HelpFileFormat & HelpFileFormats.Website) == HelpFileFormats.Website)
+            {
+                this.TransformTemplate("WebsiteContent.xml", Path.Combine(ComponentUtilities.CoreComponentsFolder,
+                    "Shared", "Content"), currentBuild.WorkingFolder);
+            }
+
             // Add syntax generator resource item files.  All languages are included regardless of the project
             // filter settings since code examples can be in any language.  Files are copied and transformed as
             // they may contain substitution tags.

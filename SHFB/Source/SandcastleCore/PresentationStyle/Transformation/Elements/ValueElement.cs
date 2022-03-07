@@ -1,11 +1,11 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
-// File    : SchemaHierarchyElement.cs
+// File    : ValueElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/23/2022
+// Updated : 02/11/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
-// This file contains the class used to handle schemaHierarchy elements
+// This file contains the class used to handle value elements
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
@@ -14,24 +14,25 @@
 //
 //    Date     Who  Comments
 // ==============================================================================================================
-// 01/23/2022  EFW  Created the code
+// 02/11/2022  EFW  Created the code
 //===============================================================================================================
 
 using System;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 {
     /// <summary>
-    /// This is used to handle general <c>schemaHierarchy</c> elements in a topic
+    /// This is used to handle <c>value</c> elements
     /// </summary>
-    public class SchemaHierarchyElement : Element
+    public class ValueElement : NamedSectionElement
     {
         #region Constructor
         //=====================================================================
 
         /// <inheritdoc />
-        public SchemaHierarchyElement() : base("schemaHierarchy")
+        public ValueElement() : base("value")
         {
         }
         #endregion
@@ -48,18 +49,34 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
             if(element == null)
                 throw new ArgumentNullException(nameof(element));
 
-            int indent = 0;
-            var lineBreak = new XElement(Ddue + "lineBreak");
+            string titleIncludeItem = transformation.ApiMember.ApiSubgroup == Reflection.ApiMemberGroup.Property ?
+                "title_propertyValue" : "title_fieldValue";
 
-            foreach(var link in element.Elements(Ddue + "link"))
+            var (titleElement, contentElement) = transformation.CreateSubsection(true, titleIncludeItem);
+            var content = transformation.CurrentElement;
+
+            if(titleElement != null)
+                content.Add(titleElement);
+
+            if(contentElement != null)
             {
-                if(indent > 0)
-                    transformation.CurrentElement.Add(indent.ToIndent());
-
-                transformation.RenderNode(link);
-                transformation.RenderNode(lineBreak);
-                indent++;
+                content.Add(contentElement);
+                content = contentElement;
             }
+
+            var typeInfo = transformation.ReferenceNode.Element("returns")?.Elements().First();
+
+            if(typeInfo != null)
+            {
+                var parameter = new XElement("parameter");
+                content.Add(new XElement("include",
+                        new XAttribute("item", "typeLink"), parameter),
+                    new XElement("br"));
+
+                transformation.RenderTypeReferenceLink(parameter, typeInfo, true);
+            }
+
+            transformation.RenderChildElements(content, element.Nodes());
         }
         #endregion
     }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : GlossaryElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/01/2022
+// Updated : 03/06/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle glossary elements
@@ -125,11 +125,13 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
             div.Add(new XElement("hr", transformation.StyleAttributeFor(CommonStyle.GlossaryRule)));
 
-            RenderGlossaryLetterBar(transformation, glossaryDiv, glossaryDiv.GenerateUniqueId(), div);
+            string divId = glossaryDiv.GenerateUniqueId();
+
+            RenderGlossaryLetterBar(transformation, glossaryDiv, divId, div);
 
             div.Add(new XElement("br"));
 
-            RenderGlossaryEntries(transformation, glossaryDiv, null, div);
+            RenderGlossaryEntries(transformation, glossaryDiv, divId, div);
         }
 
         /// <summary>

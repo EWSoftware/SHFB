@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ParametersElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/11/2022
+// Updated : 03/05/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle parameters elements based on the topic type
@@ -94,7 +94,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                     transformation.RenderTypeReferenceLink(parameter, p.Elements().First(), true);
 
                     var paramComments = transformation.CommentsNode.Elements("param").Where(
-                        pc => pc.Attribute("name")?.Value == p.Attribute("name")?.Value).First();
+                        pc => pc.Attribute("name")?.Value == p.Attribute("name")?.Value).FirstOrDefault();
 
                     if(paramComments != null)
                         transformation.RenderChildElements(dd, paramComments.Nodes());

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/04/2022
+// Updated : 03/06/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -326,7 +326,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new NonRenderedParentElement("developerWhitePaperDocument"),
                 new NonRenderedParentElement("developerXmlReference"),
 
-                // HTML elements
+                // HTML elements (may occur in XML comments)
                 new PassthroughElement("a"),
                 new PassthroughElement("abbr"),
                 new PassthroughElement("acronym"),
@@ -383,13 +383,9 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new NoteElement("alert"),
                 new ConvertibleElement("application", "strong"),
                 new NamedSectionElement("appliesTo"),
-                new NonRenderedParentElement("attribute", 4, this.StyleNameFor(CommonStyle.SubHeading), null),
-                new NonRenderedParentElement("attributes", 4, this.StyleNameFor(CommonStyle.SubHeading), "title_attributes"),
-                new NamedSectionElement("attributesandElements"),
                 new AutoOutlineElement(),
                 new NamedSectionElement("background"),
                 new NamedSectionElement("buildInstructions"),
-                new NonRenderedParentElement("childElement", 4, this.StyleNameFor(CommonStyle.SubHeading), "title_childElement"),
                 new CodeEntityReferenceElement(),
                 new CodeExampleElement(),
                 new ConvertibleElement("codeFeaturedElement", "span", this.StyleNameFor(CommonStyle.Label)),
@@ -410,7 +406,6 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new NamedSectionElement("demonstrates"),
                 new NonRenderedParentElement("description"),
                 new NamedSectionElement("dotNetFrameworkEquivalent"),
-                new NamedSectionElement("elementInformation"),
                 new ConvertibleElement("embeddedLabel", "span", this.StyleNameFor(CommonStyle.Label)),
                 new EntryElement(),
                 new ConvertibleElement("environmentVariable", "span", this.StyleNameFor(CommonStyle.Code)),
@@ -443,7 +438,6 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new ConvertibleElement("newTerm", "span", this.StyleNameFor(CommonStyle.Term)),
                 new NamedSectionElement("nextSteps"),
                 new ConvertibleElement("parameterReference", "span", this.StyleNameFor(CommonStyle.Parameter)),
-                new NonRenderedParentElement("parentElement", 4, this.StyleNameFor(CommonStyle.SubHeading), "title_parentElement"),
                 new ConvertibleElement("phrase", "span", this.StyleNameFor(CommonStyle.Phrase)),
                 new ConvertibleElement("placeholder", "span", this.StyleNameFor(CommonStyle.Placeholder)),
                 new NamedSectionElement("prerequisites"),
@@ -458,7 +452,6 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new NamedSectionElement("returnValue"),
                 new NamedSectionElement("robustProgramming"),
                 new ConvertibleElement("row", "tr"),
-                new SchemaHierarchyElement(),
                 new SectionElement(),
                 new NonRenderedParentElement("sections"),
                 new NamedSectionElement("security"),
@@ -472,6 +465,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new ConvertibleElement("system", "strong"),
                 new NonRenderedParentElement("tableHeader"),
                 new NamedSectionElement("textValue"),
+                // The title element is ignored.  The section and table elements handle them as needed.
                 new IgnoredElement("title"),
                 new NonRenderedParentElement("type"),
                 new ConvertibleElement("ui", "span", this.StyleNameFor(CommonStyle.UI)),
@@ -1809,6 +1803,8 @@ namespace Sandcastle.PresentationStyles.VS2013
             this.RenderSectionTable("title_permissions", "header_permissionName", "header_permissionDescription",
                 this.CommentsNode.Elements("permission"));
 
+            this.RenderNode(this.CommentsNode.Element("threadsafety"));
+
             this.RenderRevisionHistory();
 
             // Render the bibliography section if needed.  By now, any citation elements in the summary, remarks,
@@ -2135,7 +2131,8 @@ namespace Sandcastle.PresentationStyles.VS2013
               this.ApiMember.ApiTopicGroup == ApiMemberGroup.Member ||
               this.ApiMember.ApiTopicGroup == ApiMemberGroup.List)
             {
-                var (title, content) = this.CreateSection("seeAlsoSection", true, "title_relatedTopics", null);
+                // This has a fixed ID that matches the one used in MAML topics for the related topics section
+                var (title, content) = this.CreateSection("seeAlso", true, "title_relatedTopics", null);
 
                 this.CurrentElement.Add(title);
                 this.CurrentElement.Add(content);

@@ -59,10 +59,10 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                 transformation.RenderChildElements(content, element.Nodes());
             else
             {
-                if(!Boolean.TryParse(element.Attribute("static").Value, out bool staticThreadSafe))
+                if(!Boolean.TryParse(element.Attribute("static")?.Value, out bool staticThreadSafe))
                     staticThreadSafe = true;
 
-                if(!Boolean.TryParse(element.Attribute("instance").Value, out bool instanceThreadSafe))
+                if(!Boolean.TryParse(element.Attribute("instance")?.Value, out bool instanceThreadSafe))
                     instanceThreadSafe = false;
 
                 if(staticThreadSafe && !instanceThreadSafe)
