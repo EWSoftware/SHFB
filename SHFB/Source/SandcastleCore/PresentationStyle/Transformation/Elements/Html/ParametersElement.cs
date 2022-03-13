@@ -91,7 +91,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                         new XElement("br"));
                     dl.Add(dd);
 
-                    transformation.RenderTypeReferenceLink(parameter, p.Elements().First(), true);
+                    transformation.RenderTypeReferenceLink(parameter, p.Elements().First(), false);
 
                     var paramComments = transformation.CommentsNode.Elements("param").Where(
                         pc => pc.Attribute("name")?.Value == p.Attribute("name")?.Value).FirstOrDefault();

@@ -338,9 +338,22 @@
 		</annotation>
 	</element>
 
+	<!-- Sandcastle extension -->
 	<element name="lineBreak" type="maml:emptyType">
 		<annotation>
 			<documentation>Identifies a line break (carriage return) within a body of text, without breaking the paragraph.</documentation>
+		</annotation>
+	</element>
+
+	<!-- Sandcastle extension -->
+	<element name="cite" type="maml:inlineType">
+		<annotation>
+			<documentation>
+        	A bibliography citation.
+	        </documentation>
+			<appinfo>
+				<doc:type>character</doc:type>
+			</appinfo>
 		</annotation>
 	</element>
 
@@ -370,6 +383,7 @@
 			<element ref="maml:localizedText"/>
 			<element ref="maml:embeddedLabel"/>
 			<element ref="maml:lineBreak"/>
+			<element ref="maml:cite"/>
 		</choice>
 	</group>
 </schema>

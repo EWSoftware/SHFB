@@ -146,13 +146,19 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="b32a73b8-fc26-4c98-912c-d595fc1a17c2" visible="True" title="Block Elements">
+  <Topic id="b32a73b8-fc26-4c98-912c-d595fc1a17c2" visible="True" isExpanded="true" title="Block Elements">
     <HelpKeywords>
       <HelpKeyword index="K" term="Block Elements" />
     </HelpKeywords>
     <Topic id="a8792cd2-e8a1-4e37-bd16-eea84ac463b1" visible="True" title="alert">
       <HelpKeywords>
         <HelpKeyword index="K" term="Block Elements, alert" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="161537d9-6f89-42ef-9c51-3a15ef94df65" visible="True" isSelected="true" title="bibliography/cite">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="block elements, bibliography" />
+        <HelpKeyword index="K" term="block elements, cite" />
       </HelpKeywords>
     </Topic>
     <Topic id="65e7e30a-ba03-4e10-b1f2-763a613b6e27" visible="True" title="code">
@@ -445,7 +451,7 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="ba47a67c-4825-4fcd-b806-2b2e02d4373a" visible="True" isSelected="true" title="Version History">
+  <Topic id="ba47a67c-4825-4fcd-b806-2b2e02d4373a" visible="True" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version history" />

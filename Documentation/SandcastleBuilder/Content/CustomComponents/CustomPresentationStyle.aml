@@ -347,7 +347,7 @@ case of the folder and filenames in the elements to their actual casing on the f
 				<section address="TransformComponentArguments">
 					<title>TransformComponentArguments</title>
 					<content>
-						<para>The XSL transformations used by <application>BuildAssembler</application>'s
+						<para>The transformations used by <application>BuildAssembler</application>'s
 <codeInline>TransformComponent</codeInline> typically have a set of parameters that can be used to alter aspects
 of their processing such as inserting a logo image into the topic headers.  This property can be used by
 third-party build tools such as the Sandcastle Help File Builder to modify them for the build.  It is up to

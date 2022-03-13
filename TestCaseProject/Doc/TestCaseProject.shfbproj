@@ -88,7 +88,7 @@
           </configurations>
         </component>
       </ComponentConfig>
-      <ComponentConfig id="Transform Document Dump Component" enabled="True">
+      <ComponentConfig id="Transform Document Dump Component" enabled="False">
         <component id="Transform Document Dump Component">
           <dumpPath rawDocs="{@WorkingFolder}\RawDocs" transformedDocs="{@workingFolder}\TransformedDocs" />
         </component>
@@ -130,18 +130,13 @@
       <PlugInConfig id="Additional Content Only" enabled="False">
         <configuration />
       </PlugInConfig>
-      <PlugInConfig id="Bibliography Support" enabled="True">
-        <configuration>
-          <bibliography path="C:\GH\SHFB\TestCaseProject\Doc\Bibliography.xml" />
-        </configuration>
-      </PlugInConfig>
       <PlugInConfig id="XPath Reflection File Filter" enabled="False">
         <configuration />
       </PlugInConfig>
     </PlugInConfigurations>
     <ApiFilter>
     </ApiFilter>
-    <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
+    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <Major>1</Major>
     <Minor>20</Minor>
@@ -169,18 +164,19 @@
     <TransformComponentArguments>
       <Argument Key="RobotsMetadata" Value="" />
       <Argument Key="LogoFile" Value="Sandcastle.jpg" />
+      <Argument Key="BibliographyDataFile" Value="Bibliography.xml" />
       <Argument Key="LogoHeight" Value="" />
       <Argument Key="LogoWidth" Value="" />
       <Argument Key="LogoAltText" Value="Test logo" />
-      <Argument Key="LogoPlacement" Value="left" />
-      <Argument Key="LogoAlignment" Value="left" />
+      <Argument Key="LogoPlacement" Value="" />
+      <Argument Key="LogoAlignment" Value="" />
       <Argument Key="LogoUrl" Value="https://github.com/EWSoftware/SHFB" />
       <Argument Key="MaxVersionParts" Value="" />
       <Argument Key="DefaultLanguage" Value="cs" />
-      <Argument Key="IncludeEnumValues" Value="true" />
+      <Argument Key="IncludeEnumValues" Value="True" />
       <Argument Key="EnumMemberSortOrder" Value="Value" />
       <Argument Key="FlagsEnumValueFormat" Value="HexValue" />
-      <Argument Key="FlagsEnumSeparatorSize" Value="0" />
+      <Argument Key="FlagsEnumSeparatorSize" Value="4" />
       <Argument Key="BaseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/TestCaseProject/" />
       <Argument Key="RequestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" />
     </TransformComponentArguments>

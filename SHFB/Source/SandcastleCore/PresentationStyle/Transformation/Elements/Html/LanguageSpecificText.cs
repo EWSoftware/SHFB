@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : LanguageSpecificText.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/28/2022
+// Updated : 03/11/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to define language specific text used by a presentation style
@@ -26,6 +26,9 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
     /// <summary>
     /// This class is used to define language specific text used by a presentation style
     /// </summary>
+    /// <remarks>These elements are translated to script calls by the Language Specific Text build component in
+    /// HTML-based presentation styles.  In those that don't support script such as Open XML, the build task that
+    /// generates the final content replaces them with the neutral text equivalent or removes them.</remarks>
     public sealed class LanguageSpecificText
     {
         #region Private data members
@@ -170,7 +173,6 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         /// <returns>An XML element containing the language specific text for the keyword</returns>
         public XElement Render()
         {
-            // TODO: Perhaps just include the handling from the Language Specific Text component here?
             var span = new XElement("span", new XAttribute("class", LanguageSpecificTextStyleName),
                 this.Text.Select(t => new XElement("span", new XAttribute("class", t.LanguageId), t.Keyword)));
 

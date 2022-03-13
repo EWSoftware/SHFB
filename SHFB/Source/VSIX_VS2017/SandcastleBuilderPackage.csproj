@@ -970,6 +970,14 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
     </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\Bibliography\Bibliography.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\Bibliography</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\Bibliography\Bibliography.xml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\Bibliography</VSIXSubPath>
+    </Content>
     <Content Include="Templates\ProjectItems\OtherContent\Bitmap\Bitmap.bmp">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\Bitmap</VSIXSubPath>

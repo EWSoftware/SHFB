@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2022
+// Updated : 03/12/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the project class.
@@ -179,7 +179,8 @@ namespace SandcastleBuilder.Utils
                 "AssemblyName", "Configuration", "CustomAfterSHFBTargets", "CustomBeforeSHFBTargets",
                 "DumpLogOnFailure", "Name", "Platform", "PostBuildEvent", "PreBuildEvent", "ProjectGuid",
                 "RootNamespace", "RunPostBuildEvent", "SccAuxPath", "SccLocalPath", "SccProjectName",
-                "SccProvider", "SchemaVersion", "SHFBSchemaVersion", "TransformComponentArguments", "Verbose" };
+                "SccProvider", "SchemaVersion", "SHFBSchemaVersion", "TargetFrameworkVersion",
+                "TransformComponentArguments", "Verbose" };
 
         /// <summary>
         /// This read-only property returns the MSBuild project property cache

@@ -557,9 +557,6 @@
           </Directory>
         </Directory>
         <Directory Id="dir2DCDDA5BF4D629D8E1006F02D8889F2B" Name="Shared">
-          <Component Id="cmp2B0985406C6E9D19AA1B69387C3A9A02" Guid="{E117D799-25E7-4739-94A6-4315A7F4A0DD}">
-            <File Id="filE3E996F18256E7973896E36B235BEF95" KeyPath="yes" Source="$(var.RootFolder)\Components\Shared\Bibliography.xml" />
-          </Component>
           <Component Id="cmp362DB9A00C44AC8D66A89E9B41EDE22F" Guid="{BC59B7F4-28C2-4248-A701-BE217AD07109}">
             <File Id="fil8CB7A7EF6EC8FC3E1B6423D8BD5D7601" KeyPath="yes" Source="$(var.RootFolder)\Components\Shared\SkeletonAPI.xml" />
           </Component>
@@ -569,6 +566,11 @@
           <Directory Id="dir93BBF01DC2785F3B6769E7E9D4A29805" Name="Configuration">
             <Component Id="cmp083B87581C91E36D539C55EBB3FAD90A" Guid="{B9A5A203-9160-4B18-BA8E-020791168EFD}">
               <File Id="fil7FBC3AE3D12BB93C54B0D8ECA74BBC60" KeyPath="yes" Source="$(var.RootFolder)\Components\Shared\Configuration\xamlSyntax.config" />
+            </Component>
+          </Directory>
+          <Directory Id="dir33EC0C624469FE607DD299CAFE89B56F" Name="Content">
+            <Component Id="cmpA0926C93C0211487E820434977D6A315" Guid="{6C65B3C3-E13C-40F2-B5D5-53BE5AE1E677}">
+              <File Id="filE65D18101E84929A3A02968DB6354B11" KeyPath="yes" Source="$(var.RootFolder)\Components\Shared\Content\WebsiteContent.xml" />
             </Component>
           </Directory>
           <Directory Id="dir6982768DABF1EAF472B419AC9499E453" Name="StopWordList">
@@ -3530,44 +3532,7 @@
           </Component>
         </Directory>
       </Directory>
-      <Directory Id="dir688E9E55D9ABEF1A407892CBD1FEE7DC" Name="Extras">
-        <Component Id="cmp67E4A39B85163DE69AE140CFBFEBC07C" Guid="{BF501075-0444-42E7-A8F5-885490152567}">
-          <File Id="filCC0AF585E1D9ACD7E3C2DDAE59B12626" KeyPath="yes" Source="$(var.RootFolder)\Extras\ConvertHtmlToMaml.exe" />
-        </Component>
-        <Component Id="cmp2243A57F5B2B2487FB4B86BF223193BE" Guid="{4E2B43DC-6FCD-4270-A911-472860C040BD}">
-          <File Id="filDD88BE5F1D174EE0A1D0E48DA8A3D9B2" KeyPath="yes" Source="$(var.RootFolder)\Extras\ConvertHtmlToMaml.exe.config" />
-        </Component>
-        <Component Id="cmp7BD88F6F1D8274C651736B6462419137" Guid="{4F408B7E-14B7-454C-B16A-3C99B31762FD}">
-          <File Id="fil4963748814AF2C4D1F62636AA041657E" KeyPath="yes" Source="$(var.RootFolder)\Extras\ConvertHtmlToMaml.xml" />
-        </Component>
-        <Component Id="cmp3681986BA850FAF800B0F3670A719B0B" Guid="{352196BE-C99F-4662-B334-5E7F1B059BEB}">
-          <File Id="fil44745B437F207832F6D2D008709E47F3" KeyPath="yes" Source="$(var.RootFolder)\Extras\EWSoftware.CodeDom.dll" />
-        </Component>
-        <Component Id="cmp0D8E3D2CA518CB71ABDB4681130E7F7B" Guid="{B8717952-9131-48B8-AC88-6BFF2B172866}">
-          <File Id="fil34F7CB3B5E6D3E7BB573CCF277664216" KeyPath="yes" Source="$(var.RootFolder)\Extras\EWSoftware.CodeDom.xml" />
-        </Component>
-      </Directory>
       <Directory Id="dir0F2799FA71A14A552F2E5CD85EF758ED" Name="Help">
-        <Component Id="cmp5286CE88C3E4D32C02ACD4E0EB19B738" Guid="{5273EB37-45C5-46FC-B729-D0202EAAF923}">
-          <File Id="filFC971DA37B783E3E8474D97A19C819AA" KeyPath="yes" Source="$(var.RootFolder)\Help\EWSoftware.CodeDom.chm">
-            <Shortcut Id="EWSoftwareCodeDomChm"
-			    Directory="ShfbProgramMenuDir"
-				Icon="Help.ico"
-				Name="Custom Web Code Providers Help"
-				Description="Help on using the custom web code providers to document websites"
-				Advertise="yes" />
-			</File>
-        </Component>
-        <Component Id="cmp5C3666CEAD1E964C1C72D5448985E5D0" Guid="{52821CE0-789D-4B78-8370-B85E7F484FAB}">
-          <File Id="fil8798BDF4372A9D8E8BEE60A434E79CB1" KeyPath="yes" Source="$(var.RootFolder)\Help\HtmlToMaml.chm">
-            <Shortcut Id="HtmlToMamlChm"
-			    Directory="ShfbProgramMenuDir"
-				Icon="Help.ico"
-				Name="HTML to MAML Converter Help"
-				Description="Help on using the HTML to MAML converter utility"
-				Advertise="yes" />
-			</File>
-        </Component>
         <Component Id="cmp5CB08457C45FC7254DEE3C556ADA2857" Guid="{5FB5D177-C494-4490-A8EF-F540C22CC404}">
           <File Id="fil5B02CFCADB1835E575738EFAE3485697" KeyPath="yes" Source="$(var.RootFolder)\Help\SandcastleBuilder.chm">
             <Shortcut Id="SandcastleBuilderHelp"
@@ -4155,6 +4120,9 @@
           </Component>
         </Directory>
         <Directory Id="dir7E1157CA7309EDE2DD8476DDFADA01CF" Name="ItemTemplates">
+          <Component Id="cmp79D052D9FF4846C89809E6202D76C3B4" Guid="{F7283B7D-8231-400D-97C0-B4AE5DF4949A}">
+            <File Id="filEBF735D17485F66ECBD6D897A8FE28C9" KeyPath="yes" Source="$(var.RootFolder)\Tools\ItemTemplates\Bibliography.xml" />
+          </Component>
           <Component Id="cmp227448C24B8A5C0253BA5A18249780F8" Guid="{0F7DB327-1E9A-42A2-9774-4C1E190D230C}">
             <File Id="filC1472B02139F8655A257CF738969EAC0" KeyPath="yes" Source="$(var.RootFolder)\Tools\ItemTemplates\Bitmap.bmp" />
           </Component>
@@ -4377,10 +4345,10 @@
       <ComponentRef Id="cmp663C4337FCA2183D1DB6EFC45808E305" />
       <ComponentRef Id="cmpBE0324A76E571B56F121ACAC5086403D" />
       <ComponentRef Id="cmp814FA2DCB69AD0D01AEBDE817E5D87D5" />
-      <ComponentRef Id="cmp2B0985406C6E9D19AA1B69387C3A9A02" />
       <ComponentRef Id="cmp362DB9A00C44AC8D66A89E9B41EDE22F" />
       <ComponentRef Id="cmp048B7438C488848E7F63BA6DF5FC813A" />
       <ComponentRef Id="cmp083B87581C91E36D539C55EBB3FAD90A" />
+      <ComponentRef Id="cmpA0926C93C0211487E820434977D6A315" />
       <ComponentRef Id="cmpCB93161383C6765C46EA1486E781B92F" />
       <ComponentRef Id="cmpA0F0A9B4FA3ECE3D7F66489A7AB129EE" />
       <ComponentRef Id="cmpDB3FA19045BFED4648D43B30620D711E" />
@@ -5348,13 +5316,6 @@
       <ComponentRef Id="cmpBC5E002E39BA401C0FF1BF88E9421E0D" />
       <ComponentRef Id="cmp67A927465A5B75FD4627BD4DF2CA14FC" />
       <ComponentRef Id="cmp70900951E484584BDB0347AA39D0B3BC" />
-      <ComponentRef Id="cmp67E4A39B85163DE69AE140CFBFEBC07C" />
-      <ComponentRef Id="cmp2243A57F5B2B2487FB4B86BF223193BE" />
-      <ComponentRef Id="cmp7BD88F6F1D8274C651736B6462419137" />
-      <ComponentRef Id="cmp3681986BA850FAF800B0F3670A719B0B" />
-      <ComponentRef Id="cmp0D8E3D2CA518CB71ABDB4681130E7F7B" />
-      <ComponentRef Id="cmp5286CE88C3E4D32C02ACD4E0EB19B738" />
-      <ComponentRef Id="cmp5C3666CEAD1E964C1C72D5448985E5D0" />
       <ComponentRef Id="cmp5CB08457C45FC7254DEE3C556ADA2857" />
       <ComponentRef Id="cmp265DC0C2A9038D4CD5E7064AE9BFEFCC" />
       <ComponentRef Id="cmp505A5D9DBA01FDAD156BE9BA7CC1CC49" />
@@ -5522,6 +5483,7 @@
       <ComponentRef Id="cmpCFEAEEB94DAAF872722ED870D82CC414" />
       <ComponentRef Id="cmpAF474F9D5DE88F7B826CA61236DEC48E" />
       <ComponentRef Id="cmp61D694C280229C5091F7371815F904DE" />
+      <ComponentRef Id="cmp79D052D9FF4846C89809E6202D76C3B4" />
       <ComponentRef Id="cmp227448C24B8A5C0253BA5A18249780F8" />
       <ComponentRef Id="cmp641E31F7E9200BD5C715C1DEC4764C3A" />
       <ComponentRef Id="cmpAD0E65CCF97F994E0DE8A412500F51A8" />

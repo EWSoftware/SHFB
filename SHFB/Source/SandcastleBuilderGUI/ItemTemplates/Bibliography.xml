@@ -44,7 +44,12 @@
   - If a matching reference is not found, the cite element is processed as regular
     markup.  Currently, the transformations will remove the outer <cite> element but 
     inner text and content may pass through to the topic.
-  -->
+		
+	For more information and to see an example, refer to the Sandcastle MAML Guide
+	http://ewsoftware.github.io/MAMLGuide/html/161537d9-6f89-42ef-9c51-3a15ef94df65.htm
+	or the XML Comments Guide
+	http://ewsoftware.github.io/XMLCommentsGuide/html/4C57ED2C-F373-4B34-B983-A0009D6CDAB4.htm
+-->
 <bibliography>
   <!-- Add <reference> elements here -->
 </bibliography>

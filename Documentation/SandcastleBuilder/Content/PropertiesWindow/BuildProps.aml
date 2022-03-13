@@ -203,8 +203,8 @@ log file is always kept after a failed build.</para>
 			<content>
 				<para>This property allows the custom <link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" /> to be
 disabled so that the <codeInline>&lt;code&gt;</codeInline> elements are rendered in their default format by the
-Sandcastle XSL transformations with no colorization.  The only thing it will do is import external code and
-normalize the leading whitespace.</para>
+transformations with no colorization.  The only thing it will do is import external code and normalize the
+leading whitespace.</para>
 
 			</content>
 		</section>

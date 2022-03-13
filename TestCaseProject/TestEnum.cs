@@ -47,8 +47,10 @@ namespace TestDoc
         One = 0x01,
         /// <summary>Two</summary>
         Two = 0x2,
-        /// <summary>Three</summary>
-        Four = 0x4
+        /// <summary>Four</summary>
+        Four = 0x4,
+        /// <summary>Large flags value</summary>
+        LargeFlags = 0x10800520
     }
 
     /// <summary>
@@ -63,7 +65,7 @@ namespace TestDoc
         One = 0x01,
         /// <summary>Two</summary>
         Two = 0x2,
-        /// <summary>Three</summary>
+        /// <summary>Four</summary>
         Four = 0x4
     }
 }

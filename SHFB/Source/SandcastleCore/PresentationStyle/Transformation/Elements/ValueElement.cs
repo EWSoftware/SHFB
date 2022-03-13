@@ -73,7 +73,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                         new XAttribute("item", "typeLink"), parameter),
                     new XElement("br"));
 
-                transformation.RenderTypeReferenceLink(parameter, typeInfo, true);
+                transformation.RenderTypeReferenceLink(parameter, typeInfo, false);
             }
 
             transformation.RenderChildElements(content, element.Nodes());

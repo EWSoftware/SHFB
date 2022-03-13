@@ -49,7 +49,7 @@ syntax generator are edited, an additional <codeInline>configurations</codeInlin
 the order of the syntax filters and their custom configuration if any.</para>
 
 				<para>The <codeInline>containerElement</codeInline> element defines the name of the container element
-that will hold the grouped code snippets.  The XSL transformations will use this name to find the grouped
+that will hold the grouped code snippets.  The transformations will use this name to find the grouped
 snippets and transform them into tabbed sections.  The <codeInline>addNoExampleTabs</codeInline> attribute
 defines whether or not to insert "No Example" tabs into groups that do not contain examples for all languages
 found in the syntax section.  The default is true to insert them.  When selected, they display a message stating
@@ -59,7 +59,7 @@ including standalone snippets that specify a title).  The default is false to re
 standalone groups.  The <codeInline>groupingEnabled</codeInline> attribute specifies whether or not the grouping
 behavior is enabled.  The help file builder uses the <codeInline>{@CodeSnippetGrouping}</codeInline> replacement
 tag to set the option based on the selected presentation style.  The presentation style must support code snippet
-grouping in order for the grouped elements to be handled correctly by the XSL transformations.</para>
+grouping in order for the grouped elements to be handled correctly by the transformations.</para>
 
 			</content>
 		</section>

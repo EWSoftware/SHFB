@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/06/2022
+// Updated : 03/12/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -171,6 +171,13 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new TransformationArgument(nameof(RobotsMetadata), true, true, null,
                     "An optional robots metadata value (e.g. noindex, nofollow).  If left blank, the robots " +
                     "metadata element will be omitted from the topics."),
+                new TransformationArgument(nameof(BibliographyDataFile), true, true, null,
+                    "An optional bibliography data XML file.  Specify the filename with a fully qualified or " +
+                    "relative path.  If the path is relative or omitted, it is assumed to be relative to the " +
+                    "project folder.\r\n\r\n" +
+                    "If blank, no bibliography section will be included in the topics.\r\n\r\n" +
+                    "For information on the data file's format, see the bibliography element topic in the " +
+                    "Sandcastle MAML Guide or XML Comments Guide."),
                 new TransformationArgument(nameof(LogoFile), true, true, null,
                     "An optional logo file to insert into the topic headers.  Specify the filename only, omit " +
                     "the path.\r\n\r\n" +
@@ -186,12 +193,12 @@ namespace Sandcastle.PresentationStyles.VS2013
                     "An optional logo width.  If left blank, the actual logo image width is used."),
                 new TransformationArgument(nameof(LogoAltText), true, true, null,
                     "Optional logo alternate text.  If left blank, no alternate text is added."),
-                new TransformationArgument(nameof(LogoPlacement), true, true, "left",
-                    "An optional logo placement.  Specify left, right, or above.  If not specified, the " +
-                    "default is left."),
-                new TransformationArgument(nameof(LogoAlignment), true, true, "left",
-                    "An optional logo alignment when using the 'above' placement option.  Specify left, " +
-                    "right, or center.  If not specified, the default is left."),
+                new TransformationArgument(nameof(LogoPlacement), true, true, "Left",
+                    "An optional logo placement.  Specify Left, Right, or Above.  If not specified, the " +
+                    "default is Left."),
+                new TransformationArgument(nameof(LogoAlignment), true, true, "Left",
+                    "An optional logo alignment when using the 'Above' placement option.  Specify Left, " +
+                    "Right, or Center.  If not specified, the default is Left."),
                 new TransformationArgument(nameof(LogoUrl), true, true, null,
                     "An optional logo URL to navigate to when the logo is clicked."),
                 new TransformationArgument(nameof(MaxVersionParts), false, true, null,
@@ -202,9 +209,9 @@ namespace Sandcastle.PresentationStyles.VS2013
                     "The default language to use for syntax sections, code snippets, and a language-specific " +
                     "text.  This should be set to cs, vb, cpp, fs, or the keyword style parameter value of a " +
                     "third-party syntax generator if you want to use a non-standard language as the default."),
-                new TransformationArgument(nameof(IncludeEnumValues), false, true, "true",
-                    "Set this to 'true' to include the column for the numeric value of each field in " +
-                    "enumerated type topics.  Set it to 'false' to omit the numeric values column."),
+                new TransformationArgument(nameof(IncludeEnumValues), false, true, "True",
+                    "Set this to True to include the column for the numeric value of each field in " +
+                    "enumerated type topics.  Set it to False to omit the numeric values column."),
                 new TransformationArgument(nameof(EnumMemberSortOrder), false, true, "Value",
                     "The sort order for enumeration members.  Set it to Value to sort by value or Name to sort " +
                     "by name."),
@@ -578,17 +585,17 @@ namespace Sandcastle.PresentationStyles.VS2013
                     }
 
                     content.Add(LanguageSpecificText.ArrayOfOpening.Render());
-                    this.RenderTypeReferenceLink(content, typeInfo.Elements().First(), true);
+                    this.RenderTypeReferenceLink(content, typeInfo.Elements().First(), qualified);
                     content.Add(arrayOfClosing.Render());
                     break;
 
                 case "pointerTo":
-                    this.RenderTypeReferenceLink(content, typeInfo.Elements().First(), true);
+                    this.RenderTypeReferenceLink(content, typeInfo.Elements().First(), qualified);
                     content.Add("*");
                     break;
 
                 case "referenceTo":
-                    this.RenderTypeReferenceLink(content, typeInfo.Elements().First(), true);
+                    this.RenderTypeReferenceLink(content, typeInfo.Elements().First(), qualified);
                     content.Add(LanguageSpecificText.ReferenceTo.Render());
                     break;
 
@@ -823,12 +830,11 @@ namespace Sandcastle.PresentationStyles.VS2013
                             new XElement("span",
                                 new XAttribute("class", LanguageSpecificText.LanguageSpecificTextStyleName),
                                 new XElement("span",
-                                    new XAttribute("class", LanguageSpecificText.VisualBasic),
-                                    t.Name.Equals("Explicit", StringComparison.Ordinal) ? "Narrowing" : "Widening",
-                                    " ", t.Name),
+                                        new XAttribute("class", LanguageSpecificText.VisualBasic),
+                                    t.Name.Equals("Explicit", StringComparison.Ordinal) ? "Narrowing" : "Widening"),
                                 new XElement("span",
                                     new XAttribute("class", LanguageSpecificText.Neutral),
-                                    t.Name)));
+                                t.Name)), Element.NonBreakingSpace);
                     }
                     else
                     {
@@ -1715,12 +1721,16 @@ namespace Sandcastle.PresentationStyles.VS2013
                     new XElement("include", new XAttribute("item", "boilerplate_obsoleteLong"))));
             }
 
+            this.OnSectionRendered(RenderedSection.HeaderNotes, null);
+
+            XElement overloads = null;
+
             if(this.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload)
                 this.RenderNode(this.CommentsNode.Element("summary"));
             else
             {
                 // Render the summary from the first overloads element.  There should only be one.
-                var overloads = this.ReferenceNode.Descendants("overloads").FirstOrDefault();
+                overloads = this.ReferenceNode.Descendants("overloads").FirstOrDefault();
 
                 if(overloads != null)
                 {
@@ -1738,8 +1748,12 @@ namespace Sandcastle.PresentationStyles.VS2013
                 }
             }
 
+            this.OnSectionRendered(RenderedSection.Summary, null);
+
             // Render a minimal inheritance hierarchy at the top
             int descendants = this.RenderInheritanceHierarchy(4);
+
+            this.OnSectionRendered(RenderedSection.InheritanceHierarchyAbbreviated, null);
 
             // Only API member pages get namespace/assembly info and a syntax section
             if(this.ApiMember.ApiTopicGroup != ApiMemberGroup.List &&
@@ -1749,7 +1763,12 @@ namespace Sandcastle.PresentationStyles.VS2013
                this.ApiMember.ApiTopicGroup != ApiMemberGroup.Namespace)
             {
                 this.RenderNamespaceAndAssemblyInformation();
+
+                this.OnSectionRendered(RenderedSection.InheritanceHierarchyAbbreviated, null);
+
                 this.RenderNode(this.SyntaxNode);
+
+                this.OnSectionRendered(RenderedSection.SyntaxSection, null);
             }
 
             // Element lists
@@ -1776,18 +1795,33 @@ namespace Sandcastle.PresentationStyles.VS2013
                     break;
             }
 
+            this.OnSectionRendered(RenderedSection.MemberList, null);
+
             this.RenderSectionTable("title_events", "header_eventType", "header_eventReason",
                 this.CommentsNode.Elements("event"));
+            this.OnSectionRendered(RenderedSection.Events, null);
+
             this.RenderSectionTable("title_exceptions", "header_exceptionName", "header_exceptionCondition",
                 this.CommentsNode.Elements("exception"));
+            this.OnSectionRendered(RenderedSection.Exceptions, null);
 
-            this.RenderNode(this.CommentsNode.Element("remarks"));
-            this.RenderNode(this.CommentsNode.Element("example"));
+            // For overloads, render remarks and examples from the overloads element
+            if(overloads == null)
+            {
+                this.RenderNode(this.CommentsNode.Element("remarks"));
+                this.OnSectionRendered(RenderedSection.Remarks, null);
 
-            // Possible TODO: The Code Contracts project is dead so this is being omitted.  This would be a good
-            // test for coming up with a way to extending the presentation style with an extra section without
-            // having to redo the whole presentation style.
-            // this.RenderContractsSection();
+                this.RenderNode(this.CommentsNode.Element("example"));
+                this.OnSectionRendered(RenderedSection.Examples, null);
+            }
+            else
+            {
+                this.RenderNode(overloads.Element("remarks"));
+                this.OnSectionRendered(RenderedSection.Remarks, null);
+
+                this.RenderNode(overloads.Element("example"));
+                this.OnSectionRendered(RenderedSection.Examples, null);
+            }
 
             // Only API member pages get version information
             if(this.ApiMember.ApiTopicGroup != ApiMemberGroup.List &&
@@ -1798,14 +1832,19 @@ namespace Sandcastle.PresentationStyles.VS2013
             {
                 foreach(var v in this.ReferenceNode.Elements("versions"))
                     this.RenderNode(v);
+
+                this.OnSectionRendered(RenderedSection.Versions, null);
             }
 
             this.RenderSectionTable("title_permissions", "header_permissionName", "header_permissionDescription",
                 this.CommentsNode.Elements("permission"));
+            this.OnSectionRendered(RenderedSection.Permissions, null);
 
             this.RenderNode(this.CommentsNode.Element("threadsafety"));
+            this.OnSectionRendered(RenderedSection.ThreadSafety, null);
 
             this.RenderRevisionHistory();
+            this.OnSectionRendered(RenderedSection.RevisionHistory, null);
 
             // Render the bibliography section if needed.  By now, any citation elements in the summary, remarks,
             // or other sections should have been seen.
@@ -1821,11 +1860,17 @@ namespace Sandcastle.PresentationStyles.VS2013
                 }
             }
 
+            this.OnSectionRendered(RenderedSection.Bibliography, null);
+
             this.RenderSeeAlsoSection();
+
+            this.OnSectionRendered(RenderedSection.SeeAlso, null);
 
             // Render a full inheritance hierarchy at the bottom if needed
             if(descendants > 4)
                 this.RenderInheritanceHierarchy(0);
+
+            this.OnSectionRendered(RenderedSection.InheritanceHierarchyFull, null);
         }
 
         /// <summary>
@@ -2042,7 +2087,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                         new XElement("td",
                             new XElement("referenceLink",
                                 new XAttribute("target", se.Attribute("cref")?.Value),
-                                new XAttribute("qualified", "true"))),
+                                new XAttribute("qualified", "false"))),
                         descCell));
 
                     this.RenderChildElements(descCell, se.Nodes());
@@ -2440,7 +2485,8 @@ namespace Sandcastle.PresentationStyles.VS2013
                         table.Add(new XElement("tr",
                             new XElement("td",
                                 new XElement("img",
-                                    new XAttribute("src", $"{this.IconPath}{visibility}{key}.gif"),
+                                    new XAttribute("src",
+                                        $"{this.IconPath}{visibility}{Char.ToUpperInvariant(key[0])}{key.Substring(1)}.gif"),
                                     new XElement("includeAttribute",
                                         new XAttribute("name", "alt"),
                                         new XAttribute("item", $"altText_{visibility}{key}")),
@@ -2677,7 +2723,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                         // The order of checks is important here and doesn't match the order of the rendered
                         // sections.  It minimizes the conditions we need to check in each subsequent case.
                         case var mbr when memberData.Attribute("visibility").Value == "private" &&
-                          procedureData.Attribute("virtual").Value == "true":
+                          procedureData?.Attribute("virtual").Value == "true":
                             memberGroups[ApiMemberGroup.ExplicitInterfaceImplementation].Add(mbr);
                             break;
 
@@ -2788,7 +2834,10 @@ namespace Sandcastle.PresentationStyles.VS2013
                         referenceLink = new XElement("referenceLink",
                             new XAttribute("target", e.Attribute("api").Value));
                     string showParameters = (this.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload &&
-                        e.Element("memberdata").Attribute("overload") == null) ? "false" : "true";
+                        e.Element("memberdata").Attribute("overload") == null &&
+                        !(e.Parent.Attribute("api")?.Value ?? String.Empty).StartsWith(
+                            "Overload:", StringComparison.Ordinal)) ? "false" : "true";
+                    bool isExtensionMethod = e.AttributeOfType("T:System.Runtime.CompilerServices.ExtensionAttribute") != null;
 
                     if(e.Descendants("example").Any())
                     {
@@ -2802,7 +2851,8 @@ namespace Sandcastle.PresentationStyles.VS2013
                                 new XAttribute("item", "altText_CodeExample")));
                     }
 
-                    if(memberType != ApiMemberGroup.AttachedEvent && memberType != ApiMemberGroup.AttachedProperty &&
+                    if(!isExtensionMethod && memberType != ApiMemberGroup.AttachedEvent &&
+                      memberType != ApiMemberGroup.AttachedProperty &&
                       e.Element("memberdata").Attribute("static")?.Value == "true")
                     {
                         staticImage = new XElement("img",
@@ -2832,18 +2882,23 @@ namespace Sandcastle.PresentationStyles.VS2013
                     if(e.AttributeOfType("T:System.ObsoleteAttribute") != null)
                         summaryCell.Add(new XElement("include", new XAttribute("item", "boilerplate_obsoleteShort")));
 
-                    if(!Enum.TryParse(e.Element("apidata")?.Attribute("subgroup")?.Value, true, out ApiMemberGroup imageMemberType))
+                    if(!Enum.TryParse(e.Element("apidata")?.Attribute("subgroup")?.Value, true,
+                      out ApiMemberGroup imageMemberType))
+                    {
                         imageMemberType = memberType;
-
-                    if(imageMemberType == ApiMemberGroup.Constructor)
-                        imageMemberType = ApiMemberGroup.Method;
+                    }
 
                     switch(memberType)
                     {
                         case var t when t == ApiMemberGroup.Operator &&
-                            (e.Element("apidata")?.Attribute("name")?.Value == "Explicit" ||
-                            e.Element("apidata")?.Attribute("name")?.Value == "Implicit"):
+                          (e.Element("apidata")?.Attribute("name")?.Value == "Explicit" ||
+                          e.Element("apidata")?.Attribute("name")?.Value == "Implicit"):
                             referenceLink.Add(new XAttribute("show-parameters", "true"));
+                            imageMemberType = ApiMemberGroup.Operator;
+                            break;
+
+                        case var t when t == ApiMemberGroup.Operator:
+                            imageMemberType = ApiMemberGroup.Operator;
                             break;
 
                         case var t when t == ApiMemberGroup.Extension:
@@ -2861,9 +2916,30 @@ namespace Sandcastle.PresentationStyles.VS2013
 
                             referenceLink.Add(new XAttribute("display-target", "extension"),
                                 new XAttribute("show-parameters", showParameters), extensionMethod);
+
+                            imageMemberType = ApiMemberGroup.Extension;
                             break;
 
                         default:
+                            if(imageMemberType == ApiMemberGroup.Constructor)
+                                imageMemberType = ApiMemberGroup.Method;
+                            else
+                            {
+                                if(imageMemberType == ApiMemberGroup.Method && Enum.TryParse(
+                                  e.Element("apidata")?.Attribute("subsubgroup")?.Value, true,
+                                  out ApiMemberGroup subGroupType) && subGroupType == ApiMemberGroup.Operator)
+                                {
+                                    imageMemberType = subGroupType;
+                                }
+                                else
+                                {
+                                    // Show the extension method icon for extension methods in their containing
+                                    // type to match IntelliSense.
+                                    if(isExtensionMethod && visibility == "pub")
+                                        imageMemberType = ApiMemberGroup.Extension;
+                                }
+                            }
+
                             referenceLink.Add(new XAttribute("show-parameters", showParameters));
                             break;
                     }
@@ -2903,27 +2979,27 @@ namespace Sandcastle.PresentationStyles.VS2013
                         }
                         else
                         {
-                            if(e.Element("overrides")?.Element("member") != null)
+                            if(this.ApiMember.TypeTopicId != e.Element("containers").Element("type").Attribute("api").Value)
                             {
                                 var parameter = new XElement("parameter");
 
                                 summaryCell.Add(new XElement("br"),
-                                    new XElement("include", new XAttribute("item", "overridesMember"),
+                                    new XElement("include", new XAttribute("item", "inheritedFrom"),
                                     parameter));
 
-                                this.RenderTypeReferenceLink(parameter, e.Element("overrides").Element("member"), true);
+                                this.RenderTypeReferenceLink(parameter, e.Element("containers").Element("type"), false);
                             }
                             else
                             {
-                                if(this.ApiMember.TypeTopicId != e.Element("containers").Element("type").Attribute("api").Value)
+                                if(e.Element("overrides")?.Element("member") != null)
                                 {
                                     var parameter = new XElement("parameter");
 
                                     summaryCell.Add(new XElement("br"),
-                                        new XElement("include", new XAttribute("item", "inheritedFrom"),
+                                        new XElement("include", new XAttribute("item", "overridesMember"),
                                         parameter));
 
-                                    this.RenderTypeReferenceLink(parameter, e.Element("containers").Element("type"), false);
+                                    this.RenderTypeReferenceLink(parameter, e.Element("overrides").Element("member"), true);
                                 }
                             }
                         }

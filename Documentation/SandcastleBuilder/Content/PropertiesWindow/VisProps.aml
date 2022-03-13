@@ -22,7 +22,7 @@ Several attributes such as <codeInline>ExtensionAttribute</codeInline>, <codeInl
 <codeInline>FlagsAttribute</codeInline>, <codeInline>SerializableAttribute</codeInline>,
 <codeInline>ObsoleteAttribute</codeInline> are always included regardless of this property's setting as they provide
 important information about the types and members to which they are applied or are used by other components such
-as the syntax generators or presentation style XSL transformations.</para>
+as the syntax generators or presentation style transformations.</para>
 
 			</content>
 		</section>

@@ -3,7 +3,7 @@
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
 			<para>Sandcastle is not a single executable program but is actually a set of command-line programs and
-XSL transformations that are executed in a specific sequence to produce a set of files that can be used to
+transformations that are executed in a specific sequence to produce a set of files that can be used to
 create a help file.  It is extremely flexible and offers many configurable features and the build process can
 be changed depending upon the desired output format and presentation style.</para>
 

@@ -10,7 +10,7 @@ file builder.  It allows you to define non-API documentation that is included in
 walkthroughs, tutorials, etc.  Instead of HTML, conceptual content topics use Microsoft Assistance Markup
 Language (MAML).  This is basically XML conforming to a well defined schema that describes the structure of the
 conceptual content much like XML comments describe the structure of the code comments. There is no layout or
-style information within the MAML files. Instead, they are ran through a series of XSL transformations using
+style information within the MAML files. Instead, they are ran through a series of transformations using
 Sandcastle's <application>BuildAssembler</application> tool similar to the reference (API) content so that they
 match it in appearance and features.  This allows you to utilize the various build components to alter and extend
 the presentation style of the topics.</para>
@@ -18,12 +18,21 @@ the presentation style of the topics.</para>
 <alert class="tip">
   <para>A guide to using MAML with Sandcastle is included with the Sandcastle Help File Builder.  Open it using
 the <legacyBold>Sandcastle MAML Guide</legacyBold> link in the <legacyBold>Sandcastle Help File Builder</legacyBold>
-group of the <legacyBold>Start Menu</legacyBold> after installing the help file builder.</para>
+group of the <legacyBold>Start Menu</legacyBold> after installing the help file builder (also <externalLink>
+			<linkText>available online</linkText>
+			<linkAlternateText>Sandcastle MAML Guide</linkAlternateText>
+			<linkUri>https://EWSoftware.GitHub.io/MAMLGuide</linkUri>
+			<linkTarget>_blank</linkTarget>
+		</externalLink>).</para>
 </alert>
 
 <alert class="tip">
-  <para>If you need to convert HTML topics to MAML topics, the <legacyBold>HTML to MAML Converter</legacyBold> is
-also available as part of the extra tools included with the installer.</para>
+  <para>If you need to convert HTML topics to MAML topics, the <externalLink>
+		<linkText>HTML to MAML Converter</linkText>
+		<linkAlternateText>HTML to MAML Converter</linkAlternateText>
+		<linkUri>https://EWSoftware.GitHub.io/HtmlToMamlDocs</linkUri>
+		<linkTarget>_blank</linkTarget>
+	</externalLink> is available to help you.</para>
 </alert>
     </introduction>
 

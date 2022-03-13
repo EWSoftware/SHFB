@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/04/2022
+// Updated : 03/11/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
@@ -216,6 +216,44 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
             this.CreateTransformationArguments();
             this.CreateLanguageSpecificText();
             this.CreateElementHandlers();
+        }
+        #endregion
+
+        #region Events
+        //=====================================================================
+
+        /// <summary>
+        /// This event is raised to notify the user of an unhandled element
+        /// </summary>
+        /// <remarks>The unhandled element may be incorrectly spelled or may be a custom element for which a new
+        /// handler needs to be added.</remarks>
+        public event EventHandler<UnhandledElementEventArgs> UnhandledElement;
+
+        /// <summary>
+        /// This is used to raise the <see cref="UnhandledElement"/> event
+        /// </summary>
+        /// <param name="elementName">The unhandled element name</param>
+        /// <param name="parentElementName">The parent element name of the unhandled element</param>
+        public virtual void OnUnhandledElement(string elementName, string parentElementName)
+        {
+            this.UnhandledElement?.Invoke(this, new UnhandledElementEventArgs(this.Key, elementName, parentElementName));
+        }
+
+        /// <summary>
+        /// This event is raised to notify the user of section having been rendered
+        /// </summary>
+        /// <remarks>This event is raised regardless of whether or not anything was actually rendered for the
+        /// section.</remarks>
+        public event EventHandler<RenderedSectionEventArgs> SectionRendered;
+
+        /// <summary>
+        /// This is used to raise the <see cref="SectionRendered"/> event
+        /// </summary>
+        /// <param name="sectionName">The section name</param>
+        /// <param name="customName">The name of the custom section if <c>sectionName</c> is <c>Custom</c></param>
+        public virtual void OnSectionRendered(RenderedSection sectionName, string customName)
+        {
+            this.SectionRendered?.Invoke(this, new RenderedSectionEventArgs(this.Key, sectionName, customName));
         }
         #endregion
 
@@ -521,9 +559,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                     // If it has no handler, add a default handler and treat it like a non-rendered parent element
                     if(!elementHandlers.TryGetValue(element.Name.LocalName, out Element handler))
                     {
-                        // TODO: Raise event to flag unhandled elements?  BuildAssembler could then show a warning 
-                        Debug.WriteLine("Unhandled element type: {0}  Parent: {1}", element.Name.LocalName,
-                            element.Parent.Name.LocalName);
+                        // Raise an event to flag unhandled elements
+                        this.OnUnhandledElement(element.Name.LocalName, element.Parent.Name.LocalName);
 
                         handler = new NonRenderedParentElement(element.Name.LocalName);
                         elementHandlers.Add(handler.Name, handler);

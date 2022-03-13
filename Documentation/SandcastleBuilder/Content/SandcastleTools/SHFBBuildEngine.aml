@@ -36,11 +36,6 @@ presentation styles, and their supporting files.</para>
 					</listItem>
 
 					<listItem>
-						<para><localUri>Extras</localUri> - This folder contains optional tools that are not part of the help
-file builder such as the HTML to MAML converter and the web project code providers.</para>
-					</listItem>
-
-					<listItem>
 						<para><localUri>Help</localUri> - This folder contains the Help 1 (CHM) help files for the tools and
 extras.</para>
 					</listItem>

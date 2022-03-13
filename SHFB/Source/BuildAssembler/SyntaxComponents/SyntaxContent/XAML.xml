@@ -11,7 +11,7 @@
   <item id="metaLang_xaml">XAML</item>
 
 	<!-- XAML syntax section messages -->
-	<item id="classXamlSyntax_abstract">This class is abstract; see <strong><include item="familyTitle"/></strong> for derived non-abstract classes usable in XAML.</item>
+	<item id="classXamlSyntax_abstract">This class is abstract; see <strong><include item="title_family"/></strong> for derived non-abstract classes usable in XAML.</item>
 	<item id="classXamlSyntax_excludedSubClass">This managed class is not typically used in XAML.</item>
 	<item id="classXamlSyntax_noDefaultCtor">You cannot directly create an instance of this class in XAML.</item>
 	<item id="classXamlSyntax_noDefaultCtorWithTypeConverter"></item>  <!-- This item intentionally empty, per spec -->

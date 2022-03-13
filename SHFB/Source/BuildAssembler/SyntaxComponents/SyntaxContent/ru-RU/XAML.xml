@@ -13,7 +13,7 @@
   <item id="metaLang_xaml">XAML</item>
 
 	<!-- XAML syntax section messages -->
-	<item id="classXamlSyntax_abstract">Этот класс является абстрактным; сведения о производных неабстрактных классах, используемых в языке XAML, см. в <strong><include item="familyTitle"/></strong>.</item>
+	<item id="classXamlSyntax_abstract">Этот класс является абстрактным; сведения о производных неабстрактных классах, используемых в языке XAML, см. в <strong><include item="title_family"/></strong>.</item>
 	<item id="classXamlSyntax_excludedSubClass">Этот управляемый класс обычно не используется в XAML.</item>
 	<item id="classXamlSyntax_noDefaultCtor">Невозможно непосредственно создать экземпляр этого класса в языке XAML.</item>
 	<item id="classXamlSyntax_noDefaultCtorWithTypeConverter"></item>  <!-- This item intentionally empty, per spec -->

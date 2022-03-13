@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/02/2022
+// Updated : 03/12/2022
 // Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -28,8 +28,6 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml;
-using System.Xml.XPath;
 
 using Microsoft.Build.Evaluation;
 
@@ -1015,39 +1013,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         /// <summary>
-        /// The HTML table of contents for websites
-        /// </summary>
-        /// <returns>The HTML table of contents for websites</returns>
-        /// <remarks>If the legacy web content is ever removed, this handler and its related method,
-        /// <see cref="AppendTocEntry"/>, can be removed</remarks>
-        [SubstitutionTag]
-        private string HtmlTOC()
-        {
-            XPathDocument tocDoc;
-            Encoding enc = Encoding.Default;
-
-            // When reading the file, use the default encoding but detect the encoding if byte order marks are
-            // present.
-            using(StringReader sr = new StringReader(Utility.ReadWithEncoding(currentBuild.WorkingFolder +
-              "WebTOC.xml", ref enc)))
-            using(var reader = XmlReader.Create(sr, new XmlReaderSettings { CloseInput = true }))
-            {
-                tocDoc = new XPathDocument(reader);
-            }
-
-            var navToc = tocDoc.CreateNavigator();
-
-            // Get the TOC entries from the HelpTOC node
-            var entries = navToc.Select("HelpTOC/*");
-
-            replacementValue.Clear();
-
-            this.AppendTocEntry(entries, replacementValue);
-
-            return replacementValue.ToString();
-        }
-
-        /// <summary>
         /// The website ad content that should appear in on each page
         /// </summary>
         /// <returns>The website ad content</returns>
@@ -1428,56 +1393,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
             }
 
             return replacementValue.ToString();
-        }
-
-        /// <summary>
-        /// This is called to recursively append the child nodes to the HTML table of contents in the specified
-        /// string builder.
-        /// </summary>
-        /// <param name="entries">The list over which to iterate recursively</param>
-        /// <param name="tableOfContents">The string builder to which the entries are appended</param>
-        private void AppendTocEntry(XPathNodeIterator entries, StringBuilder tableOfContents)
-        {
-            string url, target, title;
-
-            foreach(XPathNavigator node in entries)
-                if(node.HasChildren)
-                {
-                    url = node.GetAttribute("Url", String.Empty);
-                    title = node.GetAttribute("Title", String.Empty);
-
-                    if(!String.IsNullOrWhiteSpace(url))
-                        target = " target=\"TopicContent\"";
-                    else
-                    {
-                        url = "#";
-                        target = String.Empty;
-                    }
-
-                    tableOfContents.AppendFormat(CultureInfo.InvariantCulture, "<div class=\"TreeNode\">\r\n" +
-                        "<img class=\"TreeNodeImg\" onclick=\"javascript: Toggle(this);\" " +
-                        "src=\"Collapsed.gif\"/><a class=\"UnselectedNode\" " +
-                        "onclick=\"javascript: return Expand(this);\" href=\"{0}\"{1}>{2}</a>\r\n" +
-                        "<div class=\"Hidden\">\r\n", WebUtility.HtmlEncode(url), target, WebUtility.HtmlEncode(title));
-
-                    this.AppendTocEntry(node.Select("*"), tableOfContents);
-
-                    tableOfContents.Append("</div>\r\n</div>\r\n");
-                }
-                else
-                {
-                    title = node.GetAttribute("Title", String.Empty);
-                    url = node.GetAttribute("Url", String.Empty);
-
-                    if(String.IsNullOrWhiteSpace(url))
-                        url = "about:blank";
-
-                    tableOfContents.AppendFormat(CultureInfo.InvariantCulture, "<div class=\"TreeItem\">\r\n" +
-                        "<img src=\"Item.gif\"/>" +
-                        "<a class=\"UnselectedNode\" onclick=\"javascript: return SelectNode(this);\" " +
-                        "href=\"{0}\" target=\"TopicContent\">{1}</a>\r\n" +
-                        "</div>\r\n", WebUtility.HtmlEncode(url), WebUtility.HtmlEncode(title));
-                }
         }
         #endregion
     }

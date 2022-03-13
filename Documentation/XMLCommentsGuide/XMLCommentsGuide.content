@@ -50,10 +50,16 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" visible="True" title="Section Elements">
+  <Topic id="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" visible="True" isExpanded="true" title="Section Elements">
     <HelpKeywords>
       <HelpKeyword index="K" term="element categories, section" />
     </HelpKeywords>
+    <Topic id="4C57ED2C-F373-4B34-B983-A0009D6CDAB4" visible="True" isSelected="true" title="bibliography/cite">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="section elements, bibliography" />
+        <HelpKeyword index="K" term="section elements, cite" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="81bf7ad3-45dc-452f-90d5-87ce2494a182" visible="True" title="event">
       <HelpKeywords>
         <HelpKeyword index="K" term="section elements, event" />
@@ -256,7 +262,7 @@
     <HelpKeywords>
       <HelpKeyword index="K" term="version history" />
     </HelpKeywords>
-    <Topic id="12ce0516-6612-43a2-903c-3ab9a4a6b0ae" visible="True" isSelected="true" title="Version 2019.11.7.0">
+    <Topic id="12ce0516-6612-43a2-903c-3ab9a4a6b0ae" visible="True" title="Version 2019.11.7.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2019.11.7.0" />
       </HelpKeywords>

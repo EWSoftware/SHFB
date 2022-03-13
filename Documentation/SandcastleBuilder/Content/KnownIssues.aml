@@ -31,7 +31,12 @@ on .NET Core.  It can be cleared in the plug-in settings to send the raw log fil
 viewer output.  All additional topics must be in the form of MAML
 <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link> and must be defined in a
 content layout file.  There are too many requirements of the format to support raw HTML files and the deprecated
-additional content options.  The installer contains an HTML to MAML converter utility if you need one.</para>
+additional content options.  The <externalLink>
+							<linkText>HTML to MAML Converter</linkText>
+							<linkAlternateText>HTML to MAML Converter</linkAlternateText>
+							<linkUri>https://EWSoftware.GitHub.io/HtmlToMamlDocs</linkUri>
+							<linkTarget>_blank</linkTarget>
+						</externalLink> is available to help you convert legacy HTML content to MAML topics.</para>
 					</listItem>
 
 				</list>

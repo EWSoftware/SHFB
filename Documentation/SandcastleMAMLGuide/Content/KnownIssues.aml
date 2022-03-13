@@ -23,7 +23,7 @@ topic elements.</para>
 correctly if at all.</para>
 					</listItem>
 					<listItem>
-						<para>Sandcastle's XSL transformations remove inter-element whitespace.  As such, if you place two
+						<para>Sandcastle's transformations remove inter-element whitespace.  As such, if you place two
 MAML elements one after the other and require a separating space between them, use a non-breaking space entity
 (<codeInline>&amp;#160;</codeInline>).  See the <link xlink:href="382fc569-33e4-489a-b0c2-94c11e56ab4a" /> topic
 for an example.</para>

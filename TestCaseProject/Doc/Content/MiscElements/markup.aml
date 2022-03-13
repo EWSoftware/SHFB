@@ -3,7 +3,7 @@
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
       <para>This element can be used to pass a literal piece of HTML markup through to the rendered topic.  In
-general, this element is only used by custom build components to pass format-specific marku through after
+general, this element is only used by custom build components to pass format-specific markup through after
 modifying the conceptual topic in some manner (i.e. to colorize code).  Other non-component uses might be to
 include a video or other such items in the topic that is currently not handled by MAML.</para>
 

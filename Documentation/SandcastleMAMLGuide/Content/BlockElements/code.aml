@@ -242,7 +242,7 @@ a default language if one is not specified.  The possible language values are as
 
 						<alert class="important">
 							<para>The full name "<codeInline>language</codeInline>" should be used for the attribute name rather
-than the abbreviated form "<codeInline>lang</codeInline>".  The reason is that the XSL transformations used by
+than the abbreviated form "<codeInline>lang</codeInline>".  The reason is that the transformations used by
 the presentation styles expect the full name when they search for the language attribute.  The abbreviated form
 is a legacy syntax that should be avoided.  The code block component will auto-correct the attribute name so that
 it is not missed by the transformations.</para>

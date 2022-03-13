@@ -17,7 +17,7 @@ or corrections that you would like to see added to the guide, feel free to submi
 usage notes, walkthroughs, tutorials, etc.  Instead of HTML, conceptual content topics use Microsoft Assistance
 Markup Language (MAML).  This is basically XML conforming to a well defined schema that describes the structure
 of the conceptual content much like XML comments describe the structure of the code comments. There is no layout
-or style information within the MAML files. Instead, they are ran through a series of XSL transformations using
+or style information within the MAML files. Instead, they are ran through a series of transformations using
 Sandcastle's <application>BuildAssembler</application> tool similar to the reference (API) content so that they
 match it in appearance and features.  This allows you to utilize the various Sandcastle and third-party build
 components to alter and extend the presentation style used in the topics.</para>

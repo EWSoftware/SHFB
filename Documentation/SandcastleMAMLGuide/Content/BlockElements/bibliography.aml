@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="161537d9-6f89-42ef-9c51-3a15ef94df65" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<introduction>
+      <para>The auto-generated bibliography feature allows an author to create an external bibliography data XML
+file and then share it between multiple topics by specifying short identifiers in <codeInline>cite</codeInline> 
+elements that match one of the references contained in the file.  When one or more <codeInline>cite</codeInline>
+elements are used, Sandcastle will automatically generate a bibliography for the topic in the place that the
+<codeInline>bibliography</codeInline> element is specified and the <codeInline>cite</codeInline> elements
+themselves will be replaced with hyperlinks to corresponding bookmarked entries in the bibliography section.</para>
+
+			<alert class="tip">
+				<para>The <codeInline>bibliography</codeInline> element is typically specified immediately before the
+<codeInline>relatedTopics</codeInline> element that appears at the bottom of the topic.</para>
+			</alert>
+
+  </introduction>
+  
+  <section>
+		<title>Usage</title>
+    <content>
+			<para>To use citations, a bibliography data XML file must be created to store the identifiers and entries.
+Add the file to the project and specify the file's name in the Transformation Arguments section of the project
+properties, typically the <codeInline>BibliographyDataFile</codeInline> argument.  An example file is shown
+below.  Note that not all presentation styles support the bibliography elements such as Open XML-based styles.
+In such cases they will be ignored.</para>
+
+			<procedure>
+				<title>Defining Citation Identifiers and Bibliography Entries</title>
+				<steps class="ordered">
+					<step>
+						<content>
+							<para>If it does not already exist, add a new bibliography data file to the project.  An item
+template is supplied with the help file builder standalone GUI and Visual Studio package.  The suggested name is
+<localUri>bibliography.xml</localUri> but you can name it what you like.  Set the
+<codeInline>BuildAction</codeInline> to <codeInline>None</codeInline> so that the build ignores it.</para>
+						</content>
+					</step>
+					<step>
+						<content>
+							<para>Add content similar to the following to the bibliography XML file.</para>
+
+<code language="xml" title="Sample Bibliography.xml File">
+<![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<bibliography>
+  <reference name="sandcastle activity">
+    <title>Sandcastle Help File Builder Activity Statistics</title>
+    <author>Eric Woodruff</author>
+    <publisher>GitHub.com</publisher>
+    <link>https://GitHub.com/EWSoftware/SHFB/pulse/monthly</link>
+  </reference>
+  <reference name="SHFB">
+    <title>Sandcastle Help File Builder</title>
+    <author>Eric Woodruff</author>
+    <publisher>GitHub.com</publisher>
+    <link>https://GitHub.com/EWSoftware/SHFB</link>
+  </reference>
+</bibliography>]]>
+</code>
+
+							<para>The previous example defines a bibliography XML file that contains two <codeInline>reference</codeInline>
+elements, which can be referred to by <codeInline>cite</codeInline> elements in a MAML topic using the values
+of the <codeInline>name</codeInline> attributes.</para>
+              
+							<alert class="tip">
+								<para>Reference names are not case-sensitive.</para>
+							</alert>
+
+							<para>The <codeInline>title</codeInline> and <codeInline>author</codeInline> elements are
+required.  The <codeInline>publisher</codeInline> and <codeInline>link</codeInline> elements are optional.  The
+only supported content type for each element is plain text.</para>
+						</content>
+					</step>
+				</steps>
+			</procedure>
+
+      <procedure>
+        <title>Using the Bibliography in a MAML Topic</title>
+
+        <steps class="ordered">
+          <step>
+            <content>
+              <para>Add a <codeInline>bibliography</codeInline> element to the topic, preferably just before the
+<codeInline>relatedTopics</codeInline> element (see example). </para>
+            </content>
+          </step>
+          <step>
+          	<content>
+          		<para>Use <codeInline>cite</codeInline> elements to reference items in the bibliography.  The inner
+text of the element is the value of the <codeInline>name</codeInline> attribute for the entry.</para>
+          	</content>
+          </step>
+        </steps>
+      </procedure>
+
+    </content>
+
+		<sections>
+			<section>
+				<title>Example</title>
+				<content>
+					<para>
+						The following example MAML topic uses multiple <codeInline>cite</codeInline> elements to reference
+						bibliography entries defined in the <localUri>bibliography.xml</localUri> file.
+					</para>
+
+					<alert class="important">
+						<para>
+							The <codeInline>bibliography</codeInline> element is also specified in MAML topics so that a
+							bibliography section is generated automatically near the bottom of the topic.
+						</para>
+					</alert>
+
+					<code language="xml" title="Sample Topic with Bibliography">
+						<![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<topic id="00000000-0000-0000-0000-000000000000" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>This topic discusses Sandcastle's popularity.</para>
+    </introduction>
+
+    <section>
+      <title>Sandcsatle's Popularity</title>
+
+      <content>
+        <para>Sandcastle is a popular download<cite>sandcastle activity</cite>.</para>
+
+        <para>The Sandcastle Help File Builder<cite>shfb</cite> adds even more value.</para>
+
+        <para>I expect Sandcastle's popularity<cite>sandcastle activity</cite>
+to increase as more community members become aware of its usefulness, with the
+help of projects like the Sandcastle Help File Builder<cite>shfb</cite>.</para>
+      </content>
+    </section>
+
+    <!-- Place the bibliography before the relatedTopics section -->
+    <bibliography/>
+  
+    <relatedTopics/>
+  </developerConceptualDocument>
+</topic>]]>
+					</code>
+				</content>
+			</section>
+
+			<section>
+				<title>Example Output</title>
+				<content>
+					<para>Sandcastle is a popular download<cite>sandcastle activity</cite>.</para>
+
+					<para>The Sandcastle Help File Builder<cite>SHFB</cite> adds even more value.</para>
+
+					<para>I expect Sandcastle's popularity<cite>sandcastle activity</cite>
+to increase as more community members become aware of its usefulness, with the
+help of projects like the Sandcastle Help File Builder<cite>SHFB</cite>.</para>
+				</content>
+			</section>
+
+		</sections>
+  </section>
+
+		<bibliography />
+		
+		<relatedTopics>
+			<link xlink:href="b32a73b8-fc26-4c98-912c-d595fc1a17c2" />
+		</relatedTopics>
+
+  </developerHowToDocument>
+</topic>

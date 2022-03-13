@@ -117,14 +117,14 @@ for each MAML topic using an XML companion file.</para>
 			<title>Presentation Styles</title>
 			<content>
 				<para>The presentation styles in Sandcastle contain all of the aesthetic resources that are required to
-build documentation in different styles.  Each presentation style includes a set of XSLT files, XML files,
-and other supporting files such as CSS files, images, scripts, etc.  The set of XSLT files is executed once for
-each topic that <application>BuildAssembler</application> processes to produce an individual HTML or other file
-type as output.  Each presentation style can have a different set of XSLT files (although usually similar in many
-ways); therefore, each presentation style also must provide a custom configuration for the
-<application>BuildAssembler</application> tool.  The XML files contain look-up information, such as localizable
-textual content. The other supporting files such as CSS files and images are referenced by the generated files
-so technically, they are just static output.</para>
+build documentation in different styles.  Each presentation style includes a code-based transformation, XML files
+containing localizable shared content, and other supporting files such as CSS files, images, scripts, etc.  The
+set transformation is executed once for each topic that <application>BuildAssembler</application> processes to
+produce an individual HTML or other file type as output.  Each presentation style can have a different set of
+transformations (although usually similar in many ways); therefore, each presentation style also must provide a
+custom configuration for the <application>BuildAssembler</application> tool.  The XML files contain look-up
+information, such as localizable textual content.  The other supporting files such as CSS files and images are
+referenced by the generated files so technically, they are just static output.</para>
 
 			</content>
 		</section>

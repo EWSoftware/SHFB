@@ -24,18 +24,23 @@
     <ComponentConfigurations>
       <ComponentConfig id="Code Block Component" enabled="True">
         <component id="Code Block Component">
-  <basePath value="{@HtmlEncProjectFolder}..\..\SHFB\Source\XMLCommentsExamples" />
-  <outputPaths>{@HelpFormatOutputPaths}</outputPaths>
-  <allowMissingSource value="false" />
-  <removeRegionMarkers value="false" />
-  <colorizer syntaxFile="{@CoreComponentsFolder}Colorizer\highlight.xml" styleFile="{@CoreComponentsFolder}Colorizer\highlight.xsl" stylesheet="{@CoreComponentsFolder}Colorizer\highlight.css" scriptFile="{@CoreComponentsFolder}Colorizer\highlight.js" disabled="{@DisableCodeBlockComponent}" language="cs" tabSize="0" numberLines="false" outlining="false" keepSeeTags="false" defaultTitle="true" />
-</component>
+          <basePath value="{@HtmlEncProjectFolder}..\..\SHFB\Source\XMLCommentsExamples" />
+          <outputPaths>{@HelpFormatOutputPaths}</outputPaths>
+          <allowMissingSource value="false" />
+          <removeRegionMarkers value="false" />
+          <colorizer syntaxFile="{@CoreComponentsFolder}Colorizer\highlight.xml" styleFile="{@CoreComponentsFolder}Colorizer\highlight.xsl" stylesheet="{@CoreComponentsFolder}Colorizer\highlight.css" scriptFile="{@CoreComponentsFolder}Colorizer\highlight.js" disabled="{@DisableCodeBlockComponent}" language="cs" tabSize="0" numberLines="false" outlining="false" keepSeeTags="false" defaultTitle="true" />
+        </component>
       </ComponentConfig>
-<ComponentConfig id="IntelliSense Component" enabled="True"><component id="IntelliSense Component">
-  <output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" boundedCapacity="100" />
-</component></ComponentConfig>
-<ComponentConfig id="API Token Resolution" enabled="True"><component id="API Token Resolution">{@TokenFiles}
-<replace elements="/*//token" item="string(.)" /></component></ComponentConfig></ComponentConfigurations>
+      <ComponentConfig id="IntelliSense Component" enabled="True">
+        <component id="IntelliSense Component">
+          <output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" boundedCapacity="100" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="API Token Resolution" enabled="True">
+        <component id="API Token Resolution">{@TokenFiles}
+<replace elements="/*//token" item="string(.)" /></component>
+      </ComponentConfig>
+    </ComponentConfigurations>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\..\SHFB\Source\XMLCommentsExamples\XMLCommentsExamples.csproj" />
     </DocumentationSources>
@@ -113,17 +118,23 @@
     <VisibleItems>ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected, NonBrowsable</VisibleItems>
     <ProjectSummary>This project demonstrates the use of the various XML comments elements.</ProjectSummary>
     <TransformComponentArguments>
-      <Argument Key="logoFile" Value="Sandcastle.jpg" />
-      <Argument Key="logoHeight" Value="" />
-      <Argument Key="logoWidth" Value="" />
-      <Argument Key="logoAltText" Value="Sandcastle XML Comments Guide" />
-      <Argument Key="logoPlacement" Value="left" />
-      <Argument Key="logoAlignment" Value="left" />
-      <Argument Key="maxVersionParts" Value="" />
-      <Argument Key="defaultLanguage" Value="cs" />
-      <Argument Key="includeEnumValues" Value="true" />
-      <Argument Key="baseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/SHFB/Source/" />
-      <Argument Key="requestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" />
+      <Argument Key="RobotsMetadata" Value="" />
+      <Argument Key="BibliographyDataFile" Value="Bibliography.xml" />
+      <Argument Key="LogoFile" Value="Sandcastle.jpg" />
+      <Argument Key="LogoHeight" Value="" />
+      <Argument Key="LogoWidth" Value="" />
+      <Argument Key="LogoAltText" Value="Sandcastle XML Comments Guide" />
+      <Argument Key="LogoPlacement" Value="left" />
+      <Argument Key="LogoAlignment" Value="left" />
+      <Argument Key="LogoUrl" Value="" />
+      <Argument Key="MaxVersionParts" Value="" />
+      <Argument Key="DefaultLanguage" Value="cs" />
+      <Argument Key="IncludeEnumValues" Value="true" />
+      <Argument Key="EnumMemberSortOrder" Value="Value" />
+      <Argument Key="FlagsEnumValueFormat" Value="IntegerValue" />
+      <Argument Key="FlagsEnumSeparatorSize" Value="0" />
+      <Argument Key="BaseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/SHFB/Source/" />
+      <Argument Key="RequestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" />
     </TransformComponentArguments>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
@@ -182,6 +193,7 @@
     <ContentLayout Include="XMLCommentsGuide.content" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Bibliography.xml" />
     <None Include="Content\IdStrings.aml" />
     <None Include="Content\MiscElements\AttachedEventComments.aml" />
     <None Include="Content\MiscElements\AttachedPropertyComments.aml" />
@@ -196,6 +208,7 @@
     <None Include="Content\MiscElements\token.aml" />
     <None Include="Content\MSHelpViewerRoot.aml" />
     <None Include="Content\NamespaceDoc.aml" />
+    <None Include="Content\SectionElements\bibliography.aml" />
     <None Include="Content\SectionElements\revisionHistory.aml" />
     <None Include="Content\SharedComments.aml" />
     <None Include="Content\BlockElements\BlockElements.aml" />

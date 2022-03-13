@@ -366,7 +366,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
             content.Add(new XElement("include", new XAttribute("item", "typeLink"), parameter));
 
-            transformation.RenderTypeReferenceLink(parameter, typeInfo, true);
+            transformation.RenderTypeReferenceLink(parameter, typeInfo, false);
         }
         #endregion
     }

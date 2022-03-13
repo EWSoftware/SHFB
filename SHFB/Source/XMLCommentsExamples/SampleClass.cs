@@ -2,9 +2,8 @@
 // System  : Sandcastle Tools - XML Comments Example
 // File    : SampleClass.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/06/2015
-// Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 03/13/2022
+// Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
 //
 // This class is used to demonstrate the various XML comments elements.  It serves no useful purpose.
 //
@@ -447,21 +446,21 @@ namespace XMLCommentsExamples
         /// </note>
         /// 
         /// <note type="C#">
-        /// Use parenthesis when calling this method in C#.
+        /// Use parentheses when calling this method in C#.
         /// </note>
         /// 
         /// <note type="VB">
-        /// Parenthesis are not required when calling this method in Visual Basic.
+        /// Parentheses are not required when calling this method in Visual Basic.
         /// </note>
         /// 
         /// <note type="C++">
-        /// Use parenthesis when calling this method in C++.
+        /// Use parentheses when calling this method in C++.
         /// </note>
         /// 
         /// <note type="J#">
-        /// Use parenthesis when calling this method in J#.
+        /// Use parentheses when calling this method in J#.
         /// </note>
-        /// 
+        ///
         /// <para>See the <conceptualLink target="4302a60f-e4f4-4b8d-a451-5f453c4ebd46" />
         /// topic for a full list of all possible note types.</para>
         /// </remarks>
@@ -818,9 +817,9 @@ namespace XMLCommentsExamples
         /// The summary is a brief description of the type or type member and will
         /// be displayed in IntelliSense and the Object Browser.
         /// </summary>
-        /// <remarks>The remarks element should be used to provide more detailed information
-        /// about the type or member such as how it is used, its processing, etc.
-        /// 
+        /// <remarks><para>The remarks element should be used to provide more detailed information
+        /// about the type or member such as how it is used, its processing, etc.</para>
+        ///
         /// <para>Remarks will only appear in the help file and can be as long as
         /// necessary.</para></remarks>
         /// <conceptualLink target="c3743eaf-9ef2-4d35-8f59-876f1e48a6a8" />
@@ -840,6 +839,24 @@ namespace XMLCommentsExamples
         /// must be added to the SHFB project.</remarks>
         /// <conceptualLink target="8c9273f3-0000-43cd-bb53-932b80855297" />
         public void TokenExample()
+        {
+        }
+        #endregion
+
+        #region Bibliography cite Example
+
+        /// <summary>
+        /// This demonstrates the <c>cite</c> element used to produce a bibliography section in the topic.
+        /// </summary>
+        /// <remarks>
+        /// <para>Sandcastle is a popular download<cite>sandcastle activity</cite>.</para>
+        /// <para>The Sandcastle Help File Builder<cite>SHFB</cite> adds even more value.</para>
+        /// <para>I expect Sandcastle's popularity<cite>sandcastle activity</cite> to increase as more community
+        /// members become aware of its usefulness, with the help of projects like the Sandcastle Help File
+        /// Builder<cite>SHFB</cite>.</para>
+        /// </remarks>
+        /// <conceptualLink target="4C57ED2C-F373-4B34-B983-A0009D6CDAB4" />
+        public void BibliographyCiteExample()
         {
         }
         #endregion

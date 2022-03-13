@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="4C57ED2C-F373-4B34-B983-A0009D6CDAB4" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<introduction>
+      <para>The auto-generated bibliography feature allows an author to create an external bibliography data XML
+file and then share it between multiple topics by specifying short identifiers in <codeInline>cite</codeInline> 
+elements that match one of the references contained in the file.  When one or more <codeInline>cite</codeInline>
+elements are used, Sandcastle will automatically generate a bibliography for the topic just before the See Also
+section and the <codeInline>cite</codeInline> elements themselves will be replaced with hyperlinks to
+corresponding bookmarked entries in the bibliography section.</para>
+
+			<alert class="note">
+				<para>Unlike MAML topics, the <codeInline>bibliography</codeInline> element is not specified anywhere in
+the XML comments.  The section is added automatically if any <codeInline>cite</codeInline> elements are present.</para>
+			</alert>
+
+  </introduction>
+  
+  <section>
+		<title>Usage</title>
+    <content>
+			<para>To use citations, a bibliography data XML file must be created to store the identifiers and entries.
+Add the file to the project and specify the file's name in the Transformation Arguments section of the project
+properties, typically the <codeInline>BibliographyDataFile</codeInline> argument.  An example file is shown
+below.  Note that not all presentation styles support the bibliography elements such as Open XML-based styles.
+In such cases they will be ignored.</para>
+
+			<procedure>
+				<title>Defining Citation Identifiers and Bibliography Entries</title>
+				<steps class="ordered">
+					<step>
+						<content>
+							<para>If it does not already exist, add a new bibliography data file to the project.  An item
+template is supplied with the help file builder standalone GUI and Visual Studio package.  The suggested name is
+<localUri>bibliography.xml</localUri> but you can name it what you like.  Set the
+<codeInline>BuildAction</codeInline> to <codeInline>None</codeInline> so that the build ignores it.</para>
+						</content>
+					</step>
+					<step>
+						<content>
+							<para>Add content similar to the following to the bibliography XML file.</para>
+
+<code language="xml" title="Sample Bibliography.xml File">
+<![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<bibliography>
+  <reference name="sandcastle activity">
+    <title>Sandcastle Help File Builder Activity Statistics</title>
+    <author>Eric Woodruff</author>
+    <publisher>GitHub.com</publisher>
+    <link>https://GitHub.com/EWSoftware/SHFB/pulse/monthly</link>
+  </reference>
+  <reference name="SHFB">
+    <title>Sandcastle Help File Builder</title>
+    <author>Eric Woodruff</author>
+    <publisher>GitHub.com</publisher>
+    <link>https://GitHub.com/EWSoftware/SHFB</link>
+  </reference>
+</bibliography>]]>
+</code>
+
+							<para>The previous example defines a bibliography XML file that contains two <codeInline>reference</codeInline>
+elements, which can be referred to by <codeInline>cite</codeInline> elements in a MAML topic using the values
+of the <codeInline>name</codeInline> attributes.</para>
+              
+							<alert class="tip">
+								<para>Reference names are not case-sensitive.</para>
+							</alert>
+
+							<para>The <codeInline>title</codeInline> and <codeInline>author</codeInline> elements are
+required.  The <codeInline>publisher</codeInline> and <codeInline>link</codeInline> elements are optional.  The
+only supported content type for each element is plain text.</para>
+						</content>
+					</step>
+				</steps>
+			</procedure>
+
+      <procedure>
+        <title>Using the Bibliography in XML Code Comments</title>
+
+        <steps class="ordered">
+          <step>
+          	<content>
+          		<para>Use <codeInline>cite</codeInline> elements to reference items in the bibliography.  The inner
+text of the element is the value of the <codeInline>name</codeInline> attribute for the entry.  The Sandcastle
+transformations will add a bibliography section to the API member's page automatically if any <codeInline>cite</codeInline>
+elements are found.</para>
+          	</content>
+          </step>
+        </steps>
+      </procedure>
+
+    </content>
+
+		<sections>
+			<section>
+				<title>Example</title>
+				<content>
+					<code language="cs" title=" " source="SampleClass.cs" region="Bibliography cite Example" />
+				</content>
+			</section>
+
+		</sections>
+  </section>
+
+		<relatedTopics>
+			<link xlink:href="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.BibliographyCiteExample</codeEntityReference>
+		</relatedTopics>
+
+  </developerHowToDocument>
+</topic>

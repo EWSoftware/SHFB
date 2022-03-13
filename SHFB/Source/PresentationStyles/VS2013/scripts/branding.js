@@ -129,7 +129,7 @@ function UpdateLST(language)
             // There may be a carriage return before the LST span in the content so the replace function below
             // is used to trim the whitespace at the end of the previous node of the current LST node.
             if(devLangSpan.previousSibling != null && devLangSpan.previousSibling.nodeValue != null)
-                devLangSpan.previousSibling.nodeValue = devLangSpan.previousSibling.nodeValue.replace(/\s+$/, "");
+                devLangSpan.previousSibling.nodeValue = devLangSpan.previousSibling.nodeValue.replace(/[\r\n]+$/, "");
 
             var langs = allLSTSetIds[lstMember].split("|");
             var k = 0;

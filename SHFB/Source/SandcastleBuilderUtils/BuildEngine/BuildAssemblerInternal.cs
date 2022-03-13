@@ -25,6 +25,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Globalization;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
@@ -79,6 +80,28 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     this.TopicTransformation.TransformationArguments[arg.Key].Value = arg.Value;
                 else
                     this.TopicTransformation.TransformationArguments[arg.Key].Content = arg.Content;
+
+            // Special case.  If the transformation contains a BibliographyDataFile argument, set the filename
+            // on the transformation.  If relative, use the project path to fully qualify it.
+            if(this.TopicTransformation.TransformationArguments.TryGetValue(
+              nameof(TopicTransformationCore.BibliographyDataFile), out TransformationArgument bibliographyFile))
+            {
+                string filename = bibliographyFile.Value;
+
+                if(!String.IsNullOrWhiteSpace(filename))
+                {
+                    if(!Path.IsPathRooted(filename))
+                        filename = Path.Combine(currentBuild.CurrentProject.BasePath, filename);
+
+                    if(!File.Exists(filename))
+                    {
+                        this.WriteMessage(MessageLevel.Warn, $"Bibliography data file '{filename}' not found.  " +
+                            "Bibliography elements will be ignored.");
+                    }
+                    else
+                        this.TopicTransformation.BibliographyDataFile = filename;
+                }
+            }
 
             // Add this instance to the component container so that the build component factories can find it
             currentBuild.ComponentContainer.ComposeParts(this);
@@ -260,8 +283,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             Task builder = Task.Factory.StartNew(() =>
             {
+                // Log unhandled elements during transformation as diagnostic messages
+                void unhandledElementLogger(object s, UnhandledElementEventArgs e) =>
+                    this.WriteMessage(nameof(TopicTransformation), MessageLevel.Diagnostic, e.Key,
+                        $"Unhandled transformation element: {e.ElementName}  Parent element: {e.ParentElementName}");
+
                 try
                 {
+                    this.TopicTransformation.UnhandledElement += unhandledElementLogger;
+
                     using(var reader = XmlReader.Create(currentBuild.BuildAssemblerConfigurationFile,
                       new XmlReaderSettings { CloseInput = true }))
                     {
@@ -300,6 +330,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 finally
                 {
                     messageLog.CompleteAdding();
+                    this.TopicTransformation.UnhandledElement -= unhandledElementLogger;
                 }
             }, currentBuild.CancellationToken, TaskCreationOptions.None, TaskScheduler.Default);
 

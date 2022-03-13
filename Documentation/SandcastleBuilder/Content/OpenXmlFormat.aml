@@ -65,8 +65,8 @@ been produced using the word processing application of your choice.</para>
 					
 					<listItem>
 						<para>There are many different bibliography formats available in applications such as Microsoft Word.
-As such, the bibliography elements and plug-in are not supported.  If desired, add a bibliography in the desired
-format to the document after it is produced with the word processing application of your choice.</para>
+As such, the bibliography elements are not supported.  If desired, add a bibliography in the desired format to
+the document after it is produced with the word processing application of your choice.</para>
 					</listItem>
 
 					<listItem>
@@ -86,8 +86,8 @@ markup directly into the document.  HTML markup is <legacyBold>not</legacyBold> 
 Any HTML in MAML <codeInline>markup</codeInline> elements will likely corrupt the document.</para>
 
 						<alert class="tip">
-							<para>A few HTML elements are recognized and used in the XSL transformations as a requirement of
-the presentation style to handle certain cases that cannot be taken care of in the XSL transformations and to
+							<para>A few HTML elements are recognized and used in the transformations as a requirement of
+the presentation style to handle certain cases that cannot be taken care of in the transformations and to
 support certain build component output and localized resource items.  The Open XML file builder task translates
 these elements into Open XML elements when the topics are merged into a single document body.</para>
 

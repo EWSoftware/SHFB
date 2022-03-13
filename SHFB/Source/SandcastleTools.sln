@@ -20,10 +20,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildComponentTargets", "Bu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelpLibraryManagerLauncher", "HelpLibraryManagerLauncher\HelpLibraryManagerLauncher.csproj", "{23B67AEC-4746-4C59-B36A-264BB4E38F7E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebCodeProviders", "WebCodeProviders\WebCodeProviders.csproj", "{777BFD0B-318E-4E38-BA0C-3F4951F8D00A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HtmlToMaml", "HtmlToMaml\HtmlToMaml.csproj", "{95FB7E26-4F48-4232-9692-F4B02FE17CD3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationStyles", "PresentationStyles\PresentationStyles.csproj", "{363781F8-3156-496A-896C-B22C18050974}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SyntaxComponents", "BuildAssembler\SyntaxComponents\SyntaxComponents.csproj", "{8B6BC818-4E2D-4828-80BC-81BC1D90D0FF}"
@@ -79,14 +75,6 @@ Global
 		{23B67AEC-4746-4C59-B36A-264BB4E38F7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23B67AEC-4746-4C59-B36A-264BB4E38F7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23B67AEC-4746-4C59-B36A-264BB4E38F7E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{777BFD0B-318E-4E38-BA0C-3F4951F8D00A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{777BFD0B-318E-4E38-BA0C-3F4951F8D00A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{777BFD0B-318E-4E38-BA0C-3F4951F8D00A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{777BFD0B-318E-4E38-BA0C-3F4951F8D00A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{95FB7E26-4F48-4232-9692-F4B02FE17CD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{95FB7E26-4F48-4232-9692-F4B02FE17CD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{95FB7E26-4F48-4232-9692-F4B02FE17CD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{95FB7E26-4F48-4232-9692-F4B02FE17CD3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{363781F8-3156-496A-896C-B22C18050974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{363781F8-3156-496A-896C-B22C18050974}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{363781F8-3156-496A-896C-B22C18050974}.Release|Any CPU.ActiveCfg = Release|Any CPU

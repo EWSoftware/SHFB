@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DbcsFixPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/02/2022
+// Updated : 03/07/2022
 // Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to modify the HTML files and alter the build so as to overcome the
@@ -168,6 +168,14 @@ namespace SandcastleBuilder.PlugIns
                 return;
 
             builder.ReportProgress("Adding localization options to build task");
+
+            // Copy the help compiler project files to the localized folder
+            if(!String.IsNullOrWhiteSpace(builder.HtmlExtractTool.LocalizedFolder))
+            {
+                foreach(string helpProjectFile in Directory.EnumerateFiles(builder.HtmlExtractTool.Help1Folder, "*.hh?"))
+                    File.Copy(helpProjectFile, Path.Combine(builder.HtmlExtractTool.LocalizedFolder,
+                        Path.GetFileName(helpProjectFile)), true);
+            }
 
             projectFile = builder.WorkingFolder + "Build1xHelpFile.proj";
             project = new XmlDocument();

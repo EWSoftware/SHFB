@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/02/2022
+// Updated : 03/07/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -1273,7 +1273,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
-                        var htmlExtract = new TitleAndKeywordHtmlExtract(this)
+                        this.HtmlExtractTool = new TitleAndKeywordHtmlExtract(this)
                         {
                             Help1Folder = ((this.CurrentProject.HelpFileFormat & HelpFileFormats.HtmlHelp1) == 0) ?
                                 null : Path.Combine(this.WorkingFolder, "Output", HelpFileFormats.HtmlHelp1.ToString()),
@@ -1283,11 +1283,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                        htmlExtract.ExtractHtmlInfo();
+                        this.HtmlExtractTool.ExtractHtmlInfo();
 
                         this.ExecutePlugIns(ExecutionBehaviors.After);
 
-                        htmlExtract = null;
+                        // Keep the HTML extract tool around until after the help file is build as plug-ins
+                        // may rely on it for values such as the localized file folder.
                     }
                 }
 
@@ -1327,6 +1328,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         this.ExecutePlugIns(ExecutionBehaviors.After);
                     }
                 }
+
+                this.HtmlExtractTool = null;
 
                 if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
                 {

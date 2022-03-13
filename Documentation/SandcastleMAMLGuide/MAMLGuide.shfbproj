@@ -103,17 +103,23 @@
     <CatalogVersion>100</CatalogVersion>
     <CatalogProductId>VS</CatalogProductId>
     <TransformComponentArguments>
-      <Argument Key="logoFile" Value="Sandcastle.jpg" />
-      <Argument Key="logoHeight" Value="" />
-      <Argument Key="logoWidth" Value="" />
-      <Argument Key="logoAltText" Value="Sandcastle MAML Guide" />
-      <Argument Key="logoPlacement" Value="left" />
-      <Argument Key="logoAlignment" Value="left" />
-      <Argument Key="maxVersionParts" Value="" />
-      <Argument Key="defaultLanguage" Value="cs" />
-      <Argument Key="includeEnumValues" Value="true" />
-      <Argument Key="baseSourceCodeUrl" Value="" />
-      <Argument Key="requestExampleUrl" Value="" />
+      <Argument Key="RobotsMetadata" Value="" />
+      <Argument Key="BibliographyDataFile" Value="Bibliography.xml" />
+      <Argument Key="LogoFile" Value="Sandcastle.jpg" />
+      <Argument Key="LogoHeight" Value="" />
+      <Argument Key="LogoWidth" Value="" />
+      <Argument Key="LogoAltText" Value="Sandcastle MAML Guide" />
+      <Argument Key="LogoPlacement" Value="left" />
+      <Argument Key="LogoAlignment" Value="left" />
+      <Argument Key="LogoUrl" Value="" />
+      <Argument Key="MaxVersionParts" Value="" />
+      <Argument Key="DefaultLanguage" Value="cs" />
+      <Argument Key="IncludeEnumValues" Value="true" />
+      <Argument Key="EnumMemberSortOrder" Value="Value" />
+      <Argument Key="FlagsEnumValueFormat" Value="IntegerValue" />
+      <Argument Key="FlagsEnumSeparatorSize" Value="0" />
+      <Argument Key="BaseSourceCodeUrl" Value="" />
+      <Argument Key="RequestExampleUrl" Value="" />
     </TransformComponentArguments>
     <FeedbackEMailLinkText>Eric Woodruff</FeedbackEMailLinkText>
     <MaximumGroupParts>2</MaximumGroupParts>
@@ -195,7 +201,9 @@
     </Tokens>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Bibliography.xml" />
     <None Include="ConceptualTemplates\ConceptualTemplates.vsspell" />
+    <None Include="Content\BlockElements\bibliography.aml" />
     <None Include="Content\CommonInline\lineBreak.aml" />
     <None Include="Content\Donate.aml" />
     <None Include="Content\License.aml" />

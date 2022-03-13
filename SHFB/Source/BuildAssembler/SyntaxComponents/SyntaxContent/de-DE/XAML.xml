@@ -13,7 +13,7 @@
   <item id="metaLang_xaml">XAML</item>
 
 	<!-- XAML syntax section messages -->
-	<item id="classXamlSyntax_abstract">Diese Klasse ist abstrakt; siehe <strong><include item="familyTitle"/></strong> für abgeleitete, nicht abstrakte Klassen, verwendbar in XAML.</item>
+	<item id="classXamlSyntax_abstract">Diese Klasse ist abstrakt; siehe <strong><include item="title_family"/></strong> für abgeleitete, nicht abstrakte Klassen, verwendbar in XAML.</item>
 	<item id="classXamlSyntax_excludedSubClass">Diese verwaltete Klasse wird typischerweise nicht in XAML verwendet.</item>
 	<item id="classXamlSyntax_noDefaultCtor">Sie können im XAML nicht direkt eine Instanz dieser Klasse erzeugen.</item>
 	<item id="classXamlSyntax_noDefaultCtorWithTypeConverter"></item>  <!-- This item intentionally empty, per spec -->
