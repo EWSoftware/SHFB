@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - XML Comments Example
 // File    : SampleClass.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/13/2022
+// Updated : 03/14/2022
 // Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
 //
 // This class is used to demonstrate the various XML comments elements.  It serves no useful purpose.
@@ -506,7 +506,7 @@ namespace XMLCommentsExamples
         /// <returns>The average of the values</returns>
         /// <overloads>
         /// <summary>
-        /// These methods are used to compute the average of enumerable lists of integers
+        /// These methods are used to compute the average of enumerable lists of values
         /// </summary>
         /// <remarks>
         /// These methods serve no other purpose than to demonstrate the use of the

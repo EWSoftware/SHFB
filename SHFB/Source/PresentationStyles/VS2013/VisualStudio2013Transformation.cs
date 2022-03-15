@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/12/2022
+// Updated : 03/14/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -167,7 +167,8 @@ namespace Sandcastle.PresentationStyles.VS2013
         /// <inheritdoc />
         protected override void CreateTransformationArguments()
         {
-            this.AddTransformationArgumentRange(new[] {
+            this.AddTransformationArgumentRange(new[]
+            {
                 new TransformationArgument(nameof(RobotsMetadata), true, true, null,
                     "An optional robots metadata value (e.g. noindex, nofollow).  If left blank, the robots " +
                     "metadata element will be omitted from the topics."),
@@ -244,7 +245,8 @@ namespace Sandcastle.PresentationStyles.VS2013
         {
             LanguageSpecificText.KeywordStyleName = this.StyleNameFor(CommonStyle.Keyword);
 
-            this.AddLanguageSpecificTextRange(new[] {
+            this.AddLanguageSpecificTextRange(new[]
+            {
                 new LanguageSpecificText(true, new[]
                 {
                     (LanguageSpecificText.CPlusPlus, "nullptr"),
@@ -310,7 +312,8 @@ namespace Sandcastle.PresentationStyles.VS2013
         /// <inheritdoc />
         protected override void CreateElementHandlers()
         {
-            this.AddElements(new Element[] {
+            this.AddElements(new Element[]
+            {
                 // MAML document root element types
                 new NonRenderedParentElement("topic"),
                 new NonRenderedParentElement("codeEntityDocument"),
@@ -506,6 +509,46 @@ namespace Sandcastle.PresentationStyles.VS2013
         }
 
         /// <inheritdoc />
+        protected override void CreateApiTopicSectionHandlers()
+        {
+            // API Topic sections will be rendered in this order by default
+            this.AddApiTopicSectionHandlerRange(new[]
+            {
+                new ApiTopicSectionHandler(ApiTopicSectionType.PreliminaryApiNotice,
+                    t => t.RenderNode(t.CommentsNode.Element("preliminary"))),
+                new ApiTopicSectionHandler(ApiTopicSectionType.ObsoleteApiNotice, t => RenderObsoleteApiNotice(t)),
+                new ApiTopicSectionHandler(ApiTopicSectionType.Summary, t => RenderApiSummarySection(t)),
+                new ApiTopicSectionHandler(ApiTopicSectionType.InheritanceHierarchyAbbreviated,
+                    t => RenderApiInheritanceHierarchy(t, false)),
+                new ApiTopicSectionHandler(ApiTopicSectionType.NamespaceAndAssemblyInfo,
+                    t => RenderApiNamespaceAndAssemblyInformation(t)),
+                new ApiTopicSectionHandler(ApiTopicSectionType.SyntaxSection, t => RenderApiSyntaxSection(t)),
+                new ApiTopicSectionHandler(ApiTopicSectionType.MemberList, t => RenderApiMemberList(t)),
+                new ApiTopicSectionHandler(ApiTopicSectionType.Events,
+                    t => RenderApiSectionTable(t, "title_events", "header_eventType", "header_eventReason",
+                         t.CommentsNode.Elements("event"))),
+                new ApiTopicSectionHandler(ApiTopicSectionType.Exceptions,
+                    t => RenderApiSectionTable(t, "title_exceptions", "header_exceptionName",
+                         "header_exceptionCondition", this.CommentsNode.Elements("exception"))),
+                new ApiTopicSectionHandler(ApiTopicSectionType.Remarks, t => RenderApiRemarksSection(t)),
+                new ApiTopicSectionHandler(ApiTopicSectionType.Examples, t => RenderApiExamplesSection(t)),
+                new ApiTopicSectionHandler(ApiTopicSectionType.Versions, t => RenderApiVersionsSection(t)),
+                new ApiTopicSectionHandler(ApiTopicSectionType.Permissions,
+                    t => RenderApiSectionTable(t, "title_permissions", "header_permissionName",
+                         "header_permissionDescription", t.CommentsNode.Elements("permission"))),
+                new ApiTopicSectionHandler(ApiTopicSectionType.ThreadSafety,
+                    t => t.RenderNode(t.CommentsNode.Element("threadsafety"))),
+                new ApiTopicSectionHandler(ApiTopicSectionType.RevisionHistory,
+                    t => RenderApiRevisionHistorySection(t)),
+                new ApiTopicSectionHandler(ApiTopicSectionType.Bibliography,
+                    t => RenderApiBibliographySection(t)),
+                new ApiTopicSectionHandler(ApiTopicSectionType.SeeAlso, t => RenderApiSeeAlsoSection(t)),
+                new ApiTopicSectionHandler(ApiTopicSectionType.InheritanceHierarchyFull,
+                    t => RenderApiInheritanceHierarchy(t, true)),
+            });
+        }
+
+        /// <inheritdoc />
         public override void RenderTypeReferenceLink(XElement content, XElement typeInfo, bool qualified)
         {
             if(content == null)
@@ -664,7 +707,13 @@ namespace Sandcastle.PresentationStyles.VS2013
             if(this.IsMamlTopic)
                 this.RenderNode(this.TopicNode);
             else
-                this.RenderApiTopicBody();
+            {
+                foreach(var section in this.ApiTopicSections)
+                {
+                    section.RenderSection(this);
+                    this.OnSectionRendered(section.SectionType, section.CustomSectionName);
+                }
+            }
 
             // Add the topic footer content
             body.Add(new XElement("div",
@@ -1706,195 +1755,86 @@ namespace Sandcastle.PresentationStyles.VS2013
 
             return table;
         }
+        #endregion
+
+        #region API topic section handlers
+        //=====================================================================
 
         /// <summary>
-        /// Render the content of an API topic's body
+        /// This is used to render the obsolete API notice
         /// </summary>
-        /// <remarks>This is mostly custom rendering of the various sections based on the member type</remarks>
-        private void RenderApiTopicBody()
+        /// <param name="transformation">The topic transformation to use</param>
+        private static void RenderObsoleteApiNotice(TopicTransformationCore transformation)
         {
-            this.RenderNode(this.CommentsNode.Element("preliminary"));
-
-            if(this.ReferenceNode.AttributeOfType("T:System.ObsoleteAttribute") != null)
+            if(transformation.ReferenceNode.AttributeOfType("T:System.ObsoleteAttribute") != null)
             {
-                this.CurrentElement.Add(new XElement("p",
+                transformation.CurrentElement.Add(new XElement("p",
                     new XElement("include", new XAttribute("item", "boilerplate_obsoleteLong"))));
             }
+        }
 
-            this.OnSectionRendered(RenderedSection.HeaderNotes, null);
-
-            XElement overloads = null;
-
-            if(this.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload)
-                this.RenderNode(this.CommentsNode.Element("summary"));
+        /// <summary>
+        /// This is used to render the summary section
+        /// </summary>
+        /// <param name="transformation">The topic transformation to use</param>
+        private static void RenderApiSummarySection(TopicTransformationCore transformation)
+        {
+            if(transformation.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload)
+                transformation.RenderNode(transformation.CommentsNode.Element("summary"));
             else
             {
                 // Render the summary from the first overloads element.  There should only be one.
-                overloads = this.ReferenceNode.Descendants("overloads").FirstOrDefault();
+                var overloads = transformation.ReferenceNode.Descendants("overloads").FirstOrDefault();
 
                 if(overloads != null)
                 {
                     var summary = overloads.Element("summary");
 
                     if(summary != null)
-                        this.RenderNode(summary);
+                        transformation.RenderNode(summary);
                     else
                     {
-                        var div = new XElement("div", this.StyleAttributeFor(CommonStyle.Summary));
+                        var div = new XElement("div", transformation.StyleAttributeFor(CommonStyle.Summary));
 
-                        this.CurrentElement.Add(div);
-                        this.RenderChildElements(div, overloads.Nodes());
+                        transformation.CurrentElement.Add(div);
+                        transformation.RenderChildElements(div, overloads.Nodes());
                     }
                 }
             }
-
-            this.OnSectionRendered(RenderedSection.Summary, null);
-
-            // Render a minimal inheritance hierarchy at the top
-            int descendants = this.RenderInheritanceHierarchy(4);
-
-            this.OnSectionRendered(RenderedSection.InheritanceHierarchyAbbreviated, null);
-
-            // Only API member pages get namespace/assembly info and a syntax section
-            if(this.ApiMember.ApiTopicGroup != ApiMemberGroup.List &&
-               this.ApiMember.ApiTopicGroup != ApiMemberGroup.RootGroup &&
-               this.ApiMember.ApiTopicGroup != ApiMemberGroup.Root &&
-               this.ApiMember.ApiTopicGroup != ApiMemberGroup.NamespaceGroup &&
-               this.ApiMember.ApiTopicGroup != ApiMemberGroup.Namespace)
-            {
-                this.RenderNamespaceAndAssemblyInformation();
-
-                this.OnSectionRendered(RenderedSection.InheritanceHierarchyAbbreviated, null);
-
-                this.RenderNode(this.SyntaxNode);
-
-                this.OnSectionRendered(RenderedSection.SyntaxSection, null);
-            }
-
-            // Element lists
-            switch(this.ApiMember)
-            {
-                case var t when t.ApiTopicGroup == ApiMemberGroup.RootGroup || t.ApiTopicGroup == ApiMemberGroup.Root:
-                    this.RenderRootList();
-                    break;
-
-                case var t when t.ApiTopicGroup == ApiMemberGroup.NamespaceGroup:
-                    this.RenderNamespaceGroupList();
-                    break;
-
-                case var t when t.ApiTopicGroup == ApiMemberGroup.Namespace:
-                    this.RenderNamespaceList();
-                    break;
-
-                case var t when t.ApiTopicSubgroup == ApiMemberGroup.Enumeration:
-                    this.RenderEnumerationMembersList();
-                    break;
-
-                case var t when t.ApiTopicGroup == ApiMemberGroup.Type || t.ApiTopicGroup == ApiMemberGroup.List:
-                    this.RenderTypeMemberLists();
-                    break;
-            }
-
-            this.OnSectionRendered(RenderedSection.MemberList, null);
-
-            this.RenderSectionTable("title_events", "header_eventType", "header_eventReason",
-                this.CommentsNode.Elements("event"));
-            this.OnSectionRendered(RenderedSection.Events, null);
-
-            this.RenderSectionTable("title_exceptions", "header_exceptionName", "header_exceptionCondition",
-                this.CommentsNode.Elements("exception"));
-            this.OnSectionRendered(RenderedSection.Exceptions, null);
-
-            // For overloads, render remarks and examples from the overloads element
-            if(overloads == null)
-            {
-                this.RenderNode(this.CommentsNode.Element("remarks"));
-                this.OnSectionRendered(RenderedSection.Remarks, null);
-
-                this.RenderNode(this.CommentsNode.Element("example"));
-                this.OnSectionRendered(RenderedSection.Examples, null);
-            }
-            else
-            {
-                this.RenderNode(overloads.Element("remarks"));
-                this.OnSectionRendered(RenderedSection.Remarks, null);
-
-                this.RenderNode(overloads.Element("example"));
-                this.OnSectionRendered(RenderedSection.Examples, null);
-            }
-
-            // Only API member pages get version information
-            if(this.ApiMember.ApiTopicGroup != ApiMemberGroup.List &&
-               this.ApiMember.ApiTopicGroup != ApiMemberGroup.RootGroup &&
-               this.ApiMember.ApiTopicGroup != ApiMemberGroup.Root &&
-               this.ApiMember.ApiTopicGroup != ApiMemberGroup.NamespaceGroup &&
-               this.ApiMember.ApiTopicGroup != ApiMemberGroup.Namespace)
-            {
-                foreach(var v in this.ReferenceNode.Elements("versions"))
-                    this.RenderNode(v);
-
-                this.OnSectionRendered(RenderedSection.Versions, null);
-            }
-
-            this.RenderSectionTable("title_permissions", "header_permissionName", "header_permissionDescription",
-                this.CommentsNode.Elements("permission"));
-            this.OnSectionRendered(RenderedSection.Permissions, null);
-
-            this.RenderNode(this.CommentsNode.Element("threadsafety"));
-            this.OnSectionRendered(RenderedSection.ThreadSafety, null);
-
-            this.RenderRevisionHistory();
-            this.OnSectionRendered(RenderedSection.RevisionHistory, null);
-
-            // Render the bibliography section if needed.  By now, any citation elements in the summary, remarks,
-            // or other sections should have been seen.
-            if(this.ElementHandlerFor("bibliography") is BibliographyElement b)
-            {
-                if(b.DetermineCitations(this).Count != 0)
-                {
-                    // Use the first citation element as the element for rendering.  It's only needed to create
-                    // a unique ID for the section.
-                    var cite = this.DocumentNode.Descendants("cite").First();
-
-                    b.Render(this, cite);
-                }
-            }
-
-            this.OnSectionRendered(RenderedSection.Bibliography, null);
-
-            this.RenderSeeAlsoSection();
-
-            this.OnSectionRendered(RenderedSection.SeeAlso, null);
-
-            // Render a full inheritance hierarchy at the bottom if needed
-            if(descendants > 4)
-                this.RenderInheritanceHierarchy(0);
-
-            this.OnSectionRendered(RenderedSection.InheritanceHierarchyFull, null);
         }
 
         /// <summary>
         /// Render the inheritance hierarchy section
         /// </summary>
-        /// <param name="maxDescendants">The maximum number of descendents to show or zero to show all
-        /// descendants.  If a non-zero value is passed, and the number of descendants is greater than it, a
-        /// "More..." link is generated to a section with a <c>fullInheritance</c> ID that is assumed to be
-        /// elsewhere in the topic that shows all descendants.</param>
-        /// <returns>The number of descendants.  This can be used to determine if a full hierarchy is needed at
-        /// the end of the topic.</returns>
-        public int RenderInheritanceHierarchy(int maxDescendants)
+        /// <param name="transformation">The topic transformation to use</param>
+        /// <param name="fullHierarchy">True for a full hierarchy, false for an abbreviated one (four descendants
+        /// maximum).  If full, it will only render a full one if the abbreviated hierarchy section is not
+        /// present or if the descendant count exceeds four.  The abbreviated hierarchy renders a "More..." link
+        /// to a full hierarchy section with a <c>fullInheritance</c> ID that is assumed to be elsewhere in the
+        /// topic that shows all descendants.</param>
+        private static void RenderApiInheritanceHierarchy(TopicTransformationCore transformation, bool fullHierarchy)
         {
-            var family = this.ReferenceNode.Element("family");
-            int descendantCount = 0;
+            var family = transformation.ReferenceNode.Element("family");
 
             if(family == null)
-                return 0;
+                return;
 
-            var (title, content) = this.CreateSection(family.GenerateUniqueId(), true,
-                "title_family", maxDescendants == 0 ? "fullInheritance" : null);
+            var descendants = family.Element("descendents");
+            int descendantCount = descendants?.Elements().Count() ?? 0;
 
-            this.CurrentElement.Add(title);
-            this.CurrentElement.Add(content);
+            // If an abbreviated hierarchy section is present and there are less than 5 descendants, skip the
+            // full hierarchy.
+            if(fullHierarchy && descendantCount < 5 && transformation.ApiTopicSectionHandlerFor(
+              ApiTopicSectionType.InheritanceHierarchyAbbreviated, null) != null)
+            {
+                return;
+            }
+
+            var (title, content) = transformation.CreateSection(family.GenerateUniqueId(), true,
+                "title_family", fullHierarchy ? "fullInheritance" : null);
+
+            transformation.CurrentElement.Add(title);
+            transformation.CurrentElement.Add(content);
 
             var ancestors = family.Element("ancestors");
             int indent = 0;
@@ -1907,7 +1847,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                     if(indent > 0)
                         content.Add(indent.ToIndent());
 
-                    this.RenderTypeReferenceLink(content, typeInfo, true);
+                    transformation.RenderTypeReferenceLink(content, typeInfo, true);
                     content.Add(new XElement("br"));
 
                     indent++;
@@ -1921,19 +1861,13 @@ namespace Sandcastle.PresentationStyles.VS2013
             }
 
             content.Add(new XElement("referenceLink",
-                    new XAttribute("target", this.Key),
+                    new XAttribute("target", transformation.Key),
                     new XAttribute("show-container", true)),
                 new XElement("br"));
 
-            var descendants = family.Element("descendents");
-
-            // descendents
             if(descendants != null)
             {
-
-                descendantCount = descendants.Elements().Count();
-
-                if(maxDescendants > 0 && descendantCount > maxDescendants)
+                if(!fullHierarchy && descendantCount > 4)
                 {
                     content.Add(indent.ToIndent());
                     content.Add(new XElement("a",
@@ -1946,24 +1880,33 @@ namespace Sandcastle.PresentationStyles.VS2013
                     foreach(var typeInfo in descendants.Elements().OrderBy(e => e.Attribute("api")?.Value))
                     {
                         content.Add(indent.ToIndent());
-                        this.RenderTypeReferenceLink(content, typeInfo, true);
+                        transformation.RenderTypeReferenceLink(content, typeInfo, true);
                         content.Add(new XElement("br"));
                     }
                 }
             }
-
-            return descendantCount;
         }
 
         /// <summary>
         /// This is used to render namespace and assembly information for an API topic
         /// </summary>
-        private void RenderNamespaceAndAssemblyInformation()
+        /// <param name="transformation">The topic transformation to use</param>
+        private static void RenderApiNamespaceAndAssemblyInformation(TopicTransformationCore transformation)
         {
-            var containers = this.ReferenceNode.Element("containers");
+            // Only API member pages get namespace/assembly info
+            if(transformation.ApiMember.ApiTopicGroup == ApiMemberGroup.List ||
+               transformation.ApiMember.ApiTopicGroup == ApiMemberGroup.RootGroup ||
+               transformation.ApiMember.ApiTopicGroup == ApiMemberGroup.Root ||
+               transformation.ApiMember.ApiTopicGroup == ApiMemberGroup.NamespaceGroup ||
+               transformation.ApiMember.ApiTopicGroup == ApiMemberGroup.Namespace)
+            {
+                return;
+            }
+
+            var containers = transformation.ReferenceNode.Element("containers");
             var libraries = containers.Elements("library");
 
-            this.CurrentElement.Add(new XElement("p", " "),
+            transformation.CurrentElement.Add(new XElement("p", " "),
                 new XElement("include", new XAttribute("item", "boilerplate_requirementsNamespace")),
                 Element.NonBreakingSpace,
                 new XElement("referenceLink",
@@ -1975,24 +1918,25 @@ namespace Sandcastle.PresentationStyles.VS2013
 
             if(libraries.Count() > 1)
             {
-                this.CurrentElement.Add(new XElement("include",
+                transformation.CurrentElement.Add(new XElement("include",
                     new XAttribute("item", "boilerplate_requirementsAssemblies")));
                 separatorSize = 2;
             }
             else
             {
-                this.CurrentElement.Add(new XElement("include",
+                transformation.CurrentElement.Add(new XElement("include",
                     new XAttribute("item", "boilerplate_requirementsAssemblyLabel")));
             }
 
             string separator = new String(Element.NonBreakingSpace, separatorSize);
+            int maxVersionParts = ((VisualStudio2013Transformation)transformation).MaxVersionParts;
 
             foreach(var l in libraries)
             {
                 if(!first)
-                    this.CurrentElement.Add(new XElement("br"));
+                    transformation.CurrentElement.Add(new XElement("br"));
 
-                this.CurrentElement.Add(separator);
+                transformation.CurrentElement.Add(separator);
 
                 string version = l.Element("assemblydata").Attribute("version").Value,
                     extension = l.Attribute("kind").Value.Equals(
@@ -2000,10 +1944,10 @@ namespace Sandcastle.PresentationStyles.VS2013
                 string[] versionParts = version.Split(new[] { ' ', '.' }, StringSplitOptions.RemoveEmptyEntries);
 
                 // Limit the version number parts if requested
-                if(this.MaxVersionParts > 1 && this.MaxVersionParts < 5)
-                    version = String.Join(".", versionParts, 0, this.MaxVersionParts);
+                if(maxVersionParts > 1 && maxVersionParts < 5)
+                    version = String.Join(".", versionParts, 0, maxVersionParts);
 
-                this.CurrentElement.Add(new XElement("include",
+                transformation.CurrentElement.Add(new XElement("include",
                         new XAttribute("item", "assemblyNameAndModule"),
                     new XElement("parameter", l.Attribute("assembly").Value),
                     new XElement("parameter", l.Attribute("module").Value),
@@ -2016,20 +1960,20 @@ namespace Sandcastle.PresentationStyles.VS2013
             // Show XAML XML namespace for APIs that support XAML.  All topics that have auto-generated XAML
             // syntax get an "XMLNS for XAML" line in the Requirements section.  Topics with boilerplate XAML
             // syntax, e.g. "Not applicable", do NOT get this line.
-            var xamlCode = this.SyntaxNode.Elements("div").Where(d => d.Attribute("codeLanguage")?.Value.Equals(
+            var xamlCode = transformation.SyntaxNode.Elements("div").Where(d => d.Attribute("codeLanguage")?.Value.Equals(
                 "XAML", StringComparison.Ordinal) ?? false);
 
             if(xamlCode.Any())
             {
                 var xamlXmlNS = xamlCode.Elements("div").Where(d => d.Attribute("xamlXmlnsUri")?.Value != null);
 
-                this.CurrentElement.Add(new XElement("br"));
+                transformation.CurrentElement.Add(new XElement("br"));
 
                 XElement parameter = new XElement("parameter"),
                     xamlNS = new XElement("include",
                         new XAttribute("item", "boilerplate_xamlXmlnsRequirements"), parameter);
 
-                this.CurrentElement.Add(xamlNS);
+                transformation.CurrentElement.Add(xamlNS);
 
                 if(xamlXmlNS.Any())
                 {
@@ -2038,7 +1982,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                     foreach(var d in xamlXmlNS)
                     {
                         if(!first)
-                            this.CurrentElement.Add(", ");
+                            transformation.CurrentElement.Add(", ");
 
                         parameter.Add(new XElement(d));
                         first = false;
@@ -2053,274 +1997,69 @@ namespace Sandcastle.PresentationStyles.VS2013
         }
 
         /// <summary>
-        /// Render a section with a title and a table containing the element content
+        /// This is used to render the syntax section
         /// </summary>
-        /// <param name="sectionTitleItem">The section title include item</param>
-        /// <param name="typeColumnHeaderItem">The type column header item</param>
-        /// <param name="descriptionColumnHeaderItem">The description column header item</param>
-        /// <param name="sectionElements">An enumerable list of the elements to render in the table</param>
-        private void RenderSectionTable(string sectionTitleItem, string typeColumnHeaderItem,
-          string descriptionColumnHeaderItem, IEnumerable<XElement> sectionElements)
+        /// <param name="transformation">The topic transformation to use</param>
+        private static void RenderApiSyntaxSection(TopicTransformationCore transformation)
         {
-            if(sectionElements.Any())
+            // Only API member pages get a syntax section
+            if(transformation.ApiMember.ApiTopicGroup != ApiMemberGroup.List &&
+               transformation.ApiMember.ApiTopicGroup != ApiMemberGroup.RootGroup &&
+               transformation.ApiMember.ApiTopicGroup != ApiMemberGroup.Root &&
+               transformation.ApiMember.ApiTopicGroup != ApiMemberGroup.NamespaceGroup &&
+               transformation.ApiMember.ApiTopicGroup != ApiMemberGroup.Namespace)
             {
-                var (title, content) = this.CreateSection(sectionElements.First().GenerateUniqueId(), true,
-                    sectionTitleItem, null);
-
-                this.CurrentElement.Add(title);
-                this.CurrentElement.Add(content);
-
-                var table = new XElement("table",
-                    new XElement("tr",
-                        new XElement("th",
-                            new XElement("include", new XAttribute("item", typeColumnHeaderItem))),
-                        new XElement("th",
-                            new XElement("include", new XAttribute("item", descriptionColumnHeaderItem)))));
-
-                content.Add(table);
-
-                foreach(var se in sectionElements)
-                {
-                    var descCell = new XElement("td");
-
-                    table.Add(new XElement("tr",
-                        new XElement("td",
-                            new XElement("referenceLink",
-                                new XAttribute("target", se.Attribute("cref")?.Value),
-                                new XAttribute("qualified", "false"))),
-                        descCell));
-
-                    this.RenderChildElements(descCell, se.Nodes());
-                }
+                transformation.RenderNode(transformation.SyntaxNode);
             }
         }
 
         /// <summary>
-        /// Render the revision history section if applicable
+        /// This is used to render a member list topic (root, root group, namespace group, namespace, enumeration,
+        /// type, or type member list).
         /// </summary>
-        private void RenderRevisionHistory()
+        /// <param name="transformation">The topic transformation to use</param>
+        private static void RenderApiMemberList(TopicTransformationCore transformation)
         {
-            var revisionHistory = this.CommentsNode.Element("revisionHistory");
-
-            if(revisionHistory == null || revisionHistory.Attribute("visible")?.Value == "false")
-                return;
-
-            var revisions = revisionHistory.Elements("revision").Where(
-                h => h.Attribute("visible")?.Value != "false");
-
-            if(revisions.Any())
+            switch(transformation.ApiMember)
             {
-                var (title, content) = this.CreateSection(revisionHistory.GenerateUniqueId(), true,
-                    "title_revisionHistory", null);
+                case var t when t.ApiTopicGroup == ApiMemberGroup.RootGroup || t.ApiTopicGroup == ApiMemberGroup.Root:
+                    RenderApiRootList(transformation);
+                    break;
 
-                this.CurrentElement.Add(title);
-                this.CurrentElement.Add(content);
+                case var t when t.ApiTopicGroup == ApiMemberGroup.NamespaceGroup:
+                    RenderApiNamespaceGroupList(transformation);
+                    break;
 
-                var table = new XElement("table",
-                    new XElement("tr",
-                        new XElement("th",
-                            new XElement("include", new XAttribute("item", "header_revHistoryDate"))),
-                        new XElement("th",
-                            new XElement("include", new XAttribute("item", "header_revHistoryVersion"))),
-                        new XElement("th",
-                            new XElement("include", new XAttribute("item", "header_revHistoryDescription")))));
+                case var t when t.ApiTopicGroup == ApiMemberGroup.Namespace:
+                    RenderApiNamespaceList(transformation);
+                    break;
 
-                content.Add(table);
+                case var t when t.ApiTopicSubgroup == ApiMemberGroup.Enumeration:
+                    RenderApiEnumerationMembersList(transformation);
+                    break;
 
-                foreach(var rh in revisions)
-                {
-                    var descCell = new XElement("td");
-
-                    table.Add(new XElement("tr",
-                        new XElement("td", rh.Attribute("date")?.Value),
-                        new XElement("td", rh.Attribute("version")?.Value),
-                        descCell));
-
-                    this.RenderChildElements(descCell, rh.Nodes());
-                }
-            }
-        }
-
-        /// <summary>
-        /// This renders the See Also section if applicable
-        /// </summary>
-        private void RenderSeeAlsoSection()
-        {
-            // Render the see and seealso links using the see element handler as the processing is the same
-            Element seeHandler = this.ElementHandlerFor("see"),
-                conceptualLinkHandler = this.ElementHandlerFor("conceptualLink");
-
-            // Get see also elements from comments excluding those in overloads comments
-            List<XElement>  seeAlsoNotInOverloads = this.CommentsNode.Descendants("seealso").Where(
-                    s => !s.Ancestors("overloads").Any()).ToList(),
-                seeAlsoHRef = seeAlsoNotInOverloads.Where(s => s.Attribute("href") != null).ToList(),
-                seeAlsoCRef = seeAlsoNotInOverloads.Except(seeAlsoHRef).ToList();
-
-            // Combine those with see also elements from element overloads comments
-            var elements = this.ReferenceNode.Element("elements");
-
-            if(elements == null)
-                elements = new XElement("elements");
-
-            var elementOverloads = elements.Elements("element").SelectMany(e => e.Descendants("overloads")).ToList();
-            seeAlsoHRef.AddRange(elementOverloads.Descendants("seealso").Where(s => s.Attribute("href") != null));
-            seeAlsoCRef.AddRange(elementOverloads.Descendants("seealso").Where(s => s.Attribute("href") == null));
-
-            // Get conceptual links from comments excluding those in overloads comments and combine them with
-            // those in element overloads comments.
-            var conceptualLinks = this.CommentsNode.Descendants("conceptualLink").Where(
-                s => !s.Ancestors("overloads").Any()).Concat(elementOverloads.Descendants("conceptualLink")).ToList();
-
-            if(seeAlsoCRef.Count != 0 || seeAlsoHRef.Count != 0 || conceptualLinks.Count != 0 ||
-              this.ApiMember.ApiTopicGroup == ApiMemberGroup.Type ||
-              this.ApiMember.ApiTopicGroup == ApiMemberGroup.Member ||
-              this.ApiMember.ApiTopicGroup == ApiMemberGroup.List)
-            {
-                // This has a fixed ID that matches the one used in MAML topics for the related topics section
-                var (title, content) = this.CreateSection("seeAlso", true, "title_relatedTopics", null);
-
-                this.CurrentElement.Add(title);
-                this.CurrentElement.Add(content);
-
-                var priorCurrentElement = this.CurrentElement;
-
-                if(seeAlsoCRef.Count != 0 || this.ApiMember.ApiTopicGroup == ApiMemberGroup.Type ||
-                  this.ApiMember.ApiTopicGroup == ApiMemberGroup.Member ||
-                  this.ApiMember.ApiTopicGroup == ApiMemberGroup.List)
-                {
-                    var (subtitle, subsection) = this.CreateSubsection(true, "title_seeAlso_reference");
-
-                    if(subtitle != null)
-                        content.Add(subtitle);
-
-                    if(subsection != null)
-                        content.Add(subsection);
-                    else
-                        subsection = content;
-
-                    this.RenderAutoGeneratedSeeAlsoLinks(subsection);
-
-                    if(seeHandler != null)
-                    {
-                        foreach(var s in seeAlsoCRef)
-                        {
-                            var div = new XElement("div", this.StyleAttributeFor(CommonStyle.SeeAlsoStyle));
-                            subsection.Add(div);
-
-                            this.CurrentElement = div;
-                            seeHandler.Render(this, s);
-                        }
-                    }
-                }
-
-                if((seeAlsoHRef.Count != 0 && seeHandler != null) || (conceptualLinks.Count != 0 &&
-                  conceptualLinkHandler != null))
-                {
-                    var (subtitle, subsection) = this.CreateSubsection(true, "title_seeAlso_otherResources");
-
-                    if(subtitle != null)
-                        content.Add(subtitle);
-
-                    if(subsection != null)
-                        content.Add(subsection);
-                    else
-                        subsection = content;
-
-                    if(seeHandler != null)
-                    {
-                        foreach(var s in seeAlsoHRef)
-                        {
-                            var div = new XElement("div", this.StyleAttributeFor(CommonStyle.SeeAlsoStyle));
-                            subsection.Add(div);
-
-                            this.CurrentElement = div;
-                            seeHandler.Render(this, s);
-                        }
-                    }
-
-                    if(conceptualLinkHandler != null)
-                    {
-                        foreach(var c in conceptualLinks)
-                        {
-                            var div = new XElement("div", this.StyleAttributeFor(CommonStyle.SeeAlsoStyle));
-                            subsection.Add(div);
-
-                            this.CurrentElement = div;
-                            conceptualLinkHandler.Render(this, c);
-                        }
-                    }
-                }
-
-                this.CurrentElement = priorCurrentElement;
-            }
-        }
-
-        /// <summary>
-        /// Render auto-generated see also section links based on the API topic
-        /// </summary>
-        /// <param name="subsection">The subsection to which the links are added</param>
-        private void RenderAutoGeneratedSeeAlsoLinks(XElement subsection)
-        {
-            // Adda a link to the containing type on all list and member topics
-            if(this.ApiMember.ApiTopicGroup == ApiMemberGroup.Member ||
-              this.ApiMember.ApiTopicGroup == ApiMemberGroup.List)
-            {
-                subsection.Add(new XElement("div",
-                        this.StyleAttributeFor(CommonStyle.SeeAlsoStyle),
-                    new XElement("referenceLink",
-                        new XAttribute("target", this.ApiMember.TypeTopicId),
-                        new XAttribute("display-target", "format"),
-                        new XElement("include",
-                            new XAttribute("item", "boilerplate_seeAlsoTypeLink"),
-                            new XElement("parameter", "{0}"),
-                            new XElement("parameter", this.ApiMember.TypeApiSubgroup)))));
-            }
-
-            // Add a link to the overload topic
-            if(!String.IsNullOrWhiteSpace(this.ApiMember.OverloadTopicId))
-            {
-                subsection.Add(new XElement("div",
-                        this.StyleAttributeFor(CommonStyle.SeeAlsoStyle),
-                    new XElement("referenceLink",
-                        new XAttribute("target", this.ApiMember.OverloadTopicId),
-                        new XAttribute("display-target", "format"),
-                        new XAttribute("show-parameters", "false"),
-                        new XElement("include",
-                            new XAttribute("item", "boilerplate_seeAlsoOverloadLink"),
-                            new XElement("parameter", "{0}")))));
-            }
-
-            // Add a link to the namespace topic
-            string namespaceId = this.ReferenceNode.Element("containers")?.Element("namespace")?.Attribute("api")?.Value;
-
-            if(!String.IsNullOrWhiteSpace(namespaceId))
-            {
-                subsection.Add(new XElement("div",
-                        this.StyleAttributeFor(CommonStyle.SeeAlsoStyle),
-                    new XElement("referenceLink",
-                        new XAttribute("target", namespaceId),
-                        new XAttribute("display-target", "format"),
-                        new XElement("include",
-                            new XAttribute("item", "boilerplate_seeAlsoNamespaceLink"),
-                            new XElement("parameter", "{0}")))));
+                case var t when t.ApiTopicGroup == ApiMemberGroup.Type || t.ApiTopicGroup == ApiMemberGroup.List:
+                    RenderApiTypeMemberLists(transformation);
+                    break;
             }
         }
 
         /// <summary>
         /// Render the list in a root group or root topic
         /// </summary>
-        private void RenderRootList()
+        /// <param name="transformation">The topic transformation to use</param>
+        private static void RenderApiRootList(TopicTransformationCore transformation)
         {
-            var elements = this.ReferenceNode.Element("elements").Elements("element").OrderBy(
+            var elements = transformation.ReferenceNode.Element("elements").Elements("element").OrderBy(
                 e => e.Element("apidata").Attribute("name").Value).ToList();
 
             if(elements.Count == 0)
                 return;
 
-            var (title, content) = this.CreateSection(elements[0].GenerateUniqueId(), true, "title_namespaces", null);
+            var (title, content) = transformation.CreateSection(elements[0].GenerateUniqueId(), true, "title_namespaces", null);
 
-            this.CurrentElement.Add(title);
-            this.CurrentElement.Add(content);
+            transformation.CurrentElement.Add(title);
+            transformation.CurrentElement.Add(content);
 
             var table = new XElement("table",
                     new XAttribute("id", "namespaceList"),
@@ -2351,7 +2090,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 var summary = e.Element("summary");
 
                 if(summary != null)
-                    this.RenderChildElements(summaryCell, summary.Nodes());
+                    transformation.RenderChildElements(summaryCell, summary.Nodes());
                 else
                     summaryCell.Add(Element.NonBreakingSpace);
             }
@@ -2360,9 +2099,10 @@ namespace Sandcastle.PresentationStyles.VS2013
         /// <summary>
         /// Render the list in a namespace group topic
         /// </summary>
-        private void RenderNamespaceGroupList()
+        /// <param name="transformation">The topic transformation to use</param>
+        private static void RenderApiNamespaceGroupList(TopicTransformationCore transformation)
         {
-            var elements = this.ReferenceNode.Element("elements").Elements("element").OrderBy(e =>
+            var elements = transformation.ReferenceNode.Element("elements").Elements("element").OrderBy(e =>
             {
                 string name = e.Attribute("api").Value;
                 return name.Substring(name.IndexOf(':') + 1);
@@ -2371,11 +2111,11 @@ namespace Sandcastle.PresentationStyles.VS2013
             if(elements.Count == 0)
                 return;
 
-            var (title, content) = this.CreateSection(elements[0].GenerateUniqueId(), true,
+            var (title, content) = transformation.CreateSection(elements[0].GenerateUniqueId(), true,
                 "tableTitle_namespace", null);
 
-            this.CurrentElement.Add(title);
-            this.CurrentElement.Add(content);
+            transformation.CurrentElement.Add(title);
+            transformation.CurrentElement.Add(content);
 
             var table = new XElement("table",
                     new XAttribute("id", "namespaceList"),
@@ -2402,7 +2142,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 var summary = e.Element("summary");
 
                 if(summary != null)
-                    this.RenderChildElements(summaryCell, summary.Nodes());
+                    transformation.RenderChildElements(summaryCell, summary.Nodes());
                 else
                     summaryCell.Add(Element.NonBreakingSpace);
             }
@@ -2411,20 +2151,21 @@ namespace Sandcastle.PresentationStyles.VS2013
         /// <summary>
         /// Render the category lists in a namespace topic
         /// </summary>
-        private void RenderNamespaceList()
+        /// <param name="transformation">The topic transformation to use</param>
+        private static void RenderApiNamespaceList(TopicTransformationCore transformation)
         {
-            var elements = this.ReferenceNode.Element("elements").Elements("element").GroupBy(
+            var elements = transformation.ReferenceNode.Element("elements").Elements("element").GroupBy(
                 e => e.Element("apidata").Attribute("subgroup").Value).ToDictionary(k => k.Key, v => v);
 
             foreach(string key in new[] { "class", "structure", "interface", "delegate", "enumeration" })
             {
                 if(elements.TryGetValue(key, out var group))
                 {
-                    var (title, content) = this.CreateSection(group.First().GenerateUniqueId(), true,
+                    var (title, content) = transformation.CreateSection(group.First().GenerateUniqueId(), true,
                         "tableTitle_" + key, null);
 
-                    this.CurrentElement.Add(title);
-                    this.CurrentElement.Add(content);
+                    transformation.CurrentElement.Add(title);
+                    transformation.CurrentElement.Add(content);
 
                     var table = new XElement("table",
                             new XAttribute("id", key + "List"),
@@ -2465,7 +2206,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                         if(e.Descendants("example").Any())
                         {
                             codeExampleImage = new XElement("img",
-                                new XAttribute("src", $"{this.IconPath}CodeExample.png"),
+                                new XAttribute("src", $"{transformation.IconPath}CodeExample.png"),
                                 new XElement("includeAttribute",
                                     new XAttribute("name", "alt"),
                                     new XAttribute("item", "altText_CodeExample")),
@@ -2486,7 +2227,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                             new XElement("td",
                                 new XElement("img",
                                     new XAttribute("src",
-                                        $"{this.IconPath}{visibility}{Char.ToUpperInvariant(key[0])}{key.Substring(1)}.gif"),
+                                        $"{transformation.IconPath}{visibility}{Char.ToUpperInvariant(key[0])}{key.Substring(1)}.gif"),
                                     new XElement("includeAttribute",
                                         new XAttribute("name", "alt"),
                                         new XAttribute("item", $"altText_{visibility}{key}")),
@@ -2503,7 +2244,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                         var summary = e.Element("summary");
 
                         if(summary != null)
-                            this.RenderChildElements(summaryCell, summary.Nodes());
+                            transformation.RenderChildElements(summaryCell, summary.Nodes());
                         else
                         {
                             if(summaryCell.IsEmpty)
@@ -2517,12 +2258,16 @@ namespace Sandcastle.PresentationStyles.VS2013
         /// <summary>
         /// Render the members of an enumeration
         /// </summary>
-        private void RenderEnumerationMembersList()
+        /// <param name="transformation">The topic transformation to use</param>
+        private static void RenderApiEnumerationMembersList(TopicTransformationCore transformation)
         {
-            // Sort order is configurable for enumeration members
-            EnumMemberSortOrder enumMemberSortOrder = this.EnumMemberSortOrder;
+            // Convert to this type so that we can access the argument shortcuts easily
+            var thisTransform = (VisualStudio2013Transformation)transformation;
 
-            var elements = this.ReferenceNode.Element("elements").Elements("element").OrderBy(
+            // Sort order is configurable for enumeration members
+            EnumMemberSortOrder enumMemberSortOrder = thisTransform.EnumMemberSortOrder;
+
+            var elements = thisTransform.ReferenceNode.Element("elements").Elements("element").OrderBy(
                 el => enumMemberSortOrder == EnumMemberSortOrder.Name ?
                     el.Element("apidata").Attribute("name").Value :
                     el.Element("value").Value.PadLeft(20, ' ')).ToList();
@@ -2531,19 +2276,19 @@ namespace Sandcastle.PresentationStyles.VS2013
                 return;
 
             var enumValues = elements.Select(e => e.Element("value").Value).ToList();
-            bool includeEnumValues = this.IncludeEnumValues;
+            bool includeEnumValues = thisTransform.IncludeEnumValues;
             int idx;
 
             if(includeEnumValues)
             {
-                EnumValueFormat enumFormat = this.FlagsEnumValueFormat;
+                EnumValueFormat enumFormat = thisTransform.FlagsEnumValueFormat;
                 int groupSize = 0, minWidth = 0;
                 bool signedValues = enumValues.Any(v => v.Length > 0 && v[0] == '-');
 
                 if(enumFormat != EnumValueFormat.IntegerValue &&
-                  this.ReferenceNode.AttributeOfType("T:System.FlagsAttribute") != null)
+                  thisTransform.ReferenceNode.AttributeOfType("T:System.FlagsAttribute") != null)
                 {
-                    groupSize = this.FlagsEnumSeparatorSize;
+                    groupSize = thisTransform.FlagsEnumSeparatorSize;
 
                     if(groupSize != 0 && groupSize != 4 && groupSize != 8)
                         groupSize = 0;
@@ -2586,11 +2331,11 @@ namespace Sandcastle.PresentationStyles.VS2013
                 }
             }
 
-            var (title, content) = this.CreateSection(elements.First().GenerateUniqueId(), true,
+            var (title, content) = thisTransform.CreateSection(elements.First().GenerateUniqueId(), true,
                 "topicTitle_enumMembers", null);
 
-            this.CurrentElement.Add(title);
-            this.CurrentElement.Add(content);
+            thisTransform.CurrentElement.Add(title);
+            thisTransform.CurrentElement.Add(content);
 
             XElement valueHeaderCell = null;
 
@@ -2631,7 +2376,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 table.Add(new XElement("tr",
                     new XElement("td",
                         new XElement("span",
-                            this.StyleAttributeFor(CommonStyle.SelfLink),
+                            thisTransform.StyleAttributeFor(CommonStyle.SelfLink),
                             e.Element("apidata").Attribute("name").Value)),
                     valueCell,
                     summaryCell));
@@ -2642,11 +2387,11 @@ namespace Sandcastle.PresentationStyles.VS2013
                 if(summary != null || remarks != null)
                 {
                     if(summary != null)
-                        this.RenderChildElements(summaryCell, summary.Nodes());
+                        thisTransform.RenderChildElements(summaryCell, summary.Nodes());
 
                     // Enum members may have additional authored content in the remarks node
                     if(remarks != null)
-                        this.RenderChildElements(summaryCell, remarks.Nodes());
+                        thisTransform.RenderChildElements(summaryCell, remarks.Nodes());
                 }
                 else
                 {
@@ -2660,9 +2405,10 @@ namespace Sandcastle.PresentationStyles.VS2013
         /// Render type member lists
         /// </summary>
         /// <remarks>This is used for types and the member list subtopics</remarks>
-        private void RenderTypeMemberLists()
+        /// <param name="transformation">The topic transformation to use</param>
+        private static void RenderApiTypeMemberLists(TopicTransformationCore transformation)
         {
-            var allMembers = this.ReferenceNode.Element("elements")?.Elements("element").ToList();
+            var allMembers = transformation.ReferenceNode.Element("elements")?.Elements("element").ToList();
 
             if(allMembers == null || allMembers.Count == 0)
                 return;
@@ -2693,13 +2439,14 @@ namespace Sandcastle.PresentationStyles.VS2013
                 { ApiMemberGroup.Overload, new List<XElement>() },
             };
 
-            if(this.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload)
+            if(transformation.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload)
             {
-                this.CurrentElement.Add(new XElement("p",
+                transformation.CurrentElement.Add(new XElement("p",
                     new XElement("include",
                         new XAttribute("item", "exposedMembersTableText"),
                         new XElement("parameter",
-                            new XElement("referenceLink", new XAttribute("target", this.ApiMember.TypeTopicId))))));
+                            new XElement("referenceLink", new XAttribute("target",
+                                transformation.ApiMember.TypeTopicId))))));
 
                 // Group the members by section type
                 foreach(var m in allMembers)
@@ -2787,11 +2534,11 @@ namespace Sandcastle.PresentationStyles.VS2013
                 if(members.Count == 0)
                     continue;
 
-                var (title, content) = this.CreateSection(members.First().GenerateUniqueId(), true,
+                var (title, content) = transformation.CreateSection(members.First().GenerateUniqueId(), true,
                     "tableTitle_" + memberType.ToString(), null);
 
-                this.CurrentElement.Add(title);
-                this.CurrentElement.Add(content);
+                transformation.CurrentElement.Add(title);
+                transformation.CurrentElement.Add(content);
 
                 var table = new XElement("table",
                         new XAttribute("id", memberType + "List"),
@@ -2833,7 +2580,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                     XElement codeExampleImage = null, staticImage = null, eiiImage = null,
                         referenceLink = new XElement("referenceLink",
                             new XAttribute("target", e.Attribute("api").Value));
-                    string showParameters = (this.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload &&
+                    string showParameters = (transformation.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload &&
                         e.Element("memberdata").Attribute("overload") == null &&
                         !(e.Parent.Attribute("api")?.Value ?? String.Empty).StartsWith(
                             "Overload:", StringComparison.Ordinal)) ? "false" : "true";
@@ -2842,7 +2589,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                     if(e.Descendants("example").Any())
                     {
                         codeExampleImage = new XElement("img",
-                            new XAttribute("src", $"{this.IconPath}CodeExample.png"),
+                            new XAttribute("src", $"{transformation.IconPath}CodeExample.png"),
                             new XElement("includeAttribute",
                                 new XAttribute("name", "alt"),
                                 new XAttribute("item", "altText_CodeExample")),
@@ -2856,7 +2603,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                       e.Element("memberdata").Attribute("static")?.Value == "true")
                     {
                         staticImage = new XElement("img",
-                            new XAttribute("src", $"{this.IconPath}Static.gif"),
+                            new XAttribute("src", $"{transformation.IconPath}Static.gif"),
                             new XElement("includeAttribute",
                                 new XAttribute("name", "alt"),
                                 new XAttribute("item", "altText_Static")),
@@ -2868,7 +2615,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                     if(memberType == ApiMemberGroup.ExplicitInterfaceImplementation)
                     {
                         eiiImage = new XElement("img",
-                            new XAttribute("src", $"{this.IconPath}pubInterface.gif"),
+                            new XAttribute("src", $"{transformation.IconPath}pubInterface.gif"),
                             new XElement("includeAttribute",
                                 new XAttribute("name", "alt"),
                                 new XAttribute("item", "altText_ExplicitInterface")),
@@ -2948,7 +2695,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                         new XElement("td",
                             eiiImage,
                             new XElement("img",
-                                new XAttribute("src", $"{this.IconPath}{visibility}{imageMemberType}.gif"),
+                                new XAttribute("src", $"{transformation.IconPath}{visibility}{imageMemberType}.gif"),
                                 new XElement("includeAttribute",
                                     new XAttribute("name", "alt"),
                                     new XAttribute("item", $"altText_{visibility}{imageMemberType}")),
@@ -2963,9 +2710,9 @@ namespace Sandcastle.PresentationStyles.VS2013
                     var summary = e.Element("summary");
 
                     if(summary != null)
-                        this.RenderChildElements(summaryCell, summary.Nodes());
+                        transformation.RenderChildElements(summaryCell, summary.Nodes());
 
-                    if(this.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload)
+                    if(transformation.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload)
                     {
                         if(memberType == ApiMemberGroup.Extension)
                         {
@@ -2975,11 +2722,11 @@ namespace Sandcastle.PresentationStyles.VS2013
                                 new XElement("include", new XAttribute("item", "definedBy"),
                                 parameter));
 
-                            this.RenderTypeReferenceLink(parameter, e.Element("containers").Element("type"), false);
+                            transformation.RenderTypeReferenceLink(parameter, e.Element("containers").Element("type"), false);
                         }
                         else
                         {
-                            if(this.ApiMember.TypeTopicId != e.Element("containers").Element("type").Attribute("api").Value)
+                            if(transformation.ApiMember.TypeTopicId != e.Element("containers").Element("type").Attribute("api").Value)
                             {
                                 var parameter = new XElement("parameter");
 
@@ -2987,7 +2734,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                                     new XElement("include", new XAttribute("item", "inheritedFrom"),
                                     parameter));
 
-                                this.RenderTypeReferenceLink(parameter, e.Element("containers").Element("type"), false);
+                                transformation.RenderTypeReferenceLink(parameter, e.Element("containers").Element("type"), false);
                             }
                             else
                             {
@@ -2999,7 +2746,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                                         new XElement("include", new XAttribute("item", "overridesMember"),
                                         parameter));
 
-                                    this.RenderTypeReferenceLink(parameter, e.Element("overrides").Element("member"), true);
+                                    transformation.RenderTypeReferenceLink(parameter, e.Element("overrides").Element("member"), true);
                                 }
                             }
                         }
@@ -3012,6 +2759,338 @@ namespace Sandcastle.PresentationStyles.VS2013
                 content.Add(new XElement("a",
                     new XAttribute("href", "#PageHeader"),
                     new XElement("include", new XAttribute("item", "top"))));
+            }
+        }
+
+        /// <summary>
+        /// Render a section with a title and a table containing the element content
+        /// </summary>
+        /// <param name="transformation">The topic transformation to use</param>
+        /// <param name="sectionTitleItem">The section title include item</param>
+        /// <param name="typeColumnHeaderItem">The type column header item</param>
+        /// <param name="descriptionColumnHeaderItem">The description column header item</param>
+        /// <param name="sectionElements">An enumerable list of the elements to render in the table</param>
+        private static void RenderApiSectionTable(TopicTransformationCore transformation, string sectionTitleItem,
+          string typeColumnHeaderItem, string descriptionColumnHeaderItem, IEnumerable<XElement> sectionElements)
+        {
+            if(sectionElements.Any())
+            {
+                var (title, content) = transformation.CreateSection(sectionElements.First().GenerateUniqueId(), true,
+                    sectionTitleItem, null);
+
+                transformation.CurrentElement.Add(title);
+                transformation.CurrentElement.Add(content);
+
+                var table = new XElement("table",
+                    new XElement("tr",
+                        new XElement("th",
+                            new XElement("include", new XAttribute("item", typeColumnHeaderItem))),
+                        new XElement("th",
+                            new XElement("include", new XAttribute("item", descriptionColumnHeaderItem)))));
+
+                content.Add(table);
+
+                foreach(var se in sectionElements)
+                {
+                    var descCell = new XElement("td");
+
+                    table.Add(new XElement("tr",
+                        new XElement("td",
+                            new XElement("referenceLink",
+                                new XAttribute("target", se.Attribute("cref")?.Value),
+                                new XAttribute("qualified", "false"))),
+                        descCell));
+
+                    transformation.RenderChildElements(descCell, se.Nodes());
+                }
+            }
+        }
+
+        /// <summary>
+        /// This is used to render the remarks section
+        /// </summary>
+        /// <param name="transformation">The topic transformation to use</param>
+        private static void RenderApiRemarksSection(TopicTransformationCore transformation)
+        {
+            // For overloads, render remarks from the first overloads element.  There should only be one.
+            if(transformation.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload)
+                transformation.RenderNode(transformation.CommentsNode.Element("remarks"));
+            else
+            {
+                var overloads = transformation.ReferenceNode.Descendants("overloads").FirstOrDefault();
+
+                if(overloads != null)
+                    transformation.RenderNode(overloads.Element("remarks"));
+            }
+        }
+
+        /// <summary>
+        /// This is used to render the examples section
+        /// </summary>
+        /// <param name="transformation">The topic transformation to use</param>
+        private static void RenderApiExamplesSection(TopicTransformationCore transformation)
+        {
+            // For overloads, render examples from the overloads element.  There should only be one.
+            if(transformation.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload)
+                transformation.RenderNode(transformation.CommentsNode.Element("example"));
+            else
+            {
+                var overloads = transformation.ReferenceNode.Descendants("overloads").FirstOrDefault();
+
+                if(overloads != null)
+                    transformation.RenderNode(overloads.Element("example"));
+            }
+        }
+
+        /// <summary>
+        /// This is used to render the versions section
+        /// </summary>
+        /// <param name="transformation">The topic transformation to use</param>
+        private static void RenderApiVersionsSection(TopicTransformationCore transformation)
+        {
+            // Only API member pages get version information
+            if(transformation.ApiMember.ApiTopicGroup != ApiMemberGroup.List &&
+               transformation.ApiMember.ApiTopicGroup != ApiMemberGroup.RootGroup &&
+               transformation.ApiMember.ApiTopicGroup != ApiMemberGroup.Root &&
+               transformation.ApiMember.ApiTopicGroup != ApiMemberGroup.NamespaceGroup &&
+               transformation.ApiMember.ApiTopicGroup != ApiMemberGroup.Namespace)
+            {
+                foreach(var v in transformation.ReferenceNode.Elements("versions"))
+                    transformation.RenderNode(v);
+            }
+        }
+
+        /// <summary>
+        /// Render the revision history section if applicable
+        /// </summary>
+        /// <param name="transformation">The topic transformation to use</param>
+        private static void RenderApiRevisionHistorySection(TopicTransformationCore transformation)
+        {
+            var revisionHistory = transformation.CommentsNode.Element("revisionHistory");
+
+            if(revisionHistory == null || revisionHistory.Attribute("visible")?.Value == "false")
+                return;
+
+            var revisions = revisionHistory.Elements("revision").Where(
+                h => h.Attribute("visible")?.Value != "false");
+
+            if(revisions.Any())
+            {
+                var (title, content) = transformation.CreateSection(revisionHistory.GenerateUniqueId(), true,
+                    "title_revisionHistory", null);
+
+                transformation.CurrentElement.Add(title);
+                transformation.CurrentElement.Add(content);
+
+                var table = new XElement("table",
+                    new XElement("tr",
+                        new XElement("th",
+                            new XElement("include", new XAttribute("item", "header_revHistoryDate"))),
+                        new XElement("th",
+                            new XElement("include", new XAttribute("item", "header_revHistoryVersion"))),
+                        new XElement("th",
+                            new XElement("include", new XAttribute("item", "header_revHistoryDescription")))));
+
+                content.Add(table);
+
+                foreach(var rh in revisions)
+                {
+                    var descCell = new XElement("td");
+
+                    table.Add(new XElement("tr",
+                        new XElement("td", rh.Attribute("date")?.Value),
+                        new XElement("td", rh.Attribute("version")?.Value),
+                        descCell));
+
+                    transformation.RenderChildElements(descCell, rh.Nodes());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Render the bibliography section if applicable
+        /// </summary>
+        /// <param name="transformation">The topic transformation to use</param>
+        private static void RenderApiBibliographySection(TopicTransformationCore transformation)
+        {
+            if(transformation.ElementHandlerFor("bibliography") is BibliographyElement b)
+            {
+                if(b.DetermineCitations(transformation).Count != 0)
+                {
+                    // Use the first citation element as the element for rendering.  It's only needed to create
+                    // a unique ID for the section.
+                    var cite = transformation.DocumentNode.Descendants("cite").First();
+
+                    b.Render(transformation, cite);
+                }
+            }
+        }
+
+        /// <summary>
+        /// This renders the See Also section if applicable
+        /// </summary>
+        /// <param name="transformation">The topic transformation to use</param>
+        private static void RenderApiSeeAlsoSection(TopicTransformationCore transformation)
+        {
+            // Render the see and seealso links using the see element handler as the processing is the same
+            Element seeHandler = transformation.ElementHandlerFor("see"),
+                conceptualLinkHandler = transformation.ElementHandlerFor("conceptualLink");
+
+            // Get see also elements from comments excluding those in overloads comments
+            List<XElement> seeAlsoNotInOverloads = transformation.CommentsNode.Descendants("seealso").Where(
+                    s => !s.Ancestors("overloads").Any()).ToList(),
+                seeAlsoHRef = seeAlsoNotInOverloads.Where(s => s.Attribute("href") != null).ToList(),
+                seeAlsoCRef = seeAlsoNotInOverloads.Except(seeAlsoHRef).ToList();
+
+            // Combine those with see also elements from element overloads comments
+            var elements = transformation.ReferenceNode.Element("elements");
+
+            if(elements == null)
+                elements = new XElement("elements");
+
+            var elementOverloads = elements.Elements("element").SelectMany(e => e.Descendants("overloads")).ToList();
+            seeAlsoHRef.AddRange(elementOverloads.Descendants("seealso").Where(s => s.Attribute("href") != null));
+            seeAlsoCRef.AddRange(elementOverloads.Descendants("seealso").Where(s => s.Attribute("href") == null));
+
+            // Get conceptual links from comments excluding those in overloads comments and combine them with
+            // those in element overloads comments.
+            var conceptualLinks = transformation.CommentsNode.Descendants("conceptualLink").Where(
+                s => !s.Ancestors("overloads").Any()).Concat(elementOverloads.Descendants("conceptualLink")).ToList();
+
+            if(seeAlsoCRef.Count != 0 || seeAlsoHRef.Count != 0 || conceptualLinks.Count != 0 ||
+              transformation.ApiMember.ApiTopicGroup == ApiMemberGroup.Type ||
+              transformation.ApiMember.ApiTopicGroup == ApiMemberGroup.Member ||
+              transformation.ApiMember.ApiTopicGroup == ApiMemberGroup.List)
+            {
+                // This has a fixed ID that matches the one used in MAML topics for the related topics section
+                var (title, content) = transformation.CreateSection("seeAlso", true, "title_relatedTopics", null);
+
+                transformation.CurrentElement.Add(title);
+                transformation.CurrentElement.Add(content);
+
+                var priorCurrentElement = transformation.CurrentElement;
+
+                if(seeAlsoCRef.Count != 0 || transformation.ApiMember.ApiTopicGroup == ApiMemberGroup.Type ||
+                  transformation.ApiMember.ApiTopicGroup == ApiMemberGroup.Member ||
+                  transformation.ApiMember.ApiTopicGroup == ApiMemberGroup.List)
+                {
+                    var (subtitle, subsection) = transformation.CreateSubsection(true, "title_seeAlso_reference");
+
+                    if(subtitle != null)
+                        content.Add(subtitle);
+
+                    if(subsection != null)
+                        content.Add(subsection);
+                    else
+                        subsection = content;
+
+                    RenderApiAutoGeneratedSeeAlsoLinks(transformation, subsection);
+
+                    if(seeHandler != null)
+                    {
+                        foreach(var s in seeAlsoCRef)
+                        {
+                            var div = new XElement("div", transformation.StyleAttributeFor(CommonStyle.SeeAlsoStyle));
+                            subsection.Add(div);
+
+                            transformation.CurrentElement = div;
+                            seeHandler.Render(transformation, s);
+                        }
+                    }
+                }
+
+                if((seeAlsoHRef.Count != 0 && seeHandler != null) || (conceptualLinks.Count != 0 &&
+                  conceptualLinkHandler != null))
+                {
+                    var (subtitle, subsection) = transformation.CreateSubsection(true, "title_seeAlso_otherResources");
+
+                    if(subtitle != null)
+                        content.Add(subtitle);
+
+                    if(subsection != null)
+                        content.Add(subsection);
+                    else
+                        subsection = content;
+
+                    if(seeHandler != null)
+                    {
+                        foreach(var s in seeAlsoHRef)
+                        {
+                            var div = new XElement("div", transformation.StyleAttributeFor(CommonStyle.SeeAlsoStyle));
+                            subsection.Add(div);
+
+                            transformation.CurrentElement = div;
+                            seeHandler.Render(transformation, s);
+                        }
+                    }
+
+                    if(conceptualLinkHandler != null)
+                    {
+                        foreach(var c in conceptualLinks)
+                        {
+                            var div = new XElement("div", transformation.StyleAttributeFor(CommonStyle.SeeAlsoStyle));
+                            subsection.Add(div);
+
+                            transformation.CurrentElement = div;
+                            conceptualLinkHandler.Render(transformation, c);
+                        }
+                    }
+                }
+
+                transformation.CurrentElement = priorCurrentElement;
+            }
+        }
+
+        /// <summary>
+        /// Render auto-generated see also section links based on the API topic
+        /// </summary>
+        /// <param name="transformation">The topic transformation to use</param>
+        /// <param name="subsection">The subsection to which the links are added</param>
+        private static void RenderApiAutoGeneratedSeeAlsoLinks(TopicTransformationCore transformation,
+          XElement subsection)
+        {
+            // Add a link to the containing type on all list and member topics
+            if(transformation.ApiMember.ApiTopicGroup == ApiMemberGroup.Member ||
+              transformation.ApiMember.ApiTopicGroup == ApiMemberGroup.List)
+            {
+                subsection.Add(new XElement("div",
+                        transformation.StyleAttributeFor(CommonStyle.SeeAlsoStyle),
+                    new XElement("referenceLink",
+                        new XAttribute("target", transformation.ApiMember.TypeTopicId),
+                        new XAttribute("display-target", "format"),
+                        new XElement("include",
+                            new XAttribute("item", "boilerplate_seeAlsoTypeLink"),
+                            new XElement("parameter", "{0}"),
+                            new XElement("parameter", transformation.ApiMember.TypeApiSubgroup)))));
+            }
+
+            // Add a link to the overload topic
+            if(!String.IsNullOrWhiteSpace(transformation.ApiMember.OverloadTopicId))
+            {
+                subsection.Add(new XElement("div",
+                        transformation.StyleAttributeFor(CommonStyle.SeeAlsoStyle),
+                    new XElement("referenceLink",
+                        new XAttribute("target", transformation.ApiMember.OverloadTopicId),
+                        new XAttribute("display-target", "format"),
+                        new XAttribute("show-parameters", "false"),
+                        new XElement("include",
+                            new XAttribute("item", "boilerplate_seeAlsoOverloadLink"),
+                            new XElement("parameter", "{0}")))));
+            }
+
+            // Add a link to the namespace topic
+            string namespaceId = transformation.ReferenceNode.Element("containers")?.Element("namespace")?.Attribute("api")?.Value;
+
+            if(!String.IsNullOrWhiteSpace(namespaceId))
+            {
+                subsection.Add(new XElement("div",
+                        transformation.StyleAttributeFor(CommonStyle.SeeAlsoStyle),
+                    new XElement("referenceLink",
+                        new XAttribute("target", namespaceId),
+                        new XAttribute("display-target", "format"),
+                        new XElement("include",
+                            new XAttribute("item", "boilerplate_seeAlsoNamespaceLink"),
+                            new XElement("parameter", "{0}")))));
             }
         }
         #endregion

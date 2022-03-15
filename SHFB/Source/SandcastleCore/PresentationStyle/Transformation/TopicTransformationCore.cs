@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/11/2022
+// Updated : 03/14/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
@@ -48,6 +48,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         private readonly Dictionary<string, Element> elementHandlers;
         private readonly Dictionary<string, LanguageSpecificText> languageSpecificText;
         private readonly Dictionary<string, TransformationArgument> transformationArguments;
+        private readonly List<ApiTopicSectionHandler> apiTopicSections;
 
         private string bibliographyDataFile;
         private Dictionary<string, XElement> bibliographyData;
@@ -192,6 +193,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         }
 
         /// <summary>
+        /// This read-only property returns an enumerable list of the API section handlers in the order that they
+        /// will be rendered
+        /// </summary>
+        protected IEnumerable<ApiTopicSectionHandler> ApiTopicSections => apiTopicSections;
+
+        /// <summary>
         /// This read-only property returns a dictionary used to contain transformation arguments used by the
         /// presentation style
         /// </summary>
@@ -210,12 +217,14 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         {
             elementHandlers = new Dictionary<string, Element>();
             languageSpecificText = new Dictionary<string, LanguageSpecificText>();
+            apiTopicSections = new List<ApiTopicSectionHandler>();
             transformationArguments = new Dictionary<string, TransformationArgument>(StringComparer.OrdinalIgnoreCase);
 
             this.SupportedFormats = supportedFormats;
             this.CreateTransformationArguments();
             this.CreateLanguageSpecificText();
             this.CreateElementHandlers();
+            this.CreateApiTopicSectionHandlers();
         }
         #endregion
 
@@ -251,7 +260,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// </summary>
         /// <param name="sectionName">The section name</param>
         /// <param name="customName">The name of the custom section if <c>sectionName</c> is <c>Custom</c></param>
-        public virtual void OnSectionRendered(RenderedSection sectionName, string customName)
+        public virtual void OnSectionRendered(ApiTopicSectionType sectionName, string customName)
         {
             this.SectionRendered?.Invoke(this, new RenderedSectionEventArgs(this.Key, sectionName, customName));
         }
@@ -281,13 +290,20 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         protected abstract void CreateElementHandlers();
 
         /// <summary>
+        /// This is called to create the API topic section handlers that will be used by the transformation
+        /// </summary>
+        /// <remarks>Unlike MAML topics, API topics are rendered in a fixed order defined by the presentation
+        /// style that may vary based on the topic type.</remarks>
+        protected abstract void CreateApiTopicSectionHandlers();
+
+        /// <summary>
         /// Add an element that will be transformed when the topic is rendered
         /// </summary>
         /// <param name="element">The element handler</param>
         /// <exception cref="ArgumentException">This is thrown if the element name already has a handler</exception>
         public void AddElement(Element element)
         {
-            if(element== null)
+            if(element == null)
                 throw new ArgumentNullException(nameof(element));
 
             if(elementHandlers.ContainsKey(element.Name))
@@ -297,22 +313,6 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
             }
 
             elementHandlers.Add(element.Name, element);
-        }
-
-        /// <summary>
-        /// Replace an element handler
-        /// </summary>
-        /// <param name="element">The element handler for the element to replace</param>
-        /// <remarks>If an element handler is not present for the element, it will be added instead</remarks>
-        public void ReplaceElement(Element element)
-        {
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
-
-            if(!elementHandlers.ContainsKey(element.Name))
-                elementHandlers.Add(element.Name, element);
-            else
-                elementHandlers[element.Name] = element;
         }
 
         /// <summary>
@@ -327,6 +327,25 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
 
             foreach(Element element in elements)
                 this.AddElement(element);
+        }
+
+        /// <summary>
+        /// Replace an element handler
+        /// </summary>
+        /// <param name="element">The element handler for the element to replace</param>
+        /// <remarks>If an element handler is not present for the element, it will be added instead</remarks>
+        /// <returns>The element handler that was replaced or null if one did not exist</returns>
+        public Element ReplaceElement(Element element)
+        {
+            if(element == null)
+                throw new ArgumentNullException(nameof(element));
+
+            if(!elementHandlers.TryGetValue(element.Name, out Element match))
+                elementHandlers.Add(element.Name, element);
+            else
+                elementHandlers[element.Name] = element;
+
+            return match;
         }
 
         /// <summary>
@@ -354,6 +373,167 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                 return handler;
 
             return null;
+        }
+
+        /// <summary>
+        /// Add a new API topic section handler
+        /// </summary>
+        /// <param name="sectionHandler">The API topic section handler to add</param>
+        /// <exception cref="ArgumentException">This is thrown if a section handler has already been defined for
+        /// the given section.</exception>
+        public void AddApiTopicSectionHandler(ApiTopicSectionHandler sectionHandler)
+        {
+            if(sectionHandler == null)
+                throw new ArgumentNullException(nameof(sectionHandler));
+
+            var match = apiTopicSections.FirstOrDefault(s => s.SectionType == sectionHandler.SectionType &&
+                s.CustomSectionName == sectionHandler.CustomSectionName);
+
+            if(match != null)
+            {
+                throw new ArgumentException("A section handler has already been defined for " +
+                    $"{sectionHandler.SectionType} {sectionHandler.CustomSectionName}");
+            }
+
+            apiTopicSections.Add(sectionHandler);
+        }
+
+        /// <summary>
+        /// Add a range of new API topic section handlers
+        /// </summary>
+        /// <param name="sectionHandlers">An enumerable list of the API topic section handlers to add</param>
+        public void AddApiTopicSectionHandlerRange(IEnumerable<ApiTopicSectionHandler> sectionHandlers)
+        {
+            if(sectionHandlers == null)
+                throw new ArgumentNullException(nameof(sectionHandlers));
+
+            foreach(var s in sectionHandlers)
+                this.AddApiTopicSectionHandler(s);
+        }
+
+        /// <summary>
+        /// Remove an API topic section handler
+        /// </summary>
+        /// <param name="sectionType">The section type to remove</param>
+        /// <param name="customSectionName">If the section type is custom, this defines the custom section name</param>
+        /// <returns>The API topic handler that was removed or null if it was not found</returns>
+        public ApiTopicSectionHandler RemoveApiTopicSectionHandler(ApiTopicSectionType sectionType, string customSectionName)
+        {
+            var match = apiTopicSections.FirstOrDefault(s => s.SectionType == sectionType &&
+                s.CustomSectionName == customSectionName);
+
+            if(match != null)
+                apiTopicSections.Remove(match);
+
+            return match;
+        }
+
+        /// <summary>
+        /// Replace an API topic section handler with a new one
+        /// </summary>
+        /// <param name="sectionHandler">The API topic section handler to add</param>
+        /// <exception cref="ArgumentException">This is thrown if a section handler has not been defined for
+        /// the given section.</exception>
+        /// <returns>The API topic handler that was replaced</returns>
+        public ApiTopicSectionHandler ReplaceApiTopicSectionHandler(ApiTopicSectionHandler sectionHandler)
+        {
+            if(sectionHandler == null)
+                throw new ArgumentNullException(nameof(sectionHandler));
+
+            var match = apiTopicSections.FirstOrDefault(s => s.SectionType == sectionHandler.SectionType &&
+                s.CustomSectionName == sectionHandler.CustomSectionName);
+
+            if(match == null)
+            {
+                throw new ArgumentException("No section handler has been defined for " +
+                    $"{sectionHandler.SectionType} {sectionHandler.CustomSectionName}");
+            }
+
+            apiTopicSections.Insert(apiTopicSections.IndexOf(match), sectionHandler);
+            apiTopicSections.Remove(match);
+
+            return match;
+        }
+
+        /// <summary>
+        /// Insert an API topic section handler before the given section handler
+        /// </summary>
+        /// <param name="sectionHandler">The API topic section handler to insert.</param>
+        /// <param name="insertBeforeSectionHandler">The API topic section handler before which the given
+        /// handler is inserted.</param>
+        /// <remarks>If the section handler already exists, it is removed before inserting it in the new location.</remarks>
+        public void InsertApiTopicSectionHandlerBefore(ApiTopicSectionHandler sectionHandler,
+          ApiTopicSectionHandler insertBeforeSectionHandler)
+        {
+            if(sectionHandler == null)
+                throw new ArgumentNullException(nameof(sectionHandler));
+
+            if(insertBeforeSectionHandler == null)
+                throw new ArgumentNullException(nameof(insertBeforeSectionHandler));
+
+            if(sectionHandler != insertBeforeSectionHandler)
+            {
+                var match = apiTopicSections.FirstOrDefault(s => s.SectionType == sectionHandler.SectionType &&
+                    s.CustomSectionName == sectionHandler.CustomSectionName);
+
+                if(match != null)
+                    apiTopicSections.Remove(match);
+
+                match = apiTopicSections.FirstOrDefault(s => s.SectionType == insertBeforeSectionHandler.SectionType &&
+                    s.CustomSectionName == insertBeforeSectionHandler.CustomSectionName);
+
+                if(match == null)
+                    throw new ArgumentException("Insert Before handler not found", nameof(insertBeforeSectionHandler));
+
+                apiTopicSections.Insert(apiTopicSections.IndexOf(match), sectionHandler);
+            }
+        }
+
+        /// <summary>
+        /// Insert an API topic section handler after the given section handler
+        /// </summary>
+        /// <param name="sectionHandler">The API topic section handler to insert.</param>
+        /// <param name="insertAfterSectionHandler">The API topic section handler after which the given
+        /// handler is inserted.</param>
+        /// <remarks>If the section handler already exists, it is removed before inserting it in the new location.</remarks>
+        public void InsertApiTopicSectionHandlerAfter(ApiTopicSectionHandler sectionHandler,
+          ApiTopicSectionHandler insertAfterSectionHandler)
+        {
+            if(sectionHandler == null)
+                throw new ArgumentNullException(nameof(sectionHandler));
+
+            if(insertAfterSectionHandler == null)
+                throw new ArgumentNullException(nameof(insertAfterSectionHandler));
+
+            if(sectionHandler != insertAfterSectionHandler)
+            {
+                var match = apiTopicSections.FirstOrDefault(s => s.SectionType == sectionHandler.SectionType &&
+                    s.CustomSectionName == sectionHandler.CustomSectionName);
+
+                if(match != null)
+                    apiTopicSections.Remove(match);
+
+                match = apiTopicSections.FirstOrDefault(s => s.SectionType == insertAfterSectionHandler.SectionType &&
+                    s.CustomSectionName == insertAfterSectionHandler.CustomSectionName);
+
+                if(match == null)
+                    throw new ArgumentException("Insert After handler not found", nameof(insertAfterSectionHandler));
+
+                apiTopicSections.Insert(apiTopicSections.IndexOf(match) + 1, sectionHandler);
+            }
+        }
+
+        /// <summary>
+        /// This is used to retrieve the current API topic section handler for the given section
+        /// </summary>
+        /// <param name="sectionType">The section type</param>
+        /// <param name="customSectionName">If the section type is <c>CustomSection</c>, this should refer to the
+        /// custom section name</param>
+        /// <returns>The API topic section handler if found or null if there isn't one</returns>
+        public ApiTopicSectionHandler ApiTopicSectionHandlerFor(ApiTopicSectionType sectionType, string customSectionName)
+        {
+            return apiTopicSections.FirstOrDefault(s => s.SectionType == sectionType &&
+                s.CustomSectionName == customSectionName);
         }
 
         /// <summary>

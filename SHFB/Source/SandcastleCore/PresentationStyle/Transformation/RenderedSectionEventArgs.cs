@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : RenderedSectionEventArgs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/11/2022
+// Updated : 03/14/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains an event arguments class used to report when a topic section has been rendered
@@ -34,12 +34,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         public string Key { get; }
 
         /// <summary>
-        /// The section name that was rendered
+        /// The section type that was rendered
         /// </summary>
-        public RenderedSection SectionName { get; }
+        public ApiTopicSectionType SectionType { get; }
 
         /// <summary>
-        /// If <see cref="SectionName"/> is <c>Custom</c>, this contains the custom name of the section
+        /// If <see cref="SectionType"/> is <c>CustomSection</c>, this contains the name of the custom section
         /// </summary>
         public string CustomSectionName { get; }
 
@@ -47,13 +47,16 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// Constructor
         /// </summary>
         /// <param name="key">The topic key</param>
-        /// <param name="sectionName">The section name that was rendered</param>
-        /// <param name="customSectionName">The custom section name or null if it is a known section</param>
-        public RenderedSectionEventArgs(string key, RenderedSection sectionName, string customSectionName)
+        /// <param name="sectionType">The section type that was rendered</param>
+        /// <param name="customSectionName">The name of the custom section or null if it is a known section type</param>
+        public RenderedSectionEventArgs(string key, ApiTopicSectionType sectionType, string customSectionName)
         {
             this.Key = key;
-            this.SectionName = sectionName;
+            this.SectionType = sectionType;
             this.CustomSectionName = customSectionName;
+
+            if(sectionType == ApiTopicSectionType.CustomSection && String.IsNullOrWhiteSpace(customSectionName))
+                throw new ArgumentException("Custom section name cannot be null or blank", nameof(customSectionName));
         }
     }
 }
