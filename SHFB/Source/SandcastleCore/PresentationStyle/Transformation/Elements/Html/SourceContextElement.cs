@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SourceContextElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/11/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the sourceContext element
@@ -27,6 +27,17 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
     /// </summary>
     public class SourceContextElement : Element
     {
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get or set the link button style
+        /// </summary>
+        /// <value>The default if not set explicitly is "button"</value>
+        public string LinkButtonStyle { get; set; } = "button";
+
+        #endregion
+
         #region Properties
         //=====================================================================
 
@@ -83,7 +94,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             {
                 transformation.CurrentElement.Add(new XElement("include",
                     new XAttribute("item", "requestExample"),
-                    new XElement("parameter", requestExampleUrl)));
+                    new XElement("parameter", requestExampleUrl),
+                    new XElement("parameter", this.LinkButtonStyle)));
             }
 
             if(!String.IsNullOrWhiteSpace(baseSourceCodeUrl))
@@ -96,7 +108,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
                 transformation.CurrentElement.Add(new XElement("a",
                         new XAttribute("target", "_blank"),
-                        transformation.StyleAttributeFor(CommonStyle.Button),
+                        new XAttribute("class", this.LinkButtonStyle),
                         new XAttribute("href", file),
                         new XAttribute("rel", "noopener noreferrer"),
                     new XElement("includeAttribute",

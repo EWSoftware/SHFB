@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ListElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/21/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle list elements based on the topic type
@@ -27,6 +27,17 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
     /// </summary>
     public class ListElement : Element
     {
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get or set the "no bullet" list style
+        /// </summary>
+        /// <value>The default if not set explicitly is "noBullet"</value>
+        public string NoBulletStyle { get; set; } = "noBullet";
+
+        #endregion
+
         #region Constructor
         //=====================================================================
 
@@ -49,7 +60,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 throw new ArgumentNullException(nameof(element));
 
             if(transformation.IsMamlTopic)
-                RenderMamlList(transformation, element);
+                this.RenderMamlList(transformation, element);
             else
                 RenderXmlCommentsList(transformation, element);
         }
@@ -59,10 +70,10 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         /// </summary>
         /// <param name="transformation">The transformation in use</param>
         /// <param name="element">The element to render</param>
-        private static void RenderMamlList(TopicTransformationCore transformation, XElement element)
+        private void RenderMamlList(TopicTransformationCore transformation, XElement element)
         {
             string elementName = "ul", start = null;
-            CommonStyle? styleName = null;
+            string styleName = null;
 
             switch(element.Attribute("class")?.Value)
             {
@@ -75,14 +86,14 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                     break;
 
                 default:
-                    styleName = CommonStyle.NoBullet;
+                    styleName = this.NoBulletStyle;
                     break;
             }
 
             var list = new XElement(elementName);
 
             if(styleName != null)
-                list.Add(transformation.StyleAttributeFor(styleName.Value));
+                list.Add(new XAttribute("class", styleName));
 
             if(!String.IsNullOrWhiteSpace(start))
                 list.Add(new XAttribute("start", start));

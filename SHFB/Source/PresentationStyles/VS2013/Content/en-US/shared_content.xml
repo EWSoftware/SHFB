@@ -19,7 +19,7 @@
         HT_mailLink.innerHTML = HT_mailLinkText;
         </script></item>
 
-	<item id="requestExample"><a id="HT_RequestExampleLink" href="{0}" target="_blank" rel="noopener noreferrer" class="button"
+	<item id="requestExample"><a id="HT_RequestExampleLink" href="{0}" target="_blank" rel="noopener noreferrer" class="{1}"
 		title="Request an example for this topic">Request Example</a>
 		<script type="text/javascript">
 		var HT_requestExampleLink = document.getElementById("HT_RequestExampleLink");
@@ -188,7 +188,7 @@
 	<item id="inheritedFrom">(Inherited from {0})</item>
 	<item id="noCodeExample"><p>No code example is currently available or this language may not be supported.</p></item>
 	<item id="overridesMember">(Overrides {0})</item>
-	<item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[This is preliminary documentation and is subject to change.]</p></item>
+	<item id="preliminary"><p class="preliminary">[This is preliminary documentation and is subject to change.]</p></item>
   <item id="preliminaryText">This API is preliminary and subject to change.</item>
 	<item id="sourceCodeLinkText">View Source</item>
 	<item id="sourceCodeLinkTitle">View the source code</item>
@@ -413,7 +413,7 @@
   <item id="SMCAutoDocDispose">Releases all resources used by the <referenceLink target="T:{0}" /></item>
   <item id="SMCAutoDocDisposeBool">Releases the unmanaged resources used by the <referenceLink target="T:{0}" /> and optionally releases the managed resources</item>
   <item id="SMCAutoDocDisposeParam">True to release both managed and unmanaged resources; false to release only unmanaged resources</item>
-  <item id="SMCMissingTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;{0}&gt; documentation for "{1}"]</p></item>
-  <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;{0} name="{1}"/&gt; documentation for "{2}"]</p></item>
-  <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;include&gt; target documentation in '{0}'.  File: '{1}' Path: '{2}']</p></item>
+  <item id="SMCMissingTag"><p class="missing">[Missing &lt;{0}&gt; documentation for "{1}"]</p></item>
+  <item id="SMCMissingParamTag"><p class="missing">[Missing &lt;{0} name="{1}"/&gt; documentation for "{2}"]</p></item>
+  <item id="SMCMissingIncludeTarget"><p class="missing">[Missing &lt;include&gt; target documentation in '{0}'.  File: '{1}' Path: '{2}']</p></item>
 </content>

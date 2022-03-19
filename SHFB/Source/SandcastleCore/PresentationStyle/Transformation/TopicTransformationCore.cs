@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/14/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
@@ -1442,21 +1442,6 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                     return codeLanguage;
             }
         }
-
-        /// <summary>
-        /// This is used to return an <c>XAttribute</c> containing the style to apply to an element
-        /// </summary>
-        /// <param name="style">The common style to convert to an attribute</param>
-        /// <returns>The common style in the form of an XML attribute (e.g. <c>new XAttribute("class", "keyword")</c></returns>
-        public abstract XAttribute StyleAttributeFor(CommonStyle style);
-
-        /// <summary>
-        /// This is used to return an style name for the given common style
-        /// </summary>
-        /// <param name="style">The common style to convert to an attribute</param>
-        /// <returns>The common style name in the form of an string</returns>
-        public abstract string StyleNameFor(CommonStyle style);
-
         #endregion
     }
 }

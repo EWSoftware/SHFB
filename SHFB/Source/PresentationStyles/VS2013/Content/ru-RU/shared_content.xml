@@ -20,7 +20,7 @@
         HT_mailLink.innerHTML = HT_mailLinkText;
         </script></item>
 
-	<item id="requestExample"><a id="HT_RequestExampleLink" href="{0}" target="_blank" rel="noopener noreferrer" class="button"
+	<item id="requestExample"><a id="HT_RequestExampleLink" href="{0}" target="_blank" rel="noopener noreferrer" class="{1}"
 		title="Request an example for this topic">Request Example</a>
 		<script type="text/javascript">
 		var HT_requestExampleLink = document.getElementById("HT_RequestExampleLink");
@@ -189,7 +189,7 @@
 	<item id="inheritedFrom">(Унаследован от {0})</item>
 	<item id="noCodeExample"><p>В настоящее время язык не поддерживается либо пример кода отсутствует.</p></item>
 	<item id="overridesMember">(Переопределяет {0})</item>
-	<item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Это предварительная версия документации. API может измениться в будущем.]</p></item>
+	<item id="preliminary"><p class="preliminary">[Это предварительная версия документации. API может измениться в будущем.]</p></item>
   <item id="preliminaryText">Это предварительная документация, которая в будущем может измениться.</item>
 	<item id="sourceCodeLinkText">View Source</item>
 	<item id="sourceCodeLinkTitle">View the source code</item>
@@ -414,7 +414,7 @@
   <item id="SMCAutoDocDispose">Освобождает все ресурсы, используемые объектом <referenceLink target="T:{0}" /></item>
   <item id="SMCAutoDocDisposeBool">Освобождает неуправляемые ресурсы, используемые объектом <referenceLink target="T:{0}" />, а при необходимости освобождает также управляемые ресурсы</item>
   <item id="SMCAutoDocDisposeParam">Значение true позволяет освободить управляемые и неуправляемые ресурсы; значение false позволяет освободить только неуправляемые ресурсы.</item>
-  <item id="SMCMissingTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[&lt;{0}&gt; отсутствует в документации для "{1}"]</p></item>
-  <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[&lt;{0} name="{1}"/&gt; отсутствует в документации для "{2}"]</p></item>
-  <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[&lt;include&gt; отсутствует в '{0}'.  Файл: '{1}' Путь: '{2}']</p></item>
+  <item id="SMCMissingTag"><p class="missing">[&lt;{0}&gt; отсутствует в документации для "{1}"]</p></item>
+  <item id="SMCMissingParamTag"><p class="missing">[&lt;{0} name="{1}"/&gt; отсутствует в документации для "{2}"]</p></item>
+  <item id="SMCMissingIncludeTarget"><p class="missing">[&lt;include&gt; отсутствует в '{0}'.  Файл: '{1}' Путь: '{2}']</p></item>
 </content>

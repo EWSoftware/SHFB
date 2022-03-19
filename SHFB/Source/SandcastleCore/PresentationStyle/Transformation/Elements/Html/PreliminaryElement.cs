@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PreliminaryElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/01/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the preliminary element
@@ -27,10 +27,28 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
     /// </summary>
     public class PreliminaryElement : Element
     {
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get or set the preliminary text style
+        /// </summary>
+        /// <value>The default if not set explicitly is "preliminary"</value>
+        public string PreliminaryTextStyle { get; set; } = "preliminary";
+
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
         /// <inheritdoc />
         public PreliminaryElement() : base("preliminary")
         {
         }
+        #endregion
+
+        #region Methods
+        //=====================================================================
 
         /// <inheritdoc />
         public override void Render(TopicTransformationCore transformation, XElement element)
@@ -41,7 +59,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             if(element == null)
                 throw new ArgumentNullException(nameof(element));
 
-            var div = new XElement("div", transformation.StyleAttributeFor(CommonStyle.Preliminary));
+            var div = new XElement("div", new XAttribute("class", this.PreliminaryTextStyle));
             string text = element.Value.NormalizeWhiteSpace();
 
             if(!String.IsNullOrWhiteSpace(text))
@@ -51,5 +69,6 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
             transformation.CurrentElement.Add(div);
         }
+        #endregion
     }
 }

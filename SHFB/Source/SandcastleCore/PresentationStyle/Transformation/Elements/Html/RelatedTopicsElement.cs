@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : RelatedTopicsElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/06/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle relatedTopics elements
@@ -114,7 +114,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
                 foreach(var l in links)
                 {
-                    var div = new XElement("div", transformation.StyleAttributeFor(CommonStyle.SeeAlsoStyle));
+                    var div = new XElement("div");
 
                     content.Add(div);
                     transformation.RenderChildElements(div, new[] { l });

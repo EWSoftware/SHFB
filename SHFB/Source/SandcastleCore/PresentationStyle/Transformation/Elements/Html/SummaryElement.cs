@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SummaryElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/21/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the summary element based on the topic type
@@ -27,10 +27,28 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
     /// </summary>
     public class SummaryElement : Element
     {
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get or set the summary style
+        /// </summary>
+        /// <value>The default if not set explicitly is "summary"</value>
+        public string SummaryStyle { get; set; } = "summary";
+
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
         /// <inheritdoc />
         public SummaryElement() : base("summary")
         {
         }
+        #endregion
+
+        #region Methods
+        //=====================================================================
 
         /// <inheritdoc />
         public override void Render(TopicTransformationCore transformation, XElement element)
@@ -46,11 +64,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             // the topic.  If it is true, it will be used for the Abstract help metadata element.
             if(!transformation.IsMamlTopic || !((bool?)element.Attribute("abstract") ?? false))
             {
-                var div = new XElement("div", transformation.StyleAttributeFor(CommonStyle.Summary));
+                var div = new XElement("div", new XAttribute("class", this.SummaryStyle));
 
                 transformation.CurrentElement.Add(div);
                 transformation.RenderChildElements(div, element.Nodes());
             }
         }
+        #endregion
     }
 }

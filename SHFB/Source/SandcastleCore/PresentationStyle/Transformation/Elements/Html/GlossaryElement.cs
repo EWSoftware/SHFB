@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : GlossaryElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/06/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle glossary elements
@@ -29,6 +29,59 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
     /// </summary>
     public class GlossaryElement : Element
     {
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get or set the "no link" style
+        /// </summary>
+        /// <value>The default if not set explicitly is "noLink"</value>
+        public string NoLinkStyle { get; set; } = "noLink";
+
+        /// <summary>
+        /// This is used to get or set the glossary division style
+        /// </summary>
+        /// <value>The default if not set explicitly is "glossaryDiv"</value>
+        public string GlossaryDivisionStyle { get; set; } = "glossaryDiv";
+
+        /// <summary>
+        /// This is used to get or set the glossary horizontal rule style
+        /// </summary>
+        /// <value>The default if not set explicitly is "glossaryRule"</value>
+        public string GlossaryHorizontalRuleStyle { get; set; } = "glossaryRule";
+
+        /// <summary>
+        /// This is used to get or set the glossary group style
+        /// </summary>
+        /// <value>The default if not set explicitly is "glossaryGroup"</value>
+        public string GlossaryGroupStyle { get; set; } = "glossaryGroup";
+
+        /// <summary>
+        /// This is used to get or set the glossary group heading style
+        /// </summary>
+        /// <value>The default if not set explicitly is "glossaryGroupHeading"</value>
+        public string GlossaryGroupHeadingStyle { get; set; } = "glossaryGroupHeading";
+
+        /// <summary>
+        /// This is used to get or set the glossary group list style
+        /// </summary>
+        /// <value>The default if not set explicitly is "glossaryGroupList"</value>
+        public string GlossaryGroupListStyle { get; set; } = "glossaryGroupList";
+
+        /// <summary>
+        /// This is used to get or set the glossary entry style
+        /// </summary>
+        /// <value>The default if not set explicitly is "glossaryEntry"</value>
+        public string GlossaryEntryStyle { get; set; } = "glossaryEntry";
+
+        /// <summary>
+        /// This is used to get or set the glossary related entry style
+        /// </summary>
+        /// <value>The default if not set explicitly is "relatedEntry"</value>
+        public string RelatedEntryStyle { get; set; } = "relatedEntry";
+
+        #endregion
+
         #region Constructor
         //=====================================================================
 
@@ -87,18 +140,18 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 }
 
                 foreach(var gd in element.Elements(Ddue + "glossaryDiv"))
-                    RenderGlossaryDivision(transformation, gd);
+                    this.RenderGlossaryDivision(transformation, gd);
             }
             else
             {
                 // A simple glossary consisting of nothing bu glossaryEntry elements
                 transformation.CurrentElement.Add(new XElement("br"));
 
-                RenderGlossaryLetterBar(transformation, element, null, transformation.CurrentElement);
+                this.RenderGlossaryLetterBar(element, null, transformation.CurrentElement);
 
                 transformation.CurrentElement.Add(new XElement("br"));
 
-                RenderGlossaryEntries(transformation, element, null, transformation.CurrentElement);
+                this.RenderGlossaryEntries(transformation, element, null, transformation.CurrentElement);
             }
         }
 
@@ -107,9 +160,9 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         /// </summary>
         /// <param name="transformation">The topic transformation in use</param>
         /// <param name="glossaryDiv">The glossary division to render</param>
-        private static void RenderGlossaryDivision(TopicTransformationCore transformation, XElement glossaryDiv)
+        private void RenderGlossaryDivision(TopicTransformationCore transformation, XElement glossaryDiv)
         {
-            var div = new XElement("div", transformation.StyleAttributeFor(CommonStyle.GlossaryDiv));
+            var div = new XElement("div", new XAttribute("class", this.GlossaryDivisionStyle));
 
             transformation.CurrentElement.Add(div);
 
@@ -123,26 +176,24 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             if(!String.IsNullOrWhiteSpace(title))
                 div.Add(new XElement("h3", title));
 
-            div.Add(new XElement("hr", transformation.StyleAttributeFor(CommonStyle.GlossaryRule)));
+            div.Add(new XElement("hr", new XAttribute("class", this.GlossaryHorizontalRuleStyle)));
 
             string divId = glossaryDiv.GenerateUniqueId();
 
-            RenderGlossaryLetterBar(transformation, glossaryDiv, divId, div);
+            this.RenderGlossaryLetterBar(glossaryDiv, divId, div);
 
             div.Add(new XElement("br"));
 
-            RenderGlossaryEntries(transformation, glossaryDiv, divId, div);
+            this.RenderGlossaryEntries(transformation, glossaryDiv, divId, div);
         }
 
         /// <summary>
         /// Render a glossary letter bar
         /// </summary>
-        /// <param name="transformation">The transformation to use</param>
         /// <param name="glossaryDiv">The glossary division for which to render the letter bar</param>
         /// <param name="id">An optional ID for the section containing the letter bar</param>
         /// <param name="content">The content element to which the letter bar is rendered</param>
-        private static void RenderGlossaryLetterBar(TopicTransformationCore transformation, XElement glossaryDiv,
-          string id, XElement content)
+        private void RenderGlossaryLetterBar(XElement glossaryDiv, string id, XElement content)
         {
             // Sort the terms elements by their first term element and determine what letters are present
             var terms = glossaryDiv.Descendants(Ddue + "terms").Select(t => t.Elements(Ddue + "term").Where(
@@ -159,7 +210,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 if(letters.Contains(letter))
                     content.Add(new XElement("a", new XAttribute("href", $"#{id}{letter}"), letter));
                 else
-                    content.Add(new XElement("span", transformation.StyleAttributeFor(CommonStyle.NoLink), letter));
+                    content.Add(new XElement("span", new XAttribute("class", this.NoLinkStyle), letter));
             }
 
             content.Add(new XElement("br"));
@@ -172,7 +223,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         /// <param name="glossaryDiv">The glossary division for which to render the entries</param>
         /// <param name="id">An optional ID for the section containing the entries</param>
         /// <param name="content">The content element to which the glossary entries are rendered</param>
-        private static void RenderGlossaryEntries(TopicTransformationCore transformation, XElement glossaryDiv, string id,
+        private void RenderGlossaryEntries(TopicTransformationCore transformation, XElement glossaryDiv, string id,
             XElement content)
         {
             // Sort the terms elements by their first term element and group the glossary entries by letter
@@ -192,14 +243,14 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             foreach(var letter in letterGroups)
             {
                 var group = new XElement("div",
-                        transformation.StyleAttributeFor(CommonStyle.GlossaryGroup),
+                        new XAttribute("class", this.GlossaryGroupStyle),
                     new XElement("h3",
-                        transformation.StyleAttributeFor(CommonStyle.GlossaryGroupHeading),
+                        new XAttribute("class", this.GlossaryGroupHeadingStyle),
                         new XAttribute("id", $"{id}{letter.Key}"), letter.Key));
                     
                 content.Add(group);
 
-                var dl = new XElement("dl", transformation.StyleAttributeFor(CommonStyle.GlossaryGroupList));
+                var dl = new XElement("dl", new XAttribute("class", this.GlossaryGroupListStyle));
                 group.Add(dl);
 
                 // The group only contains the first term for each glossary entry in the letter group
@@ -207,7 +258,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 {
                     // Get the parent glossary entry
                     var entry = term.Parent.Parent;
-                    var dt = new XElement("dt", transformation.StyleAttributeFor(CommonStyle.GlossaryEntry));
+                    var dt = new XElement("dt", new XAttribute("class", this.GlossaryEntryStyle));
                     dl.Add(dt);
 
                     string address = entry.Attribute("address")?.Value;
@@ -235,7 +286,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                     }
 
                     // Definition
-                    var dd = new XElement("dd", transformation.StyleAttributeFor(CommonStyle.GlossaryEntry));
+                    var dd = new XElement("dd", new XAttribute("class", this.GlossaryEntryStyle));
                     dl.Add(dd);
 
                     var definition = entry.Element(Ddue + "definition");
@@ -249,7 +300,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                         bool firstRelated = true;
 
                         var div = new XElement("div",
-                                transformation.StyleAttributeFor(CommonStyle.RelatedEntry),
+                                new XAttribute("class", this.RelatedEntryStyle),
                             new XElement("include",
                                 new XAttribute("item", "text_relatedEntries")), NonBreakingSpace);
                         dd.Add(div);

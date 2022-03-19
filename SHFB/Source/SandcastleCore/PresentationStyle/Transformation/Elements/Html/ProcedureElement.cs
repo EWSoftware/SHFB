@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ProcedureElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/23/2022
+// Updated : 03/16/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle procedure elements
@@ -54,9 +54,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
             if(!String.IsNullOrWhiteSpace(titleText))
             {
-                var title = new XElement("h3",
-                    transformation.StyleAttributeFor(CommonStyle.ProcedureSubHeading),
-                    titleText);
+                var title = new XElement("h3", titleText);
 
                 if(!String.IsNullOrWhiteSpace(address))
                     title.Add(new XAttribute("id", address));
@@ -64,8 +62,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 transformation.CurrentElement.Add(title);
             }
 
-            var content = new XElement("div",
-                transformation.StyleAttributeFor(CommonStyle.SubSection));
+            var content = new XElement("div");
 
             if(!String.IsNullOrWhiteSpace(address) && String.IsNullOrWhiteSpace(titleText))
                 content.Add(new XAttribute("id", address));

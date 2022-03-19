@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : IntroductionElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/23/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle introduction elements
@@ -51,7 +51,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
             if(element.Elements().Any() || element.Value.NormalizeWhiteSpace().Length != 0)
             {
-                var intro = new XElement("div", transformation.StyleAttributeFor(CommonStyle.Introduction));
+                var intro = new XElement("div");
 
                 string address = element.Attribute("address")?.Value;
 

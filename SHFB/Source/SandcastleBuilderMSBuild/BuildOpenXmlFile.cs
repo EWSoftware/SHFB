@@ -757,7 +757,7 @@ namespace SandcastleBuilder.MSBuild
                     return;
 
                 case "Bold":
-                case "nolink":
+                case "noLink":
                 case "NoLink":
                 case "selflink":
                 case "SelfLink":

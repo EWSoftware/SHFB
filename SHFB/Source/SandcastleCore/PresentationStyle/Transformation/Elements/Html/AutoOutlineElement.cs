@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AutoOutlineElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/19/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle autoOutline elements
@@ -170,7 +170,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 }
             }
 
-            var ul = new XElement("ul", transformation.StyleAttributeFor(CommonStyle.AutoOutline));
+            var ul = new XElement("ul");
             
             renderTo.Add(ul);
 
@@ -182,7 +182,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 if(title.Length == 0)
                     continue;
 
-                var li = new XElement("li", transformation.StyleAttributeFor(CommonStyle.OutlineSectionEntry));
+                var li = new XElement("li");
                 string address = s.Attribute("address")?.Value;
                 var summary = s.Element(Ddue + "summary");
 
@@ -193,7 +193,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
                 if(summary != null && summary.Value.NormalizeWhiteSpace().Length != 0)
                 {
-                    var div = new XElement("div", transformation.StyleAttributeFor(CommonStyle.OutlineSectionEntrySummary));
+                    var div = new XElement("div");
 
                     li.Add(div);
 
@@ -216,7 +216,6 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             if(outlineType == AutoOutlineType.TopLevel)
             {
                 ul.Add(new XElement("li",
-                        transformation.StyleAttributeFor(CommonStyle.OutlineSectionEntry),
                     new XElement("a",
                             new XAttribute("href", "#seeAlsoSection"),
                         new XElement("include",

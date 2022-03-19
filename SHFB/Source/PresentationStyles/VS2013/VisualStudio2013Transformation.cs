@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/14/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -38,13 +38,6 @@ namespace Sandcastle.PresentationStyles.VS2013
     /// </summary>
     public class VisualStudio2013Transformation : TopicTransformationCore
     {
-        #region Private data members
-        //=====================================================================
-
-        private readonly Dictionary<CommonStyle, string> commonStyles = new Dictionary<CommonStyle, string>();
-
-        #endregion
-
         #region Constructor
         //=====================================================================
 
@@ -243,7 +236,7 @@ namespace Sandcastle.PresentationStyles.VS2013
         /// <inheritdoc />
         protected override void CreateLanguageSpecificText()
         {
-            LanguageSpecificText.KeywordStyleName = this.StyleNameFor(CommonStyle.Keyword);
+            LanguageSpecificText.KeywordStyleName = "keyword";
 
             this.AddLanguageSpecificTextRange(new[]
             {
@@ -398,11 +391,11 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new NamedSectionElement("buildInstructions"),
                 new CodeEntityReferenceElement(),
                 new CodeExampleElement(),
-                new ConvertibleElement("codeFeaturedElement", "span", this.StyleNameFor(CommonStyle.Label)),
-                new ConvertibleElement("codeInline", "span", this.StyleNameFor(CommonStyle.Code)),
+                new ConvertibleElement("codeFeaturedElement", "span", "label"),
+                new ConvertibleElement("codeInline", "span", "code"),
                 new NonRenderedParentElement("codeReference"),
-                new ConvertibleElement("command", "span", this.StyleNameFor(CommonStyle.Command)),
-                new ConvertibleElement("computerOutputInline", "span", this.StyleNameFor(CommonStyle.Code)),
+                new ConvertibleElement("command", "span", "command"),
+                new ConvertibleElement("computerOutputInline", "span", "code"),
                 new NonRenderedParentElement("conclusion"),
                 new NonRenderedParentElement("content"),
                 new CopyrightElement(),
@@ -416,15 +409,15 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new NamedSectionElement("demonstrates"),
                 new NonRenderedParentElement("description"),
                 new NamedSectionElement("dotNetFrameworkEquivalent"),
-                new ConvertibleElement("embeddedLabel", "span", this.StyleNameFor(CommonStyle.Label)),
+                new ConvertibleElement("embeddedLabel", "span", "label"),
                 new EntryElement(),
-                new ConvertibleElement("environmentVariable", "span", this.StyleNameFor(CommonStyle.Code)),
+                new ConvertibleElement("environmentVariable", "span", "code"),
                 new ConvertibleElement("errorInline", "em"),
                 new NamedSectionElement("exceptions"),
                 new ExternalLinkElement(),
                 new NamedSectionElement("externalResources"),
                 new ConvertibleElement("fictitiousUri", "em"),
-                new ConvertibleElement("foreignPhrase", "span", this.StyleNameFor(CommonStyle.ForeignPhrase)),
+                new ConvertibleElement("foreignPhrase", "span", "foreignPhrase"),
                 new GlossaryElement(),
                 new ConvertibleElement("hardware", "strong"),
                 new NamedSectionElement("inThisSection"),
@@ -439,17 +432,17 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new ConvertibleElement("lineBreak", "br"),
                 new LinkElement(),
                 new ConvertibleElement("listItem", "li", true),
-                new ConvertibleElement("literal", "span", this.StyleNameFor(CommonStyle.Literal)),
+                new ConvertibleElement("literal", "span", "literal"),
                 new ConvertibleElement("localUri", "em"),
                 new NonRenderedParentElement("localizedText"),
-                new ConvertibleElement("math", "span", this.StyleNameFor(CommonStyle.Math)),
+                new ConvertibleElement("math", "span", "math"),
                 new MediaLinkElement(),
                 new MediaLinkInlineElement(),
-                new ConvertibleElement("newTerm", "span", this.StyleNameFor(CommonStyle.Term)),
+                new ConvertibleElement("newTerm", "span", "term"),
                 new NamedSectionElement("nextSteps"),
-                new ConvertibleElement("parameterReference", "span", this.StyleNameFor(CommonStyle.Parameter)),
-                new ConvertibleElement("phrase", "span", this.StyleNameFor(CommonStyle.Phrase)),
-                new ConvertibleElement("placeholder", "span", this.StyleNameFor(CommonStyle.Placeholder)),
+                new ConvertibleElement("parameterReference", "span", "parameter"),
+                new ConvertibleElement("phrase", "span", "phrase"),
+                new ConvertibleElement("placeholder", "span", "placeholder"),
                 new NamedSectionElement("prerequisites"),
                 new ProcedureElement(),
                 new ConvertibleElement("quote", "blockquote"),
@@ -457,7 +450,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new NamedSectionElement("reference"),
                 new NamedSectionElement("relatedSections"),
                 new RelatedTopicsElement(),
-                new ConvertibleElement("replaceable", "span", this.StyleNameFor(CommonStyle.Placeholder)),
+                new ConvertibleElement("replaceable", "span", "placeholder"),
                 new NamedSectionElement("requirements"),
                 new NamedSectionElement("returnValue"),
                 new NamedSectionElement("robustProgramming"),
@@ -478,19 +471,19 @@ namespace Sandcastle.PresentationStyles.VS2013
                 // The title element is ignored.  The section and table elements handle them as needed.
                 new IgnoredElement("title"),
                 new NonRenderedParentElement("type"),
-                new ConvertibleElement("ui", "span", this.StyleNameFor(CommonStyle.UI)),
+                new ConvertibleElement("ui", "span", "ui"),
                 new ConvertibleElement("unmanagedCodeEntityReference", "strong"),
-                new ConvertibleElement("userInput", "span", this.StyleNameFor(CommonStyle.Input)),
-                new ConvertibleElement("userInputLocalizable", "span", this.StyleNameFor(CommonStyle.Input)),
+                new ConvertibleElement("userInput", "span", "input"),
+                new ConvertibleElement("userInputLocalizable", "span", "input"),
                 new NamedSectionElement("whatsNew"),
 
                 // XML comments and reflection data file elements
-                new ConvertibleElement("c", "span", this.StyleNameFor(CommonStyle.Code)),
+                new ConvertibleElement("c", "span", "code"),
                 new PassthroughElement("conceptualLink"),
                 new NamedSectionElement("example"),
                 new ImplementsElement(),
                 new NoteElement("note"),
-                new ConvertibleElement("paramref", "name", "span", this.StyleNameFor(CommonStyle.Parameter)),
+                new ConvertibleElement("paramref", "name", "span", "parameter"),
                 new PreliminaryElement(),
                 new NamedSectionElement("remarks"),
                 new ReturnsElement(),
@@ -502,7 +495,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new SyntaxElement(),
                 new TemplatesElement(),
                 new ThreadsafetyElement(),
-                new ConvertibleElement("typeparamref", "name", "span", this.StyleNameFor(CommonStyle.TypeParameter)),
+                new ConvertibleElement("typeparamref", "name", "span", "typeparameter"),
                 new ValueElement(),
                 new VersionsElement()
             });
@@ -598,11 +591,11 @@ namespace Sandcastle.PresentationStyles.VS2013
                         content.Add(new XElement("referenceLink",
                                 new XAttribute("target", api),
                             new XElement("span",
-                                this.StyleAttributeFor(CommonStyle.TypeParameter),
+                                new XAttribute("class", "typeparameter"),
                             name)));
                     }
                     else
-                        content.Add(new XElement("span", this.StyleAttributeFor(CommonStyle.TypeParameter), name));
+                        content.Add(new XElement("span", new XAttribute("class", "typeparameter"), name));
                     break;
 
                 case "arrayOf":
@@ -749,15 +742,15 @@ namespace Sandcastle.PresentationStyles.VS2013
                     titleContent = new XText(title);
 
                 titleElement = new XElement("div",
-                        this.StyleAttributeFor(CommonStyle.CollapsibleAreaRegion),
+                        new XAttribute("class","collapsibleAreaRegion"),
                     new XElement("span",
-                        this.StyleAttributeFor(CommonStyle.CollapsibleRegionTitle),
+                        new XAttribute("class", "collapsibleRegionTitle"),
                         new XAttribute("onclick", "SectionExpandCollapse('" + uniqueId + "')"),
                         new XAttribute("onkeypress", "SectionExpandCollapse_CheckKey('" + uniqueId + "', event)"),
                         new XAttribute("tabindex", "0"),
                             new XElement("img",
                                 new XAttribute("id", toggleImageId),
-                                this.StyleAttributeFor(CommonStyle.CollapseToggle),
+                                new XAttribute("class", "collapseToggle"),
                                 new XAttribute("src", this.IconPath + "SectionExpanded.png")),
                             titleContent));
 
@@ -767,7 +760,7 @@ namespace Sandcastle.PresentationStyles.VS2013
 
             var contentElement = new XElement("div",
                 new XAttribute("id", toggleSectionId),
-                this.StyleAttributeFor(CommonStyle.CollapsibleSection));
+                new XAttribute("class", "collapsibleSection"));
 
             return (titleElement, contentElement);
         }
@@ -791,9 +784,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 else
                     titleContent = new XText(title);
 
-                titleElement = new XElement("h4",
-                    this.StyleAttributeFor(CommonStyle.SubHeading),
-                    titleContent);
+                titleElement = new XElement("h4", titleContent);
             }
 
             // Content for subsections can be added to the current element immediately after the title element
@@ -1003,7 +994,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                     break;
 
                 case "template":
-                    memberName.Add(new XElement("span", this.StyleAttributeFor(CommonStyle.TypeParameter), name));
+                    memberName.Add(new XElement("span", new XAttribute("class", "typeparameter"), name));
                     break;
 
                 case "arrayOf":
@@ -1050,43 +1041,6 @@ namespace Sandcastle.PresentationStyles.VS2013
                         Debugger.Break();
                     break;
             }
-        }
-
-        /// <inheritdoc />
-        /// <remarks>For the most part, we just convert the first letter to lowercase but a few are all lowercase</remarks>
-        public override string StyleNameFor(CommonStyle style)
-        {
-            if(!commonStyles.TryGetValue(style, out string styleName))
-            {
-                styleName = style.ToString();
-
-                switch(style)
-                {
-                    case CommonStyle.TypeParameter:
-                    case CommonStyle.NoBullet:
-                    case CommonStyle.NoLink:
-                    case CommonStyle.SelfLink:
-                    case CommonStyle.UI:
-                        styleName = styleName.ToLowerInvariant();
-                        break;
-
-                    default:
-                        var styleChars = styleName.ToCharArray();
-                        styleChars[0] = Char.ToLowerInvariant(styleChars[0]);
-                        styleName = new string(styleChars);
-                        break;
-                }
-
-                commonStyles.Add(style, styleName);
-            }
-
-            return styleName;
-        }
-
-        /// <inheritdoc />
-        public override XAttribute StyleAttributeFor(CommonStyle style)
-        {
-            return new XAttribute("class", this.StyleNameFor(style));
         }
         #endregion
 
@@ -1794,7 +1748,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                         transformation.RenderNode(summary);
                     else
                     {
-                        var div = new XElement("div", transformation.StyleAttributeFor(CommonStyle.Summary));
+                        var div = new XElement("div", new XAttribute("class", "summary"));
 
                         transformation.CurrentElement.Add(div);
                         transformation.RenderChildElements(div, overloads.Nodes());
@@ -2376,7 +2330,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 table.Add(new XElement("tr",
                     new XElement("td",
                         new XElement("span",
-                            thisTransform.StyleAttributeFor(CommonStyle.SelfLink),
+                            new XAttribute("class", "selflink"),
                             e.Element("apidata").Attribute("name").Value)),
                     valueCell,
                     summaryCell));
@@ -2990,7 +2944,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                     {
                         foreach(var s in seeAlsoCRef)
                         {
-                            var div = new XElement("div", transformation.StyleAttributeFor(CommonStyle.SeeAlsoStyle));
+                            var div = new XElement("div");
                             subsection.Add(div);
 
                             transformation.CurrentElement = div;
@@ -3016,7 +2970,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                     {
                         foreach(var s in seeAlsoHRef)
                         {
-                            var div = new XElement("div", transformation.StyleAttributeFor(CommonStyle.SeeAlsoStyle));
+                            var div = new XElement("div");
                             subsection.Add(div);
 
                             transformation.CurrentElement = div;
@@ -3028,7 +2982,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                     {
                         foreach(var c in conceptualLinks)
                         {
-                            var div = new XElement("div", transformation.StyleAttributeFor(CommonStyle.SeeAlsoStyle));
+                            var div = new XElement("div");
                             subsection.Add(div);
 
                             transformation.CurrentElement = div;
@@ -3054,7 +3008,6 @@ namespace Sandcastle.PresentationStyles.VS2013
               transformation.ApiMember.ApiTopicGroup == ApiMemberGroup.List)
             {
                 subsection.Add(new XElement("div",
-                        transformation.StyleAttributeFor(CommonStyle.SeeAlsoStyle),
                     new XElement("referenceLink",
                         new XAttribute("target", transformation.ApiMember.TypeTopicId),
                         new XAttribute("display-target", "format"),
@@ -3068,7 +3021,6 @@ namespace Sandcastle.PresentationStyles.VS2013
             if(!String.IsNullOrWhiteSpace(transformation.ApiMember.OverloadTopicId))
             {
                 subsection.Add(new XElement("div",
-                        transformation.StyleAttributeFor(CommonStyle.SeeAlsoStyle),
                     new XElement("referenceLink",
                         new XAttribute("target", transformation.ApiMember.OverloadTopicId),
                         new XAttribute("display-target", "format"),
@@ -3084,7 +3036,6 @@ namespace Sandcastle.PresentationStyles.VS2013
             if(!String.IsNullOrWhiteSpace(namespaceId))
             {
                 subsection.Add(new XElement("div",
-                        transformation.StyleAttributeFor(CommonStyle.SeeAlsoStyle),
                     new XElement("referenceLink",
                         new XAttribute("target", namespaceId),
                         new XAttribute("display-target", "format"),

@@ -19,7 +19,7 @@
         HT_mailLink.innerHTML = HT_mailLinkText;
         </script></item>
 
-	<item id="requestExample"><a id="HT_RequestExampleLink" href="{0}" target="_blank" rel="noopener noreferrer" class="button"
+	<item id="requestExample"><a id="HT_RequestExampleLink" href="{0}" target="_blank" rel="noopener noreferrer" class="{1}"
 		title="Request an example for this topic">Request Example</a>
 		<script type="text/javascript">
 		var HT_requestExampleLink = document.getElementById("HT_RequestExampleLink");
@@ -188,7 +188,7 @@
   <item id="inheritedFrom">(继承自 {0}。)</item>
 	<item id="noCodeExample"><p>当前没有可用的代码示例，或者可能不支持该语言。</p></item>
   <item id="overridesMember">(重写 {0})</item>
-	<item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[这是一个初步的说明文档有待于进一步改进。]</p></item>
+	<item id="preliminary"><p class="preliminary">[这是一个初步的说明文档有待于进一步改进。]</p></item>
   <item id="preliminaryText">此 API 尚未最终确定，随时可能调整。</item>
   <item id="sourceCodeLinkText">查看代码</item>
   <item id="sourceCodeLinkTitle">查看源代码</item>
@@ -413,7 +413,7 @@
     <item id="SMCAutoDocDispose">释放被 <referenceLink target="T:{0}" /> 使用的所有资源</item>
     <item id="SMCAutoDocDisposeBool">释放被 <referenceLink target="T:{0}" /> 使用的非托管资源，并且是否托管资源（可选）</item>
     <item id="SMCAutoDocDisposeParam">为 true 则同时释放托管资源和非托管资源；为 false 则只释放非托管资源</item>
-    <item id="SMCMissingTag"><p style="color: #dc143c; font-size: 9pt; font-weight: bold;">[缺少 "{1}" 的 &lt;{0}&gt; 文档]</p></item>
-    <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 9pt; font-weight: bold;">[缺少 "{2}" 的 &lt;{0} name="{1}"/&gt; 文档]</p></item>
-    <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 9pt; font-weight: bold;">[在 “{0}” 中缺少 &lt;include&gt; 目标文档。文件：“{1}” 路径：“{2}”]</p></item>
+    <item id="SMCMissingTag"><p class="missing">[缺少 "{1}" 的 &lt;{0}&gt; 文档]</p></item>
+    <item id="SMCMissingParamTag"><p class="missing">[缺少 "{2}" 的 &lt;{0} name="{1}"/&gt; 文档]</p></item>
+    <item id="SMCMissingIncludeTarget"><p class="missing">[在 “{0}” 中缺少 &lt;include&gt; 目标文档。文件：“{1}” 路径：“{2}”]</p></item>
 </content>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : CodeSnippetGroupElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/12/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle codeSnippetGroup elements
@@ -28,6 +28,71 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
     /// </summary>
     public class CodeSnippetGroupElement : Element
     {
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get or set the code snippet container style
+        /// </summary>
+        /// <value>The default if not set explicitly is "codeSnippetContainer"</value>
+        public string CodeSnippetContainerStyle { get; set; } = "codeSnippetContainer";
+
+        /// <summary>
+        /// This is used to get or set the code snippet container tabs style
+        /// </summary>
+        /// <value>The default if not set explicitly is "codeSnippetContainerTabs"</value>
+        public string CodeSnippetContainerTabsStyle { get; set; } = "codeSnippetContainerTabs";
+
+        /// <summary>
+        /// This is used to get or set the code snippet container tab style
+        /// </summary>
+        /// <value>The default if not set explicitly is "codeSnippetContainerTab"</value>
+        public string CodeSnippetContainerTabStyle { get; set; } = "codeSnippetContainerTab";
+
+        /// <summary>
+        /// This is used to get or set the code snippet container tab single style
+        /// </summary>
+        /// <value>The default if not set explicitly is "codeSnippetContainerTabSingle"</value>
+        public string CodeSnippetContainerTabSingleStyle { get; set; } = "codeSnippetContainerTabSingle";
+
+        /// <summary>
+        /// This is used to get or set the code snippet container tab phantom style
+        /// </summary>
+        /// <value>The default if not set explicitly is "codeSnippetContainerTabPhantom"</value>
+        public string CodeSnippetContainerTabPhantomStyle { get; set; } = "codeSnippetContainerTabPhantom";
+
+        /// <summary>
+        /// This is used to get or set the code snippet container code container style
+        /// </summary>
+        /// <value>The default if not set explicitly is "codeSnippetContainerCodeContainer"</value>
+        public string CodeSnippetContainerCodeContainerStyle { get; set; } = "codeSnippetContainerCodeContainer";
+
+        /// <summary>
+        /// This is used to get or set the code snippet toolbar style
+        /// </summary>
+        /// <value>The default if not set explicitly is "codeSnippetToolBar"</value>
+        public string CodeSnippetToolBarStyle { get; set; } = "codeSnippetToolBar";
+
+        /// <summary>
+        /// This is used to get or set the code snippet toolbar text style
+        /// </summary>
+        /// <value>The default if not set explicitly is "codeSnippetToolBarText"</value>
+        public string CodeSnippetToolBarTextStyle { get; set; } = "codeSnippetToolBarText";
+
+        /// <summary>
+        /// This is used to get or set the copy code snippet style
+        /// </summary>
+        /// <value>The default if not set explicitly is "copyCodeSnippet"</value>
+        public string CopyCodeSnippetStyle { get; set; } = "copyCodeSnippet";
+
+        /// <summary>
+        /// This is used to get or set the code snippet container code style
+        /// </summary>
+        /// <value>The default if not set explicitly is "codeSnippetContainerCode"</value>
+        public string CodeSnippetContainerCodeStyle { get; set; } = "codeSnippetContainerCode";
+
+        #endregion
+
         #region Constructor
         //=====================================================================
 
@@ -58,7 +123,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 int nodeCount = snippets.Count(), position = 1;
 
                 var codeSnippetContainer = new XElement("div",
-                    transformation.StyleAttributeFor(CommonStyle.CodeSnippetContainer));
+                    new XAttribute("class", this.CodeSnippetContainerStyle));
                 transformation.CurrentElement.Add(codeSnippetContainer);
 
                 // Only render the title tabs if there is more than one snippet or the title is not a single
@@ -66,22 +131,22 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 if(nodeCount > 1 || snippets.First().Attribute("title")?.Value != " ")
                 {
                     var tabDiv = new XElement("div",
-                        transformation.StyleAttributeFor(CommonStyle.CodeSnippetContainerTabs));
+                        new XAttribute("class", this.CodeSnippetContainerTabsStyle));
 
                     codeSnippetContainer.Add(tabDiv);
 
                     foreach(var snippet in snippets)
                     {
                         // Single snippet, phantom (placeholder for a non-represented language), or multi-snippet
-                        CommonStyle style = (nodeCount == 1) ? CommonStyle.CodeSnippetContainerTabSingle :
-                            snippet.Attribute("phantom") != null ? CommonStyle.CodeSnippetContainerTabPhantom :
-                            CommonStyle.CodeSnippetContainerTab;
+                        string style = (nodeCount == 1) ? this.CodeSnippetContainerTabSingleStyle :
+                            snippet.Attribute("phantom") != null ? this.CodeSnippetContainerTabPhantomStyle :
+                            this.CodeSnippetContainerTabStyle;
                         string title = snippet.Attribute("title")?.Value.NormalizeWhiteSpace(),
                             codeLanguage = snippet.Attribute("codeLanguage")?.Value;
 
                         var tab = new XElement("div",
                             new XAttribute("id", $"{id}_tab{position}"),
-                            transformation.StyleAttributeFor(style));
+                            new XAttribute("class", style));
                         tabDiv.Add(tab);
 
                         if(nodeCount == 1)
@@ -110,20 +175,19 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                     }
                 }
 
-                var codeDiv = new XElement("div",
-                    transformation.StyleAttributeFor(CommonStyle.CodeSnippetContainerCodeContainer));
+                var codeDiv = new XElement("div", new XAttribute("class", this.CodeSnippetContainerCodeContainerStyle));
 
                 codeSnippetContainer.Add(codeDiv);
 
                 // Code snippet toolbar (Copy Code link)
                 codeDiv.Add(new XElement("div",
-                    transformation.StyleAttributeFor(CommonStyle.CodeSnippetToolBar),
+                    new XAttribute("class", this.CodeSnippetToolBarStyle),
                     new XElement("div",
-                        transformation.StyleAttributeFor(CommonStyle.CodeSnippetToolBarText),
+                        new XAttribute("class", this.CodeSnippetToolBarTextStyle),
                         new XElement("a",
                             new XAttribute("id", $"{id}_copyCode"),
                             new XAttribute("href", "#"),
-                            transformation.StyleAttributeFor(CommonStyle.CopyCodeSnippet),
+                            new XAttribute("class", this.CopyCodeSnippetStyle),
                             new XAttribute("onclick", $"javascript:CopyToClipboard('{id}');return false;"),
                                 new XElement("includeAttribute",
                                     new XAttribute("name", "title"),
@@ -137,7 +201,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 {
                     var snippetDiv = new XElement("div",
                         new XAttribute("id", $"{id}_code_Div{position}"),
-                        transformation.StyleAttributeFor(CommonStyle.CodeSnippetContainerCode));
+                        new XAttribute("class", this.CodeSnippetContainerCodeStyle));
                     codeDiv.Add(snippetDiv);
 
                     if(position == 1)

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : MediaLinkElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/24/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle mediaLink elements
@@ -27,10 +27,52 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
     /// </summary>
     public class MediaLinkElement : Element
     {
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get or set the image caption style
+        /// </summary>
+        /// <value>The default if not set explicitly is "caption"</value>
+        public string ImageCaptionStyle { get; set; } = "caption";
+
+        /// <summary>
+        /// This is used to get or set the caption lead text style
+        /// </summary>
+        /// <value>The default if not set explicitly is "captionLead"</value>
+        public string CaptionLeadTextStyle { get; set; } = "captionLead";
+
+        /// <summary>
+        /// This is used to get or set the media near style
+        /// </summary>
+        /// <value>The default if not set explicitly is "mediaNear"</value>
+        public string MediaNearStyle { get; set; } = "mediaNear";
+
+        /// <summary>
+        /// This is used to get or set the media center style
+        /// </summary>
+        /// <value>The default if not set explicitly is "mediaCenter"</value>
+        public string MediaCenterStyle { get; set; } = "mediaCenter";
+
+        /// <summary>
+        /// This is used to get or set the media far style
+        /// </summary>
+        /// <value>The default if not set explicitly is "mediaFar"</value>
+        public string MediaFarStyle { get; set; } = "mediaFar";
+
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
         /// <inheritdoc />
         public MediaLinkElement() : base("mediaLink")
         {
         }
+        #endregion
+
+        #region Methods
+        //=====================================================================
 
         /// <inheritdoc />
         public override void Render(TopicTransformationCore transformation, XElement element)
@@ -52,15 +94,15 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 switch(placement)
                 {
                     case "center":
-                        link.Add(transformation.StyleAttributeFor(CommonStyle.MediaCenter));
+                        link.Add(new XAttribute("class", this.MediaCenterStyle));
                         break;
 
                     case "far":
-                        link.Add(transformation.StyleAttributeFor(CommonStyle.MediaFar));
+                        link.Add(new XAttribute("class", this.MediaFarStyle));
                         break;
 
                     default:
-                        link.Add(transformation.StyleAttributeFor(CommonStyle.MediaNear));
+                        link.Add(new XAttribute("class", this.MediaNearStyle));
                         break;
                 }
 
@@ -71,12 +113,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 {
                     placement = caption.Attribute("placement")?.Value;
                     string lead = caption.Attribute("lead")?.Value.NormalizeWhiteSpace();
-                    captionDiv = new XElement("div", transformation.StyleAttributeFor(CommonStyle.Caption));
+                    captionDiv = new XElement("div", new XAttribute("class", this.ImageCaptionStyle));
 
                     if(!String.IsNullOrWhiteSpace(lead))
                     {
                         captionDiv.Add(new XElement("span",
-                            transformation.StyleAttributeFor(CommonStyle.CaptionLead), lead + ": "));
+                            new XAttribute("class", this.CaptionLeadTextStyle), lead + ": "));
                     }
 
                     captionDiv.Add(captionText);
@@ -98,5 +140,6 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 transformation.CurrentElement.Add(link);
             }
         }
+        #endregion
     }
 }

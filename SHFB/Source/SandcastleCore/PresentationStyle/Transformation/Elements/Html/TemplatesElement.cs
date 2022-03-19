@@ -28,6 +28,17 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
     /// </summary>
     public class TemplatesElement : Element
     {
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get or set the template parameter style
+        /// </summary>
+        /// <value>The default if not set explicitly is "parameter"</value>
+        public string TemplateParameterStyle { get; set; } = "parameter";
+
+        #endregion
+
         #region Constructor
         //=====================================================================
 
@@ -69,7 +80,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             {
                 dl.Add(new XElement("dt",
                     new XElement("span",
-                        transformation.StyleAttributeFor(CommonStyle.Parameter),
+                        new XAttribute("class", this.TemplateParameterStyle),
                         t.Attribute("name").Value)));
 
                 var dd = new XElement("dd");

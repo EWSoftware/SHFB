@@ -249,7 +249,7 @@ namespace Sandcastle.Tools.BuildComponents
                 {
                     case ConceptualLinkType.None:
                         writer.WriteStartElement("span");
-                        writer.WriteAttributeString("class", "nolink");
+                        writer.WriteAttributeString("class", "noLink");
                         break;
 
                     case ConceptualLinkType.Local:

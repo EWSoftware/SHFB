@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : MediaLinkInlineElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/24/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle mediaLinkInline elements
@@ -27,10 +27,28 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
     /// </summary>
     public class MediaLinkInlineElement : Element
     {
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get or set the media style
+        /// </summary>
+        /// <value>The default if not set explicitly is "media"</value>
+        public string MediaStyle { get; set; } = "media";
+
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
         /// <inheritdoc />
         public MediaLinkInlineElement() : base("mediaLinkInline")
         {
         }
+        #endregion
+
+        #region Methods
+        //=====================================================================
 
         /// <inheritdoc />
         public override void Render(TopicTransformationCore transformation, XElement element)
@@ -46,12 +64,13 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             if(!String.IsNullOrWhiteSpace(linkTarget))
             {
                 var link = new XElement("span",
-                        transformation.StyleAttributeFor(CommonStyle.Media),
+                        new XAttribute("class", this.MediaStyle),
                     new XElement("artLink",
                         new XAttribute("target", linkTarget)));
 
                 transformation.CurrentElement.Add(link);
             }
         }
+        #endregion
     }
 }

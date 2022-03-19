@@ -423,7 +423,7 @@ namespace Sandcastle.Tools.BuildComponents
                         // If the link was intentionally suppressed, write it out as an identifier (i.e. links
                         // in the syntax section).
                         if(link.RenderAsLink)
-                            writer.WriteAttributeString("class", "nolink");
+                            writer.WriteAttributeString("class", "noLink");
                         else
                             writer.WriteAttributeString("class", "identifier");
                         break;

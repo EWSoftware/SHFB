@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : NamedSectionElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/06/2022
+// Updated : 03/16/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle versions elements
@@ -68,7 +68,6 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                     if(v.HasElements)
                     {
                         content.Add(new XElement("h4",
-                                new XAttribute("class", "subHeading"),
                             new XElement("include",
                                 new XAttribute("item", v.Attribute("name").Value))));
 

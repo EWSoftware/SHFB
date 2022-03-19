@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SectionElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/23/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle general section elements
@@ -90,16 +90,13 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 {
                     if(!String.IsNullOrWhiteSpace(titleText))
                     {
-                        title = new XElement("h4",
-                            transformation.StyleAttributeFor(CommonStyle.SubHeading),
-                            titleText);
+                        title = new XElement("h4", titleText);
 
                         if(!String.IsNullOrWhiteSpace(address))
                             title.Add(new XAttribute("id", address));
                     }
 
-                    content = new XElement("div",
-                        transformation.StyleAttributeFor(CommonStyle.SubSection));
+                    content = new XElement("div");
                 }
                 else
                 {

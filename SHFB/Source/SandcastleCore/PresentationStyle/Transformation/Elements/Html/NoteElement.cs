@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : NoteElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/28/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle note and alert elements
@@ -27,6 +27,17 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
     /// </summary>
     public class NoteElement : Element
     {
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get or set the note/alert style
+        /// </summary>
+        /// <value>The default if not set explicitly is "alert"</value>
+        public string NoteAlertStyle { get; set; } = "alert";
+
+        #endregion
+
         #region Constructor
         //=====================================================================
 
@@ -146,7 +157,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             var contentCell = new XElement("td");
             transformation.RenderChildElements(contentCell, element.Nodes());
 
-            var note = new XElement("div", transformation.StyleAttributeFor(CommonStyle.Alert),
+            var note = new XElement("div", new XAttribute("class", this.NoteAlertStyle),
                 new XElement("table",
                     new XElement("tr",
                         new XElement("th",

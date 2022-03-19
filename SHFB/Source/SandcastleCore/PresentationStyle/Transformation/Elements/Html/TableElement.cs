@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TableElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/21/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the table element based on the topic type
@@ -27,10 +27,28 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
     /// </summary>
     public class TableElement : Element
     {
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get or set the table caption style
+        /// </summary>
+        /// <value>The default if not set explicitly is "caption"</value>
+        public string TableCaptionStyle { get; set; } = "caption";
+
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
         /// <inheritdoc />
         public TableElement() : base("table")
         {
         }
+        #endregion
+
+        #region Methods
+        //=====================================================================
 
         /// <inheritdoc />
         public override void Render(TopicTransformationCore transformation, XElement element)
@@ -50,7 +68,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 if((title?.Length ?? 0) != 0)
                 {
                     transformation.CurrentElement.Add(new XElement("div",
-                        transformation.StyleAttributeFor(CommonStyle.Caption), title));
+                        new XAttribute("class", this.TableCaptionStyle), title));
                 }
             }
             else
@@ -62,5 +80,6 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             transformation.CurrentElement.Add(table);
             transformation.RenderChildElements(table, element.Nodes());
         }
+        #endregion
     }
 }

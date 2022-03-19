@@ -812,7 +812,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         [SubstitutionTag]
         private string Preliminary()
         {
-            return sandcastleProject.Preliminary ? "<include item=\"preliminary\"/>" :String.Empty;
+            return sandcastleProject.Preliminary ? "<include item=\"preliminary\"/>" : String.Empty;
         }
 
         /// <summary>

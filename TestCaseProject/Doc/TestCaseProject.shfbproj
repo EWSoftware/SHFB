@@ -130,10 +130,13 @@
       <PlugInConfig id="Additional Content Only" enabled="False">
         <configuration />
       </PlugInConfig>
-<PlugInConfig id="XPath Reflection File Filter" enabled="False"><configuration /></PlugInConfig></PlugInConfigurations>
+      <PlugInConfig id="XPath Reflection File Filter" enabled="False">
+        <configuration />
+      </PlugInConfig>
+    </PlugInConfigurations>
     <ApiFilter>
     </ApiFilter>
-    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <HelpFileFormat>Website</HelpFileFormat>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <Major>1</Major>
     <Minor>20</Minor>
@@ -181,7 +184,8 @@
     <NamespaceGrouping>True</NamespaceGrouping>
     <CatalogName>
     </CatalogName>
-    <ComponentPath>..\..\..\..\DotNet\SHFBComponents\PlugIn1CS\</ComponentPath>
+    <ComponentPath>
+    </ComponentPath>
     <WebsiteSdkLinkType>Msdn</WebsiteSdkLinkType>
     <HtmlSdkLinkType>Msdn</HtmlSdkLinkType>
     <IncludeFavorites>False</IncludeFavorites>

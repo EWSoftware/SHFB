@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ParametersElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/05/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle parameters elements based on the topic type
@@ -28,6 +28,17 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
     /// </summary>
     public class ParametersElement : NamedSectionElement
     {
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get or set the parameter style
+        /// </summary>
+        /// <value>The default if not set explicitly is "parameter"</value>
+        public string ParameterStyle { get; set; } = "parameter";
+
+        #endregion
+
         #region Constructor
         //=====================================================================
 
@@ -81,7 +92,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
                     dl.Add(new XElement("dt",
                         new XElement("span",
-                            transformation.StyleAttributeFor(CommonStyle.Parameter),
+                            new XAttribute("class", this.ParameterStyle),
                             p.Attribute("name").Value), optional));
 
                     var parameter = new XElement("parameter");

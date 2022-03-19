@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : BibliographyElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/23/2022
+// Updated : 03/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle bibliography elements based on the topic type
@@ -28,11 +28,34 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
     /// </summary>
     public class BibliographyElement : Element
     {
-        #region Properties
+        #region Private data members
         //=====================================================================
 
         private string lastTopicKey;
         private List<string> citations;
+
+        #endregion
+
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get or set the bibliography author style
+        /// </summary>
+        /// <value>The default if not set explicitly is "BibliographyAuthor"</value>
+        public string BibliographyAuthorStyle { get; set; } = "bibliographyAuthor";
+
+        /// <summary>
+        /// This is used to get or set the bibliography title style
+        /// </summary>
+        /// <value>The default if not set explicitly is "BibliographyTitle"</value>
+        public string BibliographyTitleStyle { get; set; } = "bibliographyTitle";
+
+        /// <summary>
+        /// This is used to get or set the bibliography publisher style
+        /// </summary>
+        /// <value>The default if not set explicitly is "BibliographyPublisher"</value>
+        public string BibliographyPublisherStyle { get; set; } = "bibliographyPublisher";
 
         #endregion
 
@@ -112,17 +135,15 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                     var reference = transformation.BibliographyData[citation];
 
                     var div = new XElement("div",
-                            transformation.StyleAttributeFor(CommonStyle.BibliographStyle),
                         new XElement("span",
-                            transformation.StyleAttributeFor(CommonStyle.BibliographyNumber),
                             new XAttribute("id", $"cite{idx}"),
                             $"[{idx}] "),
                         new XElement("span",
-                            transformation.StyleAttributeFor(CommonStyle.BibliographyAuthor),
+                            new XAttribute("class", this.BibliographyAuthorStyle),
                             reference.Element("author")?.Value.NormalizeWhiteSpace()),
                         ", ",
                         new XElement("span",
-                            transformation.StyleAttributeFor(CommonStyle.BibliographyTitle),
+                            new XAttribute("class", this.BibliographyTitleStyle),
                             reference.Element("title")?.Value.NormalizeWhiteSpace()));
 
                     string publisher = reference.Element("publisher")?.Value.NormalizeWhiteSpace(),
@@ -130,10 +151,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
                     if(!String.IsNullOrWhiteSpace(publisher))
                     {
-                        div.Add(", ",
-                            new XElement("span",
-                                transformation.StyleAttributeFor(CommonStyle.BibliographyPublisher),
-                                publisher));
+                        div.Add(", ", new XElement("span",
+                            new XAttribute("class", this.BibliographyPublisherStyle), publisher));
                     }
 
                     if(!String.IsNullOrWhiteSpace(link))
