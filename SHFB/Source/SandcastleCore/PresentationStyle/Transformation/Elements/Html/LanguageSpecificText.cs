@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : LanguageSpecificText.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/11/2022
+// Updated : 03/20/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to define language specific text used by a presentation style
@@ -143,6 +143,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         /// <summary>
         /// This is used to get or set the keyword style name
         /// </summary>
+        /// <value>The default if not set is <c>keyword</c></value>
         public static string KeywordStyleName { get; set; } = "keyword";
 
         #endregion

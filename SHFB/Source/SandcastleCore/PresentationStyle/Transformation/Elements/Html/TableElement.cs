@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TableElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2022
+// Updated : 03/26/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the table element based on the topic type
@@ -36,6 +36,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         /// <value>The default if not set explicitly is "caption"</value>
         public string TableCaptionStyle { get; set; } = "caption";
 
+        /// <summary>
+        /// This is used to get or set the overall table style
+        /// </summary>
+        /// <value>The default if not set explicitly is null and no explicit style will be applied</value>
+        public string TableStyle { get; set; }
+
         #endregion
 
         #region Constructor
@@ -61,6 +67,9 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
             var table = new XElement(this.Name);
 
+            if(!String.IsNullOrWhiteSpace(this.TableStyle))
+                table.Add(new XAttribute("class", this.TableStyle));
+
             if(transformation.IsMamlTopic)
             {
                 string title = element.Element(Ddue + "title")?.Value.NormalizeWhiteSpace();
@@ -74,7 +83,11 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             else
             {
                 foreach(var attr in element.Attributes())
-                    table.Add(new XAttribute(attr.Name.LocalName, attr.Value));
+                {
+                    // Don't override explicit styling
+                    if(attr.Name.LocalName != "class" || String.IsNullOrWhiteSpace(this.TableStyle))
+                        table.Add(new XAttribute(attr.Name.LocalName, attr.Value));
+                }
             }
 
             transformation.CurrentElement.Add(table);

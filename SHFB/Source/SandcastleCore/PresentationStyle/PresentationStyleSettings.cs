@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PresentationStyleSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2022
+// Updated : 03/23/2022
 // Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain settings information for a specific presentation style
@@ -92,11 +92,6 @@ namespace Sandcastle.Core.PresentationStyle
         public IList<ContentFiles> ContentFiles => contentFiles;
 
         /// <summary>
-        /// This is used to get or set the path in which BuildAssembler resource item files are stored
-        /// </summary>
-        public string ResourceItemsPath { get; protected set; }
-
-        /// <summary>
         /// This is used to get or set the document model applicator
         /// </summary>
         public IApplyDocumentModel DocumentModelApplicator { get; protected set; }
@@ -142,6 +137,15 @@ namespace Sandcastle.Core.PresentationStyle
         #region Helper methods
         //=====================================================================
 
+
+        /// <summary>
+        /// This is used to get an enumerable list of BuildAssembler resource item files used by the presentation
+        /// style.
+        /// </summary>
+        /// <param name="languageName">The language name for the localized resources.  If the specific language
+        /// is not found, it falls back to the en-US resources which will always exist.</param>
+        public abstract IEnumerable<string> ResourceItemFiles(string languageName);
+
         /// <summary>
         /// This is used to check the presentation style for errors
         /// </summary>
@@ -152,9 +156,6 @@ namespace Sandcastle.Core.PresentationStyle
 
             if(this.SupportedFormats == 0)
                 errors.Add(nameof(SupportedFormats) + " has not been specified");
-
-            if(this.ResourceItemsPath == null)
-                errors.Add(nameof(ResourceItemsPath) + " has not been specified");
 
             if(this.DocumentModelApplicator == null)
                 errors.Add(nameof(DocumentModelApplicator) + " has not been specified");
@@ -167,6 +168,9 @@ namespace Sandcastle.Core.PresentationStyle
 
             if(String.IsNullOrWhiteSpace(this.BuildAssemblerConfiguration))
                 errors.Add(nameof(BuildAssemblerConfiguration) + " has not been specified");
+
+            if(!this.ResourceItemFiles("en-US").Any())
+                errors.Add(nameof(ResourceItemFiles) + " did not return any resource item files");
 
             return errors;
         }

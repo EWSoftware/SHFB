@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TitleAndKeywordHtmlExtract.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/02/2022
+// Updated : 03/27/2022
 // Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to extract title and keyword information from HTML files for use in creating
@@ -321,7 +321,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     currentBuild.ReportProgress("Processing website files in " + this.WebsiteFolder);
 
                     ParseFiles(this.WebsiteFolder, null);
-                    WriteWebsiteKeywordIndex();
                     WriteWebsiteTableOfContents();
                 }
 
@@ -839,68 +838,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     writer.WriteLine();
                     writer.WriteLine("</HelpTOC>");
                 }
-            }
-        }
-        #endregion
-
-        #region Write out the website keyword index
-        //=====================================================================
-
-        /// <summary>
-        /// Write out the website keyword index
-        /// </summary>
-        private void WriteWebsiteKeywordIndex()
-        {
-            KeywordInfo kw;
-            string title;
-            int baseFolderLength = this.WebsiteFolder.Length + 1;
-
-            currentBuild.ReportProgress(@"Saving website keyword index to {0}\WebKI.xml", currentBuild.WorkingFolder);
-
-            // Write the keyword index with UTF-8 encoding
-            using(StreamWriter writer = new StreamWriter(Path.Combine(currentBuild.WorkingFolder, "WebKI.xml"), false,
-              Encoding.UTF8))
-            {
-                writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-                writer.Write("<HelpKI>");
-
-                foreach(var group in keywords.Where(k => !String.IsNullOrEmpty(k.MainEntry)).GroupBy(k => k.MainEntry))
-                    if(group.Count() == 1)
-                    {
-                        kw = group.First();
-
-                        if(!String.IsNullOrEmpty(kw.File))
-                            WriteContentLine(writer, 1, String.Format(CultureInfo.InvariantCulture,
-                                "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", WebUtility.HtmlEncode(kw.MainEntry),
-                                WebUtility.HtmlEncode(kw.File.Substring(baseFolderLength)).Replace('\\', '/')));
-                    }
-                    else
-                    {
-                        WriteContentLine(writer, 1, String.Format(CultureInfo.InvariantCulture,
-                             "<HelpKINode Title=\"{0}\">", WebUtility.HtmlEncode(group.Key)));
-
-                        foreach(var k in group)
-                            if(!String.IsNullOrEmpty(k.File))
-                                if(String.IsNullOrEmpty(k.SubEntry))
-                                {
-                                    // Use the target page's title as the entry's title as it will be fully
-                                    // qualified if necessary.
-                                    title = titles[Path.GetFileNameWithoutExtension(k.File)].TopicTitle;
-
-                                    WriteContentLine(writer, 2, String.Format(CultureInfo.InvariantCulture,
-                                        "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", WebUtility.HtmlEncode(title),
-                                        WebUtility.HtmlEncode(k.File.Substring(baseFolderLength)).Replace('\\', '/')));
-                                }
-                                else
-                                    WriteContentLine(writer, 2, String.Format(CultureInfo.InvariantCulture,
-                                        "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", WebUtility.HtmlEncode(k.SubEntry),
-                                        WebUtility.HtmlEncode(k.File.Substring(baseFolderLength)).Replace('\\', '/')));
-
-                        WriteContentLine(writer, 1, "</HelpKINode>");
-                    }
-
-                writer.WriteLine();
-                writer.WriteLine("</HelpKI>");
             }
         }
         #endregion

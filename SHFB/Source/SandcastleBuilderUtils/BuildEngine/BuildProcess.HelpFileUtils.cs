@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/04/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 03/27/2022
+// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the code used to modify the help file project files to create a better table of contents
 // and find the default help file page
@@ -693,10 +693,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 return;
 
             this.ExecutePlugIns(ExecutionBehaviors.Before);
-
-            // Copy the TOC, keyword index, index pages, and tree view stuff
-            File.Copy(workingFolder + "WebTOC.xml", outputFolder + "WebTOC.xml");
-            File.Copy(workingFolder + "WebKI.xml", outputFolder + "WebKI.xml");
 
             // Copy the help pages and related content
             this.RecursiveCopy(webWorkingFolder + @"\*.*", outputFolder, ref fileCount);

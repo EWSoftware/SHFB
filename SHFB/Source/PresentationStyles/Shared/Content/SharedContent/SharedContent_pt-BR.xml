@@ -36,7 +36,7 @@
 		HT_requestExampleLink.innerHTML = HT_requestExampleLinkText;
 		</script></item>
 	
-	<!-- Lightweight TOC resize tool tip -->
+	<!-- Lightweight TOC resize tool tip (VS2013 presentation style) -->
 	<item id="resizeToolTip">Clique ou arraste para redimensionar</item>
 
 	<!-- Section titles -->
@@ -186,7 +186,7 @@
   <item id="definedBy">(Definido por {0})</item>
   <item id="exposedMembersTableText">O tipo {0} expõe os seguintes membros.</item>	
 	<item id="inheritedFrom">(Herdado de {0})</item>
-	<item id="noCodeExample"><p>Nenhum exemplo está disponível atualmente ou esta linguagem pode não ser suportada.</p></item>
+	<item id="noCodeExample">Nenhum exemplo está disponível atualmente ou esta linguagem pode não ser suportada.</item>
 	<item id="overridesMember">(Sobrescreve {0})</item>
 	<item id="preliminary"><p class="preliminary">[Esta é uma documentação preliminar e está sujeita a alterações.]</p></item>
   <item id="preliminaryText">Esta API é preliminar e sujeita a mudança.</item>
@@ -200,32 +200,26 @@
 
 	<!-- Requirements section info -->
 	<item id="assemblyNameAndModule">{0} (in {1}.{2}) Versão: {3}</item>
-  <item id="boilerplate_requirementsAssemblies">
-    <strong>Assemblies:</strong>
-  </item>
-  <item id="boilerplate_requirementsAssemblyLabel">
-    <strong>Assembly:</strong>
-  </item>
-  <item id="boilerplate_requirementsNamespace">
-    <strong>Namespace:</strong> 
-  </item>
+  <item id="boilerplate_requirementsAssemblies">Assemblies:</item>
+  <item id="boilerplate_requirementsAssemblyLabel">Assembly:</item>
+  <item id="boilerplate_requirementsNamespace">Namespace:</item>
   <item id="boilerplate_unmappedXamlXmlns">Não mapeado para um xmlns.</item>
-  <item id="boilerplate_xamlXmlnsRequirements"><strong>XMLNS para XAML:</strong> {0}</item>
+  <item id="boilerplate_xamlXmlnsRequirements">XMLNS para XAML:</item>
 	
   <!-- Auto-outline text -->
   <item id="boilerplate_autoOutlineTopLevelIntro">This topic contains the following sections:</item>
 	<item id="boilerplate_autoOutlineSubsectionIntro">This section contains the following subsections:</item>
 	
   <!-- Copyright notice. {0} = Copyright text, {1} = Year(s), {2} = Holder(s) -->
-  <item id="boilerplate_copyrightNotice"><p>{0} &#169;{1}{2}. All rights reserved.</p></item>
+  <item id="boilerplate_copyrightNotice">{0} &#169;{1}{2}. All rights reserved.</item>
 
 	<!-- To format the copyright HREF and/or copyright text into a message of your choosing, you can specify
 			 @HtmlEncCopyrightHref and/or @HtmlEncCopyrightText in braces -->
 	<item id="copyright">{@HtmlEncCopyrightInfo}</item>
 
 	<!-- Obsolete API text -->
-  <item id="boilerplate_obsoleteShort"><strong>Obsoleto.</strong><br/></item>
-  <item id="boilerplate_obsoleteLong"><strong>Nota: Esta API está obsoleta.</strong></item>
+  <item id="boilerplate_obsoleteShort">Obsoleto.</item>
+  <item id="boilerplate_obsoleteLong">Nota: Esta API está obsoleta.</item>
 	
 	<!-- See Also section text-->
   <item id="boilerplate_seeAlsoNamespaceLink">{0} Namespace</item>

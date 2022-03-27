@@ -272,8 +272,8 @@
   <item id="infraStructure">インフラストラクチャ</item>
 
 	<!-- Obsolete boilerplate text -->
-  <item id="boilerplate_obsoleteShort"><strong>廃止予定。</strong></item>
-  <item id="boilerplate_obsoleteLong"><strong>注意: このAPIは廃止予定です。</strong></item>
+  <item id="boilerplate_obsoleteShort">廃止予定。</item>
+  <item id="boilerplate_obsoleteLong">注意: このAPIは廃止予定です。</item>
 
 	<!-- Group and SubGroup text -->
   <item id="text_classUpper">クラス</item>
@@ -348,21 +348,15 @@
   <item id="boilerplate_seeAlsoMembersLink">{0} メンバー</item>
   <item id="boilerplate_seeAlsoOverloadLink">{0} オーバーロード</item>
 
-  <item id="boilerplate_requirementsNamespace">
-    <strong>名前空間:</strong> 
-  </item>
+  <item id="boilerplate_requirementsNamespace">名前空間:</item>
 
   <item id="boilerplate_requirementsPlatforms">
     <strong>プラットフォーム:</strong> {0}
   </item>
 
-  <item id="boilerplate_requirementsAssemblies">
-    <strong>アセンブリ:</strong>
-  </item>
+  <item id="boilerplate_requirementsAssemblies">アセンブリ:</item>
 
-  <item id="boilerplate_requirementsAssemblyLabel">
-    <strong>アセンブリ:</strong>
-  </item>
+  <item id="boilerplate_requirementsAssemblyLabel">アセンブリ:</item>
 
 	<item id="assemblyNameAndModule">{0} (in {1}.{2}) バージョン: {3}</item>
 
@@ -514,7 +508,7 @@
   <item id="silverlight_mobile_v1">Windows Phone OS 7.0</item>
 
   <!-- Used in the Requirements section to display an xmlns URI for apis that can be used in XAML -->
-  <item id="boilerplate_xamlXmlnsRequirements"><strong>XAML用XMLNS:</strong> {0}</item>
+  <item id="boilerplate_xamlXmlnsRequirements">XAML用XMLNS:</item>
   <item id="boilerplate_unmappedXamlXmlns">xmlnsにマップされていません。</item>
 
   <item id="boilerplate_secondaryFrameworkOverride"><br /><br />In <include item="{0}" />, このメンバーは{1}でオーバーライドされています。</item>
@@ -558,7 +552,7 @@
   </item>
 
 	<!-- Copyright notice. {0} = Copyright text, {1} = Year(s), {2} = Holder(s) -->
-	<item id="boilerplate_copyrightNotice"><p>{0} ©{1}{2}. All rights reserved.</p></item>
+	<item id="boilerplate_copyrightNotice">{0} ©{1}{2}. All rights reserved.</item>
 
 	<!-- Glossary related entries -->
 	<item id="text_relatedEntries">参照:</item>

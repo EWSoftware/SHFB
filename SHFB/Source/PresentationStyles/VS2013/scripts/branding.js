@@ -62,7 +62,7 @@ function OnLoad(defaultLanguage)
     // belongs if necessary.
     try
     {
-        var footer = document.getElementById("pageFooter")
+        var footer = document.getElementById("PageFooter")
 
         if(footer)
         {

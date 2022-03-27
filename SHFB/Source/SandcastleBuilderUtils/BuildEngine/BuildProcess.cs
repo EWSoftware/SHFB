@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/07/2022
+// Updated : 03/23/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -136,7 +136,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private bool buildCancelling;
 
         // Various paths and other strings
-        private string templateFolder, projectFolder, outputFolder, workingFolder, hhcFolder, languageFolder,
+        private string templateFolder, projectFolder, outputFolder, workingFolder, hhcFolder,
             defaultTopic, reflectionFile;
 
         private CultureInfo language;   // The project language
@@ -226,11 +226,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public CultureInfo Language => language;
 
         /// <summary>
-        /// This read-only property returns the resource item file language folder name
-        /// </summary>
-        public string LanguageFolder => languageFolder;
-
-        /// <summary>
         /// This returns the presentation instance being used by the build process
         /// </summary>
         public PresentationStyleSettings PresentationStyle => presentationStyle;
@@ -241,13 +236,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         public string PresentationStyleFolder => FolderPath.TerminatePath(presentationStyle.ResolvePath(
             presentationStyle.BasePath));
-
-        /// <summary>
-        /// This returns the name of the presentation style resource items folder determined by the build
-        /// process.
-        /// </summary>
-        public string PresentationStyleResourceItemsFolder => FolderPath.TerminatePath(Path.Combine(
-            presentationStyle.ResolvePath(presentationStyle.ResourceItemsPath), languageFolder));
 
         /// <summary>
         /// This read-only property returns a collection of the output folders specific to each help file format
@@ -872,13 +860,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 this.ReportProgress(BuildStep.GenerateSharedContent, "Generating shared content files ({0}, {1})...",
                     language.Name, language.DisplayName);
 
-                // See if the user has translated the Sandcastle resources.  If not found, default to US English.
-                languageFolder = Path.Combine(presentationStyle.ResolvePath(presentationStyle.ResourceItemsPath),
-                    language.Name);
-
-                if(Directory.Exists(languageFolder))
-                    languageFolder = language.Name + Path.DirectorySeparatorChar;
-                else
+                // See if the user has translated the Sandcastle resources.  If not found, default to English (US).
+                if(!presentationStyle.ResourceItemFiles(language.Name).Any(
+                  f => Path.GetFileNameWithoutExtension(f).EndsWith(language.Name, StringComparison.OrdinalIgnoreCase)))
                 {
                     // Warn the user about the default being used.  The language will still be used for the help
                     // file though.
@@ -888,9 +872,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             "could not be found.  Using 'en-US, English (US)' defaults.", language.Name,
                             language.DisplayName);
                     }
-
-                    // The English language folder should always exist
-                    languageFolder = "en-US" + Path.DirectorySeparatorChar;
                 }
 
                 if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))

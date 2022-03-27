@@ -59,6 +59,7 @@ fsscript
 gcnew
 guid
 hashtable
+hljs
 href
 htm
 html
@@ -94,7 +95,6 @@ netstandard
 nobullet
 nofollow
 noindex
-nolink
 nolink
 noopener
 noreferrer

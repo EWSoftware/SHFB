@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ResourceItemEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/20/2022
+// Updated : 03/24/2022
 // Note    : Copyright 2011-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to edit resource item files
@@ -102,7 +102,6 @@ namespace SandcastleBuilder.WPF.UserControls
         public void LoadResourceItemsFile(string resourceItemsFile, SandcastleProject project)
         {
             PresentationStyleSettings pss = null;
-            string presentationStylePath;
             List<string> syntaxGeneratorFiles = new List<string>();
 
             if(resourceItemsFile == null)
@@ -140,18 +139,10 @@ namespace SandcastleBuilder.WPF.UserControls
                     syntaxGeneratorFiles.AddRange(ComponentUtilities.SyntaxGeneratorResourceItemFiles(container, null));
                 }
 
-                // Get the presentation style folders
-                presentationStylePath = pss.ResolvePath(pss.ResourceItemsPath);
-
-                // Use the language-specific files if they are present
-                if(Directory.Exists(Path.Combine(presentationStylePath, project.Language.Name)))
-                    presentationStylePath = Path.Combine(presentationStylePath, project.Language.Name);
-                else
-                    presentationStylePath = Path.Combine(presentationStylePath, "en-US");
-
                 // Load the presentation style content files first followed by the syntax generator files, the
-                // help file builder content items, and then the user's resource item file.
-                foreach(string file in Directory.EnumerateFiles(presentationStylePath, "*.xml"))
+                // help file builder content items, and then the user's resource item file.  Use the
+                // language-specific files if they are present.
+                foreach(string file in pss.ResourceItemFiles(project.Language.Name))
                     this.LoadItemFile(file, false);
 
                 foreach(string file in syntaxGeneratorFiles)

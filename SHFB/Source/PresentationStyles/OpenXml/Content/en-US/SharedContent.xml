@@ -272,8 +272,8 @@
   <item id="infraStructure">Infrastructure. </item>
 
 	<!-- Obsolete boilerplate text -->
-  <item id="boilerplate_obsoleteShort"><span class="Bold">Obsolete. </span></item>
-  <item id="boilerplate_obsoleteLong"><span class="Bold">Note: This API is now obsolete.</span></item>
+  <item id="boilerplate_obsoleteShort">Obsolete.</item>
+  <item id="boilerplate_obsoleteLong">Note: This API is now obsolete.</item>
 
 	<!-- Group and SubGroup text -->
   <item id="text_classUpper">Class</item>
@@ -348,13 +348,13 @@
   <item id="boilerplate_seeAlsoMembersLink">{0} Members</item>
   <item id="boilerplate_seeAlsoOverloadLink">{0} Overload</item>
 
-  <item id="boilerplate_requirementsNamespace"><span class="Bold">Namespace:</span></item>
+  <item id="boilerplate_requirementsNamespace">Namespace:</item>
 
   <item id="boilerplate_requirementsPlatforms"><span class="Bold">Platforms:</span> {0}</item>
 
-  <item id="boilerplate_requirementsAssemblies"><span class="Bold">Assemblies:</span></item>
+  <item id="boilerplate_requirementsAssemblies">Assemblies:</item>
 
-  <item id="boilerplate_requirementsAssemblyLabel"><span class="Bold">Assembly:</span></item>
+  <item id="boilerplate_requirementsAssemblyLabel">Assembly:</item>
 
 	<item id="assemblyNameAndModule">{0} (in {1}.{2}) Version: {3}</item>
 
@@ -506,7 +506,7 @@
   <item id="silverlight_mobile_v1">Windows Phone OS 7.0</item>
 
   <!-- Used in the Requirements section to display an xmlns URI for apis that can be used in XAML -->
-  <item id="boilerplate_xamlXmlnsRequirements"><span class="Bold">XMLNS for XAML:</span> {0}</item>
+  <item id="boilerplate_xamlXmlnsRequirements">XMLNS for XAML:</item>
   <item id="boilerplate_unmappedXamlXmlns">Not mapped to an xmlns.</item>
 
   <item id="boilerplate_secondaryFrameworkOverride"><w:br /><w:br />In <include item="{0}"/>, this member is overridden by {1}.</item>
@@ -550,13 +550,7 @@
 	</item>
 
 	<!-- Copyright notice. {0} = Copyright text, {1} = Year(s), {2} = Holder(s) -->
-	<item id="boilerplate_copyrightNotice">
-		<w:p>
-			<w:r>
-				<w:t>{0} &#169;{1}{2}. All rights reserved.</w:t>
-			</w:r>
-		</w:p>
-	</item>
+	<item id="boilerplate_copyrightNotice">{0} &#169;{1}{2}. All rights reserved.</item>
 
 	<!-- Glossary related entries -->
 	<item id="text_relatedEntries">See Also:</item>

@@ -1811,23 +1811,21 @@
 											@class='xamlObjectElementUsageHeading' or @class='xamlContentElementUsageHeading' or
 											@class='xamlPropertyElementUsageHeading'])">
 					<br />
-					<include item="boilerplate_xamlXmlnsRequirements">
-						<parameter>
-							<xsl:choose>
-								<xsl:when test="/document/syntax/div[@codeLanguage='XAML']/div[@class='xamlXmlnsUri']">
-									<xsl:for-each select="/document/syntax/div[@codeLanguage='XAML']/div[@class='xamlXmlnsUri']">
-										<xsl:if test="position()!=1">
-											<xsl:text>, </xsl:text>
-										</xsl:if>
-										<xsl:value-of select="."/>
-									</xsl:for-each>
-								</xsl:when>
-								<xsl:otherwise>
-									<include item="boilerplate_unmappedXamlXmlns"/>
-								</xsl:otherwise>
-							</xsl:choose>
-						</parameter>
-					</include>
+					<include item="boilerplate_xamlXmlnsRequirements" />
+					<xsl:text> </xsl:text>
+					<xsl:choose>
+						<xsl:when test="/document/syntax/div[@codeLanguage='XAML']/div[@class='xamlXmlnsUri']">
+							<xsl:for-each select="/document/syntax/div[@codeLanguage='XAML']/div[@class='xamlXmlnsUri']">
+								<xsl:if test="position()!=1">
+									<xsl:text>, </xsl:text>
+								</xsl:if>
+								<xsl:value-of select="."/>
+							</xsl:for-each>
+						</xsl:when>
+						<xsl:otherwise>
+							<include item="boilerplate_unmappedXamlXmlns"/>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:if>
 			</xsl:if>
 		</w:p>

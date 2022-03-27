@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013PresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/04/2022
+// Updated : 03/22/2022
 // Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Visual Studio 2013 presentation style.
@@ -18,6 +18,9 @@
 //===============================================================================================================
 
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 
 using Sandcastle.Core;
@@ -51,10 +54,12 @@ namespace Sandcastle.PresentationStyles.VS2013
 
             this.DocumentModelApplicator = new StandardDocumentModel();
             this.ApiTableOfContentsGenerator = new StandardApiTocGenerator();
-            this.TopicTranformation = new VisualStudio2013Transformation(this.SupportedFormats);
+            this.TopicTranformation = new VisualStudio2013Transformation(this.SupportedFormats)
+            {
+                TopicTemplatePath = this.ResolvePath(@"Templates\TopicTemplate.html")
+            };
 
             // If relative, these paths are relative to the base path
-            this.ResourceItemsPath = "Content";
             this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";
 
             // Note that UNIX based web servers may be case-sensitive with regard to folder and filenames so
@@ -68,6 +73,20 @@ namespace Sandcastle.PresentationStyles.VS2013
 
             // Add the plug-in dependencies
             this.PlugInDependencies.Add(new PlugInDependency("Lightweight Website Style", null));
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<string> ResourceItemFiles(string languageName)
+        {
+            // This presentation style only uses the standard shared content
+            string filePath = this.ResolvePath(@"..\Shared\Content\SharedContent"),
+                fileSpec = "*" + languageName + "*.xml";
+
+            if(!Directory.EnumerateFiles(filePath, fileSpec).Any())
+                fileSpec = "*en-US*.xml";
+
+            foreach(var file in Directory.EnumerateFiles(filePath, fileSpec))
+                yield return file;
         }
     }
 }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SyntaxElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/16/2022
+// Updated : 03/20/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle named topic section elements
@@ -288,7 +288,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                     snippetDiv.Add(new XAttribute("style", "display: none"));
 
                 if(div.Attribute("phantom") != null)
-                    snippetDiv.Add(new XElement("include", new XAttribute("item", "noCodeExample")));
+                    snippetDiv.Add(new XElement("p", new XElement("include", new XAttribute("item", "noCodeExample"))));
                 else
                 {
                     if(div.Attribute("codeLanguage").Value == "XAML")
@@ -296,8 +296,18 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                         RenderXamlSyntaxBlock(transformation, div, snippetDiv);
                     }
                     else
+                    {
                         snippetDiv.Add(new XElement("pre",
                             new XAttribute(XmlSpace, "preserve"), div.Nodes()));
+
+                        /* TODO: For use with highlight.js
+                        snippetDiv.Add(new XElement("pre",
+                                new XAttribute(XmlSpace, "preserve"),
+                            new XElement("code",
+                                new XAttribute("class",
+                                    $"language-{div.Attribute("style").Value}"), div.Nodes())));
+                        */
+                    }
                 }
 
                 position++;
@@ -368,7 +378,15 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             }
 
             foreach(var block in syntaxBlocks)
+            {
                 content.Add(new XElement("pre", new XAttribute(XmlSpace, "preserve"), new XElement(block)));
+
+                /* TODO: For use with highlight.js
+                content.Add(new XElement("pre", new XAttribute(XmlSpace, "preserve"),
+                    new XElement("code",
+                        new XAttribute("class", "language-xaml"), new XElement(block))));
+                */
+            }
         }
 
         /// <summary>

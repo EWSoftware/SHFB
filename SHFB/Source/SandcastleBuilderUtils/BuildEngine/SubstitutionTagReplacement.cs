@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/12/2022
+// Updated : 03/23/2022
 // Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -1214,7 +1214,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // Add resource items files from the presentation style.  These are always listed first so as to
             // allow the files below to override the stock items.  Files are copied and transformed as they may
             // contain substitution tags.
-            foreach(string psItemFile in Directory.EnumerateFiles(currentBuild.PresentationStyleResourceItemsFolder, "*.xml"))
+            foreach(string psItemFile in currentBuild.PresentationStyle.ResourceItemFiles(currentBuild.Language.Name))
             {
                 replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<content file=\"{0}\" />\r\n",
                     Path.GetFileName(psItemFile));

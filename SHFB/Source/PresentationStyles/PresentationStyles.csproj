@@ -30,6 +30,7 @@
 
 	<ItemGroup>
 		<None Remove="PresentationStyles.sln.vsspell" />
+		<None Remove="VS2013\Templates\TopicTemplate.html" />
 	</ItemGroup>
 
 	<ItemGroup>

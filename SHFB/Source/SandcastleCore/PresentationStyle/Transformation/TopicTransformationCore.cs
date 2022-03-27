@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2022
+// Updated : 03/27/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
@@ -115,6 +115,11 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// <value>If changed, you are responsible for restoring the prior value if necessary after completing
         /// any processing related to the change.</value>
         public XElement CurrentElement { get; set; }
+
+        /// <summary>
+        /// This is used to get or set the topic template path if the presentation style makes use of one
+        /// </summary>
+        public string TopicTemplatePath { get; set; }
 
         /// <summary>
         /// This is used to get or set the path used for icons and other images in the presentation style
@@ -654,6 +659,33 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
 
             foreach(var a in arguments)
                 transformationArguments.Add(a.Key, a);
+        }
+
+        /// <summary>
+        /// Load a template file and perform any necessary substitution tag replacements
+        /// </summary>
+        /// <param name="templateFilePath">The template file to load</param>
+        /// <param name="replacementTags">An optional enumerable list of tuples containing the substitution tag
+        /// names and replacement values.</param>
+        /// <returns></returns>
+        public static XDocument LoadTemplateFile(string templateFilePath,
+          IEnumerable<(string Key, string Value)> replacementTags)
+        {
+            StringBuilder sb = new StringBuilder(File.ReadAllText(templateFilePath));
+
+            if(replacementTags != null)
+            {
+                foreach(var (key, value) in replacementTags)
+                    sb.Replace(key, value);
+            }
+
+            var pageTemplate = XDocument.Parse(sb.ToString());
+
+            // Remove developer comments from the template
+            foreach(var c in pageTemplate.Root.DescendantNodes().OfType<XComment>().ToList())
+                c.Remove();
+
+            return pageTemplate;
         }
 
         /// <summary>

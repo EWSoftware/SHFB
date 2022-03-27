@@ -2,9 +2,9 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : LightweightWebsiteStylePlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Sam Harwell
-// Updated : 05/16/2021
-// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved.
-//           Portions Copyright 2014-2021, Sam Harwell, All rights reserved.
+// Updated : 03/23/2022
+// Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved.
+//           Portions Copyright 2014-2022, Sam Harwell, All rights reserved.
 //
 // This file contains a plug-in that is used to add elements for the lightweight website style such as a search
 // box and a table of contents in the topics similar to the MSDN lightweight style.
@@ -97,8 +97,7 @@ namespace SandcastleBuilder.PlugIns
             // Look up the resize tool tip in the shared content resource items file
             if(context.BuildStep == BuildStep.GenerateSharedContent)
             {
-                string sharedContentFile = Directory.EnumerateFiles(builder.PresentationStyleResourceItemsFolder,
-                    "shared*content*", SearchOption.AllDirectories).FirstOrDefault();
+                string sharedContentFile = builder.PresentationStyle.ResourceItemFiles(builder.Language.Name).FirstOrDefault();
 
                 if(sharedContentFile != null)
                 {
@@ -269,7 +268,7 @@ namespace SandcastleBuilder.PlugIns
                 string outputFile = File.ReadAllText(path, Encoding.UTF8);
 
                 // Search box
-                int pos = outputFile.IndexOf("<div class=\"pageHeader\"", StringComparison.Ordinal);
+                int pos = outputFile.IndexOf("<div id=\"PageHeader\"", StringComparison.Ordinal);
 
                 if(pos != -1)
                 {
@@ -284,7 +283,7 @@ namespace SandcastleBuilder.PlugIns
                 }
 
                 // Left nav
-                pos = outputFile.IndexOf("<div class=\"topicContent\"", StringComparison.Ordinal);
+                pos = outputFile.IndexOf("<div id=\"TopicContent\"", StringComparison.Ordinal);
 
                 if(pos != -1)
                     outputFile = outputFile.Insert(pos, leftNav.ToString(SaveOptions.DisableFormatting));

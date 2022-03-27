@@ -655,6 +655,7 @@ namespace TestDoc
         /// <note type="caller">caller</note>
         /// <note type="inherit">inherit</note>
         /// </remarks>
+        [Obsolete()]
         public void Increment()
         {
         }
@@ -665,6 +666,7 @@ namespace TestDoc
         /// <para><see cref="List{T}.Clear()"/></para>
         /// <para><see cref="List{T}.RemoveAll(Predicate{T})"/></para>
         /// </summary>
+        [Obsolete("This is obsolete.  Use something else instead")]
         public static void TestSeeWithGenerics()
         {
         }
@@ -678,6 +680,7 @@ namespace TestDoc
         /// This usually corresponds to the <c>Author</c> element(s) in an OpenSearch response, which is part of the Atom namespace. The server
         /// does not need to provide this information. If it is not provided, an empty list will be returned.
         /// </remarks>
+        [Obsolete("This is obsolete.  Use something else instead", true)]
         public System.Collections.ObjectModel.Collection<System.ServiceModel.Syndication.SyndicationPerson> Authors
         {
             get { return null ; }

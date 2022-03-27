@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : CopyrightElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/23/2022
+// Updated : 03/23/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle copyright elements
@@ -51,13 +51,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
             if(!String.IsNullOrWhiteSpace(holders))
                 holders = " " + holders;
 
-            var copyright = new XElement("include",
+            transformation.CurrentElement.Add(new XElement("p",
+                new XElement("include",
                     new XAttribute("item", "boilerplate_copyrightNotice"),
                 new XElement("parameter", element.Element(Ddue + "trademark")?.Value.NormalizeWhiteSpace()),
                 new XElement("parameter", years),
-                new XElement("parameter", holders));
-
-            transformation.CurrentElement.Add(copyright);
+                new XElement("parameter", holders))));
         }
     }
 }

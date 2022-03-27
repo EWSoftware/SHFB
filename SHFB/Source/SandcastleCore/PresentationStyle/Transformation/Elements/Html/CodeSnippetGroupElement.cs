@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : CodeSnippetGroupElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2022
+// Updated : 03/20/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle codeSnippetGroup elements
@@ -210,10 +210,20 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                         snippetDiv.Add(new XAttribute("style", "display: none"));
 
                     if(snippet.Attribute("phantom") != null)
-                        snippetDiv.Add(new XElement("include", new XAttribute("item", "noCodeExample")));
+                        snippetDiv.Add(new XElement("p", new XElement("include", new XAttribute("item", "noCodeExample"))));
                     else
+                    {
                         snippetDiv.Add(new XElement("pre",
                             new XAttribute(XmlSpace, "preserve"), snippet.Nodes()));
+
+                        /* TODO: For use with highlight.js
+                        snippetDiv.Add(new XElement("pre",
+                                new XAttribute(XmlSpace, "preserve"),
+                            new XElement("code",
+                                new XAttribute("class",
+                                    $"language-{snippet.Attribute("language")?.Value ?? "unknown"}"), snippet.Nodes())));
+                        */
+                    }
 
                     position++;
                 }

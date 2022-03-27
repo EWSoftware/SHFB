@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2022
+// Updated : 03/27/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -21,7 +21,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Linq;
 
 using Sandcastle.Core;
@@ -38,6 +40,13 @@ namespace Sandcastle.PresentationStyles.VS2013
     /// </summary>
     public class VisualStudio2013Transformation : TopicTransformationCore
     {
+        #region Private data members
+        //=====================================================================
+
+        private XDocument pageTemplate;
+
+        #endregion
+
         #region Constructor
         //=====================================================================
 
@@ -236,8 +245,6 @@ namespace Sandcastle.PresentationStyles.VS2013
         /// <inheritdoc />
         protected override void CreateLanguageSpecificText()
         {
-            LanguageSpecificText.KeywordStyleName = "keyword";
-
             this.AddLanguageSpecificTextRange(new[]
             {
                 new LanguageSpecificText(true, new[]
@@ -507,9 +514,7 @@ namespace Sandcastle.PresentationStyles.VS2013
             // API Topic sections will be rendered in this order by default
             this.AddApiTopicSectionHandlerRange(new[]
             {
-                new ApiTopicSectionHandler(ApiTopicSectionType.PreliminaryApiNotice,
-                    t => t.RenderNode(t.CommentsNode.Element("preliminary"))),
-                new ApiTopicSectionHandler(ApiTopicSectionType.ObsoleteApiNotice, t => RenderObsoleteApiNotice(t)),
+                new ApiTopicSectionHandler(ApiTopicSectionType.Notices, t => RenderNotices(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.Summary, t => RenderApiSummarySection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.InheritanceHierarchyAbbreviated,
                     t => RenderApiInheritanceHierarchy(t, false)),
@@ -663,40 +668,32 @@ namespace Sandcastle.PresentationStyles.VS2013
         /// <inheritdoc />
         protected override XDocument RenderTopic()
         {
-            // Create the document, header content, and body containing the topic header content
-            var document = new XDocument();
-            var html = new XElement("html",
-                this.RenderHeaderMetadata());
-            var body = new XElement("body",
-                    new XAttribute("onload", $"OnLoad('{this.DefaultLanguage}')"),
-                new XElement("input",
-                    new XAttribute("type", "hidden"),
-                    new XAttribute("id", "userDataCache"),
-                    new XAttribute("class", "userDataStyle")),
-                new XElement("div",
-                    new XAttribute("class", "pageHeader"),
-                    new XAttribute("id", "PageHeader"),
-                        new XElement("include",
-                            new XAttribute("item", "runningHeaderText"))));
-            var pageBody = new XElement("div",
-                new XAttribute("class", "pageBody"));
-            var topicContent = new XElement("div",
-                new XAttribute("class", "topicContent"),
-                new XAttribute("id", "TopicContent"),
-                    this.RenderPageTitleAndLogo());
+            if(pageTemplate == null)
+            {
+                pageTemplate = LoadTemplateFile(this.TopicTemplatePath, new[] {
+                    ("{@Locale}", this.Locale),
+                    ("{@LocaleLowercase}", this.Locale.ToLowerInvariant()),
+                    ("{@IconPath}", this.IconPath),
+                    ("{@StyleSheetPath}", this.StyleSheetPath),
+                    ("{@ScriptPath}", this.ScriptPath),
+                    ("{@DefaultLanguage}", this.DefaultLanguage) });
+            }
 
-            document.Add(html);
-            html.Add(body);
-            body.Add(pageBody);
-            pageBody.Add(topicContent);
+            var document = new XDocument(pageTemplate);
 
-            topicContent.Add(new XElement("include",
-                new XAttribute("item", "header")));
+            XElement html = document.Root, head = html.Element("head"),
+                topicContent = html.Descendants().Where(d => d.Attribute("id")?.Value == "TopicContent").FirstOrDefault();
+
+            this.CurrentElement = head ?? throw new InvalidOperationException("Page template is missing the head element");
+            this.RenderHeaderMetadata();
+
+            this.CurrentElement = topicContent ?? throw new InvalidOperationException("Page template is missing the \"TopicContent\" element");
+            this.RenderPageTitleAndLogo();
+
+            topicContent.Add(new XElement("include", new XAttribute("item", "header")));
 
             // Add the topic content.  MAML topics are rendered purely off of the element types.  API topics
             // require custom formatting based on the member type in the topic.
-            this.CurrentElement = topicContent;
-
             if(this.IsMamlTopic)
                 this.RenderNode(this.TopicNode);
             else
@@ -707,15 +704,6 @@ namespace Sandcastle.PresentationStyles.VS2013
                     this.OnSectionRendered(section.SectionType, section.CustomSectionName);
                 }
             }
-
-            // Add the topic footer content
-            body.Add(new XElement("div",
-                new XAttribute("id", "pageFooter"),
-                new XAttribute("class", "pageFooter"),
-                    new XElement("include",
-                        new XAttribute("item", "footer_content"))),
-                new XElement("include",
-                    new XAttribute("item", "websiteAdContent")));
 
             return document;
         }
@@ -1048,43 +1036,32 @@ namespace Sandcastle.PresentationStyles.VS2013
         //=====================================================================
 
         /// <summary>
-        /// This is used to create the <c>head</c> element containing all of the topic metadata
+        /// This is used to add topic metadata to the <c>head</c> element
         /// </summary>
-        private XElement RenderHeaderMetadata()
+        /// <remarks>The <see cref="TopicTransformationCore.CurrentElement" /> should be set to the <c>head</c>
+        /// element before calling this.</remarks>
+        private void RenderHeaderMetadata()
         {
             string topicDesc;
             
-            var head = new XElement("head");
-
-            head.Add(new XElement("link",
-                    new XAttribute("rel", "shortcut icon"),
-                    new XAttribute("href", this.IconPath + "favicon.ico")),
-                new XElement("link",
-                    new XAttribute("rel", "stylesheet"),
-                    new XAttribute("type", "text/css"),
-                    new XAttribute("href", this.StyleSheetPath + "branding.css")),
-                new XElement("link",
-                    new XAttribute("rel", "stylesheet"),
-                    new XAttribute("type", "text/css"),
-                    new XAttribute("href", this.StyleSheetPath + $"branding-{this.Locale}.css")),
-                new XElement("script",
-                    new XAttribute("type", "text/javascript"),
-                    new XAttribute("src", this.ScriptPath + "branding.js"), String.Empty),
-                new XElement("meta",
-                    new XAttribute("http-equiv", "Content-Type"),
-                    new XAttribute("content", "text/html; charset=UTF-8")));
-
             if(!String.IsNullOrWhiteSpace(this.RobotsMetadata))
-                head.Add(new XElement("meta", new XAttribute("name", "robots"), new XAttribute("content", this.RobotsMetadata)));
+            {
+                this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "robots"),
+                    new XAttribute("content", this.RobotsMetadata)));
+            }
 
-            head.Add(new XElement("title", this.IsMamlTopic ? this.MamlTopicTitle() : this.ApiTopicTitle(true, true)));
+            this.CurrentElement.Add(new XElement("title", this.IsMamlTopic ? this.MamlTopicTitle() :
+                this.ApiTopicTitle(true, true)));
 
             if(this.IsMamlTopic)
             {
                 string tocTitle = this.MetadataNode.Element("tableOfContentsTitle")?.Value.NormalizeWhiteSpace();
 
                 if(!String.IsNullOrWhiteSpace(tocTitle))
-                    head.Add(new XElement("meta", new XAttribute("name", "Title"), new XAttribute("content", tocTitle)));
+                {
+                    this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "Title"),
+                        new XAttribute("content", tocTitle)));
+                }
             }
             else
             {
@@ -1098,54 +1075,44 @@ namespace Sandcastle.PresentationStyles.VS2013
                 else
                     title = this.ApiTopicTitle(false, true);
 
-                head.Add(new XElement("meta", new XAttribute("name", "Title"),
+                this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "Title"),
                     new XElement("includeAttribute",
                         new XAttribute("name", "content"),
                         new XAttribute("item", "meta_mshelp_tocTitle"),
                         new XElement("parameter", title))));
             }
 
-            head.Add(new XElement("meta", new XAttribute("name", "Language"),
-                new XAttribute("content", this.Locale.ToLowerInvariant())));
-            head.Add(new XElement("meta", new XAttribute("name", "Microsoft.Help.Locale"),
-                new XAttribute("content", this.Locale.ToLowerInvariant())));
-            head.Add(new XElement("meta", new XAttribute("name", "Microsoft.Help.TopicLocale"),
-                new XAttribute("content", this.Locale.ToLowerInvariant())));
-
-            head.Add(new XElement("meta", new XAttribute("name", "Microsoft.Help.SelfBranded"),
-                new XAttribute("content", "true")));
-
             if(this.IsMamlTopic)
             {
                 topicDesc = this.TopicNode.Descendants(Element.Ddue + "para").FirstOrDefault()?.Value.NormalizeWhiteSpace();
 
-                head.Add(new XElement("meta", new XAttribute("name", "Microsoft.Help.Id"),
+                this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "Microsoft.Help.Id"),
                     new XAttribute("content", this.TopicNode.Attribute("id").Value)));
 
                 var topicType = TopicType.FromElementName(this.TopicNode.Elements().First().Name.LocalName);
 
                 if(topicType != null)
                 {
-                    head.Add(new XElement("meta", new XAttribute("name", "Microsoft.Help.ContentType"),
+                    this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "Microsoft.Help.ContentType"),
                         new XAttribute("content", TopicType.DescriptionForTopicTypeGroup(topicType.ContentType))));
                 }
                 else
                 {
-                    head.Add(new XElement("meta", new XAttribute("name", "Microsoft.Help.ContentType"),
+                    this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "Microsoft.Help.ContentType"),
                         new XAttribute("content", TopicType.DescriptionForTopicTypeGroup(TopicTypeGroup.Concepts))));
                 }
 
                 foreach(var keyword in this.MetadataNode.Elements("keyword").Where(
                   k => k.Attribute("index")?.Value == "K"))
                 {
-                    head.Add(new XElement("meta", new XAttribute("name", "System.Keywords"),
+                    this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "System.Keywords"),
                         new XAttribute("content", keyword.Value)));
                 }
 
                 foreach(var f1Help in this.MetadataNode.Elements("keyword").Where(
                   k => k.Attribute("index")?.Value == "F"))
                 {
-                    head.Add(new XElement("meta", new XAttribute("name", "Microsoft.Help.F1"),
+                    this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "Microsoft.Help.F1"),
                         new XAttribute("content", f1Help.Value)));
                 }
             }
@@ -1153,13 +1120,13 @@ namespace Sandcastle.PresentationStyles.VS2013
             {
                 topicDesc = this.CommentsNode.Element("summary")?.Value.NormalizeWhiteSpace();
 
-                head.Add(new XElement("meta", new XAttribute("name", "Microsoft.Help.Id"),
+                this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "Microsoft.Help.Id"),
                     new XAttribute("content", this.Key)));
-                head.Add(new XElement("meta", new XAttribute("name", "Microsoft.Help.ContentType"),
+                this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "Microsoft.Help.ContentType"),
                     new XAttribute("content", TopicType.DescriptionForTopicTypeGroup(TopicTypeGroup.Reference))));
 
-                this.AddIndexMetadata(head);
-                this.AddF1HelpMetadata(head);
+                this.AddIndexMetadata();
+                this.AddF1HelpMetadata();
             }
 
             foreach(var language in this.DocumentNode.Descendants().Where(
@@ -1171,7 +1138,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 if(!devLang.Equals("none", StringComparison.OrdinalIgnoreCase) &&
                   !devLang.Equals("other", StringComparison.OrdinalIgnoreCase))
                 {
-                    head.Add(new XElement("meta",
+                    this.CurrentElement.Add(new XElement("meta",
                             new XAttribute("name", "Microsoft.Help.Category"),
                         new XElement("includeAttribute",
                             new XAttribute("name", "content"),
@@ -1191,7 +1158,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 if(pos != -1)
                     topicDesc = topicDesc.Substring(0, pos + 1);
 
-                head.Add(new XElement("meta", new XAttribute("name", "Description"),
+                this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "Description"),
                     new XAttribute("content", topicDesc)));
             }
 
@@ -1219,26 +1186,23 @@ namespace Sandcastle.PresentationStyles.VS2013
                     }
                 }
 
-                head.Add(new XElement("meta", new XAttribute("name", "container"),
+                this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "container"),
                     new XAttribute("content", namespaceName)));
 
                 if(!String.IsNullOrWhiteSpace(this.ApiMember.TopicFilename))
                 {
-                    head.Add(new XElement("meta", new XAttribute("name", "file"),
+                    this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "file"),
                         new XAttribute("content", this.ApiMember.TopicFilename)));
-                    head.Add(new XElement("meta", new XAttribute("name", "guid"),
+                    this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "guid"),
                         new XAttribute("content", this.ApiMember.TopicFilename)));
                 }
             }
-
-            return head;
         }
 
         /// <summary>
         /// Add index metadata to the header
         /// </summary>
-        /// <param name="head">The header element to which the index metadata is added</param>
-        private void AddIndexMetadata(XElement head)
+        private void AddIndexMetadata()
         {
             string namespaceName;
 
@@ -1251,7 +1215,7 @@ namespace Sandcastle.PresentationStyles.VS2013
 
                     if(!String.IsNullOrWhiteSpace(namespaceName))
                     {
-                        head.Add(new XElement("meta",
+                        this.CurrentElement.Add(new XElement("meta",
                             new XAttribute("name", "System.Keywords"),
                             new XElement("includeAttribute",
                                 new XAttribute("name", "content"),
@@ -1269,7 +1233,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                     {
                         if(!String.IsNullOrWhiteSpace(namespaceName))
                         {
-                            head.Add(new XElement("meta",
+                            this.CurrentElement.Add(new XElement("meta",
                                 new XAttribute("name", "System.Keywords"),
                                 new XElement("includeAttribute",
                                     new XAttribute("name", "content"),
@@ -1277,7 +1241,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                                     new XElement("parameter", String.Join(".", namespaceName, apiName)))));
                         }
 
-                        head.Add(new XElement("meta",
+                        this.CurrentElement.Add(new XElement("meta",
                             new XAttribute("name", "System.Keywords"),
                             new XElement("includeAttribute",
                                 new XAttribute("name", "content"),
@@ -1290,7 +1254,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                     {
                         foreach(var enumMember in this.ReferenceNode.Element("elements").Elements("element"))
                         {
-                            head.Add(new XElement("meta",
+                            this.CurrentElement.Add(new XElement("meta",
                                 new XAttribute("name", "System.Keywords"),
                                 new XElement("includeAttribute",
                                     new XAttribute("name", "content"),
@@ -1314,7 +1278,7 @@ namespace Sandcastle.PresentationStyles.VS2013
 
                     foreach(string apiName in this.LanguageSpecificApiNames(typeInfo))
                     {
-                        head.Add(new XElement("meta",
+                        this.CurrentElement.Add(new XElement("meta",
                             new XAttribute("name", "System.Keywords"),
                             new XElement("includeAttribute",
                                 new XAttribute("name", "content"),
@@ -1327,7 +1291,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                         if(typeName == apiName)
                         {
                             // Omit the type name on nested types
-                            head.Add(new XElement("meta",
+                            this.CurrentElement.Add(new XElement("meta",
                                 new XAttribute("name", "System.Keywords"),
                                 new XElement("includeAttribute",
                                     new XAttribute("name", "content"),
@@ -1337,7 +1301,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                         }
                         else
                         {
-                            head.Add(new XElement("meta",
+                            this.CurrentElement.Add(new XElement("meta",
                                 new XAttribute("name", "System.Keywords"),
                                 new XElement("includeAttribute",
                                     new XAttribute("name", "content"),
@@ -1380,7 +1344,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                         else
                             titleItem = t.TopicSubgroup.ToString();
 
-                        head.Add(new XElement("meta",
+                        this.CurrentElement.Add(new XElement("meta",
                             new XAttribute("name", "System.Keywords"),
                             new XElement("includeAttribute",
                                 new XAttribute("name", "content"),
@@ -1402,7 +1366,7 @@ namespace Sandcastle.PresentationStyles.VS2013
 
                         if(!String.IsNullOrWhiteSpace(lastParameter))
                         {
-                            head.Add(new XElement("meta",
+                            this.CurrentElement.Add(new XElement("meta",
                                 new XAttribute("name", "System.Keywords"),
                                 new XElement("includeAttribute",
                                     new XAttribute("name", "content"),
@@ -1432,7 +1396,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                         foreach(string apiName in this.LanguageSpecificApiNames(this.ReferenceNode.Element(
                           "implements").Element("member")))
                         {
-                            head.Add(new XElement("meta",
+                            this.CurrentElement.Add(new XElement("meta",
                                 new XAttribute("name", "System.Keywords"),
                                 new XElement("includeAttribute",
                                     new XAttribute("name", "content"),
@@ -1442,7 +1406,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                             foreach(string ns in this.LanguageSpecificApiNames(this.ReferenceNode.Element(
                               "containers").Element("type")))
                             {
-                                head.Add(new XElement("meta",
+                                this.CurrentElement.Add(new XElement("meta",
                                     new XAttribute("name", "System.Keywords"),
                                     new XElement("includeAttribute",
                                         new XAttribute("name", "content"),
@@ -1489,7 +1453,7 @@ namespace Sandcastle.PresentationStyles.VS2013
 
                         foreach(string apiName in keywords)
                         {
-                            head.Add(new XElement("meta",
+                            this.CurrentElement.Add(new XElement("meta",
                                 new XAttribute("name", "System.Keywords"),
                                 new XElement("includeAttribute",
                                     new XAttribute("name", "content"),
@@ -1508,8 +1472,7 @@ namespace Sandcastle.PresentationStyles.VS2013
         /// <summary>
         /// Add F1 help metadata to the header
         /// </summary>
-        /// <param name="head">The header element to which the F1 help metadata is added</param>
-        private void AddF1HelpMetadata(XElement head)
+        private void AddF1HelpMetadata()
         {
             string namespaceName, typeName, memberName;
 
@@ -1521,7 +1484,7 @@ namespace Sandcastle.PresentationStyles.VS2013
 
                     if(!String.IsNullOrWhiteSpace(namespaceName))
                     {
-                        head.Add(new XElement("meta",
+                        this.CurrentElement.Add(new XElement("meta",
                             new XAttribute("name", "Microsoft.Help.F1"),
                             new XAttribute("content", namespaceName)));
                     }
@@ -1535,12 +1498,12 @@ namespace Sandcastle.PresentationStyles.VS2013
 
                     if(!String.IsNullOrWhiteSpace(namespaceName))
                     {
-                        head.Add(new XElement("meta",
+                        this.CurrentElement.Add(new XElement("meta",
                             new XAttribute("name", "Microsoft.Help.F1"),
                             new XAttribute("content", String.Join(".", namespaceName, typeName))));
                     }
 
-                    head.Add(new XElement("meta",
+                    this.CurrentElement.Add(new XElement("meta",
                         new XAttribute("name", "Microsoft.Help.F1"),
                         new XAttribute("content", typeName)));
 
@@ -1551,14 +1514,14 @@ namespace Sandcastle.PresentationStyles.VS2013
                         {
                             if(!String.IsNullOrWhiteSpace(namespaceName))
                             {
-                                head.Add(new XElement("meta",
+                                this.CurrentElement.Add(new XElement("meta",
                                     new XAttribute("name", "Microsoft.Help.F1"),
                                     new XAttribute("content", String.Join(".", namespaceName, typeName,
                                         enumMember.Element("apidata").Attribute("name").Value))));
                             }
                             else
                             {
-                                head.Add(new XElement("meta",
+                                this.CurrentElement.Add(new XElement("meta",
                                     new XAttribute("name", "Microsoft.Help.F1"),
                                     new XAttribute("content", String.Join(".", typeName,
                                         enumMember.Element("apidata").Attribute("name").Value))));
@@ -1580,15 +1543,15 @@ namespace Sandcastle.PresentationStyles.VS2013
 
                     if(!String.IsNullOrWhiteSpace(namespaceName))
                     {
-                        head.Add(new XElement("meta",
+                        this.CurrentElement.Add(new XElement("meta",
                             new XAttribute("name", "Microsoft.Help.F1"),
                             new XAttribute("content", String.Join(".", namespaceName, typeName, memberName))));
                     }
 
-                    head.Add(new XElement("meta",
+                    this.CurrentElement.Add(new XElement("meta",
                         new XAttribute("name", "Microsoft.Help.F1"),
                         new XAttribute("content", String.Join(".", typeName, memberName))));
-                    head.Add(new XElement("meta",
+                    this.CurrentElement.Add(new XElement("meta",
                         new XAttribute("name", "Microsoft.Help.F1"),
                         new XAttribute("content", memberName)));
                     break;
@@ -1615,15 +1578,15 @@ namespace Sandcastle.PresentationStyles.VS2013
 
                         if(!String.IsNullOrWhiteSpace(namespaceName))
                         {
-                            head.Add(new XElement("meta",
+                            this.CurrentElement.Add(new XElement("meta",
                                 new XAttribute("name", "Microsoft.Help.F1"),
                                 new XAttribute("content", String.Join(".", namespaceName, typeName, memberName))));
                         }
 
-                        head.Add(new XElement("meta",
+                        this.CurrentElement.Add(new XElement("meta",
                             new XAttribute("name", "Microsoft.Help.F1"),
                             new XAttribute("content", String.Join(".", typeName, memberName))));
-                        head.Add(new XElement("meta",
+                        this.CurrentElement.Add(new XElement("meta",
                             new XAttribute("name", "Microsoft.Help.F1"),
                             new XAttribute("content", memberName)));
                     }
@@ -1638,8 +1601,9 @@ namespace Sandcastle.PresentationStyles.VS2013
         /// <summary>
         /// This is used to render the page title and optional logo
         /// </summary>
-        /// <returns>An XML element containing the page title elements</returns>
-        private XElement RenderPageTitleAndLogo()
+        /// <remarks>The <see cref="TopicTransformationCore.CurrentElement" /> should be set to the topic content
+        /// element before calling this.</remarks>
+        private void RenderPageTitleAndLogo()
         {
             var table = new XElement("table", new XAttribute("class", "titleTable"));
 
@@ -1707,7 +1671,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                     image));
             }
 
-            return table;
+            this.CurrentElement.Add(table);
         }
         #endregion
 
@@ -1715,15 +1679,17 @@ namespace Sandcastle.PresentationStyles.VS2013
         //=====================================================================
 
         /// <summary>
-        /// This is used to render the obsolete API notice
+        /// This is used to render the preliminary and obsolete API notices
         /// </summary>
         /// <param name="transformation">The topic transformation to use</param>
-        private static void RenderObsoleteApiNotice(TopicTransformationCore transformation)
+        private static void RenderNotices(TopicTransformationCore transformation)
         {
+            transformation.RenderNode(transformation.CommentsNode.Element("preliminary"));
+
             if(transformation.ReferenceNode.AttributeOfType("T:System.ObsoleteAttribute") != null)
             {
-                transformation.CurrentElement.Add(new XElement("p",
-                    new XElement("include", new XAttribute("item", "boilerplate_obsoleteLong"))));
+                transformation.CurrentElement.Add(new XElement("p", new XElement("strong",
+                    new XElement("include", new XAttribute("item", "boilerplate_obsoleteLong")))));
             }
         }
 
@@ -1860,8 +1826,8 @@ namespace Sandcastle.PresentationStyles.VS2013
             var containers = transformation.ReferenceNode.Element("containers");
             var libraries = containers.Elements("library");
 
-            transformation.CurrentElement.Add(new XElement("p", " "),
-                new XElement("include", new XAttribute("item", "boilerplate_requirementsNamespace")),
+            transformation.CurrentElement.Add(new XElement("br"),
+                new XElement("strong", new XElement("include", new XAttribute("item", "boilerplate_requirementsNamespace"))),
                 Element.NonBreakingSpace,
                 new XElement("referenceLink",
                     new XAttribute("target", containers.Element("namespace").Attribute("api").Value)),
@@ -1872,14 +1838,14 @@ namespace Sandcastle.PresentationStyles.VS2013
 
             if(libraries.Count() > 1)
             {
-                transformation.CurrentElement.Add(new XElement("include",
-                    new XAttribute("item", "boilerplate_requirementsAssemblies")));
+                transformation.CurrentElement.Add(new XElement("strong",
+                    new XElement("include", new XAttribute("item", "boilerplate_requirementsAssemblies"))));
                 separatorSize = 2;
             }
             else
             {
-                transformation.CurrentElement.Add(new XElement("include",
-                    new XAttribute("item", "boilerplate_requirementsAssemblyLabel")));
+                transformation.CurrentElement.Add(new XElement("strong",
+                    new XElement("include", new XAttribute("item", "boilerplate_requirementsAssemblyLabel"))));
             }
 
             string separator = new String(Element.NonBreakingSpace, separatorSize);
@@ -1921,13 +1887,8 @@ namespace Sandcastle.PresentationStyles.VS2013
             {
                 var xamlXmlNS = xamlCode.Elements("div").Where(d => d.Attribute("xamlXmlnsUri")?.Value != null);
 
-                transformation.CurrentElement.Add(new XElement("br"));
-
-                XElement parameter = new XElement("parameter"),
-                    xamlNS = new XElement("include",
-                        new XAttribute("item", "boilerplate_xamlXmlnsRequirements"), parameter);
-
-                transformation.CurrentElement.Add(xamlNS);
+                transformation.CurrentElement.Add(new XElement("br"),
+                    new XElement("strong", new XElement("include", new XAttribute("item", "boilerplate_xamlXmlnsRequirements"))));
 
                 if(xamlXmlNS.Any())
                 {
@@ -1938,13 +1899,13 @@ namespace Sandcastle.PresentationStyles.VS2013
                         if(!first)
                             transformation.CurrentElement.Add(", ");
 
-                        parameter.Add(new XElement(d));
+                        transformation.CurrentElement.Add(new XElement(d));
                         first = false;
                     }
                 }
                 else
                 {
-                    parameter.Add(new XElement("include",
+                    transformation.CurrentElement.Add(new XElement("include",
                         new XAttribute("item", "boilerplate_unmappedXamlXmlns")));
                 }
             }
@@ -2173,8 +2134,9 @@ namespace Sandcastle.PresentationStyles.VS2013
 
                         if(e.AttributeOfType("T:System.ObsoleteAttribute") != null)
                         {
-                            summaryCell.Add(new XElement("include",
-                                new XAttribute("item", "boilerplate_obsoleteShort")));
+                            summaryCell.Add(new XElement("strong",
+                                new XElement("include", new XAttribute("item", "boilerplate_obsoleteShort"))),
+                                new XElement("br"));
                         }
 
                         table.Add(new XElement("tr",
@@ -2317,7 +2279,11 @@ namespace Sandcastle.PresentationStyles.VS2013
                 var summaryCell = new XElement("td");
 
                 if(e.AttributeOfType("T:System.ObsoleteAttribute") != null)
-                    summaryCell.Add(new XElement("include", new XAttribute("item", "boilerplate_obsoleteShort")));
+                {
+                    summaryCell.Add(new XElement("strong",
+                        new XElement("include", new XAttribute("item", "boilerplate_obsoleteShort"))),
+                        new XElement("br"));
+                }
 
                 XElement valueCell = null;
 
@@ -2581,7 +2547,11 @@ namespace Sandcastle.PresentationStyles.VS2013
                     var summaryCell = new XElement("td");
 
                     if(e.AttributeOfType("T:System.ObsoleteAttribute") != null)
-                        summaryCell.Add(new XElement("include", new XAttribute("item", "boilerplate_obsoleteShort")));
+                    {
+                        summaryCell.Add(new XElement("strong",
+                            new XElement("include", new XAttribute("item", "boilerplate_obsoleteShort"))),
+                            new XElement("br"));
+                    }
 
                     if(!Enum.TryParse(e.Element("apidata")?.Attribute("subgroup")?.Value, true,
                       out ApiMemberGroup imageMemberType))

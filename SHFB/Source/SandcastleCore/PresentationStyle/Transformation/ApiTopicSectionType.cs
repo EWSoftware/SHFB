@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ApiTopicSectionType.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/14/2022
+// Updated : 03/26/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains an enumerated type that defines the sections that are rendered in an API topic
@@ -29,15 +29,10 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
     public enum ApiTopicSectionType
     {
         /// <summary>
-        /// The preliminary API notice.
+        /// The notices such as the preliminary API and obsolete warnings
         /// </summary>
         /// <remarks>This is typically rendered at the very top of the topic.</remarks>
-        PreliminaryApiNotice,
-        /// <summary>
-        /// The obsolete API notice.
-        /// </summary>
-        /// <remarks>This is typically rendered at the very top of the topic.</remarks>
-        ObsoleteApiNotice,
+        Notices,
         /// <summary>
         /// The summary section.
         /// </summary>

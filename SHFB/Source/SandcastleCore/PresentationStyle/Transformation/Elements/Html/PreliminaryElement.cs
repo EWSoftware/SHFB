@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PreliminaryElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2022
+// Updated : 03/26/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the preliminary element
@@ -31,9 +31,15 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         //=====================================================================
 
         /// <summary>
+        /// This is used to get or set the container element that will hold the preliminary text
+        /// </summary>
+        /// <value>The default if not set explicitly is <c>div</c></value>
+        public string PreliminaryContainerElement { get; set; } = "div";
+
+        /// <summary>
         /// This is used to get or set the preliminary text style
         /// </summary>
-        /// <value>The default if not set explicitly is "preliminary"</value>
+        /// <value>The default if not set explicitly is <c>preliminary</c></value>
         public string PreliminaryTextStyle { get; set; } = "preliminary";
 
         #endregion
@@ -59,7 +65,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             if(element == null)
                 throw new ArgumentNullException(nameof(element));
 
-            var div = new XElement("div", new XAttribute("class", this.PreliminaryTextStyle));
+            var div = new XElement(this.PreliminaryContainerElement, new XAttribute("class", this.PreliminaryTextStyle));
             string text = element.Value.NormalizeWhiteSpace();
 
             if(!String.IsNullOrWhiteSpace(text))

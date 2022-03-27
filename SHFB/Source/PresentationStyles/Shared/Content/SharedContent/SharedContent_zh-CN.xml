@@ -36,7 +36,7 @@
 		HT_requestExampleLink.innerHTML = HT_requestExampleLinkText;
 		</script></item>
 	
-	<!-- Lightweight TOC resize tool tip -->
+	<!-- Lightweight TOC resize tool tip (VS2013 presentation style) -->
 	<item id="resizeToolTip">点击或拖拽改变大小</item>
 
 	<!-- Section titles -->
@@ -186,7 +186,7 @@
   <item id="definedBy">(由 {0} 定义。)</item>
   <item id="exposedMembersTableText">{0} 类型公开以下成员。</item>	
   <item id="inheritedFrom">(继承自 {0}。)</item>
-	<item id="noCodeExample"><p>当前没有可用的代码示例，或者可能不支持该语言。</p></item>
+	<item id="noCodeExample">当前没有可用的代码示例，或者可能不支持该语言。</item>
   <item id="overridesMember">(重写 {0})</item>
 	<item id="preliminary"><p class="preliminary">[本文档仅为初稿，以后可能会有变更。]</p></item>
   <item id="preliminaryText">此 API 尚未最终确定，随时可能调整。</item>
@@ -200,32 +200,26 @@
 
 		<!-- Requirements section info -->
     <item id="assemblyNameAndModule">{0} (在 {1}.{2} 中) 版本：{3}</item>
-    <item id="boilerplate_requirementsAssemblies">
-        <strong>程序集：</strong>
-    </item>
-    <item id="boilerplate_requirementsAssemblyLabel">
-        <strong>程序集：</strong>
-    </item>
-    <item id="boilerplate_requirementsNamespace">
-        <strong>命名空间：</strong> 
-    </item>
+    <item id="boilerplate_requirementsAssemblies">程序集：</item>
+    <item id="boilerplate_requirementsAssemblyLabel">程序集：</item>
+    <item id="boilerplate_requirementsNamespace">命名空间：</item>
     <item id="boilerplate_unmappedXamlXmlns">未映射到一个 xmlns.</item>
-    <item id="boilerplate_xamlXmlnsRequirements"><strong>XMLNS for XAML:</strong> {0}</item>
+    <item id="boilerplate_xamlXmlnsRequirements">XMLNS for XAML:</item>
 
     <!-- Auto-outline text -->
     <item id="boilerplate_autoOutlineTopLevelIntro">本页包含以下内容：</item>
     <item id="boilerplate_autoOutlineSubsectionIntro">本节包含以下子节内容：</item>
 	
     <!-- Copyright notice. {0} = Copyright text, {1} = Year(s), {2} = Holder(s) -->
-    <item id="boilerplate_copyrightNotice"><p>{0} &#169;{1}{2}。保留所有权利</p></item>
+    <item id="boilerplate_copyrightNotice">{0} &#169;{1}{2}。保留所有权利</item>
 
 	<!-- To format the copyright HREF and/or copyright text into a message of your choosing, you can specify
 			 @HtmlEncCopyrightHref and/or @HtmlEncCopyrightText in braces -->
 	<item id="copyright">{@HtmlEncCopyrightInfo}</item>
 
     <!-- Obsolete API text -->
-    <item id="boilerplate_obsoleteShort"><strong>已过时。</strong><br/></item>
-    <item id="boilerplate_obsoleteLong"><strong>注意：此 API 现在已过时。</strong></item>
+    <item id="boilerplate_obsoleteShort">已过时。</item>
+    <item id="boilerplate_obsoleteLong">注意：此 API 现在已过时。</item>
 	
 		<!-- See Also section text-->
 		<item id="boilerplate_seeAlsoNamespaceLink">{0} 命名空间</item>

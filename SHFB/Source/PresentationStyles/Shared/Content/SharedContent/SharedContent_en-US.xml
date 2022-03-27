@@ -9,8 +9,8 @@
 	<item id="footer_content">{@FooterText}{@Copyright}{@Comments}</item>
 	<!-- This should remain empty unless overridden by the website content file -->
 	<item id="websiteAdContent"></item>
-
-	<item id="comments"><div class="feedbackLink">내용에 문의사항이 있는 경우 우측의 메일 주소로 연락 바랍니다.
+	
+	<item id="comments"><div class="feedbackLink">Send comments on this topic to
         <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a></div>
         <script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");
@@ -35,71 +35,71 @@
 			"scenario you would like to see addressed.%0D%0DHelp Topic: " + window.location.href).replace(/%250D/g, "%0D");
 		HT_requestExampleLink.innerHTML = HT_requestExampleLinkText;
 		</script></item>
-	
-	<!-- Lightweight TOC resize tool tip -->
+
+	<!-- Lightweight TOC resize tool tip (VS2013 presentation style) -->
 	<item id="resizeToolTip">Click or drag to resize</item>
 	
 	<!-- Section titles -->
 	<item id="bibliographyTitle">Bibliography</item>
   <item id="title_appliesTo">Applies To</item>
-	<item id="title_attributes">Attributes</item>
+  <item id="title_attributes">Attributes</item>
   <item id="title_attributesAndElements">Attributes and Elements</item>
   <item id="title_background">Background</item>
-	<item id="title_buildInstructions">Compiling the Code</item>
-	<item id="title_changeHistory">Change History</item>
-	<item id="title_childElement">Child Elements</item>
-	<item id="title_conclusion">Conclusion</item>
-	<item id="title_delegateValue">Return Value</item>
-	<item id="title_demonstrates">Demonstrates</item>
+  <item id="title_buildInstructions">Compiling the Code</item>
+  <item id="title_changeHistory">Change History</item>
+  <item id="title_childElement">Child Elements</item>
+  <item id="title_conclusion">Conclusion</item>
+  <item id="title_delegateValue">Return Value</item>
+  <item id="title_demonstrates">Demonstrates</item>
   <item id="title_dotNetFrameworkEquivalent">.NET Framework Equivalent</item>
-	<item id="title_elementInformation">Element Information</item>
+  <item id="title_elementInformation">Element Information</item>
   <item id="title_errorMessage">Error Message</item>
-	<item id="title_events">Events</item>
+  <item id="title_events">Events</item>
   <item id="title_example">Example</item>
-	<item id="title_examples">Examples</item>
-	<item id="title_exceptions">Exceptions</item>
-	<item id="title_extensionUsage">Usage Note</item>
-	<item id="title_externalResources">External Resources</item>
-	<item id="title_family">Inheritance Hierarchy</item>
-	<item id="title_fieldValue">Field Value</item>
-	<item id="title_implements">Implements</item>
-	<item id="title_inThisSection">In This Section</item>
+  <item id="title_examples">Examples</item>
+  <item id="title_exceptions">Exceptions</item>
+  <item id="title_extensionUsage">Usage Note</item>
+  <item id="title_externalResources">External Resources</item>
+  <item id="title_family">Inheritance Hierarchy</item>
+  <item id="title_fieldValue">Field Value</item>
+  <item id="title_implements">Implements</item>
+  <item id="title_inThisSection">In This Section</item>
   <item id="title_languageReferenceRemarks">Remarks</item>
-	<item id="title_methodValue">Return Value</item>
-	<item id="title_namespaces">Namespaces</item>
-	<item id="title_nextSteps">Next Steps</item>
-	<item id="title_parameters">Parameters</item>
-	<item id="title_parentElement">Parent Elements</item>
-	<item id="title_permissions">.NET Framework Security</item>
-	<item id="title_platforms">Platforms</item>
+  <item id="title_methodValue">Return Value</item>
+  <item id="title_namespaces">Namespaces</item>
+  <item id="title_nextSteps">Next Steps</item>
+  <item id="title_parameters">Parameters</item>
+  <item id="title_parentElement">Parent Elements</item>
+  <item id="title_permissions">.NET Framework Security</item>
+  <item id="title_platforms">Platforms</item>
   <item id="title_prerequisites">Prerequisites</item>
-	<item id="title_propertyValue">Property Value</item>
+  <item id="title_propertyValue">Property Value</item>
   <item id="title_reference">Reference</item>
-	<item id="title_relatedSections">Related Sections</item>
-	<item id="title_relatedTopics">See Also</item>
-	<item id="title_remarks">Remarks</item>
-	<item id="title_requirements">Requirements</item>
-	<item id="title_returns">Return Value</item>
-	<item id="title_returnValue">Return Value</item>
-	<item id="title_revisionHistory">Revision History</item>
+  <item id="title_relatedSections">Related Sections</item>
+  <item id="title_relatedTopics">See Also</item>
+  <item id="title_remarks">Remarks</item>
+  <item id="title_requirements">Requirements</item>
+  <item id="title_returns">Return Value</item>
+  <item id="title_returnValue">Return Value</item>
+  <item id="title_revisionHistory">Revision History</item>
   <item id="title_robustProgramming">Robust Programming</item>
-	<item id="title_security">Security</item>
-	<item id="title_seeAlso_concepts">Concepts</item>
-	<item id="title_seeAlso_otherResources">Other Resources</item>
-	<item id="title_seeAlso_reference">Reference</item>
-	<item id="title_seeAlso_tasks">Tasks</item>
-	<item id="title_syntax">Syntax</item>
-	<item id="title_templates">Type Parameters</item>
+  <item id="title_security">Security</item>
+  <item id="title_seeAlso_concepts">Concepts</item>
+  <item id="title_seeAlso_otherResources">Other Resources</item>
+  <item id="title_seeAlso_reference">Reference</item>
+  <item id="title_seeAlso_tasks">Tasks</item>
+  <item id="title_syntax">Syntax</item>
+  <item id="title_templates">Type Parameters</item>
   <item id="title_textValue">Text Value</item>
-	<item id="title_threadSafety">Thread Safety</item>
-	<item id="title_value">Value</item>
-	<item id="title_versions">Version Information</item>
-	<item id="title_whatsNew">What's New</item>
-	
+  <item id="title_threadSafety">Thread Safety</item>
+  <item id="title_value">Value</item>
+  <item id="title_versions">Version Information</item>
+  <item id="title_whatsNew">What's New</item>
+
   <!-- Topic titles -->
 	<item id="topicTitle_root">{@RootNamespaceTitle}</item>
 	<!-- This is used when a title is not specified in the project -->
-  <item id="rootTopicTitleLocalized">네임스페이스</item>
+  <item id="rootTopicTitleLocalized">Namespaces</item>
 	<item id="topicTitle_attachedEvent">{0} Attached Event</item>
  	<item id="topicTitle_attachedEvents">{0} Attached Events</item>
 	<item id="topicTitle_attachedProperties">{0} Attached Properties</item>
@@ -137,7 +137,7 @@
   <item id="topicTitle_operatorsAndTypeConversions">{0} Operators and Type Conversions</item>
   <!-- Title for operator list topic that has [no operators + type conversions] -->
   <item id="topicTitle_typeConversions">{0} Type Conversions</item>
-
+	
   <!-- Member list table titles -->
   <item id="tableTitle_attachedEvent">Attached Events</item>
   <item id="tableTitle_attachedProperty">Attached Properties</item>
@@ -146,14 +146,14 @@
 	<item id="tableTitle_delegate">Delegates</item>
 	<item id="tableTitle_enumeration">Enumerations</item>
   <item id="tableTitle_event">Events</item>
-  <item id="tableTitle_explicitInterfaceImplementation">Explicit&#160;Interface&#160;Implementations</item>
-  <item id="tableTitle_extension">Extension&#160;Methods</item>
+  <item id="tableTitle_explicitInterfaceImplementation">Explicit Interface Implementations</item>
+  <item id="tableTitle_extension">Extension Methods</item>
   <item id="tableTitle_field">Fields</item>
 	<item id="tableTitle_interface">Interfaces</item>
   <item id="tableTitle_method">Methods</item>
   <item id="tableTitle_namespace">Namespaces</item>
   <item id="tableTitle_operator">Operators</item>
-	<item id="tableTitle_overload">Overload&#160;List</item>
+	<item id="tableTitle_overload">Overload List</item>
   <item id="tableTitle_property">Properties</item>
 	<item id="tableTitle_structure">Structures</item>
 
@@ -179,14 +179,14 @@
   <item id="header_structureName">Structure</item>
 	<item id="header_typeDescription">Description</item>
 	<item id="header_typeName">Name</item>
-
+	
 	<!-- Miscellaneous page text -->
 	<item id="copyCode">Copy</item>
   <item id="defaultNamespace">( Default Namespace )</item>
   <item id="definedBy">(Defined by {0})</item>
   <item id="exposedMembersTableText">The {0} type exposes the following members.</item>	
 	<item id="inheritedFrom">(Inherited from {0})</item>
-	<item id="noCodeExample"><p>No code example is currently available or this language may not be supported.</p></item>
+	<item id="noCodeExample">No code example is currently available or this language may not be supported.</item>
 	<item id="overridesMember">(Overrides {0})</item>
 	<item id="preliminary"><p class="preliminary">[This is preliminary documentation and is subject to change.]</p></item>
   <item id="preliminaryText">This API is preliminary and subject to change.</item>
@@ -196,54 +196,48 @@
 	<item id="text_moreInheritance">More...</item>
   <item id="text_relatedEntries">See Also:</item>
 	<item id="top">Top</item>
-  <item id="typeLink">Type:&#160;{0}</item>
-
+	<item id="typeLink">Type:&#160;{0}</item>
+	
 	<!-- Requirements section info -->
 	<item id="assemblyNameAndModule">{0} (in {1}.{2}) Version: {3}</item>
-  <item id="boilerplate_requirementsAssemblies">
-    <strong>Assemblies:</strong>
-  </item>
-  <item id="boilerplate_requirementsAssemblyLabel">
-    <strong>Assembly:</strong>
-  </item>
-  <item id="boilerplate_requirementsNamespace">
-    <strong>Namespace:</strong> 
-  </item>
+  <item id="boilerplate_requirementsAssemblies">Assemblies:</item>
+  <item id="boilerplate_requirementsAssemblyLabel">Assembly:</item>
+  <item id="boilerplate_requirementsNamespace">Namespace:</item>
   <item id="boilerplate_unmappedXamlXmlns">Not mapped to an xmlns.</item>
-  <item id="boilerplate_xamlXmlnsRequirements"><strong>XMLNS for XAML:</strong> {0}</item>
-	
+  <item id="boilerplate_xamlXmlnsRequirements">XMLNS for XAML:</item>
+
   <!-- Auto-outline text -->
   <item id="boilerplate_autoOutlineTopLevelIntro">This topic contains the following sections:</item>
 	<item id="boilerplate_autoOutlineSubsectionIntro">This section contains the following subsections:</item>
 	
   <!-- Copyright notice. {0} = Copyright text, {1} = Year(s), {2} = Holder(s) -->
-  <item id="boilerplate_copyrightNotice"><p>{0} &#169;{1}{2}. All rights reserved.</p></item>
-	
+  <item id="boilerplate_copyrightNotice">{0} &#169;{1}{2}. All rights reserved.</item>
+
 	<!-- To format the copyright HREF and/or copyright text into a message of your choosing, you can specify
 			 @HtmlEncCopyrightHref and/or @HtmlEncCopyrightText in braces -->
 	<item id="copyright">{@HtmlEncCopyrightInfo}</item>
-	
+
 	<!-- Obsolete API text -->
-  <item id="boilerplate_obsoleteShort"><strong>Obsolete.</strong><br/></item>
-  <item id="boilerplate_obsoleteLong"><strong>Note: This API is now obsolete.</strong></item>
+  <item id="boilerplate_obsoleteShort">Obsolete.</item>
+  <item id="boilerplate_obsoleteLong">Note: This API is now obsolete.</item>
 	
 	<!-- See Also section text-->
   <item id="boilerplate_seeAlsoNamespaceLink">{0} Namespace</item>
   <item id="boilerplate_seeAlsoOverloadLink">{0} Overload</item>
   <item id="boilerplate_seeAlsoTypeLink">{0} <include item="text_{1}Upper"/></item>
-  <item id="text_classUpper">Class</item>
+	<item id="text_classUpper">Class</item>
   <item id="text_structureUpper">Structure</item>
   <item id="text_interfaceUpper">Interface</item>
   <item id="text_delegateUpper">Delegate</item>
   <item id="text_enumerationUpper">Enumeration</item>
 	
-  <!-- Thread safety section text -->
-  <item id="boilerplate_threadSafety">Any public <include item="devlang_staticKeyword"/>  members of this type are thread safe. Any instance members are not guaranteed to be thread safe.</item>
+	<!-- Thread safety section text -->
+  <item id="boilerplate_threadSafety">Any public <include item="devlang_staticKeyword"/> members of this type are thread safe. Any instance members are not guaranteed to be thread safe.</item>
   <item id="text_staticThreadSafe">Static members of this type are safe for multi-threaded operations. </item>
   <item id="text_staticNotThreadSafe">Static members of this type are not safe for multi-threaded operations. </item>
   <item id="text_instanceThreadSafe">Instance members of this type are safe for multi-threaded operations. </item>
   <item id="text_instanceNotThreadSafe">Instance members of this type are not safe for multi-threaded operations. </item>
-
+	
 	<!-- Development language and code snippet titles for languages without a syntax generator -->
 	<item id="devlang_batch">Batch Script</item>
 	<item id="devlang_HTML">HTML</item>
@@ -275,7 +269,7 @@
 	<item id="metaLang_VBScript">VBScript</item>
 	<item id="metaLang_VisualBasicAndCSharp">VB and C#</item>
 	<item id="metaLang_XML">XML</item>
-
+	
 	<!-- Alt text for images -->
   <item id="altText_CodeExample">Code example</item>
   <item id="altText_ExplicitInterface">Explicit interface implementation</item>
@@ -322,7 +316,7 @@
 	<item id="altText_pubProperty">Public property</item>
 	<item id="altText_pubStructure">Public structure</item>
 	<item id="altText_Static">Static member</item>
-	
+
 	<!-- Alert titles -->
 	<item id="alert_title_tip">Tip</item>
 	<item id="alert_title_caution">Caution</item>
@@ -347,7 +341,7 @@
 	<item id="alert_altText_visualC#">C# note</item>
 	<item id="alert_altText_visualC++">C++ note</item>
 	<item id="alert_altText_visualJ#">J# note</item>	
-
+	
 	<!-- Index metadata entries -->
 	<item id="indexEntry_root">namespaces</item>
   <item id="indexEntry_namespace">{0} namespace</item>
@@ -386,7 +380,7 @@
 	<item id="indexEntry_propertyExplicit">{0} explicitly implemented property</item>
 	<item id="indexEntry_eventExplicit">{0} explicitly implemented event</item>
 	<item id="indexEntry_fieldExplicit">{0} explicitly implemented field</item>
-	
+
   <!-- Versions section (version builder plug-in) -->
   <item id="supportedIn_1">Supported in: {0}</item>
   <item id="supportedIn_2">Supported in: {0}, {1}</item>
