@@ -6,8 +6,9 @@
 
 	<!-- Topic title -->
 	<item id="boilerplate_pageTitle">{0}</item>
-	<item id="header">{@HeaderText} {@Preliminary}</item>
-	<item id="preliminary">_**\[This is preliminary documentation and is subject to change.\]**_</item>
+	<item id="headerText">{@HeaderText}</item>
+	<item id="preliminaryDocs">This is preliminary documentation and is subject to change.</item>
+	<item id="preliminaryShort">Preliminary</item>
 
 	<!-- Alert titles -->
 	<item id="alert_title_tip">ヒント</item>
@@ -78,7 +79,7 @@
 
   <!-- Note text -->
   <item id="notDocumented">このAPIはドキュメント化されていません。</item>
-  <item id="preliminaryText">このAPIは暫定的なものであり、変更される可能性があります。</item>
+  <item id="preliminaryApi">このAPIは暫定的なものであり、変更される可能性があります。</item>
 	
 	<!-- Inserted boilerplate -->
   <item id="definedBy">({0}により定義)</item>

@@ -351,8 +351,8 @@ HelpNavigator.Topic, "html\" &amp; pageName &amp; ".htm")
 				</code>
 
 				<para>The naming rules are the same for pages generated for the website output.  If using a newer
-presentation style such as the VS2013 style, the URLs to the topics are direct.  Simply bring up the site and
-navigate to the page you want to link to.  The URL to the page will appear in the browser's address bar.  Here
+presentation style such as the Default2022 style, the URLs to the topics are direct.  Simply bring up the site
+and navigate to the page you want to link to.  The URL to the page will appear in the browser's address bar.  Here
 is an example:</para>
 
 				<code language="none" title=" ">

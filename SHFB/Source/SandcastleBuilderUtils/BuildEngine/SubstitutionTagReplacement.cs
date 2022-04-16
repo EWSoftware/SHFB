@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/23/2022
+// Updated : 03/27/2022
 // Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -803,16 +803,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 return WebUtility.HtmlEncode(sandcastleProject.FeedbackEMailAddress);
             
             return WebUtility.HtmlEncode(sandcastleProject.FeedbackEMailLinkText);
-        }
-
-        /// <summary>
-        /// The "preliminary" warning in the header text
-        /// </summary>
-        /// <returns>Include the "preliminary" warning in the header text if wanted</returns>
-        [SubstitutionTag]
-        private string Preliminary()
-        {
-            return sandcastleProject.Preliminary ? "<include item=\"preliminary\"/>" : String.Empty;
         }
 
         /// <summary>

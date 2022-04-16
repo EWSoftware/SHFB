@@ -19,7 +19,7 @@ default to the "note" alert style.</para>
         </alert>
 
         <para>The <codeInline>class</codeInline> attribute can be any of the following values which fall into
-four different categories that use different icons to the left of the alert title.  The title will generally be
+five different categories that use different icons to the left of the alert title.  The title will generally be
 the alert class name or an expanded form of it.</para>
 
         <table>
@@ -43,12 +43,21 @@ the alert class name or an expanded form of it.</para>
           </row>
           <row>
             <entry><para>Language note</para></entry>
-						<!-- Ignore Spelling: cpp -->
 						<entry><para>cs, CSharp, c#, C#, visual c# note, cpp, CPP, c++, C++, visual c++ note, vb, VB,
 VisualBasic, visual basic note, JSharp, j#, J#, visual j# note</para></entry>
           </row>
+					<row>
+						<entry>
+							<para>To Do</para>
+						</entry>
+						<entry>
+							<para>todo</para>
+						</entry>
+					</row>
         </table>
 
+				<para>An optional <codeInline>title</codeInline> attribute can be used to provide a user-defined title
+that it will override the default title.</para>
       </content>
     </section>
 
@@ -71,7 +80,15 @@ VisualBasic, visual basic note, JSharp, j#, J#, visual j# note</para></entry>
 &lt;alert class="cs"&gt;
   &lt;para&gt;This could contain C#-specific usage notes.&lt;/para&gt;
 &lt;/alert&gt;
-</code>
+
+&lt;alert class="todo"&gt;
+	&lt;para&gt;This could contain a To Do list.&lt;/para&gt;
+&lt;/alert&gt;
+
+&lt;alert class="todo" title="Project Road Map"&gt;
+	&lt;para&gt;This alert contains a custom title.&lt;/para&gt;
+&lt;/alert&gt;
+				</code>
       </content>
     </section>
 
@@ -93,7 +110,15 @@ VisualBasic, visual basic note, JSharp, j#, J#, visual j# note</para></entry>
         <alert class="cs">
           <para>This could contain C#-specific usage notes.</para>
         </alert>
-      </content>
+
+				<alert class="todo">
+					<para>This could contain a To Do list.</para>
+				</alert>
+
+				<alert class="todo" title="Project Road Map">
+					<para>This alert contains a custom title.</para>
+				</alert>
+			</content>
     </section>
 
 		<relatedTopics>

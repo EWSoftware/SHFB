@@ -2,9 +2,9 @@
 <content xml:space="preserve" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
 
 	<!-- Header and footer text -->
-  <item id="meta_mshelp_tocTitle">{0}</item>
-	<item id="header"><span class="introStyle">{@HeaderText}</span> {@Preliminary}</item>
-	<item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
+  <item id="tocTitle">{0}</item>
+	<item id="documentationTitle">{@HtmlEncHelpTitle}</item>
+	<item id="headerText">{@HeaderText}</item>
 	<item id="feedback_body">Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.</item>
 	<item id="footer_content">{@FooterText}{@Copyright}{@Comments}</item>
 	<!-- This should remain empty unless overridden by the website content file -->
@@ -14,16 +14,34 @@
         <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a></div>
         <script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");
-        var HT_mailLinkText = HT_mailLink.innerHTML;
         HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("<include item='feedback_body' />");
-        HT_mailLink.innerHTML = HT_mailLinkText;
         </script></item>
 
+	<!-- Code/syntax section -->
+	<item id="copyCode">Copy</item>
+	<item id="sourceCodeLinkText">View Source</item>
+	<item id="sourceCodeLinkTitle">View the source code</item>
+	<item id="requestExampleLinkText">Request Example</item>
+	<item id="requestExampleLinkTitle">Request an example for this topic</item>
+	<item id="requestExampleScript">
+		$(".requestExampleLink").each(function ()
+		{{
+			if(this.href.substring(0, 4).toLowerCase() === "http")
+				this.href += "?title=";
+			else
+				this.href += "?subject={@UrlEncHelpTitle}: ";
+
+			this.href += "Add an Example for " + encodeURIComponent(document.title) + "&amp;body=" +
+				encodeURIComponent("Please add an example for " + document.title + ".%0D%0DTODO (optional): Describe a specific " +
+				"scenario you would like to see addressed.%0D%0DHelp Topic: " + window.location.href).replace(/%250D/g, "%0D");
+		}});
+	</item>
+	
+	<!-- VS2013 presentation style items -->
 	<item id="requestExample"><a id="HT_RequestExampleLink" href="{0}" target="_blank" rel="noopener noreferrer" class="{1}"
 		title="Request an example for this topic">Request Example</a>
 		<script type="text/javascript">
 		var HT_requestExampleLink = document.getElementById("HT_RequestExampleLink");
-		var HT_requestExampleLinkText = HT_requestExampleLink.innerHTML;
 				
 		if(HT_requestExampleLink.href.substring(0, 4).toLowerCase() == "http")
 			HT_requestExampleLink.href += "?title=";
@@ -33,10 +51,7 @@
 		HT_requestExampleLink.href += "Add an Example for " + encodeURIComponent(document.title) + "&amp;body=" +
 			encodeURIComponent("Please add an example for " + document.title + ".%0D%0DTODO (optional): Describe a specific " +
 			"scenario you would like to see addressed.%0D%0DHelp Topic: " + window.location.href).replace(/%250D/g, "%0D");
-		HT_requestExampleLink.innerHTML = HT_requestExampleLinkText;
 		</script></item>
-
-	<!-- Lightweight TOC resize tool tip (VS2013 presentation style) -->
 	<item id="resizeToolTip">Click or drag to resize</item>
 	
 	<!-- Section titles -->
@@ -181,23 +196,24 @@
 	<item id="header_typeName">Name</item>
 	
 	<!-- Miscellaneous page text -->
-	<item id="copyCode">Copy</item>
   <item id="defaultNamespace">( Default Namespace )</item>
   <item id="definedBy">(Defined by {0})</item>
   <item id="exposedMembersTableText">The {0} type exposes the following members.</item>	
 	<item id="inheritedFrom">(Inherited from {0})</item>
 	<item id="noCodeExample">No code example is currently available or this language may not be supported.</item>
 	<item id="overridesMember">(Overrides {0})</item>
-	<item id="preliminary"><p class="preliminary">[This is preliminary documentation and is subject to change.]</p></item>
-  <item id="preliminaryText">This API is preliminary and subject to change.</item>
-	<item id="sourceCodeLinkText">View Source</item>
-	<item id="sourceCodeLinkTitle">View the source code</item>
+	<item id="preliminaryDocs">This is preliminary documentation and is subject to change.</item>
+  <item id="preliminaryApi">This API is preliminary and subject to change.</item>
+	<item id="preliminaryShort">Preliminary</item>
 	<item id="text_extensionUsage">In Visual Basic and C#, you can call this method as an instance method on any object of type {0}. When you use instance method syntax to call this method, omit the first parameter. For more information, see <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">Extension Methods (Visual Basic)</a> or <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">Extension Methods (C# Programming Guide)</a>.</item>
 	<item id="text_moreInheritance">More...</item>
   <item id="text_relatedEntries">See Also:</item>
 	<item id="top">Top</item>
-	<item id="typeLink">Type:&#160;{0}</item>
-	
+	<item id="optionalText">(Optional)</item>
+	<item id="inThisArticle">In This Article</item>
+	<item id="showHideTOC">Show/Hide TOC</item>
+	<item id="searchPlaceHolder">Search</item>
+
 	<!-- Requirements section info -->
 	<item id="assemblyNameAndModule">{0} (in {1}.{2}) Version: {3}</item>
   <item id="boilerplate_requirementsAssemblies">Assemblies:</item>
@@ -327,6 +343,7 @@
 	<item id="alert_title_visualC#">C# Note</item>
 	<item id="alert_title_visualC++">C++ Note</item>
 	<item id="alert_title_visualJ#">J# Note</item>
+	<item id="alert_title_todo">To Do</item>
 	<item id="text_NotesForImplementers">Notes to Implementers</item>
 	<item id="text_NotesForCallers">Notes to Callers</item>
 	<item id="text_NotesForInheritors">Notes to Inheritors</item>
@@ -341,6 +358,7 @@
 	<item id="alert_altText_visualC#">C# note</item>
 	<item id="alert_altText_visualC++">C++ note</item>
 	<item id="alert_altText_visualJ#">J# note</item>	
+	<item id="alert_altText_todo">To Do</item>
 	
 	<!-- Index metadata entries -->
 	<item id="indexEntry_root">namespaces</item>

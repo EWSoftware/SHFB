@@ -1,11 +1,12 @@
 ﻿<html>
+<!-- This is HTML but it is loaded as XML so it must be well formed with proper self-closing elements and it
+	   cannot contain any entities not recognized by the parser (e.g. use &#160; instead of &nbsp;). -->
 <head>
-	<!-- Other metadata will be added by the presentation style transformation -->
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<!-- This tells Microsoft Help Viewer that we'll handle branding (styles etc.) -->
 	<meta name="Microsoft.Help.SelfBranded" content="true" />
 	<!-- Substitution tags will be replaced by the transformation.  The Microsoft.* entries here and added by
-		   the transformation are used to generate the help 1 and help viewer index. -->
+			 the transformation are used to generate the help 1 and help viewer index. -->
 	<meta name="Language" content="{@LocaleLowercase}" />
 	<meta name="Microsoft.Help.Locale" content="{@LocaleLowercase}" />
 	<meta name="Microsoft.Help.TopicLocale" content="{@LocaleLowercase}" />
@@ -13,14 +14,15 @@
 	<link rel="stylesheet" type="text/css" href="{@StyleSheetPath}branding.css" />
 	<link rel="stylesheet" type="text/css" href="{@StyleSheetPath}branding-{@Locale}.css" />
 	<script type="text/javascript" src="{@ScriptPath}branding.js"></script>
+	<!-- Other metadata will be added by the presentation style transformation -->
 </head>
 
-<body onload="OnLoad('{@DefaultLanguage}')">
-	<!-- All IDs should remain unchanged -->
+<body onload="SetDefaultLanguage('{@DefaultLanguage}');">
+	<!-- IMPORTANT: All IDs should remain unchanged -->
 	<input type="hidden" id="userDataCache" class="userDataStyle" />
 
 	<div id="PageHeader" class="pageHeader">
-		<include item="runningHeaderText" />
+		<include item="documentationTitle" />
 	</div>
 
 	<div class="pageBody">

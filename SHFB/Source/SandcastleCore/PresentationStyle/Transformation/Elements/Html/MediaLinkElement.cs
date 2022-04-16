@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : MediaLinkElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2022
+// Updated : 04/09/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle mediaLink elements
@@ -16,6 +16,8 @@
 // ==============================================================================================================
 // 01/24/2022  EFW  Created the code
 //===============================================================================================================
+
+// Ignore Spelling: figcaption
 
 using System;
 using System.Xml.Linq;
@@ -31,33 +33,45 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         //=====================================================================
 
         /// <summary>
+        /// The element used to contain the media link
+        /// </summary>
+        /// <value>The default if not set explicitly is <c>figure</c></value>
+        public string MediaElement { get; set; } = "figure";
+
+        /// <summary>
+        /// The element used to contain the media link caption
+        /// </summary>
+        /// <value>The default if not set explicitly is <c>figcaption</c></value>
+        public string MediaCaptionElement { get; set; } = "figcaption";
+
+        /// <summary>
         /// This is used to get or set the image caption style
         /// </summary>
-        /// <value>The default if not set explicitly is "caption"</value>
-        public string ImageCaptionStyle { get; set; } = "caption";
+        /// <value>No style is applied if not set explicitly</value>
+        public string CaptionStyle { get; set; }
 
         /// <summary>
         /// This is used to get or set the caption lead text style
         /// </summary>
-        /// <value>The default if not set explicitly is "captionLead"</value>
-        public string CaptionLeadTextStyle { get; set; } = "captionLead";
+        /// <value>No style is applied if not set explicitly</value>
+        public string CaptionLeadTextStyle { get; set; }
 
         /// <summary>
         /// This is used to get or set the media near style
         /// </summary>
-        /// <value>The default if not set explicitly is "mediaNear"</value>
+        /// <value>The default if not set explicitly is <c>mediaNear</c></value>
         public string MediaNearStyle { get; set; } = "mediaNear";
 
         /// <summary>
         /// This is used to get or set the media center style
         /// </summary>
-        /// <value>The default if not set explicitly is "mediaCenter"</value>
+        /// <value>The default if not set explicitly is <c>mediaCenter</c></value>
         public string MediaCenterStyle { get; set; } = "mediaCenter";
 
         /// <summary>
         /// This is used to get or set the media far style
         /// </summary>
-        /// <value>The default if not set explicitly is "mediaFar"</value>
+        /// <value>The default if not set explicitly is <c>mediaFar</c></value>
         public string MediaFarStyle { get; set; } = "mediaFar";
 
         #endregion
@@ -89,20 +103,20 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             if(!String.IsNullOrWhiteSpace(linkTarget))
             {
                 string placement = image.Attribute("placement")?.Value;
-                var link = new XElement("div");
+                var mediaLink = new XElement(this.MediaElement);
 
                 switch(placement)
                 {
                     case "center":
-                        link.Add(new XAttribute("class", this.MediaCenterStyle));
+                        mediaLink.Add(new XAttribute("class", this.MediaCenterStyle));
                         break;
 
                     case "far":
-                        link.Add(new XAttribute("class", this.MediaFarStyle));
+                        mediaLink.Add(new XAttribute("class", this.MediaFarStyle));
                         break;
 
                     default:
-                        link.Add(new XAttribute("class", this.MediaNearStyle));
+                        mediaLink.Add(new XAttribute("class", this.MediaNearStyle));
                         break;
                 }
 
@@ -113,12 +127,20 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 {
                     placement = caption.Attribute("placement")?.Value;
                     string lead = caption.Attribute("lead")?.Value.NormalizeWhiteSpace();
-                    captionDiv = new XElement("div", new XAttribute("class", this.ImageCaptionStyle));
+                    captionDiv = new XElement(MediaCaptionElement);
+
+                    if(!String.IsNullOrWhiteSpace(this.CaptionStyle))
+                        captionDiv.Add(new XAttribute("class", this.CaptionStyle));
 
                     if(!String.IsNullOrWhiteSpace(lead))
                     {
-                        captionDiv.Add(new XElement("span",
-                            new XAttribute("class", this.CaptionLeadTextStyle), lead + ": "));
+                        if(!String.IsNullOrWhiteSpace(this.CaptionLeadTextStyle))
+                        {
+                            captionDiv.Add(new XElement("span",
+                                new XAttribute("class", this.CaptionLeadTextStyle), lead + ": "));
+                        }
+                        else
+                            captionDiv.Add(lead, ": ");
                     }
 
                     captionDiv.Add(captionText);
@@ -126,18 +148,17 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                     // If placed after, it is added after the art link
                     if(!placement?.Equals("after", StringComparison.Ordinal) ?? true)
                     {
-                        link.Add(captionDiv);
+                        mediaLink.Add(captionDiv);
                         captionDiv = null;
                     }
                 }
 
-                link.Add(new XElement("artLink",
-                    new XAttribute("target", linkTarget)));
+                mediaLink.Add(new XElement("artLink", new XAttribute("target", linkTarget)));
 
                 if(captionDiv != null)
-                    link.Add(captionDiv);
+                    mediaLink.Add(captionDiv);
 
-                transformation.CurrentElement.Add(link);
+                transformation.CurrentElement.Add(mediaLink);
             }
         }
         #endregion

@@ -152,7 +152,7 @@ namespace SandcastleBuilder.PlugIns
                 // Help 1 content which isn't normally copied until after the current build step.  This assumes
                 // that none of the replacement tags in the standard content depend on information generated in
                 // this step (i.e. it wouldn't work for website output in the older presentation styles which
-                // rely on the WebTOC.xml file for the index page).
+                // relied on the WebTOC.xml file for the index page).
                 builder.ReportProgress("Copying Help 1 presentation style content ready for localization");
 
                 builder.PresentationStyle.CopyHelpContent(HelpFileFormats.HtmlHelp1,

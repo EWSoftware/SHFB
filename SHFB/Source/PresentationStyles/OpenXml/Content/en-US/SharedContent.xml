@@ -76,7 +76,8 @@
 
   <!-- Note text -->
   <item id="notDocumented">This API is not documented.</item>
-  <item id="preliminaryText">This API is preliminary and subject to change.</item>
+  <item id="preliminaryApi">This API is preliminary and subject to change.</item>
+	<item id="preliminaryShort">Preliminary</item>
 	
 	<!-- Inserted boilerplate -->
   <item id="definedBy">(Defined by {0})</item>

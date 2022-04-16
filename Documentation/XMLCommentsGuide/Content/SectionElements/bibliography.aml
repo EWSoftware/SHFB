@@ -2,12 +2,13 @@
 <topic id="4C57ED2C-F373-4B34-B983-A0009D6CDAB4" revisionNumber="1">
   <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<introduction>
-      <para>The auto-generated bibliography feature allows an author to create an external bibliography data XML
-file and then share it between multiple topics by specifying short identifiers in <codeInline>cite</codeInline> 
-elements that match one of the references contained in the file.  When one or more <codeInline>cite</codeInline>
-elements are used, Sandcastle will automatically generate a bibliography for the topic just before the See Also
-section and the <codeInline>cite</codeInline> elements themselves will be replaced with hyperlinks to
-corresponding bookmarked entries in the bibliography section.</para>
+      <para>The auto-generated bibliography feature, an extension provided by the presentation styles in the
+Sandcastle Help File Builder, allows an author to create an external bibliography data XML file and then share it
+between multiple topics by specifying short identifiers in <codeInline>cite</codeInline> elements that match one
+of the references contained in the file.  When one or more <codeInline>cite</codeInline> elements are used,
+Sandcastle will automatically generate a bibliography for the topic just before the See Also section and the
+<codeInline>cite</codeInline> elements themselves will be replaced with hyperlinks to corresponding bookmarked
+entries in the bibliography section.</para>
 
 			<alert class="note">
 				<para>Unlike MAML topics, the <codeInline>bibliography</codeInline> element is not specified anywhere in
@@ -59,7 +60,7 @@ template is supplied with the help file builder standalone GUI and Visual Studio
 </code>
 
 							<para>The previous example defines a bibliography XML file that contains two <codeInline>reference</codeInline>
-elements, which can be referred to by <codeInline>cite</codeInline> elements in a MAML topic using the values
+elements, which can be referred to by <codeInline>cite</codeInline> elements in XML comments using the values
 of the <codeInline>name</codeInline> attributes.</para>
               
 							<alert class="tip">

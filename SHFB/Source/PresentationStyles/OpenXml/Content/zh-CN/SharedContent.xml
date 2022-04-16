@@ -76,7 +76,8 @@
 
     <!-- Note text -->
     <item id="notDocumented">此API没有对应的文档。</item>
-    <item id="preliminaryText">此API尚未最终确定，随时可能调整。</item>
+    <item id="preliminaryApi">此API尚未最终确定，随时可能调整。</item>
+		<item id="preliminaryShort">Preliminary</item>
 
     <!-- Inserted boilerplate -->
     <item id="definedBy">(由 {0} 定义。)</item>

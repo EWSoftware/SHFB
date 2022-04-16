@@ -36,12 +36,12 @@
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <RootNamespaceTitle>Test Root Namespace Title</RootNamespaceTitle>
     <CopyrightHref>http://www.EWoodruff.us</CopyrightHref>
-    <CopyrightText>Copyright \xA9 2006-2011, Eric Woodruff, All rights reserved</CopyrightText>
+    <CopyrightText>Copyright \xA9 2006-2022, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <FeedbackEMailLinkText>Me. %28{%40CustomProperty}%29</FeedbackEMailLinkText>
     <HeaderText>Date Only: {%40BuildDate:MMM  d, yyyy} Full Date: {%40BuildDate}</HeaderText>
     <FooterText>Full Date: {%40BuildDate} Date Only: {%40BuildDate:MMM  d, yyyy}</FooterText>
-    <PresentationStyle>VS2013</PresentationStyle>
+    <PresentationStyle>Default2022</PresentationStyle>
     <HelpFileVersion>{%40Major}.{%40Minor}.{%40Build}.{%40Revision} Beta</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Code Block Component" enabled="True">
@@ -163,13 +163,15 @@
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <TransformComponentArguments>
       <Argument Key="RobotsMetadata" Value="" />
-      <Argument Key="LogoFile" Value="Sandcastle.jpg" />
       <Argument Key="BibliographyDataFile" Value="Bibliography.xml" />
-      <Argument Key="LogoHeight" Value="" />
+      <Argument Key="RootBreadcrumbTitleText" Value="SHFB Test" />
+      <Argument Key="CollapsibleSections" Value="True" />
+      <Argument Key="LogoFile" Value="Sandcastle.jpg" />
+      <Argument Key="LogoHeight" Value="32" />
       <Argument Key="LogoWidth" Value="" />
       <Argument Key="LogoAltText" Value="Test logo" />
-      <Argument Key="LogoPlacement" Value="" />
-      <Argument Key="LogoAlignment" Value="" />
+      <Argument Key="LogoPlacement" Value="Left" />
+      <Argument Key="LogoAlignment" Value="Right" />
       <Argument Key="LogoUrl" Value="https://github.com/EWSoftware/SHFB" />
       <Argument Key="MaxVersionParts" Value="" />
       <Argument Key="DefaultLanguage" Value="cs" />

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : MediaLinkInlineElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2022
+// Updated : 04/08/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle mediaLinkInline elements
@@ -33,8 +33,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         /// <summary>
         /// This is used to get or set the media style
         /// </summary>
-        /// <value>The default if not set explicitly is "media"</value>
-        public string MediaStyle { get; set; } = "media";
+        /// <value>The default if not set explicitly is <c>mediaInline</c></value>
+        public string MediaStyle { get; set; } = "mediaInline";
 
         #endregion
 

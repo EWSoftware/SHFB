@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TitleAndKeywordHtmlExtract.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/27/2022
+// Updated : 03/31/2022
 // Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to extract title and keyword information from HTML files for use in creating
@@ -413,6 +413,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             // Insert the See Also indices for each sub-entry
             for(int idx = 0; idx < keywords.Count; idx++)
+            {
                 if(!String.IsNullOrEmpty(keywords[idx].SubEntry))
                 {
                     if(idx > 0)
@@ -421,11 +422,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(mainEntry != keywords[idx].MainEntry)
                         keywords.Insert(idx, new KeywordInfo { MainEntry = keywords[idx].MainEntry });
                 }
+            }
         }
 
         /// <summary>
-        /// Parse each file looking for the title and index keywords and remove the unnecessary Help 2 constructs
-        /// that cause issues in Internet Explorer 10.
+        /// Parse each file looking for the title and index keywords
         /// </summary>
         /// <param name="basePath">The base folder path</param>
         /// <param name="sourceFile">The file to parse</param>
@@ -519,12 +520,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     writer.Write(destEncoding.GetString(convertedBytes));
                 }
             }
-
-            // Save the file to its original location without the Help 2 elements using the original encoding
-            using(StreamWriter writer = new StreamWriter(sourceFile, false, currentEncoding))
-            {
-                writer.Write(content);
-            }
         }
         #endregion
 
@@ -562,6 +557,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     writer.WriteLine("  <BODY>");
 
                     while(reader.Read())
+                    {
                         switch(reader.NodeType)
                         {
                             case XmlNodeType.Element:
@@ -605,8 +601,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                                         "    <param name=\"Name\" value=\"{0}\">", WebUtility.HtmlEncode(title)));
 
                                     if(htmlFile != null)
+                                    {
                                         WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
                                             "    <param name=\"Local\" value=\"{0}\">", WebUtility.HtmlEncode(htmlFile)));
+                                    }
 
                                     WriteContentLine(writer, indentCount, "  </OBJECT></LI>");
 
@@ -623,6 +621,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             default:
                                 break;
                         }
+                    }
 
                     writer.WriteLine();
                     writer.WriteLine("  </BODY>");
@@ -678,8 +677,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         kw = group.First();
 
                         if(!String.IsNullOrEmpty(kw.File))
+                        {
                             WriteHelp1IndexEntry(kw.MainEntry, kw.File.Substring(baseFolderLength).Replace(
                                 '\\', '/'), writer, 3);
+                        }
                     }
                     else
                     {
@@ -689,7 +690,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         WriteContentLine(writer, 3, "<UL>");
 
                         foreach(var k in group)
+                        {
                             if(!String.IsNullOrEmpty(k.File))
+                            {
                                 if(String.IsNullOrEmpty(k.SubEntry))
                                 {
                                     // Use the target page's title as the entry's title as it will be fully
@@ -700,8 +703,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                                         '\\', '/'), writer, 4);
                                 }
                                 else
+                                {
                                     WriteHelp1IndexEntry(k.SubEntry, k.File.Substring(baseFolderLength).Replace(
                                         '\\', '/'), writer, 4);
+                                }
+                            }
+                        }
 
                         WriteContentLine(writer, 3, "</UL>");
                     }
@@ -742,6 +749,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         #region Write out the website table of contents
         //=====================================================================
 
+        // NOTE: This is only used by the legacy VS2013 presentation style.  When that is removed at some point
+        //       in the future, everything related to this method can be removed from here as well.
+
         /// <summary>
         /// Write out the website table of contents
         /// </summary>
@@ -771,6 +781,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     writer.WriteLine("<HelpTOC>");
 
                     while(reader.Read())
+                    {
                         switch(reader.NodeType)
                         {
                             case XmlNodeType.Element:
@@ -811,18 +822,22 @@ namespace SandcastleBuilder.Utils.BuildEngine
                                     htmlFile = WebUtility.HtmlEncode(htmlFile);
 
                                     if(reader.IsEmptyElement)
-                                        WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
-                                            "<HelpTOCNode Title=\"{0}\" Url=\"{1}\" />", title, htmlFile));
-                                    else
-                                        if(htmlFile != null)
                                     {
                                         WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
-                                            "<HelpTOCNode Id=\"{0}\" Title=\"{1}\" Url=\"{2}\">", Guid.NewGuid(),
-                                            title, htmlFile));
+                                            "<HelpTOCNode Title=\"{0}\" Url=\"{1}\" />", title, htmlFile));
                                     }
                                     else
-                                        WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
-                                            "<HelpTOCNode Id=\"{0}\" Title=\"{1}\">", Guid.NewGuid(), title));
+                                    {
+                                        if(htmlFile != null)
+                                        {
+                                            WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
+                                                "<HelpTOCNode Id=\"{0}\" Title=\"{1}\" Url=\"{2}\">", Guid.NewGuid(),
+                                                title, htmlFile));
+                                        }
+                                        else
+                                            WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
+                                                "<HelpTOCNode Id=\"{0}\" Title=\"{1}\">", Guid.NewGuid(), title));
+                                    }
                                 }
                                 break;
 
@@ -834,6 +849,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             default:
                                 break;
                         }
+                    }
 
                     writer.WriteLine();
                     writer.WriteLine("</HelpTOC>");

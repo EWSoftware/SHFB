@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : GlossaryElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2022
+// Updated : 04/07/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle glossary elements
@@ -110,10 +110,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
             if(element.Element(Ddue + "glossaryDiv") != null)
             {
-                // An organized glossary with glossaryDiv elements
-                transformation.CurrentElement.Add(new XElement("br"));
-
-                // Render links to each titled division
+                // An organized glossary with glossaryDiv elements.  Render links to each titled division.
                 bool addSeparator = false;
 
                 foreach(var div in element.Elements(Ddue + "glossaryDiv"))
@@ -139,14 +136,14 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                     }
                 }
 
+                transformation.CurrentElement.Add(new XElement("br"), new XElement("br"));
+
                 foreach(var gd in element.Elements(Ddue + "glossaryDiv"))
                     this.RenderGlossaryDivision(transformation, gd);
             }
             else
             {
-                // A simple glossary consisting of nothing bu glossaryEntry elements
-                transformation.CurrentElement.Add(new XElement("br"));
-
+                // A simple glossary consisting of nothing but glossaryEntry elements
                 this.RenderGlossaryLetterBar(element, null, transformation.CurrentElement);
 
                 transformation.CurrentElement.Add(new XElement("br"));

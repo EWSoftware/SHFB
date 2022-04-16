@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Handlers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/06/2022
+// Updated : 04/15/2022
 // Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the element handler methods for the MAML to flow document converter class
@@ -274,6 +274,11 @@ namespace SandcastleBuilder.WPF.Maml
 
             if(attribute == null || !alertIcons.TryGetValue(attribute.Value, out string icon))
                 icon = "AlertNote";
+
+            attribute = props.Element.Attribute("title");
+
+            if(attribute != null)
+                title = attribute.Value;
 
             Section alert = new Section();
             props.Converter.AddToBlockContainer(alert);

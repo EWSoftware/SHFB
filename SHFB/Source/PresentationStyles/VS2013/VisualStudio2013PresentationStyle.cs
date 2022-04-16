@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013PresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/22/2022
+// Updated : 03/31/2022
 // Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Visual Studio 2013 presentation style.
@@ -32,8 +32,8 @@ namespace Sandcastle.PresentationStyles.VS2013
     /// This contains the definition for the Visual Studio 2013 presentation style
     /// </summary>
     [PresentationStyleExport("VS2013", "VS2013", Version = AssemblyInfo.ProductVersion,
-      Copyright = AssemblyInfo.Copyright, Description = "This style is similar to the one used for Visual " +
-        "Studio 2013 and the now retired MSDN online content.")]
+      Copyright = AssemblyInfo.Copyright, Description = "This presentation style is similar to the one used for " +
+        "Visual Studio 2013 offline content and the now retired MSDN online content.")]
     public sealed class VisualStudio2013PresentationStyle : PresentationStyleSettings
     {
         /// <inheritdoc />
@@ -54,10 +54,7 @@ namespace Sandcastle.PresentationStyles.VS2013
 
             this.DocumentModelApplicator = new StandardDocumentModel();
             this.ApiTableOfContentsGenerator = new StandardApiTocGenerator();
-            this.TopicTranformation = new VisualStudio2013Transformation(this.SupportedFormats)
-            {
-                TopicTemplatePath = this.ResolvePath(@"Templates\TopicTemplate.html")
-            };
+            this.TopicTranformation = new VisualStudio2013Transformation(this.SupportedFormats, this.ResolvePath);
 
             // If relative, these paths are relative to the base path
             this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";

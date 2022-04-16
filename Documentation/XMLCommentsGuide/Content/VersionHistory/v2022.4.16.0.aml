@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="c5516fc2-e3cf-4f74-8ab5-f1f57e3908c6" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2022.4.16.0.</para>
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Made various general revisions to reflect how the XML comments elements are currently used.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a topic for the <link xlink:href="4C57ED2C-F373-4B34-B983-A0009D6CDAB4" /> elements.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the <link xlink:href="4302a60f-e4f4-4b8d-a451-5f453c4ebd46" /> element topic with
+information on a new <codeInline>todo</codeInline> note type and a new optional <codeInline>title</codeInline>
+attribute that can be used to override the default note title.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the <codeInline>threadsafety</codeInline> topic to note that inner text can be used to
+specify a custom thread safety message.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a note to the Code Contracts topic to indicate that the elements are no longer supported
+directly by the help file builder presentation styles as the code contracts project has been abandoned.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

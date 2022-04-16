@@ -12,7 +12,7 @@ information.</para>
 				<para>This inline block element can be used within any other element.</para>
 
 <code language="xml" title=" ">
-&lt;note type="noteType"&gt;note content&lt;/note&gt;
+&lt;note type="noteType" [title="Optional title override"]&gt;note content&lt;/note&gt;
 </code>
 
 				<para>The <codeInline>type</codeInline> attribute defines the note type.  The <legacyItalic>noteType</legacyItalic>
@@ -52,7 +52,18 @@ type name or an expanded form of it.</para>
             <entry><para>cs, CSharp, c#, C#, visual c# note, cpp, CPP, c++, C++, visual c++ note, vb, VB,
 VisualBasic, visual basic note, JSharp, j#, J#, visual j# note</para></entry>
           </row>
-        </table>
+					<row>
+						<entry>
+							<para>To Do</para>
+						</entry>
+						<entry>
+							<para>todo</para>
+						</entry>
+					</row>
+				</table>
+
+				<para>An optional <codeInline>title</codeInline> attribute can be used to provide a user-defined title
+that it will override the default title.</para>
 				
 				<alert class="note">
 					<para>This is a custom XML comments element implemented by Sandcastle.  It will not appear in the list

@@ -144,6 +144,7 @@ namespace Sandcastle.Core.PresentationStyle
         /// </summary>
         /// <param name="languageName">The language name for the localized resources.  If the specific language
         /// is not found, it falls back to the en-US resources which will always exist.</param>
+        /// <returns>An enumerable list of resource item files used by the presentation style</returns>
         public abstract IEnumerable<string> ResourceItemFiles(string languageName);
 
         /// <summary>

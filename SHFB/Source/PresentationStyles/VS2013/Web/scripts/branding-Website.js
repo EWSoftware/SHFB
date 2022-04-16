@@ -223,12 +223,12 @@ function BuildChildren(tocDiv, data)
             var expander = "";
 
             if(hasChildren)
-                expander = "<a class=\"tocCollapsed\" onclick=\"javascript: Toggle(this);\" href=\"#!\"></a>";
+                expander = "<a class=\"tocCollapsed\" onclick=\"Toggle(this);\" href=\"#!\"></a>";
 
             var text = "<div class=\"toclevel" + childTocLevel + "\" data-toclevel=\"" + childLevel + "\">" +
                 expander + "<a data-tochassubtree=\"" + hasChildren + "\" href=\"" + childHRef + "\" title=\"" +
                 childTitle + "\" tocid=\"" + childId + "\"" +
-                (childHRef == "#" ? " onclick=\"javascript: Toggle(this.previousSibling);\"" : "") + ">" +
+                (childHRef == "#" ? " onclick=\"Toggle(this.previousSibling);\"" : "") + ">" +
                 childTitle + "</a></div>";
 
             tocDiv.after(text);

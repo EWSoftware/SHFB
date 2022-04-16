@@ -7,8 +7,9 @@
 
   <!-- Topic title -->
   <item id="boilerplate_pageTitle">{0}</item>
-	<item id="header">{@HeaderText} {@Preliminary}</item>
-	<item id="preliminary">_**\[Это предварительная версия документации. API может измениться в будущем.\]**_</item>
+	<item id="headerText">{@HeaderText}</item>
+	<item id="preliminaryDocs">Это предварительная версия документации. API может измениться в будущем.</item>
+	<item id="preliminaryShort">Preliminary</item>
 
 	<!-- Alert titles -->
 	<item id="alert_title_tip">Подсказка</item>
@@ -79,7 +80,7 @@
 
 	<!-- Note text -->
 	<item id="notDocumented">Это API не документировано.</item>
-	<item id="preliminaryText">Это предварительная документация, которая в будущем может измениться.</item>
+	<item id="preliminaryApi">Это предварительная документация, которая в будущем может измениться.</item>
 
 	<!-- Inserted boilerplate -->
 	<item id="definedBy">(Определяется {0})</item>

@@ -29,8 +29,9 @@ the hash character.</para>
     <section>
       <title>Example</title>
       <content>
-        <para>This example uses the samples from the example file above.  The first
-three are the individual snippets.  The last one combines the "create instance"
+        <para>This example uses the samples from the example file in the
+<link xlink:href="9bef5420-7560-47d9-98ce-0b5d5f46567a">Code Snippets File</link> topic.  The first three are the
+individual snippets.  The last one combines the "create instance"
 snippets into one example.</para>
         <code language="xml" title=" ">
 Define a class

@@ -1,7 +1,6 @@
 # Ignore these files and folders in this directory
 /Data/**/*.xml
 Components/*
-Help/*
 net472/*
 netcoreapp3.1/*
 Tools/*

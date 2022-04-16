@@ -3,9 +3,9 @@
 	<!-- Translations provided by Sergey Zhurikhin -->
 
   <!-- Header and footer -->
-  <item id="meta_mshelp_tocTitle">{0}</item>
-	<item id="header"><span class="introStyle">{@HeaderText}</span> {@Preliminary}</item>
-	<item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
+  <item id="tocTitle">{0}</item>
+	<item id="documentationTitle">{@HtmlEncHelpTitle}</item>
+	<item id="headerText">{@HeaderText}</item>
 	<item id="feedback_body">Ваш отзыв будет использован для улучшения качества документации и продукта в целом. Адрес вашей электронной почты не будет использован для других целей и будет удалён, после того как ваш отзыв будет обработан. До окончания работ по обработке вашего отзыва, вы можете связаться с автором для получения дополнительной информации. После его обработки, вы можете получить сообщение об окончании работ по вашему отзыву на указанный адрес электронной почты.</item>
 	<item id="footer_content">{@FooterText}{@Copyright}{@Comments}</item>
 	<!-- This should remain empty unless overridden by the website content file -->
@@ -15,16 +15,34 @@
         <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a></div>
         <script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");
-        var HT_mailLinkText = HT_mailLink.innerHTML;
         HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("<include item='feedback_body' />");
-        HT_mailLink.innerHTML = HT_mailLinkText;
         </script></item>
 
+	<!-- Code/syntax section -->
+	<item id="copyCode">Копировать</item>
+	<item id="sourceCodeLinkText">View Source</item>
+	<item id="sourceCodeLinkTitle">View the source code</item>
+	<item id="requestExampleLinkText">Request Example</item>
+	<item id="requestExampleLinkTitle">Request an example for this topic</item>
+	<item id="requestExampleScript">
+		$(".requestExampleLink").each(function ()
+		{{
+			if(this.href.substring(0, 4).toLowerCase() === "http")
+				this.href += "?title=";
+			else
+				this.href += "?subject={@UrlEncHelpTitle}: ";
+
+			this.href += "Add an Example for " + encodeURIComponent(document.title) + "&amp;body=" +
+				encodeURIComponent("Please add an example for " + document.title + ".%0D%0DTODO (optional): Describe a specific " +
+				"scenario you would like to see addressed.%0D%0DHelp Topic: " + window.location.href).replace(/%250D/g, "%0D");
+		}});
+	</item>
+	
+	<!-- VS2013 presentation style items -->
 	<item id="requestExample"><a id="HT_RequestExampleLink" href="{0}" target="_blank" rel="noopener noreferrer" class="{1}"
 		title="Request an example for this topic">Request Example</a>
 		<script type="text/javascript">
 		var HT_requestExampleLink = document.getElementById("HT_RequestExampleLink");
-		var HT_requestExampleLinkText = HT_requestExampleLink.innerHTML;
 				
 		if(HT_requestExampleLink.href.substring(0, 4).toLowerCase() == "http")
 			HT_requestExampleLink.href += "?title=";
@@ -34,10 +52,7 @@
 		HT_requestExampleLink.href += "Add an Example for " + encodeURIComponent(document.title) + "&amp;body=" +
 			encodeURIComponent("Please add an example for " + document.title + ".%0D%0DTODO (optional): Describe a specific " +
 			"scenario you would like to see addressed.%0D%0DHelp Topic: " + window.location.href).replace(/%250D/g, "%0D");
-		HT_requestExampleLink.innerHTML = HT_requestExampleLinkText;
 		</script></item>
-	
-	<!-- Lightweight TOC resize tool tip (VS2013 presentation style) -->
 	<item id="resizeToolTip">Для изменения размера нажмите или перетащите</item>
 
 	<!-- Section titles -->
@@ -182,22 +197,23 @@
 	<item id="header_typeName">Имя</item>
 
 	<!-- Miscellaneous page text -->
-	<item id="copyCode">Копировать</item>
   <item id="defaultNamespace">(пространство имён по-умолчанию)</item>
   <item id="definedBy">(Определяется {0})</item>
   <item id="exposedMembersTableText">Тип {0} предоставляет следующие члены.</item>	
 	<item id="inheritedFrom">(Унаследован от {0})</item>
 	<item id="noCodeExample">В настоящее время язык не поддерживается либо пример кода отсутствует.</item>
 	<item id="overridesMember">(Переопределяет {0})</item>
-	<item id="preliminary"><p class="preliminary">[Это предварительная версия документации. API может измениться в будущем.]</p></item>
-  <item id="preliminaryText">Это предварительная документация, которая в будущем может измениться.</item>
-	<item id="sourceCodeLinkText">View Source</item>
-	<item id="sourceCodeLinkTitle">View the source code</item>
+	<item id="preliminaryDocs">Это предварительная версия документации. API может измениться в будущем.</item>
+  <item id="preliminaryApi">Это предварительная документация, которая в будущем может измениться.</item>
+	<item id="preliminaryShort">Preliminary</item>
   <item id="text_extensionUsage">В Visual Basic и C# этот метод можно вызывать как метод экземпляра для любого объекта типа {0}. При вызове метода для экземпляра следует опускать первый параметр. Дополнительные сведения см. в разделе <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">Методы расширения (Visual Basic)</a> или <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">Методы расширения (Руководство по программированию в C#)</a>.</item>
 	<item id="text_moreInheritance">Подробнее...</item>
   <item id="text_relatedEntries">См. также</item>
   <item id="top">В начало страницы</item>
-  <item id="typeLink">Тип:&#160;{0}</item>
+	<item id="optionalText">(Optional)</item>
+	<item id="inThisArticle">In This Article</item>
+	<item id="showHideTOC">Show/Hide TOC</item>
+	<item id="searchPlaceHolder">Search</item>
 
 	<!-- Requirements section info -->
 	<item id="assemblyNameAndModule">{0} (в {1}.{2}) Версия: {3}</item>
@@ -328,6 +344,7 @@
 	<item id="alert_title_visualC#">Примечание для C#</item>
 	<item id="alert_title_visualC++">Примечание для C++</item>
 	<item id="alert_title_visualJ#">Примечание для J#</item>
+	<item id="alert_title_todo">To Do</item>
 	<item id="text_NotesForImplementers">Примечания для реализующих объектов</item>
 	<item id="text_NotesForCallers">Примечания для вызывающих объектов</item>
 	<item id="text_NotesForInheritors">Примечания для наследников</item>
@@ -342,6 +359,7 @@
 	<item id="alert_altText_visualC#">Примечание для C#</item>
 	<item id="alert_altText_visualC++">Примечание для C++</item>
 	<item id="alert_altText_visualJ#">Примечание для J#</item>
+	<item id="alert_altText_todo">To Do</item>
 
 	<!-- Index metadata entries -->
 	<item id="indexEntry_root">Пространства имён</item>

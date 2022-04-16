@@ -4,23 +4,6 @@
 }
 
 /* Style adjustments for Help 1 */
-table {
-    width: 95%;
-}
-
-.topicContent {
-    padding-left: 10px;
-    border-left: 0;
-}
-
-.codeSnippetContainerTabs {
-    top: 1px;
-}
-
 .codeSnippetToolBarText {
     top: -13px;
-}
-
-.codeSnippetContainerTabSingle {
-    height: 22px;
 }

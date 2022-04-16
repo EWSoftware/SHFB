@@ -36,7 +36,8 @@ the content of the matching element.</para>
 an alternative to repeatedly cutting and pasting the same elements into multiple locations in your source code.
 This allows you to maintain the comment elements in a single location.  When the project is built, the updated
 comments will automatically be imported into each of the locations where they are referenced.  It also allows
-one person to work on the code while another writes the comments.</para>
+one person to work on the code while another writes the comments.  If the goal is to cut down on duplicated
+comments, the <link xlink:href="86453FFB-B978-4A2A-9EB5-70E118CA8073" /> element may be a better choice.</para>
 
 				<alert class="note">
 					<para>The XPath query typically uses quote marks to surround an ID value.  If you use double quotes to
@@ -63,6 +64,7 @@ in the resulting XML comments file.</para>
 			<link xlink:href="9341fdc8-1571-405c-8e61-6a6b9b601b46" />
 			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.IncludeAllExample</codeEntityReference>
 			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.IncludeSectionsExample</codeEntityReference>
+			<link xlink:href="86453FFB-B978-4A2A-9EB5-70E118CA8073" />
 		</relatedTopics>
 	</developerConceptualDocument>
 </topic>

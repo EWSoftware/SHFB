@@ -654,6 +654,10 @@ namespace TestDoc
         /// <note type="implement">implement</note>
         /// <note type="caller">caller</note>
         /// <note type="inherit">inherit</note>
+        /// <note type="todo">To Do list</note>
+        /// <note type="todo" title="Project Road Map">
+        ///     <para>This alert has a custom title.</para>
+        /// </note>
         /// </remarks>
         [Obsolete()]
         public void Increment()
@@ -836,6 +840,7 @@ namespace TestDoc
         /// <typeparam name="T">The type</typeparam>
         /// <param name="lhs">The left hand value</param>
         /// <param name="rhs">The right hand value</param>
+        /// <preliminary>This might change later</preliminary>
         public static void Swap<T>(ref T lhs, ref T rhs)
         {
             T temp;
@@ -849,6 +854,7 @@ namespace TestDoc
         /// </summary>
         /// <param name="x">Test</param>
         /// <param name="y">Test</param>
+        /// <preliminary/>
         public static void TestThis<T, K>(KeyValuePair<T, K> x, long y)
         {
         }

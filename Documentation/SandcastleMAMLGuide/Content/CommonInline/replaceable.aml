@@ -23,8 +23,7 @@
       <title>Example Output</title>
       <content>
         <para>
-          <command>XCOPY <system>/s /e</system>&#160;<replaceable>sourceFileSpec</replaceable>&#160;
-<replaceable>destFileSpec</replaceable></command>
+          <command>XCOPY <system>/s /e</system>&#160;<replaceable>sourceFileSpec</replaceable>&#160;<replaceable>destFileSpec</replaceable></command>
         </para>
       </content>
     </section>

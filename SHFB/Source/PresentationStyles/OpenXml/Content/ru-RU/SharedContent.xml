@@ -77,7 +77,8 @@
 
 	<!-- Note text -->
 	<item id="notDocumented">Это API не документировано.</item>
-	<item id="preliminaryText">Это предварительная документация, которая в будущем может измениться.</item>
+	<item id="preliminaryApi">Это предварительная документация, которая в будущем может измениться.</item>
+	<item id="preliminaryShort">Preliminary</item>
 
 	<!-- Inserted boilerplate -->
 	<item id="definedBy">(Определяется {0})</item>

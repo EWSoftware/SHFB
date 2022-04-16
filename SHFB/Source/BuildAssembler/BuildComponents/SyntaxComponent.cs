@@ -29,6 +29,7 @@ using Sandcastle.Core.BuildAssembler.BuildComponent;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
 using Sandcastle.Tools.BuildComponents.Snippets;
+using Sandcastle.Core.PresentationStyle.Transformation;
 
 namespace Sandcastle.Tools.BuildComponents
 {
@@ -240,6 +241,18 @@ namespace Sandcastle.Tools.BuildComponents
             }
 
             this.WriteMessage(MessageLevel.Info, "Loaded {0} syntax generators.", generators.Count);
+
+            // Set the language filter options for presentation styles that support it but only on the first
+            // instance of the component.
+            if(!this.BuildAssembler.Data.ContainsKey("LanguageFilterItems"))
+            {
+                this.BuildAssembler.Data["LanguageFilterItems"] = languageSet.GroupBy(
+                    c => c.KeywordStyleParameter).Select(g =>
+                    {
+                        var first = g.First();
+                        return new LanguageFilterItem("devlang_" + first.Id, first.KeywordStyleParameter);
+                    }).ToList();
+            }
 
             // If this is not found or set, we'll assume the presentation style does not support grouping
             var containerElement = configuration.SelectSingleNode("containerElement");

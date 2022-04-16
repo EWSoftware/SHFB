@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ListElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2022
+// Updated : 04/07/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle list elements based on the topic type
@@ -16,6 +16,8 @@
 // ==============================================================================================================
 // 01/14/2022  EFW  Created the code
 //===============================================================================================================
+
+// Ignore Spelling: hoverable thead
 
 using System;
 using System.Xml.Linq;
@@ -33,8 +35,14 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         /// <summary>
         /// This is used to get or set the "no bullet" list style
         /// </summary>
-        /// <value>The default if not set explicitly is "noBullet"</value>
+        /// <value>The default if not set explicitly is <c>noBullet</c></value>
         public string NoBulletStyle { get; set; } = "noBullet";
+
+        /// <summary>
+        /// This is used to get or set the overall table style
+        /// </summary>
+        /// <value>The default if not set explicitly is <c>table is-hoverable"</c></value>
+        public string TableStyle { get; set; } = "table is-hoverable";
 
         #endregion
 
@@ -62,7 +70,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             if(transformation.IsMamlTopic)
                 this.RenderMamlList(transformation, element);
             else
-                RenderXmlCommentsList(transformation, element);
+                this.RenderXmlCommentsList(transformation, element);
         }
 
         /// <summary>
@@ -107,7 +115,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         /// </summary>
         /// <param name="transformation">The transformation in use</param>
         /// <param name="element">The element to render</param>
-        private static void RenderXmlCommentsList(TopicTransformationCore transformation, XElement element)
+        private void RenderXmlCommentsList(TopicTransformationCore transformation, XElement element)
         {
             string elementName, start = null;
 
@@ -161,10 +169,16 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 case "table":
                     XElement listHeader = element.Element("listheader");
 
+                    if(!String.IsNullOrWhiteSpace(this.TableStyle))
+                        list.Add(new XAttribute("class", this.TableStyle));
+
                     if(listHeader != null)
                     {
+                        var thead = new XElement("thead");
+                        list.Add(thead);
+                        
                         var tr = new XElement("tr");
-                        list.Add(tr);
+                        thead.Add(tr);
 
                         foreach(var cell in listHeader.Elements())
                         {

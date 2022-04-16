@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/27/2022
+// Updated : 04/11/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -21,9 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 using Sandcastle.Core;
@@ -54,8 +52,11 @@ namespace Sandcastle.PresentationStyles.VS2013
         /// Constructor
         /// </summary>
         /// <param name="supportedFormats">The help file formats supported by the presentation style</param>
-        public VisualStudio2013Transformation(HelpFileFormats supportedFormats) : base(supportedFormats)
+        /// <param name="resolvePath">The function used to resolve content file paths for the presentation style</param>
+        public VisualStudio2013Transformation(HelpFileFormats supportedFormats, Func<string, string> resolvePath) :
+          base(supportedFormats, resolvePath)
         {
+            this.TopicTemplatePath = this.ResolvePath(@"Templates\TopicTemplate.html");
         }
         #endregion
 
@@ -380,14 +381,14 @@ namespace Sandcastle.PresentationStyles.VS2013
                 // type (API or MAML).
                 new BibliographyElement(),
                 new CiteElement(),
-                new CodeSnippetGroupElement(),
+                new CodeSnippetGroupElementTabbed(),
                 new MarkupElement(),
                 new ConvertibleElement("para", "p"),
-                new ListElement(),
+                new ListElement { TableStyle = null },
                 new ParametersElement(),
                 new PassthroughElement("span"),
                 new SummaryElement(),
-                new TableElement(),
+                new TableElement { TableStyle = null },
 
                 // MAML elements
                 new NoteElement("alert"),
@@ -443,7 +444,13 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new ConvertibleElement("localUri", "em"),
                 new NonRenderedParentElement("localizedText"),
                 new ConvertibleElement("math", "span", "math"),
-                new MediaLinkElement(),
+                new MediaLinkElement
+                {
+                    MediaElement = "div",
+                    MediaCaptionElement = "div",
+                    CaptionStyle = "caption",
+                    CaptionLeadTextStyle = "captionLead"
+                },
                 new MediaLinkInlineElement(),
                 new ConvertibleElement("newTerm", "span", "term"),
                 new NamedSectionElement("nextSteps"),
@@ -491,15 +498,14 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new ImplementsElement(),
                 new NoteElement("note"),
                 new ConvertibleElement("paramref", "name", "span", "parameter"),
-                new PreliminaryElement(),
+                new PreliminaryElement { PreliminaryContainerElement = "div", PreliminaryTextStyle = "preliminary" },
                 new NamedSectionElement("remarks"),
                 new ReturnsElement(),
-                new SeeElement("see"),
+                new SeeElement(),
                 // seeAlso should be a top-level element in the comments but may appear within other elements.
                 // We'll ignore it if seen as they'll be handled manually by the See Also section processing.
                 new IgnoredElement("seealso"),
-                new SourceContextElement(nameof(RequestExampleUrl), nameof(BaseSourceCodeUrl)),
-                new SyntaxElement(),
+                new SyntaxElementTabbed(nameof(RequestExampleUrl), nameof(BaseSourceCodeUrl)),
                 new TemplatesElement(),
                 new ThreadsafetyElement(),
                 new ConvertibleElement("typeparamref", "name", "span", "typeparameter"),
@@ -547,136 +553,18 @@ namespace Sandcastle.PresentationStyles.VS2013
         }
 
         /// <inheritdoc />
-        public override void RenderTypeReferenceLink(XElement content, XElement typeInfo, bool qualified)
-        {
-            if(content == null)
-                throw new ArgumentNullException(nameof(content));
-
-            if(typeInfo == null)
-                throw new ArgumentNullException(nameof(typeInfo));
-
-            var specialization = typeInfo.Element("specialization");
-            string api = typeInfo.Attribute("api")?.Value, name = typeInfo.Attribute("name")?.Value,
-                displayApi = typeInfo.Attribute("display-api")?.Value;
-            bool first = true;
-
-            switch(typeInfo.Name.LocalName)
-            {
-                case "type":
-                    content.Add(new XElement("referenceLink",
-                        new XAttribute("target", api),
-                        new XAttribute("prefer-overload", false),
-                        new XAttribute("show-templates", specialization == null),
-                        new XAttribute("show-container", qualified)));
-
-                    if(specialization != null)
-                        this.RenderTypeReferenceLink(content, specialization, false);
-                    break;
-
-                case "specialization":
-                case "templates":
-                    content.Add(LanguageSpecificText.TypeSpecializationOpening.Render());
-
-                    foreach(var t in typeInfo.Elements())
-                    {
-                        if(!first)
-                            content.Add(", ");
-
-                        this.RenderTypeReferenceLink(content, t, false);
-
-                        first = false;
-                    }
-
-                    content.Add(LanguageSpecificText.TypeSpecializationClosing.Render());
-                    break;
-
-                case "template":
-                    if(!String.IsNullOrWhiteSpace(api))
-                    {
-                        content.Add(new XElement("referenceLink",
-                                new XAttribute("target", api),
-                            new XElement("span",
-                                new XAttribute("class", "typeparameter"),
-                            name)));
-                    }
-                    else
-                        content.Add(new XElement("span", new XAttribute("class", "typeparameter"), name));
-                    break;
-
-                case "arrayOf":
-                    LanguageSpecificText arrayOfClosing;
-
-                    if(Int32.TryParse(typeInfo.Attribute("rank")?.Value, out int rank) && rank > 1)
-                    {
-                        arrayOfClosing = new LanguageSpecificText(false, new[]
-                        {
-                            (LanguageSpecificText.CPlusPlus, $",{rank}>"),
-                            (LanguageSpecificText.VisualBasic, $"({rank})"),
-                            (LanguageSpecificText.Neutral, $"[{rank}]")
-                        });
-                    }
-                    else
-                    {
-                        arrayOfClosing = new LanguageSpecificText(false, new[]
-                        {
-                            (LanguageSpecificText.CPlusPlus, ">"),
-                            (LanguageSpecificText.VisualBasic, "()"),
-                            (LanguageSpecificText.Neutral, "[]")
-                        });
-                    }
-
-                    content.Add(LanguageSpecificText.ArrayOfOpening.Render());
-                    this.RenderTypeReferenceLink(content, typeInfo.Elements().First(), qualified);
-                    content.Add(arrayOfClosing.Render());
-                    break;
-
-                case "pointerTo":
-                    this.RenderTypeReferenceLink(content, typeInfo.Elements().First(), qualified);
-                    content.Add("*");
-                    break;
-
-                case "referenceTo":
-                    this.RenderTypeReferenceLink(content, typeInfo.Elements().First(), qualified);
-                    content.Add(LanguageSpecificText.ReferenceTo.Render());
-                    break;
-
-                case "member":
-                    if(!String.IsNullOrWhiteSpace(displayApi))
-                    {
-                        content.Add(new XElement("referenceLink",
-                            new XAttribute("target", api),
-                            new XAttribute("display-target", displayApi),
-                            new XAttribute("show-container", qualified)));
-                    }
-                    else
-                    {
-                        content.Add(new XElement("referenceLink",
-                            new XAttribute("target", api),
-                            new XAttribute("show-container", qualified)));
-                    }
-                    break;
-
-                default:
-                    Debug.WriteLine("Unhandled type element: {0}", typeInfo.Name.LocalName);
-
-                    if(Debugger.IsAttached)
-                        Debugger.Break();
-                    break;
-            }
-        }
-
-        /// <inheritdoc />
         protected override XDocument RenderTopic()
         {
             if(pageTemplate == null)
             {
                 pageTemplate = LoadTemplateFile(this.TopicTemplatePath, new[] {
+                    ("{@DefaultLanguage}", this.DefaultLanguage),
                     ("{@Locale}", this.Locale),
                     ("{@LocaleLowercase}", this.Locale.ToLowerInvariant()),
                     ("{@IconPath}", this.IconPath),
                     ("{@StyleSheetPath}", this.StyleSheetPath),
-                    ("{@ScriptPath}", this.ScriptPath),
-                    ("{@DefaultLanguage}", this.DefaultLanguage) });
+                    ("{@ScriptPath}", this.ScriptPath)
+                });
             }
 
             var document = new XDocument(pageTemplate);
@@ -690,7 +578,21 @@ namespace Sandcastle.PresentationStyles.VS2013
             this.CurrentElement = topicContent ?? throw new InvalidOperationException("Page template is missing the \"TopicContent\" element");
             this.RenderPageTitleAndLogo();
 
-            topicContent.Add(new XElement("include", new XAttribute("item", "header")));
+            if(this.HasHeaderText)
+            {
+                topicContent.Add(new XElement("span",
+                    new XAttribute("class", "introStyle"),
+                    new XElement("include", new XAttribute("item", "headerText"))));
+            }
+
+            if(this.IsPreliminaryDocumentation)
+            {
+                topicContent.Add(new XElement("p",
+                    new XAttribute("class", "preliminary"),
+                    new XElement("include", new XAttribute("item", "preliminaryDocs"))));
+            }
+
+            this.OnRenderStarting(document);
 
             // Add the topic content.  MAML topics are rendered purely off of the element types.  API topics
             // require custom formatting based on the member type in the topic.
@@ -704,6 +606,23 @@ namespace Sandcastle.PresentationStyles.VS2013
                     this.OnSectionRendered(section.SectionType, section.CustomSectionName);
                 }
             }
+
+            var body = html.Element("body") ?? throw new InvalidOperationException("Body element not found");
+
+            if(this.StartupScriptBlocks.Any())
+                body.Add(new XElement("script", $"$(function(){{\r\n{String.Join("\r\n", this.StartupScriptBlocks)}\r\n}});"));
+
+            if(this.StartupScriptBlockItemIds.Any())
+            {
+                var scriptItems = new XElement("script");
+
+                body.Add(scriptItems);
+
+                foreach(string id in this.StartupScriptBlockItemIds)
+                    scriptItems.Add(new XElement("include", new XAttribute("item", id)));
+            }
+
+            this.OnRenderCompleted(document);
 
             return document;
         }
@@ -779,257 +698,6 @@ namespace Sandcastle.PresentationStyles.VS2013
             // by the caller.
             return (titleElement, null);
         }
-
-        /// <inheritdoc />
-        protected override IEnumerable<XNode> ApiTopicShortNameDecorated()
-        {
-            // This isn't returned, just its content
-            XElement nameElement = new XElement("name");
-
-            switch(this.ApiMember)
-            {
-                case var t when (t.TopicGroup == ApiMemberGroup.Api && t.ApiGroup == ApiMemberGroup.Type) ||
-                  (t.TopicGroup == ApiMemberGroup.List && t.TopicSubgroup != ApiMemberGroup.Overload):
-                    // Type overview pages and member list pages get the type name
-                    this.ApiTypeNameDecorated(nameElement, this.ReferenceNode);
-                    break;
-
-                case var t when (t.TopicGroup == ApiMemberGroup.Api && t.ApiSubgroup == ApiMemberGroup.Constructor) ||
-                  (t.TopicSubgroup == ApiMemberGroup.Overload && t.ApiSubgroup == ApiMemberGroup.Constructor):
-                    // Constructors and member list pages also use the type name
-                    this.ApiTypeNameDecorated(nameElement, this.ReferenceNode.Element("containers").Element("type"));
-                    break;
-
-                case var t when t.IsExplicitlyImplemented:
-                    // EII members
-                    this.ApiTypeNameDecorated(nameElement, this.ReferenceNode.Element("containers").Element("type"));
-                    
-                    nameElement.Add(LanguageSpecificText.NameSeparator.Render());
-
-                    var member = this.ReferenceNode.Element("implements").Element("member");
-
-                    this.ApiTypeNameDecorated(nameElement, member.Element("type"));
-
-                    nameElement.Add(LanguageSpecificText.NameSeparator.Render());
-
-                    // If the API element is not present (unresolved type), show the type name from the type element
-                    if(!String.IsNullOrWhiteSpace(t.Name))
-                        nameElement.Add(t.Name);
-                    else
-                    {
-                        string name = member.Attribute("api")?.Value;
-
-                        if(name != null)
-                        {
-                            int pos = name.LastIndexOf('.');
-
-                            if(pos != -1)
-                                name = name.Substring(pos + 1);
-
-                            nameElement.Add(name);
-                        }
-                    }
-
-                    var templates = member.Element("templates");
-
-                    if(templates != null)
-                        this.ApiTypeNameDecorated(nameElement, templates);
-                    break;
-
-                case var t when t.TopicGroup == ApiMemberGroup.List && t.TopicSubgroup == ApiMemberGroup.Overload &&
-                  this.ReferenceNode.Element("templates") != null:
-                    // Use just the plain, unadorned Type.API name for overload pages with templates
-                    this.ApiTypeNameDecorated(nameElement, this.ReferenceNode.Element("containers").Element("type"));
-
-                    nameElement.Add(LanguageSpecificText.NameSeparator.Render());
-                    nameElement.Add(t.Name);
-                    break;
-
-                case var t when (t.TopicGroup == ApiMemberGroup.Api && t.ApiGroup == ApiMemberGroup.Member) ||
-                  (t.TopicSubgroup == ApiMemberGroup.Overload && t.ApiGroup == ApiMemberGroup.Member):
-                    // Normal member pages use the qualified member name
-                    this.ApiTypeNameDecorated(nameElement, this.ReferenceNode.Element("containers").Element("type"));
-
-                    if(t.ApiSubSubgroup == ApiMemberGroup.Operator &&
-                      (t.Name.Equals("Explicit", StringComparison.Ordinal) ||
-                       t.Name.Equals("Implicit", StringComparison.Ordinal)))
-                    {
-                        nameElement.Add(" ",
-                            new XElement("span",
-                                new XAttribute("class", LanguageSpecificText.LanguageSpecificTextStyleName),
-                                new XElement("span",
-                                        new XAttribute("class", LanguageSpecificText.VisualBasic),
-                                    t.Name.Equals("Explicit", StringComparison.Ordinal) ? "Narrowing" : "Widening"),
-                                new XElement("span",
-                                    new XAttribute("class", LanguageSpecificText.Neutral),
-                                t.Name)), Element.NonBreakingSpace);
-                    }
-                    else
-                    {
-                        nameElement.Add(LanguageSpecificText.NameSeparator.Render(), t.Name);
-                    }
-
-                    templates = this.ReferenceNode.Element("templates");
-
-                    if(templates != null)
-                        this.ApiTypeNameDecorated(nameElement, templates);
-                    break;
-
-                case var t when (String.IsNullOrWhiteSpace(t.Name)):
-                    // Default namespace
-                    nameElement.Add(new XElement("include", new XAttribute("item", "defaultNamespace")));
-                    break;
-
-                default:
-                    // Namespaces and other members just use the name
-                    nameElement.Add(this.ApiMember.Name);
-                    break;
-            }
-
-            return nameElement.Nodes();
-        }
-
-        /// <inheritdoc />
-        protected override void ApiTypeNameDecorated(XElement memberName, XElement typeInfo)
-        {
-            if(memberName == null)
-                throw new ArgumentNullException(nameof(memberName));
-
-            if(typeInfo == null)
-                throw new ArgumentNullException(nameof(typeInfo));
-
-            var specialization = typeInfo.Element("specialization");
-            var templates = typeInfo.Element("templates");
-            string name = typeInfo.Attribute("name")?.Value, api = typeInfo.Attribute("api")?.Value,
-                apiDataName = typeInfo.Element("apidata")?.Attribute("name")?.Value;
-            bool first = true;
-
-            switch(typeInfo.Name.LocalName)
-            {
-                case "reference":
-                case "type":
-                    if(typeInfo.Name.LocalName == "reference")
-                    {
-                        // Don't show the type on list pages
-                        if(this.ApiMember.TopicGroup != ApiMemberGroup.List)
-                        {
-                            var typeNode = typeInfo.Element("type");
-
-                            if(typeNode == null)
-                            {
-                                typeNode = typeInfo.Element("containers")?.Element("type");
-
-                                if(typeNode != null)
-                                {
-                                    this.ApiTypeNameDecorated(memberName, typeNode);
-                                    memberName.Add(LanguageSpecificText.NameSeparator.Render());
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // Add nested type name if necessary
-                        var nestedType = typeInfo.Element("type") ?? typeInfo.Element("container")?.Element("type");
-
-                        if(nestedType != null)
-                        {
-                            this.ApiTypeNameDecorated(memberName, nestedType);
-                            memberName.Add(LanguageSpecificText.NameSeparator.Render());
-                        }
-                    }
-
-                    // If the API element is not present (unresolved type), show the type name from the type element
-                    if(!String.IsNullOrWhiteSpace(apiDataName))
-                        memberName.Add(apiDataName);
-                    else
-                    {
-                        if(api != null)
-                        {
-                            int pos = api.LastIndexOf('.');
-
-                            if(pos != -1)
-                                api = api.Substring(pos + 1);
-
-                            memberName.Add(api);
-                        }
-                    }
-
-                    if(specialization != null)
-                        this.ApiTypeNameDecorated(memberName, specialization);
-                    else
-                    {
-                        if(templates != null)
-                            this.ApiTypeNameDecorated(memberName, templates);
-                    }
-                    break;
-
-                case "specialization":
-                case "templates":
-                    memberName.Add(LanguageSpecificText.TypeSpecializationOpening.Render());
-
-                    foreach(var t in typeInfo.Elements())
-                    {
-                        if(!first)
-                            memberName.Add(", ");
-
-                        this.ApiTypeNameDecorated(memberName, t);
-
-                        first = false;
-                    }
-
-                    memberName.Add(LanguageSpecificText.TypeSpecializationClosing.Render());
-                    break;
-
-                case "template":
-                    memberName.Add(new XElement("span", new XAttribute("class", "typeparameter"), name));
-                    break;
-
-                case "arrayOf":
-                    LanguageSpecificText arrayOfClosing;
-
-                    if(Int32.TryParse(typeInfo.Attribute("rank")?.Value, out int rank) && rank > 1)
-                    {
-                        arrayOfClosing = new LanguageSpecificText(false, new[]
-                        {
-                            (LanguageSpecificText.CPlusPlus, $",{rank}>"),
-                            (LanguageSpecificText.VisualBasic, $"({rank})"),
-                            (LanguageSpecificText.Neutral, $"[{rank}]")
-                        });
-                    }
-                    else
-                    {
-                        arrayOfClosing = new LanguageSpecificText(false, new[]
-                        {
-                            (LanguageSpecificText.CPlusPlus, ">"),
-                            (LanguageSpecificText.VisualBasic, "()"),
-                            (LanguageSpecificText.Neutral, "[]")
-                        });
-                    }
-
-                    memberName.Add(LanguageSpecificText.ArrayOfOpening.Render());
-                    this.ApiTypeNameDecorated(memberName, typeInfo.Elements().First());
-                    memberName.Add(arrayOfClosing.Render());
-                    break;
-
-                case "pointerTo":
-                    this.ApiTypeNameDecorated(memberName, typeInfo.Elements().First());
-                    memberName.Add("*");
-                    break;
-
-                case "referenceTo":
-                    this.ApiTypeNameDecorated(memberName, typeInfo.Elements().First());
-                    memberName.Add(LanguageSpecificText.ReferenceTo.Render());
-                    break;
-
-                default:
-                    Debug.WriteLine("Unhandled type element: {0}", typeInfo.Name.LocalName);
-
-                    if(Debugger.IsAttached)
-                        Debugger.Break();
-                    break;
-            }
-        }
         #endregion
 
         #region General topic rendering helper methods
@@ -1078,7 +746,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "Title"),
                     new XElement("includeAttribute",
                         new XAttribute("name", "content"),
-                        new XAttribute("item", "meta_mshelp_tocTitle"),
+                        new XAttribute("item", "tocTitle"),
                         new XElement("parameter", title))));
             }
 
@@ -1127,6 +795,39 @@ namespace Sandcastle.PresentationStyles.VS2013
 
                 this.AddIndexMetadata();
                 this.AddF1HelpMetadata();
+
+                // Insert container and filename metadata for an API topic
+                string namespaceId = this.ReferenceNode.Element("containers")?.Element(
+                    "namespace").Attribute("api").Value, namespaceName = "(Default Namespace)";
+
+                // Get the namespace from the container node for most members
+                if(namespaceId != null && namespaceId.Length > 2 && namespaceId[1] == ':')
+                    namespaceName = namespaceId.Substring(2);
+                else
+                {
+                    if(String.IsNullOrWhiteSpace(namespaceId))
+                    {
+                        // If it's a namespace, get the name from the API data node.  For all others, assume it's
+                        // the default namespace
+                        if((this.ApiMember.ApiGroup == ApiMemberGroup.NamespaceGroup ||
+                          this.ApiMember.ApiGroup == ApiMemberGroup.Namespace) &&
+                          !String.IsNullOrWhiteSpace(this.ApiMember.Name))
+                        {
+                            namespaceName = this.ApiMember.Name;
+                        }
+                    }
+                }
+
+                this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "container"),
+                    new XAttribute("content", namespaceName)));
+
+                if(!String.IsNullOrWhiteSpace(this.ApiMember.TopicFilename))
+                {
+                    this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "file"),
+                        new XAttribute("content", this.ApiMember.TopicFilename)));
+                    this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "guid"),
+                        new XAttribute("content", this.ApiMember.TopicFilename)));
+                }
             }
 
             foreach(var language in this.DocumentNode.Descendants().Where(
@@ -1160,42 +861,6 @@ namespace Sandcastle.PresentationStyles.VS2013
 
                 this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "Description"),
                     new XAttribute("content", topicDesc)));
-            }
-
-            if(!this.IsMamlTopic)
-            {
-                // Insert container and filename metadata for an API topic
-                string namespaceId = this.ReferenceNode.Element("containers")?.Element(
-                    "namespace").Attribute("api").Value, namespaceName = "(Default Namespace)";
-
-                // Get the namespace from the container node for most members
-                if(namespaceId != null && namespaceId.Length > 2 && namespaceId[1] == ':')
-                    namespaceName = namespaceId.Substring(2);
-                else
-                {
-                    if(String.IsNullOrWhiteSpace(namespaceId))
-                    {
-                        // If it's a namespace, get the name from the API data node.  For all others, assume it's
-                        // the default namespace
-                        if((this.ApiMember.ApiGroup == ApiMemberGroup.NamespaceGroup ||
-                          this.ApiMember.ApiGroup == ApiMemberGroup.Namespace) &&
-                          !String.IsNullOrWhiteSpace(this.ApiMember.Name))
-                        {
-                            namespaceName = this.ApiMember.Name;
-                        }
-                    }
-                }
-
-                this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "container"),
-                    new XAttribute("content", namespaceName)));
-
-                if(!String.IsNullOrWhiteSpace(this.ApiMember.TopicFilename))
-                {
-                    this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "file"),
-                        new XAttribute("content", this.ApiMember.TopicFilename)));
-                    this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "guid"),
-                        new XAttribute("content", this.ApiMember.TopicFilename)));
-                }
             }
         }
 
@@ -1639,7 +1304,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 }
             }
 
-            if(!String.IsNullOrWhiteSpace(logoFile) && placement == LogoPlacement.Above)
+            if(image != null && placement == LogoPlacement.Above)
             {
                 table.Add(new XElement("tr",
                     new XElement("td",
@@ -1653,7 +1318,7 @@ namespace Sandcastle.PresentationStyles.VS2013
             
             table.Add(tr);
 
-            if(!String.IsNullOrWhiteSpace(logoFile) && placement == LogoPlacement.Left)
+            if(image != null && placement == LogoPlacement.Left)
             {
                 tr.Add(new XElement("td",
                     new XAttribute("class", "logoColumn"),
@@ -1664,7 +1329,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new XAttribute("class", "titleColumn"),
                 new XElement("h1", this.IsMamlTopic ? this.MamlTopicTitle() : this.ApiTopicTitle(false, false))));
 
-            if(!String.IsNullOrWhiteSpace(logoFile) && placement == LogoPlacement.Right)
+            if(image != null && placement == LogoPlacement.Right)
             {
                 tr.Add(new XElement("td",
                     new XAttribute("class", "logoColumn"),

@@ -6,7 +6,7 @@
 find out all that you need to know about XML comments as used with Sandcastle to produce help files containing
 API reference content.  If you have any information, tips, updates, or corrections that you would like to see
 added to the guide, feel free to submit them to the author using the <legacyBold>Send Feedback</legacyBold> link
-at the top of the page or the e-mail link in the page footer.</para>
+in the page footer.</para>
 		</introduction>
 
 		<section>
@@ -50,7 +50,9 @@ file.</para>
 
 				<para>Certain elements or attributes they utilize are implemented by Sandcastle or are only usable with a
 particular third-party tool such as the <token>SHFB</token>.  Such extensions to the standard XML comments
-elements and attributes will be noted in the affected topics.</para>
+elements and attributes will be noted in the affected topics.  Such extensions do not appear in Visual Studio's
+XML comments IntelliSense.  However, an extension is available that can add them.  See the
+<link xlink:href="7F003236-9AF3-4B6A-8F14-4124FFF0AD7B" /> topic for more information.</para>
 
 				<para>Since the syntax of the XML comments themselves are language neutral with the exception of the
 comment characters that precede them, all example code is shown only in C# to reduce unnecessary clutter.
@@ -63,8 +65,8 @@ and the XML comments will work the same way.</para>
 		<relatedTopics>
 			<link xlink:href="57C91630-95D6-4E3E-AF24-3415CC569AC8" />
 			<link xlink:href="515d5a54-5047-4d6f-bf51-d47c7c699cc2" />
-			<link xlink:href="BD2B1A8B-275D-4584-9FB1-92759FAF37D7" />
 			<link xlink:href="0999CAAA-4992-4352-9ED2-965892040176" />
+			<link xlink:href="BD2B1A8B-275D-4584-9FB1-92759FAF37D7" />
 		</relatedTopics>
 	</developerConceptualDocument>
 </topic>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/27/2022
+// Updated : 04/14/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
@@ -48,7 +48,9 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         private readonly Dictionary<string, Element> elementHandlers;
         private readonly Dictionary<string, LanguageSpecificText> languageSpecificText;
         private readonly Dictionary<string, TransformationArgument> transformationArguments;
+        private readonly List<LanguageFilterItem> languageFilter;
         private readonly List<ApiTopicSectionHandler> apiTopicSections;
+        private readonly Dictionary<string, int> startupScript, startupScriptItemIds;
 
         private string bibliographyDataFile;
         private Dictionary<string, XElement> bibliographyData;
@@ -117,6 +119,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         public XElement CurrentElement { get; set; }
 
         /// <summary>
+        /// This read-only property is used to get the function use to resolve a path to a presentation style
+        /// content file of some sort.
+        /// </summary>
+        public Func<string, string> ResolvePath { get; }
+
+        /// <summary>
         /// This is used to get or set the topic template path if the presentation style makes use of one
         /// </summary>
         public string TopicTemplatePath { get; set; }
@@ -138,6 +146,19 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// </summary>
         /// <remarks>Ensure the path is terminated with an appropriate directory separator character</remarks>
         public abstract string ScriptPath { get; set; }
+
+        /// <summary>
+        /// This property is used to get or set whether or not all pages should be have the header text item
+        /// inserted into them.
+        /// </summary>
+        /// <value>This will be true if the project's header text property contains a value, false if not</value>
+        public bool HasHeaderText { get; set; }
+
+        /// <summary>
+        /// This property is used to get or set whether or not all pages should be marked with a "preliminary
+        /// documentation" warning in the page header.
+        /// </summary>
+        public bool IsPreliminaryDocumentation { get; set; }
 
         /// <summary>
         /// This is used to get or set the locale
@@ -204,10 +225,28 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         protected IEnumerable<ApiTopicSectionHandler> ApiTopicSections => apiTopicSections;
 
         /// <summary>
+        /// This read-only property returns the language filter items for presentation styles that contain one
+        /// in their topics.
+        /// </summary>
+        protected IEnumerable<LanguageFilterItem> LanguageFilter => languageFilter;
+
+        /// <summary>
         /// This read-only property returns a dictionary used to contain transformation arguments used by the
         /// presentation style
         /// </summary>
         public IReadOnlyDictionary<string, TransformationArgument> TransformationArguments => transformationArguments;
+
+        /// <summary>
+        /// This read-only property returns an enumerable list of the startup script blocks that have been
+        /// registered.
+        /// </summary>
+        public IEnumerable<string> StartupScriptBlocks => startupScript.OrderBy(s => s.Value).Select(s => s.Key);
+
+        /// <summary>
+        /// This read-only property returns an enumerable list of the startup script block item IDs that have
+        /// been registered.
+        /// </summary>
+        public IEnumerable<string> StartupScriptBlockItemIds => startupScriptItemIds.OrderBy(s => s.Value).Select(s => s.Key);
 
         #endregion
 
@@ -218,14 +257,20 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// Constructor
         /// </summary>
         /// <param name="supportedFormats">The presentation style's supported help file formats</param>
-        protected TopicTransformationCore(HelpFileFormats supportedFormats)
+        /// <param name="resolvePath">The function used to resolve content file paths for the presentation style</param>
+        protected TopicTransformationCore(HelpFileFormats supportedFormats, Func<string, string> resolvePath)
         {
             elementHandlers = new Dictionary<string, Element>();
             languageSpecificText = new Dictionary<string, LanguageSpecificText>();
+            languageFilter = new List<LanguageFilterItem>();
             apiTopicSections = new List<ApiTopicSectionHandler>();
             transformationArguments = new Dictionary<string, TransformationArgument>(StringComparer.OrdinalIgnoreCase);
+            startupScript = new Dictionary<string, int>();
+            startupScriptItemIds = new Dictionary<string, int>();
 
             this.SupportedFormats = supportedFormats;
+            this.ResolvePath = resolvePath;
+
             this.CreateTransformationArguments();
             this.CreateLanguageSpecificText();
             this.CreateElementHandlers();
@@ -269,6 +314,36 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         {
             this.SectionRendered?.Invoke(this, new RenderedSectionEventArgs(this.Key, sectionName, customName));
         }
+
+        /// <summary>
+        /// This event is raised to notify the user that the topic is about to be rendered
+        /// </summary>
+        /// <remarks>When invoked, only the basic page template is present with the metadata and page header
+        /// rendered.</remarks>
+        public event EventHandler<RenderTopicEventArgs> RenderStarting;
+
+        /// <summary>
+        /// This is used to raise the <see cref="RenderStarting"/> event
+        /// </summary>
+        /// <param name="topicContent">The basic topic template</param>
+        public virtual void OnRenderStarting(XDocument topicContent)
+        {
+            this.RenderStarting?.Invoke(this, new RenderTopicEventArgs(this.Key, topicContent));
+        }
+
+        /// <summary>
+        /// This event is raised to notify the user that the topic has been completely rendered
+        /// </summary>
+        public event EventHandler<RenderTopicEventArgs> RenderCompleted;
+
+        /// <summary>
+        /// This is used to raise the <see cref="RenderCompleted"/> event
+        /// </summary>
+        /// <param name="topicContent">The topic content</param>
+        public virtual void OnRenderCompleted(XDocument topicContent)
+        {
+            this.RenderCompleted?.Invoke(this, new RenderTopicEventArgs(this.Key, topicContent));
+        }
         #endregion
 
         #region Methods
@@ -298,7 +373,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// This is called to create the API topic section handlers that will be used by the transformation
         /// </summary>
         /// <remarks>Unlike MAML topics, API topics are rendered in a fixed order defined by the presentation
-        /// style that may vary based on the topic type.</remarks>
+        /// style that may vary based on the topic type (namespace, type, member, overloaded member, etc.).</remarks>
         protected abstract void CreateApiTopicSectionHandlers();
 
         /// <summary>
@@ -633,6 +708,20 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         }
 
         /// <summary>
+        /// This is used to add the language filter item information for presentation styles that contain a
+        /// language filter in the topics.
+        /// </summary>
+        /// <param name="languageFilterItems">The language filter items</param>
+        /// <remarks>Language filter items with duplicate keyword styles will be ignored</remarks>
+        public void AddLanguageFilterItems(IEnumerable<LanguageFilterItem> languageFilterItems)
+        {
+            var existingIds = new HashSet<string>(languageFilter.Select(l => l.KeywordStyle));
+
+            foreach(var l in languageFilterItems.Where(lf => !existingIds.Contains(lf.KeywordStyle)))
+                languageFilter.Add(l);
+        }
+
+        /// <summary>
         /// Add a new transformation argument
         /// </summary>
         /// <param name="argument">The transformation argument information</param>
@@ -667,7 +756,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// <param name="templateFilePath">The template file to load</param>
         /// <param name="replacementTags">An optional enumerable list of tuples containing the substitution tag
         /// names and replacement values.</param>
-        /// <returns></returns>
+        /// <returns>A copy of the template XML document with the substitution tags replaced with the given text</returns>
         public static XDocument LoadTemplateFile(string templateFilePath,
           IEnumerable<(string Key, string Value)> replacementTags)
         {
@@ -681,11 +770,49 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
 
             var pageTemplate = XDocument.Parse(sb.ToString());
 
+            // If there is a document type and the internal subset is an empty string, it will get written out
+            // as a set of empty brackets.  Set it to null so that it isn't written out at all or it can cause
+            // some odd formatting issues in the browser.
+            if(pageTemplate.DocumentType != null && pageTemplate.DocumentType.InternalSubset != null &&
+              pageTemplate.DocumentType.InternalSubset.Length == 0)
+            {
+                pageTemplate.DocumentType.InternalSubset = null;
+            }
+
             // Remove developer comments from the template
             foreach(var c in pageTemplate.Root.DescendantNodes().OfType<XComment>().ToList())
                 c.Remove();
 
             return pageTemplate;
+        }
+
+        /// <summary>
+        /// This is used to register a block of script to execute in the <c>$(document).ready()</c> function by
+        /// presentation styles that support script.
+        /// </summary>
+        /// <param name="priority">The priority of the script.  Lower numbers will have higher priority</param>
+        /// <param name="scriptBlock">The script block to execute</param>
+        /// <remarks>Only unique script blocks are registered.  Any subsequent calls to this method with an
+        /// identical script block will ignore the duplicates.</remarks>
+        public void RegisterStartupScript(int priority, string scriptBlock)
+        {
+            if(!startupScript.ContainsKey(scriptBlock))
+                startupScript.Add(scriptBlock, priority);
+        }
+
+        /// <summary>
+        /// This is used to register a shared content item ID that contains a block of script with localized
+        /// text.  These will be added to a <c>script</c> element at the end of the document body by presentation
+        /// styles that support script.
+        /// </summary>
+        /// <param name="priority">The priority of the script.  Lower numbers will have higher priority</param>
+        /// <param name="scriptBlockItemId">The item ID that contains the script block to execute</param>
+        /// <remarks>Only unique script block IDs are registered.  Any subsequent calls to this method with an
+        /// identical script block ID will ignore the duplicates.</remarks>
+        public void RegisterStartupScriptItem(int priority, string scriptBlockItemId)
+        {
+            if(!startupScriptItemIds.ContainsKey(scriptBlockItemId))
+                startupScriptItemIds.Add(scriptBlockItemId, priority);
         }
 
         /// <summary>
@@ -698,6 +825,10 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         {
             if(topic == null)
                 throw new ArgumentNullException(nameof(topic));
+
+            // Startup script can be unique to each page so clear it each time
+            startupScript.Clear();
+            startupScriptItemIds.Clear();
 
             // Get references to the most commonly used nodes and values for the commonly accessed attributes
             this.Key = key ?? throw new ArgumentNullException(nameof(key));
@@ -736,7 +867,9 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                     throw new InvalidOperationException("The comments node was not found");
             }
 
-            return this.RenderTopic();
+            var renderedTopic = this.RenderTopic();
+
+            return renderedTopic;
         }
 
         /// <summary>
@@ -746,8 +879,126 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// <param name="typeInfo">An element containing the type information for the reference link</param>
         /// <param name="qualified">True to fully qualify the type, false to show the type name alone</param>
         /// <remarks>This method will call itself recursively if necessary to render type specializations,
-        /// template parameter types, array types, etc.</remarks>
-        public abstract void RenderTypeReferenceLink(XElement content, XElement typeInfo, bool qualified);
+        /// template parameter types, array types, etc.  This will render language-specific text elements where
+        /// needed.  Non-HTML presentation styles may override this method to obtain the result and then strip
+        /// or replace the language-specific text elements as they see fit.</remarks>
+        public virtual void RenderTypeReferenceLink(XElement content, XElement typeInfo, bool qualified)
+        {
+            if(content == null)
+                throw new ArgumentNullException(nameof(content));
+
+            if(typeInfo == null)
+                throw new ArgumentNullException(nameof(typeInfo));
+
+            var specialization = typeInfo.Element("specialization");
+            string api = typeInfo.Attribute("api")?.Value, name = typeInfo.Attribute("name")?.Value,
+                displayApi = typeInfo.Attribute("display-api")?.Value;
+            bool first = true;
+
+            switch(typeInfo.Name.LocalName)
+            {
+                case "type":
+                    content.Add(new XElement("referenceLink",
+                        new XAttribute("target", api),
+                        new XAttribute("prefer-overload", false),
+                        new XAttribute("show-templates", specialization == null),
+                        new XAttribute("show-container", qualified)));
+
+                    if(specialization != null)
+                        this.RenderTypeReferenceLink(content, specialization, false);
+                    break;
+
+                case "specialization":
+                case "templates":
+                    content.Add(LanguageSpecificText.TypeSpecializationOpening.Render());
+
+                    foreach(var t in typeInfo.Elements())
+                    {
+                        if(!first)
+                            content.Add(", ");
+
+                        this.RenderTypeReferenceLink(content, t, false);
+
+                        first = false;
+                    }
+
+                    content.Add(LanguageSpecificText.TypeSpecializationClosing.Render());
+                    break;
+
+                case "template":
+                    if(!String.IsNullOrWhiteSpace(api))
+                    {
+                        content.Add(new XElement("referenceLink",
+                                new XAttribute("target", api),
+                            new XElement("span",
+                                new XAttribute("class", "typeparameter"),
+                            name)));
+                    }
+                    else
+                        content.Add(new XElement("span", new XAttribute("class", "typeparameter"), name));
+                    break;
+
+                case "arrayOf":
+                    LanguageSpecificText arrayOfClosing;
+
+                    if(Int32.TryParse(typeInfo.Attribute("rank")?.Value, out int rank) && rank > 1)
+                    {
+                        arrayOfClosing = new LanguageSpecificText(false, new[]
+                        {
+                            (LanguageSpecificText.CPlusPlus, $",{rank}>"),
+                            (LanguageSpecificText.VisualBasic, $"({rank})"),
+                            (LanguageSpecificText.Neutral, $"[{rank}]")
+                        });
+                    }
+                    else
+                    {
+                        arrayOfClosing = new LanguageSpecificText(false, new[]
+                        {
+                            (LanguageSpecificText.CPlusPlus, ">"),
+                            (LanguageSpecificText.VisualBasic, "()"),
+                            (LanguageSpecificText.Neutral, "[]")
+                        });
+                    }
+
+                    content.Add(LanguageSpecificText.ArrayOfOpening.Render());
+                    this.RenderTypeReferenceLink(content, typeInfo.Elements().First(), qualified);
+                    content.Add(arrayOfClosing.Render());
+                    break;
+
+                case "pointerTo":
+                    this.RenderTypeReferenceLink(content, typeInfo.Elements().First(), qualified);
+                    content.Add("*");
+                    break;
+
+                case "referenceTo":
+                    this.RenderTypeReferenceLink(content, typeInfo.Elements().First(), qualified);
+                    content.Add(LanguageSpecificText.ReferenceTo.Render());
+                    break;
+
+                case "member":
+                    if(!String.IsNullOrWhiteSpace(displayApi))
+                    {
+                        content.Add(new XElement("referenceLink",
+                            new XAttribute("target", api),
+                            new XAttribute("display-target", displayApi),
+                            new XAttribute("show-container", qualified)));
+                    }
+                    else
+                    {
+                        content.Add(new XElement("referenceLink",
+                            new XAttribute("target", api),
+                            new XAttribute("show-container", qualified)));
+                    }
+                    break;
+
+                default:
+                    Debug.WriteLine("Unhandled type element: {0}", typeInfo.Name.LocalName);
+
+                    if(Debugger.IsAttached)
+                        Debugger.Break();
+                    break;
+            }
+        }
 
         /// <summary>
         /// Render the topic content based on the topic type
@@ -1088,7 +1339,116 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// for page title.
         /// </summary>
         /// <returns>An enumerable list of XML elements representing the current topic's type/member name</returns>
-        protected abstract IEnumerable<XNode> ApiTopicShortNameDecorated();
+        /// <remarks>This will render language-specific text elements where needed.  Non-HTML presentation styles
+        /// may override this method to obtain the result and then strip or replace the language-specific text
+        /// elements as they see fit.</remarks>
+        protected virtual IEnumerable<XNode> ApiTopicShortNameDecorated()
+        {
+            // This isn't returned, just its content
+            XElement nameElement = new XElement("name");
+
+            switch(this.ApiMember)
+            {
+                case var t when(t.TopicGroup == ApiMemberGroup.Api && t.ApiGroup == ApiMemberGroup.Type) ||
+                  (t.TopicGroup == ApiMemberGroup.List && t.TopicSubgroup != ApiMemberGroup.Overload):
+                    // Type overview pages and member list pages get the type name
+                    this.ApiTypeNameDecorated(nameElement, this.ReferenceNode);
+                    break;
+
+                case var t when(t.TopicGroup == ApiMemberGroup.Api && t.ApiSubgroup == ApiMemberGroup.Constructor) ||
+                  (t.TopicSubgroup == ApiMemberGroup.Overload && t.ApiSubgroup == ApiMemberGroup.Constructor):
+                    // Constructors and member list pages also use the type name
+                    this.ApiTypeNameDecorated(nameElement, this.ReferenceNode.Element("containers").Element("type"));
+                    break;
+
+                case var t when t.IsExplicitlyImplemented:
+                    // EII members
+                    this.ApiTypeNameDecorated(nameElement, this.ReferenceNode.Element("containers").Element("type"));
+
+                    nameElement.Add(LanguageSpecificText.NameSeparator.Render());
+
+                    var member = this.ReferenceNode.Element("implements").Element("member");
+
+                    this.ApiTypeNameDecorated(nameElement, member.Element("type"));
+
+                    nameElement.Add(LanguageSpecificText.NameSeparator.Render());
+
+                    // If the API element is not present (unresolved type), show the type name from the type element
+                    if(!String.IsNullOrWhiteSpace(t.Name))
+                        nameElement.Add(t.Name.InsertWordBreakOpportunities());
+                    else
+                    {
+                        string name = member.Attribute("api")?.Value;
+
+                        if(name != null)
+                        {
+                            int pos = name.LastIndexOf('.');
+
+                            if(pos != -1)
+                                name = name.Substring(pos + 1);
+
+                            nameElement.Add(name.InsertWordBreakOpportunities());
+                        }
+                    }
+
+                    var templates = member.Element("templates");
+
+                    if(templates != null)
+                        this.ApiTypeNameDecorated(nameElement, templates);
+                    break;
+
+                case var t when t.TopicGroup == ApiMemberGroup.List && t.TopicSubgroup == ApiMemberGroup.Overload &&
+                  this.ReferenceNode.Element("templates") != null:
+                    // Use just the plain, unadorned Type.API name for overload pages with templates
+                    this.ApiTypeNameDecorated(nameElement, this.ReferenceNode.Element("containers").Element("type"));
+
+                    nameElement.Add(LanguageSpecificText.NameSeparator.Render());
+                    nameElement.Add(t.Name.InsertWordBreakOpportunities());
+                    break;
+
+                case var t when(t.TopicGroup == ApiMemberGroup.Api && t.ApiGroup == ApiMemberGroup.Member) ||
+                  (t.TopicSubgroup == ApiMemberGroup.Overload && t.ApiGroup == ApiMemberGroup.Member):
+                    // Normal member pages use the qualified member name
+                    this.ApiTypeNameDecorated(nameElement, this.ReferenceNode.Element("containers").Element("type"));
+
+                    if(t.ApiSubSubgroup == ApiMemberGroup.Operator &&
+                      (t.Name.Equals("Explicit", StringComparison.Ordinal) ||
+                       t.Name.Equals("Implicit", StringComparison.Ordinal)))
+                    {
+                        nameElement.Add(" ",
+                            new XElement("span",
+                                new XAttribute("class", LanguageSpecificText.LanguageSpecificTextStyleName),
+                                new XElement("span",
+                                        new XAttribute("class", LanguageSpecificText.VisualBasic),
+                                    t.Name.Equals("Explicit", StringComparison.Ordinal) ? "Narrowing" : "Widening"),
+                                new XElement("span",
+                                    new XAttribute("class", LanguageSpecificText.Neutral),
+                                t.Name.InsertWordBreakOpportunities())), Element.NonBreakingSpace);
+                    }
+                    else
+                    {
+                        nameElement.Add(LanguageSpecificText.NameSeparator.Render(), t.Name.InsertWordBreakOpportunities());
+                    }
+
+                    templates = this.ReferenceNode.Element("templates");
+
+                    if(templates != null)
+                        this.ApiTypeNameDecorated(nameElement, templates);
+                    break;
+
+                case var t when(String.IsNullOrWhiteSpace(t.Name)):
+                    // Default namespace
+                    nameElement.Add(new XElement("include", new XAttribute("item", "defaultNamespace")));
+                    break;
+
+                default:
+                    // Namespaces and other members just use the name
+                    nameElement.Add(this.ApiMember.Name.InsertWordBreakOpportunities());
+                    break;
+            }
+
+            return nameElement.Nodes();
+        }
 
         /// <summary>
         /// Get parameter and return types for an operator API member topic (e.g. <c>Int32</c> to <c>Decimal</c>)
@@ -1348,7 +1708,150 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// </summary>
         /// <param name="memberName">An XML element to which the name elements are added</param>
         /// <param name="typeInfo">An element containing the type information for the reference link</param>
-        protected abstract void ApiTypeNameDecorated(XElement memberName, XElement typeInfo);
+        /// <remarks>This method will call itself recursively if necessary to render type specializations,
+        /// template parameter types, array types, etc.  This will render language-specific text elements where
+        /// needed.  Non-HTML presentation styles may override this method to obtain the result and then strip
+        /// or replace the language-specific text elements as they see fit.</remarks>
+        protected virtual void ApiTypeNameDecorated(XElement memberName, XElement typeInfo)
+        {
+            if(memberName == null)
+                throw new ArgumentNullException(nameof(memberName));
+
+            if(typeInfo == null)
+                throw new ArgumentNullException(nameof(typeInfo));
+
+            var specialization = typeInfo.Element("specialization");
+            var templates = typeInfo.Element("templates");
+            string name = typeInfo.Attribute("name")?.Value, api = typeInfo.Attribute("api")?.Value,
+                apiDataName = typeInfo.Element("apidata")?.Attribute("name")?.Value;
+            bool first = true;
+
+            switch(typeInfo.Name.LocalName)
+            {
+                case "reference":
+                case "type":
+                    if(typeInfo.Name.LocalName == "reference")
+                    {
+                        // Don't show the type on list pages
+                        if(this.ApiMember.TopicGroup != ApiMemberGroup.List)
+                        {
+                            var typeNode = typeInfo.Element("type");
+
+                            if(typeNode == null)
+                            {
+                                typeNode = typeInfo.Element("containers")?.Element("type");
+
+                                if(typeNode != null)
+                                {
+                                    this.ApiTypeNameDecorated(memberName, typeNode);
+                                    memberName.Add(LanguageSpecificText.NameSeparator.Render());
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Add nested type name if necessary
+                        var nestedType = typeInfo.Element("type") ?? typeInfo.Element("container")?.Element("type");
+
+                        if(nestedType != null)
+                        {
+                            this.ApiTypeNameDecorated(memberName, nestedType);
+                            memberName.Add(LanguageSpecificText.NameSeparator.Render());
+                        }
+                    }
+
+                    // If the API element is not present (unresolved type), show the type name from the type element
+                    if(!String.IsNullOrWhiteSpace(apiDataName))
+                        memberName.Add(apiDataName.InsertWordBreakOpportunities());
+                    else
+                    {
+                        if(api != null)
+                        {
+                            int pos = api.LastIndexOf('.');
+
+                            if(pos != -1)
+                                api = api.Substring(pos + 1);
+
+                            memberName.Add(api);
+                        }
+                    }
+
+                    if(specialization != null)
+                        this.ApiTypeNameDecorated(memberName, specialization);
+                    else
+                    {
+                        if(templates != null)
+                            this.ApiTypeNameDecorated(memberName, templates);
+                    }
+                    break;
+
+                case "specialization":
+                case "templates":
+                    memberName.Add(LanguageSpecificText.TypeSpecializationOpening.Render());
+
+                    foreach(var t in typeInfo.Elements())
+                    {
+                        if(!first)
+                            memberName.Add(", ");
+
+                        this.ApiTypeNameDecorated(memberName, t);
+
+                        first = false;
+                    }
+
+                    memberName.Add(LanguageSpecificText.TypeSpecializationClosing.Render());
+                    break;
+
+                case "template":
+                    memberName.Add(new XElement("span", new XAttribute("class", "typeparameter"), name));
+                    break;
+
+                case "arrayOf":
+                    LanguageSpecificText arrayOfClosing;
+
+                    if(Int32.TryParse(typeInfo.Attribute("rank")?.Value, out int rank) && rank > 1)
+                    {
+                        arrayOfClosing = new LanguageSpecificText(false, new[]
+                        {
+                            (LanguageSpecificText.CPlusPlus, $",{rank}>"),
+                            (LanguageSpecificText.VisualBasic, $"({rank})"),
+                            (LanguageSpecificText.Neutral, $"[{rank}]")
+                        });
+                    }
+                    else
+                    {
+                        arrayOfClosing = new LanguageSpecificText(false, new[]
+                        {
+                            (LanguageSpecificText.CPlusPlus, ">"),
+                            (LanguageSpecificText.VisualBasic, "()"),
+                            (LanguageSpecificText.Neutral, "[]")
+                        });
+                    }
+
+                    memberName.Add(LanguageSpecificText.ArrayOfOpening.Render());
+                    this.ApiTypeNameDecorated(memberName, typeInfo.Elements().First());
+                    memberName.Add(arrayOfClosing.Render());
+                    break;
+
+                case "pointerTo":
+                    this.ApiTypeNameDecorated(memberName, typeInfo.Elements().First());
+                    memberName.Add("*");
+                    break;
+
+                case "referenceTo":
+                    this.ApiTypeNameDecorated(memberName, typeInfo.Elements().First());
+                    memberName.Add(LanguageSpecificText.ReferenceTo.Render());
+                    break;
+
+                default:
+                    Debug.WriteLine("Unhandled type element: {0}", typeInfo.Name.LocalName);
+
+                    if(Debugger.IsAttached)
+                        Debugger.Break();
+                    break;
+            }
+        }
 
         /// <summary>
         /// This is used to get the type name with the template count if any (e.g. TypeName`2)

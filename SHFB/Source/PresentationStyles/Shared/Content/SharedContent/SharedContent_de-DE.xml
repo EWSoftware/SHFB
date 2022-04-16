@@ -3,9 +3,9 @@
 	<!-- Translations provided by Michael Buchner -->
 
 	<!-- Header and footer text -->
-  <item id="meta_mshelp_tocTitle">{0}</item>
-	<item id="header"><span class="introStyle">{@HeaderText}</span> {@Preliminary}</item>
-	<item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
+  <item id="tocTitle">{0}</item>
+	<item id="documentationTitle">{@HtmlEncHelpTitle}</item>
+	<item id="headerText">{@HeaderText}</item>
 	<item id="feedback_body">Ihre Rückmeldung wird für die Verbesserung der Dokumentation und des Produktes genutzt. Ihre Email-Adresse wird zu keinem anderen Zweck benutzt und wird nach der Behebung des gemeldeten Problems gelöscht. Während der Arbeit an dem Problem kann es sein dass Sie per Email kontaktiert werden für weitergehende Details oder Abklärung zur Rückmeldung von Ihnen. Nachdem das Problem eingegrenzt worden ist kann es sein dass Sie eine Email erhalten zur Problembehebung.</item>
 	<item id="footer_content">{@FooterText}{@Copyright}{@Comments}</item>
 	<!-- This should remain empty unless overridden by the website content file -->
@@ -15,16 +15,34 @@
         <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a></div>
         <script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");
-        var HT_mailLinkText = HT_mailLink.innerHTML;
         HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("<include item='feedback_body' />");
-        HT_mailLink.innerHTML = HT_mailLinkText;
         </script></item>
 
+	<!-- Code/syntax section -->
+	<item id="copyCode">Copy</item>
+	<item id="sourceCodeLinkText">View Source</item>
+	<item id="sourceCodeLinkTitle">View the source code</item>
+	<item id="requestExampleLinkText">Beispiel anfordern</item>
+	<item id="requestExampleLinkTitle">Beispiel für dieses Thema anfordern</item>
+	<item id="requestExampleScript">
+		$(".requestExampleLink").each(function ()
+		{{
+			if(this.href.substring(0, 4).toLowerCase() === "http")
+				this.href += "?title=";
+			else
+				this.href += "?subject={@UrlEncHelpTitle}: ";
+
+			this.href += "Add an Example for " + encodeURIComponent(document.title) + "&amp;body=" +
+				encodeURIComponent("Please add an example for " + document.title + ".%0D%0DTODO (optional): Describe a specific " +
+				"scenario you would like to see addressed.%0D%0DHelp Topic: " + window.location.href).replace(/%250D/g, "%0D");
+		}});
+	</item>
+	
+	<!-- VS2013 presentation style items -->
 	<item id="requestExample"><a id="HT_RequestExampleLink" href="{0}" target="_blank" rel="noopener noreferrer" class="{1}"
 		title="Beispiel für dieses Thema anfordern">Beispiel anfordern</a>
 		<script type="text/javascript">
 		var HT_requestExampleLink = document.getElementById("HT_RequestExampleLink");
-		var HT_requestExampleLinkText = HT_requestExampleLink.innerHTML;
 				
 		if(HT_requestExampleLink.href.substring(0, 4).toLowerCase() == "http")
 			HT_requestExampleLink.href += "?title=";
@@ -34,10 +52,7 @@
 		HT_requestExampleLink.href += "Add an Example for " + encodeURIComponent(document.title) + "&amp;body=" +
 			encodeURIComponent("Please add an example for " + document.title + ".%0D%0DTODO (optional): Describe a specific " +
 			"scenario you would like to see addressed.%0D%0DHelp Topic: " + window.location.href).replace(/%250D/g, "%0D");
-		HT_requestExampleLink.innerHTML = HT_requestExampleLinkText;
 		</script></item>
-
-	<!-- Lightweight TOC resize tool tip (VS2013 presentation style) -->
 	<item id="resizeToolTip">Click or drag to resize</item>
 
   <!-- Section titles -->
@@ -182,23 +197,24 @@
 	<item id="header_typeName">Name</item>
 
 	<!-- Miscellaneous page text -->
-	<item id="copyCode">Copy</item>
   <item id="defaultNamespace">( Standardnamensraum )</item>
   <item id="definedBy">(Definiert von {0})</item>
   <item id="exposedMembersTableText">Der {0} Typ exponiert die folgenden Member.</item>	
 	<item id="inheritedFrom">(Vererbt von {0})</item>
 	<item id="noCodeExample">No code example is currently available or this language may not be supported.</item>
 	<item id="overridesMember">(Überschreibt {0})</item>
-	<item id="preliminary"><p class="preliminary">[Diese Seite ist eine Vorabausgabe der Dokumentation und kann in zukünftigen Ausgaben geändert werden. Leere Seiten sind als Platzhalter eingefügt.]</p></item>
-  <item id="preliminaryText">Diese API-Dokumentation befindet sich im Entwurf und kann sich noch ändern.</item>
-	<item id="sourceCodeLinkText">View Source</item>
-	<item id="sourceCodeLinkTitle">View the source code</item>
+	<item id="preliminaryDocs">Diese Seite ist eine Vorabausgabe der Dokumentation und kann in zukünftigen Ausgaben geändert werden. Leere Seiten sind als Platzhalter eingefügt.</item>
+  <item id="preliminaryApi">Diese API-Dokumentation befindet sich im Entwurf und kann sich noch ändern.</item>
+	<item id="preliminaryShort">Preliminary</item>
 	<item id="text_extensionUsage">In Visual Basic und C# können Sie diese Methode als Instanzmethode eines beliebigen Objektes vom Typ {0} aufrufen. Wenn Sie die Instanzmethodensyntax beim Methodenaufruf anwenden, lassen Sie den ersten Parameter weg. Für weitere Informationen siehe <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">Extension Methods (Visual Basic)</a> or <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">Erweiterungsmethoden (C# Programmierhandbuch)</a>.</item>
 	<item id="text_moreInheritance">More...</item>
   <item id="text_relatedEntries">Verwandte Themen:</item>
   <item id="top">Zurück nach oben</item>
-  <item id="typeLink">Typ:&#160;{0}</item>
-  
+ 	<item id="optionalText">(Optional)</item>
+	<item id="inThisArticle">In This Article</item>
+	<item id="showHideTOC">Show/Hide TOC</item>
+	<item id="searchPlaceHolder">Search</item>
+
 	<!-- Requirements section info -->	
 	<item id="assemblyNameAndModule">{0} (in {1}.{2}) Version: {3}</item>
   <item id="boilerplate_requirementsAssemblies">Assemblys:</item>
@@ -328,6 +344,7 @@
 	<item id="alert_title_visualC#">C# Hinweis</item>
 	<item id="alert_title_visualC++">C++ Hinweis</item>
 	<item id="alert_title_visualJ#">J# Hinweis</item>
+	<item id="alert_title_todo">To Do</item>
 	<item id="text_NotesForImplementers">Hinweise an Implementierer</item>
 	<item id="text_NotesForCallers">Hinweise an Anrufer</item>
 	<item id="text_NotesForInheritors">Hinweise an Erben</item>
@@ -342,6 +359,7 @@
 	<item id="alert_altText_visualC#">C# Hinweis</item>
 	<item id="alert_altText_visualC++">C++ Hinweis</item>
 	<item id="alert_altText_visualJ#">J# Hinweis</item>	
+	<item id="alert_altText_todo">To Do</item>
 
 	<!-- Index metadata entries -->
 	<item id="indexEntry_root">Namensräume</item>

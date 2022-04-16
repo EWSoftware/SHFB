@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SeeElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/28/2022
+// Updated : 04/07/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle see/seealso elements
@@ -32,7 +32,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         //=====================================================================
 
         /// <inheritdoc />
-        public SeeElement(string name) : base(name)
+        public SeeElement() : base("see")
         {
         }
         #endregion

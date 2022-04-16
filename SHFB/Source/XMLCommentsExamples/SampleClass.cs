@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - XML Comments Example
 // File    : SampleClass.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/14/2022
+// Updated : 04/15/2022
 // Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
 //
 // This class is used to demonstrate the various XML comments elements.  It serves no useful purpose.
@@ -459,6 +459,14 @@ namespace XMLCommentsExamples
         /// 
         /// <note type="J#">
         /// Use parentheses when calling this method in J#.
+        /// </note>
+        ///
+        /// <note type="todo">
+        /// This could contain a To Do list.
+        /// </note>
+        ///
+        /// <note type="todo" title="Project Road Map">
+        /// This note contains a custom title.
         /// </note>
         ///
         /// <para>See the <conceptualLink target="4302a60f-e4f4-4b8d-a451-5f453c4ebd46" />

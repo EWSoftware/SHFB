@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TemplatesElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/05/2022
+// Updated : 04/08/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle templates elements
@@ -79,6 +79,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             foreach(var t in element.Elements("template"))
             {
                 dl.Add(new XElement("dt",
+                        new XAttribute("class", "has-text-weight-normal"),
                     new XElement("span",
                         new XAttribute("class", this.TemplateParameterStyle),
                         t.Attribute("name").Value)));

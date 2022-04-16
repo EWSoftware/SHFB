@@ -13,6 +13,7 @@
 // new code-based transformation process.
 
 using System;
+using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -73,6 +74,10 @@ namespace Sandcastle.Tools.BuildComponents
         public override void Initialize(XPathNavigator configuration)
         {
             transformation = this.BuildAssembler.TopicTransformation;
+
+            // Add language filter item settings from the Syntax Component for presentation styles that use them
+            if(this.BuildAssembler.Data["LanguageFilterItems"] is IEnumerable<LanguageFilterItem> languageFilterItems)
+                transformation.AddLanguageFilterItems(languageFilterItems);
         }
 
         /// <summary>

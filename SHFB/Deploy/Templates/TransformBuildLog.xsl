@@ -106,7 +106,7 @@
 </xsl:if>
 
 <br/><hr/>
-<a href="#" onclick="javascript: ExpandCollapseAll(false);">Collapse All</a>&#160;&#160;&#160;&#160;<a href="#" onclick="javascript: ExpandCollapseAll(true);">Expand All</a>
+<a href="#" onclick="ExpandCollapseAll(false);">Collapse All</a>&#160;&#160;&#160;&#160;<a href="#" onclick="ExpandCollapseAll(true);">Expand All</a>
 <hr/>
 
 <!-- Process the build steps -->
@@ -115,7 +115,7 @@
 <hr/>
 End of Log
 <hr/>
-<a href="#" onclick="javascript: ExpandCollapseAll(false);">Collapse All</a>&#160;&#160;&#160;&#160;<a href="#" onclick="javascript: ExpandCollapseAll(true);">Expand All</a>
+<a href="#" onclick="ExpandCollapseAll(false);">Collapse All</a>&#160;&#160;&#160;&#160;<a href="#" onclick="ExpandCollapseAll(true);">Expand All</a>
 
 <script type="text/javascript">
 // Expand/collapse a section
@@ -153,9 +153,9 @@ function ExpandCollapseAll(expand)
 
   <!-- Build step template -->
   <xsl:template match="buildStep">
-    <span id="col_{@step}" style="display: none;"><span class="CollapseBox" onclick="javascript: ExpandCollapse('exp_{@step}', 'col_{@step}');">+</span>
+    <span id="col_{@step}" style="display: none;"><span class="CollapseBox" onclick="ExpandCollapse('exp_{@step}', 'col_{@step}');">+</span>
     <span><span class="CollapsedHeader"><xsl:value-of select="@step"/></span><br/><br/></span></span><span id="exp_{@step}" style="display: inline;">
-    <span class="CollapseBox" onclick="javascript: ExpandCollapse('col_{@step}', 'exp_{@step}');">-</span>
+    <span class="CollapseBox" onclick="ExpandCollapse('col_{@step}', 'exp_{@step}');">-</span>
 
     <span class="SectionHeader"><xsl:value-of select="@step"/></span><br/><br/>
     <pre>

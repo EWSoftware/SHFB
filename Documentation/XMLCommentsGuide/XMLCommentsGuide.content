@@ -1,10 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Topics>
-  <Topic id="d326da5b-f570-40fa-9802-40149370ae60" visible="False" isMSHVRoot="true" title="Sandcastle XML Comments Guide">
-    <HelpKeywords>
-      <HelpKeyword index="K" term="Sandcastle XML Comments Guide" />
-    </HelpKeywords>
-  </Topic>
   <Topic id="4268757F-CE8D-4E6D-8502-4F7F2E22DDA3" visible="True" isDefault="true" title="Welcome">
     <HelpKeywords>
       <HelpKeyword index="K" term="Welcome" />
@@ -54,7 +49,7 @@
     <HelpKeywords>
       <HelpKeyword index="K" term="element categories, section" />
     </HelpKeywords>
-    <Topic id="4C57ED2C-F373-4B34-B983-A0009D6CDAB4" visible="True" isSelected="true" title="bibliography/cite">
+    <Topic id="4C57ED2C-F373-4B34-B983-A0009D6CDAB4" visible="True" title="bibliography/cite">
       <HelpKeywords>
         <HelpKeyword index="K" term="section elements, bibliography" />
         <HelpKeyword index="K" term="section elements, cite" />
@@ -262,6 +257,11 @@
     <HelpKeywords>
       <HelpKeyword index="K" term="version history" />
     </HelpKeywords>
+    <Topic id="c5516fc2-e3cf-4f74-8ab5-f1f57e3908c6" visible="True" isSelected="true" title="Version 2022.4.16.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2022.4.16.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="12ce0516-6612-43a2-903c-3ab9a4a6b0ae" visible="True" title="Version 2019.11.7.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2019.11.7.0" />

@@ -6,8 +6,9 @@
 
 	<!-- Topic title -->
 	<item id="boilerplate_pageTitle">{0}</item>
-	<item id="header">{@HeaderText} {@Preliminary}</item>
-	<item id="preliminary">_**\[This is preliminary documentation and is subject to change.\]**_</item>
+	<item id="headerText">{@HeaderText}</item>
+	<item id="preliminaryDocs">This is preliminary documentation and is subject to change.</item>
+	<item id="preliminaryShort">Preliminary</item>
 
 	<!-- Alert titles -->
 	<item id="alert_title_tip">Tip</item>
@@ -78,7 +79,7 @@
 
     <!-- Note text -->
     <item id="notDocumented">此API没有对应的文档。</item>
-    <item id="preliminaryText">此API尚未最终确定，随时可能调整。</item>
+    <item id="preliminaryApi">此API尚未最终确定，随时可能调整。</item>
 
     <!-- Inserted boilerplate -->
     <item id="definedBy">(由 {0} 定义。)</item>

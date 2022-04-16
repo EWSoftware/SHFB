@@ -271,6 +271,10 @@ div.caption {
 .summary {
 }
 
+.has-text-weight-normal {
+    font-weight: 400 !important;
+}
+
 /* Collapsible region styles */
 .collapsibleAreaRegion {
     margin-top: 15px;
@@ -555,10 +559,6 @@ span.parameter {
     font-style: italic;
 }
 
-dt span.parameter {
-    font-weight: normal;
-}
-
 span.literal {
     color: #cc0000;
 }
@@ -569,6 +569,7 @@ span.comment {
 
 span.introStyle {
     color: #a9a9a9;
+    line-height: 2em;
 }
 
 span.noLink {
@@ -600,6 +601,12 @@ span.captionLead {
 }
 
 span.media img {
+    vertical-align: top;
+}
+
+span.mediaInline {
+    padding-left: .25em;
+    padding-right: .25em;
     vertical-align: top;
 }
 

@@ -2,9 +2,9 @@
 <content xml:space="preserve" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
 
 	<!-- Header and footer text -->
-  <item id="meta_mshelp_tocTitle">{0}</item>
-	<item id="header"><span class="introStyle">{@HeaderText}</span> {@Preliminary}</item>
-	<item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
+  <item id="tocTitle">{0}</item>
+	<item id="documentationTitle">{@HtmlEncHelpTitle}</item>
+	<item id="headerText">{@HeaderText}</item>
 	<item id="feedback_body">Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.</item>
 	<item id="footer_content">{@FooterText}{@Copyright}{@Comments}</item>
 	<!-- This should remain empty unless overridden by the website content file -->
@@ -14,16 +14,34 @@
         <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a></div>
         <script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");
-        var HT_mailLinkText = HT_mailLink.innerHTML;
         HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("<include item='feedback_body' />");
-        HT_mailLink.innerHTML = HT_mailLinkText;
         </script></item>
 
+	<!-- Code/syntax section -->
+	<item id="copyCode">复制</item>
+  <item id="sourceCodeLinkText">查看代码</item>
+  <item id="sourceCodeLinkTitle">查看源代码</item>
+	<item id="requestExampleLinkText">Request Example</item>
+	<item id="requestExampleLinkTitle">Request an example for this topic</item>
+	<item id="requestExampleScript">
+		$(".requestExampleLink").each(function ()
+		{{
+			if(this.href.substring(0, 4).toLowerCase() === "http")
+				this.href += "?title=";
+			else
+				this.href += "?subject={@UrlEncHelpTitle}: ";
+
+			this.href += "Add an Example for " + encodeURIComponent(document.title) + "&amp;body=" +
+				encodeURIComponent("Please add an example for " + document.title + ".%0D%0DTODO (optional): Describe a specific " +
+				"scenario you would like to see addressed.%0D%0DHelp Topic: " + window.location.href).replace(/%250D/g, "%0D");
+		}});
+	</item>
+	
+	<!-- VS2013 presentation style items -->
 	<item id="requestExample"><a id="HT_RequestExampleLink" href="{0}" target="_blank" rel="noopener noreferrer" class="{1}"
 		title="Request an example for this topic">Request Example</a>
 		<script type="text/javascript">
 		var HT_requestExampleLink = document.getElementById("HT_RequestExampleLink");
-		var HT_requestExampleLinkText = HT_requestExampleLink.innerHTML;
 				
 		if(HT_requestExampleLink.href.substring(0, 4).toLowerCase() == "http")
 			HT_requestExampleLink.href += "?title=";
@@ -33,10 +51,7 @@
 		HT_requestExampleLink.href += "Add an Example for " + encodeURIComponent(document.title) + "&amp;body=" +
 			encodeURIComponent("Please add an example for " + document.title + ".%0D%0DTODO (optional): Describe a specific " +
 			"scenario you would like to see addressed.%0D%0DHelp Topic: " + window.location.href).replace(/%250D/g, "%0D");
-		HT_requestExampleLink.innerHTML = HT_requestExampleLinkText;
 		</script></item>
-	
-	<!-- Lightweight TOC resize tool tip (VS2013 presentation style) -->
 	<item id="resizeToolTip">点击或拖拽改变大小</item>
 
 	<!-- Section titles -->
@@ -181,22 +196,23 @@
     <item id="header_typeName">名称</item>
 
 	<!-- Miscellaneous page text -->
-	<item id="copyCode">复制</item>
   <item id="defaultNamespace">( 默认命名空间 )</item>
   <item id="definedBy">(由 {0} 定义。)</item>
   <item id="exposedMembersTableText">{0} 类型公开以下成员。</item>	
   <item id="inheritedFrom">(继承自 {0}。)</item>
 	<item id="noCodeExample">当前没有可用的代码示例，或者可能不支持该语言。</item>
   <item id="overridesMember">(重写 {0})</item>
-	<item id="preliminary"><p class="preliminary">[本文档仅为初稿，以后可能会有变更。]</p></item>
-  <item id="preliminaryText">此 API 尚未最终确定，随时可能调整。</item>
-  <item id="sourceCodeLinkText">查看代码</item>
-  <item id="sourceCodeLinkTitle">查看源代码</item>
+	<item id="preliminaryDocs">本文档仅为初稿，以后可能会有变更。</item>
+  <item id="preliminaryApi">此 API 尚未最终确定，随时可能调整。</item>
+	<item id="preliminaryShort">Preliminary</item>
   <item id="text_extensionUsage">在 Visual Basic 和 C# 中，这个方法可以当成为类型 {0} 的实例方法来调用。在采用实例方法语法调用这个方法时，请省略第一个参数。请参考 <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">扩展方法 (Visual Basic)</a> 或 <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">扩展方法 (C# 编程指南)</a> 获取更多信息。</item>
   <item id="text_moreInheritance">更多...</item>
   <item id="text_relatedEntries">参见：</item>
 	<item id="top">Top</item>
-  <item id="typeLink">类型：{0}</item>
+	<item id="optionalText">(Optional)</item>
+	<item id="inThisArticle">In This Article</item>
+	<item id="showHideTOC">Show/Hide TOC</item>
+	<item id="searchPlaceHolder">Search</item>
 
 		<!-- Requirements section info -->
     <item id="assemblyNameAndModule">{0} (在 {1}.{2} 中) 版本：{3}</item>
@@ -327,6 +343,7 @@
 	<item id="alert_title_visualC#"><b>C# 备注：</b></item>
 	<item id="alert_title_visualC++"><b>C++ 备注：</b></item>
 	<item id="alert_title_visualJ#"><b>J# 备注：</b></item>
+	<item id="alert_title_todo">To Do</item>
 	<item id="text_NotesForImplementers">实现时注意</item>
 	<item id="text_NotesForCallers">调用时注意</item>
 	<item id="text_NotesForInheritors">继承时注意</item>
@@ -341,6 +358,7 @@
 	<item id="alert_altText_visualC#">C#备注</item>
 	<item id="alert_altText_visualC++">C++备注</item>
 	<item id="alert_altText_visualJ#">J#备注</item>	
+	<item id="alert_altText_todo">To Do</item>
 
 		<!-- Index metadata entries -->
     <item id="indexEntry_root">命名空间</item>

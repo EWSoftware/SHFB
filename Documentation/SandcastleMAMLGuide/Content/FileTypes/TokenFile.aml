@@ -40,7 +40,7 @@ the token content.</para>
         <alert class="note">
           <para>If you embed MAML elements within a token,  you must prefix each element name with
 "<codeInline>ddue:</codeInline>" (without the quotes) as shown in the example above.  If not, the elements are
-inserted using the default empty namespace and they will not be processed by the topic transformations.</para>
+inserted using the default empty namespace and they may not be processed by the topic transformations.</para>
         </alert>
 
       </content>

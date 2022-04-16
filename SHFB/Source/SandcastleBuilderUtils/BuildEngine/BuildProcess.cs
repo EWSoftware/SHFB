@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/23/2022
+// Updated : 04/13/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -1213,10 +1213,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 commentsFiles = null;
 
+                // Combine the conceptual and API intermediate TOC files into one
+                this.CombineIntermediateTocFiles();
+
                 try
                 {
                     // Switch to the working folder for relative paths in the Build Assembler configuration file
                     Directory.SetCurrentDirectory(this.WorkingFolder);
+                    bool notInsteadOf = true;
 
                     using(var buildAssembler = new BuildAssemblerInternal(this))
                     {
@@ -1231,10 +1235,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             this.ExecutePlugIns(ExecutionBehaviors.Before);
 
                             buildAssembler.BuildTopics();
-
-                            this.ExecutePlugIns(ExecutionBehaviors.After);
                         }
+                        else
+                            notInsteadOf = false;
                     }
+
+                    // Execute "after" context plug-ins after disposal of the build assembler instance.  If not,
+                    // build assembler's save component may still be writing out topics and they might not all
+                    // exist.  After disposal, we can guarantee that they all exist.
+                    if(notInsteadOf)
+                        this.ExecutePlugIns(ExecutionBehaviors.After);
                 }
                 finally
                 {
@@ -1243,11 +1253,43 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     Directory.SetCurrentDirectory(this.ProjectFolder);
                 }
 
-                // Combine the conceptual and API intermediate TOC files into one
-                this.CombineIntermediateTocFiles();
+                // Determine the default topic for Help 1, website, and markdown output if one was not specified in a
+                // site map or content layout file.
+                if(defaultTopic == null && (project.HelpFileFormat & (HelpFileFormats.HtmlHelp1 |
+                  HelpFileFormats.Website | HelpFileFormats.Markdown)) != 0)
+                {
+                    var defTopic = ComponentUtilities.XmlStreamAxis(Path.Combine(workingFolder, "toc.xml"), "topic").FirstOrDefault(
+                        t => t.Attribute("file") != null);
+
+                    if(defTopic != null)
+                    {
+                        // Find the file.  Could be .htm, .html, or .md so just look for any file with the given name.
+                        defaultTopic = Directory.EnumerateFiles(workingFolder + "Output",
+                            defTopic.Attribute("file").Value + ".*", SearchOption.AllDirectories).FirstOrDefault();
+
+                        if(defaultTopic != null)
+                        {
+                            defaultTopic = defaultTopic.Substring(workingFolder.Length + 7);
+
+                            if(defaultTopic.IndexOf('\\') != -1)
+                                defaultTopic = defaultTopic.Substring(defaultTopic.IndexOf('\\') + 1);
+                        }
+                    }
+
+                    // This shouldn't happen anymore, but just in case...
+                    if(defaultTopic == null)
+                        throw new BuilderException("BE0026", "Unable to determine default topic in toc.xml.  Mark " +
+                            "one as the default topic manually in the content layout file.");
+                }
 
                 // The last part differs based on the help file format
-                if((project.HelpFileFormat & (HelpFileFormats.HtmlHelp1 | HelpFileFormats.Website)) != 0)
+
+                // NOTE: For website output, this is only used by the legacy VS2013 presentation style.  When
+                //       that is removed at some point in the future, this can go away and this step doesn't have
+                //       to be ran for website output anymore.
+                if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0 ||
+                  ((project.HelpFileFormat & HelpFileFormats.Website) != 0 &&
+                    presentationStyle.BasePath == "VS2013"))
                 {
                     this.ReportProgress(BuildStep.ExtractingHtmlInfo,
                         "Extracting HTML info for HTML Help 1 and/or website...");

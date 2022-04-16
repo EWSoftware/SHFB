@@ -23,15 +23,21 @@
     <Ignore>paramref</Ignore>
     <Ignore>seealso</Ignore>
     <Ignore>threadsafety</Ignore>
+    <Ignore>todo</Ignore>
     <Ignore>typeparam</Ignore>
     <Ignore>typeparamref</Ignore>
     <Ignore>ui</Ignore>
     <Ignore>xcopy</Ignore>
     <Ignore>xml</Ignore>
     <Ignore>xmlns</Ignore>
+    <Ignore>nullptr</Ignore>
+    <Ignore>foreach</Ignore>
   </IgnoredWords>
   <InheritExclusionExpressions>True</InheritExclusionExpressions>
   <InheritIgnoredFilePatterns>True</InheritIgnoredFilePatterns>
   <InheritXmlSettings>True</InheritXmlSettings>
   <IgnoredWordsFile></IgnoredWordsFile>
+  <IgnoredXmlElements>
+    <Ignore>languageKeyword</Ignore>
+  </IgnoredXmlElements>
 </SpellCheckerConfiguration>

@@ -276,7 +276,7 @@ namespace SandcastleBuilder.PlugIns
 
                     if(pos != -1)
                         outputFile = outputFile.Insert(pos, "<form id=\"SearchForm\" method=\"get\" " +
-                            "action=\"#\" onsubmit=\"javascript:TransferToSearchPage(); return false;\">" +
+                            "action=\"#\" onsubmit=\"TransferToSearchPage(); return false;\">" +
                             "<input id=\"SearchTextBox\" type=\"text\" maxlength=\"200\" />" +
                             "<button id=\"SearchButton\" type=\"submit\"></button>" +
                             "</form>");
@@ -333,7 +333,7 @@ namespace SandcastleBuilder.PlugIns
                     new XAttribute("data-toclevel", "0"),
                     new XElement("a",
                         new XAttribute("class", expanded ? "tocExpanded" : "tocCollapsed"),
-                        new XAttribute("onclick", "javascript: Toggle(this);"),
+                        new XAttribute("onclick", "Toggle(this);"),
                         new XAttribute("href", "#!")),
                     new XElement("a",
                         new XAttribute("data-tochassubtree", "true"),
@@ -388,7 +388,7 @@ namespace SandcastleBuilder.PlugIns
                     new XAttribute("data-toclevel", level),
                     new XElement("a",
                         new XAttribute("class", expanded ? "tocExpanded" : "tocCollapsed"),
-                        new XAttribute("onclick", "javascript: Toggle(this);"),
+                        new XAttribute("onclick", "Toggle(this);"),
                         new XAttribute("href", "#!")),
                     new XElement("a",
                         new XAttribute("data-tochassubtree", "true"),
@@ -460,7 +460,7 @@ namespace SandcastleBuilder.PlugIns
                 glyphElement =
                     new XElement("a",
                         new XAttribute("class", (targetId == currentId) ? "tocExpanded" : "tocCollapsed"),
-                        new XAttribute("onclick", "javascript: Toggle(this);"),
+                        new XAttribute("onclick", "Toggle(this);"),
                         new XAttribute("href", "#!"));
             }
             else
@@ -524,7 +524,7 @@ namespace SandcastleBuilder.PlugIns
                 glyphElement =
                     new XElement("a",
                         new XAttribute("class", "tocCollapsed"),
-                        new XAttribute("onclick", "javascript: Toggle(this);"),
+                        new XAttribute("onclick", "Toggle(this);"),
                         new XAttribute("href", "#!"));
             }
             else

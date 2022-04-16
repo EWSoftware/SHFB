@@ -8,7 +8,7 @@
       <para>It is possible to replace the stock content files that are included in each help file (style sheets,
 scripts, icons, images, etc.).  The stock content is copied from a presentation style sub-folders which can be
 found under the <localUri>.\PresentationStyles</localUri> folder of the root help file builder installation
-folder.  Each presentation style has its own folder such as <localUri>.\VS2010</localUri>,
+folder.  Each presentation style has its own folder such as <localUri>.\Default2022</localUri>,
 <localUri>.\VS2013</localUri>, etc.</para>
     </introduction>
 
@@ -26,7 +26,7 @@ method icons, etc.).</para>
 				<para>The <localUri>scripts\</localUri> folder contains stock JavaScript files.</para>
 			</listItem>
 			<listItem>
-				<para>The <localUri>styles\</localUri> folder contains stock style sheets.</para>
+				<para>The <localUri>styles\</localUri> or <localUri>css\</localUri> folder contains stock style sheets.</para>
 			</listItem>
 		</list>
 
@@ -47,45 +47,43 @@ existing one.</para>
 		<para>If you want to modify the files on a per project basis, that is when you would copy them to your
 project's folder.  By adding the file to the project that resides in a like-named folder and has the same
 filename, you can replace the default file of the same name copied by the presentation style. In the example
-above, you would do the following:</para>
+above, you would do the following assuming you are using the Default2022 presentation style:</para>
 
 		<list class="ordered">
 			<listItem>
 				<para>Right click on the project name in the Solution Explorer window and select the option to add a new
-folder.  Call it <localUri>styles</localUri> to match the folder in the presentation style.</para>
+folder.  Call it <localUri>css</localUri> to match the folder in the presentation style.</para>
 			</listItem>
 
 			<listItem>
-				<para>Copy the style sheet files from the presentation file folder to the new project folder.  For
-example, if using the VS2013 presentation style, copy the <localUri>branding.css</localUri>,
-<localUri>branding-Help1.css</localUri>, <localUri>branding-HelpViewer.css</localUri>, and
-<localUri>branding-Website.css</localUri> files from the <localUri>%ProgramFiles(x86)\EWSoftware\Sandcastle Help
-File Builder\PresentationStyles\VS2013\styles</localUri> folder.</para>
+				<para>Copy the style sheet files that you want to modify from the presentation file folder to the new
+project folder (<localUri>presentationStyle.css</localUri> for example located in the
+<localUri>%ProgramFiles(x86)\EWSoftware\Sandcastle Help File Builder\Components\Default2022\css</localUri> folder.</para>
 			</listItem>
 
 			<listItem>
-				<para>Modify the style sheet files as needed.  As an example, open the <localUri>branding.css</localUri>
-file in the project and change the <codeInline>collapsibleRegionTitle</codeInline> style's font and add a color
-entry to make the text green:</para>
+				<para>Modify the style sheet files as needed.  As an example, open the <localUri>presentationStyle.css</localUri>
+file in the project and change the <codeInline>codeHeader</codeInline> style's font and add a color entry to make
+the text green:</para>
 
 <code language="none" title=" ">
-.collapsibleRegionTitle {
-	font-family: Arial !important;
-	font-style: normal !important;
-	font-size: 3em;
-	color: green;
-	margin-top: 9px;
-	margin-bottom: 19px;
-	padding-top: 20px;
-	padding-bottom: 5px;
-	cursor: pointer;
+.codeHeader {
+		font-family: Arial;
+		font-style: normal;
+		background-color: #e6e6e6;
+		box-sizing: content-box;
+		color: green;
+		display: flex;
+		flex-direction: row;
+		margin-top: 1em;
+		padding-right: 0.25em
 }
 </code>
 			</listItem>
 
 			<listItem>
 				<para>Save the changes, build the help project, and then open the resulting help file.  Note that the
-section headers are now larger and green.</para>
+code section headers are now using the new style.</para>
 			</listItem>
 
 			<listItem>

@@ -162,7 +162,7 @@
 						<xsl:apply-templates/>
 					</xsl:when>
 					<xsl:otherwise>
-						<include item="preliminaryText" />
+						<include item="preliminaryApi" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</strong>

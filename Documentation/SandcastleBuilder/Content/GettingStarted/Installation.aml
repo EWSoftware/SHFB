@@ -87,7 +87,12 @@ particular type:</para>
 <linkText>HTML Help Workshop</linkText>
 <linkUri>https://docs.microsoft.com/previous-versions/windows/desktop/htmlhelp/microsoft-html-help-downloads</linkUri>
 <linkTarget>_blank</linkTarget>
-</externalLink> for building HTML Help 1 (.chm) help files.</para>
+</externalLink> for building HTML Help 1 (.chm) help files.  The Microsoft download link appears to have been
+discontinued.  If you need a copy to install, it can be downloaded from the <externalLink>
+	<linkText>Sandcastle Help File Builder project website</linkText>
+	<linkAlternateText>HTML Help Workshop download</linkAlternateText>
+	<linkUri>https://github.com/EWSoftware/SHFB/raw/master/ThirdPartyTools/htmlhelp.exe</linkUri>
+</externalLink></para>
 					</listItem>
 
 					<listItem>
@@ -112,26 +117,47 @@ files.  These are installed as part of Visual Studio.</para>
 
 				<list class="bullet">
 					<listItem>
-						<para>If you need a spell checker for Visual Studio, the <externalLink>
-<linkText>Visual Studio Spell Checker</linkText>
-<linkAlternateText>Visual Studio Spell Checker</linkAlternateText>
-<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.VisualStudioSpellCheckerVS2017andLater</linkUri>
-<linkTarget>_blank</linkTarget>
-</externalLink> extension can be downloaded and installed from the <legacyBold>Visual Studio Gallery</legacyBold>.  It is an
-editor extension that checks the spelling of comments, strings, and plain text as you type or interactively with
-a tool window.  Support is included for spell checking source code, XML files, and MAML topic files.</para>
+						<para>If you need a spell checker for Visual Studio, the <legacyBold>Visual Studio Spell Checker</legacyBold>
+extension can be downloaded and installed from the Visual Studio Gallery.  It is an editor extension that checks
+the spelling of comments, strings, and plain text as you type or interactively with a tool window.  Support is
+included for spell checking source code, XML files, and MAML topic files.  Versions are available for Versions
+are available for 
+<externalLink>
+	<linkText>Visual Studio 2013 and 2015</linkText>
+	<linkAlternateText>Visual Studio Spell Checker (VS2013/2015)</linkAlternateText>
+	<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.VisualStudioSpellChecker</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink>, 
+<externalLink>
+	<linkText>Visual Studio 2017 and 2019</linkText>
+	<linkAlternateText>Visual Studio Spell Checker (VS2017/2019)</linkAlternateText>
+	<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.VisualStudioSpellCheckerVS2017andLater</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink> and
+<externalLink>
+	<linkText>Visual Studio 2022 and Later</linkText>
+	<linkAlternateText>Visual Studio Spell Checker (VS2022+)</linkAlternateText>
+	<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.VisualStudioSpellCheckerVS2022andLater</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink>.</para>
 					</listItem>
 
 						<listItem>
-							<para>For extended XML comments completion support in Visual Studio 2019 and later, install the
+						<para>For extended XML comments completion support in Visual Studio 2019 and later, install the
+<legacyBold>Extended XML Documentation Comments Completion Provider</legacyBold> extension which can be
+downloaded and installed from the Visual Studio Gallery.  Versions are available for 
 <externalLink>
-<linkText>Extended XML Documentation Comments Completion Provider</linkText>
-<linkAlternateText>Extended XML Documentation Comments Completion Provider</linkAlternateText>
-<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.ExtendedDocCommentsProvider</linkUri>
-<linkTarget>_blank</linkTarget>
-</externalLink> package which can be downloaded and installed from the Visual Studio Gallery.  It is an editor
-extension that augments the standard XML documentation comments elements with custom elements, attributes, and
-attribute values supported by the Sandcastle Help File Builder and other documentation tools.</para>
+	<linkText>Visual Studio 2019</linkText>
+	<linkAlternateText>Extended XML Documentation Comments Completion Provider (VS2019)</linkAlternateText>
+	<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.ExtendedDocCommentsProvider</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink> and 
+<externalLink>
+	<linkText>Visual Studio 2022 and later</linkText>
+	<linkAlternateText>Extended XML Documentation Comments Completion Provider (VS2022+)</linkAlternateText>
+	<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.ExtendedDocCommentsProvider2022</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink>.</para>
 						</listItem>
 
 					<listItem>

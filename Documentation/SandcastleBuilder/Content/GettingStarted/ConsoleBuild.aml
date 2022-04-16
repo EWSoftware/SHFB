@@ -185,7 +185,7 @@ quotes.</para>
     <HtmlHelpName>TestDoc</HtmlHelpName>
     <CleanIntermediates>True</CleanIntermediates>
     <RootNamespaceTitle>Root Namespace Container</RootNamespaceTitle>
-    <PresentationStyle>VS2013</PresentationStyle>
+    <PresentationStyle>Default2022</PresentationStyle>
     <HelpTitle>Test Help File</HelpTitle>
   </PropertyGroup>
 </Project>]]>

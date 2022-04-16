@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationExtensions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/17/2022
+// Updated : 04/08/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains various extension and utility methods for presentation styles
@@ -16,6 +16,8 @@
 // ==============================================================================================================
 // 01/14/2022  EFW  Created the code
 //===============================================================================================================
+
+// Ignore Spelling: wbr
 
 using System;
 using System.Collections.Generic;
@@ -146,6 +148,54 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                 normalized.Append(text, startIndex, index - startIndex);
 
             return normalized.ToString();
+        }
+
+        /// <summary>
+        /// Insert word break opportunities into HTML text to allow better word wrapping when the text container
+        /// is narrow like the Table of Contents pane.
+        /// </summary>
+        /// <param name="text">The text into which word break markers will be inserted</param>
+        /// <returns>An enumerable list of the text parts and word break elements</returns>
+        public static IEnumerable<XNode> InsertWordBreakOpportunities(this string text)
+        {
+            if(String.IsNullOrWhiteSpace(text))
+            {
+                if(text != null)
+                    yield return new XText(text);
+            }
+            else
+            {
+                int start = 0, end = 0;
+
+                while(end < text.Length)
+                {
+                    // Split between camel case words, digits, and punctuation with no intervening whitespace
+                    if(end != 0 && end < text.Length - 1 && ((Char.IsLower(text[end]) &&
+                      Char.IsUpper(text[end + 1])) || (Char.IsLetter(text[end]) &&
+                      Char.IsDigit(text[end + 1])) || (!Char.IsLetterOrDigit(text[end]) &&
+                      !Char.IsWhiteSpace(text[end - 1]) && Char.IsLetterOrDigit(text[end + 1]))))
+                    {
+                        yield return new XText(text.Substring(start, end - start + 1));
+                        yield return new XElement("wbr");
+
+                        start = end + 1;
+                    }
+
+                    // Skip over non-word/non-punctuation characters
+                    do
+                    {
+                        end++;
+                    } while(end < text.Length && !Char.IsLetterOrDigit(text[end]) && !Char.IsPunctuation(text[end]));
+                }
+
+                if(start == 0 && end == text.Length)
+                    yield return new XText(text);
+                else
+                {
+                    if(start < end)
+                        yield return new XText(text.Substring(start));
+                }
+            }
         }
 
         /// <summary>

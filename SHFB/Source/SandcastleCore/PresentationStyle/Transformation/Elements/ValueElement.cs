@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ValueElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/11/2022
+// Updated : 04/08/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle value elements
@@ -68,12 +68,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 
             if(typeInfo != null)
             {
-                var parameter = new XElement("parameter");
-                content.Add(new XElement("include",
-                        new XAttribute("item", "typeLink"), parameter),
-                    new XElement("br"));
-
-                transformation.RenderTypeReferenceLink(parameter, typeInfo, false);
+                transformation.RenderTypeReferenceLink(content, typeInfo, false);
+                content.Add(new XElement("br"));
             }
 
             transformation.RenderChildElements(content, element.Nodes());

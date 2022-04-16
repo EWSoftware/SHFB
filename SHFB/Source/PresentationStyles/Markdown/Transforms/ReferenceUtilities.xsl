@@ -98,7 +98,7 @@
 				<xsl:text> </xsl:text>
 			</span>
 			<xsl:text>&#xa;</xsl:text>
-			<include item="header"/>
+			<include item="headerText"/>
 			<xsl:text>&#xa;</xsl:text>
 			<xsl:call-template name="t_body"/>
 		</document>

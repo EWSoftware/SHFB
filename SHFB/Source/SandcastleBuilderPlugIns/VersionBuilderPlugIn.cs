@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : VersionBuilderPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/06/2022
+// Updated : 04/10/2022
 // Note    : Copyright 2007-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to generate version information for assemblies in the current project
@@ -269,14 +269,16 @@ namespace SandcastleBuilder.PlugIns
         /// project defined in the configuration settings.</remarks>
         private void UpdateVersionItems()
         {
-            XmlAttribute attr;
             XmlDocument sharedContent;
             XmlNode root, node;
-            string sharedContentFilename, hashValue;
+            XmlAttribute attr;
 
             builder.ReportProgress("Adding version information shared content items from the plug-in settings");
 
-            sharedContentFilename = Path.Combine(builder.WorkingFolder, "shared_content.xml");
+            // Add them to the first resource items file in the working folder
+            string sharedContentFilename = builder.PresentationStyle.ResourceItemFiles(builder.Language.Name).FirstOrDefault();
+
+            sharedContentFilename = Path.Combine(builder.WorkingFolder, Path.GetFileName(sharedContentFilename));
             sharedContent = new XmlDocument();
             sharedContent.Load(sharedContentFilename);
 
@@ -287,7 +289,7 @@ namespace SandcastleBuilder.PlugIns
             {
                 // We need to use a hash value as this ends up as an XML attribute name in the reflection
                 // data file and this ensures it only contains valid characters.
-                hashValue = label.GetHashCode().ToString("X", CultureInfo.InvariantCulture);
+                string hashValue = label.GetHashCode().ToString("X", CultureInfo.InvariantCulture);
 
                 // Label item
                 node = sharedContent.CreateElement("item");

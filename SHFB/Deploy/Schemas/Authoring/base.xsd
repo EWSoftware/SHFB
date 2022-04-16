@@ -66,6 +66,7 @@
 			<enumeration value="visual c++ note"/>
 			<enumeration value="visual j# note"/>
 			<!-- Sandcastle extension.  Added additional note types. -->
+			<enumeration value="todo"/>
 			<enumeration value="implement"/>
 			<enumeration value="caller"/>
 			<enumeration value="inherit"/>

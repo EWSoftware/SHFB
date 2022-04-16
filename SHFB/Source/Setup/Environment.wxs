@@ -21,8 +21,38 @@
 					<Shortcut Id="SHFB.url"
 						Directory="ShfbProgramMenuDir"
 						Icon="HtmlDocument.ico"
-						Name="Sandcastle Help File Builder"
+						Name="Sandcastle Help File Builder Project"
 						Description="SHFB project site"
+						Advertise="yes" />
+				</File>
+			</Component>
+			<Component Id="SHFBHelp.url" Guid="{D1BDC858-578D-4716-AC8B-9CB782953476}">
+				<File Id="SHFBHelp.url" KeyPath="yes" Source="$(var.SolutionDir)SHFBHelp.url">
+					<Shortcut Id="SHFBHelp.url"
+						Directory="ShfbProgramMenuDir"
+						Icon="HtmlDocument.ico"
+						Name="Sandcastle Help File Builder Online Help"
+						Description="SHFB online help"
+						Advertise="yes" />
+				</File>
+			</Component>
+			<Component Id="MAMLGuide.url" Guid="{312F52B1-AF4F-42B9-9E44-81D2D72853A7}">
+				<File Id="MAMLGuide.url" KeyPath="yes" Source="$(var.SolutionDir)MAMLGuide.url">
+					<Shortcut Id="MAMLGuide.url"
+						Directory="ShfbProgramMenuDir"
+						Icon="HtmlDocument.ico"
+						Name="Microsoft Assistance Markup Language Guide"
+						Description="MAML Guide"
+						Advertise="yes" />
+				</File>
+			</Component>
+			<Component Id="XMLCommentsGuide.url" Guid="{BAB2E56E-F526-4913-9863-CC3032FD4BDD}">
+				<File Id="XMLCommentsGuide.url" KeyPath="yes" Source="$(var.SolutionDir)XMLCommentsGuide.url">
+					<Shortcut Id="XMLCommentsGuide.url"
+						Directory="ShfbProgramMenuDir"
+						Icon="HtmlDocument.ico"
+						Name="XML Comments Guide"
+						Description="XML Comments Guide"
 						Advertise="yes" />
 				</File>
 			</Component>
@@ -33,6 +63,9 @@
 			<ComponentRef Id="WriteSHFBEnvironmentPath" />
 			<ComponentRef Id="LICENSE" />
 			<ComponentRef Id="SHFB.url" />
+			<ComponentRef Id="SHFBHelp.url" />
+			<ComponentRef Id="MAMLGuide.url" />
+			<ComponentRef Id="XMLCommentsGuide.url" />
 		</ComponentGroup>
 	</Fragment>
 </Wix>

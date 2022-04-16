@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AutoOutlineElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2022
+// Updated : 04/16/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle autoOutline elements
@@ -70,6 +70,19 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
     /// </example>
     public class AutoOutlineElement : Element
     {
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to set a style class name on top-level auto-outlines
+        /// </summary>
+        /// <remarks>This is useful for hiding top-level auto-outlines on all but certain devices if another
+        /// element on the page displays section headers such as In This Article quick links.  Custom lead text,
+        /// if specified, will still be rendered as it may not refer to the auto-outline.</remarks>
+        public string TopLevelStyleName { get; set; }
+
+        #endregion
+
         #region Constructor
         //=====================================================================
 
@@ -171,6 +184,9 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             }
 
             var ul = new XElement("ul");
+
+            if(outlineType <= AutoOutlineType.TopNoRelated && !String.IsNullOrWhiteSpace(this.TopLevelStyleName))
+                ul.Add(new XAttribute("class", this.TopLevelStyleName));
             
             renderTo.Add(ul);
 
@@ -212,14 +228,19 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 }
             }
 
-            // Add See Also section link for top level outlines
+            // Add See Also section link for top level outlines but only if it has related topics
             if(outlineType == AutoOutlineType.TopLevel)
             {
-                ul.Add(new XElement("li",
-                    new XElement("a",
-                            new XAttribute("href", "#seeAlsoSection"),
-                        new XElement("include",
-                            new XAttribute("item", "title_relatedTopics")))));
+                var relatedTopics = transformation.DocumentNode.Descendants(Ddue + "relatedTopics").FirstOrDefault();
+
+                if(relatedTopics != null && relatedTopics.HasElements)
+                {
+                    ul.Add(new XElement("li",
+                        new XElement("a",
+                                new XAttribute("href", "#seeAlsoSection"),
+                            new XElement("include",
+                                new XAttribute("item", "title_relatedTopics")))));
+                }
             }
         }
         #endregion

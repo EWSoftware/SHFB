@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2022
+// Updated : 04/01/2022
 // Note    : Copyright 2007-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class containing properties and methods used to locate and work with build components,
@@ -678,7 +678,7 @@ namespace Sandcastle.Core
         /// </overloads>
         public static IEnumerable<XElement> XmlStreamAxis(string xmlFile, string elementName)
         {
-            using(XmlReader reader = XmlReader.Create(xmlFile, new XmlReaderSettings()))
+            using(XmlReader reader = XmlReader.Create(xmlFile, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore }))
             {
                 while(reader.ReadToFollowing(elementName))
                     yield return (XElement)XNode.ReadFrom(reader);
@@ -699,7 +699,7 @@ namespace Sandcastle.Core
         {
             HashSet<string> elements = new HashSet<string>(elementNames);
 
-            using(XmlReader reader = XmlReader.Create(xmlFile, new XmlReaderSettings()))
+            using(XmlReader reader = XmlReader.Create(xmlFile, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore }))
             {
                 reader.MoveToContent();
 

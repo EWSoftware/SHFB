@@ -2,10 +2,11 @@
 <topic id="161537d9-6f89-42ef-9c51-3a15ef94df65" revisionNumber="1">
   <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<introduction>
-      <para>The auto-generated bibliography feature allows an author to create an external bibliography data XML
-file and then share it between multiple topics by specifying short identifiers in <codeInline>cite</codeInline> 
-elements that match one of the references contained in the file.  When one or more <codeInline>cite</codeInline>
-elements are used, Sandcastle will automatically generate a bibliography for the topic in the place that the
+      <para>The auto-generated bibliography feature, an extension provided by the presentation styles in the
+Sandcastle Help File Builder, allows an author to create an external bibliography data XML file and then share it
+between multiple topics by specifying short identifiers in <codeInline>cite</codeInline> elements that match one
+of the references contained in the file.  When one or more <codeInline>cite</codeInline> elements are used,
+Sandcastle will automatically generate a bibliography for the topic in the place that the
 <codeInline>bibliography</codeInline> element is specified and the <codeInline>cite</codeInline> elements
 themselves will be replaced with hyperlinks to corresponding bookmarked entries in the bibliography section.</para>
 

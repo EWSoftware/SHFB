@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TableElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/26/2022
+// Updated : 04/07/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the table element based on the topic type
@@ -16,6 +16,8 @@
 // ==============================================================================================================
 // 01/14/2022  EFW  Created the code
 //===============================================================================================================
+
+// Ignore Spelling: hoverable
 
 using System;
 using System.Xml.Linq;
@@ -33,14 +35,14 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         /// <summary>
         /// This is used to get or set the table caption style
         /// </summary>
-        /// <value>The default if not set explicitly is "caption"</value>
+        /// <value>The default if not set explicitly is <c>caption</c></value>
         public string TableCaptionStyle { get; set; } = "caption";
 
         /// <summary>
         /// This is used to get or set the overall table style
         /// </summary>
-        /// <value>The default if not set explicitly is null and no explicit style will be applied</value>
-        public string TableStyle { get; set; }
+        /// <value>The default if not set explicitly is <c>table is-hoverable</c></value>
+        public string TableStyle { get; set; } = "table is-hoverable";
 
         #endregion
 

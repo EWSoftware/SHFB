@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ParametersElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2022
+// Updated : 04/08/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle parameters elements based on the topic type
@@ -85,30 +85,32 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
                 foreach(var p in element.Elements("parameter"))
                 {
-                    string optional = null;
-
-                    if(p.Attribute("optional") != null)
-                        optional = " (Optional)";
-
-                    dl.Add(new XElement("dt",
+                    var dt = new XElement("dt",
+                            new XAttribute("class", "has-text-weight-normal"),
                         new XElement("span",
                             new XAttribute("class", this.ParameterStyle),
-                            p.Attribute("name").Value), optional));
+                            p.Attribute("name").Value));
 
-                    var parameter = new XElement("parameter");
-                    var dd = new XElement("dd",
-                        new XElement("include",
-                            new XAttribute("item", "typeLink"), parameter),
-                        new XElement("br"));
-                    dl.Add(dd);
+                    dt.Add(NonBreakingSpace, NonBreakingSpace);
 
-                    transformation.RenderTypeReferenceLink(parameter, p.Elements().First(), false);
+                    transformation.RenderTypeReferenceLink(dt, p.Elements().First(), false);
 
+                    if(p.Attribute("optional") != null)
+                    {
+                        dt.Add(NonBreakingSpace, NonBreakingSpace,
+                            new XElement("include", new XAttribute("item", "optionalText")));
+                    }
+
+                    var dd = new XElement("dd");
                     var paramComments = transformation.CommentsNode.Elements("param").Where(
                         pc => pc.Attribute("name")?.Value == p.Attribute("name")?.Value).FirstOrDefault();
 
+                    dl.Add(dt, dd);
+
                     if(paramComments != null)
                         transformation.RenderChildElements(dd, paramComments.Nodes());
+                    else
+                        dd.Add(NonBreakingSpace);
                 }
             }
         }

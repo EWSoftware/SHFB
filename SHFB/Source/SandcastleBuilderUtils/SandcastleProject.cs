@@ -996,7 +996,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This read-only property is used to get the presentation style for the help topic pages
         /// </summary>
-        /// <value>The default is to use the VS2013 style</value>
+        /// <value>The default is defined by <see cref="Constants.DefaultPresentationStyle" qualifyHint="true" /></value>
         [EscapeValue]
         public string PresentationStyle
         {

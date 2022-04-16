@@ -76,7 +76,8 @@
 
   <!-- Note text -->
   <item id="notDocumented">このAPIはドキュメント化されていません。</item>
-  <item id="preliminaryText">このAPIは暫定的なものであり、変更される可能性があります。</item>
+  <item id="preliminaryApi">このAPIは暫定的なものであり、変更される可能性があります。</item>
+	<item id="preliminaryShort">Preliminary</item>
 	
 	<!-- Inserted boilerplate -->
   <item id="definedBy">({0}により定義)</item>

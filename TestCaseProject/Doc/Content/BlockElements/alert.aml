@@ -44,6 +44,10 @@ the alert class name or an expanded form of it.</para>
             <entry><para>cs, CSharp, c#, C#, visual c# note, cpp, CPP, c++, C++, visual c++ note,
 vb, VB, VisualBasic, visual basic note, JSharp, j#, J#, visual j# note</para></entry>
           </row>
+          <row>
+            <entry><para>To Do list</para></entry>
+            <entry><para>todo</para></entry>
+          </row>
         </table>
       </content>
     </section>
@@ -66,6 +70,14 @@ vb, VB, VisualBasic, visual basic note, JSharp, j#, J#, visual j# note</para></e
 &lt;alert class="cs"&gt;
   &lt;para&gt;This could contain C#-specific usage notes.&lt;/para&gt;
 &lt;/alert&gt;
+
+&lt;alert class="todo"&gt;
+  &lt;para&gt;This could contain a list of things to do.&lt;/para&gt;
+&lt;/alert&gt;
+
+&lt;alert class="todo" title="Project Road Map"&gt;
+  &lt;para&gt;This alert has a custom title.&lt;/para&gt;
+&lt;/alert&gt;
 </code>
       </content>
     </section>
@@ -86,6 +98,14 @@ vb, VB, VisualBasic, visual basic note, JSharp, j#, J#, visual j# note</para></e
 
         <alert class="cs">
           <para>This could contain C#-specific usage notes.</para>
+        </alert>
+
+        <alert class="todo">
+          <para>This could contain a list of things to do.</para>
+        </alert>
+
+        <alert class="todo" title="Project Road Map">
+          <para>This alert has a custom title.</para>
         </alert>
       </content>
     </section>
