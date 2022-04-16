@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : WebsiteTableOfContentsGeneratorPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Sam Harwell
-// Updated : 04/12/2022
+// Updated : 04/16/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved.
 //
 // This file contains a plug-in that is used to generate table of contents information for website-based
@@ -105,11 +105,11 @@ namespace SandcastleBuilder.PlugIns
                     helpToc.Root
                 };
 
-                helpToc.Root.Add(new XAttribute("parentId", "RootTOC"));
+                helpToc.Root.Add(new XAttribute("parentId", "Root"));
 
                 foreach(var t in tocEntries.Values.Where(te => te.HasElements))
                 {
-                    t.Add(new XAttribute("parentId", Guid.NewGuid().ToString()));
+                    t.Add(new XAttribute("parentId", t.GenerateUniqueId()));
                     parentTopics.Add(t);
                 }
 
@@ -324,7 +324,7 @@ namespace SandcastleBuilder.PlugIns
                 string tocFile;
 
                 if(tocEntry.Parent == tocEntry.Document.Root)
-                    tocFile = "RootTOC";
+                    tocFile = "Root";
                 else
                     tocFile = tocEntry.Parent.Attribute("parentId").Value;
 
