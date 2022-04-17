@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/27/2022
+// Updated : 04/17/2022
 // Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -572,6 +572,18 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         #region Build category substitution tags
         //=====================================================================
+
+        /// <summary>
+        /// Disabled the code block component
+        /// </summary>
+        /// <returns>"True" if the presentation style does not use the legacy colorizer or if the project setting
+        /// is set to true, "false" if not</returns>
+        [SubstitutionTag]
+        private string DisableCodeBlockComponent()
+        {
+            return (!currentBuild.PresentationStyle.TopicTranformation.UsesLegacyCodeColorizer ||
+                currentBuild.CurrentProject.DisableCodeBlockComponent).ToString().ToLowerInvariant();
+        }
 
         /// <summary>
         /// Build assembler Save Component writer task cache capacity

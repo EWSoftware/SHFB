@@ -32,7 +32,7 @@
     <BuildLogFile>
     </BuildLogFile>
     <FrameworkVersion>.NET Framework 4.7.2</FrameworkVersion>
-    <IndentHtml>True</IndentHtml>
+    <IndentHtml>False</IndentHtml>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <RootNamespaceTitle>Test Root Namespace Title</RootNamespaceTitle>
     <CopyrightHref>http://www.EWoodruff.us</CopyrightHref>

@@ -94,7 +94,7 @@ these elements into Open XML elements when the topics are merged into a single d
 							<para>Those elements are: <codeInline>a</codeInline> (anchor), <codeInline>br</codeInline> (line
 break), <codeInline>img</codeInline> (image), <codeInline>span</codeInline> (used for a limited set of named
 styles), <codeInline>ul</codeInline>/<codeInline>li</codeInline> (used to define lists).  If these elements
-appear in a <codeInline>markup</codeInline> element, they will be passed through and processed as if the XSL
+appear in a <codeInline>markup</codeInline> element, they will be passed through and processed as if the
 transformations or a build component had added them.  Note that they will only be processed based on the
 conditions expected by the Open XML file builder task.  Additional attributes on the elements other than those
 expected will be ignored.  As always, it is best to avoid use of the <codeInline>markup</codeInline> element

@@ -88,8 +88,9 @@ tag as shown so that the leading whitespace can be normalized correctly.</para>
 						<para>This attribute allows you to define the code language.  Although optional, it is recommended
 that you always specify a language attribute if using Sandcastle alone.  Many of the presentation styles rely on
 the language attribute to classify the code block and handle it in some way such as attaching it to a language
-filter or grouping it with like code blocks.  The Sandcastle Help File Builder's code block component will apply
-a default language if one is not specified.  The possible language values are as follows:</para>
+filter or grouping it with like code blocks based on the syntax filters selected in the project.  The Sandcastle
+Help File Builder's code block component will apply a default language if one is not specified.  The possible
+language values are as follows:</para>
 
 						<table>
 							<tableHeader>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/14/2022
+// Updated : 04/17/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -18,7 +18,8 @@
 // 03/16/2022  EFW  Created the code
 //===============================================================================================================
 
-// Ignore Spelling: bdi datalist figcaption keygen nav rp svg wbr tbody tfoot px mb fa thead hoverable
+// Ignore Spelling: bdi datalist figcaption keygen nav rp svg wbr tbody tfoot px mb fa thead hoverable fscript
+// Ignore Spelling: plaintext aspnet xsharp
 
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,44 @@ namespace Sandcastle.PresentationStyles.Default2022
         {
             this.presentationStyle = presentationStyle;
             this.TopicTemplatePath = this.ResolvePath(@"Templates\TopicTemplate.html");
+
+            // Add language IDs used by the legacy colorizer and their highlight.js equivalents
+            foreach(var (oldId, newId) in new[] {
+                ("asp", "xml"),
+                ("asp.net", "xml"),
+                ("aspnet", "xml"),
+                ("batch", "bat"),
+                ("CPlusPlus", "cpp"),
+                ("cpp#", "cpp"),
+                ("EcmaScript", "js"),
+                ("fscript", "fs"),
+                ("htm", "html"),
+                ("jsc", "js"),
+                ("jscript", "js"),
+                ("jscript#", "js"),
+                ("jscript.net", "js"),
+                ("kbjscript", "js"),
+                ("kblangcpp", "cpp"),
+                ("kblangvb", "vbnet"),
+                ("j#", "js"),
+                ("jsharp", "js"),
+                ("jsh", "js"),
+                ("Managed C++", "cpp"),
+                ("ManagedCPlusPlus", "cpp"),
+                ("none", "plaintext"),
+                ("pshell", "ps1"),
+                ("sql server", "sql"),
+                ("sqlserver", "sql"),
+                ("VB#", "vbnet"),
+                ("Visual Basic", "vbnet"),
+                ("VisualBasic", "vbnet"),
+                ("XAML", "xml"),
+                ("x#", "xsharp"),
+                ("xs", "xsharp")
+            })
+            {
+                this.CodeSnippetLanguageConversion.Add(oldId, newId);
+            }
         }
         #endregion
 
@@ -181,6 +220,9 @@ namespace Sandcastle.PresentationStyles.Default2022
 
         /// <inheritdoc />
         public override string ScriptPath { get; set; } = "../scripts/";
+
+        /// <inheritdoc />
+        public override bool UsesLegacyCodeColorizer => false;
 
         /// <inheritdoc />
         protected override void CreateTransformationArguments()

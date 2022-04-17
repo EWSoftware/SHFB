@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : CodeSnippetGroupElementLanguageFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/14/2022
+// Updated : 04/17/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle codeSnippetGroup elements in presentation styles that use a
@@ -127,16 +127,27 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                     codeContainer.RemoveNodes();
 
                     if(snippet.Attribute("phantom") != null)
-                        codeContainer.Add(new XElement("p", new XElement("include", new XAttribute("item", "noCodeExample"))));
+                    {
+                        codeContainer.Add(new XElement("code",
+                            new XAttribute("class", "language-plaintext"),
+                            new XElement("include", new XAttribute("item", "noCodeExample"))));
+                    }
                     else
                     {
-                        codeContainer.Add(snippet.Nodes());
+                        if(transformation.UsesLegacyCodeColorizer)
+                            codeContainer.Add(snippet.Nodes());
+                        else
+                        {
+                            string language = snippet.Attribute("language")?.Value ?? "plaintext";
 
-                        /* TODO: For use with highlight.js
-                        codeContainer.Add(new XElement("code",
-                            new XAttribute("class", $"language-{div.Attribute("style").Value}"),
-                            div.Nodes())));
-                        */
+                            if(transformation.CodeSnippetLanguageConversion.TryGetValue(language, out string newId))
+                                language = newId;
+
+                            codeContainer.Add(new XElement("code",
+                                new XAttribute("class", $"language-{language}"),
+                                snippet.Nodes()));
+                            transformation.RegisterStartupScript(10000, "hljs.highlightAll();");
+                        }
                     }
 
                     transformation.CurrentElement.Add(codeBlock);

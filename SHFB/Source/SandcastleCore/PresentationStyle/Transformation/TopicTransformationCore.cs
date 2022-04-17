@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/14/2022
+// Updated : 04/17/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
@@ -51,6 +51,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         private readonly List<LanguageFilterItem> languageFilter;
         private readonly List<ApiTopicSectionHandler> apiTopicSections;
         private readonly Dictionary<string, int> startupScript, startupScriptItemIds;
+        private readonly Dictionary<string, string> codeSnippetLanguageConversions;
 
         private string bibliographyDataFile;
         private Dictionary<string, XElement> bibliographyData;
@@ -172,6 +173,14 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         public HelpFileFormats SupportedFormats { get; }
 
         /// <summary>
+        /// This read-only property is used to specify whether or not the presentation style transformation uses
+        /// the legacy code colorizer.
+        /// </summary>
+        /// <value>The default is false to use the client-side highlighter (highlight.js).  If true, the legacy
+        /// colorizer implemented in the Code Block Component will be used.</value>
+        public abstract bool UsesLegacyCodeColorizer { get; }
+
+        /// <summary>
         /// This is used to get or set the path to the bibliography data file for the <c>bibliography</c>
         /// and <c>cite</c> elements.
         /// </summary>
@@ -248,6 +257,13 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// </summary>
         public IEnumerable<string> StartupScriptBlockItemIds => startupScriptItemIds.OrderBy(s => s.Value).Select(s => s.Key);
 
+        /// <summary>
+        /// This read-only property returns a dictionary containing code snippet language ID conversions
+        /// </summary>
+        /// <remarks>Use this to convert code snippet language IDs not recognized by the transformation's
+        /// code colorizer of choice to a language ID that it does recognize.  The keys are case-insensitive.</remarks>
+        public IDictionary<string, string> CodeSnippetLanguageConversion => codeSnippetLanguageConversions;
+
         #endregion
 
         #region Constructor
@@ -267,6 +283,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
             transformationArguments = new Dictionary<string, TransformationArgument>(StringComparer.OrdinalIgnoreCase);
             startupScript = new Dictionary<string, int>();
             startupScriptItemIds = new Dictionary<string, int>();
+            codeSnippetLanguageConversions = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             this.SupportedFormats = supportedFormats;
             this.ResolvePath = resolvePath;

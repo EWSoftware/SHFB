@@ -73,10 +73,14 @@ language, a combination of languages, <codeInline>All</codeInline> to include th
 section entirely.  In the property page, put a checkmark next to each syntax filter that you wanted included in
 the API topics.</para>
 
-				<alert class="note">
+				<alert class="tip">
 					<para>If you want to change the order of the languages in the syntax section and code examples, add the
 Syntax Component to the project on the Components category property page.  Its configuration lets you modify the
 order of the languages in the syntax sections and code examples.</para>
+
+					<para>The selected languages also control code snippet grouping or connecting them to the language
+filter depending on the presentation style.  As different tabs are selected or the language filter selection
+changes, all related code snippets for the selected tab/language will be shown to keep them all in sync.</para>
 				</alert>
 
 			</content>

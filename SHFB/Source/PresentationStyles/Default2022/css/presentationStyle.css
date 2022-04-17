@@ -224,11 +224,13 @@ span.keyword {
 }
 
 .codePanel {
+    border: 1px solid lightgrey;
+    padding: 1em;
     margin-bottom: 1em;
 }
 
     .codePanel pre {
-        padding: 1em;
+        padding: 0em;
         line-height: 1.37
     }
 

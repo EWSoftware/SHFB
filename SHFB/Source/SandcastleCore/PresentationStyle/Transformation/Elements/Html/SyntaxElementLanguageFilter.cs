@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SyntaxElementLanguageFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/14/2022
+// Updated : 04/17/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle syntax section elements in presentation styles that use a
@@ -17,6 +17,8 @@
 // ==============================================================================================================
 // 02/10/2022  EFW  Created the code
 //===============================================================================================================
+
+// Ignore Spelling: plaintext
 
 using System;
 using System.Collections.Generic;
@@ -268,7 +270,11 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 codeContainer.RemoveNodes();
 
                 if(div.Attribute("phantom") != null)
-                    codeContainer.Add(new XElement("p", new XElement("include", new XAttribute("item", "noCodeExample"))));
+                {
+                    codeContainer.Add(new XElement("code",
+                        new XAttribute("class", "language-plaintext"),
+                        new XElement("include", new XAttribute("item", "noCodeExample"))));
+                }
                 else
                 {
                     if(div.Attribute("codeLanguage").Value == "XAML")
@@ -277,13 +283,21 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                     }
                     else
                     {
-                        codeContainer.Add(div.Nodes());
+                        if(transformation.UsesLegacyCodeColorizer)
+                            codeContainer.Add(div.Nodes());
+                        else
+                        {
+                            string language = div.Attribute("style").Value;
 
-                        /* TODO: For use with highlight.js
-                        codeContainer.Add(new XElement("code",
-                            new XAttribute("class", $"language-{div.Attribute("style").Value}"),
-                            div.Nodes())));
-                        */
+                            if(transformation.CodeSnippetLanguageConversion.TryGetValue(language, out string newId))
+                                language = newId;
+
+                            codeContainer.Add(new XElement("code",
+                                new XAttribute("class", $"language-{language}"),
+                                div.Nodes()));
+
+                            transformation.RegisterStartupScript(10000, "hljs.highlightAll();");
+                        }
                     }
                 }
 
@@ -352,11 +366,13 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
             foreach(var block in syntaxBlocks)
             {
-                content.Add(new XElement(block));
-
-                /* TODO: For use with highlight.js
-                content.Add(new XElement("code", new XAttribute("class", "language-xaml"), new XElement(block))));
-                */
+                if(transformation.UsesLegacyCodeColorizer)
+                    content.Add(new XElement(block));
+                else
+                {
+                    content.Add(new XElement("code", new XAttribute("class", "language-xml"), new XElement(block)));
+                    transformation.RegisterStartupScript(10000, "hljs.highlightAll();");
+                }
             }
         }
 
