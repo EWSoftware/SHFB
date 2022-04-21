@@ -18,7 +18,9 @@
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
-    </Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
     <Grid Grid.Row="0">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
@@ -34,7 +36,47 @@
       <Button Grid.Row="1" Grid.Column="1" Name="btnSelectFolder" MinWidth="30" Margin="3,0,0,0" Content="..."
         Click="btnSelectFolder_Click" ToolTip="Select base path folder" />
     </Grid>
-    <Grid Grid.Row="1">
+		<Grid Grid.Row="1" Margin="0,10,0,10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition MaxWidth="120"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Content="_Default Language" Margin="0,3,3,3" HorizontalAlignment="Right"
+				Target="{Binding ElementName=cboLanguage}" />
+			<ComboBox Grid.Column="1" Name="cboLanguage" Margin="3" DisplayMemberPath="Value" SelectedValuePath="Key" />
+			<Label Grid.Column="2" Content="Default _Tab Size" HorizontalAlignment="Right" Margin="20,3,3,3"
+				Target="{Binding ElementName=udcTabSize}" />
+			<xctk:IntegerUpDown Grid.Column="3" Name="udcTabSize" Margin="3" MinWidth="45" Minimum="0"
+        Maximum="25" Increment="1" DefaultValue="0" ClipValueToMinMax="True" DisplayDefaultValueOnEmptyText="True"
+        HorizontalAlignment="Left" />
+		</Grid>
+		<Grid Grid.Row="2">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<CheckBox Grid.Row="0" Grid.Column="0" Name="chkDefaultTitle" Margin="0,3,0,3"
+        Content="_Use language name as title if one is not specified" IsChecked="True" />
+			<CheckBox Grid.Row="0" Grid.Column="1" Name="chkAllowMissingSource" Margin="0,3"
+        Content="Allo_w missing source code files/regions" />
+			<CheckBox Grid.Row="1" Grid.Column="0" Name="chkRemoveRegionMarkers" Margin="0,3"
+        Content="Remove nested region _markers" />
+		</Grid>
+		<Grid Grid.Row="3">
+			<Grid.RowDefinitions>
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<TextBlock Grid.Row="0" Padding="0,15,0,15">
+				<Bold>NOTE:</Bold> Options below are for the legacy code colorizer only.
+			</TextBlock>
+		</Grid>
+		<Grid Grid.Row="4">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="Auto"/>
@@ -49,7 +91,7 @@
       <Button Grid.Row="1" Grid.Column="1" Name="btnSelectSyntax" MinWidth="30" Margin="3,0,0,0" Content="..."
         Click="SelectFile_Click" ToolTip="Select language syntax configuration file" />
     </Grid>
-    <Grid Grid.Row="2">
+    <Grid Grid.Row="5">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="Auto"/>
@@ -64,7 +106,7 @@
       <Button Grid.Row="1" Grid.Column="1" Name="btnSelectXsltStylesheet" MinWidth="30" Margin="3,0,0,0" Content="..."
         Click="SelectFile_Click" ToolTip="Select XSLT style transformation file" />
     </Grid>
-    <Grid Grid.Row="3">
+    <Grid Grid.Row="6">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="Auto"/>
@@ -79,7 +121,7 @@
       <Button Grid.Row="1" Grid.Column="1" Name="btnSelectCssStylesheet" MinWidth="30" Margin="3,0,0,0" Content="..."
         Click="SelectFile_Click" ToolTip="Select colorized code style sheet file" />
     </Grid>
-    <Grid Grid.Row="4">
+    <Grid Grid.Row="7">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="Auto"/>
@@ -94,25 +136,8 @@
       <Button Grid.Row="1" Grid.Column="1" Name="btnSelectScript" MinWidth="30" Margin="3,0,0,0" Content="..."
         Click="SelectFile_Click" ToolTip="Select colorized code JavaScript file" />
     </Grid>
-    <Grid Grid.Row="5" Margin="0,10,0,10">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="Auto" />
-        <ColumnDefinition MaxWidth="120"/>
-        <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition />
-      </Grid.ColumnDefinitions>
-      <Label Grid.Column="0" Content="_Default Language" Margin="0,3,3,3" HorizontalAlignment="Right"
-				Target="{Binding ElementName=cboLanguage}" />
-      <ComboBox Grid.Column="1" Name="cboLanguage" Margin="3" DisplayMemberPath="Value" SelectedValuePath="Key" />
-      <Label Grid.Column="2" Content="Default _Tab Size" HorizontalAlignment="Right" Margin="20,3,3,3"
-				Target="{Binding ElementName=udcTabSize}" />
-      <xctk:IntegerUpDown Grid.Column="3" Name="udcTabSize" Margin="3" MinWidth="45" Minimum="0"
-        Maximum="25" Increment="1" DefaultValue="0" ClipValueToMinMax="True" DisplayDefaultValueOnEmptyText="True"
-        HorizontalAlignment="Left" />
-    </Grid>
-    <Grid Grid.Row="6">
+		<Grid Grid.Row="8" Margin="0,10,0,0">
       <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
@@ -121,18 +146,12 @@
         <ColumnDefinition />
       </Grid.ColumnDefinitions>
       <CheckBox Grid.Row="0" Grid.Column="0" Name="chkNumberLines" Margin="0,3" Content="Enable line _numbering" />
-      <CheckBox Grid.Row="1" Grid.Column="0" Name="chkOutlining" Margin="0,3"
+      <CheckBox Grid.Row="0" Grid.Column="1" Name="chkOutlining" Margin="0,3"
         Content="Enable _collapsible #region and #if/#else/#endif blocks" />
-      <CheckBox Grid.Row="2" Grid.Column="0" Name="chkKeepSeeTags" Margin="0,3"
+      <CheckBox Grid.Row="1" Grid.Column="0" Name="chkKeepSeeTags" Margin="0,3"
         Content="_Keep &lt;see&gt; XML comment tags that occur with the code" />
-      <CheckBox Grid.Row="0" Grid.Column="1" Name="chkDefaultTitle" Margin="0,3"
-        Content="_Use language name as title if one is not specified" IsChecked="True" />
-      <CheckBox Grid.Row="1" Grid.Column="1" Name="chkAllowMissingSource" Margin="0,3"
-        Content="Allo_w missing source code files/regions" />
-      <CheckBox Grid.Row="2" Grid.Column="1" Name="chkRemoveRegionMarkers" Margin="0,3"
-        Content="Remove nested region _markers" />
     </Grid>
-    <Grid Grid.Row="7" Margin="0,20,0,0">
+    <Grid Grid.Row="9" Margin="0,10,0,0">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition />

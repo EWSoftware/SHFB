@@ -41,12 +41,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="..\CodeColorizer\ColorizerLibrary\Template\CopyCode.gif" Link="Colorizer\CopyCode.gif">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="..\CodeColorizer\ColorizerLibrary\Template\CopyCode_h.gif" Link="Colorizer\CopyCode_h.gif">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
 		<Content Include="..\CodeColorizer\ColorizerLibrary\Template\DocumentTemplate.xaml" Link="Colorizer\DocumentTemplate.xaml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>

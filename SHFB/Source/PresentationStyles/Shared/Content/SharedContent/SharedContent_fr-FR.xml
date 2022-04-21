@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- French translations contributed by Stéphane Gagnon -->
-<content xml:space="preserve" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+<content xml:space="preserve">
 
 	<!-- Header and footer text -->
   <item id="tocTitle">{0}</item>

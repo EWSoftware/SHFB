@@ -1,5 +1,4 @@
-<content xml:space="preserve"
-				 xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+<content xml:space="preserve">
 
 	<!-- Header and footer text -->
   <item id="tocTitle">{0}</item>

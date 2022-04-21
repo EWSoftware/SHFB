@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2022
+// Updated : 04/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
@@ -173,12 +173,13 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         public HelpFileFormats SupportedFormats { get; }
 
         /// <summary>
-        /// This read-only property is used to specify whether or not the presentation style transformation uses
+        /// This property is used to get or set whether or not the presentation style transformation uses
         /// the legacy code colorizer.
         /// </summary>
-        /// <value>The default is false to use the client-side highlighter (highlight.js).  If true, the legacy
-        /// colorizer implemented in the Code Block Component will be used.</value>
-        public abstract bool UsesLegacyCodeColorizer { get; }
+        /// <value>The default is false to use the client-side highlighter (highlight.js) or, in cases such as
+        /// the Markdown style, to do no colorization.  If true, the legacy colorizer implemented in the Code
+        /// Block Component will be used.</value>
+        public bool UsesLegacyCodeColorizer { get; set; }
 
         /// <summary>
         /// This is used to get or set the path to the bibliography data file for the <c>bibliography</c>

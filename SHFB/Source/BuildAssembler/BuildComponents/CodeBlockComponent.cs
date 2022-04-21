@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/28/2022
+// Updated : 04/19/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to search for <code> XML comment tags and colorize the code
@@ -628,7 +628,7 @@ namespace Sandcastle.Tools.BuildComponents
                 {
                     language = code.Attributes["lang"].Value;
 
-                    // The XSL transformations consistently use "language" so change the attribute name
+                    // The transformations consistently use "language" so change the attribute name
                     attr = document.CreateAttribute("language");
                     attr.Value = language;
                     code.Attributes.Remove(code.Attributes["lang"]);

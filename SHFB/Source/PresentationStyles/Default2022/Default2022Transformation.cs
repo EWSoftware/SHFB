@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2022
+// Updated : 04/19/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -220,9 +220,6 @@ namespace Sandcastle.PresentationStyles.Default2022
 
         /// <inheritdoc />
         public override string ScriptPath { get; set; } = "../scripts/";
-
-        /// <inheritdoc />
-        public override bool UsesLegacyCodeColorizer => false;
 
         /// <inheritdoc />
         protected override void CreateTransformationArguments()
