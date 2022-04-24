@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2022
+// Updated : 04/23/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -19,7 +19,6 @@
 //===============================================================================================================
 
 // Ignore Spelling: bdi datalist figcaption keygen nav rp svg wbr tbody tfoot px mb fa thead hoverable fscript
-// Ignore Spelling: plaintext aspnet xsharp
 
 using System;
 using System.Collections.Generic;
@@ -61,44 +60,6 @@ namespace Sandcastle.PresentationStyles.Default2022
         {
             this.presentationStyle = presentationStyle;
             this.TopicTemplatePath = this.ResolvePath(@"Templates\TopicTemplate.html");
-
-            // Add language IDs used by the legacy colorizer and their highlight.js equivalents
-            foreach(var (oldId, newId) in new[] {
-                ("asp", "xml"),
-                ("asp.net", "xml"),
-                ("aspnet", "xml"),
-                ("batch", "bat"),
-                ("CPlusPlus", "cpp"),
-                ("cpp#", "cpp"),
-                ("EcmaScript", "js"),
-                ("fscript", "fs"),
-                ("htm", "html"),
-                ("jsc", "js"),
-                ("jscript", "js"),
-                ("jscript#", "js"),
-                ("jscript.net", "js"),
-                ("kbjscript", "js"),
-                ("kblangcpp", "cpp"),
-                ("kblangvb", "vbnet"),
-                ("j#", "js"),
-                ("jsharp", "js"),
-                ("jsh", "js"),
-                ("Managed C++", "cpp"),
-                ("ManagedCPlusPlus", "cpp"),
-                ("none", "plaintext"),
-                ("pshell", "ps1"),
-                ("sql server", "sql"),
-                ("sqlserver", "sql"),
-                ("VB#", "vbnet"),
-                ("Visual Basic", "vbnet"),
-                ("VisualBasic", "vbnet"),
-                ("XAML", "xml"),
-                ("x#", "xsharp"),
-                ("xs", "xsharp")
-            })
-            {
-                this.CodeSnippetLanguageConversion.Add(oldId, newId);
-            }
         }
         #endregion
 
@@ -615,17 +576,14 @@ namespace Sandcastle.PresentationStyles.Default2022
                 new ApiTopicSectionHandler(ApiTopicSectionType.SyntaxSection, t => RenderApiSyntaxSection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.MemberList, t => RenderApiMemberList(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.Events,
-                    t => RenderApiSectionTable(t, "title_events", "header_eventType", "header_eventReason",
-                         t.CommentsNode.Elements("event"))),
+                    t => RenderApiSectionTable(t, "title_events", t.CommentsNode.Elements("event"))),
                 new ApiTopicSectionHandler(ApiTopicSectionType.Exceptions,
-                    t => RenderApiSectionTable(t, "title_exceptions", "header_exceptionName",
-                         "header_exceptionCondition", this.CommentsNode.Elements("exception"))),
+                    t => RenderApiSectionTable(t, "title_exceptions", this.CommentsNode.Elements("exception"))),
                 new ApiTopicSectionHandler(ApiTopicSectionType.Remarks, t => RenderApiRemarksSection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.Examples, t => RenderApiExamplesSection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.Versions, t => RenderApiVersionsSection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.Permissions,
-                    t => RenderApiSectionTable(t, "title_permissions", "header_permissionName",
-                         "header_permissionDescription", t.CommentsNode.Elements("permission"))),
+                    t => RenderApiSectionTable(t, "title_permissions", t.CommentsNode.Elements("permission"))),
                 new ApiTopicSectionHandler(ApiTopicSectionType.ThreadSafety,
                     t => t.RenderNode(t.CommentsNode.Element("threadsafety"))),
                 new ApiTopicSectionHandler(ApiTopicSectionType.RevisionHistory,
@@ -864,11 +822,11 @@ $("".toggleSection"").keypress(function () {
             {
                 string tocTitle = this.MetadataNode.Element("tableOfContentsTitle")?.Value.NormalizeWhiteSpace();
 
-                if(!String.IsNullOrWhiteSpace(tocTitle))
-                {
-                    this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "Title"),
-                        new XAttribute("content", tocTitle)));
-                }
+                if(String.IsNullOrWhiteSpace(tocTitle))
+                    tocTitle = ((XText)this.MamlTopicTitle()).Value;
+
+                this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "Title"),
+                    new XAttribute("content", tocTitle)));
             }
             else
             {
@@ -880,7 +838,7 @@ $("".toggleSection"").keypress(function () {
                     title = new XText(this.ApiMember.Name);
                 }
                 else
-                    title = this.ApiTopicTitle(false, true);
+                    title = this.ApiTopicTocTitleSimple();
 
                 this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "Title"),
                     new XElement("includeAttribute",
@@ -1296,7 +1254,7 @@ $("".toggleSection"").keypress(function () {
                 first = false;
             }
 
-            // Show XAML XML namespace for APIs that support XAML.  All topics that have auto-generated XAML
+            // Show XAML XML namespaces for APIs that support XAML.  All topics that have auto-generated XAML
             // syntax get an "XMLNS for XAML" line in the Requirements section.  Topics with boilerplate XAML
             // syntax, e.g. "Not applicable", do NOT get this line.
             var xamlCode = transformation.SyntaxNode.Elements("div").Where(d => d.Attribute("codeLanguage")?.Value.Equals(
@@ -1304,10 +1262,12 @@ $("".toggleSection"").keypress(function () {
 
             if(xamlCode.Any())
             {
-                var xamlXmlNS = xamlCode.Elements("div").Where(d => d.Attribute("xamlXmlnsUri")?.Value != null);
+                var xamlXmlNS = xamlCode.Elements("div").Where(d => d.Attribute("class")?.Value == "xamlXmlnsUri");
 
                 transformation.CurrentElement.Add(new XElement("br"),
-                    new XElement("strong", new XElement("include", new XAttribute("item", "boilerplate_xamlXmlnsRequirements"))));
+                    new XElement("strong",
+                        new XElement("include", new XAttribute("item", "boilerplate_xamlXmlnsRequirements"))),
+                    Element.NonBreakingSpace);
 
                 if(xamlXmlNS.Any())
                 {
@@ -1318,7 +1278,7 @@ $("".toggleSection"").keypress(function () {
                         if(!first)
                             transformation.CurrentElement.Add(", ");
 
-                        transformation.CurrentElement.Add(new XElement(d));
+                        transformation.CurrentElement.Add(d.Value.NormalizeWhiteSpace());
                         first = false;
                     }
                 }
@@ -1397,13 +1357,7 @@ $("".toggleSection"").keypress(function () {
 
             var table = new XElement("table",
                     new XAttribute("id", "namespaceList"),
-                    new XAttribute("class", "table is-hoverable"),
-                new XElement("thead",
-                    new XElement("tr",
-                        new XElement("th",
-                            new XElement("include", new XAttribute("item", "header_namespaceName"))),
-                        new XElement("th",
-                            new XElement("include", new XAttribute("item", "header_namespaceDescription"))))));
+                    new XAttribute("class", "table is-hoverable"));
 
             content.Add(table);
 
@@ -1454,13 +1408,7 @@ $("".toggleSection"").keypress(function () {
 
             var table = new XElement("table",
                     new XAttribute("id", "namespaceList"),
-                    new XAttribute("class", "table is-hoverable"),
-                new XElement("thead",
-                    new XElement("tr",
-                        new XElement("th",
-                            new XElement("include", new XAttribute("item", "header_namespaceName"))),
-                        new XElement("th",
-                            new XElement("include", new XAttribute("item", "header_namespaceDescription"))))));
+                    new XAttribute("class", "table is-hoverable"));
 
             content.Add(table);
 
@@ -1505,13 +1453,7 @@ $("".toggleSection"").keypress(function () {
 
                     var table = new XElement("table",
                             new XAttribute("id", key + "List"),
-                            new XAttribute("class", "table is-hoverable"),
-                        new XElement("thead",
-                            new XElement("tr",
-                                new XElement("th",
-                                    new XElement("include", new XAttribute("item", $"header_{key}Name"))),
-                                new XElement("th",
-                                    new XElement("include", new XAttribute("item", "header_typeDescription"))))));
+                            new XAttribute("class", "table is-hoverable"));
 
                     content.Add(table);
 
@@ -1645,24 +1587,9 @@ $("".toggleSection"").keypress(function () {
             thisTransform.CurrentElement.Add(title);
             thisTransform.CurrentElement.Add(content);
 
-            XElement valueHeaderCell = null;
-
-            if(includeEnumValues)
-            {
-                valueHeaderCell = new XElement("th",
-                    new XElement("include", new XAttribute("item", "header_memberValue")));
-            }
-
             var table = new XElement("table",
                     new XAttribute("id", "enumMemberList"),
-                    new XAttribute("class", "table is-hoverable"),
-                new XElement("thead",
-                    new XElement("tr",
-                        new XElement("th",
-                            new XElement("include", new XAttribute("item", "header_memberName"))),
-                        valueHeaderCell,
-                        new XElement("th",
-                            new XElement("include", new XAttribute("item", "header_memberDescription"))))));
+                    new XAttribute("class", "table is-hoverable"));
 
             content.Add(table);
             idx = 0;
@@ -1857,13 +1784,7 @@ $("".toggleSection"").keypress(function () {
 
                 var table = new XElement("table",
                         new XAttribute("id", memberType + "List"),
-                        new XAttribute("class", "table is-hoverable"),
-                    new XElement("thead",
-                        new XElement("tr",
-                            new XElement("th",
-                                new XElement("include", new XAttribute("item", $"header_typeName"))),
-                            new XElement("th",
-                                new XElement("include", new XAttribute("item", "header_typeDescription"))))));
+                        new XAttribute("class", "table is-hoverable"));
 
                 content.Add(table);
 
@@ -2050,11 +1971,9 @@ $("".toggleSection"").keypress(function () {
         /// </summary>
         /// <param name="transformation">The topic transformation to use</param>
         /// <param name="sectionTitleItem">The section title include item</param>
-        /// <param name="typeColumnHeaderItem">The type column header item</param>
-        /// <param name="descriptionColumnHeaderItem">The description column header item</param>
         /// <param name="sectionElements">An enumerable list of the elements to render in the table</param>
         private static void RenderApiSectionTable(TopicTransformationCore transformation, string sectionTitleItem,
-          string typeColumnHeaderItem, string descriptionColumnHeaderItem, IEnumerable<XElement> sectionElements)
+          IEnumerable<XElement> sectionElements)
         {
             if(sectionElements.Any())
             {
@@ -2065,13 +1984,7 @@ $("".toggleSection"").keypress(function () {
                 transformation.CurrentElement.Add(content);
 
                 var table = new XElement("table",
-                        new XAttribute("class", "table is-hoverable"),
-                    new XElement("thead",
-                        new XElement("tr",
-                            new XElement("th",
-                                new XElement("include", new XAttribute("item", typeColumnHeaderItem))),
-                            new XElement("th",
-                                new XElement("include", new XAttribute("item", descriptionColumnHeaderItem))))));
+                        new XAttribute("class", "table is-hoverable"));
 
                 content.Add(table);
 

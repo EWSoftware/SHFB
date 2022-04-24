@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : presentationStyle.js
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/16/2022
+// Updated : 04/22/2022
 // Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
 //           Portions Copyright 2010-2022 Microsoft, All rights reserved
 //
@@ -44,9 +44,14 @@ function SetDefaultLanguage(defaultLanguage)
             {
                 text: function (trigger)
                 {
-                    var codePanel = trigger.parentElement.parentElement.nextElementSibling;
+                    var codePanel = trigger.parentElement.parentElement;
 
-                    if(codePanel === null)
+                    if(codePanel === null || typeof(codePanel) === "undefined")
+                        return "";
+
+                    codePanel = $(codePanel).find("code");
+
+                    if(codePanel === null || typeof(codePanel) === "undefined")
                         return "";
 
                     // Toggle the icon briefly to show success
@@ -62,7 +67,7 @@ function SetDefaultLanguage(defaultLanguage)
                         }, 500);
                     }
 
-                    return codePanel.innerText;
+                    return $(codePanel).text();
                 }
             });
     }
@@ -338,8 +343,10 @@ function ParentTocElement(parentElement, selectedTopicId, tocElements)
 
     if(parentElement === null)
     {
+        var topicTitle = $("meta[name='Title']").attr("content");
+
         $("#TopicBreadcrumbs").append($(tocElements).find("breadcrumbs").html());
-        $("#TopicBreadcrumbs").append($("<li><p>" + $("title").text() + "</p></li>"));
+        $("#TopicBreadcrumbs").append($("<li><p>" + topicTitle + "</p></li>"));
         $("#TableOfContents").append(toc);
     }
     else

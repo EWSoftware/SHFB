@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2022
+// Updated : 04/23/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
@@ -288,6 +288,44 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
 
             this.SupportedFormats = supportedFormats;
             this.ResolvePath = resolvePath;
+
+            // Add language IDs used by the legacy colorizer and their highlight.js equivalents
+            foreach(var (oldId, newId) in new[] {
+                ("asp", "xml"),
+                ("asp.net", "xml"),
+                ("aspnet", "xml"),
+                ("batch", "bat"),
+                ("CPlusPlus", "cpp"),
+                ("cpp#", "cpp"),
+                ("EcmaScript", "js"),
+                ("fscript", "fs"),
+                ("htm", "html"),
+                ("jsc", "js"),
+                ("jscript", "js"),
+                ("jscript#", "js"),
+                ("jscript.net", "js"),
+                ("kbjscript", "js"),
+                ("kblangcpp", "cpp"),
+                ("kblangvb", "vbnet"),
+                ("j#", "js"),
+                ("jsharp", "js"),
+                ("jsh", "js"),
+                ("Managed C++", "cpp"),
+                ("ManagedCPlusPlus", "cpp"),
+                ("none", "plaintext"),
+                ("pshell", "ps1"),
+                ("sql server", "sql"),
+                ("sqlserver", "sql"),
+                ("VB#", "vbnet"),
+                ("Visual Basic", "vbnet"),
+                ("VisualBasic", "vbnet"),
+                ("XAML", "xml"),
+                ("x#", "xsharp"),
+                ("xs", "xsharp")
+            })
+            {
+                this.CodeSnippetLanguageConversion.Add(oldId, newId);
+            }
 
             this.CreateTransformationArguments();
             this.CreateLanguageSpecificText();
@@ -1466,6 +1504,68 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
             }
 
             return nameElement.Nodes();
+        }
+
+
+        /// <summary>
+        /// Get the simple table of contents title for an API topic
+        /// </summary>
+        /// <returns>The XML content representing the current topic's simple table of contents title.  For
+        /// types and members, this will be the type/member name alone.  For list topics, it will be the category
+        /// name alone.</returns>
+        protected virtual XNode ApiTopicTocTitleSimple()
+        {
+            if(this.IsMamlTopic)
+                throw new InvalidOperationException("Not an API topic");
+
+            string titleItem;
+
+            switch(this.ApiMember)
+            {
+                case var t when t.ApiGroup == ApiMemberGroup.NamespaceGroup:
+                    return new XElement("include", new XAttribute("item", "topicTitle_namespaceGroup"),
+                        new XElement("parameter", this.ApiMember.Name));
+
+                case var t when t.TopicGroup == ApiMemberGroup.Api:
+                    // API topic titles.  The subsubgroup, subgroup, or group determines the title.
+                    if(t.ApiSubSubgroup != ApiMemberGroup.None)
+                        return this.ApiTopicShortNamePlainText(false);
+
+                    if(t.ApiSubgroup != ApiMemberGroup.None)
+                    {
+                        if(t.ApiSubgroup != ApiMemberGroup.Constructor)
+                            return this.ApiTopicShortNamePlainText(false);
+
+                        titleItem = "Constructor";
+                    }
+                    else
+                        titleItem = t.ApiGroup.ToString();
+                    break;
+
+                case var t when t.TopicSubgroup == ApiMemberGroup.Overload:
+                    // Overload topic titles are just the member name except for constructors
+                    if(t.ApiSubgroup != ApiMemberGroup.Constructor)
+                        return this.ApiTopicShortNamePlainText(false);
+
+                    titleItem = "Constructors";
+                    break;
+
+                case var t when t.TopicGroup == ApiMemberGroup.List:
+                    // List topic titles.  The topic subgroup (e.g. "Methods") determines the title.
+                    titleItem = t.TopicSubgroup.ToString();
+                    break;
+
+                case var t when t.TopicGroup == ApiMemberGroup.Root || t.TopicGroup == ApiMemberGroup.RootGroup:
+                    // Root namespace/namespace group
+                    return new XElement("include", new XAttribute("item", "topicTitle_root"));
+
+                default:
+                    // We shouldn't get here so if this item appears as a missing content item, there's an issue
+                    titleItem = "Unknown";
+                    break;
+            }
+
+            return new XElement("include", new XAttribute("item", "tocTitle_" + titleItem));
         }
 
         /// <summary>

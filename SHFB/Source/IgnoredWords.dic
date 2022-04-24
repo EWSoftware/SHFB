@@ -7,6 +7,7 @@ apidata
 apis
 arg
 args
+aspnet
 assemblydata
 attachedeventdata
 attachedpropertydata
@@ -55,6 +56,7 @@ fastcall
 fielddata
 filterpriority
 fs
+fscript
 fsscript
 gcnew
 guid
@@ -107,6 +109,7 @@ onload
 param
 paramref
 params
+plaintext
 powershell
 pragma
 preservesig
@@ -181,5 +184,6 @@ xmlns
 xpath
 xref
 xs
+xsharp
 xsl
 Zhurikhin

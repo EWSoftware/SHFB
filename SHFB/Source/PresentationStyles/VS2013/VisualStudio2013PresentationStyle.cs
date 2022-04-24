@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013PresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/31/2022
+// Updated : 04/23/2022
 // Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Visual Studio 2013 presentation style.
@@ -76,14 +76,13 @@ namespace Sandcastle.PresentationStyles.VS2013
         public override IEnumerable<string> ResourceItemFiles(string languageName)
         {
             // This presentation style only uses the standard shared content
-            string filePath = this.ResolvePath(@"..\Shared\Content\SharedContent"),
-                fileSpec = "*" + languageName + "*.xml";
+            string filePath = this.ResolvePath(@"..\Shared\Content"),
+                fileSpec = "SharedContent_" + languageName + ".xml";
 
-            if(!Directory.EnumerateFiles(filePath, fileSpec).Any())
-                fileSpec = "*en-US*.xml";
+            if(!File.Exists(Path.Combine(filePath, fileSpec)))
+                fileSpec = "SharedContent_en-US.xml";
 
-            foreach(var file in Directory.EnumerateFiles(filePath, fileSpec))
-                yield return file;
+            yield return Path.Combine(filePath, fileSpec);
         }
     }
 }

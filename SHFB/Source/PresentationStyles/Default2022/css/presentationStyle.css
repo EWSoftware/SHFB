@@ -227,11 +227,35 @@ span.keyword {
     border: 1px solid lightgrey;
     padding: 1em;
     margin-bottom: 1em;
+    flex: 1;
 }
 
     .codePanel pre {
         padding: 0em;
-        line-height: 1.37
+        line-height: 1.37;
+    }
+
+.codeWithNumbers {
+    display: flex;
+}
+
+    .codeWithNumbers .lineNumbers {
+        border: 1px solid lightgrey;
+        flex-shrink: 1;
+        text-align: right;
+        margin-bottom: 1em;
+    }
+
+        .codeWithNumbers .lineNumbers pre {
+            background: transparent;
+            padding-left: 0.50em;
+            padding-right: 0.50em;
+            line-height: 1.37
+        }
+
+    .codeWithNumbers .numbered {
+        flex: 1;
+        overflow-x: auto;
     }
 
 /* Glossary styles */

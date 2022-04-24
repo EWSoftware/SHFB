@@ -124,7 +124,6 @@
 	<item id="topicTitle_constructor">{0}{1} - конструктор</item>
 	<item id="topicTitle_constructors">{0} - конструкторы</item>
 	<item id="topicTitle_delegate">{0} - делегат</item>
-	<item id="topicTitle_derivedTypeList">{0} - производные классы</item>
 	<item id="topicTitle_enumeration">{0} - перечисление</item>
 	<item id="topicTitle_enumMembers">Члены</item>
 	<item id="topicTitle_event">{0} - событие</item>
@@ -132,11 +131,9 @@
 	<item id="topicTitle_field">{0} - поле</item>
 	<item id="topicTitle_fields">{0} - поля</item>
 	<item id="topicTitle_interface">{0} - интерфейс</item>
-	<item id="topicTitle_members">{0} - члены</item>
 	<item id="topicTitle_method">{0}{1} - метод</item>
 	<item id="topicTitle_methods">{0} - методы</item>
 	<item id="topicTitle_namespace">{0} - пространство имён</item>
-	<item id="topicTitle_NamespacePlain">{0}</item>
 	<item id="topicTitle_namespaceGroup">{0} - пространства имён</item>
 	<item id="topicTitle_properties">{0} - свойства</item>
 	<item id="topicTitle_property">{0}{1} - свойство</item>
@@ -153,6 +150,17 @@
   <item id="topicTitle_operatorsAndTypeConversions">{0}  - операторы и преобразования типов</item>
   <!-- Title for operator list topic that has [no operators + type conversions] -->
   <item id="topicTitle_typeConversions">{0} - преобразования типов</item>
+
+	<!-- Table of contents simple titles -->
+ 	<item id="tocTitle_AttachedEvents">вложенные события</item>
+	<item id="tocTitle_AttachedProperties">вложенные свойства</item>
+	<item id="tocTitle_Constructor">конструктор</item>
+	<item id="tocTitle_Constructors">конструкторы</item>
+	<item id="tocTitle_Events">события</item>
+	<item id="tocTitle_Fields">поля</item>
+	<item id="tocTitle_Methods">методы</item>
+	<item id="tocTitle_Operators">операторы</item>
+	<item id="tocTitle_Properties">свойства</item>
 
   <!-- Member list table titles -->
   <item id="tableTitle_attachedEvent">Вложенные события</item>

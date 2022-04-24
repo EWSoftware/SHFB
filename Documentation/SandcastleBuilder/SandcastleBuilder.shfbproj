@@ -198,7 +198,7 @@
     <BinaryTOC>True</BinaryTOC>
     <FeedbackEMailLinkText>Eric Woodruff</FeedbackEMailLinkText>
     <MaximumGroupParts>2</MaximumGroupParts>
-    <NamespaceGrouping>True</NamespaceGrouping>
+    <NamespaceGrouping>False</NamespaceGrouping>
     <RootNamespaceTitle>Sandcastle Help File Builder Namespaces</RootNamespaceTitle>
     <SaveComponentCacheCapacity>0</SaveComponentCacheCapacity>
     <SourceCodeBasePath>..\..\SHFB\Source\</SourceCodeBasePath>

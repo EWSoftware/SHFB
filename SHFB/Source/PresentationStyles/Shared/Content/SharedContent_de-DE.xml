@@ -124,7 +124,6 @@
 	<item id="topicTitle_constructor">{0} Konstruktor {1}</item>
 	<item id="topicTitle_constructors">{0} Konstruktoren</item>
 	<item id="topicTitle_delegate">{0} Delegat</item>
-	<item id="topicTitle_derivedTypeList">{0} Abgeleitete Klassen</item>
 	<item id="topicTitle_enumeration">{0} Enumeration</item>
 	<item id="topicTitle_enumMembers">Member</item>
 	<item id="topicTitle_event">{0} Ereignis</item>
@@ -132,11 +131,9 @@
 	<item id="topicTitle_field">{0} Feld</item>
 	<item id="topicTitle_fields">{0} Felder</item>
 	<item id="topicTitle_interface">{0} Schnittstelle</item>
-	<item id="topicTitle_members">{0} Member</item>
 	<item id="topicTitle_method">{0} Methode {1}</item>
 	<item id="topicTitle_methods">{0} Methoden</item>
 	<item id="topicTitle_namespace">{0} Namensraum</item>
-	<item id="topicTitle_NamespacePlain">{0}</item>
 	<item id="topicTitle_namespaceGroup">{0} Namensräume</item>
 	<item id="topicTitle_properties">{0} Eigenschaften</item>
 	<item id="topicTitle_property">{0} Eigenschaft {1}</item>
@@ -154,6 +151,17 @@
   <!-- Title for operator list topic that has [no operators + type conversions] -->
   <item id="topicTitle_typeConversions">{0} Typenkonvertierungen</item>
 
+	<!-- Table of contents simple titles -->
+ 	<item id="tocTitle_AttachedEvents">Angefügte Ereignisse</item>
+	<item id="tocTitle_AttachedProperties">Angefügte Eigenschaften</item>
+	<item id="tocTitle_Constructor">Konstruktor</item>
+	<item id="tocTitle_Constructors">Konstruktoren</item>
+	<item id="tocTitle_Events">Ereignisse</item>
+	<item id="tocTitle_Fields">Felder</item>
+	<item id="tocTitle_Methods">Methoden</item>
+	<item id="tocTitle_Operators">Operatoren</item>
+	<item id="tocTitle_Properties">Eigenschaften</item>
+	
   <!-- Member list table titles -->
   <item id="tableTitle_attachedEvent">Angefügte Ereignisse</item>
   <item id="tableTitle_attachedProperty">Angefügte Eigenschaften</item>

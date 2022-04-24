@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2022
+// Updated : 04/21/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to search for <code> XML comment tags and colorize the code
@@ -336,9 +336,11 @@ namespace Sandcastle.Tools.BuildComponents
             }
 
             if(outputPaths.Count == 0)
+            {
                 throw new ArgumentException("You must specify at least one <path> element in the " +
                     "<outputPaths> element.  You may need to delete and re-add the component to the project " +
                     "to obtain updated configuration settings.", nameof(configuration));
+            }
 
             // The <allowMissingSource> element is optional.  If not set, missing source files generate an error.
             nav = configuration.SelectSingleNode("allowMissingSource");
@@ -348,8 +350,10 @@ namespace Sandcastle.Tools.BuildComponents
                 value = nav.GetAttribute("value", String.Empty);
 
                 if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out allowMissingSource))
+                {
                     throw new ArgumentException("You must specify a Boolean value for the " +
                         "<allowMissingSource> 'value' attribute.", nameof(configuration));
+                }
             }
 
             if(!allowMissingSource)
@@ -366,16 +370,20 @@ namespace Sandcastle.Tools.BuildComponents
                 value = nav.GetAttribute("value", String.Empty);
 
                 if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out removeRegionMarkers))
+                {
                     throw new ArgumentException("You must specify a Boolean value for the " +
                         "<removeRegionMarkers> 'value' attribute.", nameof(configuration));
+                }
             }
 
             // The <colorizer> element is required and defines the defaults for the code colorizer
             nav = configuration.SelectSingleNode("colorizer");
 
             if(nav == null)
+            {
                 throw new ArgumentException("You must specify a <colorizer> element to define the code " +
                     "colorizer options.", nameof(configuration));
+            }
 
             // The file and URL values are all required
             syntaxFile = nav.GetAttribute("syntaxFile", String.Empty);
@@ -384,20 +392,28 @@ namespace Sandcastle.Tools.BuildComponents
             scriptFile = nav.GetAttribute("scriptFile", String.Empty);
 
             if(String.IsNullOrEmpty(syntaxFile))
+            {
                 throw new ArgumentException("You must specify a 'syntaxFile' attribute on the " +
                     "<colorizer> element.", nameof(configuration));
+            }
 
             if(String.IsNullOrEmpty(styleFile))
+            {
                 throw new ArgumentException("You must specify a 'styleFile' attribute on the " +
                     "<colorizer> element.", nameof(configuration));
+            }
 
             if(String.IsNullOrEmpty(stylesheet) && !isOpenXml && !isMarkdown)
+            {
                 throw new ArgumentException("You must specify a 'stylesheet' attribute on the " +
                     "<colorizer> element", nameof(configuration));
+            }
 
             if(String.IsNullOrEmpty(scriptFile) && !isOpenXml && !isMarkdown)
+            {
                 throw new ArgumentException("You must specify a 'scriptFile' attribute on the " +
                     "<colorizer> element", nameof(configuration));
+            }
 
             // The syntax and style files must also exist.  The "copy" image URL is just a location and it
             // doesn't have to exist yet.
@@ -405,12 +421,16 @@ namespace Sandcastle.Tools.BuildComponents
             styleFile = Path.GetFullPath(styleFile);
 
             if(!File.Exists(syntaxFile))
+            {
                 throw new ArgumentException("The specified syntax file could not be found: " + syntaxFile,
                     nameof(configuration));
+            }
 
             if(!File.Exists(styleFile))
+            {
                 throw new ArgumentException("The specified style file could not be found: " + styleFile,
                     nameof(configuration));
+            }
 
             if(!isOpenXml && !isMarkdown)
             {
@@ -438,40 +458,52 @@ namespace Sandcastle.Tools.BuildComponents
             value = nav.GetAttribute("numberLines", String.Empty);
 
             if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out numberLines))
+            {
                 throw new ArgumentException("You must specify a Boolean value for the " +
                     "'numberLines' attribute.", nameof(configuration));
+            }
 
             value = nav.GetAttribute("outlining", String.Empty);
 
             if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out outliningEnabled))
+            {
                 throw new ArgumentException("You must specify a Boolean value for the 'outlining' attribute.",
                     nameof(configuration));
+            }
 
             value = nav.GetAttribute("keepSeeTags", String.Empty);
 
             if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out keepSeeTags))
+            {
                 throw new ArgumentException("You must specify a Boolean value for the 'keepSeeTags' attribute.",
                     nameof(configuration));
+            }
 
             value = nav.GetAttribute("tabSize", String.Empty);
 
             if(!String.IsNullOrEmpty(value) && !Int32.TryParse(value, out defaultTabSize))
+            {
                 throw new ArgumentException("You must specify an integer value for the 'tabSize' attribute.",
                     nameof(configuration));
+            }
 
             value = nav.GetAttribute("defaultTitle", String.Empty);
 
             if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out useDefaultTitle))
+            {
                 throw new ArgumentException("You must specify a Boolean value for the 'defaultTitle' attribute.",
                     nameof(configuration));
+            }
 
             if(!isMarkdown)
             {
                 value = nav.GetAttribute("disabled", String.Empty);
 
                 if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out isDisabled))
+                {
                     throw new ArgumentException("You must specify a Boolean value for the 'disabled' attribute.",
                         nameof(configuration));
+                }
             }
             else
                 isDisabled = true;      // Markdown doesn't support anything so it is always disabled
@@ -490,8 +522,10 @@ namespace Sandcastle.Tools.BuildComponents
                     styleFile = Path.Combine(Path.GetDirectoryName(defaultTransform), "highlight_openxml.xsl");
 
                     if(!File.Exists(styleFile))
+                    {
                         throw new ArgumentException("The specified style file could not be found: " + styleFile,
                             nameof(configuration));
+                    }
                 }
             }
 
@@ -521,7 +555,7 @@ namespace Sandcastle.Tools.BuildComponents
             nestedConceptCode.SetContext(context);
 
             // Hook up the event handler to complete the process after the topic is transformed to HTML
-            base.BuildAssembler.ComponentEvent += TransformComponent_TopicTransformed;
+            this.BuildAssembler.ComponentEvent += TransformComponent_TopicTransformed;
         }
 
         /// <summary>
@@ -561,7 +595,7 @@ namespace Sandcastle.Tools.BuildComponents
 
                 if(root == null)
                 {
-                    base.WriteMessage(key, MessageLevel.Warn, "Root content node not found.  Cannot colorize code.");
+                    this.WriteMessage(key, MessageLevel.Warn, "Root content node not found.  Cannot colorize code.");
                     return;
                 }
 
@@ -589,8 +623,10 @@ namespace Sandcastle.Tools.BuildComponents
                 // Allow the "missing source" option to be overridden locally.  However, if false, it will
                 // inherit the global setting.
                 if(code.Attributes["allowMissingSource"] != null)
+                {
                     msgLevel = Convert.ToBoolean(code.Attributes["allowMissingSource"].Value,
                         CultureInfo.InvariantCulture) ? MessageLevel.Warn : messageLevel;
+                }
 
                 // If there are nested code blocks, load them.  Source and region attributes will be ignored on
                 // the parent.  All other attributes will be applied to the combined block of code.  If there are
@@ -599,27 +635,25 @@ namespace Sandcastle.Tools.BuildComponents
                 if(navCode.SelectSingleNode(nestedCode) != null)
                     codeBlock = this.LoadNestedCodeBlocks(key, navCode, nestedCode, msgLevel);
                 else
+                {
                     if(code.Attributes["source"] != null)
                         codeBlock = this.LoadCodeBlock(key, code, msgLevel);
                     else
                         codeBlock = code.InnerXml;
+                }
 
                 // Check for option overrides
                 if(code.Attributes["numberLines"] != null)
-                    nbrLines = Convert.ToBoolean(code.Attributes["numberLines"].Value,
-                        CultureInfo.InvariantCulture);
+                    nbrLines = Convert.ToBoolean(code.Attributes["numberLines"].Value, CultureInfo.InvariantCulture);
 
                 if(code.Attributes["outlining"] != null)
-                    outline = Convert.ToBoolean(code.Attributes["outlining"].Value,
-                        CultureInfo.InvariantCulture);
+                    outline = Convert.ToBoolean(code.Attributes["outlining"].Value, CultureInfo.InvariantCulture);
 
                 if(code.Attributes["keepSeeTags"] != null)
-                    seeTags = Convert.ToBoolean(code.Attributes["keepSeeTags"].Value,
-                        CultureInfo.InvariantCulture);
+                    seeTags = Convert.ToBoolean(code.Attributes["keepSeeTags"].Value, CultureInfo.InvariantCulture);
 
                 if(code.Attributes["tabSize"] != null)
-                    tabSize = Convert.ToInt32(code.Attributes["tabSize"].Value,
-                        CultureInfo.InvariantCulture);
+                    tabSize = Convert.ToInt32(code.Attributes["tabSize"].Value, CultureInfo.InvariantCulture);
 
                 // If either language option is set to "none" or an unknown language, it just strips excess
                 // leading whitespace and optionally numbers the lines and adds outlining based on the other
@@ -635,8 +669,17 @@ namespace Sandcastle.Tools.BuildComponents
                     code.Attributes.Append(attr);
                 }
                 else
+                {
                     if(code.Attributes["language"] != null)
                         language = code.Attributes["language"].Value;
+                    else
+                    {
+                        // Add the attribute with the default language
+                        attr = document.CreateAttribute("language");
+                        attr.Value = language;
+                        code.Attributes.Append(attr);
+                    }
+                }
 
                 if(isOpenXml)
                     nbrLines = outline = false;
@@ -645,6 +688,14 @@ namespace Sandcastle.Tools.BuildComponents
                 // handle it.  The language ID is passed to use the appropriate tab size if not overridden.
                 if(isDisabled)
                 {
+                    // Pass through the default line numbering option if enabled
+                    if(nbrLines && code.Attributes["numberLines"] == null)
+                    {
+                        attr = document.CreateAttribute("numberLines");
+                        attr.Value = "true";
+                        code.Attributes.Append(attr);
+                    }
+
                     code.InnerXml = colorizer.ProcessAndHighlightText(String.Format(CultureInfo.InvariantCulture,
                         "<code lang=\"{0}\" tabSize=\"{1}\" disabled=\"true\">{2}</code>", language, tabSize,
                         codeBlock));
@@ -956,7 +1007,7 @@ namespace Sandcastle.Tools.BuildComponents
 
                 if(head == null)
                 {
-                    base.WriteMessage(ac.Key, MessageLevel.Error, "<head> section not found!  Could not insert links.");
+                    this.WriteMessage(ac.Key, MessageLevel.Error, "<head> section not found!  Could not insert links.");
                     return;
                 }
 

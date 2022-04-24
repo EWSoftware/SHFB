@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2022
+// Updated : 04/22/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -1543,7 +1543,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 first = false;
             }
 
-            // Show XAML XML namespace for APIs that support XAML.  All topics that have auto-generated XAML
+            // Show XAML XML namespaces for APIs that support XAML.  All topics that have auto-generated XAML
             // syntax get an "XMLNS for XAML" line in the Requirements section.  Topics with boilerplate XAML
             // syntax, e.g. "Not applicable", do NOT get this line.
             var xamlCode = transformation.SyntaxNode.Elements("div").Where(d => d.Attribute("codeLanguage")?.Value.Equals(
@@ -1551,10 +1551,12 @@ namespace Sandcastle.PresentationStyles.VS2013
 
             if(xamlCode.Any())
             {
-                var xamlXmlNS = xamlCode.Elements("div").Where(d => d.Attribute("xamlXmlnsUri")?.Value != null);
+                var xamlXmlNS = xamlCode.Elements("div").Where(d => d.Attribute("class")?.Value == "xamlXmlnsUri");
 
                 transformation.CurrentElement.Add(new XElement("br"),
-                    new XElement("strong", new XElement("include", new XAttribute("item", "boilerplate_xamlXmlnsRequirements"))));
+                    new XElement("strong",
+                        new XElement("include", new XAttribute("item", "boilerplate_xamlXmlnsRequirements"))),
+                    Element.NonBreakingSpace);
 
                 if(xamlXmlNS.Any())
                 {
@@ -1565,7 +1567,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                         if(!first)
                             transformation.CurrentElement.Add(", ");
 
-                        transformation.CurrentElement.Add(new XElement(d));
+                        transformation.CurrentElement.Add(d.Value.NormalizeWhiteSpace());
                         first = false;
                     }
                 }

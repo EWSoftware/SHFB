@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : CodeSnippetGroupElementLanguageFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2022
+// Updated : 04/22/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle codeSnippetGroup elements in presentation styles that use a
@@ -19,6 +19,8 @@
 //===============================================================================================================
 
 using System;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -39,6 +41,14 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         /// <value>If not set by the owning transformation or something else, the element will try to resolve
         /// the default path on first use.</value>
         public string CodeSnippetTemplatePath { get; set; }
+
+        /// <summary>
+        /// This is used to get or set the code snippet template file path that contains an element block for
+        /// line numbers.
+        /// </summary>
+        /// <value>If not set by the owning transformation or something else, the element will try to resolve
+        /// the default path on first use.</value>
+        public string CodeSnippetNumberedTemplatePath { get; set; }
 
         #endregion
 
@@ -74,11 +84,31 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 if(String.IsNullOrWhiteSpace(this.CodeSnippetTemplatePath))
                     this.CodeSnippetTemplatePath = transformation.ResolvePath(@"Templates\CodeSnippetTemplate.html");
 
-                var template = TopicTransformationCore.LoadTemplateFile(this.CodeSnippetTemplatePath, null);
+                if(String.IsNullOrWhiteSpace(this.CodeSnippetNumberedTemplatePath))
+                    this.CodeSnippetNumberedTemplatePath = transformation.ResolvePath(@"Templates\CodeSnippetNumberedTemplate.html");
+
+                XDocument codeOnlyTemplate = TopicTransformationCore.LoadTemplateFile(this.CodeSnippetTemplatePath, null),
+                    withNumbersTemplate = null;
+
+                if(File.Exists(this.CodeSnippetNumberedTemplatePath))
+                    withNumbersTemplate = TopicTransformationCore.LoadTemplateFile(this.CodeSnippetNumberedTemplatePath, null);
+
+                TopicTransformationCore.LoadTemplateFile(this.CodeSnippetNumberedTemplatePath, null);
 
                 foreach(var snippet in snippets)
                 {
-                    var codeBlock = new XElement(template.Root);
+                    string numberLines = snippet.Attribute("numberLines")?.Value;
+                    XElement codeBlock;
+
+                    if(withNumbersTemplate == null || transformation.UsesLegacyCodeColorizer ||
+                      numberLines == null || !numberLines.Equals("true", StringComparison.OrdinalIgnoreCase))
+                    {
+                        codeBlock = new XElement(codeOnlyTemplate.Root);
+                        numberLines = null;
+                    }
+                    else
+                        codeBlock = new XElement(withNumbersTemplate.Root);
+
                     string titleText = snippet.Attribute("title")?.Value,
                         codeLanguage = snippet.Attribute("codeLanguage")?.Value,
                         style = snippet.Attribute("style")?.Value;
@@ -115,12 +145,13 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                             new XAttribute("undefined", codeLanguage)));
                     }
 
-                    var codeContainer = codeBlock.Descendants("pre").FirstOrDefault(p => p.Attribute("id")?.Value == "CodeBlock");
+                    var codeContainer = codeBlock.Descendants("pre").FirstOrDefault(
+                        p => p.Attribute("id")?.Value == "CodeBlock");
 
                     if(codeContainer == null)
                     {
                         throw new InvalidOperationException("Unable to locate the code container with the id " +
-                            "'CodeBlock' in the syntax section code template");
+                            "'CodeBlock' in the code snippet template");
                     }
 
                     codeContainer.Attribute("id").Remove();
@@ -143,9 +174,30 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                             if(transformation.CodeSnippetLanguageConversion.TryGetValue(language, out string newId))
                                 language = newId;
 
+                            if(numberLines != null)
+                            {
+                                var numberContainer = codeBlock.Descendants("pre").FirstOrDefault(
+                                    p => p.Attribute("id")?.Value == "LineNumbers");
+
+                                if(numberContainer == null)
+                                {
+                                    throw new InvalidOperationException("Unable to locate the line number " +
+                                        "container with the id 'LineNumbers' in the code snippet template");
+                                }
+
+                                numberContainer.Attribute("id").Remove();
+                                numberContainer.RemoveNodes();
+
+                                int lineCount = snippet.Value.Split(new[] { "\r\n" }, StringSplitOptions.None).Length;
+
+                                numberContainer.Value = String.Join("\r\n", Enumerable.Range(
+                                    1, lineCount).Select(i => i.ToString(CultureInfo.InvariantCulture)));
+                            }
+
                             codeContainer.Add(new XElement("code",
                                 new XAttribute("class", $"language-{language}"),
                                 snippet.Nodes()));
+
                             transformation.RegisterStartupScript(10000, "hljs.highlightAll();");
                         }
                     }
