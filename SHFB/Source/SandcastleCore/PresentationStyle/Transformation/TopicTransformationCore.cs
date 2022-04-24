@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/23/2022
+// Updated : 04/24/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
@@ -1281,9 +1281,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
             else
             {
                 if(!String.IsNullOrWhiteSpace(this.ApiMember.OverloadTopicId))
-                {
                     memberParams.Add(this.ApiTopicParameterTypes(plainText));
-                }
             }
 
             return includeItem;
@@ -1527,12 +1525,34 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                         new XElement("parameter", this.ApiMember.Name));
 
                 case var t when t.TopicGroup == ApiMemberGroup.Api:
+                    XNode memberName, parameters = null;
+
+                    if(!String.IsNullOrWhiteSpace(this.ApiMember.OverloadTopicId))
+                        parameters = this.ApiTopicParameterTypes(true)?.First();
+
                     // API topic titles.  The subsubgroup, subgroup, or group determines the title.
                     if(t.ApiSubSubgroup != ApiMemberGroup.None)
-                        return this.ApiTopicShortNamePlainText(false);
+                    {
+                        memberName = this.ApiTopicShortNamePlainText(false);
+
+                        if(parameters == null)
+                            return memberName;
+
+                        return new XText(((XText)memberName).Value + ((XText)parameters).Value);
+                    }
 
                     if(t.ApiSubgroup != ApiMemberGroup.None)
                     {
+                        if(!String.IsNullOrWhiteSpace(this.ApiMember.OverloadTopicId))
+                        {
+                            memberName = this.ApiTopicShortNamePlainText(false);
+
+                            if(parameters == null)
+                                return memberName;
+
+                            return new XText(((XText)memberName).Value + ((XText)parameters).Value);
+                        }
+
                         if(t.ApiSubgroup != ApiMemberGroup.Constructor)
                             return this.ApiTopicShortNamePlainText(false);
 
@@ -1760,7 +1780,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
 
                 case "specialization":
                 case "templates":
-                    memberName.Append('(');
+                    memberName.Append('<');
 
                     foreach(var t in typeInfo.Elements())
                     {
@@ -1772,7 +1792,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                         first = false;
                     }
 
-                    memberName.Append(')');
+                    memberName.Append('>');
                     break;
 
                 case "template":
