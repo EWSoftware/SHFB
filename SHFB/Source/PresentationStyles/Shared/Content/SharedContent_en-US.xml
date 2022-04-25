@@ -64,6 +64,7 @@
   <item id="title_changeHistory">Change History</item>
   <item id="title_childElement">Child Elements</item>
   <item id="title_conclusion">Conclusion</item>
+  <item id="title_definition">Definition</item>
   <item id="title_delegateValue">Return Value</item>
   <item id="title_demonstrates">Demonstrates</item>
   <item id="title_dotNetFrameworkEquivalent">.NET Framework Equivalent</item>
@@ -214,7 +215,11 @@
   <item id="preliminaryApi">This API is preliminary and subject to change.</item>
 	<item id="preliminaryShort">Preliminary</item>
 	<item id="text_extensionUsage">In Visual Basic and C#, you can call this method as an instance method on any object of type {0}. When you use instance method syntax to call this method, omit the first parameter. For more information, see <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">Extension Methods (Visual Basic)</a> or <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">Extension Methods (C# Programming Guide)</a>.</item>
-	<item id="text_moreInheritance">More...</item>
+	<item id="text_inheritance">Inheritance</item>
+	<item id="text_derived">Derived</item>
+	<item id="text_implements">Implements</item>
+	<item id="text_moreInheritance">More</item>
+	<item id="text_lessInheritance">Less</item>
   <item id="text_relatedEntries">See Also:</item>
 	<item id="top">Top</item>
 	<item id="optionalText">(Optional)</item>

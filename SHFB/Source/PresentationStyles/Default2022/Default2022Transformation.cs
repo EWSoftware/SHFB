@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/23/2022
+// Updated : 04/24/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -552,7 +552,13 @@ namespace Sandcastle.PresentationStyles.Default2022
                 // seeAlso should be a top-level element in the comments but may appear within other elements.
                 // We'll ignore it if seen as they'll be handled manually by the See Also section processing.
                 new IgnoredElement("seealso"),
-                new SyntaxElementLanguageFilter(nameof(RequestExampleUrl), nameof(BaseSourceCodeUrl)),
+                // For this presentation style, namespace/assembly info and inheritance hierarchy are part of
+                // the definition (syntax) section.
+                new SyntaxElementLanguageFilter(nameof(RequestExampleUrl), nameof(BaseSourceCodeUrl))
+                {
+                    NamespaceAndAssemblyInfoRenderer = RenderApiNamespaceAndAssemblyInformation,
+                    InheritanceHierarchyRenderer = RenderApiInheritanceHierarchy
+                },
                 new TemplatesElement(),
                 new ThreadsafetyElement(),
                 new ConvertibleElement("typeparamref", "name", "span", "parameter"),
@@ -569,18 +575,14 @@ namespace Sandcastle.PresentationStyles.Default2022
             {
                 new ApiTopicSectionHandler(ApiTopicSectionType.Notices, t => RenderNotices(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.Summary, t => RenderApiSummarySection(t)),
-                new ApiTopicSectionHandler(ApiTopicSectionType.InheritanceHierarchyAbbreviated,
-                    t => RenderApiInheritanceHierarchy(t, false)),
-                new ApiTopicSectionHandler(ApiTopicSectionType.NamespaceAndAssemblyInfo,
-                    t => RenderApiNamespaceAndAssemblyInformation(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.SyntaxSection, t => RenderApiSyntaxSection(t)),
+                new ApiTopicSectionHandler(ApiTopicSectionType.Remarks, t => RenderApiRemarksSection(t)),
+                new ApiTopicSectionHandler(ApiTopicSectionType.Examples, t => RenderApiExamplesSection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.MemberList, t => RenderApiMemberList(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.Events,
                     t => RenderApiSectionTable(t, "title_events", t.CommentsNode.Elements("event"))),
                 new ApiTopicSectionHandler(ApiTopicSectionType.Exceptions,
                     t => RenderApiSectionTable(t, "title_exceptions", this.CommentsNode.Elements("exception"))),
-                new ApiTopicSectionHandler(ApiTopicSectionType.Remarks, t => RenderApiRemarksSection(t)),
-                new ApiTopicSectionHandler(ApiTopicSectionType.Examples, t => RenderApiExamplesSection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.Versions, t => RenderApiVersionsSection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.Permissions,
                     t => RenderApiSectionTable(t, "title_permissions", t.CommentsNode.Elements("permission"))),
@@ -591,8 +593,6 @@ namespace Sandcastle.PresentationStyles.Default2022
                 new ApiTopicSectionHandler(ApiTopicSectionType.Bibliography,
                     t => RenderApiBibliographySection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.SeeAlso, t => RenderApiSeeAlsoSection(t)),
-                new ApiTopicSectionHandler(ApiTopicSectionType.InheritanceHierarchyFull,
-                    t => RenderApiInheritanceHierarchy(t, true)),
             });
         }
 
@@ -1104,82 +1104,116 @@ $("".toggleSection"").keypress(function () {
         /// Render the inheritance hierarchy section
         /// </summary>
         /// <param name="transformation">The topic transformation to use</param>
-        /// <param name="fullHierarchy">True for a full hierarchy, false for an abbreviated one (four descendants
-        /// maximum).  If full, it will only render a full one if the abbreviated hierarchy section is not
-        /// present or if the descendant count exceeds four.  The abbreviated hierarchy renders a "More..." link
-        /// to a full hierarchy section with a <c>fullInheritance</c> ID that is assumed to be elsewhere in the
-        /// topic that shows all descendants.</param>
-        private static void RenderApiInheritanceHierarchy(TopicTransformationCore transformation, bool fullHierarchy)
+        /// <param name="content">The content element to which the information is added</param>
+        private static void RenderApiInheritanceHierarchy(TopicTransformationCore transformation, XElement content)
         {
-            var family = transformation.ReferenceNode.Element("family");
+            XElement dl, dd, hierarchyItem, family = transformation.ReferenceNode.Element("family");
+            bool isFirst = true;
 
-            if(family == null)
-                return;
-
-            var descendants = family.Element("descendents");
-            int descendantCount = descendants?.Elements().Count() ?? 0;
-
-            // If an abbreviated hierarchy section is present and there are less than 5 descendants, skip the
-            // full hierarchy.
-            if(fullHierarchy && descendantCount < 5 && transformation.ApiTopicSectionHandlerFor(
-              ApiTopicSectionType.InheritanceHierarchyAbbreviated, null) != null)
+            if(family != null)
             {
-                return;
-            }
+                XElement descendants = family.Element("descendents"), ancestors = family.Element("ancestors");
 
-            var (title, content) = transformation.CreateSection(family.GenerateUniqueId(), true,
-                "title_family", fullHierarchy ? "fullInheritance" : null);
+                dl = new XElement("dl", new XAttribute("class", "inheritanceHierarchy"),
+                    new XElement("dt", new XElement("include", new XAttribute("item", "text_inheritance"))));
+                dd = new XElement("dd");
 
-            transformation.CurrentElement.Add(title);
-            transformation.CurrentElement.Add(content);
+                dl.Add(dd);
+                content.Add(dl);
 
-            var ancestors = family.Element("ancestors");
-            int indent = 0;
-
-            if(ancestors != null)
-            {
-                // Ancestor types are stored nearest to most distant so reverse them
-                foreach(var typeInfo in ancestors.Elements().Reverse())
+                if(ancestors != null)
                 {
-                    if(indent > 0)
-                        content.Add(indent.ToIndent());
+                    // Ancestor types are stored nearest to most distant so reverse them
+                    foreach(var typeInfo in ancestors.Elements().Reverse())
+                    {
+                        if(!isFirst)
+                        {
+                            dd.Add(Element.NonBreakingSpace, Element.NonBreakingSpace, new XElement("span",
+                                    new XAttribute("class", "icon is-small"),
+                                new XElement("i",
+                                    new XAttribute("class", "fa fa-arrow-right"), String.Empty)),
+                                Element.NonBreakingSpace, Element.NonBreakingSpace);
+                        }
 
-                    transformation.RenderTypeReferenceLink(content, typeInfo, true);
-                    content.Add(new XElement("br"));
-
-                    indent++;
+                        transformation.RenderTypeReferenceLink(dd, typeInfo, false);
+                        isFirst = false;
+                    }
                 }
-            }
 
-            if(indent > 0)
-            {
-                content.Add(indent.ToIndent());
-                indent++;
-            }
-
-            content.Add(new XElement("referenceLink",
-                    new XAttribute("target", transformation.Key),
-                    new XAttribute("show-container", true)),
-                new XElement("br"));
-
-            if(descendants != null)
-            {
-                if(!fullHierarchy && descendantCount > 4)
+                if(!isFirst)
                 {
-                    content.Add(indent.ToIndent());
-                    content.Add(new XElement("a",
-                        new XAttribute("href", "#fullInheritance"),
-                        new XElement("include",
-                            new XAttribute("item", "text_moreInheritance"))));
+                    dd.Add(Element.NonBreakingSpace, Element.NonBreakingSpace, new XElement("span",
+                            new XAttribute("class", "icon is-small"),
+                        new XElement("i",
+                            new XAttribute("class", "fa fa-arrow-right"), String.Empty)),
+                        Element.NonBreakingSpace, Element.NonBreakingSpace);
                 }
-                else
+
+                dd.Add(new XElement("referenceLink",
+                        new XAttribute("target", transformation.Key),
+                        new XAttribute("show-container", false)));
+
+                if(descendants != null)
                 {
+                    dl = new XElement("dl", new XAttribute("class", "inheritanceHierarchy"),
+                        new XElement("dt", new XElement("include", new XAttribute("item", "text_derived"))));
+                    dd = new XElement("dd");
+
+                    dl.Add(dd);
+                    content.Add(dl);
+
+                    int count = 1, totalDescendants = descendants.Elements().Count();
+
                     foreach(var typeInfo in descendants.Elements().OrderBy(e => e.Attribute("api")?.Value))
                     {
-                        content.Add(indent.ToIndent());
-                        transformation.RenderTypeReferenceLink(content, typeInfo, true);
-                        content.Add(new XElement("br"));
+                        hierarchyItem = new XElement("div");
+
+                        if(count > 4 && totalDescendants > 5)
+                            hierarchyItem.Add(new XAttribute("class", "is-hidden hiddenDescendant"));
+
+                        dd.Add(hierarchyItem);
+                        transformation.RenderTypeReferenceLink(hierarchyItem, typeInfo, true);
+
+                        count++;
                     }
+
+                    if(totalDescendants > 5)
+                    {
+                        dd.Add(new XElement("a", new XAttribute("class", "descendantsToggle hiddenDescendant"),
+                            new XElement("include", new XAttribute("item", "text_moreInheritance")), " ",
+                            new XElement("span", new XAttribute("class", "icon is-small"),
+                            new XElement("i", new XAttribute("class", "fa fa-chevron-down"), String.Empty))));
+                        dd.Add(new XElement("a", new XAttribute("class", "descendantsToggle hiddenDescendant is-hidden"),
+                            new XElement("include", new XAttribute("item", "text_lessInheritance")), " ",
+                            new XElement("span", new XAttribute("class", "icon is-small"),
+                            new XElement("i", new XAttribute("class", "fa fa-chevron-up"), String.Empty))));
+
+                        transformation.RegisterStartupScript(1000, @"$("".descendantsToggle"").click(function () {
+    $("".hiddenDescendant"").toggleClass(""is-hidden"");
+});");
+                    }
+                }
+            }
+
+            var implements = transformation.ReferenceNode.Element("implements");
+
+            if(implements != null)
+            {
+                dl = new XElement("dl", new XAttribute("class", "implementsList"),
+                    new XElement("dt", new XElement("include", new XAttribute("item", "text_implements"))));
+                dd = new XElement("dd");
+
+                dl.Add(dd);
+                content.Add(dl);
+                isFirst = true;
+
+                foreach(var typeInfo in implements.Elements().OrderBy(e => e.Attribute("api")?.Value))
+                {
+                    if(!isFirst)
+                        dd.Add(", ");
+
+                    transformation.RenderTypeReferenceLink(dd, typeInfo, false);
+                    isFirst = false;
                 }
             }
         }
@@ -1188,7 +1222,9 @@ $("".toggleSection"").keypress(function () {
         /// This is used to render namespace and assembly information for an API topic
         /// </summary>
         /// <param name="transformation">The topic transformation to use</param>
-        private static void RenderApiNamespaceAndAssemblyInformation(TopicTransformationCore transformation)
+        /// <param name="content">The content element to which the information is added</param>
+        private static void RenderApiNamespaceAndAssemblyInformation(TopicTransformationCore transformation,
+          XElement content)
         {
             // Only API member pages get namespace/assembly info
             if(transformation.ApiMember.ApiTopicGroup == ApiMemberGroup.List ||
@@ -1203,8 +1239,8 @@ $("".toggleSection"").keypress(function () {
             var containers = transformation.ReferenceNode.Element("containers");
             var libraries = containers.Elements("library");
 
-            transformation.CurrentElement.Add(new XElement("br"),
-                new XElement("strong", new XElement("include", new XAttribute("item", "boilerplate_requirementsNamespace"))),
+            content.Add(new XElement("strong",
+                new XElement("include", new XAttribute("item", "boilerplate_requirementsNamespace"))),
                 Element.NonBreakingSpace,
                 new XElement("referenceLink",
                     new XAttribute("target", containers.Element("namespace").Attribute("api").Value)),
@@ -1215,13 +1251,13 @@ $("".toggleSection"").keypress(function () {
 
             if(libraries.Count() > 1)
             {
-                transformation.CurrentElement.Add(new XElement("strong",
+                content.Add(new XElement("strong",
                     new XElement("include", new XAttribute("item", "boilerplate_requirementsAssemblies"))));
                 separatorSize = 2;
             }
             else
             {
-                transformation.CurrentElement.Add(new XElement("strong",
+                content.Add(new XElement("strong",
                     new XElement("include", new XAttribute("item", "boilerplate_requirementsAssemblyLabel"))));
             }
 
@@ -1231,9 +1267,9 @@ $("".toggleSection"").keypress(function () {
             foreach(var l in libraries)
             {
                 if(!first)
-                    transformation.CurrentElement.Add(new XElement("br"));
+                    content.Add(new XElement("br"));
 
-                transformation.CurrentElement.Add(separator);
+                content.Add(separator);
 
                 string version = l.Element("assemblydata").Attribute("version").Value,
                     extension = l.Attribute("kind").Value.Equals(
@@ -1244,7 +1280,7 @@ $("".toggleSection"").keypress(function () {
                 if(maxVersionParts > 1 && maxVersionParts < 5)
                     version = String.Join(".", versionParts, 0, maxVersionParts);
 
-                transformation.CurrentElement.Add(new XElement("include",
+                content.Add(new XElement("include",
                         new XAttribute("item", "assemblyNameAndModule"),
                     new XElement("parameter", l.Attribute("assembly").Value),
                     new XElement("parameter", l.Attribute("module").Value),
@@ -1264,7 +1300,7 @@ $("".toggleSection"").keypress(function () {
             {
                 var xamlXmlNS = xamlCode.Elements("div").Where(d => d.Attribute("class")?.Value == "xamlXmlnsUri");
 
-                transformation.CurrentElement.Add(new XElement("br"),
+                content.Add(new XElement("br"),
                     new XElement("strong",
                         new XElement("include", new XAttribute("item", "boilerplate_xamlXmlnsRequirements"))),
                     Element.NonBreakingSpace);
@@ -1276,17 +1312,14 @@ $("".toggleSection"").keypress(function () {
                     foreach(var d in xamlXmlNS)
                     {
                         if(!first)
-                            transformation.CurrentElement.Add(", ");
+                            content.Add(", ");
 
-                        transformation.CurrentElement.Add(d.Value.NormalizeWhiteSpace());
+                        content.Add(d.Value.NormalizeWhiteSpace());
                         first = false;
                     }
                 }
                 else
-                {
-                    transformation.CurrentElement.Add(new XElement("include",
-                        new XAttribute("item", "boilerplate_unmappedXamlXmlns")));
-                }
+                    content.Add(new XElement("include", new XAttribute("item", "boilerplate_unmappedXamlXmlns")));
             }
         }
 
@@ -1683,13 +1716,6 @@ $("".toggleSection"").keypress(function () {
 
             if(transformation.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload)
             {
-                transformation.CurrentElement.Add(new XElement("p",
-                    new XElement("include",
-                        new XAttribute("item", "exposedMembersTableText"),
-                        new XElement("parameter",
-                            new XElement("referenceLink", new XAttribute("target",
-                                transformation.ApiMember.TypeTopicId))))));
-
                 // Group the members by section type
                 foreach(var m in allMembers)
                 {
@@ -1959,10 +1985,6 @@ $("".toggleSection"").keypress(function () {
                     if(summaryCell.IsEmpty)
                         summaryCell.Add(Element.NonBreakingSpace);
                 }
-
-                content.Add(new XElement("a",
-                    new XAttribute("href", "#Header"),
-                    new XElement("include", new XAttribute("item", "top"))));
             }
         }
 
@@ -2375,7 +2397,7 @@ $("".toggleSection"").keypress(function () {
             }
 
             if(hasLinks)
-                this.RegisterStartupScript(500, "InitializeQuickLinks()");
+                this.RegisterStartupScript(500, "InitializeQuickLinks();");
         }
         #endregion
     }

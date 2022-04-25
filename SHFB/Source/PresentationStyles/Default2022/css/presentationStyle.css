@@ -99,6 +99,11 @@ div.is-centered {
     text-decoration: underline;
 }
 
+/* Add an outer border to tables */
+.content table {
+    border: 1px solid #dbdbdb;
+}
+
 /* MAML and XML comments element styles */
 .content h4 {
     margin-top: 0.8em;
@@ -193,6 +198,17 @@ span.keyword {
     background-color: #ededed;
     text-align: left;
 }
+
+/* Inheritance hierarchy styles */
+.inheritanceHierarchy, .implementsList {
+    display: flex;
+    margin-bottom: 1em;
+}
+
+    .inheritanceHierarchy dd, .implementsList dd {
+        margin-left: 1em;
+        margin-bottom: 0;
+    }
 
 /* Code block styles */
 .codeHeader {

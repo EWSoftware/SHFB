@@ -64,6 +64,7 @@
 	<item id="title_changeHistory">変更履歴</item>
 	<item id="title_childElement">子要素</item>
 	<item id="title_conclusion">結論</item>
+  <item id="title_definition">Definition</item>
 	<item id="title_delegateValue">戻り値</item>
 	<item id="title_demonstrates">デモ</item>
   <item id="title_dotNetFrameworkEquivalent">.NET Framework と等価</item>
@@ -214,7 +215,11 @@
   <item id="preliminaryApi">このAPIは暫定的なものであり、変更される可能性があります。</item>
 	<item id="preliminaryShort">Preliminary</item>
 	<item id="text_extensionUsage">Visual Basic と C#では、{0}型のオブジェクトのインスタンスメソッドのようにこのメソッドを呼び出せます。このメソッドを呼び出すためにインスタンスメソッド構文を使う場合、最初のパラメーターを省略します。詳細は、<a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">拡張メソッド(Visual Basic)</a>または<a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">拡張メソッド(C# プログラミング ガイド)</a>を参照してください。</item>
-	<item id="text_moreInheritance">More...</item>
+	<item id="text_inheritance">Inheritance</item>
+	<item id="text_derived">Derived</item>
+	<item id="text_implements">Implements</item>
+	<item id="text_moreInheritance">More</item>
+	<item id="text_lessInheritance">Less</item>
   <item id="text_relatedEntries">参照:</item>
 	<item id="top">トップ</item>
 	<item id="optionalText">(Optional)</item>

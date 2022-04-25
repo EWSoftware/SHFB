@@ -65,6 +65,7 @@
   <item id="title_changeHistory">Änderungshistorie</item>
 	<item id="title_childElement">Kindelemente</item>
 	<item id="title_conclusion">Schlussfolgerung</item>
+  <item id="title_definition">Definition</item>
 	<item id="title_delegateValue">Rückgabewert</item>
 	<item id="title_demonstrates">Zeigt</item>
   <item id="title_dotNetFrameworkEquivalent">.NET Framework Equivalent</item>
@@ -215,7 +216,11 @@
   <item id="preliminaryApi">Diese API-Dokumentation befindet sich im Entwurf und kann sich noch ändern.</item>
 	<item id="preliminaryShort">Preliminary</item>
 	<item id="text_extensionUsage">In Visual Basic und C# können Sie diese Methode als Instanzmethode eines beliebigen Objektes vom Typ {0} aufrufen. Wenn Sie die Instanzmethodensyntax beim Methodenaufruf anwenden, lassen Sie den ersten Parameter weg. Für weitere Informationen siehe <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">Extension Methods (Visual Basic)</a> or <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">Erweiterungsmethoden (C# Programmierhandbuch)</a>.</item>
-	<item id="text_moreInheritance">More...</item>
+	<item id="text_inheritance">Inheritance</item>
+	<item id="text_derived">Derived</item>
+	<item id="text_implements">Implements</item>
+	<item id="text_moreInheritance">More</item>
+	<item id="text_lessInheritance">Less</item>
   <item id="text_relatedEntries">Verwandte Themen:</item>
   <item id="top">Zurück nach oben</item>
  	<item id="optionalText">(Optional)</item>

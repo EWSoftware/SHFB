@@ -63,6 +63,7 @@
 	<item id="title_changeHistory">Storia delle modifiche</item>
 	<item id="title_childElement">Child Elements</item>
 	<item id="title_conclusion">Conclusion</item>
+  <item id="title_definition">Definition</item>
 	<item id="title_delegateValue">Valore di ritorno</item>
 	<item id="title_demonstrates">Demonstrates</item>
   <item id="title_dotNetFrameworkEquivalent">.NET Framework Equivalent</item>
@@ -213,7 +214,11 @@
   <item id="preliminaryApi">Questa API è preliminare e soggetta a variazioni.</item>
 	<item id="preliminaryShort">Preliminary</item>
 	<item id="text_extensionUsage">In Visual Basic e C# puoi chiamare questo metodo come metodo di istanza su qualunque oggetto di tipo {0}. Quando usi la sintassi del metodo di istanza, devi omettere il primo parametro. Per maggiori informazioni, vedi <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">Metodi di estensione (Visual Basic)</a> o <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">Metodi di estensione (C# Programming Guide)</a>.</item>
-	<item id="text_moreInheritance">Altro...</item>
+	<item id="text_inheritance">Inheritance</item>
+	<item id="text_derived">Derived</item>
+	<item id="text_implements">Implements</item>
+	<item id="text_moreInheritance">Altro</item>
+	<item id="text_lessInheritance">Less</item>
   <item id="text_relatedEntries">See Also:</item>
 	<item id="top">Torna su</item>
   <item id="optionalText">(Optional)</item>

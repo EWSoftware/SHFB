@@ -65,6 +65,7 @@
 	<item id="title_changeHistory">Historique des modifications</item>
 	<item id="title_childElement">Éléments enfants</item>
 	<item id="title_conclusion">Conclusion</item>
+  <item id="title_definition">Definition</item>
 	<item id="title_delegateValue">Valeur de retour</item>
 	<item id="title_demonstrates">Démonstrations</item>
   <item id="title_dotNetFrameworkEquivalent">Équivalent .NET Framework</item>
@@ -215,7 +216,11 @@
   <item id="preliminaryApi">Cette API est préliminaire et sujet à changements.</item>
 	<item id="preliminaryShort">Preliminary</item>
 	<item id="text_extensionUsage">En Visual Basic et C#, vous pouvez appeler cette méthode comme une méthode d'instance sur n'importe quel objet de type {0}. Lorsque vous utilisez la syntaxe des méthodes d'instance pour appeler cette méthode, omettez le premier paramètre. Pour plus d'informations, consultez <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">Méthodes d'extension (Visual Basic)</a> ou <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">Méthodes d'extension (Guide de programmation C#)</a>.</item>
-	<item id="text_moreInheritance">Plus...</item>
+	<item id="text_inheritance">Inheritance</item>
+	<item id="text_derived">Derived</item>
+	<item id="text_implements">Implements</item>
+	<item id="text_moreInheritance">Plus</item>
+	<item id="text_lessInheritance">Less</item>
   <item id="text_relatedEntries">Voir aussi:</item>
 	<item id="top">Haut de la page</item>
 	<item id="optionalText">(Optional)</item>

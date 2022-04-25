@@ -64,6 +64,7 @@
 	<item id="title_changeHistory">Histórico de Mudança</item>
 	<item id="title_childElement">Child Elements</item>
 	<item id="title_conclusion">Conclusion</item>
+  <item id="title_definition">Definition</item>
 	<item id="title_delegateValue">Valor de Retorno</item>
 	<item id="title_demonstrates">Demonstrates</item>
   <item id="title_dotNetFrameworkEquivalent">.NET Framework Equivalent</item>
@@ -214,7 +215,11 @@
   <item id="preliminaryApi">Esta API é preliminar e sujeita a mudança.</item>
 	<item id="preliminaryShort">Preliminary</item>
 	<item id="text_extensionUsage">No Visual Basic e C#, você pode chamar este método como uma instância do método de qualquer objeto do tipo {0}. Quando você usar a Sintaxe de chamada do método de instância, omita o primeiro parâmetro. Para mais informação, veja <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">Extensão de Métodos (Visual Basic)</a> ou <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">Extensão nos Métodos (C# Programming Guide)</a>.</item>
-	<item id="text_moreInheritance">Mais...</item>
+	<item id="text_inheritance">Inheritance</item>
+	<item id="text_derived">Derived</item>
+	<item id="text_implements">Implements</item>
+	<item id="text_moreInheritance">Mais</item>
+	<item id="text_lessInheritance">Less</item>
   <item id="text_relatedEntries">See Also:</item>
 	<item id="top">Top</item>
 	<item id="optionalText">(Optional)</item>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SyntaxElementLanguageFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2022
+// Updated : 04/24/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle syntax section elements in presentation styles that use a
@@ -64,6 +64,16 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         /// the default path on first use.</value>
         public string SyntaxSectionCodeTemplatePath { get; set; }
 
+        /// <summary>
+        /// This is used to get or set the action delegate use to render the namespace and assembly information
+        /// </summary>
+        public Action<TopicTransformationCore, XElement> NamespaceAndAssemblyInfoRenderer { get; set; }
+
+        /// <summary>
+        /// This is used to get or set the action delegate use to render the inheritance hierarchy information
+        /// </summary>
+        public Action<TopicTransformationCore, XElement> InheritanceHierarchyRenderer { get; set; }
+
         #endregion
 
         #region Constructor
@@ -103,12 +113,17 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 this.SyntaxSectionCodeTemplatePath = transformation.ResolvePath(@"Templates\SyntaxSectionCodeTemplate.html");
 
             var (title, content) = transformation.CreateSection(element.GenerateUniqueId(), true,
-                "title_syntax", null);
+                "title_definition", null);
 
             transformation.CurrentElement.Add(title);
             transformation.CurrentElement.Add(content);
 
+            this.NamespaceAndAssemblyInfoRenderer?.Invoke(transformation, content);
+
             this.RenderSyntaxSections(transformation, element, content);
+
+            if(transformation.ApiMember.ApiGroup == ApiMemberGroup.Type)
+                this.InheritanceHierarchyRenderer?.Invoke(transformation, content);
 
             XElement parameters = transformation.ReferenceNode.Element("parameters"),
                 templates = transformation.ReferenceNode.Element("templates"),

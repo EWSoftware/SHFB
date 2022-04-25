@@ -65,6 +65,7 @@
   <item id="title_changeHistory">История изменений</item>
 	<item id="title_childElement">Дочерние элементы</item>
 	<item id="title_conclusion">Выводы</item>
+  <item id="title_definition">Definition</item>
 	<item id="title_delegateValue">Возвращаемое значение</item>
 	<item id="title_demonstrates">Демонстрация</item>
   <item id="title_dotNetFrameworkEquivalent">Эквивалент в платформе .NET Framework</item>
@@ -215,7 +216,11 @@
   <item id="preliminaryApi">Это предварительная документация, которая в будущем может измениться.</item>
 	<item id="preliminaryShort">Preliminary</item>
   <item id="text_extensionUsage">В Visual Basic и C# этот метод можно вызывать как метод экземпляра для любого объекта типа {0}. При вызове метода для экземпляра следует опускать первый параметр. Дополнительные сведения см. в разделе <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">Методы расширения (Visual Basic)</a> или <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">Методы расширения (Руководство по программированию в C#)</a>.</item>
-	<item id="text_moreInheritance">Подробнее...</item>
+	<item id="text_inheritance">Inheritance</item>
+	<item id="text_derived">Derived</item>
+	<item id="text_implements">Implements</item>
+	<item id="text_moreInheritance">Подробнее</item>
+	<item id="text_lessInheritance">Less</item>
   <item id="text_relatedEntries">См. также</item>
   <item id="top">В начало страницы</item>
 	<item id="optionalText">(Optional)</item>

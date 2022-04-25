@@ -64,6 +64,7 @@
 	<item id="title_changeHistory">修订历史</item>
   <item id="title_childElement">子元素</item>
   <item id="title_conclusion">结论</item>
+  <item id="title_definition">Definition</item>
   <item id="title_delegateValue">返回值</item>
   <item id="title_demonstrates">演示</item>
   <item id="title_dotNetFrameworkEquivalent">.NET 框架等价项</item>
@@ -214,7 +215,11 @@
   <item id="preliminaryApi">此 API 尚未最终确定，随时可能调整。</item>
 	<item id="preliminaryShort">Preliminary</item>
   <item id="text_extensionUsage">在 Visual Basic 和 C# 中，这个方法可以当成为类型 {0} 的实例方法来调用。在采用实例方法语法调用这个方法时，请省略第一个参数。请参考 <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">扩展方法 (Visual Basic)</a> 或 <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">扩展方法 (C# 编程指南)</a> 获取更多信息。</item>
-  <item id="text_moreInheritance">更多...</item>
+	<item id="text_inheritance">Inheritance</item>
+	<item id="text_derived">Derived</item>
+	<item id="text_implements">Implements</item>
+  <item id="text_moreInheritance">更多</item>
+	<item id="text_lessInheritance">Less</item>
   <item id="text_relatedEntries">参见：</item>
 	<item id="top">Top</item>
 	<item id="optionalText">(Optional)</item>
