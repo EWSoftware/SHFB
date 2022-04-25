@@ -2,9 +2,9 @@
 // System  : Sandcastle Help File Builder
 // File    : branding-Website.js
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/04/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
-//           Portions Copyright 2014 Sam Harwell, All rights reserved
+// Updated : 04/24/2022
+// Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
+//           Portions Copyright 2014-2022 Sam Harwell, All rights reserved
 //
 // This file contains the methods necessary to implement the lightweight TOC and search functionality.
 //
@@ -122,6 +122,7 @@ function Toggle(item)
 
             $.ajax({
                 url: "../toc/" + tocid + ".xml",
+                cache: false,
                 async: true,
                 dataType: "xml",
                 success: function(data)
@@ -377,6 +378,7 @@ function PerformSearch()
         $.ajax({
             type: "GET",
             url: encodeURI("SearchHelp.aspx?Keywords=" + searchText + "&SortByTitle=" + sortByTitle),
+            cache: false,
             success: function(html)
             {
                 searchResults.innerHTML = html;
@@ -391,6 +393,7 @@ function PerformSearch()
         $.ajax({
             type: "GET",
             url: encodeURI("SearchHelp.php?Keywords=" + searchText + "&SortByTitle=" + sortByTitle),
+            cache: false,
             success: function(html)
             {
                 searchResults.innerHTML = html;
@@ -409,6 +412,7 @@ function PerformSearch()
     $.ajax({
         type: "GET",
         url: "fti/FTI_Files.json",
+        cache: false,
         dataType: "json",
         async: false,
         success: function(data)
@@ -436,6 +440,7 @@ function PerformSearch()
             $.ajax({
                 type: "GET",
                 url: "fti/FTI_" + letter.charCodeAt(0) + ".json",
+                cache: false,
                 dataType: "json",
                 async: false,
                 success: function(data)
@@ -471,6 +476,7 @@ function DetermineSearchMethod()
         $.ajax({
             type: "GET",
             url: "SearchHelp.aspx",
+            cache: false,
             async: false,
             success: function(html)
             {
@@ -483,6 +489,7 @@ function DetermineSearchMethod()
             $.ajax({
                 type: "GET",
                 url: "SearchHelp.php",
+                cache: false,
                 async: false,
                 success: function(html)
                 {

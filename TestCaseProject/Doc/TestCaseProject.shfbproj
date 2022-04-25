@@ -46,20 +46,54 @@
     <ComponentConfigurations>
       <ComponentConfig id="Code Block Component" enabled="True">
         <component id="Code Block Component">
-  <basePath value="{@HtmlEncProjectFolder}" />
-  <outputPaths>{@HelpFormatOutputPaths}</outputPaths>
-  <allowMissingSource value="false" />
-  <removeRegionMarkers value="false" />
-  <colorizer syntaxFile="{@CoreComponentsFolder}Colorizer\highlight.xml" styleFile="{@CoreComponentsFolder}Colorizer\highlight.xsl" stylesheet="{@CoreComponentsFolder}Colorizer\highlight.css" scriptFile="{@CoreComponentsFolder}Colorizer\highlight.js" disabled="{@DisableCodeBlockComponent}" language="cs" tabSize="0" numberLines="false" outlining="true" keepSeeTags="false" defaultTitle="true" />
-</component>
+          <basePath value="{@HtmlEncProjectFolder}" />
+          <outputPaths>{@HelpFormatOutputPaths}</outputPaths>
+          <allowMissingSource value="false" />
+          <removeRegionMarkers value="false" />
+          <colorizer syntaxFile="{@CoreComponentsFolder}Colorizer\highlight.xml" styleFile="{@CoreComponentsFolder}Colorizer\highlight.xsl" stylesheet="{@CoreComponentsFolder}Colorizer\highlight.css" scriptFile="{@CoreComponentsFolder}Colorizer\highlight.js" disabled="{@DisableCodeBlockComponent}" language="cs" tabSize="0" numberLines="false" outlining="true" keepSeeTags="false" defaultTitle="true" />
+        </component>
       </ComponentConfig>
-<ComponentConfig id="API Token Resolution" enabled="True"><component id="API Token Resolution">{@TokenFiles}
-<replace elements="/*//token" item="string(.)" /></component></ComponentConfig>
-<ComponentConfig id="IntelliSense Component" enabled="True"><component id="IntelliSense Component"><output includeNamespaces="true" namespacesFile="NamespacesTest" folder="{@OutputFolder}" boundedCapacity="0" /></component></ComponentConfig>
-<ComponentConfig id="Syntax Component" enabled="False"><component id="Syntax Component"><syntax input="/document/reference" output="/document/syntax" renderReferenceLinks="true" /><generators>
+      <ComponentConfig id="API Token Resolution" enabled="True">
+        <component id="API Token Resolution">{@TokenFiles}
+<replace elements="/*//token" item="string(.)" /></component>
+      </ComponentConfig>
+      <ComponentConfig id="IntelliSense Component" enabled="True">
+        <component id="IntelliSense Component">
+          <output includeNamespaces="true" namespacesFile="NamespacesTest" folder="{@OutputFolder}" boundedCapacity="0" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="Syntax Component" enabled="False">
+        <component id="Syntax Component">
+          <syntax input="/document/reference" output="/document/syntax" renderReferenceLinks="true" />
+          <generators>
     {@SyntaxFilters}
-</generators><containerElement name="codeSnippetGroup" addNoExampleTabs="true" includeOnSingleSnippets="true" groupingEnabled="{@CodeSnippetGrouping}" /><configurations><generator id="Visual Basic"><includeLineContinuation value="true" /></generator><generator id="Visual Basic Usage"><includeLineContinuation value="false" /></generator><generator id="Managed C++" /><generator id="C#" /><generator id="F#" /><generator id="J#" /><generator id="JScript" /><generator id="JavaScript" /><generator id="XAML Usage" /><generator id="ASP.NET" /><generator id="X#" /></configurations></component></ComponentConfig>
-<ComponentConfig id="Transform Document Dump Component" enabled="False"><component id="Transform Document Dump Component"><dumpPath rawDocs="{@WorkingFolder}\RawDocs" transformedDocs="{@workingFolder}\TransformedDocs" /></component></ComponentConfig></ComponentConfigurations>
+</generators>
+          <containerElement name="codeSnippetGroup" addNoExampleTabs="true" includeOnSingleSnippets="true" groupingEnabled="{@CodeSnippetGrouping}" />
+          <configurations>
+            <generator id="Visual Basic">
+              <includeLineContinuation value="true" />
+            </generator>
+            <generator id="Visual Basic Usage">
+              <includeLineContinuation value="false" />
+            </generator>
+            <generator id="Managed C++" />
+            <generator id="C#" />
+            <generator id="F#" />
+            <generator id="J#" />
+            <generator id="JScript" />
+            <generator id="JavaScript" />
+            <generator id="XAML Usage" />
+            <generator id="ASP.NET" />
+            <generator id="X#" />
+          </configurations>
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="Transform Document Dump Component" enabled="False">
+        <component id="Transform Document Dump Component">
+          <dumpPath rawDocs="{@WorkingFolder}\RawDocs" transformedDocs="{@workingFolder}\TransformedDocs" />
+        </component>
+      </ComponentConfig>
+    </ComponentConfigurations>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\TestDoc.csproj" />
     </DocumentationSources>
