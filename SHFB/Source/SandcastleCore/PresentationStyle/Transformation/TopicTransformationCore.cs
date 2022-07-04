@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/24/2022
+// Updated : 05/04/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
@@ -1071,7 +1071,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
             switch(node)
             {
                 case XText text:
-                    this.CurrentElement.Add(new XText(text.Value));
+                    this.RenderTextNode(this.CurrentElement, text);
                     break;
 
                 case XElement element:
@@ -1101,6 +1101,20 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                     }
                     break;
             }
+        }
+
+        /// <summary>
+        /// This is used to render a text node
+        /// </summary>
+        /// <param name="content">The content element to which the text is added</param>
+        /// <param name="textNode">The text node to render</param>
+        /// <remarks>By default, this just adds the text to the given content element.  Presentation styles can
+        /// override this to provide additional formatting support for text.  For example, Open XML needs to
+        /// normalize whitespace and handle some other conditions.</remarks>
+        public virtual void RenderTextNode(XElement content, XText textNode)
+        {
+            if(content != null && textNode != null)
+                content.Add(new XText(textNode.Value));
         }
 
         /// <summary>
@@ -1137,8 +1151,9 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// <param name="linkId">An optional link ID for the section.  If there is no title, this will be
         /// ignored.</param>
         /// <returns>A tuple containing a reference to the title element if a title was created, null if not,
-        /// and a reference to the content element into which any additional content can be rendered.  Both
-        /// elements should be added to the topic if created.</returns>
+        /// and a reference to the content element into which any additional content can be rendered or null if
+        /// it should be rendered into the current topic element.  Both elements should be added to the topic if
+        /// created.</returns>
         public abstract (XElement Title, XElement Content) CreateSection(string uniqueId, bool localizedTitle,
           string title, string linkId);
 

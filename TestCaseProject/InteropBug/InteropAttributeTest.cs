@@ -9,6 +9,7 @@ namespace TestDoc.InteropAttributesBug
     /// </summary>
     /// <remarks>Certain System.Runtime.InteropServices attributes will not show up in the reflection information
     /// even when the attribute filter is completely removed.</remarks>
+    [ProgId("TestDoc.InteropAttributeTest")]
     public class InteropAttributeTest
     {
         /// <summary>

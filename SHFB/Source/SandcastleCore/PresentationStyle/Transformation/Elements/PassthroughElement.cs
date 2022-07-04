@@ -1,6 +1,6 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
-// File    : HtmlElement.cs
+// File    : PassthroughElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 02/13/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved

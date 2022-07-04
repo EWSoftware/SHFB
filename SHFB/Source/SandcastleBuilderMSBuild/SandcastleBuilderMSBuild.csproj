@@ -55,7 +55,6 @@
 		<None Include="..\..\Deploy\SandcastleHelpFileBuilder.targets" Link="SandcastleHelpFileBuilder.targets" />
 		<None Include="..\..\Deploy\Templates\Build1xHelpFile.proj" Link="Templates\Build1xHelpFile.proj" />
 		<None Include="..\..\Deploy\Templates\BuildHelpViewerFile.proj" Link="Templates\BuildHelpViewerFile.proj" />
-		<None Include="..\..\Deploy\Templates\BuildOpenXmlFile.proj" Link="Templates\BuildOpenXmlFile.proj" />
 		<None Include="..\..\Deploy\Templates\GenerateInheritedDocs.config" Link="Templates\GenerateInheritedDocs.config" />
 		<None Include="..\..\Deploy\Templates\GenerateInheritedDocs.proj" Link="Templates\GenerateInheritedDocs.proj" />
 		<None Include="..\..\Deploy\Templates\GenerateMarkdownContent.proj" Link="Templates\GenerateMarkdownContent.proj" />
@@ -67,17 +66,5 @@
 		<None Include="..\..\Deploy\Templates\PlaceHolderNode.aml" Link="Templates\PlaceHolderNode.aml" />
 		<None Include="..\..\Deploy\Templates\RemoveMSHC.bat" Link="Templates\RemoveMSHC.bat" />
 		<None Include="..\..\Deploy\Templates\TransformBuildLog.xsl" Link="Templates\TransformBuildLog.xsl" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Update="Properties\Resources.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Resources.resx</DependentUpon>
-		</Compile>
-		<EmbeddedResource Update="Properties\Resources.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
-			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
 	</ItemGroup>
 </Project>

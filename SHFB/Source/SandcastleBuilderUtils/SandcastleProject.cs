@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/12/2022
+// Updated : 05/13/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the project class.
@@ -1565,7 +1565,6 @@ namespace SandcastleBuilder.Utils
 
             this.BuildAssemblerVerbosity = BuildAssemblerVerbosity.OnlyWarningsAndErrors;
             this.SaveComponentCacheCapacity = 100;
-            this.HelpFileFormat = HelpFileFormats.HtmlHelp1;
             this.HtmlSdkLinkType = this.WebsiteSdkLinkType = HtmlSdkLinkType.Msdn;
             this.MSHelpViewerSdkLinkType = MSHelpViewerSdkLinkType.Msdn;
             this.SdkLinkTarget = SdkLinkTarget.Blank;
@@ -2029,6 +2028,15 @@ namespace SandcastleBuilder.Utils
                 return ReflectionDataSetDictionary.DefaultFrameworkTitle;
 
             return dataSet.Title;
+        }
+
+        /// <summary>
+        /// This is used to set the default help file format when one isn't explicitly defined in the project
+        /// </summary>
+        /// <param name="defaultFormat">The default help file format to use</param>
+        internal void SetDefaultHelpFileFormat(HelpFileFormats defaultFormat)
+        {
+            this.HelpFileFormat = defaultFormat;
         }
         #endregion
 

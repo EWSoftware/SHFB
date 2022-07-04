@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : BuildPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 08/24/2021
-// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
+// Updated : 05/13/2022
+// Note    : Copyright 2017-2022, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Build category properties
 //
@@ -345,14 +345,30 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
             var styleFormats = allHelpFileFormats.Where(f => (supportedFormats & f.Format) != 0).ToList();
 
+            BuildPropertiesNeededEventArgs projectSettings = new BuildPropertiesNeededEventArgs();
+
+            this.BuildPropertiesNeeded?.Invoke(this, projectSettings);
+
+            bool defaultFormatSet = false;
+
+            if(!Enum.TryParse(projectSettings.HelpFileFormats, out HelpFileFormats hf))
+            {
+                hf = styleFormats.First().Format;
+                defaultFormatSet = true;
+            }
+
+            styleFormats.ForEach(f =>
+            {
+                f.IsActive = true;
+                f.IsSelected = (hf & f.Format) != 0;
+            });
+
             if(styleFormats.Count != 0 && !styleFormats.Any(f => f.IsSelected))
                 styleFormats[0].IsSelected = true;
 
-            styleFormats.ForEach(f => f.IsActive = true);
-
             lbHelpFileFormat.ItemsSource = styleFormats;
 
-            if(!isBinding)
+            if(!isBinding || defaultFormatSet)
                 this.PropertyChanged?.Invoke(this, e);
         }
 
@@ -520,6 +536,9 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
                         if(match != null)
                             cboPresentationStyle.SelectedValue = match.Id;
+
+                        if(Enum.TryParse(projectSettings.HelpFileFormats, out HelpFileFormats hf))
+                            this.SelectedHelpFileFormats = hf;
                     }
 
                     if(!String.IsNullOrWhiteSpace(projectSettings.SyntaxFilters))

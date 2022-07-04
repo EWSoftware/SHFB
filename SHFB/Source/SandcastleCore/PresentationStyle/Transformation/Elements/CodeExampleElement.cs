@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : CodeExampleElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/23/2022
+// Updated : 04/26/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle codeExample elements
@@ -57,8 +57,14 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                 var (title, content) = transformation.CreateSection(element.GenerateUniqueId(), true,
                     "title_example", null);
 
-                transformation.CurrentElement.Add(title);
-                transformation.CurrentElement.Add(content);
+                if(title != null)
+                    transformation.CurrentElement.Add(title);
+
+                if(content != null)
+                    transformation.CurrentElement.Add(content);
+                else
+                    content = transformation.CurrentElement;
+
                 transformation.RenderChildElements(content, element.Nodes());
 
                 foreach(var otherExample in element.FollowingSiblings(element.Name))

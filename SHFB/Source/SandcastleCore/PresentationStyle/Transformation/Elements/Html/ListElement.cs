@@ -214,7 +214,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                             if(term != null)
                             {
                                 var strong = new XElement("strong");
-                                li.Add(strong, " - ");
+                                li.Add(strong, " \u2013 ");
                                 transformation.RenderChildElements(strong, term.Nodes());
                             }
 

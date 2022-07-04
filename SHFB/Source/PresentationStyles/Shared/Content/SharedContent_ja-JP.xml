@@ -121,7 +121,7 @@
 	<item id="topicTitle_attachedProperties">{0} 添付プロパティ</item>
 	<item id="topicTitle_attachedProperty">{0} 添付プロパティ</item>
 	<item id="topicTitle_class">{0} クラス</item>
-	<item id="topicTitle_constructor">{0} コンストラクター {1}</item>
+	<item id="topicTitle_constructor">{0}{1} コンストラクター</item>
 	<item id="topicTitle_constructors">{0} コンストラクター</item>
 	<item id="topicTitle_delegate">{0} デリゲート</item>
 	<item id="topicTitle_enumeration">{0} 列挙体</item>
@@ -131,15 +131,15 @@
 	<item id="topicTitle_field">{0} フィールド</item>
 	<item id="topicTitle_fields">{0} フィールド</item>
 	<item id="topicTitle_interface">{0} インターフェイス</item>
-	<item id="topicTitle_method">{0} メソッド {1}</item>
+	<item id="topicTitle_method">{0}{1} メソッド</item>
 	<item id="topicTitle_methods">{0} メソッド</item>
 	<item id="topicTitle_namespace">{0} 名前空間</item>
 	<item id="topicTitle_namespaceGroup">{0} 名前空間</item>
 	<item id="topicTitle_properties">{0} プロパティ</item>
-	<item id="topicTitle_property">{0} プロパティ {1}</item>
+	<item id="topicTitle_property">{0}{1} プロパティ</item>
 	<item id="topicTitle_structure">{0} 構造体</item>
   <!-- Title for operator members -->
-	<item id="topicTitle_operator">{0} 演算子 {1}</item>
+	<item id="topicTitle_operator">{0}{1} 演算子</item>
   <!-- Title for op_explicit and op_implicit members -->
   <item id="topicTitle_typeConversion">{0} 変換 {1}</item>
   <!-- Title for overload op_explicit and op_implicit topics -->

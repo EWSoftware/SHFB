@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/01/2022
+// Updated : 05/02/2022
 // Note    : Copyright 2007-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class containing properties and methods used to locate and work with build components,
@@ -42,6 +42,7 @@ using System.Xml;
 using System.Xml.Linq;
 
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
+using Sandcastle.Core.PresentationStyle.Transformation;
 
 namespace Sandcastle.Core
 {
@@ -585,22 +586,20 @@ namespace Sandcastle.Core
         }
 
         /// <summary>
-        /// This returns the syntax language XML elements to insert into a BuildAssembler configuration file for
-        /// the comma-separated list of syntax filter IDs.
+        /// This returns the language filter items to used in the presentation style transformation
         /// </summary>
         /// <param name="allFilters">The list of all available syntax filter generators</param>
         /// <param name="filterIds">A comma-separated list of syntax filter ID values.</param>
-        /// <returns>A string containing the language XML elements for the specified syntax filter IDs.</returns>
-        public static string SyntaxFilterLanguagesFrom(IEnumerable<ISyntaxGeneratorMetadata> allFilters,
-          string filterIds)
+        /// <returns>An enumerable list of the language filter items to use</returns>
+        public static IEnumerable<LanguageFilterItem> SyntaxFilterLanguagesFrom(
+          IEnumerable<ISyntaxGeneratorMetadata> allFilters, string filterIds)
         {
-            StringBuilder sb = new StringBuilder(1024);
-
-            foreach(var generator in SyntaxFiltersFrom(allFilters, filterIds))
-                sb.AppendFormat(CultureInfo.InvariantCulture, "<language name=\"{0}\" style=\"{1}\" />\r\n",
-                    generator.LanguageElementName, generator.KeywordStyleParameter);
-
-            return sb.ToString();
+            return SyntaxFiltersFrom(allFilters, filterIds).GroupBy(
+                c => c.KeywordStyleParameter).Select(g =>
+                {
+                    var first = g.First();
+                    return new LanguageFilterItem("devlang_" + first.Id, first.KeywordStyleParameter);
+                });
         }
 
         /// <summary>

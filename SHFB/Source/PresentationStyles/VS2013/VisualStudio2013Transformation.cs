@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/22/2022
+// Updated : 07/03/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -383,10 +383,13 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new BibliographyElement(),
                 new CiteElement(),
                 new CodeSnippetGroupElementTabbed(),
+                new PassthroughElement("include"),
+                new PassthroughElement("includeAttribute"),
                 new MarkupElement(),
                 new ConvertibleElement("para", "p"),
                 new ListElement { TableStyle = null },
                 new ParametersElement(),
+                new PassthroughElement("referenceLink"),
                 new PassthroughElement("span"),
                 new SummaryElement(),
                 new TableElement { TableStyle = null },
@@ -549,7 +552,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                     t => RenderApiBibliographySection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.SeeAlso, t => RenderApiSeeAlsoSection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.InheritanceHierarchyFull,
-                    t => RenderApiInheritanceHierarchy(t, true)),
+                    t => RenderApiInheritanceHierarchy(t, true))
             });
         }
 
@@ -674,6 +677,8 @@ namespace Sandcastle.PresentationStyles.VS2013
         }
 
         /// <inheritdoc />
+        /// <remarks>The returned content element is always null and the content should be inserted into the
+        /// transformation's current element after adding the title element.</remarks>
         public override (XElement Title, XElement Content) CreateSubsection(bool localizedTitle, string title)
         {
             XElement titleElement = null;
@@ -695,8 +700,6 @@ namespace Sandcastle.PresentationStyles.VS2013
                 titleElement = new XElement("h4", titleContent);
             }
 
-            // Content for subsections can be added to the current element immediately after the title element
-            // by the caller.
             return (titleElement, null);
         }
         #endregion
@@ -1962,10 +1965,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 }
 
                 table.Add(new XElement("tr",
-                    new XElement("td",
-                        new XElement("span",
-                            new XAttribute("class", "selflink"),
-                            e.Element("apidata").Attribute("name").Value)),
+                    new XElement("td", e.Element("apidata").Attribute("name").Value),
                     valueCell,
                     summaryCell));
 

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ImplementsElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/28/2022
+// Updated : 05/31/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the implements
@@ -56,6 +56,14 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                 {
                     content.Add(contentElement);
                     content = contentElement;
+                }
+
+                if(transformation.SupportedFormats == HelpFileFormats.OpenXml)
+                {
+                    // For Open XML, the links are wrapped in a paragraph
+                    var para = new XElement(OpenXml.OpenXmlElement.WordProcessingML + "p");
+                    content.Add(para);
+                    content = para;
                 }
 
                 foreach(var m in memberElements)

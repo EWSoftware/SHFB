@@ -1805,7 +1805,6 @@
 		<xsl:call-template name="t_putAssembliesInfo"/>
 
 		<!-- Show XAML xmlns for APIs that support XAML -->
-		<xsl:if test="$omitXmlnsBoilerplate != 'true'">
 			<!-- All topics that have auto-generated XAML syntax get an "XMLNS for XAML" line in the Requirements
 					 section.  Topics with boilerplate XAML syntax, e.g. "Not applicable", do NOT get this line. -->
 			<xsl:if test="boolean(/document/syntax/div[@codeLanguage='XAML']/div[
@@ -1828,7 +1827,6 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:if>
-		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="t_putAssembliesInfo">
@@ -1957,14 +1955,12 @@
 	============================================================================================= -->
 
 	<xsl:template match="versions" name="t_versions">
-		<xsl:if test="$omitVersionInformation != 'true'">
 			<xsl:call-template name="t_putSectionInclude">
 				<xsl:with-param name="p_titleInclude" select="'title_versions'"/>
 				<xsl:with-param name="p_content">
 					<xsl:call-template name="t_processVersions"/>
 				</xsl:with-param>
 			</xsl:call-template>
-		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="t_processVersions">

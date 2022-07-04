@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+	<!-- IMPORTANT: The substitution tag and ID names must remain the same.  The root document node will not be
+	     added, only the content nodes. -->
+	<w:tbl>
+		<w:tblPr>
+			<w:tblStyle w:val="ToDoAlertTable"/>
+			<w:tblW w:w="5000" w:type="pct"/>
+		</w:tblPr>
+		<w:tr>
+			<w:trPr>
+				<w:cnfStyle w:val="100000000000" />
+			</w:trPr>
+			<w:tc>
+				<w:p>
+					<w:pPr>
+						<w:keepNext />
+					</w:pPr>
+					<w:r>
+						<img src="{@IconPath}AlertToDo.png">
+							<includeAttribute name="alt" item="{@AlertAltTextItemId}" />
+						</img>
+					</w:r>
+					<w:r>
+						<w:t xml:space="preserve">  </w:t>
+					</w:r>
+					<include item="{@AlertTitleItemId}" />
+				</w:p>
+			</w:tc>
+		</w:tr>
+		<w:tr>
+			<!-- This ID is just used to locate the content element.  It will be removed when the template is rendered. -->
+			<w:tc id="content">
+			</w:tc>
+		</w:tr>
+	</w:tbl>
+	<w:p>
+		<w:pPr>
+			<w:spacing w:after="0" />
+		</w:pPr>
+	</w:p>
+</w:document>

@@ -73,9 +73,9 @@ namespace Sandcastle.PresentationStyles.VS2013
         }
 
         /// <inheritdoc />
+        /// <remarks>This presentation style only uses the standard shared content</remarks>
         public override IEnumerable<string> ResourceItemFiles(string languageName)
         {
-            // This presentation style only uses the standard shared content
             string filePath = this.ResolvePath(@"..\Shared\Content"),
                 fileSpec = "SharedContent_" + languageName + ".xml";
 

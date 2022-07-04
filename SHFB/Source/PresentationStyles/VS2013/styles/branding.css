@@ -241,10 +241,6 @@ td.logoColumnAbove {
     vertical-align: middle;
 }
 
-span.selflink {
-    color: #000066;
-}
-
 .missing {
     color: #dc143c;
     font-weight: bold;
@@ -514,6 +510,11 @@ span.code, span.command {
     font-family: Consolas, Courier, monospace;
     color: #000066;
     background-color: #f4f4f4;
+}
+
+span.selflink {
+    font-family: Consolas, Courier, monospace;
+    color: #000066;
 }
 
 span.ui {

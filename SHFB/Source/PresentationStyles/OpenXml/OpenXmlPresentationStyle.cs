@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : OpenXmlPresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/20/2022
+// Updated : 04/25/2022
 // Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Open XML presentation style.
@@ -17,9 +17,9 @@
 // 02/15/2014  EFW  Created the code
 //===============================================================================================================
 
-/* TODO: Convert to new presenation style method
-
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 using Sandcastle.Core;
@@ -53,6 +53,7 @@ namespace Sandcastle.PresentationStyles.OpenXml
         /// </summary>
         public OpenXmlPresentationStyle()
         {
+            // The base path of the presentation style files relative to the assembly's location
             this.BasePath = "OpenXML";
 
             this.SupportedFormats = HelpFileFormats.OpenXml;
@@ -61,32 +62,34 @@ namespace Sandcastle.PresentationStyles.OpenXml
 
             this.DocumentModelApplicator = new StandardDocumentModel();
             this.ApiTableOfContentsGenerator = new StandardApiTocGenerator();
+            this.TopicTranformation = new OpenXmlTransformation(this.ResolvePath);
 
             // If relative, these paths are relative to the base path
-            this.ResourceItemsPath = "Content";
             this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";
 
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, null, @"DocumentParts\*.*",
                 String.Empty, new[] { ".xml" } ));
+        }
 
-            this.TransformComponentArguments.Add(new TransformComponentArgument("maxVersionParts", false, true,
-                null, "The maximum number of assembly version parts to show in API member topics.  Set to 2, " +
-                "3, or 4 to limit it to 2, 3, or 4 parts or leave it blank for all parts including the " +
-                "assembly file version value if specified."));
-            this.TransformComponentArguments.Add(new TransformComponentArgument("includeEnumValues", false, true,
-                "true", "Set this to 'true' to include the column for the numeric value of each field in " +
-                "enumerated type topics.  Set it to 'false' to omit the numeric values column."));
-            this.TransformComponentArguments.Add(new TransformComponentArgument("baseSourceCodeUrl", false, true,
-                null, "If you set the Source Code Base Path property in the Paths category, specify the URL to " +
-                "the base source code folder on your project's website here.  Some examples for GitHub are " +
-                "shown below.\r\n\r\n" +
-                "Important: Be sure to set the Source Code Base Path property and terminate the URL below with " +
-                "a slash if necessary.\r\n\r\n" +
-                "Format: https://github.com/YourUserID/YourProject/blob/BranchNameOrCommitHash/BaseSourcePath/ \r\n\r\n" +
-                "Master branch: https://github.com/JohnDoe/WidgestProject/blob/master/src/ \r\n" +
-                "A different branch: https://github.com/JohnDoe/WidgestProject/blob/dev-branch/src/ \r\n" +
-                "A specific commit: https://github.com/JohnDoe/WidgestProject/blob/c6e41c4fc2a4a335352d2ae8e7e85a1859751662/src/"));
+        /// <inheritdoc />
+        /// <remarks>This presentation style uses the standard shared content and overrides a few items with
+        /// Open XML specific values.</remarks>
+        public override IEnumerable<string> ResourceItemFiles(string languageName)
+        {
+            string filePath = this.ResolvePath(@"..\Shared\Content"),
+                fileSpec = "SharedContent_" + languageName + ".xml";
+
+            if(!File.Exists(Path.Combine(filePath, fileSpec)))
+                fileSpec = "SharedContent_en-US.xml";
+
+            yield return Path.Combine(filePath, fileSpec);
+
+            fileSpec = "OpenXml_" + languageName + ".xml";
+
+            if(!File.Exists(Path.Combine(filePath, fileSpec)))
+                fileSpec = "OpenXml_en-US.xml";
+
+            yield return Path.Combine(filePath, fileSpec);
         }
     }
 }
-*/

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/13/2022
+// Updated : 05/03/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -623,16 +623,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 else
                     workingFolder = project.WorkingPath;
 
-                if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
-                    VerifySafePath("OutputPath", outputFolder, projectFolder);
-
-                // The output folder and the working folder cannot be the same
-                if(workingFolder == outputFolder)
-                    throw new BuilderException("BE0030", "The OutputPath and WorkingPath properties cannot be " +
-                        "set to the same path");
-
-                // Make sure we can find the tools
-                this.FindTools();
+                this.ExecutePlugIns(ExecutionBehaviors.Before);
+                this.ReportProgress("The Sandcastle tools are located in '{0}'", ComponentUtilities.RootFolder);
+                this.ExecutePlugIns(ExecutionBehaviors.After);
 
                 // Check for the SHFBROOT environment variable.  It may not be present yet if a reboot hasn't
                 // occurred after installation.  In such cases, set it to the proper folder for this process so
@@ -663,24 +656,30 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 frameworkReflectionData = reflectionDataDictionary.CoreFrameworkByTitle(project.FrameworkVersion, true);
 
                 if(frameworkReflectionData == null)
+                {
                     throw new BuilderException("BE0071", String.Format(CultureInfo.CurrentCulture,
                         "Unable to locate information for the project framework version '{0}' or a suitable " +
                         "redirected version on this system.  See error number help topic for details.",
                         project.FrameworkVersion));
+                }
 
                 this.ReportProgress("Using framework reflection data for '{0}' located in '{1}'",
                     this.FrameworkReflectionData.Title, this.FrameworkReflectionDataFolder);
 
                 if(!Directory.EnumerateFiles(this.FrameworkReflectionDataFolder, "*.xml").Any())
+                {
                     throw new BuilderException("BE0032", "Reflection data files for the selected framework " +
                         "do not exist yet (" + frameworkReflectionData.Title + ").  See help file for " +
                         "details about this error number.");
+                }
 
                 // Warn if a different framework is being used for the build
                 if(frameworkReflectionData.Title != project.FrameworkVersion)
+                {
                     this.ReportWarning("BE0072", "Project framework version '{0}' not found.  It has been " +
                         "redirected and will use '{1}' instead.", project.FrameworkVersion,
                         frameworkReflectionData.Title);
+                }
 
                 // Get the composition container used to find build components in the rest of the build process
                 componentContainer = ComponentUtilities.CreateComponentContainer(project.ComponentSearchPaths,
@@ -692,8 +691,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         project.PresentationStyle, StringComparison.OrdinalIgnoreCase));
 
                 if(style == null)
+                {
                     throw new BuilderException("BE0001", "The PresentationStyle property value of '" +
                         project.PresentationStyle + "' is not recognized as a valid presentation style definition");
+                }
 
                 presentationStyle = style.Value;
 
@@ -703,17 +704,46 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 var psErrors = presentationStyle.CheckForErrors();
 
                 if(psErrors.Any())
+                {
                     throw new BuilderException("BE0004", String.Format(CultureInfo.CurrentCulture,
                         "The selected presentation style ({0}) is not valid.  Reason(s):\r\n{1}",
                         style.Metadata.Id, String.Join("\r\n", psErrors)));
+                }
+
+                // If no help file format is specified in the project, use the first available format based on
+                // the selected presentation style.
+                if(project.HelpFileFormat == 0)
+                {
+                    foreach(int v in Enum.GetValues(typeof(HelpFileFormats)))
+                        if(((int)presentationStyle.SupportedFormats & v) != 0)
+                        {
+                            project.SetDefaultHelpFileFormat((HelpFileFormats)v);
+                            break;
+                        }
+                }
+
+                if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
+                    this.FindHtmlHelpCompiler();
+
+                if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
+                    VerifySafePath("OutputPath", outputFolder, projectFolder);
+
+                // The output folder and the working folder cannot be the same
+                if(workingFolder == outputFolder)
+                {
+                    throw new BuilderException("BE0030", "The OutputPath and WorkingPath properties cannot be " +
+                        "set to the same path");
+                }
 
                 // If the presentation style does not support one or more of the selected help file formats,
                 // stop now.
                 if((project.HelpFileFormat & ~presentationStyle.SupportedFormats) != 0)
+                {
                     throw new BuilderException("BE0074", String.Format(CultureInfo.CurrentCulture,
                         "The selected presentation style ({0}) does not support one or more of the selected " +
                         "help file formats.  Supported formats: {1}", style.Metadata.Id,
                         presentationStyle.SupportedFormats));
+                }
 
                 // Create the substitution tag replacement handler now as we have everything it needs
                 substitutionTags = new SubstitutionTagReplacement(this);
@@ -1227,6 +1257,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         // Merge the build component custom configurations
                         this.MergeComponentConfigurations();
 
+                        // Set the language filter items used by the presentation style transformation
+                        presentationStyle.TopicTranformation.AddLanguageFilterItems(
+                            ComponentUtilities.SyntaxFilterLanguagesFrom(this.SyntaxGenerators,
+                            project.SyntaxFilters));
+
                         // Build the help topics
                         this.ReportProgress(BuildStep.BuildTopics, "Building help topics...");
 
@@ -1434,12 +1469,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
-                        scriptFile = substitutionTags.TransformTemplate("BuildOpenXmlFile.proj", templateFolder,
-                            workingFolder);
-
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                        taskRunner.RunProject("BuildOpenXmlFile.proj", true);
+                        new OpenXmlFileGenerator(this).Execute();
 
                         this.GatherBuildOutputFilenames();
                         this.ExecutePlugIns(ExecutionBehaviors.After);
@@ -1644,7 +1676,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <remarks>This just reports the error.  The caller must abort the build</remarks>
         public void ReportError(BuildStep step, string errorCode, string message, params object[] args)
         {
-            string errorMessage = String.Format(CultureInfo.CurrentCulture, message, args);
+            // If the message has no arguments, use it as is rather than formatting it to avoid issues if it
+            // contains braces which will look like format arguments.
+            string errorMessage = args.Length == 0 ? message : String.Format(CultureInfo.CurrentCulture, message, args);
 
             this.ReportProgress(step, "\r\nSHFB: Error {0}: {1}\r\n", errorCode, errorMessage);
         }
@@ -1901,103 +1935,50 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         /// <summary>
-        /// Find the Sandcastle tools and the HTML help compiler
+        /// Find the HTML help compiler
         /// </summary>
-        /// <exception cref="BuilderException">This is thrown if any of the tools cannot be found</exception>
-        protected void FindTools()
+        /// <exception cref="BuilderException">This is thrown if the HTML help compiler cannot be found</exception>
+        protected void FindHtmlHelpCompiler()
         {
-            this.ReportProgress("Finding tools...");
-            this.ExecutePlugIns(ExecutionBehaviors.Before);
+            hhcFolder = project.HtmlHelp1xCompilerPath;
 
-            this.ReportProgress("The Sandcastle tools are located in '{0}'", ComponentUtilities.RootFolder);
-
-            // Find the help compilers by looking on all fixed drives but only if the related format is used
-            if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
+            if(hhcFolder.Length == 0)
             {
-                hhcFolder = project.HtmlHelp1xCompilerPath;
+                this.ReportProgress("Searching for HTML Help 1 compiler...");
 
-                if(hhcFolder.Length == 0)
+                // Check for a 64-bit process.  The tools will be in the x86 folder.  If running as a 32-bit
+                // process, the folder will contain "(x86)" already if on a 64-bit OS.
+                StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.Is64BitProcess ?
+                    Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles));
+
+                sb.Append(@"\HTML Help Workshop");
+
+                foreach(DriveInfo di in DriveInfo.GetDrives())
                 {
-                    this.ReportProgress("Searching for HTML Help 1 compiler...");
-                    hhcFolder = FindOnFixedDrives(@"\HTML Help Workshop");
-                }
-
-                if(hhcFolder.Length == 0 || !Directory.Exists(hhcFolder))
-                    throw new BuilderException("BE0037", "Could not find the path to the HTML Help 1 compiler.  " +
-                        "Is the HTML Help Workshop installed?  See the error number topic in the help file " +
-                        "for details.\r\n");
-
-                if(hhcFolder[hhcFolder.Length - 1] != '\\')
-                    hhcFolder += @"\";
-
-                this.ReportProgress("Found HTML Help 1 compiler in '{0}'", hhcFolder);
-            }
-
-            this.ExecutePlugIns(ExecutionBehaviors.After);
-        }
-
-        /// <summary>
-        /// Find a folder by searching the Program Files folders on all fixed drives.
-        /// </summary>
-        /// <param name="path">The path for which to search</param>
-        /// <returns>The path if found or an empty string if not found</returns>
-        protected internal static string FindOnFixedDrives(string path)
-        {
-            // Check for a 64-bit process.  The tools will be in the x86 folder.  If running as a 32-bit process,
-            // the folder will contain "(x86)" already if on a 64-bit OS.
-            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.Is64BitProcess ?
-                Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles));
-
-            sb.Append(path);
-
-            foreach(DriveInfo di in DriveInfo.GetDrives())
-                if(di.DriveType == DriveType.Fixed)
-                {
-                    sb[0] = di.Name[0];
-
-                    if(Directory.Exists(sb.ToString()))
-                        return sb.ToString();
-                }
-
-            return String.Empty;
-        }
-
-        /// <summary>
-        /// This is used to find the named executable in one of the Visual Studio SDK installation folders.
-        /// </summary>
-        /// <param name="exeName">The name of the executable to find</param>
-        /// <returns>The path if found or an empty string if not found</returns>
-        /// <remarks>The search looks in all "*Visual*SDK*" folders under the Program Files special folder on all
-        /// fixed drives.</remarks>
-        protected internal static string FindSdkExecutable(string exeName)
-        {
-            // Check for a 64-bit process.  The tools will be in the x86 folder.  If running as a 32-bit process,
-            // the folder will contain "(x86)" already if on a 64-bit OS.
-            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.Is64BitProcess ?
-                Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles));
-            string folder;
-
-            foreach(DriveInfo di in DriveInfo.GetDrives())
-                if(di.DriveType == DriveType.Fixed)
-                {
-                    sb[0] = di.Name[0];
-                    folder = sb.ToString();
-
-                    if(!Directory.Exists(folder))
-                        continue;
-
-                    foreach(string dir in Directory.EnumerateDirectories(folder, "*Visual*SDK*"))
+                    if(di.DriveType == DriveType.Fixed)
                     {
-                        // If more than one, sort them and take the last one as it should be the most recent.
-                        var file = Directory.EnumerateFiles(dir, exeName, SearchOption.AllDirectories).OrderBy(
-                            f => f).LastOrDefault();
+                        sb[0] = di.Name[0];
 
-                        if(file != null)
-                            return Path.GetDirectoryName(file);
+                        if(Directory.Exists(sb.ToString()))
+                        {
+                            hhcFolder = sb.ToString();
+                            break;
+                        }
                     }
                 }
+            }
 
-            return String.Empty;
+            if(hhcFolder.Length == 0 || !Directory.Exists(hhcFolder))
+            {
+                throw new BuilderException("BE0037", "Could not find the path to the HTML Help 1 compiler.  " +
+                    "Is the HTML Help Workshop installed?  See the error number topic in the help file " +
+                    "for details.\r\n");
+            }
+
+            if(hhcFolder[hhcFolder.Length - 1] != '\\')
+                hhcFolder += @"\";
+
+            this.ReportProgress("Found HTML Help 1 compiler in '{0}'", hhcFolder);
         }
         #endregion
 

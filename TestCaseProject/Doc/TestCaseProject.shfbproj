@@ -32,7 +32,7 @@
     <BuildLogFile>
     </BuildLogFile>
     <FrameworkVersion>.NET Framework 4.7.2</FrameworkVersion>
-    <IndentHtml>False</IndentHtml>
+    <IndentHtml>True</IndentHtml>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <RootNamespaceTitle>Test Root Namespace Title</RootNamespaceTitle>
     <CopyrightHref>http://www.EWoodruff.us</CopyrightHref>
@@ -41,7 +41,7 @@
     <FeedbackEMailLinkText>Me. %28{%40CustomProperty}%29</FeedbackEMailLinkText>
     <HeaderText>Date Only: {%40BuildDate:MMM  d, yyyy} Full Date: {%40BuildDate}</HeaderText>
     <FooterText>Full Date: {%40BuildDate} Date Only: {%40BuildDate:MMM  d, yyyy}</FooterText>
-    <PresentationStyle>Default2022</PresentationStyle>
+    <PresentationStyle>OpenXML</PresentationStyle>
     <HelpFileVersion>{%40Major}.{%40Minor}.{%40Build}.{%40Revision} Beta</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Code Block Component" enabled="True">
@@ -64,20 +64,20 @@
       </ComponentConfig>
       <ComponentConfig id="Syntax Component" enabled="False">
         <component id="Syntax Component">
-          <syntax input="/document/reference" output="/document/syntax" renderReferenceLinks="true" />
+          <syntax input="/document/reference" output="/document/syntax" renderReferenceLinks="false" />
           <generators>
     {@SyntaxFilters}
 </generators>
           <containerElement name="codeSnippetGroup" addNoExampleTabs="true" includeOnSingleSnippets="true" groupingEnabled="{@CodeSnippetGrouping}" />
           <configurations>
+            <generator id="C#" />
             <generator id="Visual Basic">
-              <includeLineContinuation value="true" />
+              <includeLineContinuation value="false" />
             </generator>
             <generator id="Visual Basic Usage">
               <includeLineContinuation value="false" />
             </generator>
             <generator id="Managed C++" />
-            <generator id="C#" />
             <generator id="F#" />
             <generator id="J#" />
             <generator id="JScript" />
@@ -86,11 +86,6 @@
             <generator id="ASP.NET" />
             <generator id="X#" />
           </configurations>
-        </component>
-      </ComponentConfig>
-      <ComponentConfig id="Transform Document Dump Component" enabled="False">
-        <component id="Transform Document Dump Component">
-          <dumpPath rawDocs="{@WorkingFolder}\RawDocs" transformedDocs="{@workingFolder}\TransformedDocs" />
         </component>
       </ComponentConfig>
     </ComponentConfigurations>
@@ -130,13 +125,10 @@
       <PlugInConfig id="Additional Content Only" enabled="False">
         <configuration />
       </PlugInConfig>
-      <PlugInConfig id="XPath Reflection File Filter" enabled="False">
-        <configuration />
-      </PlugInConfig>
     </PlugInConfigurations>
     <ApiFilter>
     </ApiFilter>
-    <HelpFileFormat>Website</HelpFileFormat>
+    <HelpFileFormat>OpenXml</HelpFileFormat>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <Major>1</Major>
     <Minor>20</Minor>
@@ -243,6 +235,7 @@
     <Image Include="media\SandcastleLogoLarge.jpg">
       <ImageId>6be7079d-a9d8-4189-9021-0f72d1642beb</ImageId>
       <AlternateText>Sandcastle</AlternateText>
+      <CopyToMedia>True</CopyToMedia>
     </Image>
     <Image Include="media\SandcastleLogoSmall.jpg">
       <ImageId>98a8a8b7-c374-40c7-902a-91c947bf107c</ImageId>
@@ -263,6 +256,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Bibliography.xml" />
+    <None Include="Content\CommonInline\lineBreak.aml" />
     <None Include="Content\GlossaryWithDivs.aml" />
     <None Include="Content\MiscElements\markup.aml" />
     <None Include="ExampleFiles\Test.xml" />
@@ -381,7 +375,7 @@
     <None Include="Content\SchemaExtensibility.aml" />
   </ItemGroup>
   <ItemGroup>
-    <ContentLayout Include="TestCaseProject.content" />
+    <None Include="TestCaseProject.content" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ExampleFiles\TestUTF8.txt" />

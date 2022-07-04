@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/21/2022
+// Updated : 05/08/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to search for <code> XML comment tags and colorize the code
@@ -515,7 +515,7 @@ namespace Sandcastle.Tools.BuildComponents
                 // If the default transform is specified, switch to the Open XML version.  This can happen if
                 // the user adds the code block component to their project to override the default settings.
                 string defaultTransform = Path.Combine(Path.GetDirectoryName(asm.Location),
-                    @"PresentationStyles\Colorizer\highlight.xsl");
+                    @"Colorizer\highlight.xsl");
 
                 if(styleFile.Equals(defaultTransform, StringComparison.OrdinalIgnoreCase))
                 {

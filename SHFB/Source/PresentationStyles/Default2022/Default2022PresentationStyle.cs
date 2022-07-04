@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022PresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/23/2022
+// Updated : 04/25/2022
 // Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Default 2022 presentation style.
@@ -17,12 +17,9 @@
 // 03/16/2022  EFW  Created the code
 //===============================================================================================================
 
-// Ignore Spelling: webfonts
-
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 using Sandcastle.Core;
@@ -33,10 +30,9 @@ namespace Sandcastle.PresentationStyles.Default2022
     /// <summary>
     /// This contains the definition for the Default 2022 presentation style
     /// </summary>
-    [PresentationStyleExport("Default2022", "Default2022", Version = AssemblyInfo.ProductVersion,
-      Copyright = AssemblyInfo.Copyright, Description = "This presentation style has a table of contents and " +
-        "topic structure similar to the ones used for Microsoft Docs online content as of 2022.  It also has " +
-        "a responsive layout.")]
+    [PresentationStyleExport("Default2022", "Default 2022", Version = AssemblyInfo.ProductVersion,
+      Copyright = AssemblyInfo.Copyright, Description = "This is the default presentation style.  It generates " +
+        "website output with a responsive layout.")]
     public sealed class Default2022PresentationStyle : PresentationStyleSettings
     {
         /// <inheritdoc />
@@ -76,9 +72,9 @@ namespace Sandcastle.PresentationStyles.Default2022
         }
 
         /// <inheritdoc />
+        /// <remarks>This presentation style only uses the standard shared content</remarks>
         public override IEnumerable<string> ResourceItemFiles(string languageName)
         {
-            // This presentation style only uses the standard shared content
             string filePath = this.ResolvePath(@"..\Shared\Content"),
                 fileSpec = "SharedContent_" + languageName + ".xml";
 

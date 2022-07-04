@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/24/2022
+// Updated : 07/03/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -18,7 +18,7 @@
 // 03/16/2022  EFW  Created the code
 //===============================================================================================================
 
-// Ignore Spelling: bdi datalist figcaption keygen nav rp svg wbr tbody tfoot px mb fa thead hoverable fscript
+// Ignore Spelling: fa
 
 using System;
 using System.Collections.Generic;
@@ -75,7 +75,6 @@ namespace Sandcastle.PresentationStyles.Default2022
         /// Root breadcrumb title text
         /// </summary>
         private string RootBreadcrumbTitleText => this.TransformationArguments[nameof(RootBreadcrumbTitleText)].Value;
-
 
         /// <summary>
         /// Render collapsible sections
@@ -433,10 +432,13 @@ namespace Sandcastle.PresentationStyles.Default2022
                 new BibliographyElement(),
                 new CiteElement(),
                 new CodeSnippetGroupElementLanguageFilter(),
+                new PassthroughElement("include"),
+                new PassthroughElement("includeAttribute"),
                 new MarkupElement(),
                 new ConvertibleElement("para", "p"),
                 new ListElement(),
                 new ParametersElement(),
+                new PassthroughElement("referenceLink"),
                 new PassthroughElement("span"),
                 new SummaryElement(),
                 new TableElement(),
@@ -592,7 +594,7 @@ namespace Sandcastle.PresentationStyles.Default2022
                     t => RenderApiRevisionHistorySection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.Bibliography,
                     t => RenderApiBibliographySection(t)),
-                new ApiTopicSectionHandler(ApiTopicSectionType.SeeAlso, t => RenderApiSeeAlsoSection(t)),
+                new ApiTopicSectionHandler(ApiTopicSectionType.SeeAlso, t => RenderApiSeeAlsoSection(t))
             });
         }
 
@@ -608,7 +610,6 @@ namespace Sandcastle.PresentationStyles.Default2022
                 else
                     localeSpecificStyleSheet = this.StyleSheetPath + Path.GetFileName(localeSpecificStyleSheet);
 
-                // {@LocalSpecificStyleSheet}
                 pageTemplate = LoadTemplateFile(this.TopicTemplatePath, new[] {
                     ("{@Locale}", this.Locale),
                     ("{@LocaleLowercase}", this.Locale.ToLowerInvariant()),
@@ -770,6 +771,8 @@ $("".toggleSection"").keypress(function () {
         }
 
         /// <inheritdoc />
+        /// <remarks>The returned content element is always null and the content should be inserted into the
+        /// transformation's current element after adding the title element.</remarks>
         public override (XElement Title, XElement Content) CreateSubsection(bool localizedTitle, string title)
         {
             XElement titleElement = null;
@@ -791,8 +794,6 @@ $("".toggleSection"").keypress(function () {
                 titleElement = new XElement("h4", titleContent);
             }
 
-            // Content for subsections can be added to the current element immediately after the title element
-            // by the caller.
             return (titleElement, null);
         }
         #endregion
@@ -1640,10 +1641,7 @@ $("".toggleSection"").keypress(function () {
                 }
 
                 table.Add(new XElement("tr",
-                    new XElement("td",
-                        new XElement("span",
-                            new XAttribute("class", "selflink"),
-                            e.Element("apidata").Attribute("name").Value)),
+                    new XElement("td", e.Element("apidata").Attribute("name").Value),
                     valueCell,
                     summaryCell));
 
@@ -1819,25 +1817,6 @@ $("".toggleSection"").keypress(function () {
                     el.Element("apidata").Attribute("name").Value).ThenBy(
                     el => el.Element("templates")?.Elements()?.Count() ?? 0))
                 {
-                    string visibility;
-
-                    switch(e.Element("memberdata").Attribute("visibility").Value)
-                    {
-                        case "family":
-                        case "family or assembly":
-                        case "assembly":
-                            visibility = "prot";
-                            break;
-
-                        case "private":
-                            visibility = "priv";
-                            break;
-
-                        default:
-                            visibility = "pub";
-                            break;
-                    }
-
                     XElement referenceLink = new XElement("referenceLink",
                             new XAttribute("target", e.Attribute("api").Value));
                     string showParameters = (transformation.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload &&
@@ -1848,23 +1827,15 @@ $("".toggleSection"").keypress(function () {
 
                     var summaryCell = new XElement("td");
 
-                    if(!Enum.TryParse(e.Element("apidata")?.Attribute("subgroup")?.Value, true,
-                      out ApiMemberGroup imageMemberType))
-                    {
-                        imageMemberType = memberType;
-                    }
-
                     switch(memberType)
                     {
                         case var t when t == ApiMemberGroup.Operator &&
                           (e.Element("apidata")?.Attribute("name")?.Value == "Explicit" ||
                           e.Element("apidata")?.Attribute("name")?.Value == "Implicit"):
                             referenceLink.Add(new XAttribute("show-parameters", "true"));
-                            imageMemberType = ApiMemberGroup.Operator;
                             break;
 
                         case var t when t == ApiMemberGroup.Operator:
-                            imageMemberType = ApiMemberGroup.Operator;
                             break;
 
                         case var t when t == ApiMemberGroup.Extension:
@@ -1882,30 +1853,9 @@ $("".toggleSection"").keypress(function () {
 
                             referenceLink.Add(new XAttribute("display-target", "extension"),
                                 new XAttribute("show-parameters", showParameters), extensionMethod);
-
-                            imageMemberType = ApiMemberGroup.Extension;
                             break;
 
                         default:
-                            if(imageMemberType == ApiMemberGroup.Constructor)
-                                imageMemberType = ApiMemberGroup.Method;
-                            else
-                            {
-                                if(imageMemberType == ApiMemberGroup.Method && Enum.TryParse(
-                                  e.Element("apidata")?.Attribute("subsubgroup")?.Value, true,
-                                  out ApiMemberGroup subGroupType) && subGroupType == ApiMemberGroup.Operator)
-                                {
-                                    imageMemberType = subGroupType;
-                                }
-                                else
-                                {
-                                    // Show the extension method icon for extension methods in their containing
-                                    // type to match IntelliSense.
-                                    if(isExtensionMethod && visibility == "pub")
-                                        imageMemberType = ApiMemberGroup.Extension;
-                                }
-                            }
-
                             referenceLink.Add(new XAttribute("show-parameters", showParameters));
                             break;
                     }
@@ -2340,7 +2290,8 @@ $("".toggleSection"").keypress(function () {
                         parent = parent.Parent.Parent;
                     else
                     {
-                        parent = parent.Elements().Last();
+                        if(parent.Elements().Any())
+                            parent = parent.Elements().Last();
 
                         var ul = new XElement("ul", new XAttribute("class", "menu"));
                         

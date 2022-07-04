@@ -20,6 +20,7 @@
 // 03/16/2021 - EFW - Added support for writing out the nullable context for nullable reference types
 // 04/03/2021 - EFW - Moved duplicate type/member merging and XAML syntax attributes to MRefBuilder and removed
 // the MergeDuplicates.xsl and AddXamlSyntaxData.xsl transformations.
+// 06/13/2022 - EFW - Added support for writing out hierarchy info for structures
 
 using System;
 using System.Collections.Generic;
@@ -929,8 +930,8 @@ namespace Sandcastle.Tools
 
             writer.WriteEndElement();
 
-            // For classes, record base type
-            if(type is Class)
+            // For classes and structures, record base types and descendants
+            if(type is Class || type is Struct)
                 this.WriteHierarchy(type, hasContentProperty);
         }
 

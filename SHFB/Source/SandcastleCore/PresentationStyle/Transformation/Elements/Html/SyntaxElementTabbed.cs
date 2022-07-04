@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SyntaxElementTabbed.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/10/2022
+// Updated : 06/26/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle syntax section elements in legacy presentation styles such as
@@ -158,8 +158,13 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             var (title, content) = transformation.CreateSection(element.GenerateUniqueId(), true,
                 "title_syntax", null);
 
-            transformation.CurrentElement.Add(title);
-            transformation.CurrentElement.Add(content);
+            if(title != null)
+                transformation.CurrentElement.Add(title);
+
+            if(content != null)
+                transformation.CurrentElement.Add(content);
+            else
+                content = transformation.CurrentElement;
 
             this.RenderSyntaxSections(transformation, element, content);
 
@@ -199,7 +204,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 }
 
                 var parameter = new XElement("parameter");
-                var paramType = transformation.ReferenceNode.Element("parameters").Element("parameter").Element("type");
+                var paramType = transformation.ReferenceNode.Element("parameters").Element("parameter").Elements().First();
 
                 content.Add(new XElement("include", new XAttribute("item", "text_extensionUsage"), parameter));
 
@@ -396,7 +401,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             }
 
             foreach(var block in syntaxBlocks)
-                content.Add(new XElement("pre", new XAttribute(XmlSpace, "preserve"), new XElement(block)));
+                content.Add(new XElement("pre", new XAttribute(XmlSpace, "preserve"), block.Nodes()));
         }
 
         /// <summary>

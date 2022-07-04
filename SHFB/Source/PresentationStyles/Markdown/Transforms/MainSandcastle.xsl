@@ -17,8 +17,6 @@
 	============================================================================================= -->
 
 	<xsl:param name="bibliographyData" select="'../Data/bibliography.xml'"/>
-	<xsl:param name="omitXmlnsBoilerplate" select="'false'"/>
-	<xsl:param name="omitVersionInformation" select="'false'"/>
 
 	<!-- ============================================================================================
 	Global Variables

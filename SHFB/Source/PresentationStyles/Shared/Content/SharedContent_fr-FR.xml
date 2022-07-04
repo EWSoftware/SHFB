@@ -122,7 +122,7 @@
 	<item id="topicTitle_attachedProperties">{0} Propriétés attachés</item>
 	<item id="topicTitle_attachedProperty">{0} Propriété attaché</item>
 	<item id="topicTitle_class">{0} Classe</item>
-	<item id="topicTitle_constructor">{0} Constructeur {1}</item>
+	<item id="topicTitle_constructor">{0}{1} Constructeur</item>
 	<item id="topicTitle_constructors">{0} Constructeurs</item>
 	<item id="topicTitle_delegate">{0} Délégués</item>
 	<item id="topicTitle_enumeration">{0} Énumeration</item>
@@ -132,15 +132,15 @@
 	<item id="topicTitle_field">{0} Champ</item>
 	<item id="topicTitle_fields">{0} Champs</item>
 	<item id="topicTitle_interface">{0} Interface</item>
-	<item id="topicTitle_method">{0} Méthode {1}</item>
+	<item id="topicTitle_method">{0}{1} Méthode</item>
 	<item id="topicTitle_methods">{0} Méthodes</item>
 	<item id="topicTitle_namespace">{0} Espace de nom</item>
 	<item id="topicTitle_namespaceGroup">{0} Espaces de noms</item>
 	<item id="topicTitle_properties">{0} Propriétés</item>
-	<item id="topicTitle_property">{0} Propriété {1}</item>
+	<item id="topicTitle_property">{0}{1} Propriété</item>
 	<item id="topicTitle_structure">{0} Structure</item>
   <!-- Title for operator members -->
-	<item id="topicTitle_operator">{0} Opérateur {1}</item>
+	<item id="topicTitle_operator">{0}{1} Opérateur</item>
   <!-- Title for op_explicit and op_implicit members -->
   <item id="topicTitle_typeConversion">{0} Conversion {1}</item>
   <!-- Title for overload op_explicit and op_implicit topics -->

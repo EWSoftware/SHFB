@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SyntaxElementLanguageFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/24/2022
+// Updated : 06/26/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle syntax section elements in presentation styles that use a
@@ -115,8 +115,13 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             var (title, content) = transformation.CreateSection(element.GenerateUniqueId(), true,
                 "title_definition", null);
 
-            transformation.CurrentElement.Add(title);
-            transformation.CurrentElement.Add(content);
+            if(title != null)
+                transformation.CurrentElement.Add(title);
+
+            if(content != null)
+                transformation.CurrentElement.Add(content);
+            else
+                content = transformation.CurrentElement;
 
             this.NamespaceAndAssemblyInfoRenderer?.Invoke(transformation, content);
 
@@ -158,7 +163,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 }
 
                 var parameter = new XElement("parameter");
-                var paramType = transformation.ReferenceNode.Element("parameters").Element("parameter").Element("type");
+                var paramType = transformation.ReferenceNode.Element("parameters").Element("parameter").Elements().First();
 
                 content.Add(new XElement("include", new XAttribute("item", "text_extensionUsage"), parameter));
 
@@ -292,23 +297,19 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 }
                 else
                 {
-                    if(div.Attribute("codeLanguage").Value == "XAML")
-                    {
+                    if(codeLanguage == "XAML")
                         RenderXamlSyntaxBlock(transformation, div, codeContainer);
-                    }
                     else
                     {
                         if(transformation.UsesLegacyCodeColorizer)
                             codeContainer.Add(div.Nodes());
                         else
                         {
-                            string language = div.Attribute("style").Value;
-
-                            if(transformation.CodeSnippetLanguageConversion.TryGetValue(language, out string newId))
-                                language = newId;
+                            if(transformation.CodeSnippetLanguageConversion.TryGetValue(style, out string newId))
+                                style = newId;
 
                             codeContainer.Add(new XElement("code",
-                                new XAttribute("class", $"language-{language}"),
+                                new XAttribute("class", $"language-{style}"),
                                 div.Nodes()));
 
                             transformation.RegisterStartupScript(10000, "hljs.highlightAll();");
@@ -382,10 +383,10 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             foreach(var block in syntaxBlocks)
             {
                 if(transformation.UsesLegacyCodeColorizer)
-                    content.Add(new XElement(block));
+                    content.Add(block.Nodes());
                 else
                 {
-                    content.Add(new XElement("code", new XAttribute("class", "language-xml"), new XElement(block)));
+                    content.Add(new XElement("code", new XAttribute("class", "language-xml"), block.Nodes()));
                     transformation.RegisterStartupScript(10000, "hljs.highlightAll();");
                 }
             }

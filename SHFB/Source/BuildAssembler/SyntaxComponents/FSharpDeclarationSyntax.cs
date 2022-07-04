@@ -220,6 +220,8 @@ namespace Sandcastle.Tools.SyntaxGenerators
 
             for(int i = 0; i < iterations; i++)
             {
+                if(i != 0)
+                    writer.WriteLine();
 
                 WriteAttributes(reflection, writer);
 
@@ -262,9 +264,6 @@ namespace Sandcastle.Tools.SyntaxGenerators
                 writer.WriteString(" ");
 
                 WriteGenericTemplateConstraints(reflection, writer);
-
-                if(i == 0)
-                    writer.WriteLine();
             }
         }
 
@@ -456,6 +455,9 @@ namespace Sandcastle.Tools.SyntaxGenerators
 
             for(int i = 0; i < iterations; i++)
             {
+                if(i != 0)
+                    writer.WriteLine();
+
                 WriteAttributes(reflection, writer);
                 WriteVisibility(reflection, writer);
 
@@ -533,9 +535,6 @@ namespace Sandcastle.Tools.SyntaxGenerators
 
                     writer.WriteKeyword("set");
                 }
-
-                if(i == 0)
-                    writer.WriteLine();
             }
         }
 
@@ -560,6 +559,9 @@ namespace Sandcastle.Tools.SyntaxGenerators
 
             for(int i = 0; i < iterations; i++)
             {
+                if(i != 0)
+                    writer.WriteLine();
+
                 WriteAttributes(reflection, writer);
                 WriteVisibility(reflection, writer);
 
@@ -597,9 +599,6 @@ namespace Sandcastle.Tools.SyntaxGenerators
                     WriteTypeReference(args, writer);
 
                 writer.WriteString(">");
-
-                if(i == 0)
-                    writer.WriteLine();
             }
         }
 
@@ -674,7 +673,7 @@ namespace Sandcastle.Tools.SyntaxGenerators
             writer.WriteString(" ");
             writer.WriteIdentifier(name);
             WriteGenericTemplates(reflection, writer);
-            writer.WriteString(" =  ");
+            writer.WriteString(" = ");
 
             if(hasBaseClass || implements.Count != 0)
             {

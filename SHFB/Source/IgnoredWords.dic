@@ -12,6 +12,7 @@ assemblydata
 attachedeventdata
 attachedpropertydata
 attr
+bdi
 bestfitmapping
 bkeyword
 blockquote
@@ -21,6 +22,7 @@ Buchner
 byref
 callingconvention
 cctor
+cdata
 cdecl
 charset
 codepage
@@ -33,6 +35,7 @@ cref
 csharp
 css
 ctor
+datalist
 dd
 ddue
 dduetools
@@ -54,6 +57,8 @@ exactspelling
 exe
 fastcall
 fielddata
+figcaption
+fillcolor
 filterpriority
 fs
 fscript
@@ -62,7 +67,10 @@ gcnew
 guid
 hashtable
 hljs
+hoverable
+hralign
 href
+hrstd
 htm
 html
 http
@@ -71,6 +79,7 @@ img
 inheritdoc
 initonly
 javascript
+jc
 js
 jsc
 jscript
@@ -80,6 +89,7 @@ jsharp
 kbjscript
 kblangcpp
 kblangvb
+keygen
 kw
 lang
 langword
@@ -88,11 +98,14 @@ li
 listheader
 localhost
 mailto
+mb
 memberdata
+microsoft
 mscorlib
 mshelp
 msxsl
 nativeptr
+nav
 netstandard
 nobullet
 nofollow
@@ -109,6 +122,7 @@ onload
 param
 paramref
 params
+pict
 plaintext
 powershell
 pragma
@@ -121,10 +135,13 @@ propertydata
 prot
 pshell
 psx
+px
 py
 readonly
+rect
 regex
 regexes
+rp
 safeprojectname
 sbyte
 seealso
@@ -141,8 +158,14 @@ struct
 structs
 stylesheet
 subsubgroup
+svg
 tabindex
+tbl
+tbody
+tc
 td
+tfoot
+thead
 thiscall
 threadsafety
 throwonunmappablechar
@@ -172,7 +195,10 @@ vbscript
 vbusage
 visualbasic
 visualbasicandcsharp
+vml
 vref
+wbr
+webfonts
 xaml
 xamlusage
 xhelp
