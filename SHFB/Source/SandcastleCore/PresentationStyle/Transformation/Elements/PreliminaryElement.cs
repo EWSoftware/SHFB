@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PreliminaryElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/21/2022
+// Updated : 07/24/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the preliminary element
@@ -71,35 +71,46 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 
             XElement container;
 
-            if(transformation.SupportedFormats != HelpFileFormats.OpenXml)
+            switch(transformation.SupportedFormats)
             {
-                container = new XElement(this.PreliminaryContainerElement,
-                    new XAttribute("class", this.PreliminaryTextStyle));
+                case HelpFileFormats.OpenXml:
+                    container = new XElement(OpenXmlElement.WordProcessingML + "p");
 
-                if(!String.IsNullOrWhiteSpace(text))
-                    container.Add(text);
-                else
-                    container.Add(new XElement("include", new XAttribute("item", "preliminaryApi")));
-            }
-            else
-            {
-                container = new XElement(OpenXmlElement.WordProcessingML + "p");
+                    if(!String.IsNullOrWhiteSpace(text))
+                    {
+                        container.Add(new XElement(OpenXmlElement.WordProcessingML + "r",
+                            new XElement(OpenXmlElement.WordProcessingML + "rPr",
+                                new XElement(OpenXmlElement.WordProcessingML + "i")),
+                            new XElement(OpenXmlElement.WordProcessingML + "t", text)));
+                    }
+                    else
+                    {
+                        container.Add(new XElement(OpenXmlElement.WordProcessingML + "r",
+                            new XElement(OpenXmlElement.WordProcessingML + "rPr",
+                                new XElement(OpenXmlElement.WordProcessingML + "i")),
+                            new XElement(OpenXmlElement.WordProcessingML + "t",
+                                new XElement("include", new XAttribute("item", "preliminaryApi")))));
+                    }
+                    break;
 
-                if(!String.IsNullOrWhiteSpace(text))
-                {
-                    container.Add(new XElement(OpenXmlElement.WordProcessingML + "r",
-                        new XElement(OpenXmlElement.WordProcessingML + "rPr",
-                            new XElement(OpenXmlElement.WordProcessingML + "i")),
-                        new XElement(OpenXmlElement.WordProcessingML + "t", text)));
-                }
-                else
-                {
-                    container.Add(new XElement(OpenXmlElement.WordProcessingML + "r",
-                        new XElement(OpenXmlElement.WordProcessingML + "rPr",
-                            new XElement(OpenXmlElement.WordProcessingML + "i")),
-                        new XElement(OpenXmlElement.WordProcessingML + "t",
-                            new XElement("include", new XAttribute("item", "preliminaryApi")))));
-                }
+                case HelpFileFormats.Markdown:
+                    container = new XElement("strong");
+
+                    if(!String.IsNullOrWhiteSpace(text))
+                        container.Add(text);
+                    else
+                        container.Add(new XElement("include", new XAttribute("item", "preliminaryApi")));
+                    break;
+
+                default:
+                    container = new XElement(this.PreliminaryContainerElement,
+                        new XAttribute("class", this.PreliminaryTextStyle));
+
+                    if(!String.IsNullOrWhiteSpace(text))
+                        container.Add(text);
+                    else
+                        container.Add(new XElement("include", new XAttribute("item", "preliminaryApi")));
+                    break;
             }
 
             transformation.CurrentElement.Add(container);

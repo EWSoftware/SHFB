@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : OpenXmlTransformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/03/2022
+// Updated : 07/24/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -1936,10 +1936,13 @@ namespace Sandcastle.PresentationStyles.OpenXml
             seeAlsoHRef.AddRange(elementOverloads.Descendants("seealso").Where(s => s.Attribute("href") != null));
             seeAlsoCRef.AddRange(elementOverloads.Descendants("seealso").Where(s => s.Attribute("href") == null));
 
-            // Get conceptual links from comments excluding those in overloads comments and combine them with
-            // those in element overloads comments.
+            // Get unique conceptual links from comments excluding those in overloads comments and combine them
+            // with those in element overloads comments.
             var conceptualLinks = transformation.CommentsNode.Descendants("conceptualLink").Where(
-                s => !s.Ancestors("overloads").Any()).Concat(elementOverloads.Descendants("conceptualLink")).ToList();
+                s => !s.Ancestors("overloads").Any()).Concat(
+                    elementOverloads.Descendants("conceptualLink")).GroupBy(
+                        c => c.Attribute("target")?.Value ?? String.Empty).Where(g => g.Key.Length != 0).Select(
+                        g => g.First()).ToList();
 
             if(seeAlsoCRef.Count != 0 || seeAlsoHRef.Count != 0 || conceptualLinks.Count != 0 ||
               transformation.ApiMember.ApiTopicGroup == ApiMemberGroup.Type ||

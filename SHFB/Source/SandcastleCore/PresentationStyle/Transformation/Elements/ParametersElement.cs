@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ParametersElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/14/2022
+// Updated : 07/28/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle parameters elements based on the topic type
@@ -32,7 +32,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
         //=====================================================================
 
         /// <summary>
-        /// This is used to get or set the parameter style
+        /// This is used to get or set the parameter style for HTML presentation styles
         /// </summary>
         /// <value>The default if not set explicitly is "parameter"</value>
         public string ParameterStyle { get; set; } = "parameter";
@@ -87,11 +87,15 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 
                     foreach(var p in element.Elements("parameter"))
                     {
-                        var dt = new XElement("dt",
-                                new XAttribute("class", "has-text-weight-normal"),
-                            new XElement("span",
-                                new XAttribute("class", this.ParameterStyle),
-                                p.Attribute("name").Value));
+                        var dt = new XElement("dt");
+
+                        if(transformation.SupportedFormats != HelpFileFormats.Markdown)
+                        {
+                            dt.Add(new XAttribute("class", "has-text-weight-normal"),
+                                new XElement("span",
+                                    new XAttribute("class", this.ParameterStyle),
+                                    p.Attribute("name").Value));
+                        }
 
                         dt.Add(NonBreakingSpace, NonBreakingSpace);
 

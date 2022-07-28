@@ -1,11 +1,11 @@
 ﻿//===============================================================================================================
-// System  : Sandcastle Help File Builder MSBuild Tasks
-// File    : GenerateMarkdownContent.cs
+// System  : Sandcastle Help File Builder Utilities
+// File    : MarkdownContentGenerator.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/07/2021
-// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
+// Updated : 07/28/2022
+// Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
 //
-// This file contains the MSBuild task used to finish up creation of the markdown content and copy it to the
+// This file contains the class used to finish up creation of the markdown content and copy it to the
 // output folder.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
@@ -16,9 +16,10 @@
 //    Date     Who  Comments
 // ==============================================================================================================
 // 03/30/2015  EFW  Created the code
+// 07/04/2022  EFW  Moved the code into the build engine and removed the task
 //===============================================================================================================
 
-// Ignore Spelling: blockquote dl ol ul noscript fieldset iframe
+// Ignore Spelling: noscript fieldset iframe
 
 using System;
 using System.Collections.Generic;
@@ -29,53 +30,42 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 
-using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
-
-namespace SandcastleBuilder.MSBuild
+namespace SandcastleBuilder.Utils.BuildEngine
 {
     /// <summary>
-    /// This task is used to finish up creation of the markdown content and copy it to the output folder
+    /// This class is used to finish up creation of the markdown content and copy it to the output folder
     /// </summary>
-    public class GenerateMarkdownContent : Task
+    public class MarkdownContentGenerator
     {
         #region Private data members
         //=====================================================================
 
-        private static readonly Regex reAddNewLines = new Regex(@"(\w)(\<(p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|" +
-            "address|script|noscript|form|fieldset|iframe|math))");
+        private static readonly Regex reAddNewLines = new Regex(@"(\w)(\<(p|div|h[1-6]|blockquote|pre|table|dl|" +
+            "ol|ul|address|script|noscript|form|fieldset|iframe|math|article|aside|canvas|details|dialog|" +
+            "figcaption|figure|footer|header|main|nav))");
         private static readonly Regex reTrimNbsp = new Regex(@"\s*&nbsp;\s*");
+        private static readonly Regex reDecodeEntities = new Regex("```.*?```", RegexOptions.Singleline);
+        private static readonly MatchEvaluator meDecodeEntities = new MatchEvaluator(
+            m => WebUtility.HtmlDecode(m.Value));
 
-        private static readonly Regex reTrimSpace = new Regex(@"\s+</");
+        private readonly BuildProcess buildProcess;
+        private readonly string workingFolder;
 
         #endregion
 
-        #region Task input properties
+        #region Constructor
         //=====================================================================
 
         /// <summary>
-        /// This is used to pass in the working folder where the files to parse are located
+        /// Constructor
         /// </summary>
-        [Required]
-        public string WorkingFolder { get; set; }
+        /// <param name="buildProcess">The build process to use</param>
+        public MarkdownContentGenerator(BuildProcess buildProcess)
+        {
+            this.buildProcess = buildProcess ?? throw new ArgumentNullException(nameof(buildProcess));
 
-        /// <summary>
-        /// This is used to pass in the output folder where the generated content is stored
-        /// </summary>
-        [Required]
-        public string OutputFolder { get; set; }
-
-        /// <summary>
-        /// This is used to pass in the default topic name.  If no Home.md file is found and a value is
-        /// specified, this file will be copied to create Home.md.
-        /// </summary>
-        public string DefaultTopic { get; set; }
-
-        /// <summary>
-        /// This is used to pass in whether or not to append extensions to the sidebar topic links
-        /// </summary>
-        public bool AppendMarkdownFileExtensionsToUrls { get; set; }
-
+            workingFolder = Path.Combine(buildProcess.WorkingFolder, @"Output\Markdown");
+        }
         #endregion
 
         #region Execute methods
@@ -85,127 +75,118 @@ namespace SandcastleBuilder.MSBuild
         /// This is used to execute the task and perform the build
         /// </summary>
         /// <returns>True on success or false on failure.</returns>
-        public override bool Execute()
+        public bool Execute()
         {
             XDocument topic;
-            string key, title;
+            string key, title,
+                extension = buildProcess.CurrentProject.AppendMarkdownFileExtensionsToUrls ? ".md" : String.Empty;
             int topicCount = 0;
 
             // Load the TOC file and process the topics in TOC order.  This generates the sidebar TOC as well.
-            using(var tocReader = XmlReader.Create(Path.Combine(this.WorkingFolder, @"..\..\toc.xml"), new XmlReaderSettings { CloseInput = true }))
-                using(StreamWriter sidebar = new StreamWriter(Path.Combine(this.WorkingFolder, "_Sidebar.md")))
-                {
-                    while(tocReader.Read())
-                        if(tocReader.NodeType == XmlNodeType.Element && tocReader.Name == "topic")
+            using(var tocReader = XmlReader.Create(Path.Combine(workingFolder, @"..\..\toc.xml"), new XmlReaderSettings { CloseInput = true }))
+            using(StreamWriter sidebar = new StreamWriter(Path.Combine(workingFolder, "_Sidebar.md")))
+            {
+                while(tocReader.Read())
+                    if(tocReader.NodeType == XmlNodeType.Element && tocReader.Name == "topic")
+                    {
+                        key = tocReader.GetAttribute("file");
+
+                        if(!String.IsNullOrWhiteSpace(key))
                         {
-                            key = tocReader.GetAttribute("file");
+                            string topicFile = Path.Combine(workingFolder, key + ".md");
 
-                            if(!String.IsNullOrWhiteSpace(key))
+                            // The topics are easier to update as XDocuments as we can use LINQ to XML to
+                            // find stuff.  Not all topics may have been generated by the presentation style.
+                            // Ignore those that won't load.
+                            try
                             {
-                                string topicFile = Path.Combine(this.WorkingFolder, key + ".md");
+                                topic = XDocument.Load(topicFile);
+                            }
+                            catch(XmlException)
+                            {
+                                // If it's an additional topic added by the user, wrap it in a document
+                                // element and try again.  We still need the title for the TOC.
+                                string content = File.ReadAllText(topicFile);
 
-                                // The topics are easier to update as XDocuments as we can use LINQ to XML to
-                                // find stuff.  Not all topics may have been generated by the presentation style.
-                                // Ignore those that won't load.
                                 try
                                 {
-                                    topic = XDocument.Load(topicFile);
+                                    topic = XDocument.Parse("<document xml:space=\"preserve\">\r\n" + content +
+                                        "\r\n</document>");
                                 }
-                                catch(XmlException )
+                                catch
                                 {
-                                    // If it's an additional topic added by the user, wrap it in a document
-                                    // element and try again.  We still need the title for the TOC.
-                                    string content = File.ReadAllText(topicFile);
-
-                                    try
-                                    {
-                                        topic = XDocument.Parse("<document>\r\n" + content + "\r\n</document>");
-                                    }
-                                    catch
-                                    {
-                                        topic = null;
-                                    }
-                                }
-
-                                if(topic != null)
-                                {
-                                    title = ApplyChanges(key, topic) ?? key;
-
-                                    // Remove the containing document element and save the inner content
-                                    string content = topic.ToString(SaveOptions.DisableFormatting);
-
-#if NET472_OR_GREATER
-                                    int pos = content.IndexOf('>');
-#else
-                                    int pos = content.IndexOf('>', StringComparison.Ordinal);
-#endif
-
-                                    if(pos != -1)
-                                        content = content.Substring(pos + 1).TrimStart();
-
-                                    pos = content.IndexOf("</document>", StringComparison.Ordinal);
-
-                                    if(pos != -1)
-                                        content = content.Substring(0, pos);
-
-                                    // A few final fix ups:
-                                    
-                                    // Insert line breaks between literal text and block level elements where
-                                    // needed.
-                                    content = reAddNewLines.Replace(content, "$1\r\n\r\n$2");
-
-                                    // Trim trailing spaces before a closing element
-                                    content = reTrimSpace.Replace(content, "</");
-
-                                    // Decode HTML entities.  However, keep non-breaking spaces.
-#if NET472_OR_GREATER
-                                    content = WebUtility.HtmlDecode(content).Replace("\xA0", "&nbsp;");
-#else
-                                    content = WebUtility.HtmlDecode(content).Replace("\xA0", "&nbsp;",
-                                        StringComparison.Ordinal);
-#endif
-                                    // Trim whitespace around non-breaking spaces to get rid of excess blank
-                                    // lines except in a cases where we need to keep it so that the content is
-                                    // converted from markdown to HTML properly.
-                                    content = reTrimNbsp.Replace(content, new MatchEvaluator(m =>
-                                    {
-                                        if(m.Index + m.Length < content.Length && content[m.Index + m.Length] == '#')
-                                            return "\r\n\r\n";
-
-                                        if(m.Value.Length > 6 && m.Value[0] == '&' && Char.IsWhiteSpace(m.Value[6]))
-                                            return "&nbsp;\r\n";
-
-                                        if(Char.IsWhiteSpace(m.Value[0]))
-                                            return "\r\n&nbsp;";
-
-                                        return m.Value;
-                                    }));
-
-                                    File.WriteAllText(topicFile, content);
-
-                                    if(tocReader.Depth > 1)
-                                        sidebar.Write(new String(' ', (tocReader.Depth - 1) * 2));
-
-                                    sidebar.WriteLine("- [{0}]({1}{2})", title, key,
-                                        this.AppendMarkdownFileExtensionsToUrls ? ".md" : String.Empty);
-
-                                    topicCount++;
-
-                                    if((topicCount % 500) == 0)
-                                        Log.LogMessage(MessageImportance.High, "{0} topics generated", topicCount);
+                                    topic = null;
                                 }
                             }
+
+                            if(topic != null)
+                            {
+                                title = ApplyChanges(key, topic) ?? key;
+
+                                // Remove the containing document element and save the inner content
+                                string content = topic.ToString(buildProcess.CurrentProject.IndentHtml ?
+                                    SaveOptions.None : SaveOptions.DisableFormatting);
+
+                                int pos = content.IndexOf('>');
+
+                                if(pos != -1)
+                                    content = content.Substring(pos + 1).TrimStart();
+
+                                pos = content.IndexOf("</document>", StringComparison.Ordinal);
+
+                                if(pos != -1)
+                                    content = content.Substring(0, pos);
+
+                                // A few final fix ups:
+
+                                // Insert line breaks between literal text and block level elements where
+                                // needed.
+                                content = reAddNewLines.Replace(content, "$1\r\n\r\n$2");
+
+                                // Decode entities within code blocks
+                                content = reDecodeEntities.Replace(content, meDecodeEntities);
+
+                                // Trim whitespace around non-breaking spaces to get rid of excess blank
+                                // lines except in a cases where we need to keep it so that the content is
+                                // converted from markdown to HTML properly.
+                                content = reTrimNbsp.Replace(content, new MatchEvaluator(m =>
+                                {
+                                    if(m.Index + m.Length < content.Length && content[m.Index + m.Length] == '#')
+                                        return "\r\n\r\n";
+
+                                    if(m.Value.Length > 6 && m.Value[0] == '&' && Char.IsWhiteSpace(m.Value[6]))
+                                        return "&nbsp;\r\n";
+
+                                    if(Char.IsWhiteSpace(m.Value[0]))
+                                        return "\r\n&nbsp;";
+
+                                    return m.Value;
+                                }));
+
+                                File.WriteAllText(topicFile, content);
+
+                                if(tocReader.Depth > 1)
+                                    sidebar.Write(new String(' ', (tocReader.Depth - 1) * 2));
+
+                                sidebar.WriteLine("- [{0}]({1}{2})", title, key, extension);
+
+                                topicCount++;
+
+                                if((topicCount % 500) == 0)
+                                    buildProcess.ReportProgress("{0} topics generated", topicCount);
+                            }
                         }
-                }
+                    }
+            }
 
-            Log.LogMessage(MessageImportance.High, "Finished generating {0} topics", topicCount);
+            buildProcess.ReportProgress("Finished generating {0} topics", topicCount);
 
-            string homeTopic = Path.Combine(this.WorkingFolder, "Home.md");
+            string homeTopic = Path.Combine(workingFolder, "Home.md");
 
-            if(!File.Exists(homeTopic) && !String.IsNullOrWhiteSpace(this.DefaultTopic))
+            if(!File.Exists(homeTopic) && !String.IsNullOrWhiteSpace(buildProcess.DefaultTopicFile))
             {
-                string defaultTopic = Path.Combine(this.WorkingFolder,
-                    Path.GetFileNameWithoutExtension(this.DefaultTopic) + ".md");
+                string defaultTopic = Path.Combine(workingFolder,
+                    Path.GetFileNameWithoutExtension(buildProcess.DefaultTopicFile) + ".md");
 
                 if(File.Exists(defaultTopic))
                     File.Copy(defaultTopic, homeTopic);
@@ -214,11 +195,11 @@ namespace SandcastleBuilder.MSBuild
             // Copy the working folder content to the output folder
             int fileCount = 0;
 
-            Log.LogMessage(MessageImportance.High, "Copying content to output folder...");
+            buildProcess.ReportProgress("Copying content to output folder...");
 
-            this.RecursiveCopy(this.WorkingFolder, this.OutputFolder, ref fileCount);
+            this.RecursiveCopy(workingFolder, buildProcess.OutputFolder, ref fileCount);
 
-            Log.LogMessage(MessageImportance.High, "Finished copying {0} files", fileCount);
+            buildProcess.ReportProgress("Finished copying {0} files", fileCount);
 
             return true;
         }
@@ -243,6 +224,18 @@ namespace SandcastleBuilder.MSBuild
 
             if(filename != null)
                 filename.Remove();
+
+            // Replace SectionTitle elements with their content
+            foreach(var st in topic.Descendants("SectionTitle").ToList())
+            {
+                foreach(var n in st.Nodes().ToList())
+                {
+                    n.Remove();
+                    st.AddBeforeSelf(n);
+                }
+
+                st.Remove();
+            }
 
             foreach(var span in topic.Descendants("span").Where(s => s.Attribute("class") != null).ToList())
             {
@@ -285,12 +278,16 @@ namespace SandcastleBuilder.MSBuild
             // that cross-page anchor references (PageName#Anchor) won't work and I'm not going to attempt to
             // support them since it would be more complicated.  Likewise, links to elements without a title
             // such as list items and table cells won't work either.
-            foreach(var span in topic.Descendants("span").Where(s => s.Attribute("id") != null).ToList())
+            foreach(var span in topic.Descendants("span").Where(s => s.Attribute("id") != null &&
+              String.IsNullOrWhiteSpace(s.Value)).ToList())
             {
                 string id = span.Attribute("id").Value;
 
                 if(span.PreviousNode is XText sectionTitle)
                 {
+                    if(String.IsNullOrWhiteSpace(sectionTitle.Value) && sectionTitle.PreviousNode is XText prevText)
+                        sectionTitle = prevText;
+
                     // We may get more than one line so find the last one with a section title which will be
                     // the closest to the span.
                     string title = sectionTitle.Value.Split(new[] { '\r', '\n' },
@@ -299,11 +296,8 @@ namespace SandcastleBuilder.MSBuild
 
                     if(title != null)
                     {
-#if NET472_OR_GREATER
                         int pos = title.IndexOf(' ');
-#else
-                        int pos = title.IndexOf(' ', StringComparison.Ordinal);
-#endif
+
                         if(pos != -1)
                         {
                             title = title.Substring(pos + 1).Trim();
@@ -313,12 +307,7 @@ namespace SandcastleBuilder.MSBuild
                                 topicTitle = title;
 
                             // Convert the title ID to the expected format
-#if NET472_OR_GREATER
                             title = title.ToLowerInvariant().Replace(' ', '-').Replace("#", String.Empty);
-#else
-                            title = title.ToLowerInvariant().Replace(' ', '-').Replace("#", String.Empty,
-                                StringComparison.Ordinal);
-#endif
 
                             // For intro links, link to the page header title since intro sections have no title
                             // themselves.  The transformations always add a PageHeader link span after the page
@@ -326,24 +315,28 @@ namespace SandcastleBuilder.MSBuild
                             if(id.StartsWith("@pageHeader_", StringComparison.Ordinal))
                             {
                                 if(linkTargets.ContainsKey(id.Substring(12)))
-                                    Log.LogWarning(null, "GMC0001", "GMC0001", "SHFB", 0, 0, 0, 0,
-                                        "Duplicate in-page link ID found: Topic ID: {0}  Link ID: {1}", key, id);
+                                {
+                                    buildProcess.ReportWarning("GMC0001", "Duplicate in-page link ID found: " +
+                                        "Topic ID: {0}  Link ID: {1}", key, id);
+                                }
 
                                 linkTargets[id.Substring(12)] = "PageHeader";
                             }
                             else
                             {
                                 if(linkTargets.ContainsKey(id))
-                                    Log.LogWarning(null, "GMC0001", "GMC0001", "SHFB", 0, 0, 0, 0,
-                                        "Duplicate in-page link ID found: Topic ID: {0}  Link ID: {1}", key, id);
+                                {
+                                    buildProcess.ReportWarning("GMC0001", "Duplicate in-page link ID found: " +
+                                        "Topic ID: {0}  Link ID: {1}", key, id);
+                                }
 
                                 linkTargets[id] = "#" + title;
                             }
                         }
+
+                        span.Remove();
                     }
                 }
-
-                span.Remove();
             }
 
             // Update in-page link targets
@@ -355,16 +348,20 @@ namespace SandcastleBuilder.MSBuild
                 {
                     string id = href.Value.Substring(1).Trim();
 
+                    // Special case for the See Also section link
+                    if(id == "seeAlsoSection")
+                        id = "seeAlso";
+
                     if(linkTargets.TryGetValue(id, out string target))
                     {
                         if(target == "PageHeader")
+                        {
                             if(!linkTargets.TryGetValue("PageHeader", out target))
                                 target = "#";
-                    }
-                    else
-                        target = "#";
+                        }
 
-                    href.Value = target;
+                        href.Value = target;
+                    }
                 }
             }
 
@@ -381,11 +378,8 @@ namespace SandcastleBuilder.MSBuild
 
                     if(title != null)
                     {
-#if NET472_OR_GREATER
                         int pos = title.IndexOf(' ');
-#else
-                        int pos = title.IndexOf(' ', StringComparison.Ordinal);
-#endif
+
                         if(pos != -1)
                             topicTitle = title.Substring(pos + 1).Trim();
                     }
@@ -402,7 +396,7 @@ namespace SandcastleBuilder.MSBuild
         /// <param name="sourcePath">The source path from which to copy</param>
         /// <param name="destPath">The destination path to which to copy</param>
         /// <param name="fileCount">The file count used for logging progress</param>
-        private void RecursiveCopy(string sourcePath, string destPath, ref int fileCount )
+        private void RecursiveCopy(string sourcePath, string destPath, ref int fileCount)
         {
             if(sourcePath == null)
                 throw new ArgumentNullException(nameof(sourcePath));
@@ -428,7 +422,7 @@ namespace SandcastleBuilder.MSBuild
                 fileCount++;
 
                 if((fileCount % 500) == 0)
-                    Log.LogMessage(MessageImportance.High, "Copied {0} files", fileCount);
+                    buildProcess.ReportProgress("Copied {0} files", fileCount);
             }
 
             // Ignore hidden folders as they may be under source control and are not wanted

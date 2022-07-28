@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ProcedureElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/10/2022
+// Updated : 07/23/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle procedure elements
@@ -53,40 +53,52 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
             string address = element.Attribute("address")?.Value;
             var titleText = element.Element(Ddue + "title")?.Value.NormalizeWhiteSpace();
 
-            if(transformation.SupportedFormats != HelpFileFormats.OpenXml)
+            switch(transformation.SupportedFormats)
             {
-                if(!String.IsNullOrWhiteSpace(titleText))
-                {
-                    var title = new XElement("h3", titleText);
+                case HelpFileFormats.OpenXml:
+                    content = transformation.CurrentElement;
 
                     if(!String.IsNullOrWhiteSpace(address))
-                        title.Add(new XAttribute("id", address));
+                        OpenXml.OpenXmlElement.AddAddressBookmark(content, address);
 
-                    transformation.CurrentElement.Add(title);
-                }
+                    if(!String.IsNullOrWhiteSpace(titleText))
+                    {
+                        content.Add(new XElement(OpenXml.OpenXmlElement.WordProcessingML + "p",
+                            new XElement(OpenXml.OpenXmlElement.WordProcessingML + "pPr",
+                                new XElement(OpenXml.OpenXmlElement.WordProcessingML + "pStyle",
+                                    new XAttribute(OpenXml.OpenXmlElement.WordProcessingML + "val", "Heading5"))),
+                            titleText));
+                    }
+                    break;
 
-                content = new XElement("div");
+                case HelpFileFormats.Markdown:
+                    content = transformation.CurrentElement;
 
-                if(!String.IsNullOrWhiteSpace(address) && String.IsNullOrWhiteSpace(titleText))
-                    content.Add(new XAttribute("id", address));
+                    if(!String.IsNullOrWhiteSpace(titleText))
+                        content.Add("### ", titleText);
 
-                transformation.CurrentElement.Add(content);
-            }
-            else
-            {
-                content = transformation.CurrentElement;
+                    if(!String.IsNullOrWhiteSpace(address))
+                        Markdown.MarkdownElement.AddAddressBookmark(content, address);
+                    break;
 
-                if(!String.IsNullOrWhiteSpace(address))
-                    OpenXml.OpenXmlElement.AddAddressBookmark(content, address);
+                default:
+                    if(!String.IsNullOrWhiteSpace(titleText))
+                    {
+                        var title = new XElement("h3", titleText);
 
-                if(!String.IsNullOrWhiteSpace(titleText))
-                {
-                    content.Add(new XElement(OpenXml.OpenXmlElement.WordProcessingML + "p",
-                        new XElement(OpenXml.OpenXmlElement.WordProcessingML + "pPr",
-                            new XElement(OpenXml.OpenXmlElement.WordProcessingML + "pStyle",
-                                new XAttribute(OpenXml.OpenXmlElement.WordProcessingML + "val", "Heading5"))),
-                        titleText));
-                }
+                        if(!String.IsNullOrWhiteSpace(address))
+                            title.Add(new XAttribute("id", address));
+
+                        transformation.CurrentElement.Add(title);
+                    }
+
+                    content = new XElement("div");
+
+                    if(!String.IsNullOrWhiteSpace(address) && String.IsNullOrWhiteSpace(titleText))
+                        content.Add(new XAttribute("id", address));
+
+                    transformation.CurrentElement.Add(content);
+                    break;
             }
 
             // Render the steps and conclusion

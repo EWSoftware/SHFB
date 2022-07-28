@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : LanguageKeywordElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/09/2022
+// Updated : 07/04/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle languageKeyword elements
@@ -44,8 +44,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
             string keyword = element.Value?.NormalizeWhiteSpace();
 
             // If there is a slash, separate the keywords and render each one individually
-            bool first = true, isHtml = (transformation.SupportedFormats != HelpFileFormats.OpenXml &&
-                transformation.SupportedFormats != HelpFileFormats.Markdown);
+            bool first = true, isMarkdown = transformation.SupportedFormats == HelpFileFormats.Markdown,
+                isHtml = (transformation.SupportedFormats != HelpFileFormats.OpenXml && !isMarkdown);
 
             foreach(string k in keyword.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries))
             {
@@ -128,13 +128,18 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                         }
                         else
                         {
-                            transformation.CurrentElement.Add(
-                                new XElement(OpenXml.OpenXmlElement.WordProcessingML + "r",
-                                    new XElement(OpenXml.OpenXmlElement.WordProcessingML + "rPr",
-                                        new XElement(OpenXml.OpenXmlElement.WordProcessingML + "rStyle",
-                                            new XAttribute(OpenXml.OpenXmlElement.WordProcessingML + "val", "CodeInline"))),
-                                    new XElement(OpenXml.OpenXmlElement.WordProcessingML + "t",
-                                        new XAttribute(XmlSpace, "preserve"), kw)));
+                            if(isMarkdown)
+                                transformation.CurrentElement.Add($"`{kw}`");
+                            else
+                            {
+                                transformation.CurrentElement.Add(
+                                    new XElement(OpenXml.OpenXmlElement.WordProcessingML + "r",
+                                        new XElement(OpenXml.OpenXmlElement.WordProcessingML + "rPr",
+                                            new XElement(OpenXml.OpenXmlElement.WordProcessingML + "rStyle",
+                                                new XAttribute(OpenXml.OpenXmlElement.WordProcessingML + "val", "CodeInline"))),
+                                        new XElement(OpenXml.OpenXmlElement.WordProcessingML + "t",
+                                            new XAttribute(XmlSpace, "preserve"), kw)));
+                            }
                         }
                     }
 

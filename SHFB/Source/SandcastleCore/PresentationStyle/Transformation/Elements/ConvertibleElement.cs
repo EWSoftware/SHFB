@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ConvertibleElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/09/2022
+// Updated : 07/23/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class that handles elements that are converted to a different element name and have an
@@ -135,10 +135,20 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 
                 if(!String.IsNullOrWhiteSpace(address))
                 {
-                    if(transformation.SupportedFormats != HelpFileFormats.OpenXml)
-                        el.Add(new XAttribute("id", address));
-                    else
-                        OpenXml.OpenXmlElement.AddAddressBookmark(transformation.CurrentElement, address);
+                    switch(transformation.SupportedFormats)
+                    {
+                        case HelpFileFormats.OpenXml:
+                            OpenXml.OpenXmlElement.AddAddressBookmark(transformation.CurrentElement, address);
+                            break;
+
+                        case HelpFileFormats.Markdown:
+                            Markdown.MarkdownElement.AddAddressBookmark(transformation.CurrentElement, address);
+                            break;
+
+                        default:
+                            el.Add(new XAttribute("id", address));
+                            break;
+                    }
                 }
             }
 

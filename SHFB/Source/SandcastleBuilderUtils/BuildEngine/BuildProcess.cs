@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2022
+// Updated : 07/04/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -1498,12 +1498,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
-                        scriptFile = substitutionTags.TransformTemplate("GenerateMarkdownContent.proj",
-                            templateFolder, workingFolder);
-
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                        taskRunner.RunProject("GenerateMarkdownContent.proj", true);
+                        new MarkdownContentGenerator(this).Execute();
 
                         this.GatherBuildOutputFilenames();
                         this.ExecutePlugIns(ExecutionBehaviors.After);
@@ -2214,7 +2211,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                         if(commonTarget != null)
                         {
-                            this.ReportProgress("    Multi-targeted projects where found.  The common target " +
+                            this.ReportProgress("    Multi-targeted projects were found.  The common target " +
                                 "framework '{0}' will be used.  Override using the TargetFramework property on " +
                                 "the documentation sources.", commonTarget);
 
@@ -2224,7 +2221,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         else
                         {
                             // This may work or it may not depending on their compatibility
-                            this.ReportProgress("    Multi-targeted projects where found but no common target " +
+                            this.ReportProgress("    Multi-targeted projects were found but no common target " +
                                 "framework could be determined.  The first target framework in each will be " +
                                 "used.  Override using the TargetFramework property on the documentation sources.");
                         }

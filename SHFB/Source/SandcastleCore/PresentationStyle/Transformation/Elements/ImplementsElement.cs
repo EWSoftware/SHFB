@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ImplementsElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/31/2022
+// Updated : 07/24/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the implements
@@ -70,8 +70,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                 {
                     content.Add(new XElement("referenceLink",
                             new XAttribute("target", m.Attribute("api").Value),
-                            new XAttribute("qualified", "true")),
-                        new XElement("br"));
+                            new XAttribute("qualified", "true")));
+
+                    if(transformation.SupportedFormats != HelpFileFormats.Markdown)
+                        content.Add(new XElement("br"));
+                    else
+                        content.Add("  \n");
                 }
             }
         }

@@ -237,8 +237,11 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 
             transformation.RenderChildElements(contentCell, element.Nodes());
 
-            if(transformation.SupportedFormats != HelpFileFormats.OpenXml)
+            if(transformation.SupportedFormats != HelpFileFormats.OpenXml &&
+              transformation.SupportedFormats != HelpFileFormats.Markdown)
+            {
                 transformation.CurrentElement.Add(noteTemplate);
+            }
             else
             {
                 foreach(var n in noteTemplate.Nodes())

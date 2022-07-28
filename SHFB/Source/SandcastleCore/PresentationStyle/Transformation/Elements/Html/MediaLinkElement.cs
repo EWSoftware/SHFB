@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : MediaLinkElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/09/2022
+// Updated : 07/23/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle mediaLink elements
@@ -105,19 +105,22 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 string placement = image.Attribute("placement")?.Value;
                 var mediaLink = new XElement(this.MediaElement);
 
-                switch(placement)
+                if(transformation.SupportedFormats != HelpFileFormats.Markdown)
                 {
-                    case "center":
-                        mediaLink.Add(new XAttribute("class", this.MediaCenterStyle));
-                        break;
+                    switch(placement)
+                    {
+                        case "center":
+                            mediaLink.Add(new XAttribute("class", this.MediaCenterStyle));
+                            break;
 
-                    case "far":
-                        mediaLink.Add(new XAttribute("class", this.MediaFarStyle));
-                        break;
+                        case "far":
+                            mediaLink.Add(new XAttribute("class", this.MediaFarStyle));
+                            break;
 
-                    default:
-                        mediaLink.Add(new XAttribute("class", this.MediaNearStyle));
-                        break;
+                        default:
+                            mediaLink.Add(new XAttribute("class", this.MediaNearStyle));
+                            break;
+                    }
                 }
 
                 var caption = element.Element(Ddue + "caption");
@@ -129,12 +132,16 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                     string lead = caption.Attribute("lead")?.Value.NormalizeWhiteSpace();
                     captionDiv = new XElement(MediaCaptionElement);
 
-                    if(!String.IsNullOrWhiteSpace(this.CaptionStyle))
+                    if(!String.IsNullOrWhiteSpace(this.CaptionStyle) &&
+                      transformation.SupportedFormats != HelpFileFormats.Markdown)
+                    {
                         captionDiv.Add(new XAttribute("class", this.CaptionStyle));
+                    }
 
                     if(!String.IsNullOrWhiteSpace(lead))
                     {
-                        if(!String.IsNullOrWhiteSpace(this.CaptionLeadTextStyle))
+                        if(!String.IsNullOrWhiteSpace(this.CaptionLeadTextStyle) &&
+                          transformation.SupportedFormats != HelpFileFormats.Markdown)
                         {
                             captionDiv.Add(new XElement("span",
                                 new XAttribute("class", this.CaptionLeadTextStyle), lead + ": "));

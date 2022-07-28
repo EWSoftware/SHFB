@@ -57,7 +57,6 @@
 		<None Include="..\..\Deploy\Templates\BuildHelpViewerFile.proj" Link="Templates\BuildHelpViewerFile.proj" />
 		<None Include="..\..\Deploy\Templates\GenerateInheritedDocs.config" Link="Templates\GenerateInheritedDocs.config" />
 		<None Include="..\..\Deploy\Templates\GenerateInheritedDocs.proj" Link="Templates\GenerateInheritedDocs.proj" />
-		<None Include="..\..\Deploy\Templates\GenerateMarkdownContent.proj" Link="Templates\GenerateMarkdownContent.proj" />
 		<None Include="..\..\Deploy\Templates\GenerateRefInfo.proj" Link="Templates\GenerateRefInfo.proj" />
 		<None Include="..\..\Deploy\Templates\Help1x.hhp" Link="Templates\Help1x.hhp" />
 		<None Include="..\..\Deploy\Templates\HelpContentSetup.msha" Link="Templates\HelpContentSetup.msha" />

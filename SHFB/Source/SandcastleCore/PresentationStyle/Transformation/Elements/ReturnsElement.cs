@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReturnsElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/07/2022
+// Updated : 07/24/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle returns elements
@@ -68,7 +68,11 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                 if(transformation.SupportedFormats != HelpFileFormats.OpenXml)
                 {
                     transformation.RenderTypeReferenceLink(content, typeInfo, false);
-                    content.Add(new XElement("br"));
+
+                    if(transformation.SupportedFormats != HelpFileFormats.Markdown)
+                        content.Add(new XElement("br"));
+                    else
+                        content.Add("  \n");
                 }
                 else
                 {

@@ -83,15 +83,15 @@ custom build components.
 <p>This content is only compatible with <strong>HTML</strong> and <strong>Markdown</strong>
 presentation style formats.</p>
 
-<p>It is <strong>NOT</strong> recommended that you use the <em>markup</em> element for
+<p>It is <strong>NOT</strong> recommended that you use the <code>markup</code> element for
 normal conceptual content when an equivalent <u>MAML element</u> already exists.
 Its use should be restricted to custom build components.</p>
 </markup>
 
-<markup contentType="Markdown"><br /><br />
+<markup contentType="Markdown">
 This content is only compatible with **Markdown** presentation style formats.
 
-It is **NOT** recommended that you use the _markup_ element for normal conceptual
+It is **NOT** recommended that you use the `markup` element for normal conceptual
 content when an equivalent <u>MAML element</u> already exists.  Its use should be
 restricted to custom build components.
 
@@ -103,7 +103,7 @@ Open XML namespaces could be used if they are added to the namespace list at the
 <markup contentType="OpenXml"><br /><br />
 This content is only compatible with <span class="Bold">Open XML</span> presentation style formats.
 <br /><br />
-It is <span class="Bold">NOT</span> recommended that you use the <span class="Emphasis">markup</span>
+It is <span class="Bold">NOT</span> recommended that you use the <span class="CodeInline">markup</span>
 element for normal conceptual content when an equivalent <span class="Underline">MAML element</span> already
 exists.  Its use should be restricted to custom build components.
 </markup>

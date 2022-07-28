@@ -82,7 +82,8 @@
 <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation" isDocumented="True">This namespace contains presentation transformation related types.</NamespaceSummaryItem>
 <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements" isDocumented="True">This namespace contains presentation transformation elements that are format-neutral or perform render output conditionally based on the supported output format(s).</NamespaceSummaryItem>
 <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements.Html" isDocumented="True">This namespace contains presentation transformation elements that render HTML-specific output.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml" isDocumented="True">This namespace contains presentation transformation elements that render Open XML-specific output.</NamespaceSummaryItem></NamespaceSummaries>
+<NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml" isDocumented="True">This namespace contains presentation transformation elements that render Open XML-specific output.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements.Markdown" isDocumented="True">This namespace contains presentation transformation elements that render markdown-specific output.</NamespaceSummaryItem></NamespaceSummaries>
     <CleanIntermediates>True</CleanIntermediates>
     <ApiFilter>
       <Filter entryType="Namespace" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator" isExposed="True">

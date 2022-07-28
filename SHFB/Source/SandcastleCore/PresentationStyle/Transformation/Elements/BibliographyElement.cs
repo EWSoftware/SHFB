@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : BibliographyElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/12/2022
+// Updated : 07/23/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle bibliography elements based on the topic type
@@ -141,10 +141,20 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                 {
                     var reference = transformation.BibliographyData[citation];
 
-                    if(transformation.SupportedFormats != HelpFileFormats.OpenXml)
-                        this.RenderHtmlCitation(reference, idx, content);
-                    else
-                        RenderOpenXmlCitation(reference, idx, content);
+                    switch(transformation.SupportedFormats)
+                    {
+                        case HelpFileFormats.OpenXml:
+                            RenderOpenXmlCitation(reference, idx, content);
+                            break;
+
+                        case HelpFileFormats.Markdown:
+                            RenderMarkdownCitation(reference, idx, content);
+                            break;
+
+                        default:
+                            this.RenderHtmlCitation(reference, idx, content);
+                            break;
+                    }
 
                     idx++;
                 }
@@ -195,6 +205,38 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
             }
 
             content.Add(div);
+        }
+
+        /// <summary>
+        /// Render a citation for markdown output formats
+        /// </summary>
+        /// <param name="reference">The citation reference to render</param>
+        /// <param name="citationNumber">The citation number</param>
+        /// <param name="content">The content element to which the citation is added</param>
+        private static void RenderMarkdownCitation(XElement reference, int citationNumber, XElement content)
+        {
+            content.Add(new XElement("span",
+                    new XAttribute("id", $"cite{citationNumber}"), $"\\[{citationNumber}\\] "),
+                $"**{reference.Element("author")?.Value.NormalizeWhiteSpace()}**, ",
+                $"*{reference.Element("title")?.Value.NormalizeWhiteSpace()}*");
+
+            string publisher = reference.Element("publisher")?.Value.NormalizeWhiteSpace(),
+                link = reference.Element("link")?.Value.NormalizeWhiteSpace();
+
+            if(!String.IsNullOrWhiteSpace(publisher))
+                content.Add(", ", publisher);
+
+            if(!String.IsNullOrWhiteSpace(link))
+            {
+                content.Add(", ",
+                    new XElement("a",
+                        new XAttribute("href", link),
+                        new XAttribute("target", "_blank"),
+                        new XAttribute("rel", "noopener noreferrer"),
+                        link));
+            }
+
+            content.Add("  \n");
         }
 
         /// <summary>

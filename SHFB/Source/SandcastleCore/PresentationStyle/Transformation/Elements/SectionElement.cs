@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SectionElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/04/2022
+// Updated : 07/24/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle general section elements
@@ -21,8 +21,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-
-using Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml;
 
 namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 {
@@ -96,10 +94,20 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 
                         if(!String.IsNullOrWhiteSpace(address))
                         {
-                            if(transformation.SupportedFormats != HelpFileFormats.OpenXml)
-                                title.Add(new XAttribute("id", address));
-                            else
-                                OpenXmlElement.AddAddressBookmark(transformation.CurrentElement, address);
+                            switch(transformation.SupportedFormats)
+                            {
+                                case HelpFileFormats.OpenXml:
+                                    OpenXml.OpenXmlElement.AddAddressBookmark(transformation.CurrentElement, address);
+                                    break;
+
+                                case HelpFileFormats.Markdown:
+                                    Markdown.MarkdownElement.AddAddressBookmark(title, address);
+                                    break;
+
+                                default:
+                                    title.Add(new XAttribute("id", address));
+                                    break;
+                            }
                         }
                     }
                 }

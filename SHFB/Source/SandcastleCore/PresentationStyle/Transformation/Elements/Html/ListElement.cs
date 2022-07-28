@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ListElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/07/2022
+// Updated : 07/24/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle list elements based on the topic type
@@ -71,6 +71,9 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 this.RenderMamlList(transformation, element);
             else
                 this.RenderXmlCommentsList(transformation, element);
+
+            if(transformation.SupportedFormats == HelpFileFormats.Markdown)
+                transformation.CurrentElement.Add("\n\n");
         }
 
         /// <summary>
@@ -169,8 +172,11 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 case "table":
                     XElement listHeader = element.Element("listheader");
 
-                    if(!String.IsNullOrWhiteSpace(this.TableStyle))
+                    if(!String.IsNullOrWhiteSpace(this.TableStyle) &&
+                      transformation.SupportedFormats != HelpFileFormats.Markdown)
+                    {
                         list.Add(new XAttribute("class", this.TableStyle));
+                    }
 
                     if(listHeader != null)
                     {

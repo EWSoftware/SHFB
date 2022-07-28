@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : IntroductionElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/04/2022
+// Updated : 07/23/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle introduction elements
@@ -56,21 +56,32 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                 XElement intro;
                 string address = element.Attribute("address")?.Value;
 
-                if(transformation.SupportedFormats != HelpFileFormats.OpenXml)
+                switch(transformation.SupportedFormats)
                 {
-                    intro = new XElement("div");
+                    case HelpFileFormats.OpenXml:
+                        intro = transformation.CurrentElement;
 
-                    if(!String.IsNullOrWhiteSpace(address))
-                        intro.Add(new XAttribute("id", address));
+                        if(!String.IsNullOrWhiteSpace(address))
+                            OpenXmlElement.AddAddressBookmark(intro, address);
+                        break;
 
-                    transformation.CurrentElement.Add(intro);
-                }
-                else
-                {
-                    intro = transformation.CurrentElement;
+                    case HelpFileFormats.Markdown:
+                        intro = transformation.CurrentElement;
 
-                    if(!String.IsNullOrWhiteSpace(address))
-                        OpenXmlElement.AddAddressBookmark(intro, address);
+                        // Special case.  Links to this address will get converted to a link to the page header
+                        // since the introduction has no title itself.
+                        if(!String.IsNullOrWhiteSpace(address))
+                            Markdown.MarkdownElement.AddAddressBookmark(intro, "@pageHeader_" + address);
+                        break;
+
+                    default:
+                        intro = new XElement("div");
+
+                        if(!String.IsNullOrWhiteSpace(address))
+                            intro.Add(new XAttribute("id", address));
+
+                        transformation.CurrentElement.Add(intro);
+                        break;
                 }
 
                 transformation.RenderChildElements(intro, element.Nodes());

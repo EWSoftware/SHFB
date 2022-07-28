@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : CiteElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/12/2022
+// Updated : 07/23/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle cite elements
@@ -88,10 +88,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                     if(transformation.SupportedFormats != HelpFileFormats.OpenXml)
                     {
                         c = new XElement("sup",
-                                new XAttribute("class", this.CitationStyle),
                             new XElement("a",
                                 new XAttribute("href", $"#cite{foundIdx}"),
                                 $"[{foundIdx}]"));
+
+                        if(transformation.SupportedFormats != HelpFileFormats.Markdown)
+                            c.Add(new XAttribute("class", this.CitationStyle));
                     }
                     else
                     {

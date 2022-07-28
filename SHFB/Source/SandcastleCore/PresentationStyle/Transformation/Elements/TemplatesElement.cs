@@ -32,7 +32,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
         //=====================================================================
 
         /// <summary>
-        /// This is used to get or set the template parameter style
+        /// This is used to get or set the template parameter style for HTML presentation styles
         /// </summary>
         /// <value>The default if not set explicitly is "parameter"</value>
         public string TemplateParameterStyle { get; set; } = "parameter";
@@ -80,11 +80,17 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 
                 foreach(var t in element.Elements("template"))
                 {
-                    dl.Add(new XElement("dt",
-                            new XAttribute("class", "has-text-weight-normal"),
-                        new XElement("span",
-                            new XAttribute("class", this.TemplateParameterStyle),
-                            t.Attribute("name").Value)));
+                    var dt = new XElement("dt");
+
+                    dl.Add(dt);
+
+                    if(transformation.SupportedFormats != HelpFileFormats.Markdown)
+                    {
+                        dt.Add(new XAttribute("class", "has-text-weight-normal"),
+                            new XElement("span",
+                                new XAttribute("class", this.TemplateParameterStyle),
+                                t.Attribute("name").Value));
+                    }
 
                     var dd = new XElement("dd");
                     dl.Add(dd);

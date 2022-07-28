@@ -41,7 +41,7 @@
     <FeedbackEMailLinkText>Me. %28{%40CustomProperty}%29</FeedbackEMailLinkText>
     <HeaderText>Date Only: {%40BuildDate:MMM  d, yyyy} Full Date: {%40BuildDate}</HeaderText>
     <FooterText>Full Date: {%40BuildDate} Date Only: {%40BuildDate:MMM  d, yyyy}</FooterText>
-    <PresentationStyle>OpenXML</PresentationStyle>
+    <PresentationStyle>Default2022</PresentationStyle>
     <HelpFileVersion>{%40Major}.{%40Minor}.{%40Build}.{%40Revision} Beta</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Code Block Component" enabled="True">
@@ -128,7 +128,7 @@
     </PlugInConfigurations>
     <ApiFilter>
     </ApiFilter>
-    <HelpFileFormat>OpenXml</HelpFileFormat>
+    <HelpFileFormat>Website</HelpFileFormat>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <Major>1</Major>
     <Minor>20</Minor>
@@ -375,7 +375,7 @@
     <None Include="Content\SchemaExtensibility.aml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="TestCaseProject.content" />
+    <ContentLayout Include="TestCaseProject.content" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ExampleFiles\TestUTF8.txt" />

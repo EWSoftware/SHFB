@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : RelatedTopicsElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/04/2022
+// Updated : 07/23/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle relatedTopics elements
@@ -123,19 +123,30 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                 {
                     XElement linkContainer;
 
-                    if(transformation.SupportedFormats != HelpFileFormats.OpenXml)
-                        linkContainer = new XElement("div");
-                    else
+                    switch(transformation.SupportedFormats)
                     {
-                        linkContainer = new XElement(OpenXmlElement.WordProcessingML + "p",
-                            new XElement(OpenXmlElement.WordProcessingML + "pPr",
-                                new XElement(OpenXmlElement.WordProcessingML + "spacing",
-                                    new XAttribute(OpenXmlElement.WordProcessingML + "after", "0"))));
+                        case HelpFileFormats.OpenXml:
+                            linkContainer = new XElement(OpenXmlElement.WordProcessingML + "p",
+                                new XElement(OpenXmlElement.WordProcessingML + "pPr",
+                                    new XElement(OpenXmlElement.WordProcessingML + "spacing",
+                                        new XAttribute(OpenXmlElement.WordProcessingML + "after", "0"))));
+
+                            content.Add(linkContainer);
+                            transformation.RenderChildElements(linkContainer, new[] { l });
+                            break;
+
+                        case HelpFileFormats.Markdown:
+                            transformation.RenderChildElements(content, new[] { l });
+                            content.Add("  \n");
+                            break;
+
+                        default:
+                            linkContainer = new XElement("div");
+                            content.Add(linkContainer);
+                            transformation.RenderChildElements(linkContainer, new[] { l });
+                            break;
                     }
 
-                    content.Add(linkContainer);
-
-                    transformation.RenderChildElements(linkContainer, new[] { l });
                 }
             }
         }

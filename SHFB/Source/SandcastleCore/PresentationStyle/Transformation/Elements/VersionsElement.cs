@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : NamedSectionElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/21/2022
+// Updated : 07/24/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle versions elements
@@ -69,25 +69,32 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                 {
                     if(v.HasElements)
                     {
-                        if(transformation.SupportedFormats != HelpFileFormats.OpenXml)
+                        switch(transformation.SupportedFormats)
                         {
-                            content.Add(new XElement("h4",
-                                new XElement("include",
-                                    new XAttribute("item", v.Attribute("name").Value))));
-                        }
-                        else
-                        {
-                            content.Add(new XElement(OpenXmlElement.WordProcessingML + "p",
-                                new XElement(OpenXmlElement.WordProcessingML + "pPr",
-                                    new XElement(OpenXmlElement.WordProcessingML + "pStyle",
-                                        new XAttribute(OpenXmlElement.WordProcessingML + "val", "Heading4"))),
-                                new XElement(OpenXmlElement.WordProcessingML + "r",
-                                    new XElement(OpenXmlElement.WordProcessingML + "t",
-                                        new XElement("include",
-                                            new XAttribute("item", v.Attribute("name").Value))))));
+                            case HelpFileFormats.OpenXml:
+                                content.Add(new XElement(OpenXmlElement.WordProcessingML + "p",
+                                    new XElement(OpenXmlElement.WordProcessingML + "pPr",
+                                        new XElement(OpenXmlElement.WordProcessingML + "pStyle",
+                                            new XAttribute(OpenXmlElement.WordProcessingML + "val", "Heading4"))),
+                                    new XElement(OpenXmlElement.WordProcessingML + "r",
+                                        new XElement(OpenXmlElement.WordProcessingML + "t",
+                                            new XElement("include",
+                                                new XAttribute("item", v.Attribute("name").Value))))));
+                                break;
+
+                            case HelpFileFormats.Markdown:
+                                content.Add("#### ", new XElement("include",
+                                        new XAttribute("item", v.Attribute("name").Value)), "  \n");
+                                break;
+
+                            default:
+                                content.Add(new XElement("h4",
+                                    new XElement("include",
+                                        new XAttribute("item", v.Attribute("name").Value))));
+                                break;
                         }
 
-                        RenderVersionInfo(v, content);
+                        RenderVersionInfo(v, content, transformation.SupportedFormats == HelpFileFormats.Markdown);
                     }
                 }
             }
@@ -98,7 +105,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
         /// </summary>
         /// <param name="version">The version element</param>
         /// <param name="content">The content element to which the information is added</param>
-        private static void RenderVersionInfo(XElement version, XElement content)
+        /// <param name="isMarkdown">True if rendering for markdown, false if not</param>
+        private static void RenderVersionInfo(XElement version, XElement content, bool isMarkdown)
         {
             // Show the versions in which the api is supported, if any
             var notObsolete = version.Elements().Where(v => v.Attribute("obsolete") == null).ToList();
@@ -115,7 +123,10 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                             new XAttribute("item", v.Attribute("name").Value))));
                 }
 
-                content.Add(new XElement("br"));
+                if(isMarkdown)
+                    content.Add("  \n");
+                else
+                    content.Add(new XElement("br"));
             }
 
             // Show the versions in which the API is obsolete with a compiler warning, if any
@@ -127,7 +138,10 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                         new XElement("include",
                             new XAttribute("item", v.Attribute("name").Value)))));
 
-                content.Add(new XElement("br"));
+                if(isMarkdown)
+                    content.Add("  \n");
+                else
+                    content.Add(new XElement("br"));
             }
 
             // Show the version in which the API is obsolete and does not compile, if any
@@ -141,7 +155,10 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                         new XElement("include",
                             new XAttribute("item", obsoleteError.Attribute("name").Value)))));
 
-                content.Add(new XElement("br"));
+                if(isMarkdown)
+                    content.Add("  \n");
+                else
+                    content.Add(new XElement("br"));
             }
         }
         #endregion

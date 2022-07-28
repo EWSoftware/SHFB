@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TableElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/07/2022
+// Updated : 07/23/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the table element based on the topic type
@@ -69,7 +69,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
             var table = new XElement(this.Name);
 
-            if(!String.IsNullOrWhiteSpace(this.TableStyle))
+            if(!String.IsNullOrWhiteSpace(this.TableStyle) && transformation.SupportedFormats != HelpFileFormats.Markdown)
                 table.Add(new XAttribute("class", this.TableStyle));
 
             if(transformation.IsMamlTopic)
@@ -78,8 +78,16 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
                 if((title?.Length ?? 0) != 0)
                 {
-                    transformation.CurrentElement.Add(new XElement("div",
-                        new XAttribute("class", this.TableCaptionStyle), title));
+                    if(transformation.SupportedFormats != HelpFileFormats.Markdown)
+                    {
+                        transformation.CurrentElement.Add(new XElement("div",
+                            new XAttribute("class", this.TableCaptionStyle), title));
+                    }
+                    else
+                    {
+                        transformation.CurrentElement.Add(new XElement("p",
+                            new XElement("strong", title)));
+                    }
                 }
             }
             else

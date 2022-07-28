@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : EntryElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/21/2022
+// Updated : 07/23/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the entry element based on the parent element
@@ -57,6 +57,9 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
             transformation.CurrentElement.Add(cell);
             transformation.RenderChildElements(cell, element.Nodes());
+
+            if(transformation.SupportedFormats == HelpFileFormats.Markdown)
+                transformation.CurrentElement.Add("\n");
         }
     }
 }
