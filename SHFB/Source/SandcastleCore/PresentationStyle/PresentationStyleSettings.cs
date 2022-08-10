@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PresentationStyleSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/23/2022
+// Updated : 08/06/2022
 // Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain settings information for a specific presentation style
@@ -46,6 +46,7 @@ namespace Sandcastle.Core.PresentationStyle
 
         private readonly List<ContentFiles> contentFiles;
         private readonly List<PlugInDependency> plugInDependencies;
+        private readonly List<string> additionalResourceItemsFiles;
 
         #endregion
 
@@ -92,6 +93,12 @@ namespace Sandcastle.Core.PresentationStyle
         public IList<ContentFiles> ContentFiles => contentFiles;
 
         /// <summary>
+        /// This read-only property returns the list of additional resource items files if any
+        /// </summary>
+        /// <remarks>Plug-ins can add files to this list to support localized text that they add</remarks>
+        public IList<string> AdditionalResourceItemsFiles => additionalResourceItemsFiles;
+
+        /// <summary>
         /// This is used to get or set the document model applicator
         /// </summary>
         public IApplyDocumentModel DocumentModelApplicator { get; protected set; }
@@ -131,6 +138,7 @@ namespace Sandcastle.Core.PresentationStyle
         {
             contentFiles = new List<ContentFiles>();
             plugInDependencies = new List<PlugInDependency>();
+            additionalResourceItemsFiles = new List<string>();
         }
         #endregion
 

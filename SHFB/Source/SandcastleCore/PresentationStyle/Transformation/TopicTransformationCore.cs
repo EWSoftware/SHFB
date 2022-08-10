@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/04/2022
+// Updated : 08/07/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
@@ -594,23 +594,23 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// <summary>
         /// Insert an API topic section handler before the given section handler
         /// </summary>
-        /// <param name="sectionHandler">The API topic section handler to insert.</param>
         /// <param name="insertBeforeSectionHandler">The API topic section handler before which the given
         /// handler is inserted.</param>
+        /// <param name="newSectionHandler">The new API topic section handler to insert.</param>
         /// <remarks>If the section handler already exists, it is removed before inserting it in the new location.</remarks>
-        public void InsertApiTopicSectionHandlerBefore(ApiTopicSectionHandler sectionHandler,
-          ApiTopicSectionHandler insertBeforeSectionHandler)
+        public void InsertApiTopicSectionHandlerBefore(ApiTopicSectionHandler insertBeforeSectionHandler,
+          ApiTopicSectionHandler newSectionHandler)
         {
-            if(sectionHandler == null)
-                throw new ArgumentNullException(nameof(sectionHandler));
+            if(newSectionHandler == null)
+                throw new ArgumentNullException(nameof(newSectionHandler));
 
             if(insertBeforeSectionHandler == null)
                 throw new ArgumentNullException(nameof(insertBeforeSectionHandler));
 
-            if(sectionHandler != insertBeforeSectionHandler)
+            if(newSectionHandler != insertBeforeSectionHandler)
             {
-                var match = apiTopicSections.FirstOrDefault(s => s.SectionType == sectionHandler.SectionType &&
-                    s.CustomSectionName == sectionHandler.CustomSectionName);
+                var match = apiTopicSections.FirstOrDefault(s => s.SectionType == newSectionHandler.SectionType &&
+                    s.CustomSectionName == newSectionHandler.CustomSectionName);
 
                 if(match != null)
                     apiTopicSections.Remove(match);
@@ -621,30 +621,30 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                 if(match == null)
                     throw new ArgumentException("Insert Before handler not found", nameof(insertBeforeSectionHandler));
 
-                apiTopicSections.Insert(apiTopicSections.IndexOf(match), sectionHandler);
+                apiTopicSections.Insert(apiTopicSections.IndexOf(match), newSectionHandler);
             }
         }
 
         /// <summary>
         /// Insert an API topic section handler after the given section handler
         /// </summary>
-        /// <param name="sectionHandler">The API topic section handler to insert.</param>
         /// <param name="insertAfterSectionHandler">The API topic section handler after which the given
         /// handler is inserted.</param>
+        /// <param name="newSectionHandler">The API topic section handler to insert.</param>
         /// <remarks>If the section handler already exists, it is removed before inserting it in the new location.</remarks>
-        public void InsertApiTopicSectionHandlerAfter(ApiTopicSectionHandler sectionHandler,
-          ApiTopicSectionHandler insertAfterSectionHandler)
+        public void InsertApiTopicSectionHandlerAfter(ApiTopicSectionHandler insertAfterSectionHandler,
+          ApiTopicSectionHandler newSectionHandler)
         {
-            if(sectionHandler == null)
-                throw new ArgumentNullException(nameof(sectionHandler));
+            if(newSectionHandler == null)
+                throw new ArgumentNullException(nameof(newSectionHandler));
 
             if(insertAfterSectionHandler == null)
                 throw new ArgumentNullException(nameof(insertAfterSectionHandler));
 
-            if(sectionHandler != insertAfterSectionHandler)
+            if(newSectionHandler != insertAfterSectionHandler)
             {
-                var match = apiTopicSections.FirstOrDefault(s => s.SectionType == sectionHandler.SectionType &&
-                    s.CustomSectionName == sectionHandler.CustomSectionName);
+                var match = apiTopicSections.FirstOrDefault(s => s.SectionType == newSectionHandler.SectionType &&
+                    s.CustomSectionName == newSectionHandler.CustomSectionName);
 
                 if(match != null)
                     apiTopicSections.Remove(match);
@@ -655,7 +655,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                 if(match == null)
                     throw new ArgumentException("Insert After handler not found", nameof(insertAfterSectionHandler));
 
-                apiTopicSections.Insert(apiTopicSections.IndexOf(match) + 1, sectionHandler);
+                apiTopicSections.Insert(apiTopicSections.IndexOf(match) + 1, newSectionHandler);
             }
         }
 

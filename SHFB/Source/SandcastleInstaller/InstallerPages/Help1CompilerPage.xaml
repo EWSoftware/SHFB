@@ -17,7 +17,8 @@
         <Paragraph><Bold FontSize="16">HTML Help 1 Compiler</Bold></Paragraph>
 
         <Paragraph>HTML Help 1 files are standalone help files with a <Italic>.chm</Italic> extension.  This
-is the oldest help file format and these files can be viewed on any system without any special viewers.</Paragraph>
+is the oldest help file format and these files can be viewed on any system without any special viewers.  Support
+for this format has been deprecated.</Paragraph>
 
         <Section Name="secResults">
 

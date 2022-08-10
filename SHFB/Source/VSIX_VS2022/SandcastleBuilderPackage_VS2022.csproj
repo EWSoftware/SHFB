@@ -346,6 +346,7 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
     </Content>
+    <!-- Temporarily removed until it can be updated
     <Content Include="..\VSIX_VS2017\Templates\Projects\PresentationStyleCS\AssemblyInfo.cs" Link="Templates\Projects\PresentationStyleCS\AssemblyInfo.cs">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
@@ -354,6 +355,23 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
     </Content>
+    <Content Include="..\VSIX_VS2017\Templates\Projects\PresentationStyleCS\launchSettings.json" Link="Templates\Projects\PresentationStyleCS\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
+    <Content Include="..\VSIX_VS2017\Templates\Projects\PresentationStyleCS\PresentationStyle.csproj" Link="Templates\Projects\PresentationStyleCS\PresentationStyle.csproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
+    <Content Include="..\VSIX_VS2017\Templates\Projects\PresentationStyleCS\PresentationStyle.props" Link="Templates\Projects\PresentationStyleCS\PresentationStyle.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
+    <Content Include="..\VSIX_VS2017\Templates\Projects\PresentationStyleCS\PresentationStyleCS.vstemplate" Link="Templates\Projects\PresentationStyleCS\PresentationStyleCS.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
+    -->
     <Content Include="..\VSIX_VS2017\Templates\Projects\SyntaxGeneratorCS\AssemblyInfo.cs" Link="Templates\Projects\SyntaxGeneratorCS\AssemblyInfo.cs">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
@@ -521,30 +539,6 @@
     <Content Include="..\VSIX_VS2017\Templates\Projects\PlugInVB\PlugIn.vbproj" Link="Templates\Projects\PlugInVB\PlugIn.vbproj">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInVB</VSIXSubPath>
-    </Content>
-    <Content Include="..\VSIX_VS2017\Templates\Projects\PresentationStyleCS\launchSettings.json" Link="Templates\Projects\PresentationStyleCS\launchSettings.json">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
-    </Content>
-    <Content Include="..\VSIX_VS2017\Templates\Projects\PresentationStyleCS\PresentationStyle.csproj" Link="Templates\Projects\PresentationStyleCS\PresentationStyle.csproj">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
-    </Content>
-    <Content Include="..\VSIX_VS2017\Templates\Projects\PresentationStyleCS\PresentationStyle.props" Link="Templates\Projects\PresentationStyleCS\PresentationStyle.props">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
-    </Content>
-    <Content Include="..\VSIX_VS2017\Templates\Projects\PresentationStyleVB\launchSettings.json" Link="Templates\Projects\PresentationStyleVB\launchSettings.json">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
-    </Content>
-    <Content Include="..\VSIX_VS2017\Templates\Projects\PresentationStyleVB\PresentationStyle.props" Link="Templates\Projects\PresentationStyleVB\PresentationStyle.props">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
-    </Content>
-    <Content Include="..\VSIX_VS2017\Templates\Projects\PresentationStyleVB\PresentationStyle.vbproj" Link="Templates\Projects\PresentationStyleVB\PresentationStyle.vbproj">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
     </Content>
     <Content Include="..\VSIX_VS2017\Templates\Projects\SyntaxGeneratorCS\launchSettings.json" Link="Templates\Projects\SyntaxGeneratorCS\launchSettings.json">
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -753,22 +747,6 @@
     <Content Include="..\VSIX_VS2017\Templates\Projects\PlugInVB\PlugInVB.vstemplate" Link="Templates\Projects\PlugInVB\PlugInVB.vstemplate">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInVB</VSIXSubPath>
-    </Content>
-    <Content Include="..\VSIX_VS2017\Templates\Projects\PresentationStyleCS\PresentationStyleCS.vstemplate" Link="Templates\Projects\PresentationStyleCS\PresentationStyleCS.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
-    </Content>
-    <Content Include="..\VSIX_VS2017\Templates\Projects\PresentationStyleVB\AssemblyInfo.vb" Link="Templates\Projects\PresentationStyleVB\AssemblyInfo.vb">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
-    </Content>
-    <Content Include="..\VSIX_VS2017\Templates\Projects\PresentationStyleVB\PresentationStyle.vb" Link="Templates\Projects\PresentationStyleVB\PresentationStyle.vb">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
-    </Content>
-    <Content Include="..\VSIX_VS2017\Templates\Projects\PresentationStyleVB\PresentationStyleVB.vstemplate" Link="Templates\Projects\PresentationStyleVB\PresentationStyleVB.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
     </Content>
     <Content Include="..\VSIX_VS2017\Templates\Projects\SyntaxGeneratorCS\ResourceItems.xml" Link="Templates\Projects\SyntaxGeneratorCS\ResourceItems.xml">
       <IncludeInVSIX>true</IncludeInVSIX>

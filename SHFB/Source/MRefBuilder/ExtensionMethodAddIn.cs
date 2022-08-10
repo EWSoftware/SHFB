@@ -12,6 +12,7 @@
 // 11/25/2013 - EFW - Cleaned up the code and removed unused members
 // 06/16/2015 - EFW - Fixed the extension method parameter comparisons so that it doesn't add extension methods
 // to types with matching method signatures.
+// 07/31/2022 - EFW - Added support for nullable, reference, and nullable reference type extension methods
 
 using System;
 using System.Collections.Generic;
@@ -108,7 +109,7 @@ namespace Sandcastle.Tools
                         // generic type and the extended type's specialized template argument is a type parameter
                         // declared by the generic extension method.  In this case, we need to save a TypeNode
                         // for the non-specialized type in the index because a TypeNode for the specialized type
-                        // won't match correctly in AddExtensionMethods().  NOTE: we are not interested in
+                        // won't match correctly in AddExtensionMethods().  NOTE: We are not interested in
                         // extended types that are specialized by a specific type rather than by the extension
                         // method's template parameter.
                         if(method.IsGeneric && method.TemplateParameters.Count > 0)
@@ -133,6 +134,17 @@ namespace Sandcastle.Tools
                                 }
                             }
                         }
+
+                        // Reference and nullable types are special cases.  Technically they are separate from
+                        // the non-reference/non-nullable type but we should show the reference/nullable
+                        // extension methods in the type's topic as they won't show up anywhere else.  Check for
+                        // reference types first as there can be reference nullable types such as:
+                        // public static void ExtendNullableStructByRef(this in TestStruct? testStruct)
+                        if(extendedType.NodeType == NodeType.Reference)
+                            extendedType = ((Reference)extendedType).ElementType ?? extendedType;
+
+                        if(extendedType.IsNullable && extendedType.TemplateArguments.Count != 0)
+                            extendedType = extendedType.TemplateArguments[0];
 
                         if(!index.TryGetValue(extendedType, out List<Method> methods))
                         {

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="e6d18448-2459-46f1-bbdc-a7db415f2bda" revisionNumber="1">
+	<!-- Ignore Spelling: api apis  -->
   <developerConceptualDocument
     xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -64,9 +65,10 @@ Once it has been created, right click on the project and select <ui>Properties</
 						<step>
 							<content>
 								<para>By default, the Debug project properties are set to use the standalone GUI for debugging
-which will help you see if the component can be located and also that the configuration form is working if you
-created one for the component.  To debug the actual component and allow stepping through its code, you will need
-to change the executable used to run it.</para>
+which will help you see if the component can be located, that the configuration form is working if you
+created one for the component, and that it is working within the build as expected.  See the
+<link xlink:href="d7b0528c-c75a-477b-9445-db6d2c55dbcb" /> for some special requirements when debugging
+components and plug-ins.</para>
 
 								<alert class="tip">
 									<para>Using the standalone GUI as the host is easier than using Visual Studio as the package
@@ -80,14 +82,6 @@ assembly.  If you have opened the project's <ui>Components</ui> property page be
 you may need to close and reopen the project in order for it to discover your build component assembly.</para>
 								</alert>
 								
-								<para>On the <ui>Debug</ui> tab, set the <ui>Launch</ui> option to "Executable" and
-enter the path to the most recent version of <localUri>MSBuild.exe</localUri>.  This can typically be found in
-the Visual Studio folder for the version that you are using (e.g. C:\Program Files (x86)\Microsoft Visual
-Studio\2019\Community\MSBuild\Current\Bin).  Set the working directory to the working folder of a project that
-contains the build component.  Note that you will need to perform one build of the project with the <ui>Clean
-intermediate files</ui> option turned off so that you can test the build component using the temporary build
-files.  Set the <ui>Application arguments</ui> option to <localUri>BuildTopics.proj</localUri>.</para>
-
 							</content>
 						</step>
 						<step>

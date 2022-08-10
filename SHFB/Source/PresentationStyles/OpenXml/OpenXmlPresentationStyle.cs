@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : OpenXmlPresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/25/2022
+// Updated : 08/06/2022
 // Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Open XML presentation style.
@@ -90,6 +90,9 @@ namespace Sandcastle.PresentationStyles.OpenXml
                 fileSpec = "OpenXml_en-US.xml";
 
             yield return Path.Combine(filePath, fileSpec);
+
+            foreach(string f in this.AdditionalResourceItemsFiles)
+                yield return f;
         }
     }
 }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : MarkdownContentGenerator.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/28/2022
+// Updated : 07/30/2022
 // Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to finish up creation of the markdown content and copy it to the
@@ -40,9 +40,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
         #region Private data members
         //=====================================================================
 
-        private static readonly Regex reAddNewLines = new Regex(@"(\w)(\<(p|div|h[1-6]|blockquote|pre|table|dl|" +
+        private static readonly Regex reAddNewLinesBefore = new Regex(@"(\w)(\<(p|div|h[1-6]|blockquote|pre|table|dl|" +
             "ol|ul|address|script|noscript|form|fieldset|iframe|math|article|aside|canvas|details|dialog|" +
             "figcaption|figure|footer|header|main|nav))");
+        private static readonly Regex reAddNewLinesAfter = new Regex(@"(/(p|div|h[1-6]|blockquote|pre|table|dl|" +
+            "ol|ul|address|script|noscript|form|fieldset|iframe|math|article|aside|canvas|details|dialog|" +
+            @"figcaption|figure|footer|header|main|nav).*?\>)(\s*?\w)");
         private static readonly Regex reTrimNbsp = new Regex(@"\s*&nbsp;\s*");
         private static readonly Regex reDecodeEntities = new Regex("```.*?```", RegexOptions.Singleline);
         private static readonly MatchEvaluator meDecodeEntities = new MatchEvaluator(
@@ -139,9 +142,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                                 // A few final fix ups:
 
-                                // Insert line breaks between literal text and block level elements where
-                                // needed.
-                                content = reAddNewLines.Replace(content, "$1\r\n\r\n$2");
+                                // Insert line breaks between literal text and block level elements where needed.
+                                // If not, it tends not to render any markdown before/after them.
+                                content = reAddNewLinesBefore.Replace(content, "$1\r\n\r\n$2");
+                                content = reAddNewLinesAfter.Replace(content, "$1\r\n\r\n$3");
 
                                 // Decode entities within code blocks
                                 content = reDecodeEntities.Replace(content, meDecodeEntities);

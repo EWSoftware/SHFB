@@ -61,33 +61,16 @@ fit.</para>
 						</step>
 						<step>
 							<content>
-								<para>On the <ui>Debug</ui> tab, do the following:</para>
-
-								<list class="bullet">
-
-									<listItem>
-										<para>Set the <ui>Start Action</ui> to "Start external program" and enter the path to the
-<localUri>BuildAssembler.exe</localUri> program.  If you installed the help file builder in the default location,
-this will be <localUri>%ProgramFiles(x86)%\EWSoftware\Sandcastle Help File Builder\</localUri>.  If not,
-substitute your path as appropriate.</para>
-									</listItem>
-
-									<listItem>
-										<para>Set the <ui>Command line arguments</ui> property to
-<command><replaceable>/config:sandcastle.config manifest.xml</replaceable></command>.</para>
-									</listItem>
-
-									<listItem>
-										<para>Set the working directory to the working folder of a project that contains the build
-component.  Note that you will need to perform one build of the project with the <ui>Clean intermediate files</ui>
-option turned off so that you can test the build component using the temporary build files.</para>
-									</listItem>
-								</list>
+								<para>By default, the Debug project properties are set to use the standalone GUI for debugging
+which will help you see if the component can be located, that the configuration form is working if you
+created one for the component, and that it is working within the build as expected.  See the
+<link xlink:href="d7b0528c-c75a-477b-9445-db6d2c55dbcb" /> for some special requirements when debugging
+components and plug-ins.</para>
 
 								<alert class="tip">
-									<para>Using the BuildAssembler tool as the host is easier than using Visual Studio as the
-package locks the assemblies once the help file builder project has loaded them for use and you will not be able
-to rebuild them.  Shutting down BuildAssembler frees the assemblies so that you can rebuild them and start a
+									<para>Using the standalone GUI as the host is easier than using Visual Studio as the package
+locks the assemblies once the help file builder project has loaded them for use and you will not be able to
+rebuild them.  Shutting down the standalone GUI frees the assemblies so that you can rebuild them and start a
 new debugging session.</para>
 
 									<para>In the help file builder project that you use to test your build component, set the

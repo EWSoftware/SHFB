@@ -1,7 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<!-- See the help topic https://ewsoftware.github.io/SHFB/html/d7b0528c-c75a-477b-9445-db6d2c55dbcb.htm
+			 for information on why conditional target frameworks are used. -->
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<!-- Use the full framework for debugging -->
+		<TargetFramework>net47</TargetFramework>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<!-- Use .NET Standard for release builds -->
+		<TargetFramework>netstandard2.0</TargetFramework>
+	</PropertyGroup>
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<!-- Only use an unconditional target framework if you have a UI project within the solution that can be
+				 used to start debugging.
+		<TargetFramework>netstandard2.0</TargetFramework> -->
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
@@ -38,8 +51,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="System.ComponentModel.Composition" Version="5.0.0" />
-		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2021.10.23" />
-		<PackageReference Include="EWSoftware.SandcastleBuilder.Utils" Version="2021.10.23" />
+		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2022.7.28.0" />
+		<PackageReference Include="EWSoftware.SandcastleBuilder.Utils" Version="2022.7.28.0" />
 	</ItemGroup>
 
 	<!-- TODO: If you have a project with configuration forms, you can include it in this package by

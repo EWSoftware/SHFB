@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : BuildPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 05/13/2022
+// Updated : 08/09/2022
 // Note    : Copyright 2017-2022, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Build category properties
@@ -237,12 +237,24 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 else
                     reflectionDataSets = new ReflectionDataSetDictionary(null);
             }
+            catch(UnauthorizedAccessException uex)
+            {
+                Debug.WriteLine(uex.ToString());
+
+                MessageBox.Show($"An unauthorized access error has occurred ({uex.Message}).  If you have " +
+                    "placed the help file builder project in the My Documents folder, move it to a subfolder " +
+                    "to avoid this issue.", Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+
+                reflectionDataSets = new ReflectionDataSetDictionary(null);
+            }
             catch(Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
 
                 MessageBox.Show("Unexpected error loading reflection data set info: " + ex.Message, Constants.AppName,
                     MessageBoxButton.OK, MessageBoxImage.Error);
+
+                reflectionDataSets = new ReflectionDataSetDictionary(null);
             }
             finally
             {

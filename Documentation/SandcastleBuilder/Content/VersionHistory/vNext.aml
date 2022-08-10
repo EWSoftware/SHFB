@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="502f1147-eaa4-4150-813d-a57eb6b521e8" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+			<!-- Ignore Spelling: Html Bulma noindex nofollow -->
+			<introduction>
+			<!-- TODO: Update the release version number in MigrationSupport.aml (search for vNext) -->
+			<para>This release contains significant breaking changes related to how the presentation styles are
+implemented.  All XSL transformations have been removed and a new code-based API is now used to generate all
+topics.  This makes it much easier to extend and modify presentation styles with simple plug-ins and build
+components rather than cloning and modifying an entire presentation style and working with cumbersome XSL
+transformations.  Such components will work with whatever presentation style is selected.</para>
+
+			<para>Many of the build tools have been merged into the build engine and now run in process rather than
+out of process as MSBuild tasks.  This will affect custom plug-ins that relied on modifying the related build
+scripts for those tools.  See the Build Components and Tools section below for details.</para>
+
+			<para>All custom build components and plug-ins will need to be updated to use the latest NuGet packages.
+The constructor for all build components will need to be updated to accept a parameter of the type
+<codeInline>IBuildAssembler</codeInline> rather than <codeInline>BuildAssemblerCore</codeInline>.  See the
+<link xlink:href="bc933f8f-e792-45bf-afec-62aa2c46aa3b" /> topic for information on how to update custom
+components created for use with version v2021.4.9.0 and earlier for use with the latest release of the help file
+builder.</para>
+
+			<autoOutline excludeRelatedTopics="true" lead="none">1</autoOutline>
+		</introduction>
+
+		<section address="Help1HelpViewer">
+			<title>Help 1 (CHM) and Help Viewer (MSHC) Support Deprecated</title>
+			<content>
+				<para>With this release, support for the Help 1 (CHM) and Help Viewer (MSHC) formats is deprecated.  With
+the end of support for Internet Explorer, it seems unlikely that either of the help viewers for these formats
+will receive any future support or updates from Microsoft as they both use the Internet Explorer control to
+display the help content.  This makes it difficult if not impossible to support the latest HTML features in the
+new presentation style.  The VS2010 presentation style has been removed and the VS2013 presentation style is now
+considered the legacy presentation style.  It is the only presentation style that will support generation of
+Help 1 or Help Viewer output.  All future presentation styles will only support website, Open XML, or Markdown
+output.</para>
+
+				<para>The HTML Help Workshop used to compile Help 1 files no longer appears to be available from
+Microsoft.  A copy is available from the project website if you still need it.  See the
+<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" /> topic for a link.</para>
+				
+				<para>In the event that the MSHC Help Viewer is updated to use something newer such as the WebView2
+control that does support the latest HTML features, support will be added back for that format.</para>
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<para>The following changes were made to the presentation styles.</para>
+			</content>
+
+			<sections>
+				<section address="PSGeneral">
+					<title>General Changes</title>
+					<content>
+						<list class="bullet">
+							<listItem>
+								<para>All presentation styles have been rewritten to use the new code-based API that is much
+easier to extend and modify without having to clone and implement a full presentation style.  The new API
+contains support for adding, removing, and reordering sections as well as adding new element handlers via
+standard help file builder plug-ins.  Topic templates are supported to define the general structure of the
+topics and can be replaced via plug-ins to alter the overall topic layout.  This can also be applied at the
+element level and is currently used by the alert/note, code block, and syntax section element handlers.</para>
+							</listItem>
+
+							<listItem>
+								<para>Minor updates were made to the styling and topic layout of all existing presentation styles
+to make them more consistent with each other and so that common element handlers could be used for all of them
+where possible.</para>
+							</listItem>
+
+							
+							<listItem>
+								<para>Support for the code contracts elements was removed from all presentation styles as the
+related Microsoft project appears to have been abandoned.  Support for these elements may be provided in a
+separate component package as an example of how to use the new API at a later date.</para>
+							</listItem>
+
+							<listItem>
+								<para>The icons, style sheets, and scripts paths were removed from the resource items and made
+properties on the transformation class so that they can be modified more easily by plug-ins.</para>
+							</listItem>
+								
+							<listItem>
+								<para>All presentation style resource items have been merged into a single, shared set that is
+used by all presentation styles.  All unused resource items (about 50% of them) were removed.</para>
+							</listItem>
+
+							<listItem>
+								<para>Removed the <localUri>HelpFileBuilderTokens.tokens</localUri> file as it only contained the
+auto-outline token and auto-outlining is supported directly within MAML topics.  The reference in the
+presentation style BuildAssembler configuration files was also removed.</para>
+							</listItem>
+
+							<listItem>
+								<para>Removed the <codeInline>BuildAssemblerVerbosity</codeInline> substitution tag and the
+reference to it in the presentation style configuration files.</para>
+							</listItem>
+
+							<listItem>
+								<para>Removed the component locations element from the presentation style BuildAssembler
+configuration files as it is no longer used.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added a <codeInline>BibliographyDataFile</codeInline> transformation argument in all
+presentation styles to support the <codeInline>bibliography</codeInline> and <codeInline>cite</codeInline>
+elements natively.  This replaces the plug-in used in prior versions for bibliography support.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added a <codeInline>RobotsMetadata</codeInline> transformation argument in all presentation
+styles to allow adding an optional robots metadata value to all topics (e.g. <codeInline>noindex</codeInline>,
+<codeInline>nofollow</codeInline>).</para>
+							</listItem>
+
+							<listItem>
+								<para>Added an <codeInline>EnumMemberSortOrder</codeInline> transformation argument in all
+presentation styles to allow specifying how enumeration members are sorted (by value or by name).</para>
+							</listItem>
+						
+							<listItem>
+								<para>Added a <codeInline>FlagsEnumValueFormat</codeInline> transformation argument in all
+presentation styles to allow specifying the format of flags enumeration values (integer value, hex value, or
+bit flags).</para>
+							</listItem>
+
+							<listItem>
+								<para>Added a <codeInline>FlagsEnumSeparatorSize</codeInline> transformation argument in all
+presentation styles to allow specifying the separator group size for flags enumeration values (0, 4, or 8).  This
+determines where separators are placed in the formatted value (e.g. <codeInline>0b0000_0000</codeInline>,
+<codeInline>0x1234_ABCD</codeInline>).  If set to zero, no separators will be inserted.</para>
+							</listItem>
+							
+							<listItem>
+								<para>Extended the <codeInline>markup</codeInline> element with a <codeInline>contentType</codeInline>
+attribute that can be used to define for what output format the content should be rendered (Html, OpenXml, or
+Markdown).</para>
+							</listItem>
+
+							<listItem>
+								<para>Extended the <codeInline>note</codeInline> and <codeInline>alert</codeInline> elements with
+a new <codeInline>todo</codeInline> note type for To Do lists.  Also added support for an optional
+<codeInline>title</codeInline> attribute to allow overriding the note/alert title.</para>
+							</listItem>
+
+							<listItem>
+								<para>Found various inconsistencies on when types were and were not qualified in the various
+topic sections.  Updated them to be consistent with how Microsoft Docs qualifies names for the most part.</para>
+							</listItem>
+
+							<listItem>
+								<para>Fixed up some inconsistencies in the formatting of the syntax section code generated by the
+syntax components.</para>
+							</listItem>
+						</list>
+					</content>
+				</section>
+			
+				<section address="Default2022">
+					<title>Default2022 Presentation Style</title>
+					<content>
+						<para>This is the new default presentation style.  It only produces website output and has been
+written to use a more modern style with a responsive layout that should work well on any device from mobile
+to widescreen desktop displays.  The topic and section layout is similar to that of Microsoft Docs.</para>
+							
+						<list class="bullet">
+							<listItem>
+								<para>Topic structure and styling is implemented using
+<externalLink>
+	<linkText>Bulma</linkText>
+	<linkAlternateText>Bulma</linkAlternateText>
+	<linkUri>https://bulma.io/</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink> and
+<externalLink>
+	<linkText>Font Awesome</linkText>
+	<linkAlternateText>Font Awesome</linkAlternateText>
+	<linkUri>https://fontawesome.com/license/free</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink>.</para>
+							</listItem>
+							
+							<listItem>
+								<para>Code colorizing is handled client-side using 
+<externalLink>
+	<linkText>highlight.js</linkText>
+	<linkAlternateText>highlight.js</linkAlternateText>
+	<linkUri>https://github.com/highlightjs/highlight.js</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink>.</para>
+							</listItem>
+
+							<listItem>
+								<para>It uses a slightly different TOC structure from the VS2013 presentation style consisting of
+a breadcrumb trail at the top of the page and a hierarchical table of content that shows an appropriate fragment
+of the overall table of contents based on the selected topic.</para>
+							</listItem>
+
+							<listItem>
+								<para>A <codeInline>RootBreadcrumbTitleText</codeInline> transformation argument is available to
+set the root breadcrumb title.</para>
+							</listItem>
+
+							<listItem>
+								<para>A <codeInline>CollabsibleSections</codeInline> transformation argument is available to
+allow turning off rendering of collapsible section headers within the topics.</para>
+							</listItem>
+
+						</list>
+					</content>
+				</section>
+
+				<section address="OpenXml">
+					<title>Open XML Presentation Style</title>
+					<content>
+						<list class="bullet">
+							<listItem>
+								<para>Fixed the Open XML file generator so that it produces a valid archive file that works with
+the updated .NET Framework packaging types.</para>
+							</listItem>
+
+							<listItem>
+								<para>Member list pages are now suppressed in the Open XML output as they did not serve any
+useful purpose and were repetitive.</para>
+							</listItem>
+						</list>
+						
+					</content>
+				</section>
+			
+				<section address="Markdown">
+					<title>Markdown Presentation Style</title>
+					<content>
+						<list class="bullet">
+							<listItem>
+								<para>Fixed up some issues with how the markdown was rendered under certain conditions.</para>
+							</listItem>
+						</list>
+						
+					</content>
+				</section>
+
+				<section address="VS2010and2013">
+					<title>VS2010 and VS2013 Presentation Styles</title>
+					<content>
+						<list class="bullet">
+							<listItem>
+								<para>The VS2010 presentation style has been removed.  It was simply too old and the VS2013
+presentation style is close enough in format to it that it didn't make sense to keep it going forward.  Use the
+VS2013 presentation style if you need support for Help 1 or Help Viewer output.  See the Help 1/Help Viewer
+section above for related information.</para>
+							</listItem>
+
+							<listItem>
+								<para>Updated the VS2013 icon image name casing to match how the presentation style renders them
+now.</para>
+							</listItem>
+
+							<listItem>
+								<para>Updated member list rendering to show the extension method icon for extension methods in
+their containing type to match IntelliSense.</para>
+							</listItem>
+						</list>
+						
+					</content>
+				</section>
+
+			</sections>
+		</section>
+
+		<section address="Tools">
+			<title>Build Components and Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Corrected the casing in the <localUri>.\tools</localUri> path in the help file builder NuGet
+package properties file so that it works correctly on Linux-based systems.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added <codeInline>ProgIdAttribute</codeInline> to the attribute filter in the
+<localUri>MRefBuilder.config</localUri> file so that it is included in the syntax sections.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated MRefBuilder to add type hierarchy information for structures.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the extension methods MRefBuilder add-in so that it correctly associates extension
+methods with a nullable, reference, or nullable reference type parameter with the actual related type so that
+they show up in the type's topic.</para>
+					</listItem>
+
+					<listItem>
+						<para>The BuildAssembler code has been moved in to <localUri>SandcastleBuilder.Utils</localUri> and
+is called directly from within the build engine.  The related <localUri>BuildTopics.proj</localUri> template was
+removed.</para>
+					</listItem>
+
+					<listItem>
+						<para>Build component constructors are now passed an
+<codeEntityReference qualifyHint="false">T:Sandcastle.Core.BuildAssembler.IBuildAssember</codeEntityReference>
+interface reference used to interact with the build engine.</para>
+					</listItem>
+
+					<listItem>
+						<para>A new <codeEntityReference qualifyHint="false">P:Sandcastle.Core.BuildAssembler.BuildComponent.BuildComponentCore.BuildAssembler</codeEntityReference>
+property was added to <codeInline>BuildComponentCore</codeInline> that allows build components to interact with the build engine.</para>
+					</listItem>
+
+					<listItem>
+						<para>The static <codeInline>Data</codeInline> property in <codeInline>BuildComponentCore</codeInline>
+was removed and an instance-based <codeEntityReference qualifyHint="false">P:Sandcastle.Core.BuildAssembler.IBuildAssembler.Data</codeEntityReference>
+property was added to the <codeInline>IBuildAssembler</codeInline> interface.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <codeInline>LogLevel</codeInline> enumeration was removed and replaced with the
+<codeEntityReference qualifyHint="false">T:Sandcastle.Core.MessageLevel</codeEntityReference> enumeration as it
+contained duplicate values.  The <codeInline>MessageLevel.Ignore</codeInline> enumeration value was removed as it
+was unused.  The <codeInline>MessageLevel</codeInline> enumeration was also moved to the
+<codeInline>Sandcastle.Core</codeInline> namespace so build components will need to add a <codeInline>using</codeInline>
+statement for it if they log messages.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added <codeEntityReference qualifyHint="false">P:SandcastleBuilder.Utils.BuildEngine.BuildProcess.BuildAssemblerConfigurationFile</codeEntityReference>
+and <codeEntityReference qualifyHint="false">P:SandcastleBuilder.Utils.BuildEngine.BuildProcess.BuildAssemblerManifestFile</codeEntityReference>
+properties to <codeInline>BuildProcess</codeInline>.  These should be used in place of the hard-coded
+<localUri>sandcastle.config</localUri> and <localUri>manifest.xml</localUri> filenames.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the Sandcastle HTML Extract tool and moved the code into the build engine.  The
+related <localUri>ExtractHtmlInfo.proj</localUri> template was removed.</para>
+					</listItem>
+
+					<listItem>
+						<para>A new <codeEntityReference qualifyHint="false">P:SandcastleBuilder.Utils.BuildEngine.BuildProcess.HtmlExtractTool</codeEntityReference>
+property was added to the build engine to allow plug-ins to adjust how the tool runs.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the Open XML file generator task and moved the code into the build engine.  The related
+<localUri>BuildOpenXmlFile.proj</localUri> template was removed.</para>
+					</listItem>
+						
+					<listItem>
+						<para>Removed the markdown generator task and moved the code into the build engine.  The related
+<localUri>GenerateMarkdownContent.proj</localUri> template was removed.</para>
+					</listItem>
+						
+					<listItem>
+						<para> Removed generation of the website keyword index file (<localUri>WebKI.xml</localUri>) file as
+it is not longer used anywhere.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section address="SHFB">
+			<title>Sandcastle Help File Builder</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Removed the HTML to MAML converter tool from the tools distribution.  It has been moved into
+its own <externalLink>
+							<linkText>project repository</linkText>
+							<linkAlternateText>HTML to MAML Converter</linkAlternateText>
+							<linkUri>https://GitHub.com/EWSoftware/HtmlToMamlConverter</linkUri>
+							<linkTarget>_blank</linkTarget>
+						</externalLink>.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the web code providers assembly from the tools distribution.  It has been moved into
+its own <externalLink>
+							<linkText>project repository</linkText>
+							<linkAlternateText>Web Code Providers</linkAlternateText>
+							<linkUri>https://GitHub.com/EWSoftware/WebCodeProviders</linkUri>
+							<linkTarget>_blank</linkTarget>
+						</externalLink>.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the bibliography support plug-in.  It has been replaced by a
+<codeInline>BibliographyDataFile</codeInline> transformation argument in all presentation styles to support the
+<codeInline>bibliography</codeInline> and <codeInline>cite</codeInline> elements natively.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Removed the AjaxDoc plug-in, Script# plug-in, Manual Visibility/API Filter plug-in, and the
+ESent and SQL data cache components.   These will be distributed as one or more separate legacy component NuGet
+packages at a later date.</para>
+					</listItem>
+
+					<listItem>
+						<para>The presentation style project templates have been temporarily removed from the Visual Studio
+package.  Updated presentation style project templates will be added to a future release.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

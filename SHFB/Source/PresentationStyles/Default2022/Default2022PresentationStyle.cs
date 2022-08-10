@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022PresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/25/2022
+// Updated : 08/06/2022
 // Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Default 2022 presentation style.
@@ -82,6 +82,9 @@ namespace Sandcastle.PresentationStyles.Default2022
                 fileSpec = "SharedContent_en-US.xml";
 
             yield return Path.Combine(filePath, fileSpec);
+
+            foreach(string f in this.AdditionalResourceItemsFiles)
+                yield return f;
         }
     }
 }

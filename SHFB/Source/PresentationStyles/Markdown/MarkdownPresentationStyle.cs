@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : MarkdownPresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/04/2022
+// Updated : 08/06/2022
 // Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the markdown content presentation style
@@ -83,6 +83,9 @@ namespace Sandcastle.PresentationStyles.Markdown
                 fileSpec = "Markdown_en-US.xml";
 
             yield return Path.Combine(filePath, fileSpec);
+
+            foreach(string f in this.AdditionalResourceItemsFiles)
+                yield return f;
         }
     }
 }

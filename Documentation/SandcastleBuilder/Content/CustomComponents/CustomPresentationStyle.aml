@@ -3,15 +3,72 @@
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
 			<para>Sandcastle comes with some standard presentation styles used to apply formatting and layout to each
-generated topic.  Rather than make changes directly to the Sandcastle presentation styles, you can clone them to
-create modified versions for yourself.  In addition, you can create entirely new presentation styles.  The help
-file builder supports custom presentation styles and will make them available via the <codeInline>Presentation
-Style</codeInline> property.  This topic will walk you through the creation of a presentation style project.</para>
+generated topic.  With the code-based API, it is unlikely that you will need to create a full presentation style
+to make minor modifications to its layout or to add support for new sections or elements.
+These types of changes can be implemented using simple help file builder plug-ins.  Creating a full presentation
+style is likely only necessary when you want to make a significant number of changes to the way it is generated
+that cannot be handled via plug-ins.</para>
 
-			<autoOutline lead="none" excludeRelatedTopics="true">1</autoOutline>
+			<para>The help file builder supports custom presentation styles and will make them available via the
+<codeInline>Presentation Style</codeInline> property.  More information and updated presentation style project
+templates will be provided in a future release.</para>
+
+			<!-- <autoOutline lead="none" excludeRelatedTopics="true">1</autoOutline> -->
 
 		</introduction>
 
+		<section>
+			<title>Making Presentation Style Changes Via Plug-Ins</title>
+			<content>
+				<para>Below are some examples of the changes that can be made to a presentation style through a plug-in.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Reorder API topic sections, remove API topic sections, add support for new MAML or API topic
+sections, or replace the handlers for existing sections.</para>
+					</listItem>
+
+					<listItem>
+						<para>Add support for new MAML or API topic elements or replace the handlers for existing elements.</para>
+					</listItem>
+
+					<listItem>
+						<para>Add support for additional style sheets, scripts, and localized resource item files.</para>
+					</listItem>
+
+					<listItem>
+						<para>Register additional startup script or script for specific elements.</para>
+					</listItem>
+
+					<listItem>
+						<para>Modify or add to the language-specific text elements.</para>
+					</listItem>
+
+					<listItem>
+						<para>Modify a topic before and/or after it has been rendered prior to it being saved.</para>
+					</listItem>
+
+					<listItem>
+						<para>Modify a topic section after it has been rendered.</para>
+					</listItem>
+
+					<listItem>
+						<para>Specify an alternate topic template or element templates for those that support them.</para>
+					</listItem>
+				</list>
+
+				<para>Refer to the <externalLink>
+	<linkText>Presentation Style Mods Plug-In</linkText>
+	<linkAlternateText>Presentation Style Mods Plug-In</linkAlternateText>
+	<linkUri>https://GitHub.com/EWSoftware/PresentationStyleModsPlugIn</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink> project on GitHub for some working examples.  If you do not see a particular case demonstrated,
+create a work item in that project or the help file builder project requesting more information and an example
+of how to implement it.</para>
+			</content>
+		</section>
+		
+		<!--
 		<section address="CreateProject">
 			<title>Creating the Project</title>
 			<content>
@@ -43,10 +100,11 @@ fit.</para>
 						</step>
 						<step>
 							<content>
-								<para>On the <ui>Debug</ui> tab, set the <ui>Start Action</ui> to "Start external program" and
-enter the path to the <localUri>SandcastleBuilderGUI.exe</localUri> program.  If you installed the help file
-builder in the default location, this will be <localUri>%ProgramFiles(x86)%\EWSoftware\Sandcastle Help File
-Builder\</localUri>.  If not, substitute your path as appropriate.</para>
+								<para>By default, the Debug project properties are set to use the standalone GUI for debugging
+which will help you see if the component can be located, that the configuration form is working if you
+created one for the component, and that it is working within the build as expected.  See the
+<link xlink:href="d7b0528c-c75a-477b-9445-db6d2c55dbcb" /> for some special requirements when debugging
+components and plug-ins.</para>
 
 								<alert class="tip">
 									<para>Using the standalone GUI as the host is easier than using Visual Studio as the package
@@ -400,7 +458,7 @@ the project instances will be used instead.</para>
 
 			</sections>
 		</section>
-
+		-->
 		<relatedTopics>
 			<link xlink:href="c8258d52-6664-4e96-86cd-6f75a854a69c" />
 		</relatedTopics>

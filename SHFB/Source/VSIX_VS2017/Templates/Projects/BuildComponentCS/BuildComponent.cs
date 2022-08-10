@@ -71,7 +71,7 @@ namespace $safeprojectname$
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected $safeprojectname$Component(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected $safeprojectname$Component(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013PresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/23/2022
+// Updated : 08/06/2022
 // Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Visual Studio 2013 presentation style.
@@ -83,6 +83,9 @@ namespace Sandcastle.PresentationStyles.VS2013
                 fileSpec = "SharedContent_en-US.xml";
 
             yield return Path.Combine(filePath, fileSpec);
+
+            foreach(string f in this.AdditionalResourceItemsFiles)
+                yield return f;
         }
     }
 }

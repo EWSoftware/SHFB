@@ -560,6 +560,11 @@
     <HelpKeywords>
       <HelpKeyword index="K" term="custom components" />
     </HelpKeywords>
+    <Topic id="d7b0528c-c75a-477b-9445-db6d2c55dbcb" visible="True" title="Debugging Components and Plug-Ins">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="custom components, debugging" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="a14e026e-642f-4ce6-9506-341e57cc3d1f" visible="True" title="Creating a Build Process Plug-In">
       <HelpKeywords>
         <HelpKeyword index="K" term="plug-ins, creating a plug-in" />
@@ -917,6 +922,11 @@
           <HelpKeyword index="K" term="errors, BE0065" />
         </HelpKeywords>
       </Topic>
+      <Topic id="8df85eb5-a4d9-4a16-a9d4-5bb5a957428e" visible="True" title="BE0066: [warning]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0066" />
+        </HelpKeywords>
+      </Topic>
       <Topic id="355bb237-acf6-4df8-bfc6-d89736837abb" visible="True" title="BE0067: Unable to obtain assembly name from project file">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, BE0067" />
@@ -1188,7 +1198,7 @@
       <HelpKeyword index="K" term="customize, build tags" />
     </HelpKeywords>
   </Topic>
-  <Topic id="c5e7e920-2cb4-4f78-b167-634361d85263" visible="True" title="Open XML Document Help File Format">
+  <Topic id="c5e7e920-2cb4-4f78-b167-634361d85263" visible="True" isSelected="true" title="Open XML Document Help File Format">
     <HelpKeywords>
       <HelpKeyword index="K" term="open XML" />
     </HelpKeywords>
@@ -1198,7 +1208,7 @@
       <HelpKeyword index="K" term="markdown content" />
     </HelpKeywords>
   </Topic>
-  <Topic id="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" visible="True" isSelected="true" title="Sandcastle Tools">
+  <Topic id="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" visible="True" title="Sandcastle Tools">
     <HelpKeywords>
       <HelpKeyword index="K" term="sandcastle tools" />
     </HelpKeywords>
@@ -1359,6 +1369,11 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
+    <Topic id="502f1147-eaa4-4150-813d-a57eb6b521e8" visible="True" title="Version vNext">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, vNext" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="5491f230-cc0d-4604-8710-c046584907bd" visible="True" title="Version 2022.2.6.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2022.1.22.0" />

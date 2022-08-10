@@ -35,7 +35,7 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>Default2022</PresentationStyle>
     <SyntaxFilters>Standard</SyntaxFilters>
-    <HelpFileVersion>2022.2.6.0</HelpFileVersion>
+    <HelpFileVersion>2022.7.28.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -48,42 +48,43 @@
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
-<NamespaceSummaryItem name="SandcastleBuilder.Components" isDocumented="True">This namespace contains custom build components used by the Sandcastle &lt;strong&gt;BuildAssembler&lt;/strong&gt; tool.  The components are used to add additional features to the help topics such as a code colorization, alternate framework data caching implementations, etc.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.PlugIns" isDocumented="True">This namespace contains the plug-ins supplied with the Sandcastle Help File Builder.  These can be used in a project to extend or alter the build process in various ways such as supporting build completion notification, deployment, and generating documentation with AjaxDoc.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils" isDocumented="True">This namespace contains various utility classes and the help file builder project classes.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils.BuildComponent" isDocumented="True">This namespace contains the classes used to load and manage third-party build components that can be used with the help file builder and Sandcastle tools (plug-ins, build components, syntax generators, and presentation styles).</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils.ConceptualContent" isDocumented="True">This namespace contains classes related to conceptual content items.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils.Design" isDocumented="True">This namespace contains various designer classes.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils.InheritedDocumentation" isDocumented="True">This namespace contains classes related to indexing comments files used when generating inherited documentation.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils.BuildEngine" isDocumented="True">This namespace contains the classes related to the build engine.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils.MSBuild" isDocumented="True">This namespace contains MSBuild related classes such as tasks and project file wrappers.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.MicrosoftHelpViewer" isDocumented="True">This namespace contains classes related to the Microsoft Help Viewer help file format and the installation tool.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Components (Group)" isGroup="True" isDocumented="True">This namespace contains &lt;strong&gt;BuildAssembler&lt;/strong&gt; related namespaces.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils (Group)" isGroup="True" isDocumented="True">This namespace contains all of the other utility and build engine related namespaces.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle (Group)" isGroup="True" isDocumented="True">This namespace group contains various namespaces related to the Sandcastle tools.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core" isDocumented="True">This namespace contains common core types related to the Sandcastle tools.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler (Group)" isGroup="True" isDocumented="True">This namespace group contains namespaces related to BuildAssembler.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler" isDocumented="True">This namespace contains types related to BuildAssembler.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler.BuildComponent" isDocumented="True">This namespace contains BuildAssembler component types.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler.SyntaxGenerator" isDocumented="True">This namespace contains BuildAssembler syntax generator types.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.CommandLine" isDocumented="True">This namespace contains types used to interact with command line parameters.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle" isDocumented="True">This namespace contains presentation style related types.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.Reflection" isDocumented="True">This namespace contains types used to manage reflection data sets.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder (Group)" isGroup="True" isDocumented="True">This namespace contains the help file builder related namespaces.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core (Group)" isGroup="True" isDocumented="True">This namespace group contains various namespaces related to the core Sandcastle types.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Tools (Group)" isGroup="True" isDocumented="True">This namespace group contains various namespaces related to the Sandcastle tools.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Tools.BuildComponents (Group)" isGroup="True" isDocumented="True">This namespace group contains various namespaces related to the Sandcastle build components.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Tools.BuildComponents" isDocumented="True">This namespace contains various classes related to the Sandcastle build components.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Tools.BuildComponents.Commands" isDocumented="True">This namespace contains various classes related to the Sandcastle build components commands.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Tools.BuildComponents.Snippets" isDocumented="True">This namespace contains various classes related to the Sandcastle build component snippet handling.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Tools.BuildComponents.Targets" isDocumented="True">This namespace contains various classes related to the Sandcastle build components target type definitions.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Tools.SyntaxGenerators" isDocumented="True">This namespace contains various classes related to the Sandcastle build component syntax generators.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle (Group)" isGroup="True" isDocumented="True">This namespace group contains namespaces related to presentation styles and their transformations.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation" isDocumented="True">This namespace contains presentation transformation related types.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements" isDocumented="True">This namespace contains presentation transformation elements that are format-neutral or perform render output conditionally based on the supported output format(s).</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements.Html" isDocumented="True">This namespace contains presentation transformation elements that render HTML-specific output.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml" isDocumented="True">This namespace contains presentation transformation elements that render Open XML-specific output.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements.Markdown" isDocumented="True">This namespace contains presentation transformation elements that render markdown-specific output.</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="SandcastleBuilder.Components" isDocumented="True">This namespace contains custom build components used by the Sandcastle &lt;strong&gt;BuildAssembler&lt;/strong&gt; tool.  The components are used to add additional features to the help topics such as a code colorization, alternate framework data caching implementations, etc.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.PlugIns" isDocumented="True">This namespace contains the plug-ins supplied with the Sandcastle Help File Builder.  These can be used in a project to extend or alter the build process in various ways such as supporting build completion notification, deployment, and generating documentation with AjaxDoc.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils" isDocumented="True">This namespace contains various utility classes and the help file builder project classes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.BuildComponent" isDocumented="True">This namespace contains the classes used to load and manage third-party build components that can be used with the help file builder and Sandcastle tools (plug-ins, build components, syntax generators, and presentation styles).</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.ConceptualContent" isDocumented="True">This namespace contains classes related to conceptual content items.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.Design" isDocumented="True">This namespace contains various designer classes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.InheritedDocumentation" isDocumented="True">This namespace contains classes related to indexing comments files used when generating inherited documentation.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.BuildEngine" isDocumented="True">This namespace contains the classes related to the build engine.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.MSBuild" isDocumented="True">This namespace contains MSBuild related classes such as tasks and project file wrappers.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.MicrosoftHelpViewer" isDocumented="True">This namespace contains classes related to the Microsoft Help Viewer help file format and the installation tool.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Components (Group)" isGroup="True" isDocumented="True">This namespace contains &lt;strong&gt;BuildAssembler&lt;/strong&gt; related namespaces.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils (Group)" isGroup="True" isDocumented="True">This namespace contains all of the other utility and build engine related namespaces.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle (Group)" isGroup="True" isDocumented="True">This namespace group contains various namespaces related to the Sandcastle tools.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core" isDocumented="True">This namespace contains common core types related to the Sandcastle tools.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler (Group)" isGroup="True" isDocumented="True">This namespace group contains namespaces related to BuildAssembler.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler" isDocumented="True">This namespace contains types related to BuildAssembler.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler.BuildComponent" isDocumented="True">This namespace contains BuildAssembler component types.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler.SyntaxGenerator" isDocumented="True">This namespace contains BuildAssembler syntax generator types.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.CommandLine" isDocumented="True">This namespace contains types used to interact with command line parameters.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle" isDocumented="True">This namespace contains presentation style related types.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.Reflection" isDocumented="True">This namespace contains types used to manage reflection data sets.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder (Group)" isGroup="True" isDocumented="True">This namespace contains the help file builder related namespaces.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core (Group)" isGroup="True" isDocumented="True">This namespace group contains various namespaces related to the core Sandcastle types.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Tools (Group)" isGroup="True" isDocumented="True">This namespace group contains various namespaces related to the Sandcastle tools.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Tools.BuildComponents (Group)" isGroup="True" isDocumented="True">This namespace group contains various namespaces related to the Sandcastle build components.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Tools.BuildComponents" isDocumented="True">This namespace contains various classes related to the Sandcastle build components.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Tools.BuildComponents.Commands" isDocumented="True">This namespace contains various classes related to the Sandcastle build components commands.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Tools.BuildComponents.Snippets" isDocumented="True">This namespace contains various classes related to the Sandcastle build component snippet handling.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Tools.BuildComponents.Targets" isDocumented="True">This namespace contains various classes related to the Sandcastle build components target type definitions.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Tools.SyntaxGenerators" isDocumented="True">This namespace contains various classes related to the Sandcastle build component syntax generators.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle (Group)" isGroup="True" isDocumented="True">This namespace group contains namespaces related to presentation styles and their transformations.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation" isDocumented="True">This namespace contains presentation transformation related types.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements" isDocumented="True">This namespace contains presentation transformation elements that are format-neutral or perform render output conditionally based on the supported output format(s).</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements.Html" isDocumented="True">This namespace contains presentation transformation elements that render HTML-specific output.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml" isDocumented="True">This namespace contains presentation transformation elements that render Open XML-specific output.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements.Markdown" isDocumented="True">This namespace contains presentation transformation elements that render markdown-specific output.</NamespaceSummaryItem>
+    </NamespaceSummaries>
     <CleanIntermediates>True</CleanIntermediates>
     <ApiFilter>
       <Filter entryType="Namespace" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator" isExposed="True">
@@ -277,9 +278,11 @@
     <None Include="Content\CustomComponents\CreateSyntaxFilter.aml" />
     <None Include="Content\CustomComponents\CreatingCustomComponents.aml" />
     <None Include="Content\CustomComponents\CustomPresentationStyle.aml" />
+    <None Include="Content\CustomComponents\DebuggingComponents.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0011.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0027.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0036.aml" />
+    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0066.aml" />
     <None Include="Content\ErrorsAndWarnings\InheritedDocs\GID0010.aml" />
     <None Include="Content\ProjectExplorer\ComponentPackages.aml" />
     <None Include="Content\VersionHistory\MigrationSupport.aml" />
@@ -398,6 +401,7 @@
     <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2021.4.9.0.aml" />
     <None Include="Content\VersionHistory\v2021.11.7.0.aml" />
     <None Include="Content\VersionHistory\v2022.2.6.0.aml" />
+    <None Include="Content\VersionHistory\vNext.aml" />
     <None Include="Content\VisualStudio\GoToDefinition.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />

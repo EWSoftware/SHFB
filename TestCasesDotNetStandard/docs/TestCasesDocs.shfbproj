@@ -16,16 +16,16 @@
     <RootNamespace>Documentation</RootNamespace>
     <Name>TestCasesDocs</Name>
     <!-- SHFB properties -->
-    <FrameworkVersion>Cross-platform (.NET Core/.NET Standard)</FrameworkVersion>
+    <FrameworkVersion>.NET Core/.NET Standard/.NET 5.0+</FrameworkVersion>
     <OutputPath>Help\</OutputPath>
     <HtmlHelpName>Documentation</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\DotNetStandardTestCases.csproj" />
     </DocumentationSources>
-    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <HelpFileFormat>Website</HelpFileFormat>
     <SyntaxFilters>Standard</SyntaxFilters>
-    <PresentationStyle>VS2013</PresentationStyle>
+    <PresentationStyle>Default2022</PresentationStyle>
     <CleanIntermediates>False</CleanIntermediates>
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
@@ -35,8 +35,8 @@
     <ProjectSummary>Test nullable reference types</ProjectSummary>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="NullableTypesTest" isDocumented="True">Test nullable reference types</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="NullableTypesTestNet5" isDocumented="True">Test nullable reference types</NamespaceSummaryItem>
-    </NamespaceSummaries>
+<NamespaceSummaryItem name="NullableTypesTestNet5" isDocumented="True">Test nullable reference types</NamespaceSummaryItem>
+<NamespaceSummaryItem name="DotNetStandardTestCases" isDocumented="True">Test cases</NamespaceSummaryItem></NamespaceSummaries>
     <SourceCodeBasePath>..\</SourceCodeBasePath>
     <WarnOnMissingSourceContext>False</WarnOnMissingSourceContext>
     <TransformComponentArguments>

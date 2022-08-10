@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Sandcastle.Installer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Sandcastle Guided Installation" Height="600" Width="800" MinHeight="300" MinWidth="400"
+        Title="Sandcastle Guided Installation" Height="768" Width="1024" MinHeight="300" MinWidth="400"
         WindowStartupLocation="CenterScreen" Icon="/SandcastleInstaller;component/Resources/HelpDoc.ico"
         Closing="Window_Closing" Activated="Window_Activated">
   <Grid Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">

@@ -49,6 +49,9 @@ function SetDefaultLanguage(defaultLanguage)
                     if(codePanel === null || typeof(codePanel) === "undefined")
                         return "";
 
+                    if($(codePanel).hasClass("codeHeader"))
+                        codePanel = codePanel.parentElement;
+
                     codePanel = $(codePanel).find("code");
 
                     if(codePanel === null || typeof(codePanel) === "undefined")
