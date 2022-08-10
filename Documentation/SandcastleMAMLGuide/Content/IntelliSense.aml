@@ -2,12 +2,13 @@
 <topic id="746fc19e-2670-440b-8277-a1ef7dc074d5" revisionNumber="1">
 	<developerWalkthroughDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<introduction>
-	  <para>This topic covers how to integrate MAML schema files into Visual Studio's
+	  <para>This topic covers how to manually integrate MAML schema files into Visual Studio's
 global schema cache to provide IntelliSense when editing MAML topics within Visual Studio.</para>
 
 		<alert class="tip">
-			<para>The guided installer used to install Sandcastle and the related tools provides an option to install
-the MAML schemas in the Visual Studio global schema cache for you.</para>
+			<para>The Sandcastle Help File Builder Visual Studio package installs the MAML schemas automatically so
+that they are available in the Visual Studio global schema cache for you.  You do not need to install them
+manually.</para>
 		</alert>
 
 <alert class="note">
@@ -46,8 +47,9 @@ use the most recent version of the schema files.</para>
 automatically.</para>
 				
 				<alert class="note">
-					<para>Updates to Visual Studio may reset the global schema cache undoing the changes made above.  If
-that happens and you no longer see IntelliSense for MAML files, simply apply the changes again.</para>
+					<para>When installed manually, updates to Visual Studio will likely reset the global schema cache
+undoing the changes made above.  If that happens and you no longer see IntelliSense for MAML files, simply apply
+the changes again.</para>
 				</alert>
 
 			</content>

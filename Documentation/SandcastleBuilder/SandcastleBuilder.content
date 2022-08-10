@@ -69,7 +69,7 @@
         <HelpKeyword index="K" term="log file" />
       </HelpKeywords>
     </Topic>
-    <Topic id="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" visible="True" title="User Preferences">
+    <Topic id="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" visible="True" isExpanded="true" title="User Preferences">
       <HelpKeywords>
         <HelpKeyword index="K" term="Getting started, user preferences" />
       </HelpKeywords>
@@ -449,22 +449,10 @@
         <HelpKeyword index="K" term="AdditionalReferenceLinksPlugIn, configuration options" />
       </HelpKeywords>
     </Topic>
-    <Topic id="99773472-ff05-4eba-8194-b36a0536280e" visible="True" title="AjaxDoc Builder Plug-In">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="AjaxDocPlugIn, configuration options" />
-        <HelpKeyword index="K" term="plug-ins, AjaxDoc plug-in" />
-      </HelpKeywords>
-    </Topic>
     <Topic id="f5051d32-b973-4fe1-9ffe-e30531007691" visible="True" title="Assembly Binding Redirection Plug-In">
       <HelpKeywords>
         <HelpKeyword index="K" term="BindingRedirectResolverPlugIn, configuration options" />
         <HelpKeyword index="K" term="plug-ins, assembly binding redirection plug-in" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="161537d9-6f89-42ef-9c51-3a15ef94df65" visible="True" title="Bibliography Support Plug-In">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="BibliographySupportPlugIn, configuration options" />
-        <HelpKeyword index="K" term="plug-ins, bibliography support plug-in" />
       </HelpKeywords>
     </Topic>
     <Topic id="d0ac3f31-bc25-4c5a-b2e6-d64a74fdb67c" visible="True" title="Completion Notification Plug-In">
@@ -495,11 +483,6 @@
         <HelpKeyword index="K" term="plug-ins, lightweight website style plug-in" />
       </HelpKeywords>
     </Topic>
-    <Topic id="d377a638-6dfc-4041-ba7b-97561de26f0d" visible="True" title="Manual Visibility/API Filter Plug-In">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="plug-ins, manual visibility/API filter plug-in" />
-      </HelpKeywords>
-    </Topic>
     <Topic id="17d977a6-e3dc-4ef4-9bbf-718ef4823854" visible="True" title="Member ID Fix-Ups Plug-In">
       <HelpKeywords>
         <HelpKeyword index="K" term="plug-ins, member ID fix-ups plug-in" />
@@ -509,12 +492,6 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="plug-ins, output deployment plug-in" />
         <HelpKeyword index="K" term="DeploymentPlugIn, configuration options" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="93c452fd-71d4-470e-8d27-ec3d979679a4" visible="True" title="Script# Reflection File Fixer Plug-In">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="plug-ins, Script# reflection file fixer plug-in" />
-        <HelpKeyword index="K" term="ScriptSharpPlugIn, configuration options" />
       </HelpKeywords>
     </Topic>
     <Topic id="d0e91b66-135e-446b-9239-c02fcafabd09" visible="True" title="Table of Contents Exclusion Plug-In">
@@ -578,30 +555,16 @@
         <HelpKeyword index="K" term="SyntaxComponent, configuration" />
       </HelpKeywords>
     </Topic>
-    <Topic id="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" visible="True" title="Data Caching Build Components">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="build components, data caching" />
-      </HelpKeywords>
-      <Topic id="2e8fa0c8-d7ec-4f7e-b42f-ac2718312ffc" visible="True" title="ESENT Caching Components">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="build components, ESENT caching" />
-          <HelpKeyword index="K" term="ESentCopyFromIndexComponent, configuration options" />
-          <HelpKeyword index="K" term="ESentResolveReferenceLinksComponent, configuration options" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="0f0cc654-6ddf-4673-a001-b29885ca0310" visible="True" title="SQL Server Caching Component">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="build components, SQL caching" />
-          <HelpKeyword index="K" term="SqlCopyFromIndexComponent, configuration options" />
-          <HelpKeyword index="K" term="SqlResolveReferenceLinksComponent, configuration options" />
-        </HelpKeywords>
-      </Topic>
-    </Topic>
   </Topic>
   <Topic id="c8258d52-6664-4e96-86cd-6f75a854a69c" visible="True" title="Creating Custom Components">
     <HelpKeywords>
       <HelpKeyword index="K" term="custom components" />
     </HelpKeywords>
+    <Topic id="d7b0528c-c75a-477b-9445-db6d2c55dbcb" visible="True" title="Debugging Components and Plug-Ins">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="custom components, debugging" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="a14e026e-642f-4ce6-9506-341e57cc3d1f" visible="True" title="Creating a Build Process Plug-In">
       <HelpKeywords>
         <HelpKeyword index="K" term="plug-ins, creating a plug-in" />
@@ -959,6 +922,11 @@
           <HelpKeyword index="K" term="errors, BE0065" />
         </HelpKeywords>
       </Topic>
+      <Topic id="8df85eb5-a4d9-4a16-a9d4-5bb5a957428e" visible="True" title="BE0066: [warning]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0066" />
+        </HelpKeywords>
+      </Topic>
       <Topic id="355bb237-acf6-4df8-bfc6-d89736837abb" visible="True" title="BE0067: Unable to obtain assembly name from project file">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, BE0067" />
@@ -1230,7 +1198,7 @@
       <HelpKeyword index="K" term="customize, build tags" />
     </HelpKeywords>
   </Topic>
-  <Topic id="c5e7e920-2cb4-4f78-b167-634361d85263" visible="True" title="Open XML Document Help File Format">
+  <Topic id="c5e7e920-2cb4-4f78-b167-634361d85263" visible="True" isSelected="true" title="Open XML Document Help File Format">
     <HelpKeywords>
       <HelpKeyword index="K" term="open XML" />
     </HelpKeywords>
@@ -1401,7 +1369,12 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="5491f230-cc0d-4604-8710-c046584907bd" visible="True" isSelected="true" title="Version 2022.2.6.0">
+    <Topic id="502f1147-eaa4-4150-813d-a57eb6b521e8" visible="True" title="Version vNext">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, vNext" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="5491f230-cc0d-4604-8710-c046584907bd" visible="True" title="Version 2022.2.6.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2022.1.22.0" />
         <HelpKeyword index="K" term="versions, 2022.2.6.0" />

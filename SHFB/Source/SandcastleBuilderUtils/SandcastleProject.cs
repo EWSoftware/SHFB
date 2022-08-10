@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/05/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 05/13/2022
+// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the project class.
 //
@@ -94,7 +94,7 @@ using Microsoft.Build.Evaluation;
 
 using Sandcastle.Core;
 using Sandcastle.Core.Reflection;
-using Sandcastle.Core.PresentationStyle;
+using Sandcastle.Core.PresentationStyle.Transformation;
 
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.ConceptualContent;
@@ -179,7 +179,8 @@ namespace SandcastleBuilder.Utils
                 "AssemblyName", "Configuration", "CustomAfterSHFBTargets", "CustomBeforeSHFBTargets",
                 "DumpLogOnFailure", "Name", "Platform", "PostBuildEvent", "PreBuildEvent", "ProjectGuid",
                 "RootNamespace", "RunPostBuildEvent", "SccAuxPath", "SccLocalPath", "SccProjectName",
-                "SccProvider", "SchemaVersion", "SHFBSchemaVersion", "TransformComponentArguments", "Verbose" };
+                "SccProvider", "SchemaVersion", "SHFBSchemaVersion", "TargetFrameworkVersion",
+                "TransformComponentArguments", "Verbose" };
 
         /// <summary>
         /// This read-only property returns the MSBuild project property cache
@@ -413,7 +414,7 @@ namespace SandcastleBuilder.Utils
         /// <remarks>These are passed as arguments to the XSL transformations used by the <b>BuildAssembler</b>
         /// <c>TransformComponent</c>.</remarks>
         /// <returns>An enumerable list of transform component arguments</returns>
-        public IEnumerable<TransformComponentArgument> TransformComponentArguments
+        public IEnumerable<TransformationArgument> TransformComponentArguments
         {
             get
             {
@@ -429,7 +430,7 @@ namespace SandcastleBuilder.Utils
                         xr.MoveToContent();
 
                         foreach(var arg in XElement.Load(xr, LoadOptions.PreserveWhitespace).Descendants("Argument"))
-                            yield return new TransformComponentArgument(arg);
+                            yield return new TransformationArgument(arg);
                     }
                 }
             }
@@ -995,7 +996,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This read-only property is used to get the presentation style for the help topic pages
         /// </summary>
-        /// <value>The default is to use the VS2013 style</value>
+        /// <value>The default is defined by <see cref="Constants.DefaultPresentationStyle" qualifyHint="true" /></value>
         [EscapeValue]
         public string PresentationStyle
         {
@@ -1564,7 +1565,6 @@ namespace SandcastleBuilder.Utils
 
             this.BuildAssemblerVerbosity = BuildAssemblerVerbosity.OnlyWarningsAndErrors;
             this.SaveComponentCacheCapacity = 100;
-            this.HelpFileFormat = HelpFileFormats.HtmlHelp1;
             this.HtmlSdkLinkType = this.WebsiteSdkLinkType = HtmlSdkLinkType.Msdn;
             this.MSHelpViewerSdkLinkType = MSHelpViewerSdkLinkType.Msdn;
             this.SdkLinkTarget = SdkLinkTarget.Blank;
@@ -2028,6 +2028,15 @@ namespace SandcastleBuilder.Utils
                 return ReflectionDataSetDictionary.DefaultFrameworkTitle;
 
             return dataSet.Title;
+        }
+
+        /// <summary>
+        /// This is used to set the default help file format when one isn't explicitly defined in the project
+        /// </summary>
+        /// <param name="defaultFormat">The default help file format to use</param>
+        internal void SetDefaultHelpFileFormat(HelpFileFormats defaultFormat)
+        {
+            this.HelpFileFormat = defaultFormat;
         }
         #endregion
 

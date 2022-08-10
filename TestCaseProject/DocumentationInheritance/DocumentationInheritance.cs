@@ -14,13 +14,12 @@ namespace TestDoc.DocumentationInheritance
     /// <para>These remarks are for the base class.</para>
     ///
     /// <para>This information applies to all classes that derive from
-    /// <see cref="BaseInheritDoc"/>:
+    /// <see cref="BaseInheritDoc"/>:</para>
     /// <list type="bullet">
     /// <item><description>Point #1.</description></item>
     /// <item><description>Point #2.</description></item>
     /// <item><description>Point #3.</description></item>
     /// </list>
-    /// </para>
     /// </remarks>
     public class BaseInheritDoc
     {

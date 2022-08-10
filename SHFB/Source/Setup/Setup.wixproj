@@ -10,6 +10,7 @@
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <Name>Setup</Name>
+    <SuppressIces>ICE60</SuppressIces>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -32,7 +33,6 @@
     <Content Include="Product.wxi" />
     <Content Include="Resources\Banner.jpg" />
     <Content Include="Resources\Dialog.jpg" />
-    <Content Include="Resources\Help.ico" />
     <Content Include="Resources\HtmlDocument.ico" />
   </ItemGroup>
   <ItemGroup>

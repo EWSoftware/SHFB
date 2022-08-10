@@ -141,7 +141,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="b32a73b8-fc26-4c98-912c-d595fc1a17c2" visible="True" title="Block Elements">
+  <Topic id="b32a73b8-fc26-4c98-912c-d595fc1a17c2" visible="True" isExpanded="true" title="Block Elements">
     <HelpKeywords>
       <HelpKeyword index="K" term="Block Elements" />
     </HelpKeywords>
@@ -155,17 +155,19 @@
         <HelpKeyword index="K" term="Block Elements, code" />
       </HelpKeywords>
     </Topic>
-    <Topic id="91a45341-e368-463e-a9ed-9e05286d2c25" visible="True" title="codeReference">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="Miscellaneous Elements, codeReference" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="cb59e91c-f3cd-4086-a7ea-e2413a626e3d" visible="True" title="definitionTable, definedTerm, definition">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="Block Elements, definedTerm" />
-        <HelpKeyword index="K" term="Block Elements, definition" />
-        <HelpKeyword index="K" term="Block Elements, definitionTable" />
-      </HelpKeywords>
+    <Topic id="96149756-b6e1-4af6-9fdc-9f1cdd7cbb64" visible="True" noFile="true" isExpanded="true" title="Test Empy Container Node">
+      <Topic id="91a45341-e368-463e-a9ed-9e05286d2c25" visible="True" title="codeReference">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="Miscellaneous Elements, codeReference" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="cb59e91c-f3cd-4086-a7ea-e2413a626e3d" visible="True" title="definitionTable, definedTerm, definition">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="Block Elements, definedTerm" />
+          <HelpKeyword index="K" term="Block Elements, definition" />
+          <HelpKeyword index="K" term="Block Elements, definitionTable" />
+        </HelpKeywords>
+      </Topic>
     </Topic>
     <Topic id="97724282-5470-48ca-89c6-541737fafd1f" visible="True" title="introduction">
       <HelpKeywords>
@@ -207,7 +209,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="b96d95c0-ec3c-4846-998a-4b43548bfa0e" visible="True" title="Common Inline Elements">
+  <Topic id="b96d95c0-ec3c-4846-998a-4b43548bfa0e" visible="True" isExpanded="true" title="Common Inline Elements">
     <HelpKeywords>
       <HelpKeyword index="K" term="Common Inline Elements" />
     </HelpKeywords>
@@ -276,6 +278,11 @@
         <HelpKeyword index="K" term="Common Inline Elements, legacyUnderline" />
       </HelpKeywords>
     </Topic>
+    <Topic id="da613e19-4d41-4e92-830e-0c776f14e751" visible="True" isSelected="true" title="lineBreak">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, lineBreak" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="d50f98be-cddf-4756-994d-c05431f013a8" visible="True" title="literal">
       <HelpKeywords>
         <HelpKeyword index="K" term="Common Inline Elements, literal" />
@@ -284,11 +291,6 @@
     <Topic id="ecd8ab10-57b5-4094-b195-4c8c5a1ba3d0" visible="True" title="localUri">
       <HelpKeywords>
         <HelpKeyword index="K" term="Common Inline Elements, localUri" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="aaaff238-1ab4-4c9e-95d8-60ca4d8d4f8e" visible="True" title="markup">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="Common Inline Elements, markup" />
       </HelpKeywords>
     </Topic>
     <Topic id="5bab8ccb-0ff0-496e-aa15-ae803c210a22" visible="True" title="math">
@@ -387,7 +389,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="9d0dc122-7829-4b22-af2e-6685867116f8" visible="True" title="Miscellaneous Elements">
+  <Topic id="9d0dc122-7829-4b22-af2e-6685867116f8" visible="True" isExpanded="true" title="Miscellaneous Elements">
     <HelpKeywords>
       <HelpKeyword index="K" term="Miscellaneous Elements" />
     </HelpKeywords>
@@ -400,6 +402,11 @@
           <HelpKeyword index="K" term="auto-outline example" />
         </HelpKeywords>
       </Topic>
+    </Topic>
+    <Topic id="aaaff238-1ab4-4c9e-95d8-60ca4d8d4f8e" visible="True" title="markup">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Miscellaneous Elements, markup" />
+      </HelpKeywords>
     </Topic>
     <Topic id="0f1bdf10-7968-4e17-aaf9-849091479df8" visible="True" title="token">
       <HelpKeywords>
@@ -418,7 +425,7 @@
       <HelpKeyword index="K" term="extensibility" />
     </HelpKeywords>
   </Topic>
-  <Topic id="dc4fcc96-283e-4202-9ecc-08a65e0c9313" visible="True" isSelected="true" apiParentMode="InsertAfter" title="Links to Resources">
+  <Topic id="dc4fcc96-283e-4202-9ecc-08a65e0c9313" visible="True" apiParentMode="InsertAfter" title="Links to Resources">
     <HelpKeywords>
       <HelpKeyword index="K" term="build components, article on creating components" />
       <HelpKeyword index="K" term="build components, links to third-party components" />

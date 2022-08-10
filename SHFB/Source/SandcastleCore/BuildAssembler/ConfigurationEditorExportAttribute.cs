@@ -1,5 +1,5 @@
 ﻿//===============================================================================================================
-// System  : Sandcastle Help File Builder Utilities
+// System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ConfigurationEditorExportAttribute.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 05/31/2021

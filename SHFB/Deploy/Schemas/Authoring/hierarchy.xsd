@@ -162,6 +162,19 @@
 			</appinfo>
 		</annotation>
 	</element>
+
+	<!-- Sandcastle extension -->
+    <element name="bibliography">
+		<annotation>
+			<documentation>
+			This element marks the location of the bibliography section.  It has no content.
+			</documentation>
+			<appinfo>
+				<doc:type>section</doc:type>
+			</appinfo>
+		</annotation>
+    </element>
+
 	<!-- complexType declarations -->
 	<complexType name="contentTypeType">
 		<complexContent>

@@ -412,7 +412,7 @@ namespace TestDoc
         /// <returns>Returns the sum for the array of double values if the array is
         /// not null and not empty.</returns>
         /// <remarks>
-        /// <p/>Test definition list:
+        /// <para>Test definition list:</para>
         /// <list type="definition">
         /// <item>
         /// <term>maxLen</term>
@@ -445,7 +445,7 @@ namespace TestDoc
         /// </item>
         /// </list>
         /// 
-        /// <p/>Test bullet list with terms and definitions:
+        /// <para>Test bullet list with terms and definitions:</para>
         /// <list type="bullet">
         /// <item>
         /// <term>maxLen</term>
@@ -478,7 +478,7 @@ namespace TestDoc
         /// </item>
         /// </list>
         /// 
-        /// <p/>Test numbered list with terms and definitions:
+        /// <para>Test numbered list with terms and definitions:</para>
         /// <list type="number">
         /// <item>
         /// <term>maxLen</term>
@@ -511,7 +511,7 @@ namespace TestDoc
         /// </item>
         /// </list>
         /// 
-        /// <p/>Test table list with terms and definitions:
+        /// <para>Test table list with terms and definitions:</para>
         /// <list type="table">
         /// <listheader>
         /// <term>Item</term>
@@ -654,7 +654,12 @@ namespace TestDoc
         /// <note type="implement">implement</note>
         /// <note type="caller">caller</note>
         /// <note type="inherit">inherit</note>
+        /// <note type="todo">To Do list</note>
+        /// <note type="todo" title="Project Road Map">
+        ///     <para>This alert has a custom title.</para>
+        /// </note>
         /// </remarks>
+        [Obsolete()]
         public void Increment()
         {
         }
@@ -665,6 +670,7 @@ namespace TestDoc
         /// <para><see cref="List{T}.Clear()"/></para>
         /// <para><see cref="List{T}.RemoveAll(Predicate{T})"/></para>
         /// </summary>
+        [Obsolete("This is obsolete.  Use something else instead")]
         public static void TestSeeWithGenerics()
         {
         }
@@ -678,6 +684,7 @@ namespace TestDoc
         /// This usually corresponds to the <c>Author</c> element(s) in an OpenSearch response, which is part of the Atom namespace. The server
         /// does not need to provide this information. If it is not provided, an empty list will be returned.
         /// </remarks>
+        [Obsolete("This is obsolete.  Use something else instead", true)]
         public System.Collections.ObjectModel.Collection<System.ServiceModel.Syndication.SyndicationPerson> Authors
         {
             get { return null ; }
@@ -833,6 +840,7 @@ namespace TestDoc
         /// <typeparam name="T">The type</typeparam>
         /// <param name="lhs">The left hand value</param>
         /// <param name="rhs">The right hand value</param>
+        /// <preliminary>This might change later</preliminary>
         public static void Swap<T>(ref T lhs, ref T rhs)
         {
             T temp;
@@ -846,6 +854,7 @@ namespace TestDoc
         /// </summary>
         /// <param name="x">Test</param>
         /// <param name="y">Test</param>
+        /// <preliminary/>
         public static void TestThis<T, K>(KeyValuePair<T, K> x, long y)
         {
         }

@@ -43,7 +43,6 @@
 		<Media Id="1" Cabinet="$(var.ProductShortName).cab" CompressionLevel="high" EmbedCab="yes" />
 
 		<!-- Icons -->
-		<Icon Id="Help.ico" SourceFile="Resources\Help.ico" />
 		<Icon Id="SandcastleBuilder.exe" SourceFile="Resources\SandcastleBuilder.ico" />
 		<Icon Id="SHFBProjectLauncher.exe" SourceFile="Resources\SHFBProjectLauncher.ico" />
 		<Icon Id="HtmlDocument.ico" SourceFile="Resources\HtmlDocument.ico" />

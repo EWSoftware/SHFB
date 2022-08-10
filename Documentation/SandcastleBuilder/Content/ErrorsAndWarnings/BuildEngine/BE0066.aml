@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="8df85eb5-a4d9-4a16-a9d4-5bb5a957428e" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning BE0066: <legacyItalic>[warning]</legacyItalic></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This is the generic warning produced when a build encounters an unexpected condition.  The build
+will continue but you should review the warning to see if the cause can be resolved.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Review the build log output just prior to the point of this warning and look for other warning
+messages that may have contributed to the problem.  If you cannot resolve the problem, please post a message in
+the <token>SHFB</token> discussion forum asking for help along with the details from the build log.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+			<link xlink:href="20e87b11-21a3-493c-8dd6-16ce7694952b" />
+    </relatedTopics>
+	</developerConceptualDocument>
+</topic>

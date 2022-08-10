@@ -31,9 +31,7 @@ of additional tools that need to be installed, where to get them, and how to mak
 correctly. The guided installer also provides information on the necessary tools and walks you through the
 installation steps.
 	</para>
-</alert>
 
-<alert class="tip">
 	<para>
 		If you are new to Sandcastle and the help file builder, see the topics in the
 <link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" /> section to get familiar with it, set up your projects

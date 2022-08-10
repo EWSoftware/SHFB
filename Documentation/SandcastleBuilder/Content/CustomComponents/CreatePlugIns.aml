@@ -90,7 +90,9 @@ Once it has been created, right click on the project and select <ui>Properties</
 							<content>
 								<para>By default, the Debug project properties are set to use the standalone GUI for debugging
 which will help you see if the component can be located, that the configuration form is working if you created
-one for the component, and that it is working within the build as expected.</para>
+one for the component, and that it is working within the build as expected.  See the
+<link xlink:href="d7b0528c-c75a-477b-9445-db6d2c55dbcb" /> for some special requirements when debugging
+components and plug-ins.</para>
 
 								<alert class="tip">
 									<para>Using the standalone GUI as the host is easier than using Visual Studio as the package

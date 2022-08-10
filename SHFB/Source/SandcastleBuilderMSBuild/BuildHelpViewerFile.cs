@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelpViewerFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/15/2021
-// Note    : Copyright 2009-2021, Eric Woodruff, All rights reserved
+// Updated : 04/25/2022
+// Note    : Copyright 2009-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the MSBuild task used to compress the help content into a Microsoft Help Container (a ZIP
 // file with a .mshc extension).
@@ -110,6 +110,9 @@ namespace SandcastleBuilder.MSBuild
         {
             int addCount = 0, baseFolderLength = this.WorkingFolder.Length;
 
+            if(this.WorkingFolder[baseFolderLength - 1] != '\\')
+                baseFolderLength++;
+
             fileCount = Directory.EnumerateFiles(this.WorkingFolder, "*", SearchOption.AllDirectories).Count();
             
             using(var archive = ZipFile.Open(archiveName, ZipArchiveMode.Create))
@@ -118,7 +121,12 @@ namespace SandcastleBuilder.MSBuild
                 // enumerating the files so that we can report progress.
                 foreach(var file in Directory.EnumerateFiles(this.WorkingFolder, "*", SearchOption.AllDirectories))
                 {
-                    archive.CreateEntryFromFile(file, file.Substring(baseFolderLength), CompressionLevel.Optimal);
+                    string entryName = file.Substring(baseFolderLength);
+
+                    if(Path.DirectorySeparatorChar == '\\')
+                        entryName = entryName.Replace('\\', '/');
+
+                    archive.CreateEntryFromFile(file, entryName, CompressionLevel.Optimal);
 
                     var fi = new FileInfo(file);
 

@@ -35,6 +35,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
@@ -229,7 +230,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected IntelliSenseComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected IntelliSenseComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
             // No bounded capacity by default
             commentsList = new BlockingCollection<CommentsInfo>();

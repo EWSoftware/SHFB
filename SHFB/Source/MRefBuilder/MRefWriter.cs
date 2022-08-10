@@ -20,6 +20,7 @@
 // 03/16/2021 - EFW - Added support for writing out the nullable context for nullable reference types
 // 04/03/2021 - EFW - Moved duplicate type/member merging and XAML syntax attributes to MRefBuilder and removed
 // the MergeDuplicates.xsl and AddXamlSyntaxData.xsl transformations.
+// 06/13/2022 - EFW - Added support for writing out hierarchy info for structures
 
 using System;
 using System.Collections.Generic;
@@ -251,7 +252,7 @@ namespace Sandcastle.Tools
                     if(typeSourceContext.Document.Name == null)
                     {
                         System.Diagnostics.Debug.WriteLine("Source code location not found for " + type.FullName);
-                        this.MessageLogger(this.WarnOnMissingContext ? LogLevel.Warn : LogLevel.Info,
+                        this.MessageLogger(this.WarnOnMissingContext ? MessageLevel.Warn : MessageLevel.Info,
                             $"Source code location not found for {type.FullName}");
                     }
                 }
@@ -929,8 +930,8 @@ namespace Sandcastle.Tools
 
             writer.WriteEndElement();
 
-            // For classes, record base type
-            if(type is Class)
+            // For classes and structures, record base types and descendants
+            if(type is Class || type is Struct)
                 this.WriteHierarchy(type, hasContentProperty);
         }
 
@@ -1940,7 +1941,7 @@ namespace Sandcastle.Tools
             if(parameter.Type.Name.Name == "Void")
             {
                 // This one may or may not be an error.  It could be a missing reference assembly that was ignored.
-                this.MessageLogger(LogLevel.Warn, "Unexpected parameter type Void.  This may be " +
+                this.MessageLogger(MessageLevel.Warn, "Unexpected parameter type Void.  This may be " +
                     "an issue (missing reference assembly?).  Declaring method: " + parameter.DeclaringMethod.FullName);
             }
 

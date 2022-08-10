@@ -37,9 +37,6 @@ text and you use the topic in a link frequently, you can specify a <codeInline>l
 contains different text to use for the link.  Note that if a <codeInline>link</codeInline> element has inner text
 specified in the topic, it will always be used instead of the values from the companion file.</para>
 
-				<alert class="note">
-					<para>The ID value must be in the form of a Globally Unique Identifier (GUID).</para>
-				</alert>
 			</content>
 		</section>
 

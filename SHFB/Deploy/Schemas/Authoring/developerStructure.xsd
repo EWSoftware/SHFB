@@ -48,7 +48,7 @@
 		</sequence>
 	</complexType>
 
-	<element name="summary" type="maml:singleParagraphSimpleContentType">
+	<element name="summary">
 		<annotation>
 			<documentation>
 				This element contains a summary, introduction, or short description of the current item.
@@ -60,6 +60,28 @@
 				<doc:type>section</doc:type>
 			</appinfo>
 		</annotation>
+		<complexType>
+			<sequence>
+				<element ref="maml:para" minOccurs="0"/>
+			</sequence>
+			<attribute name="abstract" use="optional">
+				<simpleType>
+					<restriction base="token">
+						<enumeration value="true">
+							<annotation>
+								<documentation>The summary is only used for an abstract in the topic metadata and will not appear in the topic itself</documentation>
+							</annotation>
+						</enumeration>
+						<enumeration value="false">
+							<annotation>
+								<documentation>The summary is not an abstract and should appear in the topic.  This is the default if not specified.</documentation>
+							</annotation>
+						</enumeration>
+					</restriction>
+				</simpleType>
+			</attribute>
+
+		</complexType>
 	</element>
 
 	<element name="remarks" type="maml:namedSectionType">

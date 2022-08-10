@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PresentationStyleSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/17/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 08/06/2022
+// Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain settings information for a specific presentation style
 //
@@ -19,6 +19,7 @@
 // 11/30/2013  EFW  Merged changes from Stazzz to support namespace grouping
 // 01/04/2014  EFW  Moved the code into Sandcastle.Core and made it an abstract base class
 // 05/14/2014  EFW  Added support for defining dependent plug-ins
+// 02/27/2022  EFW  Added support for code-base transformations
 //===============================================================================================================
 
 // Ignore Spelling: Stazzz
@@ -27,6 +28,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
+using Sandcastle.Core.PresentationStyle.Transformation;
 
 namespace Sandcastle.Core.PresentationStyle
 {
@@ -42,8 +45,8 @@ namespace Sandcastle.Core.PresentationStyle
         //=====================================================================
 
         private readonly List<ContentFiles> contentFiles;
-        private readonly List<TransformComponentArgument> transformComponentArgs;
         private readonly List<PlugInDependency> plugInDependencies;
+        private readonly List<string> additionalResourceItemsFiles;
 
         #endregion
 
@@ -90,14 +93,10 @@ namespace Sandcastle.Core.PresentationStyle
         public IList<ContentFiles> ContentFiles => contentFiles;
 
         /// <summary>
-        /// This is used to get or set the path in which BuildAssembler resource item files are stored
+        /// This read-only property returns the list of additional resource items files if any
         /// </summary>
-        public string ResourceItemsPath { get; protected set; }
-
-        /// <summary>
-        /// This is used to get or set the path in which help file builder resource item files are stored
-        /// </summary>
-        public string ToolResourceItemsPath { get; protected set; }
+        /// <remarks>Plug-ins can add files to this list to support localized text that they add</remarks>
+        public IList<string> AdditionalResourceItemsFiles => additionalResourceItemsFiles;
 
         /// <summary>
         /// This is used to get or set the document model applicator
@@ -115,9 +114,9 @@ namespace Sandcastle.Core.PresentationStyle
         public string BuildAssemblerConfiguration { get; protected set; }
 
         /// <summary>
-        /// This read-only property returns the transform component arguments if any
+        /// This read-only property returns the topic transformation to use
         /// </summary>
-        public IList<TransformComponentArgument> TransformComponentArguments => transformComponentArgs;
+        public TopicTransformationCore TopicTranformation { get; protected set; }
 
         /// <summary>
         /// This read-only property returns any plug-in dependencies required by the presentation style
@@ -138,13 +137,23 @@ namespace Sandcastle.Core.PresentationStyle
         protected PresentationStyleSettings()
         {
             contentFiles = new List<ContentFiles>();
-            transformComponentArgs = new List<TransformComponentArgument>();
             plugInDependencies = new List<PlugInDependency>();
+            additionalResourceItemsFiles = new List<string>();
         }
         #endregion
 
         #region Helper methods
         //=====================================================================
+
+
+        /// <summary>
+        /// This is used to get an enumerable list of BuildAssembler resource item files used by the presentation
+        /// style.
+        /// </summary>
+        /// <param name="languageName">The language name for the localized resources.  If the specific language
+        /// is not found, it falls back to the en-US resources which will always exist.</param>
+        /// <returns>An enumerable list of resource item files used by the presentation style</returns>
+        public abstract IEnumerable<string> ResourceItemFiles(string languageName);
 
         /// <summary>
         /// This is used to check the presentation style for errors
@@ -157,20 +166,20 @@ namespace Sandcastle.Core.PresentationStyle
             if(this.SupportedFormats == 0)
                 errors.Add(nameof(SupportedFormats) + " has not been specified");
 
-            if(this.ResourceItemsPath == null)
-                errors.Add(nameof(ResourceItemsPath) + " has not been specified");
-
-            if(this.ToolResourceItemsPath == null)
-                errors.Add(nameof(ToolResourceItemsPath) + " path has not been specified");
-
             if(this.DocumentModelApplicator == null)
                 errors.Add(nameof(DocumentModelApplicator) + " has not been specified");
 
             if(this.ApiTableOfContentsGenerator == null)
                 errors.Add(nameof(ApiTableOfContentsGenerator) + " has not been specified");
 
+            if(this.TopicTranformation == null)
+                errors.Add(nameof(TopicTranformation) + " has not been specified");
+
             if(String.IsNullOrWhiteSpace(this.BuildAssemblerConfiguration))
                 errors.Add(nameof(BuildAssemblerConfiguration) + " has not been specified");
+
+            if(!this.ResourceItemFiles("en-US").Any())
+                errors.Add(nameof(ResourceItemFiles) + " did not return any resource item files");
 
             return errors;
         }

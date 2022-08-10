@@ -11,7 +11,7 @@ using System;
 using System.Xml;
 using System.Xml.XPath;
 
-using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
 namespace Sandcastle.Tools.BuildComponents.Commands

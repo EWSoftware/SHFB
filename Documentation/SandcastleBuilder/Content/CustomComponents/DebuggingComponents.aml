@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="d7b0528c-c75a-477b-9445-db6d2c55dbcb" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Build components, plug-ins, syntax generators, and presentation styles are typically built using
+.NET Standard so that they will work with both <application>MSBuild</application> and
+<application>dotnet build</application>.  This creates an issue when trying to debug the components using the
+standalone GUI as the host.  When the components are built with .NET Standard, Visual Studio will launch the .NET
+Core debugger for the project which will not be invoked when using the standalone GUI as the host because it uses
+the .NET Framework.  Any breakpoints set within the .NET Standard component are ignored.</para>
+		</introduction>
+
+		<section address="Section1">
+			<content>
+				<para>The workaround to this issue is to use conditional properties within the project to target the
+.NET Framework for debug builds and .NET Standard for release builds.  By using .NET Framework when debugging,
+the correct debugger is launched and will be invoked when the standalone GUI starts up.  Breakpoints set within
+the component code will then be triggered when hit as expected.</para>
+
+				<para>Configuration UI projects used to edit a component's configuration are an exception as they always
+use the .NET Framework.  If they are used as the startup project, debugging will also work as expected and
+breakpoints in the component projects will also be triggered whether or not they were built using the .NET
+Framework.</para>
+
+				<para>If you created a component project using version 2022.2.6.0 or earlier of the Visual Studio
+package, you will need to edit the project properties as shown below so that debugging works as expected.  All
+project templates in the latest release contain the necessary conditional properties.</para>
+
+				<code language="xml" title="Conditional Target Framework Properties">
+&lt;!-- See the help topic https://ewsoftware.github.io/SHFB/html/d7b0528c-c75a-477b-9445-db6d2c55dbcb.htm
+     for information on why conditional target frameworks are used. --&gt;
+&lt;PropertyGroup Condition="'$(Configuration)'=='Debug'"&gt;
+	&lt;!-- Use the full framework for debugging --&gt;
+	&lt;TargetFramework&gt;net47&lt;/TargetFramework&gt;
+&lt;/PropertyGroup&gt;
+
+&lt;PropertyGroup Condition="'$(Configuration)'=='Release'"&gt;
+	&lt;!-- Use .NET Standard for release builds --&gt;
+	&lt;TargetFramework&gt;netstandard2.0&lt;/TargetFramework&gt;
+&lt;/PropertyGroup&gt;
+
+&lt;PropertyGroup&gt;
+	&lt;!-- Only use an unconditional target framework if you have a UI project within the solution that can be
+       used to start debugging.
+	&lt;TargetFramework&gt;netstandard2.0&lt;/TargetFramework&gt; --&gt;
+	.
+	.
+	.
+&lt;/PropertyGroup&gt;
+					</code>
+			</content>
+
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="c8258d52-6664-4e96-86cd-6f75a854a69c" />
+			<link xlink:href="a14e026e-642f-4ce6-9506-341e57cc3d1f" />
+			<link xlink:href="e6d18448-2459-46f1-bbdc-a7db415f2bda" />
+			<link xlink:href="5e80d139-811c-48ed-9b52-dcd8a3f5aef3" />
+			<link xlink:href="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : VersionBuilderPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/17/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 04/10/2022
+// Note    : Copyright 2007-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to generate version information for assemblies in the current project
 // and others related to the same product that can be merged into the current project's help file topics.
@@ -81,8 +81,8 @@ namespace SandcastleBuilder.PlugIns
                 if(executionPoints == null)
                     executionPoints = new List<ExecutionPoint>
                     {
-                        new ExecutionPoint(BuildStep.GenerateSharedContent, ExecutionBehaviors.After),
-                        new ExecutionPoint(BuildStep.ApplyDocumentModel, ExecutionBehaviors.Before)
+                        new ExecutionPoint(BuildStep.ApplyDocumentModel, ExecutionBehaviors.Before),
+                        new ExecutionPoint(BuildStep.BuildTopics, ExecutionBehaviors.Before)
                     };
 
                 return executionPoints;
@@ -158,7 +158,7 @@ namespace SandcastleBuilder.PlugIns
                 throw new ArgumentNullException(nameof(context));
 
             // Update shared content version items
-            if(context.BuildStep == BuildStep.GenerateSharedContent)
+            if(context.BuildStep == BuildStep.BuildTopics)
             {
                 this.UpdateVersionItems();
                 return;
@@ -269,37 +269,27 @@ namespace SandcastleBuilder.PlugIns
         /// project defined in the configuration settings.</remarks>
         private void UpdateVersionItems()
         {
-            XmlAttribute attr;
             XmlDocument sharedContent;
             XmlNode root, node;
-            string sharedContentFilename, hashValue;
+            XmlAttribute attr;
 
-            builder.ReportProgress("Removing standard version information items from shared content file");
+            builder.ReportProgress("Adding version information shared content items from the plug-in settings");
 
-            sharedContentFilename = Path.Combine(builder.WorkingFolder, "SHFBContent.xml");
+            // Add them to the first resource items file in the working folder
+            string sharedContentFilename = builder.PresentationStyle.ResourceItemFiles(builder.Language.Name).FirstOrDefault();
+
+            sharedContentFilename = Path.Combine(builder.WorkingFolder, Path.GetFileName(sharedContentFilename));
             sharedContent = new XmlDocument();
             sharedContent.Load(sharedContentFilename);
 
             root = sharedContent.SelectSingleNode("content");
-
-            node = root.SelectSingleNode("item[@id='locationInformation']");
-
-            if(node != null)
-                root.RemoveChild(node);
-
-            node = root.SelectSingleNode("item[@id='assemblyNameAndModule']");
-
-            if(node != null)
-                root.RemoveChild(node);
-
-            builder.ReportProgress("Adding version information items from plug-in settings");
 
             // Add items for each framework label
             foreach(string label in uniqueLabels)
             {
                 // We need to use a hash value as this ends up as an XML attribute name in the reflection
                 // data file and this ensures it only contains valid characters.
-                hashValue = label.GetHashCode().ToString("X", CultureInfo.InvariantCulture);
+                string hashValue = label.GetHashCode().ToString("X", CultureInfo.InvariantCulture);
 
                 // Label item
                 node = sharedContent.CreateElement("item");

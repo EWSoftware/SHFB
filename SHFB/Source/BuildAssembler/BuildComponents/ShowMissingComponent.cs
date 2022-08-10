@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ShowMissingComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/01/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 02/27/2022
+// Note    : Copyright 2007-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to add "missing" notes for missing summary, parameter,
 // returns, value, and remarks tags.  It can also add default summary documentation for constructors.
@@ -34,6 +34,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
@@ -98,7 +99,7 @@ namespace Sandcastle.Tools.BuildComponents
             /// </summary>
             public Factory()
             {
-                this.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Before, "XSL Transform Component");
+                this.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Before, "Transform Component");
             }
 
             /// <inheritdoc />
@@ -127,7 +128,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected ShowMissingComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected ShowMissingComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion

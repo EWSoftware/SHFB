@@ -20,6 +20,7 @@ using System.Xml.Schema;
 
 using Sandcastle.Tools.BuildComponents.Targets;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
@@ -100,7 +101,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected SharedContentComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected SharedContentComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion

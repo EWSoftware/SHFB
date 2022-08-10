@@ -66,8 +66,7 @@ similar to a <codeInline>remarks</codeInline> element.</para>
 
         <alert class="important">
           <para>The <codeInline>type</codeInline> attribute value is case-sensitive.  Unrecognized values will
-cause the entire list element to be ignored with the item content rendered inline without any special list
-formatting.</para>
+default to the <codeInline>bullet</codeInline> list style.</para>
         </alert>
 
         <para>The <codeInline>type</codeInline> attribute can be any of the following values.  The requirements

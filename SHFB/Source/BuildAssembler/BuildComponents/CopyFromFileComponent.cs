@@ -12,10 +12,11 @@ using System.Linq;
 using System.Xml;
 using System.Xml.XPath;
 
-using Sandcastle.Tools.BuildComponents.Commands;
-
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
+
+using Sandcastle.Tools.BuildComponents.Commands;
 
 namespace Sandcastle.Tools.BuildComponents
 {
@@ -56,7 +57,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected CopyFromFileComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected CopyFromFileComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion

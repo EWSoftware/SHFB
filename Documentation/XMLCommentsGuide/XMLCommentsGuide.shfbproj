@@ -24,18 +24,23 @@
     <ComponentConfigurations>
       <ComponentConfig id="Code Block Component" enabled="True">
         <component id="Code Block Component">
-  <basePath value="{@HtmlEncProjectFolder}..\..\SHFB\Source\XMLCommentsExamples" />
-  <outputPaths>{@HelpFormatOutputPaths}</outputPaths>
-  <allowMissingSource value="false" />
-  <removeRegionMarkers value="false" />
-  <colorizer syntaxFile="{@CoreComponentsFolder}Colorizer\highlight.xml" styleFile="{@CoreComponentsFolder}Colorizer\highlight.xsl" stylesheet="{@CoreComponentsFolder}Colorizer\highlight.css" scriptFile="{@CoreComponentsFolder}Colorizer\highlight.js" disabled="{@DisableCodeBlockComponent}" language="cs" tabSize="0" numberLines="false" outlining="false" keepSeeTags="false" defaultTitle="true" />
-</component>
+          <basePath value="{@HtmlEncProjectFolder}..\..\SHFB\Source\XMLCommentsExamples" />
+          <outputPaths>{@HelpFormatOutputPaths}</outputPaths>
+          <allowMissingSource value="false" />
+          <removeRegionMarkers value="false" />
+          <colorizer syntaxFile="{@CoreComponentsFolder}Colorizer\highlight.xml" styleFile="{@CoreComponentsFolder}Colorizer\highlight.xsl" stylesheet="{@CoreComponentsFolder}Colorizer\highlight.css" scriptFile="{@CoreComponentsFolder}Colorizer\highlight.js" disabled="{@DisableCodeBlockComponent}" language="cs" tabSize="0" numberLines="false" outlining="false" keepSeeTags="false" defaultTitle="true" />
+        </component>
       </ComponentConfig>
-<ComponentConfig id="IntelliSense Component" enabled="True"><component id="IntelliSense Component">
-  <output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" boundedCapacity="100" />
-</component></ComponentConfig>
-<ComponentConfig id="API Token Resolution" enabled="True"><component id="API Token Resolution">{@TokenFiles}
-<replace elements="/*//token" item="string(.)" /></component></ComponentConfig></ComponentConfigurations>
+      <ComponentConfig id="IntelliSense Component" enabled="True">
+        <component id="IntelliSense Component">
+          <output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" boundedCapacity="100" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="API Token Resolution" enabled="True">
+        <component id="API Token Resolution">{@TokenFiles}
+<replace elements="/*//token" item="string(.)" /></component>
+      </ComponentConfig>
+    </ComponentConfigurations>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\..\SHFB\Source\XMLCommentsExamples\XMLCommentsExamples.csproj" />
     </DocumentationSources>
@@ -44,14 +49,8 @@
     </NamespaceSummaries>
     <PlugInConfigurations>
       <PlugInConfig id="Output Deployment" enabled="True">
-        <configuration deleteAfterDeploy="true">
-          <deploymentLocation id="help1x" location="..\..\SHFB\Deploy\Help\">
-            <userCredentials useDefault="true" userName="" password="" />
-            <proxyCredentials useProxy="false" proxyServer="">
-              <userCredentials useDefault="true" userName="" password="" />
-            </proxyCredentials>
-          </deploymentLocation>
-          <deploymentLocation id="help2x" location="">
+        <configuration deleteAfterDeploy="true" verboseLogging="false">
+          <deploymentLocation id="help1x" location="">
             <userCredentials useDefault="true" userName="" password="" />
             <proxyCredentials useProxy="false" proxyServer="">
               <userCredentials useDefault="true" userName="" password="" />
@@ -75,6 +74,12 @@
               <userCredentials useDefault="true" userName="" password="" />
             </proxyCredentials>
           </deploymentLocation>
+          <deploymentLocation id="markdown" location="">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
         </configuration>
       </PlugInConfig>
     </PlugInConfigurations>
@@ -84,7 +89,7 @@
     <SyntaxFilters>Standard</SyntaxFilters>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <RootNamespaceContainer>False</RootNamespaceContainer>
-    <PresentationStyle>VS2013</PresentationStyle>
+    <PresentationStyle>Default2022</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
     <HelpTitle>Sandcastle XML Comments Guide</HelpTitle>
@@ -92,7 +97,7 @@
     <CopyrightText>[v{%40HelpFileVersion}] Sandcastle XML Comments Guide</CopyrightText>
     <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
-    <HelpFileVersion>2019.11.7.0</HelpFileVersion>
+    <HelpFileVersion>2022.4.16.0</HelpFileVersion>
     <CatalogName>VisualStudio11</CatalogName>
     <TocParentId>-1</TocParentId>
     <TocParentVersion>100</TocParentVersion>
@@ -104,7 +109,7 @@
     <CatalogVersion>100</CatalogVersion>
     <CatalogProductId>VS</CatalogProductId>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
-    <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
+    <HelpFileFormat>Website</HelpFileFormat>
     <IndentHtml>False</IndentHtml>
     <FrameworkVersion>.NET Framework 4.7.2</FrameworkVersion>
     <KeepLogFile>True</KeepLogFile>
@@ -113,17 +118,25 @@
     <VisibleItems>ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected, NonBrowsable</VisibleItems>
     <ProjectSummary>This project demonstrates the use of the various XML comments elements.</ProjectSummary>
     <TransformComponentArguments>
-      <Argument Key="logoFile" Value="Sandcastle.jpg" />
-      <Argument Key="logoHeight" Value="" />
-      <Argument Key="logoWidth" Value="" />
-      <Argument Key="logoAltText" Value="Sandcastle XML Comments Guide" />
-      <Argument Key="logoPlacement" Value="left" />
-      <Argument Key="logoAlignment" Value="left" />
-      <Argument Key="maxVersionParts" Value="" />
-      <Argument Key="defaultLanguage" Value="cs" />
-      <Argument Key="includeEnumValues" Value="true" />
-      <Argument Key="baseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/SHFB/Source/" />
-      <Argument Key="requestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" />
+      <Argument Key="RobotsMetadata" Value="" />
+      <Argument Key="BibliographyDataFile" Value="Bibliography.xml" />
+      <Argument Key="RootBreadcrumbTitleText" Value="XML Comments" />
+      <Argument Key="CollapsibleSections" Value="True" />
+      <Argument Key="LogoFile" Value="Sandcastle.jpg" />
+      <Argument Key="LogoHeight" Value="50" />
+      <Argument Key="LogoWidth" Value="" />
+      <Argument Key="LogoAltText" Value="Sandcastle XML Comments Guide" />
+      <Argument Key="LogoPlacement" Value="Left" />
+      <Argument Key="LogoAlignment" Value="Left" />
+      <Argument Key="LogoUrl" Value="https://github.com/EWSoftware/SHFB" />
+      <Argument Key="MaxVersionParts" Value="" />
+      <Argument Key="DefaultLanguage" Value="cs" />
+      <Argument Key="IncludeEnumValues" Value="True" />
+      <Argument Key="EnumMemberSortOrder" Value="Value" />
+      <Argument Key="FlagsEnumValueFormat" Value="HexValue" />
+      <Argument Key="FlagsEnumSeparatorSize" Value="0" />
+      <Argument Key="BaseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/SHFB/Source/" />
+      <Argument Key="RequestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" />
     </TransformComponentArguments>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
@@ -148,6 +161,8 @@
 &amp;lt%3bdiv data-type=&amp;quot%3bad&amp;quot%3b data-publisher=&amp;quot%3bewsoftware.github.io&amp;quot%3b data-format=&amp;quot%3b728x90&amp;quot%3b data-zone=&amp;quot%3bXMLCommentsGuide&amp;quot%3b&amp;gt%3b&amp;lt%3b/div&amp;gt%3b
 </WebsiteAdContent>
     <AppendMarkdownFileExtensionsToUrls>False</AppendMarkdownFileExtensionsToUrls>
+    <HeaderText>
+    </HeaderText>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
@@ -182,6 +197,7 @@
     <ContentLayout Include="XMLCommentsGuide.content" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Bibliography.xml" />
     <None Include="Content\IdStrings.aml" />
     <None Include="Content\MiscElements\AttachedEventComments.aml" />
     <None Include="Content\MiscElements\AttachedPropertyComments.aml" />
@@ -196,6 +212,7 @@
     <None Include="Content\MiscElements\token.aml" />
     <None Include="Content\MSHelpViewerRoot.aml" />
     <None Include="Content\NamespaceDoc.aml" />
+    <None Include="Content\SectionElements\bibliography.aml" />
     <None Include="Content\SectionElements\revisionHistory.aml" />
     <None Include="Content\SharedComments.aml" />
     <None Include="Content\BlockElements\BlockElements.aml" />
@@ -232,6 +249,7 @@
     <None Include="Content\UsageNotes.aml" />
     <None Include="Content\VersionHistory\v1.0.0.0.aml" />
     <None Include="Content\VersionHistory\v2019.11.7.0.aml" />
+    <None Include="Content\VersionHistory\v2022.4.16.0.aml" />
     <None Include="Content\VersionHistory\VersionHistory.aml" />
     <None Include="Content\VersionHistory\v2014.1.26.0.aml" />
     <None Include="Content\VersionHistory\v2014.5.31.0.aml" />

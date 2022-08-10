@@ -326,6 +326,12 @@ https://GitHub.com/EWSoftware/SHFB</value>
   <data name="176" xml:space="preserve">
     <value>Create a SHFB help file project from another project format</value>
   </data>
+  <data name="177" xml:space="preserve">
+    <value>Bibliography data file</value>
+  </data>
+  <data name="178" xml:space="preserve">
+    <value>This is used to add bibliography citations to conceptual and API topics</value>
+  </data>
   <data name="200" xml:space="preserve">
     <value>General</value>
     <comment>General options page title</comment>

@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="3698dacb-763b-4a45-a051-f34c09e5f862" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This element is used to create a section within a topic.</para>
+    </introduction>
+    
+		<section>
+      <title>Usage</title>
+      <content>
+        <para>Enter the element in the topic with a nested <codeInline>content</codeInline> element that contains
+the section's content.  An optional <codeInline>title</codeInline> element can be used to provide a title for
+the section.  The content element will contain other MAML elements, nested lists, tables, etc.  Text should be
+contained in a <codeInline>para</codeInline> element.</para>
+
+				<para>A section can contain a <codeInline>sections</codeInline> element that is used to create
+subsections.  The <codeInline>sections</codeInline> element contains one or more <codeInline>section</codeInline>
+elements for the subsections.  Subsections can themselves contain a <codeInline>sections</codeInline> element for
+additional subsections nested any number of levels deep.    See the
+<link xlink:href="b9a1daac-a2d8-41b7-83b0-b7dc7b28b898" /> topic for an example with subsections.  </para>
+      </content>
+    </section>
+		
+    <section>
+      <title>Example</title>
+      <content>
+        <code language="xml" title=" ">
+&lt;section&gt;
+	&lt;title&gt;Usage&lt;/title&gt;
+	&lt;content&gt;
+		&lt;para&gt;Enter the element in the topic with a nested
+&lt;codeInline&gt;content&lt;/codeInline&gt; element that contains the section's
+content.  An optional &lt;codeInline&gt;title&lt;/codeInline&gt; element can be
+used to provide a title for the section.  The content element will contain other
+MAML elements, nested lists, tables, etc.  Text should be contained in a
+&lt;codeInline&gt;para&lt;/codeInline&gt; element.&lt;/para&gt;
+
+		&lt;para&gt;A section can contain a &lt;codeInline&gt;sections&lt;/codeInline&gt;
+element that is used to create subsections.  The &lt;codeInline&gt;sections&lt;/codeInline&gt;
+element contains one or more &lt;codeInline&gt;section&lt;/codeInline&gt; elements
+for the subsections.  Subsections can themselves contain a
+&lt;codeInline&gt;sections&lt;/codeInline&gt; element for additional subsections
+nested any number of levels deep.    See the
+&lt;link xlink:href="b9a1daac-a2d8-41b7-83b0-b7dc7b28b898" /&gt; topic for an
+example with subsections.  &lt;/para&gt;
+		&lt;/content&gt;
+&lt;/section&gt;
+</code>
+      </content>
+    </section>
+    
+		<section>
+      <title>Example Output</title>
+      <content>
+        <para>See the <legacyBold>Usage</legacyBold> section above for an
+example of the output.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+	  <link xlink:href="b32a73b8-fc26-4c98-912c-d595fc1a17c2" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -5,7 +5,9 @@
 		<introduction>
 			<para>This topic provides information on migrating build components, plug-ins, presentation styles, and
 syntax generators built against v2021.4.9.0 and earlier to the latest release that supports .NET Core and
-deploying the components as NuGet packages.</para>
+deploying the components as NuGet packages.  Presentation styles also underwent a complete rewrite in
+version vNext.  However, you may be able to replace your presentation style with simpler build components or
+plug-ins rather than reimplementing an entire presentation style.</para>
 
 			<autoOutline excludeRelatedTopics="true" lead="none" />
 		</introduction>
@@ -212,6 +214,15 @@ new parameter type.</para>
 		<section address="PresentationStyles">
 			<title>Migrating Presentation Style Projects</title>
 			<content>
+				<para>Starting with version vNext, presentation styles are implemented using a code-based API rather than
+XSL transformations.  This makes them much easier to extend and modify compared to prior releases.  If you
+created your own presentation style in the past to make adjustments to how the topics were rendered or to add or
+remove handling for certain sections or elements, it is entirely likely that you will not need to create a whole
+new presentation style going forward.  Instead, you should be able to implement just those parts that you need to
+modify using standard help file builder plug-ins to adjust how the topics are rendered with selected presentation
+style regardless of which one is selected.</para>
+				
+				
 				<list class="bullet">
 					<listItem>
 						<para>Create a new project and edit the properties on the project file's Package properties page that

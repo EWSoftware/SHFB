@@ -19,17 +19,17 @@
     <!-- SHFB properties -->
     <OutputPath>.\Help\</OutputPath>
     <HtmlHelpName>ColorizerLibrary</HtmlHelpName>
-    <ProjectSummary>Copyright &amp;amp%3b#169%3b 2003-2021, Jonathan de Halleux.  Modifications by Eric Woodruff.  The original &amp;lt%3bb&amp;gt%3bCode Project&amp;lt%3b/b&amp;gt%3b article by Jonathan can be found at &amp;lt%3ba href=&amp;quot%3bhttp://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bhttp://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con&amp;lt%3b/a&amp;gt%3b.&amp;lt%3bbr/&amp;gt%3b&amp;lt%3bbr/&amp;gt%3b</ProjectSummary>
+    <ProjectSummary>Copyright &amp;amp%3b#169%3b 2003-2022, Jonathan de Halleux.  Modifications by Eric Woodruff.  The original &amp;lt%3bb&amp;gt%3bCode Project&amp;lt%3b/b&amp;gt%3b article by Jonathan can be found at &amp;lt%3ba href=&amp;quot%3bhttp://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bhttp://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con&amp;lt%3b/a&amp;gt%3b.&amp;lt%3bbr/&amp;gt%3b&amp;lt%3bbr/&amp;gt%3b</ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter, AutoDocumentDispose</MissingTags>
-    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
+    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected, NonBrowsable</VisibleItems>
     <HtmlHelp1xCompilerPath>
     </HtmlHelp1xCompilerPath>
     <WorkingPath>
     </WorkingPath>
     <FrameworkVersion>.NET Core/.NET Standard/.NET 5.0+</FrameworkVersion>
     <HelpTitle>ColorizerLibrary Documentation</HelpTitle>
-    <CopyrightText>Copyright \xA9 2003-2021, Jonathan de Halleux.  Portions Copyright \xA9 2006-2019, Eric Woodruff.</CopyrightText>
-    <PresentationStyle>VS2013</PresentationStyle>
+    <CopyrightText>Copyright \xA9 2003-2022, Jonathan de Halleux.  Portions Copyright \xA9 2006-2022, Eric Woodruff.</CopyrightText>
+    <PresentationStyle>Default2022</PresentationStyle>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -40,7 +40,7 @@
       <NamespaceSummaryItem name="ColorizerLibrary" isDocumented="True">The core namespace of the library.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="ColorizerLibrary.Controls" isDocumented="True">This contains an ASP.NET control to display colorized text.</NamespaceSummaryItem>
     </NamespaceSummaries>
-    <RootNamespaceContainer>True</RootNamespaceContainer>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
     <ApiFilter />
     <PlugInConfigurations />
     <BuildLogFile />
@@ -52,7 +52,7 @@
     <Language>en-US</Language>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
-    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <HelpFileFormat>Website</HelpFileFormat>
     <IndentHtml>False</IndentHtml>
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>

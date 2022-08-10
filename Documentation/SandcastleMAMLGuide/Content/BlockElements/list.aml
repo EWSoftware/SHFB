@@ -9,31 +9,34 @@
     <section>
       <title>Usage</title>
       <content>
-        <para>Enter the element in the topic and specify the type of
-<codeInline>list</codeInline> using the <codeInline>class</codeInline>
-attribute.  The content of the list element is one or more
-<codeInline>listItem</codeInline> elements containing the content of the list
-items.  The list items can themselves contain other MAML elements, nested
-lists, tables, etc.  Text should be contained in a <codeInline>para</codeInline>
-element.  The <codeInline>class</codeInline> attribute can be any
-of the following values:</para>
+        <para>Enter the element in the topic and specify the type of <codeInline>list</codeInline> using the
+<codeInline>class</codeInline> attribute.  The content of the list element is one or more
+<codeInline>listItem</codeInline> elements containing the content of the list items.  The list items can
+themselves contain other MAML elements, nested lists, tables, etc.  Text should be contained in a
+<codeInline>para</codeInline> element.  The <codeInline>class</codeInline> attribute can be any of the following
+values:</para>
 
 <list class="bullet">
   <listItem><para><legacyBold>bullet</legacyBold> - A standard bulleted list of
 items.</para></listItem>
-  <listItem><para><legacyBold>ordered</legacyBold> - A numbered list of items.</para></listItem>
+  <listItem><para><legacyBold>ordered</legacyBold> - A numbered list of items.  The <codeInline>ordered</codeInline>
+style supports an optional <codeInline>start</codeInline> attribute that can be used to indicate the starting
+number for the numbered list.  This lets you create a list at a later point in the topic that continues numbering
+from the end point of a prior list.  You are responsible for providing the appropriate starting number for the
+new list.  The <codeInline>start</codeInline> attribute is a custom attribute implemented by Sandcastle.</para></listItem>
   <listItem><para><legacyBold>nobullet</legacyBold> - A list of items with no symbol
 preceding the items.</para></listItem>
 </list>
 
 	<alert class="note">
-		<para>The class attribute value is case-sensitive.  Unrecognized values
-will default to the <codeInline>nobullet</codeInline> list style.</para>
+		<para>The class attribute value is case-sensitive.  Unrecognized values will default to the
+<codeInline>nobullet</codeInline> list style.</para>
 	</alert>
 
 	<alert class="tip">
 		<para>The <codeInline>listItem</codeInline> element supports an <codeInline>address</codeInline>
 attribute that can be used to link to a specific list item from another location.</para>
+	
 	</alert>
 
       </content>
@@ -80,6 +83,35 @@ link target.&lt;/para&gt;&lt;/listItem&gt;
   &lt;listItem&gt;&lt;para&gt;Item 9&lt;/para&gt;&lt;/listItem&gt;
   &lt;listItem&gt;&lt;para&gt;Item 10&lt;/para&gt;&lt;/listItem&gt;
 &lt;/list&gt;
+
+&lt;para&gt;This demonstrates the use of the custom &lt;codeInline&gt;start&lt;/codeInline&gt; attribute for ordered lists.&lt;/para&gt;
+				
+&lt;list class="ordered"&gt;
+	&lt;listItem&gt;
+		&lt;para&gt;Item 1.&lt;/para&gt;
+	&lt;/listItem&gt;
+	&lt;listItem&gt;
+		&lt;para&gt;Item 2.&lt;/para&gt;
+	&lt;/listItem&gt;
+	&lt;listItem&gt;
+		&lt;para&gt;Item 3.&lt;/para&gt;
+	&lt;/listItem&gt;
+&lt;/list&gt;
+			
+&lt;para&gt;The next list is separate but continues the numbering from the last list.&lt;/para&gt;
+				
+&lt;list class="ordered" start="4"&gt;
+	&lt;listItem&gt;
+		&lt;para&gt;Item 1.&lt;/para&gt;
+	&lt;/listItem&gt;
+	&lt;listItem&gt;
+		&lt;para&gt;Item 2.&lt;/para&gt;
+	&lt;/listItem&gt;
+	&lt;listItem&gt;
+		&lt;para&gt;Item 3.&lt;/para&gt;
+	&lt;/listItem&gt;
+&lt;/list&gt;
+			
 </code>
       </content>
     </section>
@@ -124,6 +156,34 @@ link target.</para></listItem>
   <listItem><para>Item 9</para></listItem>
   <listItem><para>Item 10</para></listItem>
 </list>
+
+				<para>This demonstrates the use of the custom <codeInline>start</codeInline> attribute for ordered lists.</para>
+				
+				<list class="ordered">
+					<listItem>
+						<para>Item 1.</para>
+					</listItem>
+					<listItem>
+						<para>Item 2.</para>
+					</listItem>
+					<listItem>
+						<para>Item 3.</para>
+					</listItem>
+				</list>
+			
+				<para>The next list is separate but continues the numbering from the last list.</para>
+				
+				<list class="ordered" start="4">
+					<listItem>
+						<para>Item 4.</para>
+					</listItem>
+					<listItem>
+						<para>Item 5.</para>
+					</listItem>
+					<listItem>
+						<para>Item 6.</para>
+					</listItem>
+				</list>
       </content>
     </section>
 

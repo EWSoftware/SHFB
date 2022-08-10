@@ -75,7 +75,7 @@ Namespace $safeprojectname$
         ''' Constructor
         ''' </summary>
         ''' <param name="buildAssembler">A reference to the build assembler</param>
-        Protected Sub New(buildAssembler As BuildAssemblerCore)
+        Protected Sub New(buildAssembler As IBuildAssembler)
             MyBase.New(buildAssembler)
         End Sub
 

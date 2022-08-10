@@ -33,9 +33,9 @@
     <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
     <CopyrightText>[v{%40HelpFileVersion}] Copyright \xA9 2006-2022, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
-    <PresentationStyle>VS2013</PresentationStyle>
+    <PresentationStyle>Default2022</PresentationStyle>
     <SyntaxFilters>Standard</SyntaxFilters>
-    <HelpFileVersion>2022.2.6.0</HelpFileVersion>
+    <HelpFileVersion>2022.7.28.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -60,7 +60,6 @@
       <NamespaceSummaryItem name="SandcastleBuilder.MicrosoftHelpViewer" isDocumented="True">This namespace contains classes related to the Microsoft Help Viewer help file format and the installation tool.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="SandcastleBuilder.Components (Group)" isGroup="True" isDocumented="True">This namespace contains &lt;strong&gt;BuildAssembler&lt;/strong&gt; related namespaces.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="SandcastleBuilder.Utils (Group)" isGroup="True" isDocumented="True">This namespace contains all of the other utility and build engine related namespaces.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="Microsoft.Ddue.Tools" isDocumented="True">This namespace contains various Sandcastle tools.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="Sandcastle (Group)" isGroup="True" isDocumented="True">This namespace group contains various namespaces related to the Sandcastle tools.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="Sandcastle.Core" isDocumented="True">This namespace contains common core types related to the Sandcastle tools.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler (Group)" isGroup="True" isDocumented="True">This namespace group contains namespaces related to BuildAssembler.</NamespaceSummaryItem>
@@ -71,11 +70,6 @@
       <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle" isDocumented="True">This namespace contains presentation style related types.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="Sandcastle.Core.Reflection" isDocumented="True">This namespace contains types used to manage reflection data sets.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="SandcastleBuilder (Group)" isGroup="True" isDocumented="True">This namespace contains the help file builder related namespaces.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="Microsoft.Ddue.Tools.BuildComponent" isDocumented="True">This namespace contains various BuildAssembler components.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="Microsoft.Ddue.Tools.Commands" isDocumented="True">This namespace contains command types used to copy data from reflection data files used when building help topics.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="Microsoft.Ddue.Tools.Snippets" isDocumented="True">This namespace contains supporting classes for the example and syntax build components.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="Microsoft.Ddue.Tools.Targets" isDocumented="True">This namespace contain classes that represent the various API element target types.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="Microsoft.Ddue (Group)" isGroup="True" isDocumented="True">This contains various Sandcastle tools.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="Sandcastle.Core (Group)" isGroup="True" isDocumented="True">This namespace group contains various namespaces related to the core Sandcastle types.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="Sandcastle.Tools (Group)" isGroup="True" isDocumented="True">This namespace group contains various namespaces related to the Sandcastle tools.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="Sandcastle.Tools.BuildComponents (Group)" isGroup="True" isDocumented="True">This namespace group contains various namespaces related to the Sandcastle build components.</NamespaceSummaryItem>
@@ -84,6 +78,12 @@
       <NamespaceSummaryItem name="Sandcastle.Tools.BuildComponents.Snippets" isDocumented="True">This namespace contains various classes related to the Sandcastle build component snippet handling.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="Sandcastle.Tools.BuildComponents.Targets" isDocumented="True">This namespace contains various classes related to the Sandcastle build components target type definitions.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="Sandcastle.Tools.SyntaxGenerators" isDocumented="True">This namespace contains various classes related to the Sandcastle build component syntax generators.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle (Group)" isGroup="True" isDocumented="True">This namespace group contains namespaces related to presentation styles and their transformations.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation" isDocumented="True">This namespace contains presentation transformation related types.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements" isDocumented="True">This namespace contains presentation transformation elements that are format-neutral or perform render output conditionally based on the supported output format(s).</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements.Html" isDocumented="True">This namespace contains presentation transformation elements that render HTML-specific output.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml" isDocumented="True">This namespace contains presentation transformation elements that render Open XML-specific output.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Transformation.Elements.Markdown" isDocumented="True">This namespace contains presentation transformation elements that render markdown-specific output.</NamespaceSummaryItem>
     </NamespaceSummaries>
     <CleanIntermediates>True</CleanIntermediates>
     <ApiFilter>
@@ -126,14 +126,8 @@
     </ApiFilter>
     <PlugInConfigurations>
       <PlugInConfig id="Output Deployment" enabled="True">
-        <configuration deleteAfterDeploy="true">
-          <deploymentLocation id="help1x" location="..\..\SHFB\Deploy\Help\">
-            <userCredentials useDefault="true" userName="" password="" />
-            <proxyCredentials useProxy="false" proxyServer="">
-              <userCredentials useDefault="true" userName="" password="" />
-            </proxyCredentials>
-          </deploymentLocation>
-          <deploymentLocation id="help2x" location="">
+        <configuration deleteAfterDeploy="true" verboseLogging="false">
+          <deploymentLocation id="help1x" location="">
             <userCredentials useDefault="true" userName="" password="" />
             <proxyCredentials useProxy="false" proxyServer="">
               <userCredentials useDefault="true" userName="" password="" />
@@ -157,13 +151,19 @@
               <userCredentials useDefault="true" userName="" password="" />
             </proxyCredentials>
           </deploymentLocation>
+          <deploymentLocation id="markdown" location="">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
         </configuration>
       </PlugInConfig>
     </PlugInConfigurations>
     <Preliminary>False</Preliminary>
     <VendorName>EWSoftware</VendorName>
     <ProductTitle>Sandcastle Help File Builder</ProductTitle>
-    <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
+    <HelpFileFormat>Website</HelpFileFormat>
     <IndentHtml>False</IndentHtml>
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
@@ -174,17 +174,25 @@
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <TransformComponentArguments>
-      <Argument Key="logoFile" Value="Sandcastle.jpg" />
-      <Argument Key="logoHeight" Value="68" />
-      <Argument Key="logoWidth" Value="70" />
-      <Argument Key="logoAltText" Value="Sandcastle Help File Builder" />
-      <Argument Key="logoPlacement" Value="left" />
-      <Argument Key="logoAlignment" Value="left" />
-      <Argument Key="maxVersionParts" Value="" />
-      <Argument Key="defaultLanguage" Value="cs" />
-      <Argument Key="includeEnumValues" Value="true" />
-      <Argument Key="baseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/SHFB/Source/" />
-      <Argument Key="requestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" />
+      <Argument Key="RobotsMetadata" Value="" />
+      <Argument Key="BibliographyDataFile" Value="" />
+      <Argument Key="RootBreadcrumbTitleText" Value="SHFB" />
+      <Argument Key="CollapsibleSections" Value="True" />
+      <Argument Key="LogoFile" Value="Sandcastle.jpg" />
+      <Argument Key="LogoHeight" Value="69" />
+      <Argument Key="LogoWidth" Value="" />
+      <Argument Key="LogoAltText" Value="Sandcastle Help File Builder" />
+      <Argument Key="LogoPlacement" Value="Left" />
+      <Argument Key="LogoAlignment" Value="Left" />
+      <Argument Key="LogoUrl" Value="https://github.com/EWSoftware/SHFB" />
+      <Argument Key="MaxVersionParts" Value="" />
+      <Argument Key="DefaultLanguage" Value="cs" />
+      <Argument Key="IncludeEnumValues" Value="True" />
+      <Argument Key="EnumMemberSortOrder" Value="Value" />
+      <Argument Key="FlagsEnumValueFormat" Value="HexValue" />
+      <Argument Key="FlagsEnumSeparatorSize" Value="0" />
+      <Argument Key="BaseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/SHFB/Source/" />
+      <Argument Key="RequestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" />
     </TransformComponentArguments>
     <WebsiteSdkLinkType>Msdn</WebsiteSdkLinkType>
     <HtmlSdkLinkType>Msdn</HtmlSdkLinkType>
@@ -192,7 +200,7 @@
     <BinaryTOC>True</BinaryTOC>
     <FeedbackEMailLinkText>Eric Woodruff</FeedbackEMailLinkText>
     <MaximumGroupParts>2</MaximumGroupParts>
-    <NamespaceGrouping>True</NamespaceGrouping>
+    <NamespaceGrouping>False</NamespaceGrouping>
     <RootNamespaceTitle>Sandcastle Help File Builder Namespaces</RootNamespaceTitle>
     <SaveComponentCacheCapacity>0</SaveComponentCacheCapacity>
     <SourceCodeBasePath>..\..\SHFB\Source\</SourceCodeBasePath>
@@ -211,6 +219,8 @@
 &amp;lt%3bdiv data-type=&amp;quot%3bad&amp;quot%3b data-publisher=&amp;quot%3bewsoftware.github.io&amp;quot%3b data-format=&amp;quot%3b728x90&amp;quot%3b data-zone=&amp;quot%3bSHFB&amp;quot%3b&amp;gt%3b&amp;lt%3b/div&amp;gt%3b
 </WebsiteAdContent>
     <AppendMarkdownFileExtensionsToUrls>False</AppendMarkdownFileExtensionsToUrls>
+    <HeaderText>
+    </HeaderText>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
@@ -268,9 +278,11 @@
     <None Include="Content\CustomComponents\CreateSyntaxFilter.aml" />
     <None Include="Content\CustomComponents\CreatingCustomComponents.aml" />
     <None Include="Content\CustomComponents\CustomPresentationStyle.aml" />
+    <None Include="Content\CustomComponents\DebuggingComponents.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0011.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0027.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0036.aml" />
+    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0066.aml" />
     <None Include="Content\ErrorsAndWarnings\InheritedDocs\GID0010.aml" />
     <None Include="Content\ProjectExplorer\ComponentPackages.aml" />
     <None Include="Content\VersionHistory\MigrationSupport.aml" />
@@ -297,8 +309,6 @@
     <None Include="Content\AddConceptContent\SiteMapEditor.aml" />
     <None Include="Content\BenefitsAndFeatures.aml" />
     <None Include="Content\CompConfig\APITokenResolution.aml" />
-    <None Include="Content\CompConfig\ESentCachingComponents.aml" />
-    <None Include="Content\CompConfig\SQLCachingComponents.aml" />
     <None Include="Content\CompConfig\SyntaxComponent.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0004.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0031.aml" />
@@ -337,7 +347,6 @@
     <None Include="Content\PlugIns\DocumentedEntitiesOnlyPlugIn.aml" />
     <None Include="Content\PlugIns\IntelliSenseOnlyPlugIn.aml" />
     <None Include="Content\PlugIns\LightweightWebsiteStylePlugIn.aml" />
-    <None Include="Content\PlugIns\ManualVisibilityApiFilterPlugIn.aml" />
     <None Include="Content\PlugIns\MemberIdFixUpsPlugIn.aml" />
     <None Include="Content\PropertiesWindow\BuildEvents.aml" />
     <None Include="Content\PropertiesWindow\ComponentConfigs.aml" />
@@ -392,6 +401,7 @@
     <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2021.4.9.0.aml" />
     <None Include="Content\VersionHistory\v2021.11.7.0.aml" />
     <None Include="Content\VersionHistory\v2022.2.6.0.aml" />
+    <None Include="Content\VersionHistory\vNext.aml" />
     <None Include="Content\VisualStudio\GoToDefinition.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />
@@ -520,7 +530,6 @@
     <None Include="Content\GettingStarted\TeamBuild.aml" />
     <None Include="Content\VersionHistory\VersionHistory.aml" />
     <None Include="Content\Welcome.aml" />
-    <None Include="Content\CompConfig\CachedComponents.aml" />
     <None Include="Content\CompConfig\CodeBlockComponent.aml" />
     <None Include="Content\CompConfig\CompConfig.aml" />
     <None Include="Content\CompConfig\IntelliSenseComponent.aml" />
@@ -546,12 +555,10 @@
     <None Include="Content\AddConceptContent\ConceptContent\Topics.aml" />
     <None Include="Content\PlugIns\AddContentPlugIn.aml" />
     <None Include="Content\PlugIns\AddRefLinksPlugIn.aml" />
-    <None Include="Content\PlugIns\AjaxDocPlugIn.aml" />
     <None Include="Content\PlugIns\CompNotifyPlugIn.aml" />
     <None Include="Content\PlugIns\DBCSFixPlugIn.aml" />
     <None Include="Content\PlugIns\DeployPlugIn.aml" />
     <None Include="Content\PlugIns\PlugIns.aml" />
-    <None Include="Content\PlugIns\ScriptSharpPlugIn.aml" />
     <None Include="Content\PlugIns\TocExcludePlugIn.aml" />
     <None Include="Content\PlugIns\VersionBuilderPlugIn.aml" />
     <None Include="Content\KnownIssues.aml" />
@@ -581,7 +588,6 @@
     <None Include="Content\ProjectExplorer\References.aml" />
     <None Include="Content\ProjectExplorer\FileItems.aml" />
     <None Include="Content\ProjectExplorer\BuildActions.aml" />
-    <None Include="Content\PlugIns\BibliographySupport.aml" />
     <None Include="Content\PlugIns\AssemblyBindingRedirection.aml" />
   </ItemGroup>
   <ItemGroup>

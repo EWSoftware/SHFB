@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DbcsFixPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 03/07/2022
+// Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to modify the HTML files and alter the build so as to overcome the
 // encoding issues encountered when building HTML Help 1 (.chm) files for various foreign languages.
@@ -24,7 +24,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -153,30 +152,15 @@ namespace SandcastleBuilder.PlugIns
                 // Help 1 content which isn't normally copied until after the current build step.  This assumes
                 // that none of the replacement tags in the standard content depend on information generated in
                 // this step (i.e. it wouldn't work for website output in the older presentation styles which
-                // rely on the WebTOC.xml file for the index page).
+                // relied on the WebTOC.xml file for the index page).
                 builder.ReportProgress("Copying Help 1 presentation style content ready for localization");
 
-                builder.PresentationStyle.CopyHelpContent(HelpFileFormats.HtmlHelp1, String.Format(
-                    CultureInfo.InvariantCulture, @"{0}Output\{1}", builder.WorkingFolder, HelpFileFormats.HtmlHelp1),
-                    builder.ReportProgress, (name, source, dest) =>
+                builder.PresentationStyle.CopyHelpContent(HelpFileFormats.HtmlHelp1,
+                    builder.HtmlExtractTool.Help1Folder, builder.ReportProgress, (name, source, dest) =>
                         builder.SubstitutionTags.TransformTemplate(name, source, dest));
 
-                builder.ReportProgress("Adding DBCS Fix localization folder");
-
-                projectFile = Path.Combine(builder.WorkingFolder, "ExtractHtmlInfo.proj");
-                project = new XmlDocument();
-                project.Load(projectFile);
-                nsm = new XmlNamespaceManager(project.NameTable);
-                nsm.AddNamespace("MSBuild", project.DocumentElement.NamespaceURI);
-
-                property = project.SelectSingleNode("//MSBuild:LocalizedFolder", nsm);
-
-                if(property == null)
-                    throw new BuilderException("DFP0004", "Unable to locate LocalizedFolder element in " +
-                        "project file");
-
-                property.InnerText = @".\Localized";
-                project.Save(projectFile);
+                builder.ReportProgress("Setting DBCS Fix localization folder");
+                builder.HtmlExtractTool.LocalizedFolder = Path.Combine(builder.WorkingFolder, "Localized");
                 return;
             }
 
@@ -184,6 +168,14 @@ namespace SandcastleBuilder.PlugIns
                 return;
 
             builder.ReportProgress("Adding localization options to build task");
+
+            // Copy the help compiler project files to the localized folder
+            if(!String.IsNullOrWhiteSpace(builder.HtmlExtractTool.LocalizedFolder))
+            {
+                foreach(string helpProjectFile in Directory.EnumerateFiles(builder.HtmlExtractTool.Help1Folder, "*.hh?"))
+                    File.Copy(helpProjectFile, Path.Combine(builder.HtmlExtractTool.LocalizedFolder,
+                        Path.GetFileName(helpProjectFile)), true);
+            }
 
             projectFile = builder.WorkingFolder + "Build1xHelpFile.proj";
             project = new XmlDocument();
@@ -196,7 +188,7 @@ namespace SandcastleBuilder.PlugIns
             if(property == null)
                 throw new BuilderException("DFP0005", "Unable to locate WorkingFolder element in project file");
 
-            property.InnerText = @".\Localized";
+            property.InnerText = Path.Combine(builder.WorkingFolder, "Localized");
 
             property = project.SelectSingleNode("//MSBuild:LocalizeApp", nsm);
 

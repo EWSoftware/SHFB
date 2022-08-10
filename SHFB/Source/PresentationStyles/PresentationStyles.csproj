@@ -29,7 +29,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Remove="Default2022\Templates\LanguageAlertTemplate.html" />
+		<None Remove="Default2022\Templates\ToDoAlertTemplate.html" />
 		<None Remove="PresentationStyles.sln.vsspell" />
+		<None Remove="VS2013\Templates\LanguageAlertTemplate.html" />
+		<None Remove="VS2013\Templates\ToDoAlertTemplate.html" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -37,12 +41,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="..\CodeColorizer\ColorizerLibrary\Template\CopyCode.gif" Link="Colorizer\CopyCode.gif">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="..\CodeColorizer\ColorizerLibrary\Template\CopyCode_h.gif" Link="Colorizer\CopyCode_h.gif">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
 		<Content Include="..\CodeColorizer\ColorizerLibrary\Template\DocumentTemplate.xaml" Link="Colorizer\DocumentTemplate.xaml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -64,6 +62,9 @@
 		<Content Include="Colorizer\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+		<Content Include="Default2022\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 		<Content Include="Markdown\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -73,26 +74,39 @@
 		<Content Include="Shared\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="VS2010\**">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
 		<Content Include="VS2013\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Remove="Default2022\**\*.vsspell" />
 		<Content Remove="Markdown\**\*.vsspell" />
 		<Content Remove="OpenXml\**\*.vsspell" />
 		<Content Remove="Shared\**\*.vsspell" />
-		<Content Remove="VS2010\**\*.vsspell" />
 		<Content Remove="VS2013\**\*.vsspell" />
+		<Content Remove="Default2022\**\*.cs" />
+		<Content Remove="Markdown\**\*.cs" />
+		<Content Remove="OpenXml\**\*.cs" />
+		<Content Remove="Shared\**\*.cs" />
+		<Content Remove="VS2013\**\*.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\SandcastleCore\SandcastleCore.csproj">
 			<Private>False</Private>
 		</ProjectReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="Default2022\RootWebsiteContent\SearchHelp.aspx">
+	    <SubType>ASPXCodeBehind</SubType>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Default2022\webfonts\" />
+	  <Folder Include="Markdown\Templates\" />
 	</ItemGroup>
 
 </Project>

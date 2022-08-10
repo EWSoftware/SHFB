@@ -20,7 +20,7 @@
 			<title>Remarks</title>
 			<content>
 				<para>Use this element to mark inline text as code.  Use the <link xlink:href="1abd1992-e3d0-45b4-b43d-91fcfc5e5574" />
-element to mark a multi-line block of lines as code.</para>
+element to mark a multi-line block of text as code.</para>
 			</content>
 		</section>
 		

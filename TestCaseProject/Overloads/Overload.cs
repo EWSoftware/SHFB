@@ -82,6 +82,8 @@ namespace TestDoc.Overloads
         /// <p/><i>Italic</i> and <strong>Strong</strong>
         /// <p/><sub>Subscript</sub> and <sup>Superscript</sup>
         /// <p/><ins>Inserted</ins> and <del>Deleted</del>
+        /// <p/><u>Underlined</u>
+        /// <p><font face="Arial" size="15" color="blue">Font element</font></p>
         ///
         /// <pre>
         ///     Pre tag
@@ -98,6 +100,8 @@ namespace TestDoc.Overloads
         /// here is a long quotation
         /// here is a long quotation
         /// </blockquote>
+        /// 
+        /// <p>Here is a <q>short quote</q>.</p>
         ///
         /// <p/>Abbreviation: <abbr title="United Nations">UN</abbr>
         /// <p/>Acronym: <acronym title="World Wide Web">WWW</acronym>
@@ -136,7 +140,16 @@ namespace TestDoc.Overloads
         /// <dd>White cold drink</dd>
         /// </dl>
         ///
-        /// <p/><img src="../Media/SandcastleLogoSmall.jpg" alt="Sandcastle Logo" title="Sandcastle Logo"/>
+        /// <p>Image element:<br />
+        /// <img src="../Media/SandcastleLogoSmall.jpg" alt="Sandcastle Logo" title="Sandcastle Logo"/></p>
+        /// 
+        /// <p>Image map</p>
+        /// <img src="../Media/SandcastleLogoLarge.jpg" alt="Image Map Test" usemap="#imageMap" width="200" height="200" />
+        /// <map name = "imageMap" >
+        ///   <area shape="rect" coords="50,50,100,100" alt="Area 1" href="#" />
+        ///   <area shape = "rect" coords="100,100,150,150" alt="Area 2" href="#" />
+        ///   <area shape = "circle" coords="150,150,50" alt="Area 3" href="#" />
+        /// </map>
         /// </remarks>
         public void HtmlTagCommentTest()
         {

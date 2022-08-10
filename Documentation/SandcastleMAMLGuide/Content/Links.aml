@@ -12,8 +12,12 @@
 			<content>
 				<list class="bullet">
 					<listItem>
-						<para>The most recent version of this guide can be download from the <token>SHFB</token> project on
-GitHub.</para>
+						<para>The most recent version of this guide can be found at the <externalLink>
+							<linkText>official site</linkText>
+							<linkAlternateText>Sandcastle MAML Guide</linkAlternateText>
+							<linkUri>https://ewsoftware.github.io/MAMLGuide</linkUri>
+							<linkTarget>_blank</linkTarget>
+						</externalLink>.</para>
 					</listItem>
 
 					<listItem>
@@ -31,11 +35,11 @@ GitHub.</para>
 
 					<listItem>
 						<para>If you need a tool to convert HTML files to MAML, the <externalLink>
-<linkText>Converting HTML Files to MAML Topics</linkText>
+<linkText>HTML to MAML Converter</linkText>
 <linkAlternateText>HTML to MAML Converter</linkAlternateText>
 <linkUri>https://EWSoftware.GitHub.io/HtmlToMamlDocs</linkUri>
 <linkTarget>_blank</linkTarget>
-</externalLink> is included with the help file builder along with this guide.</para>
+</externalLink> is available to help you.</para>
 					</listItem>
 				</list>
 			</content>
@@ -52,8 +56,8 @@ request help using them, visit the <token>SHFB</token> project site.</para>
 
 					<listItem>
 						<para>For discussion and questions about help systems in general, visit the <externalLink>
-<linkText>Visual Studio General Questions forum</linkText>
-<linkUri>https://social.msdn.microsoft.com/Forums/vstudio/en-US/home?forum=visualstudiogeneral</linkUri>
+<linkText>Microsoft Q&amp;A Forums</linkText>
+<linkUri>https://docs.microsoft.com/en-us/answers/products/?WT.mc_id=msdnredirect-web-msdn</linkUri>
 <linkTarget>_blank</linkTarget>
 </externalLink>.</para>
 					</listItem>
@@ -70,26 +74,65 @@ request help using them, visit the <token>SHFB</token> project site.</para>
 			</content>
 		</section>
 
-		<section address="BuildTools">
-			<title>Build Tools</title>
+		<section address="Tools">
+			<title>Additional Tools</title>
 			<content>
 				<list class="bullet">
 					<listItem>
-						<para>
-							<externalLink>
-								<linkText>Microsoft .NET Frameworks and SDKs</linkText>
-								<linkUri>https://www.microsoft.com/net</linkUri>
-								<linkTarget>_blank</linkTarget>
-							</externalLink>.
-						</para>
+						<para>If you need a spell checker for Visual Studio, the <legacyBold>Visual Studio Spell Checker</legacyBold>
+extension can be downloaded and installed from the Visual Studio Gallery.  It is an editor extension that checks
+the spelling of comments, strings, and plain text as you type or interactively with a tool window.  Support is
+included for spell checking source code, XML files, and MAML topic files.  Versions are available for Versions
+are available for 
+<externalLink>
+	<linkText>Visual Studio 2013 and 2015</linkText>
+	<linkAlternateText>Visual Studio Spell Checker (VS2013/2015)</linkAlternateText>
+	<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.VisualStudioSpellChecker</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink>, 
+<externalLink>
+	<linkText>Visual Studio 2017 and 2019</linkText>
+	<linkAlternateText>Visual Studio Spell Checker (VS2017/2019)</linkAlternateText>
+	<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.VisualStudioSpellCheckerVS2017andLater</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink> and
+<externalLink>
+	<linkText>Visual Studio 2022 and Later</linkText>
+	<linkAlternateText>Visual Studio Spell Checker (VS2022+)</linkAlternateText>
+	<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.VisualStudioSpellCheckerVS2022andLater</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink>.</para>
 					</listItem>
+
+						<listItem>
+						<para>For extended XML comments completion support in Visual Studio 2019 and later, install the
+<legacyBold>Extended XML Documentation Comments Completion Provider</legacyBold> extension which can be
+downloaded and installed from the Visual Studio Gallery.  Versions are available for 
+<externalLink>
+	<linkText>Visual Studio 2019</linkText>
+	<linkAlternateText>Extended XML Documentation Comments Completion Provider (VS2019)</linkAlternateText>
+	<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.ExtendedDocCommentsProvider</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink> and 
+<externalLink>
+	<linkText>Visual Studio 2022 and later</linkText>
+	<linkAlternateText>Extended XML Documentation Comments Completion Provider (VS2022+)</linkAlternateText>
+	<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.ExtendedDocCommentsProvider2022</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink>.</para>
+						</listItem>
 
 					<listItem>
 						<para>The <externalLink>
 <linkText>HTML Help Workshop</linkText>
 <linkUri>https://docs.microsoft.com/previous-versions/windows/desktop/htmlhelp/microsoft-html-help-downloads</linkUri>
 <linkTarget>_blank</linkTarget>
-</externalLink> for building HTML Help 1.x (.CHM) help files.</para>
+</externalLink> used to build HTML Help 1.x (.CHM) help files appears to have been discontinued and cannot be
+downloaded from the Microsoft site.  If you need a copy to install, it can be downloaded from the <externalLink>
+	<linkText>Sandcastle Help File Builder project website</linkText>
+	<linkAlternateText>HTML Help Workshop download</linkAlternateText>
+	<linkUri>https://github.com/EWSoftware/SHFB/raw/master/ThirdPartyTools/htmlhelp.exe</linkUri>
+</externalLink></para>
 					</listItem>
 
 				</list>

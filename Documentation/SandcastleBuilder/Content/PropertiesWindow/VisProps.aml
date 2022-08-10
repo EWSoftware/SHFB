@@ -20,10 +20,9 @@ documented items so that they do not appear in the syntax section of each class,
 compiled help file. When set to true, the attribute information is left intact and will appear in the help file.
 Several attributes such as <codeInline>ExtensionAttribute</codeInline>, <codeInline>FixedBufferAttribute</codeInline>,
 <codeInline>FlagsAttribute</codeInline>, <codeInline>SerializableAttribute</codeInline>,
-<codeInline>ObsoleteAttribute</codeInline>, and some special attributes used by <application>AjaxDoc</application>
-and <application>Script#</application> are always included regardless of this property's setting as they provide
+<codeInline>ObsoleteAttribute</codeInline> are always included regardless of this property's setting as they provide
 important information about the types and members to which they are applied or are used by other components such
-as the syntax generators or presentation style XSL transformations.</para>
+as the syntax generators or presentation style transformations.</para>
 
 			</content>
 		</section>

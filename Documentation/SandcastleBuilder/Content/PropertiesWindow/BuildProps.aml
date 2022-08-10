@@ -73,10 +73,14 @@ language, a combination of languages, <codeInline>All</codeInline> to include th
 section entirely.  In the property page, put a checkmark next to each syntax filter that you wanted included in
 the API topics.</para>
 
-				<alert class="note">
+				<alert class="tip">
 					<para>If you want to change the order of the languages in the syntax section and code examples, add the
 Syntax Component to the project on the Components category property page.  Its configuration lets you modify the
 order of the languages in the syntax sections and code examples.</para>
+
+					<para>The selected languages also control code snippet grouping or connecting them to the language
+filter depending on the presentation style.  As different tabs are selected or the language filter selection
+changes, all related code snippets for the selected tab/language will be shown to keep them all in sync.</para>
 				</alert>
 
 			</content>
@@ -107,10 +111,10 @@ third-party syntax generator.  For a list of current third-party build component
 			<title>Presentation style (PresentationStyle)</title>
 			<content>
 				<para>This property is used to choose the presentation style that determines the layout and appearance of
-the help topics.  Several styles are provided: <codeInline>VS2013</codeInline> (the default),
-<codeInline>VS2010</codeInline>, <codeInline>Open XML Document</codeInline>, and <codeInline>Markdown Content</codeInline>.
-The files for each style are located in the <localUri>.\PresentationStyles</localUri> folder under the main help
-file builder installation folder.</para>
+the help topics.  Several styles are provided: <codeInline>Default2022</codeInline> (the default),
+<codeInline>VS2013</codeInline> (legacy support for Help 1 and Microsoft Help Viewer), <codeInline>Open XML
+Document</codeInline>, and <codeInline>Markdown Content</codeInline>.  The files for each style are located in
+the <localUri>.\Components</localUri> folder under the main help file builder installation folder.</para>
 
 			</content>
 
@@ -203,8 +207,8 @@ log file is always kept after a failed build.</para>
 			<content>
 				<para>This property allows the custom <link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" /> to be
 disabled so that the <codeInline>&lt;code&gt;</codeInline> elements are rendered in their default format by the
-Sandcastle XSL transformations with no colorization.  The only thing it will do is import external code and
-normalize the leading whitespace.</para>
+transformations with no colorization.  The only thing it will do is import external code and normalize the
+leading whitespace.</para>
 
 			</content>
 		</section>

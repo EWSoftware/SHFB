@@ -2,9 +2,9 @@
 // System  : Sandcastle Help File Builder
 // File    : branding.js
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/08/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
-//           Portions Copyright 2010-2014 Microsoft, All rights reserved
+// Updated : 04/10/2022
+// Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
+//           Portions Copyright 2010-2022 Microsoft, All rights reserved
 //
 // This file contains the methods necessary to implement the language filtering, collapsible section, and
 // copy to clipboard options.
@@ -36,39 +36,37 @@ var isHelp1;
 
 var curLoc = document.location + ".";
 
-if(curLoc.indexOf("mk:@MSITStore") == 0)
+if(curLoc.indexOf("mk:@MSITStore") === 0)
 {
     isHelp1 = true;
     curLoc = "ms-its:" + curLoc.substring(14, curLoc.length - 1);
     document.location.replace(curLoc);
 }
 else
-    if(curLoc.indexOf("ms-its:") == 0)
+{
+    if(curLoc.indexOf("ms-its:") === 0)
         isHelp1 = true;
     else
         isHelp1 = false;
+}
 
-// The OnLoad method
-function OnLoad(defaultLanguage)
+// Set the default language on the page
+function SetDefaultLanguage(defaultLanguage)
 {
-    var defLang;
-
-    if(typeof (defaultLanguage) == "undefined" || defaultLanguage == null || defaultLanguage == "")
-        defLang = "vb";
-    else
-        defLang = defaultLanguage;
+    if(typeof (defaultLanguage) === "undefined" || defaultLanguage === null || defaultLanguage === "")
+        defaultLanguage = "cs";
 
     // In MS Help Viewer, the transform the topic is ran through can move the footer.  Move it back where it
     // belongs if necessary.
     try
     {
-        var footer = document.getElementById("pageFooter")
+        var footer = document.getElementById("PageFooter")
 
-        if(footer)
+        if(footer)  
         {
             var footerParent = document.body;
 
-            if(footer.parentElement != footerParent)
+            if(footer.parentElement !== footerParent)
             {
                 footer.parentElement.removeChild(footer);
                 footerParent.appendChild(footer);
@@ -77,9 +75,33 @@ function OnLoad(defaultLanguage)
     }
     catch(e)
     {
+        // Ignore exceptions
     }
 
-    var language = GetCookie("CodeSnippetContainerLanguage", defLang);
+    // Add language-specific text spans on startup.  We can't tell for sure if there are any as some
+    // may be added after transformation by other components.
+    var lstSpans = document.querySelectorAll("span[data-languageSpecificText]");
+
+    if(lstSpans.length > 0)
+    {
+        for(i = 0; i < lstSpans.length; i++)
+        {
+            AddLanguageSpecificTextSet(lstSpans[i].getAttribute("id"), lstSpans[i].getAttribute("data-languageSpecificText"));
+        }
+    }
+
+    // Ensure language tab sets are registered on startup
+    var tabSets = document.querySelectorAll(".codeSnippetContainer");
+
+    if(tabSets.length > 0)
+    {
+        for(i = 0; i < tabSets.length; i++)
+        {
+            AddLanguageTabSet(tabSets[i].getAttribute("id"));
+        }
+    }
+
+    var language = GetCookie("CodeSnippetContainerLanguage", defaultLanguage);
 
     // If LST exists on the page, set the LST to show the user selected programming language
     UpdateLST(language);
@@ -94,7 +116,7 @@ function OnLoad(defaultLanguage)
             var tabCount = 1;
 
             // The tab count may vary so find the last one in this set
-            while(document.getElementById(allTabSetIds[i] + "_tab" + tabCount) != null)
+            while(document.getElementById(allTabSetIds[i] + "_tab" + tabCount) !== null)
                 tabCount++;
 
             tabCount--;
@@ -110,12 +132,13 @@ function OnLoad(defaultLanguage)
     InitializeToc();
 }
 
-// This is just a place holder.  The website script implements this function to initialize it's in-page TOC pane
+// This is just a place holder.  The website script implements this function to initialize it's in-page TOC pane.
+// It's not present in Help 1 and Help Viewer output.
 function InitializeToc()
 {
 }
 
-// This function executes in the OnLoad event and ChangeTab action on code snippets.  The function parameter
+// This function executes when setting the default language and changing the tab on code snippets.  The parameter
 // is the user chosen programming language.  This function iterates through the "allLSTSetIds" dictionary object
 // to update the node value of the LST span tag per the user's chosen programming language.
 function UpdateLST(language)
@@ -124,12 +147,12 @@ function UpdateLST(language)
     {
         var devLangSpan = document.getElementById(lstMember);
 
-        if(devLangSpan != null)
+        if(devLangSpan !== null)
         {
             // There may be a carriage return before the LST span in the content so the replace function below
             // is used to trim the whitespace at the end of the previous node of the current LST node.
-            if(devLangSpan.previousSibling != null && devLangSpan.previousSibling.nodeValue != null)
-                devLangSpan.previousSibling.nodeValue = devLangSpan.previousSibling.nodeValue.replace(/\s+$/, "");
+            if(devLangSpan.previousSibling !== null && devLangSpan.previousSibling.nodeValue !== null)
+                devLangSpan.previousSibling.nodeValue = devLangSpan.previousSibling.nodeValue.replace(/[\r\n]+$/, "");
 
             var langs = allLSTSetIds[lstMember].split("|");
             var k = 0;
@@ -139,17 +162,17 @@ function UpdateLST(language)
             {
                 keyValue = langs[k].split("=");
 
-                if(keyValue[0] == language)
+                if(keyValue[0] === language)
                 {
                     devLangSpan.innerHTML = keyValue[1];
 
                     // Help 1 and MS Help Viewer workaround.  Add a space if the following text element starts
                     // with a space to prevent things running together.
-                    if(devLangSpan.parentNode != null && devLangSpan.parentNode.nextSibling != null)
+                    if(devLangSpan.parentNode !== null && devLangSpan.parentNode.nextSibling !== null)
                     {
-                        if(devLangSpan.parentNode.nextSibling.nodeValue != null &&
-                          !devLangSpan.parentNode.nextSibling.nodeValue.substring(0, 1).match(/[.,);:!/?]/) &&
-                          (isHelp1 || devLangSpan.innerHTML == '&gt;' || devLangSpan.innerHTML == ')'))
+                        if(devLangSpan.parentNode.nextSibling.nodeValue !== null &&
+                            !devLangSpan.parentNode.nextSibling.nodeValue.substring(0, 1).match(/[.,);:!/?]/) &&
+                            (isHelp1 || devLangSpan.innerHTML === '&gt;' || devLangSpan.innerHTML === ')'))
                         {
                             devLangSpan.innerHTML = keyValue[1] + " ";
                         }
@@ -164,7 +187,7 @@ function UpdateLST(language)
             // content to hide it.
             if(k >= langs.length)
             {
-                if(language != "nu")
+                if(language !== "nu")
                 {
                     k = 0;
 
@@ -172,17 +195,17 @@ function UpdateLST(language)
                     {
                         keyValue = langs[k].split("=");
 
-                        if(keyValue[0] == "nu")
+                        if(keyValue[0] === "nu")
                         {
                             devLangSpan.innerHTML = keyValue[1];
 
                             // Help 1 and MS Help Viewer workaround.  Add a space if the following text element
                             // starts with a space to prevent things running together.
-                            if(devLangSpan.parentNode != null && devLangSpan.parentNode.nextSibling != null)
+                            if(devLangSpan.parentNode !== null && devLangSpan.parentNode.nextSibling !== null)
                             {
-                                if(devLangSpan.parentNode.nextSibling.nodeValue != null &&
-                                  !devLangSpan.parentNode.nextSibling.nodeValue.substring(0, 1).match(/[.,);:!/?]/) &&
-                                  (isHelp1 || devLangSpan.innerHTML == '&gt;' || devLangSpan.innerHTML == ')'))
+                                if(devLangSpan.parentNode.nextSibling.nodeValue !== null &&
+                                    !devLangSpan.parentNode.nextSibling.nodeValue.substring(0, 1).match(/[.,);:!/?]/) &&
+                                    (isHelp1 || devLangSpan.innerHTML === '&gt;' || devLangSpan.innerHTML === ')'))
                                 {
                                     devLangSpan.innerHTML = keyValue[1] + " ";
                                 }
@@ -212,7 +235,7 @@ function GetCookie(cookieName, defaultValue)
 
             var value = globals.Load(cookieName);
 
-            if(value == null)
+            if(value === null)
                 value = defaultValue;
 
             return value;
@@ -229,7 +252,7 @@ function GetCookie(cookieName, defaultValue)
     {
         var crumb = cookie[i].split("=");
 
-        if(cookieName == crumb[0])
+        if(cookieName === crumb[0])
             return unescape(crumb[1])
     }
 
@@ -249,6 +272,7 @@ function SetCookie(name, value)
         }
         catch(e)
         {
+            // Ignore exceptions
         }
 
         return;
@@ -264,15 +288,13 @@ function SetCookie(name, value)
     document.cookie = name + "=" + escape(value) + ";expires=" + expires_date.toGMTString() + ";path=/";
 }
 
-// Add a language-specific text ID
-function AddLanguageSpecificTextSet(lstId)
+// Add a language-specific text ID and its parameters
+function AddLanguageSpecificTextSet(lstID, langParams)
 {
-    var keyValue = lstId.split("?")
-
-    allLSTSetIds[keyValue[0]] = keyValue[1];
+    allLSTSetIds[lstID] = langParams;
 }
 
-var clipboardHandler;
+var clipboardHandler = null;
 
 // Add a language tab set ID
 function AddLanguageTabSet(tabSetId)
@@ -280,39 +302,39 @@ function AddLanguageTabSet(tabSetId)
     allTabSetIds.push(tabSetId);
 
     // Create the clipboard handler on first use
-    if(clipboardHandler == null && typeof (Clipboard) == "function")
+    if(clipboardHandler === null && typeof (Clipboard) === "function")
     {
-        clipboardHandler = new Clipboard('.copyCodeSnippet',
-        {
-            text: function (trigger)
+        clipboardHandler = new ClipboardJS('.copyCodeSnippet',
             {
-                // Get the code to copy to the clipboard from the active tab of the given tab set
-                var i = 1, tabSetId = trigger.id;
-                var pos = tabSetId.indexOf('_');
-
-                if(pos == -1)
-                    return "";
-
-                tabSetId = tabSetId.substring(0, pos);
-
-                do
+                text: function (trigger)
                 {
-                    contentId = tabSetId + "_code_Div" + i;
-                    tabTemp = document.getElementById(contentId);
+                    // Get the code to copy to the clipboard from the active tab of the given tab set
+                    var i = 1, tabSetId = trigger.id;
+                    var pos = tabSetId.indexOf('_');
 
-                    if(tabTemp != null && tabTemp.style.display != "none")
-                        break;
+                    if(pos === -1)
+                        return "";
 
-                    i++;
+                    tabSetId = tabSetId.substring(0, pos);
 
-                } while(tabTemp != null);
+                    do
+                    {
+                        contentId = tabSetId + "_code_Div" + i;
+                        tabTemp = document.getElementById(contentId);
 
-                if(tabTemp == null)
-                    return "";
+                        if(tabTemp !== null && tabTemp.style.display !== "none")
+                            break;
 
-                return document.getElementById(contentId).innerText;
-            }
-        });
+                        i++;
+
+                    } while(tabTemp !== null);
+
+                    if(tabTemp === null)
+                        return "";
+
+                    return document.getElementById(contentId).innerText;
+                }
+            });
     }
 }
 
@@ -331,12 +353,12 @@ function ChangeTab(tabSetId, language, snippetIdx, snippetCount)
     while(i < allTabSetIds.length)
     {
         // We just care about other snippets
-        if(allTabSetIds[i] != tabSetId)
+        if(allTabSetIds[i] !== tabSetId)
         {
             // Other tab sets may not have the same number of tabs
             var tabCount = 1;
 
-            while(document.getElementById(allTabSetIds[i] + "_tab" + tabCount) != null)
+            while(document.getElementById(allTabSetIds[i] + "_tab" + tabCount) !== null)
                 tabCount++;
 
             tabCount--;
@@ -359,7 +381,7 @@ function SetCurrentLanguage(tabSetId, language, tabCount)
     {
         var tabTemp = document.getElementById(tabSetId + "_tab" + tabIndex);
 
-        if(tabTemp != null && tabTemp.innerHTML.indexOf("'" + language + "'") != -1)
+        if(tabTemp !== null && tabTemp.innerHTML.indexOf("'" + language + "'") !== -1)
             break;
 
         tabIndex++;
@@ -370,7 +392,7 @@ function SetCurrentLanguage(tabSetId, language, tabCount)
         // Select the first non-disabled tab
         tabIndex = 1;
 
-        if(document.getElementById(tabSetId + "_tab1").className == "codeSnippetContainerTabPhantom")
+        if(document.getElementById(tabSetId + "_tab1").className === "codeSnippetContainerTabPhantom")
         {
             tabIndex++;
 
@@ -378,7 +400,7 @@ function SetCurrentLanguage(tabSetId, language, tabCount)
             {
                 var tab = document.getElementById(tabSetId + "_tab" + tabIndex);
 
-                if(tab.className != "codeSnippetContainerTabPhantom")
+                if(tab.className !== "codeSnippetContainerTabPhantom")
                 {
                     tab.className = "codeSnippetContainerTabActive";
                     document.getElementById(tabSetId + "_code_Div" + j).style.display = "block";
@@ -402,17 +424,19 @@ function SetActiveTab(tabSetId, tabIndex, tabCount)
     {
         var tabTemp = document.getElementById(tabSetId + "_tab" + i);
 
-        if (tabTemp != null)
+        if(tabTemp !== null)
         {
-            if(tabTemp.className == "codeSnippetContainerTabActive")
+            if(tabTemp.className === "codeSnippetContainerTabActive")
                 tabTemp.className = "codeSnippetContainerTab";
             else
-                if(tabTemp.className == "codeSnippetContainerTabPhantom")
+            {
+                if(tabTemp.className === "codeSnippetContainerTabPhantom")
                     tabTemp.style.display = "none";
+            }
 
             var codeTemp = document.getElementById(tabSetId + "_code_Div" + i);
 
-            if(codeTemp.style.display != "none")
+            if(codeTemp.style.display !== "none")
                 codeTemp.style.display = "none";
         }
 
@@ -420,7 +444,7 @@ function SetActiveTab(tabSetId, tabIndex, tabCount)
     }
 
     // Phantom tabs are shown or hidden as needed
-    if(document.getElementById(tabSetId + "_tab" + tabIndex).className != "codeSnippetContainerTabPhantom")
+    if(document.getElementById(tabSetId + "_tab" + tabIndex).className !== "codeSnippetContainerTabPhantom")
         document.getElementById(tabSetId + "_tab" + tabIndex).className = "codeSnippetContainerTabActive";
     else
         document.getElementById(tabSetId + "_tab" + tabIndex).style.display = "block";
@@ -434,7 +458,7 @@ function CopyToClipboard(tabSetId)
     var tabTemp, contentId;
     var i = 1;
 
-    if(typeof (Clipboard) == "function")
+    if(typeof (Clipboard) === "function")
         return;
 
     do
@@ -442,14 +466,14 @@ function CopyToClipboard(tabSetId)
         contentId = tabSetId + "_code_Div" + i;
         tabTemp = document.getElementById(contentId);
 
-        if(tabTemp != null && tabTemp.style.display != "none")
+        if(tabTemp !== null && tabTemp.style.display !== "none")
             break;
 
         i++;
 
-    } while(tabTemp != null);
+    } while(tabTemp !== null);
 
-    if(tabTemp == null)
+    if(tabTemp === null)
         return;
 
     if(window.clipboardData)
@@ -483,8 +507,6 @@ function CopyToClipboard(tabSetId)
 
             trans.addDataFlavor("text/unicode");
 
-            var str = new Object();
-            var len = new Object();
             var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(
                 Components.interfaces.nsISupportsString);
 
@@ -510,8 +532,9 @@ function SectionExpandCollapse(togglePrefix)
     var image = document.getElementById(togglePrefix + "Toggle");
     var section = document.getElementById(togglePrefix + "Section");
 
-    if(image != null && section != null)
-        if(section.style.display == "")
+    if(image !== null && section !== null)
+    {
+        if(section.style.display === "")
         {
             image.src = image.src.replace("SectionExpanded.png", "SectionCollapsed.png");
             section.style.display = "none";
@@ -521,12 +544,13 @@ function SectionExpandCollapse(togglePrefix)
             image.src = image.src.replace("SectionCollapsed.png", "SectionExpanded.png");
             section.style.display = "";
         }
+    }
 }
 
 // Expand or collapse a section when it has the focus and Enter is hit
 function SectionExpandCollapse_CheckKey(togglePrefix, eventArgs)
 {
-    if(eventArgs.keyCode == 13)
+    if(eventArgs.keyCode === 13)
         SectionExpandCollapse(togglePrefix);
 }
 
@@ -535,14 +559,14 @@ function SectionExpandCollapse_CheckKey(togglePrefix, eventArgs)
 // <input type="hidden" id="userDataCache" class="userDataStyle" />
 var Help1Globals =
 {
-    UserDataCache: function()
+    UserDataCache: function ()
     {
         var userData = document.getElementById("userDataCache");
 
         return userData;
     },
 
-    Load: function(key)
+    Load: function (key)
     {
         var userData = this.UserDataCache();
 
@@ -553,7 +577,7 @@ var Help1Globals =
         return value;
     },
 
-    Save: function(key, value)
+    Save: function (key, value)
     {
         var userData = this.UserDataCache();
         userData.setAttribute(key, value);

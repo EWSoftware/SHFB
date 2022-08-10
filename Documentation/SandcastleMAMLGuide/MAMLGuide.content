@@ -1,10 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Topics>
-  <Topic id="80949828-3d04-4572-9340-d6ad3f30f8fa" visible="False" isMSHVRoot="true" title="Sandcastle MAML Guide">
-    <HelpKeywords>
-      <HelpKeyword index="K" term="Sandcastle MAML Guide" />
-    </HelpKeywords>
-  </Topic>
   <Topic id="303c996a-2911-4c08-b492-6496c82b3edb" visible="True" isDefault="true" title="Welcome">
     <HelpKeywords>
       <HelpKeyword index="K" term="Welcome" />
@@ -155,6 +150,12 @@
         <HelpKeyword index="K" term="Block Elements, alert" />
       </HelpKeywords>
     </Topic>
+    <Topic id="161537d9-6f89-42ef-9c51-3a15ef94df65" visible="True" title="bibliography/cite">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="block elements, bibliography" />
+        <HelpKeyword index="K" term="block elements, cite" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="65e7e30a-ba03-4e10-b1f2-763a613b6e27" visible="True" title="code">
       <HelpKeywords>
         <HelpKeyword index="K" term="Block Elements, code" />
@@ -198,17 +199,17 @@
         <HelpKeyword index="K" term="Block Elements, relatedTopics" />
       </HelpKeywords>
     </Topic>
+    <Topic id="3698dacb-763b-4a45-a051-f34c09e5f862" visible="True" title="section">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Block Elements, section" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="ec11472a-8a9c-44e7-9d32-45f671526922" visible="True" title="table, tableHeader, row, entry">
       <HelpKeywords>
         <HelpKeyword index="K" term="Block Elements, entry" />
         <HelpKeyword index="K" term="Block Elements, row" />
         <HelpKeyword index="K" term="Block Elements, table" />
         <HelpKeyword index="K" term="Block Elements, tableHeader" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="3698dacb-763b-4a45-a051-f34c09e5f862" visible="True" title="title">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="Block Elements, title" />
       </HelpKeywords>
     </Topic>
   </Topic>
@@ -264,6 +265,11 @@
     <Topic id="47e7184b-4213-44b2-9602-a0271d93747b" visible="True" title="hardware">
       <HelpKeywords>
         <HelpKeyword index="K" term="Common Inline Elements, hardware" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="448a32c2-9922-4901-8d23-37cb0b253d9a" visible="True" title="languageKeyword">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, languageKeyword" />
       </HelpKeywords>
     </Topic>
     <Topic id="ca1eccd2-dfa4-4daa-a69b-3bad7e0c4946" visible="True" title="legacyBold">
@@ -445,11 +451,16 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="ba47a67c-4825-4fcd-b806-2b2e02d4373a" visible="True" isSelected="true" title="Version History">
+  <Topic id="ba47a67c-4825-4fcd-b806-2b2e02d4373a" visible="True" isExpanded="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version history" />
     </HelpKeywords>
+    <Topic id="ee982f89-b3b7-4863-aded-01a5ff4634fa" visible="True" isSelected="true" title="Version 2022.4.16.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2022.4.16.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="3d6cb7db-3633-4517-8ace-db72c2607a80" visible="True" title="Version 2017.5.15.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2017.5.15.0" />

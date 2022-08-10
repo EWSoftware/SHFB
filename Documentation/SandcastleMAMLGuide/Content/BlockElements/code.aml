@@ -69,14 +69,6 @@ and formatting are preserved.  For example:</para>
 						<para>Be sure to start the example code on a new line after the opening "<codeInline>&lt;![CDATA[</codeInline>"
 tag as shown so that the leading whitespace can be normalized correctly.</para>
 
-						<alert class="note">
-							<para>The inclusion of a <codeInline>CDATA</codeInline> tag anywhere in the code comments can cause
-Visual Studio 2005 to lock up when you type an angle bracket within a comment block.  If you are affected by this
-issue, there is a hot fix available at: <externalLink>
-<linkText>https://connect.microsoft.com/VisualStudio/Downloads/DownloadDetails.aspx?DownloadID=9646</linkText>
-<linkUri>https://connect.microsoft.com/VisualStudio/Downloads/DownloadDetails.aspx?DownloadID=9646</linkUri>
-<linkTarget>_blank</linkTarget></externalLink>.</para>
-						</alert>
 					</listItem>
 				</list>
 
@@ -96,8 +88,9 @@ issue, there is a hot fix available at: <externalLink>
 						<para>This attribute allows you to define the code language.  Although optional, it is recommended
 that you always specify a language attribute if using Sandcastle alone.  Many of the presentation styles rely on
 the language attribute to classify the code block and handle it in some way such as attaching it to a language
-filter or grouping it with like code blocks.  The Sandcastle Help File Builder's code block component will apply
-a default language if one is not specified.  The possible language values are as follows:</para>
+filter or grouping it with like code blocks based on the syntax filters selected in the project.  The Sandcastle
+Help File Builder's code block component will apply a default language if one is not specified.  The possible
+language values are as follows:</para>
 
 						<table>
 							<tableHeader>
@@ -242,7 +235,7 @@ a default language if one is not specified.  The possible language values are as
 
 						<alert class="important">
 							<para>The full name "<codeInline>language</codeInline>" should be used for the attribute name rather
-than the abbreviated form "<codeInline>lang</codeInline>".  The reason is that the XSL transformations used by
+than the abbreviated form "<codeInline>lang</codeInline>".  The reason is that the transformations used by
 the presentation styles expect the full name when they search for the language attribute.  The abbreviated form
 is a legacy syntax that should be avoided.  The code block component will auto-correct the attribute name so that
 it is not missed by the transformations.</para>

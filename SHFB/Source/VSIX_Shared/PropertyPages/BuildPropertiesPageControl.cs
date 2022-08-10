@@ -206,18 +206,20 @@ namespace SandcastleBuilder.Package.PropertyPages
         private void ucBuildPropertiesPageContent_BuildPropertiesNeeded(object sender,
           BuildPropertiesNeededEventArgs e)
         {
-            ProjectProperty presentationStyleProp, syntaxFiltersProp;
+            ProjectProperty presentationStyleProp, syntaxFiltersProp, helpFileFormatsProp;
 
 #if !STANDALONEGUI
             if(this.IsDisposed || this.ProjectMgr == null)
                 return;
 
+            helpFileFormatsProp = this.ProjectMgr.BuildProject.GetProperty("HelpFileFormat");
             presentationStyleProp = this.ProjectMgr.BuildProject.GetProperty("PresentationStyle");
             syntaxFiltersProp = this.ProjectMgr.BuildProject.GetProperty("SyntaxFilters");
 #else
             if(this.IsDisposed || this.CurrentProject == null)
                 return;
 
+            helpFileFormatsProp = this.CurrentProject.MSBuildProject.GetProperty("HelpFileFormat");
             presentationStyleProp = this.CurrentProject.MSBuildProject.GetProperty("PresentationStyle");
             syntaxFiltersProp = this.CurrentProject.MSBuildProject.GetProperty("SyntaxFilters");
 #endif
@@ -225,6 +227,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             e.ProjectLoaded = true;
             e.PresentationStyle = presentationStyleProp?.UnevaluatedValue;
             e.SyntaxFilters = (syntaxFiltersProp?.UnevaluatedValue ?? ComponentUtilities.DefaultSyntaxFilter);
+            e.HelpFileFormats = helpFileFormatsProp?.UnevaluatedValue;
         }
         #endregion
     }

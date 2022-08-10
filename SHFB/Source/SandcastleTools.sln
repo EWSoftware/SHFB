@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31129.286
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{341E6822-C748-44AB-88CF-9FF3490D5D04}"
 	ProjectSection(SolutionItems) = preProject
@@ -20,19 +20,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildComponentTargets", "Bu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelpLibraryManagerLauncher", "HelpLibraryManagerLauncher\HelpLibraryManagerLauncher.csproj", "{23B67AEC-4746-4C59-B36A-264BB4E38F7E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebCodeProviders", "WebCodeProviders\WebCodeProviders.csproj", "{777BFD0B-318E-4E38-BA0C-3F4951F8D00A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HtmlToMaml", "HtmlToMaml\HtmlToMaml.csproj", "{95FB7E26-4F48-4232-9692-F4B02FE17CD3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationStyles", "PresentationStyles\PresentationStyles.csproj", "{363781F8-3156-496A-896C-B22C18050974}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SyntaxComponents", "BuildAssembler\SyntaxComponents\SyntaxComponents.csproj", "{8B6BC818-4E2D-4828-80BC-81BC1D90D0FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandcastleHtmlExtract", "SandcastleHtmlExtract\SandcastleHtmlExtract.csproj", "{353A1526-2810-4673-8024-55A67FE1E3D8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateInheritedDocs", "GenerateInheritedDocs\GenerateInheritedDocs.csproj", "{F70DBAB2-371B-48BD-B641-F5620B86F19D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildAssembler", "BuildAssembler\BuildAssembler\BuildAssembler.csproj", "{E6F7AEE3-AC16-4445-ABF0-2C2BACD9421C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRefBuilder", "MRefBuilder\MRefBuilder.csproj", "{AC07EC26-EC9B-4254-8C3E-F09C0B6E73B8}"
 EndProject
@@ -83,14 +75,6 @@ Global
 		{23B67AEC-4746-4C59-B36A-264BB4E38F7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23B67AEC-4746-4C59-B36A-264BB4E38F7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23B67AEC-4746-4C59-B36A-264BB4E38F7E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{777BFD0B-318E-4E38-BA0C-3F4951F8D00A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{777BFD0B-318E-4E38-BA0C-3F4951F8D00A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{777BFD0B-318E-4E38-BA0C-3F4951F8D00A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{777BFD0B-318E-4E38-BA0C-3F4951F8D00A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{95FB7E26-4F48-4232-9692-F4B02FE17CD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{95FB7E26-4F48-4232-9692-F4B02FE17CD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{95FB7E26-4F48-4232-9692-F4B02FE17CD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{95FB7E26-4F48-4232-9692-F4B02FE17CD3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{363781F8-3156-496A-896C-B22C18050974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{363781F8-3156-496A-896C-B22C18050974}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{363781F8-3156-496A-896C-B22C18050974}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -99,18 +83,10 @@ Global
 		{8B6BC818-4E2D-4828-80BC-81BC1D90D0FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B6BC818-4E2D-4828-80BC-81BC1D90D0FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B6BC818-4E2D-4828-80BC-81BC1D90D0FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{353A1526-2810-4673-8024-55A67FE1E3D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{353A1526-2810-4673-8024-55A67FE1E3D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{353A1526-2810-4673-8024-55A67FE1E3D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{353A1526-2810-4673-8024-55A67FE1E3D8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F70DBAB2-371B-48BD-B641-F5620B86F19D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F70DBAB2-371B-48BD-B641-F5620B86F19D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F70DBAB2-371B-48BD-B641-F5620B86F19D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F70DBAB2-371B-48BD-B641-F5620B86F19D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E6F7AEE3-AC16-4445-ABF0-2C2BACD9421C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6F7AEE3-AC16-4445-ABF0-2C2BACD9421C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6F7AEE3-AC16-4445-ABF0-2C2BACD9421C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6F7AEE3-AC16-4445-ABF0-2C2BACD9421C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AC07EC26-EC9B-4254-8C3E-F09C0B6E73B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AC07EC26-EC9B-4254-8C3E-F09C0B6E73B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC07EC26-EC9B-4254-8C3E-F09C0B6E73B8}.Release|Any CPU.ActiveCfg = Release|Any CPU

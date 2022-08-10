@@ -24,6 +24,7 @@ using System.Xml.XPath;
 
 using Sandcastle.Tools.BuildComponents.Snippets;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
@@ -74,7 +75,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected ExampleComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected ExampleComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion

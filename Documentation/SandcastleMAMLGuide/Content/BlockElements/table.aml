@@ -40,10 +40,8 @@ tables, etc.  Text should be contained in a <codeInline>para</codeInline> elemen
 	<alert class="tip">
 		<para>The <codeInline>entry</codeInline> element supports an <codeInline>address</codeInline> attribute
 that can be used to link to a specific entry from another location.</para>
-	</alert>
 
-<alert class="tip">
-  <para>To render an empty cell, use a non-breaking space entity (<codeInline>&amp;#160;</codeInline>).</para>
+		<para>To render an empty cell, use a non-breaking space entity (<codeInline>&amp;#160;</codeInline>).</para>
 </alert>
 
 	</definition>

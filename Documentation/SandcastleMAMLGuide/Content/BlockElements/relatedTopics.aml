@@ -15,9 +15,8 @@ links, external links, or code entity references.</para>
           <para>In topics in which this element appears, it is a required element.
 However, if the topic has no links of interest, you can leave it empty and
 the related topics section will not be included in the topic.</para>
-        </alert>
-        <alert class="note">
-          <para>The links within the element can appear in any order.  They will be
+
+					<para>The links within the element can appear in any order.  They will be
 grouped by type when the topic is built.</para>
         </alert>
       </content>

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ResourceItemEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/20/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 03/24/2022
+// Note    : Copyright 2011-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to edit resource item files
 //
@@ -102,7 +102,6 @@ namespace SandcastleBuilder.WPF.UserControls
         public void LoadResourceItemsFile(string resourceItemsFile, SandcastleProject project)
         {
             PresentationStyleSettings pss = null;
-            string presentationStylePath, shfbStyleContent;
             List<string> syntaxGeneratorFiles = new List<string>();
 
             if(resourceItemsFile == null)
@@ -118,7 +117,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 resourceItemFilename = resourceItemsFile;
 
                 using(var container = ComponentUtilities.CreateComponentContainer(project.ComponentSearchPaths,
-                  CancellationToken.None))
+                  null, CancellationToken.None))
                 {
                     var presentationStyles = container.GetExports<PresentationStyleSettings, IPresentationStyleMetadata>();
                     var style = presentationStyles.FirstOrDefault(s => s.Metadata.Id.Equals(
@@ -140,29 +139,14 @@ namespace SandcastleBuilder.WPF.UserControls
                     syntaxGeneratorFiles.AddRange(ComponentUtilities.SyntaxGeneratorResourceItemFiles(container, null));
                 }
 
-                // Get the presentation style folders
-                presentationStylePath = pss.ResolvePath(pss.ResourceItemsPath);
-                shfbStyleContent = pss.ResolvePath(pss.ToolResourceItemsPath);
-
-                // Use the language-specific files if they are present
-                if(Directory.Exists(Path.Combine(presentationStylePath, project.Language.Name)))
-                    presentationStylePath = Path.Combine(presentationStylePath, project.Language.Name);
-
-                if(File.Exists(Path.Combine(shfbStyleContent, project.Language.Name + ".xml")))
-                    shfbStyleContent = Path.Combine(shfbStyleContent, project.Language.Name + ".xml");
-                else
-                    shfbStyleContent = Path.Combine(shfbStyleContent, "en-US.xml");
-
                 // Load the presentation style content files first followed by the syntax generator files, the
-                // help file builder content items, and then the user's resource item file.
-                foreach(string file in Directory.EnumerateFiles(presentationStylePath, "*.xml"))
+                // help file builder content items, and then the user's resource item file.  Use the
+                // language-specific files if they are present.
+                foreach(string file in pss.ResourceItemFiles(project.Language.Name))
                     this.LoadItemFile(file, false);
 
                 foreach(string file in syntaxGeneratorFiles)
                     this.LoadItemFile(file, false);
-
-                if(File.Exists(shfbStyleContent))
-                    this.LoadItemFile(shfbStyleContent, false);
 
                 this.LoadItemFile(resourceItemFilename, true);
 

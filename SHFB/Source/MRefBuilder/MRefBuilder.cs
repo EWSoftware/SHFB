@@ -120,7 +120,7 @@ namespace Sandcastle.Tools.MSBuild
 
             if(this.Assemblies == null || this.Assemblies.Length == 0)
             {
-                this.WriteMessage(LogLevel.Error, "At least one assembly (.dll or .exe) is " +
+                this.WriteMessage(MessageLevel.Error, "At least one assembly (.dll or .exe) is " +
                     "required for MRefBuilder to parse");
                 return false;
             }
@@ -139,7 +139,7 @@ namespace Sandcastle.Tools.MSBuild
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                this.WriteMessage(LogLevel.Error, "An unexpected error occurred trying to " +
+                this.WriteMessage(MessageLevel.Error, "An unexpected error occurred trying to " +
                     "execute the MRefBuilder MSBuild task: {0}", ex);
             }
             finally
@@ -176,19 +176,19 @@ namespace Sandcastle.Tools.MSBuild
             }
             catch(IOException e)
             {
-                this.WriteMessage(LogLevel.Error, "An error occurred while attempting to read " +
+                this.WriteMessage(MessageLevel.Error, "An error occurred while attempting to read " +
                     "the configuration file '{0}'. The error message is: {1}", this.ConfigurationFile, e.Message);
                 return false;
             }
             catch(UnauthorizedAccessException e)
             {
-                this.WriteMessage(LogLevel.Error, "An error occurred while attempting to read " +
+                this.WriteMessage(MessageLevel.Error, "An error occurred while attempting to read " +
                     "the configuration file '{0}'. The error message is: {1}", this.ConfigurationFile, e.Message);
                 return false;
             }
             catch(XmlException e)
             {
-                this.WriteMessage(LogLevel.Error, "The configuration file '{0}' is not " +
+                this.WriteMessage(MessageLevel.Error, "The configuration file '{0}' is not " +
                     "well-formed. The error message is: {1}", this.ConfigurationFile, e.Message);
                 return false;
             }
@@ -198,7 +198,7 @@ namespace Sandcastle.Tools.MSBuild
 
             if(platformNode == null)
             {
-                this.WriteMessage(LogLevel.Error, "A platform element is required to define the " +
+                this.WriteMessage(MessageLevel.Error, "A platform element is required to define the " +
                     "framework type and version to use.");
                 return false;
             }
@@ -235,7 +235,7 @@ namespace Sandcastle.Tools.MSBuild
             }
             else
             {
-                this.WriteMessage(LogLevel.Error, "Unknown target framework version '{0} {1}'.",
+                this.WriteMessage(MessageLevel.Error, "Unknown target framework version '{0} {1}'.",
                     framework, version);
                 return false;
             }
@@ -275,53 +275,53 @@ namespace Sandcastle.Tools.MSBuild
 
                     if(namer == null)
                     {
-                        this.WriteMessage(LogLevel.Error, "The type '{0}' was not found in the " +
+                        this.WriteMessage(MessageLevel.Error, "The type '{0}' was not found in the " +
                             "component assembly '{1}'.", typeName, assembly.Location);
                         return false;
                     }
                 }
                 catch(IOException e)
                 {
-                    this.WriteMessage(LogLevel.Error, "A file access error occurred while " +
+                    this.WriteMessage(MessageLevel.Error, "A file access error occurred while " +
                         "attempting to load the component assembly '{0}'. The error message is: {1}",
                         assemblyPath, e.Message);
                     return false;
                 }
                 catch(UnauthorizedAccessException e)
                 {
-                    this.WriteMessage(LogLevel.Error, "A file access error occurred while " +
+                    this.WriteMessage(MessageLevel.Error, "A file access error occurred while " +
                         "attempting to load the component assembly '{0}'. The error message is: {1}",
                         assemblyPath, e.Message);
                     return false;
                 }
                 catch(BadImageFormatException)
                 {
-                    this.WriteMessage(LogLevel.Error, "The component assembly '{0}' is not a " +
+                    this.WriteMessage(MessageLevel.Error, "The component assembly '{0}' is not a " +
                         "valid managed assembly.", assemblyPath);
                     return false;
                 }
                 catch(TypeLoadException)
                 {
-                    this.WriteMessage(LogLevel.Error, "The type '{0}' was not found in the " +
+                    this.WriteMessage(MessageLevel.Error, "The type '{0}' was not found in the " +
                         "component assembly '{1}'.", typeName, assemblyPath);
                     return false;
                 }
                 catch(MissingMethodException)
                 {
-                    this.WriteMessage(LogLevel.Error, "No appropriate constructor exists for " +
+                    this.WriteMessage(MessageLevel.Error, "No appropriate constructor exists for " +
                         "the type'{0}' in the component assembly '{1}'.", typeName, assemblyPath);
                     return false;
                 }
                 catch(TargetInvocationException e)
                 {
-                    this.WriteMessage(LogLevel.Error, "An error occurred while initializing the " +
+                    this.WriteMessage(MessageLevel.Error, "An error occurred while initializing the " +
                         "type '{0}' in the component assembly '{1}'. The error message and stack trace " +
                         "follows: {2}", typeName, assemblyPath, e.InnerException);
                     return false;
                 }
                 catch(InvalidCastException)
                 {
-                    this.WriteMessage(LogLevel.Error, "The type '{0}' in the component assembly " +
+                    this.WriteMessage(MessageLevel.Error, "The type '{0}' in the component assembly " +
                         "'{1}' is not a component type.", typeName, assemblyPath);
                     return false;
                 }
@@ -353,53 +353,53 @@ namespace Sandcastle.Tools.MSBuild
 
                     if(resolver == null)
                     {
-                        this.WriteMessage(LogLevel.Error, "The type '{0}' was not found in the " +
+                        this.WriteMessage(MessageLevel.Error, "The type '{0}' was not found in the " +
                             "component assembly '{1}'.", typeName, assembly.Location);
                         return false;
                     }
                 }
                 catch(IOException e)
                 {
-                    this.WriteMessage(LogLevel.Error, "A file access error occurred while " +
+                    this.WriteMessage(MessageLevel.Error, "A file access error occurred while " +
                         "attempting to load the component assembly '{0}'. The error message is: {1}",
                         assemblyPath, e.Message);
                     return false;
                 }
                 catch(UnauthorizedAccessException e)
                 {
-                    this.WriteMessage(LogLevel.Error, "A file access error occurred while " +
+                    this.WriteMessage(MessageLevel.Error, "A file access error occurred while " +
                         "attempting to load the component assembly '{0}'. The error message is: {1}",
                         assemblyPath, e.Message);
                     return false;
                 }
                 catch(BadImageFormatException)
                 {
-                    this.WriteMessage(LogLevel.Error, "The component assembly '{0}' is not a " +
+                    this.WriteMessage(MessageLevel.Error, "The component assembly '{0}' is not a " +
                         "valid managed assembly.", assemblyPath);
                     return false;
                 }
                 catch(TypeLoadException)
                 {
-                    this.WriteMessage(LogLevel.Error, "The type '{0}' was not found in the " +
+                    this.WriteMessage(MessageLevel.Error, "The type '{0}' was not found in the " +
                         "component assembly '{1}'.", typeName, assemblyPath);
                     return false;
                 }
                 catch(MissingMethodException)
                 {
-                    this.WriteMessage(LogLevel.Error, "No appropriate constructor exists for " +
+                    this.WriteMessage(MessageLevel.Error, "No appropriate constructor exists for " +
                         "the type'{0}' in the component assembly '{1}'.", typeName, assemblyPath);
                     return false;
                 }
                 catch(TargetInvocationException e)
                 {
-                    this.WriteMessage(LogLevel.Error, "An error occurred while initializing the " +
+                    this.WriteMessage(MessageLevel.Error, "An error occurred while initializing the " +
                         "type '{0}' in the component assembly '{1}'. The error message and stack trace " +
                         "follows: {2}", typeName, assemblyPath, e.InnerException);
                     return false;
                 }
                 catch(InvalidCastException)
                 {
-                    this.WriteMessage(LogLevel.Error, "The type '{0}' in the component assembly " +
+                    this.WriteMessage(MessageLevel.Error, "The type '{0}' in the component assembly " +
                         "'{1}' is not a component type.", typeName, assemblyPath);
                     return false;
                 }
@@ -417,13 +417,13 @@ namespace Sandcastle.Tools.MSBuild
             }
             catch(IOException e)
             {
-                this.WriteMessage(LogLevel.Error, "An error occurred while attempting to " +
+                this.WriteMessage(MessageLevel.Error, "An error occurred while attempting to " +
                     "create an output file. The error message is: {0}", e.Message);
                 return false;
             }
             catch(UnauthorizedAccessException e)
             {
-                this.WriteMessage(LogLevel.Error, "An error occurred while attempting to " +
+                this.WriteMessage(MessageLevel.Error, "An error occurred while attempting to " +
                     "create an output file. The error message is: {0}", e.Message);
                 return false;
             }
@@ -441,7 +441,7 @@ namespace Sandcastle.Tools.MSBuild
                         "boolean(/configuration/dduetools/sourceContext[@warnOnMissingSourceContext='true'])");
                 }
                 else
-                    this.WriteMessage(LogLevel.Info, "No source code context base path " +
+                    this.WriteMessage(MessageLevel.Info, "No source code context base path " +
                         "specified.  Source context information is unavailable.");
 
                 apiVisitor = new ManagedReflectionWriter(output, namer, resolver, sourceCodeBasePath,
@@ -476,46 +476,46 @@ namespace Sandcastle.Tools.MSBuild
 
                         if(addin == null)
                         {
-                            this.WriteMessage(LogLevel.Error, "The type '{0}' was not found in " +
+                            this.WriteMessage(MessageLevel.Error, "The type '{0}' was not found in " +
                                 "the add-in assembly '{1}'.", typeName, assembly.Location);
                             return false;
                         }
                     }
                     catch(IOException e)
                     {
-                        this.WriteMessage(LogLevel.Error, "A file access error occurred while " +
+                        this.WriteMessage(MessageLevel.Error, "A file access error occurred while " +
                             "attempting to load the add-in assembly '{0}'. The error message is: {1}",
                             assemblyPath, e.Message);
                         return false;
                     }
                     catch(BadImageFormatException)
                     {
-                        this.WriteMessage(LogLevel.Error, "The add-in assembly '{0}' is not a " +
+                        this.WriteMessage(MessageLevel.Error, "The add-in assembly '{0}' is not a " +
                             "valid managed assembly.", assemblyPath);
                         return false;
                     }
                     catch(TypeLoadException)
                     {
-                        this.WriteMessage(LogLevel.Error, "The type '{0}' was not found in the " +
+                        this.WriteMessage(MessageLevel.Error, "The type '{0}' was not found in the " +
                             "add-in assembly '{1}'.", typeName, assemblyPath);
                         return false;
                     }
                     catch(MissingMethodException)
                     {
-                        this.WriteMessage(LogLevel.Error, "No appropriate constructor exists " +
+                        this.WriteMessage(MessageLevel.Error, "No appropriate constructor exists " +
                             "for the type '{0}' in the add-in assembly '{1}'.", typeName, assemblyPath);
                         return false;
                     }
                     catch(TargetInvocationException e)
                     {
-                        this.WriteMessage(LogLevel.Error, "An error occurred while initializing " +
+                        this.WriteMessage(MessageLevel.Error, "An error occurred while initializing " +
                             "the type '{0}' in the add-in assembly '{1}'. The error message and stack trace " +
                             "follows: {2}", typeName, assemblyPath, e.InnerException);
                         return false;
                     }
                     catch(InvalidCastException)
                     {
-                        this.WriteMessage(LogLevel.Error, "The type '{0}' in the add-in " +
+                        this.WriteMessage(MessageLevel.Error, "The type '{0}' in the add-in " +
                             "assembly '{1}' is not an MRefBuilderAddIn type.", typeName, assemblyPath);
                         return false;
                     }
@@ -537,7 +537,7 @@ namespace Sandcastle.Tools.MSBuild
                     }
                     catch(IOException e)
                     {
-                        this.WriteMessage(LogLevel.Error, "An error occurred while loading " +
+                        this.WriteMessage(MessageLevel.Error, "An error occurred while loading " +
                             "dependency assemblies. The error message is: {0}", e.Message);
                         return false;
                     }
@@ -562,31 +562,31 @@ namespace Sandcastle.Tools.MSBuild
                     }
                     catch(IOException e)
                     {
-                        this.WriteMessage(LogLevel.Error, "An error occurred while loading " +
+                        this.WriteMessage(MessageLevel.Error, "An error occurred while loading " +
                             "assemblies for reflection. The error message is: {0}", e.Message);
                         return false;
                     }
                 }
 
-                this.WriteMessage(LogLevel.Info, "Loaded {0} assemblies for reflection and " +
+                this.WriteMessage(MessageLevel.Info, "Loaded {0} assemblies for reflection and " +
                     "{1} dependency assemblies.", apiVisitor.Assemblies.Count(),
                     apiVisitor.AccessoryAssemblies.Count());
 
                 apiVisitor.VisitApis();
 
                 if(apiVisitor.Canceled)
-                    this.WriteMessage(LogLevel.Error, "MRefBuilder task canceled");
+                    this.WriteMessage(MessageLevel.Error, "MRefBuilder task canceled");
                 else
                 {
-                    this.WriteMessage(LogLevel.Info, "Wrote information on {0} namespaces, " +
+                    this.WriteMessage(MessageLevel.Info, "Wrote information on {0} namespaces, " +
                         "{1} types, and {2} members", apiVisitor.NamespaceCount, apiVisitor.TypeCount,
                         apiVisitor.MemberCount);
 
-                    this.WriteMessage(LogLevel.Info, "Merging duplicate type and member information");
+                    this.WriteMessage(MessageLevel.Info, "Merging duplicate type and member information");
 
                     var (mergedTypes, mergedMembers) = apiVisitor.MergeDuplicateReflectionData(this.ReflectionFilename);
 
-                    this.WriteMessage(LogLevel.Info, "Merged {0} duplicate type(s) and {1} " +
+                    this.WriteMessage(MessageLevel.Info, "Merged {0} duplicate type(s) and {1} " +
                         "duplicate member(s)", mergedTypes, mergedMembers);
                 }
             }
@@ -614,7 +614,7 @@ namespace Sandcastle.Tools.MSBuild
         /// <remarks>An unresolved assembly reference will terminate the application</remarks>
         private void UnresolvedAssemblyReferenceHandler(object sender, AssemblyReferenceEventArgs e)
         {
-            this.WriteMessage(LogLevel.Error, "Unresolved assembly reference: {0} ({1}) required by {2}",
+            this.WriteMessage(MessageLevel.Error, "Unresolved assembly reference: {0} ({1}) required by {2}",
                 e.Reference.Name, e.Reference.StrongName, e.Referrer.Name);
 
             // If in the debugger, break so that we can see what was missed
@@ -630,19 +630,19 @@ namespace Sandcastle.Tools.MSBuild
         /// <param name="level">The log level of the message</param>
         /// <param name="format">The message format string</param>
         /// <param name="args">The list of arguments to format into the message</param>
-        private void WriteMessage(LogLevel level, string format, params object[] args)
+        private void WriteMessage(MessageLevel level, string format, params object[] args)
         {
             switch(level)
             {
-                case LogLevel.Diagnostic:
+                case MessageLevel.Diagnostic:
                     this.Log.LogMessage(MessageImportance.High, format, args);
                     break;
 
-                case LogLevel.Warn:
+                case MessageLevel.Warn:
                     this.Log.LogWarning(null, null, null, this.GetType().Name, 0, 0, 0, 0, format, args);
                     break;
 
-                case LogLevel.Error:
+                case MessageLevel.Error:
                     this.Log.LogError(null, null, null, this.GetType().Name, 0, 0, 0, 0, format, args);
                     break;
 

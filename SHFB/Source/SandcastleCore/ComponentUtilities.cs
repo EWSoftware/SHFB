@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/31/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 05/02/2022
+// Note    : Copyright 2007-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class containing properties and methods used to locate and work with build components,
 // plug-ins, syntax generators, and presentation styles.
@@ -42,6 +42,7 @@ using System.Xml;
 using System.Xml.Linq;
 
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
+using Sandcastle.Core.PresentationStyle.Transformation;
 
 namespace Sandcastle.Core
 {
@@ -254,6 +255,7 @@ namespace Sandcastle.Core
         /// plug-ins, presentation styles, BuildAssembler components, and syntax generators).
         /// </summary>
         /// <param name="folders">An enumerable list of additional folders to search recursively for components.</param>
+        /// <param name="resolver">A component assembly resolver to use or null to use a temporary one</param>
         /// <param name="cancellationToken">An optional cancellation token or null if not supported by the caller.</param>
         /// <returns>The a composition container that contains all of the available components</returns>
         /// <remarks>The following folders are searched in the following order.  If the given folder has not been
@@ -275,21 +277,33 @@ namespace Sandcastle.Core
         /// ID will be used.  As such, assemblies in a folder with a higher search precedence can override
         /// copies in folders lower in the search order.</remarks>
         public static CompositionContainer CreateComponentContainer(IEnumerable<string> folders,
-          CancellationToken cancellationToken)
+          ComponentAssemblyResolver resolver, CancellationToken cancellationToken)
         {
             if(folders == null)
                 throw new ArgumentNullException(nameof(folders));
 
             var catalog = new AggregateCatalog();
             HashSet<string> searchedFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            bool disposeResolver = false;
 
-            using(var resolver = new ComponentAssemblyResolver())
+            try
             {
+                if(resolver == null)
+                {
+                    resolver = new ComponentAssemblyResolver();
+                    disposeResolver = true;
+                }
+
                 foreach(string folder in folders)
                     AddAssemblyCatalogs(catalog, folder, searchedFolders, true, resolver, cancellationToken);
 
                 AddAssemblyCatalogs(catalog, ThirdPartyComponentsFolder, searchedFolders, true, resolver, cancellationToken);
                 AddAssemblyCatalogs(catalog, CoreComponentsFolder, searchedFolders, true, resolver, cancellationToken);
+            }
+            finally
+            {
+                if(disposeResolver)
+                    resolver.Dispose();
             }
 
             return new CompositionContainer(catalog);
@@ -572,22 +586,20 @@ namespace Sandcastle.Core
         }
 
         /// <summary>
-        /// This returns the syntax language XML elements to insert into a BuildAssembler configuration file for
-        /// the comma-separated list of syntax filter IDs.
+        /// This returns the language filter items to used in the presentation style transformation
         /// </summary>
         /// <param name="allFilters">The list of all available syntax filter generators</param>
         /// <param name="filterIds">A comma-separated list of syntax filter ID values.</param>
-        /// <returns>A string containing the language XML elements for the specified syntax filter IDs.</returns>
-        public static string SyntaxFilterLanguagesFrom(IEnumerable<ISyntaxGeneratorMetadata> allFilters,
-          string filterIds)
+        /// <returns>An enumerable list of the language filter items to use</returns>
+        public static IEnumerable<LanguageFilterItem> SyntaxFilterLanguagesFrom(
+          IEnumerable<ISyntaxGeneratorMetadata> allFilters, string filterIds)
         {
-            StringBuilder sb = new StringBuilder(1024);
-
-            foreach(var generator in SyntaxFiltersFrom(allFilters, filterIds))
-                sb.AppendFormat(CultureInfo.InvariantCulture, "<language name=\"{0}\" style=\"{1}\" />\r\n",
-                    generator.LanguageElementName, generator.KeywordStyleParameter);
-
-            return sb.ToString();
+            return SyntaxFiltersFrom(allFilters, filterIds).GroupBy(
+                c => c.KeywordStyleParameter).Select(g =>
+                {
+                    var first = g.First();
+                    return new LanguageFilterItem("devlang_" + first.Id, first.KeywordStyleParameter);
+                });
         }
 
         /// <summary>
@@ -665,7 +677,7 @@ namespace Sandcastle.Core
         /// </overloads>
         public static IEnumerable<XElement> XmlStreamAxis(string xmlFile, string elementName)
         {
-            using(XmlReader reader = XmlReader.Create(xmlFile, new XmlReaderSettings()))
+            using(XmlReader reader = XmlReader.Create(xmlFile, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore }))
             {
                 while(reader.ReadToFollowing(elementName))
                     yield return (XElement)XNode.ReadFrom(reader);
@@ -686,7 +698,7 @@ namespace Sandcastle.Core
         {
             HashSet<string> elements = new HashSet<string>(elementNames);
 
-            using(XmlReader reader = XmlReader.Create(xmlFile, new XmlReaderSettings()))
+            using(XmlReader reader = XmlReader.Create(xmlFile, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore }))
             {
                 reader.MoveToContent();
 

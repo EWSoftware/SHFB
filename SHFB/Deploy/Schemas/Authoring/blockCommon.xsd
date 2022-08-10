@@ -91,6 +91,8 @@
 					</documentation>
 				</annotation>
 			</attribute>
+			<!-- Sandcastle addition.  An optional user-defined title. -->
+			<attribute name="title" type="string" use="optional"/>
 			<attributeGroup ref="maml:contentIdentificationSharingAndConditionGroup"/>
 		</complexType>
 	</element>

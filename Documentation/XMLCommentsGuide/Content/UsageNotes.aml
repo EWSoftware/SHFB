@@ -64,9 +64,10 @@ topic for more information.</para>
 						<para>XML comments for enumerations are treated differently.  The common convention in presentation
 styles is to suppress topics for the individual enumeration members.  Instead, they are listed in a table in the
 containing enumerated type's topic.  Within that table, only the summary for each member is listed as the
-description.  Any additional comments elements such as <codeInline>seealso</codeInline> or <codeInline>remarks</codeInline>
-elements will be ignored.  As such, include any additional information that must appear in the help file in the
-enumerated type's XML comments or within the member's <codeInline>summary</codeInline> element.</para>
+description and remarks, if present, will be included.  Any additional comments elements such as
+<codeInline>seealso</codeInline> or <codeInline>example</codeInline> elements will be ignored.  As such, include
+any additional information that must appear in the help file in the enumerated type's XML comments or within the
+member's <codeInline>summary</codeInline> or <codeInline>remarks</codeInline> element.</para>
 					</listItem>
 				</list>
 			</content>

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : BuildPropertiesNeededEventArgs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/17/2019
-// Note    : Copyright 2017-2019, Eric Woodruff, All rights reserved
+// Updated : 05/13/2022
+// Note    : Copyright 2017-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to obtain the current build property settings from the project
 //
@@ -41,5 +41,10 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// This is used to get the current syntax filters setting
         /// </summary>
         public string SyntaxFilters { get; set; }
+
+        /// <summary>
+        /// This is used to get the current help file formats setting
+        /// </summary>
+        public string HelpFileFormats { get; set; }
     }
 }

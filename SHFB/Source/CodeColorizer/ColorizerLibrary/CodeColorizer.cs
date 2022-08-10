@@ -794,11 +794,11 @@ namespace ColorizerLibrary
 
                             linePrefix = String.Format(CultureInfo.InvariantCulture,
                                 "<span id=\"hrCol{0}\" style=\"display: none;\">{1}<span " +
-                                "class=\"highlight-collapsebox\" onclick=\"javascript: " +
+                                "class=\"highlight-collapsebox\" onclick=\"" +
                                 "HighlightExpandCollapse('hrExp{0}', 'hrCol{0}');\">+</span><span " +
                                 "class=\"highlight-collapsed\">{2}</span></span><span id=\"hrExp{0}\" " +
                                 "style=\"display: inline;\">{1}<span class=\"highlight-collapsebox\" " +
-                                "onclick=\"javascript: HighlightExpandCollapse('hrCol{0}', " +
+                                "onclick=\"HighlightExpandCollapse('hrCol{0}', " +
                                 "'hrExp{0}');\">-</span>", uniqueRegionId, lineInfo, regions[regionIdx].Description);
 
                             regionIdx++;
@@ -809,11 +809,11 @@ namespace ColorizerLibrary
                             {
                                 linePrefix += String.Format(CultureInfo.InvariantCulture,
                                     "<span id=\"hrCol{0}_{1}\" style=\"display: none;\">" +
-                                    "<span class=\"highlight-collapsebox\" onclick=\"javascript: " +
+                                    "<span class=\"highlight-collapsebox\" onclick=\"" +
                                     "HighlightExpandCollapse('hrExp{0}_{1}', 'hrCol{0}_{1}');\">+</span><span " +
                                     "class=\"highlight-collapsed\">{2}</span></span><span id=\"hrExp{0}_{1}\" " +
                                     "style=\"display: inline;\"><span class=\"highlight-collapsebox\" " +
-                                    "onclick=\"javascript: HighlightExpandCollapse('hrCol{0}_{1}', " +
+                                    "onclick=\"HighlightExpandCollapse('hrCol{0}_{1}', " +
                                     "'hrExp{0}_{1}');\">-</span>", uniqueRegionId, regionIdx, regions[regionIdx].Description);
 
                                 regionIdx++;
@@ -1536,10 +1536,10 @@ namespace ColorizerLibrary
                 // Add the title div with the title text and Copy span
                 matchText = String.Format(CultureInfo.InvariantCulture,
                     "<div class=\"highlight-title\"><span class=\"highlight-copycode\" " +
-                    "onkeypress=\"javascript:CopyColorizedCodeCheckKey(this.parentNode, event);\" " +
+                    "onkeypress=\"CopyColorizedCodeCheckKey(this.parentNode, event);\" " +
                     "onmouseover=\"CopyCodeChangeIcon(this)\" " +
                     "onmouseout=\"CopyCodeChangeIcon(this)\" " +
-                    "onclick=\"javascript:CopyColorizedCode(this.parentNode);\"><img src=\"{0}\" " +
+                    "onclick=\"CopyColorizedCode(this.parentNode);\"><img src=\"{0}\" " +
                     "style=\"margin-right: 5px;\" />{1}</span>{2}</div>{3}", this.CopyImageUrl, this.CopyText,
                     title, matchText);
             }

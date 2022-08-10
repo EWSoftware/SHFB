@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ee982f89-b3b7-4863-aded-01a5ff4634fa" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2022.4.16.0.</para>
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Made various general revisions to reflect how the MAML elements are currently used.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a topic for the <link xlink:href="161537d9-6f89-42ef-9c51-3a15ef94df65" /> elements.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a topic for the <link xlink:href="448a32c2-9922-4901-8d23-37cb0b253d9a" /> element.</para>
+					</listItem>
+
+					<listItem>
+						<para>Replaced the <codeInline>title</codeInline> topic with a
+<link xlink:href="3698dacb-763b-4a45-a051-f34c09e5f862" /> topic which makes better sense.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the <link xlink:href="a8792cd2-e8a1-4e37-bd16-eea84ac463b1" /> element topic with
+information on a new <codeInline>todo</codeInline> alert type and a new optional <codeInline>title</codeInline>
+attribute that can be used to override the default alert title.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Added documentation for the <codeInline>start</codeInline> attribute on the
+<link xlink:href="d6c82cde-f889-4ac9-b3a7-7d45fd6fbffc">list</link> element for ordered lists.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added documentation for the new <codeInline>contentType</codeInline> attribute on the
+<link xlink:href="aaaff238-1ab4-4c9e-95d8-60ca4d8d4f8e" /> element.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

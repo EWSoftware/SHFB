@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/04/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 04/13/2022
+// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the code used to modify the help file project files to create a better table of contents
 // and find the default help file page
@@ -424,35 +424,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 this.ExecutePlugIns(ExecutionBehaviors.After);
             }
-
-            // Determine the default topic for Help 1, website, and markdown output if one was not specified in a
-            // site map or content layout file.
-            if(defaultTopic == null && (project.HelpFileFormat & (HelpFileFormats.HtmlHelp1 |
-              HelpFileFormats.Website | HelpFileFormats.Markdown)) != 0)
-            {
-                var defTopic = ComponentUtilities.XmlStreamAxis(Path.Combine(workingFolder, "toc.xml"), "topic").FirstOrDefault(
-                    t => t.Attribute("file") != null);
-
-                if(defTopic != null)
-                {
-                    // Find the file.  Could be .htm, .html, or .md so just look for any file with the given name.
-                    defaultTopic = Directory.EnumerateFiles(workingFolder + "Output",
-                        defTopic.Attribute("file").Value + ".*", SearchOption.AllDirectories).FirstOrDefault();
-
-                    if(defaultTopic != null)
-                    {
-                        defaultTopic = defaultTopic.Substring(workingFolder.Length + 7);
-
-                        if(defaultTopic.IndexOf('\\') != -1)
-                            defaultTopic = defaultTopic.Substring(defaultTopic.IndexOf('\\') + 1);
-                    }
-                }
-
-                // This shouldn't happen anymore, but just in case...
-                if(defaultTopic == null)
-                    throw new BuilderException("BE0026", "Unable to determine default topic in toc.xml.  Mark " +
-                        "one as the default topic manually in the content layout file.");
-            }
         }
         #endregion
 
@@ -693,10 +664,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 return;
 
             this.ExecutePlugIns(ExecutionBehaviors.Before);
-
-            // Copy the TOC, keyword index, index pages, and tree view stuff
-            File.Copy(workingFolder + "WebTOC.xml", outputFolder + "WebTOC.xml");
-            File.Copy(workingFolder + "WebKI.xml", outputFolder + "WebKI.xml");
 
             // Copy the help pages and related content
             this.RecursiveCopy(webWorkingFolder + @"\*.*", outputFolder, ref fileCount);

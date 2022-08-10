@@ -35,7 +35,7 @@ as the base .NET Framework class library.  The syntax of the element is as follo
 				<alert class="important">
 					<para>As of November 2019, the <codeInline>select</codeInline> attribute has been deprecated.  Use the
 equivalent <codeInline>path</codeInline> attribute instead which is consistent with the XML comments IntelliSense
-usage in Visual Studio 2019.</para>
+usage in Visual Studio 2019 and later.</para>
 				</alert>
 				
 				<para>The optional <codeInline>cref</codeInline> attribute overrides the standard search method to allow
@@ -51,13 +51,9 @@ XPath query that will result in a node set.</para>
 either by themselves or together, you can fine tune the inheritance of documentation.  You can also nest the
 element within other elements to further refine the level of inheritance.</para>
 
-				<para>When using the Sandcastle tools alone, the <codeInline>InheritDocumentationComponent</codeInline>
-must be added to the <application>BuildAssembler</application> configuration file to handle the
-<codeInline>inheritdoc</codeInline> elements.  When using the Sandcastle Help File Builder, its
-<application>GenerateInheritedDocumentation</application> tool handles the task of generating the inherited
-documentation.  The following documentation is based on the Sandcastle Help File Builder's implementation.
-The build component works in a similar fashion but does not support all of the scenarios related to merging
-and overriding existing elements.</para>
+				<para>When using the Sandcastle Help File Builder, its <application>GenerateInheritedDocumentation</application>
+tool handles the task of generating the inherited documentation.  The following documentation is based on the
+Sandcastle Help File Builder's implementation.</para>
 				
 			</content>
 		</section>

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.ConfigFiles.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/05/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 02/26/2022
+// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the code used to transform and modify configuration files for the build
 //
@@ -241,17 +241,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         /// <summary>
         /// This is used to merge the component configurations from the project with the
-        /// <strong>sandcastle.config</strong> file.
+        /// BuildAssembler configuration file.
         /// </summary>
         private void MergeComponentConfigurations()
         {
-            XmlDocument config;
-            string configName;
-
             this.ReportProgress(BuildStep.MergeCustomConfigs, "Merging custom build component configurations");
 
             // Reset the adjusted instance values to match the configuration instance values
-            foreach(var component in buildComponents.Values)
+            foreach(var component in this.BuildComponents.Values)
             {
                 component.ReferenceBuildPlacement.AdjustedInstance = component.ReferenceBuildPlacement.Instance;
                 component.ConceptualBuildPlacement.AdjustedInstance = component.ConceptualBuildPlacement.Instance;
@@ -262,11 +259,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-            configName = workingFolder + "sandcastle.config";
-            this.ReportProgress(configName);
+            this.ReportProgress(this.BuildAssemblerConfigurationFile);
 
-            config = new XmlDocument();
-            config.Load(configName);
+            var config = new XmlDocument();
+            config.Load(this.BuildAssemblerConfigurationFile);
 
             this.ReportProgress("  Updating reference topic configurations.");
             this.MergeConfigurations(config, false);
@@ -302,7 +298,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 }
             }
 
-            config.Save(configName);
+            config.Save(this.BuildAssemblerConfigurationFile);
 
             this.ExecutePlugIns(ExecutionBehaviors.After);
         }
@@ -329,10 +325,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 projectComp = project.ComponentConfigurations[id];
 
-                if(!buildComponents.TryGetValue(id, out BuildComponentFactory factory))
+                if(!this.BuildComponents.TryGetValue(id, out BuildComponentFactory factory))
+                {
                     throw new BuilderException("BE0021", String.Format(CultureInfo.CurrentCulture,
                         "The project contains a reference to a custom build component '{0}' that could not " +
                         "be found.", id));
+                }
 
                 if(isConceptualConfig)
                 {
@@ -436,10 +434,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         continue;
 
                     // Add the dependency with a default configuration
-                    if(!buildComponents.TryGetValue(dependency, out BuildComponentFactory dependencyFactory))
+                    if(!this.BuildComponents.TryGetValue(dependency, out BuildComponentFactory dependencyFactory))
+                    {
                         throw new BuilderException("BE0023", String.Format(CultureInfo.CurrentCulture,
                             "The project contains a reference to a custom build component '{0}' that has a " +
                             "dependency '{1}' that could not be found.", id, dependency));
+                    }
 
                     node = rootNode.OwnerDocument.CreateDocumentFragment();
                     node.InnerXml = substitutionTags.TransformText(dependencyFactory.DefaultConfiguration);
@@ -479,7 +479,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     "for '{2}'", replaceId, position.AdjustedInstance, id);
 
                 // Adjust instance values on matching components
-                foreach(var component in buildComponents.Values)
+                foreach(var component in this.BuildComponents.Values)
+                {
                     if(!isConceptualConfig)
                     {
                         if(component.ReferenceBuildPlacement.Id == replaceId &&
@@ -489,11 +490,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         }
                     }
                     else
+                    {
                         if(component.ConceptualBuildPlacement.Id == replaceId &&
                           component.ConceptualBuildPlacement.AdjustedInstance > position.AdjustedInstance)
                         {
                             component.ConceptualBuildPlacement.AdjustedInstance--;
                         }
+                    }
+                }
 
                 return;
             }
@@ -560,11 +564,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             this.ReportProgress(BuildStep.GenerateApiTopicManifest, "Generating API topic manifest...");
 
+            this.BuildAssemblerManifestFile = Path.Combine(this.WorkingFolder, "manifest.xml");
+
             if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
             {
                 this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                using(XmlWriter writer = XmlWriter.Create(Path.Combine(this.WorkingFolder, "manifest.xml"),
+                using(XmlWriter writer = XmlWriter.Create(this.BuildAssemblerManifestFile,
                   new XmlWriterSettings { Indent = true }))
                 {
                     writer.WriteStartDocument();

@@ -2,11 +2,11 @@
 // System  : Sandcastle Help File Builder Components
 // File    : LanguageSpecificTextComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/17/2021
-// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
+// Updated : 03/28/2022
+// Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to convert span style language-specific text elements to
-// the script style elements used in the VS2010 and later styles.
+// the script style elements used in HTML-based presentation styles.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
@@ -32,11 +32,11 @@ namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This component is used to convert the span style language-specific text elements to the script style
-    /// elements used in the VS2010 and later styles.
+    /// elements used in the HTML-based presentation styles.
     /// </summary>
-    /// <remarks>An optional <c>scriptFunction</c> configuration element with a <c>name</c> attribute specifying
-    /// the JavaScript function to call can be specified.  If omitted, the function name defaults to
-    /// "<c>AddLanguageSpecificTextSet</c>".</remarks>
+    /// <remarks>This is handled after topic transformation as other components such as the Resolve Reference
+    /// Links component may insert additional language-specific text elements after transformation has
+    /// occurred.</remarks>
     public class LanguageSpecificTextComponent : BuildComponentCore
     {
         #region Build component factory for MEF
@@ -56,13 +56,6 @@ namespace Sandcastle.Tools.BuildComponents
         }
         #endregion
 
-        #region Private data members
-        //=====================================================================
-
-        private string scriptFunctionName;
-
-        #endregion
-
         #region Constructor
         //=====================================================================
 
@@ -70,7 +63,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected LanguageSpecificTextComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected LanguageSpecificTextComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion
@@ -81,18 +74,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
-            if(configuration == null)
-                throw new ArgumentNullException(nameof(configuration));
-
-            // The <scriptFunction> element is optional.  If not set, it will use the default name
-            // "AddLanguageSpecificTextSet".
-            var nav = configuration.SelectSingleNode("scriptFunction");
-
-            if(nav != null)
-                scriptFunctionName = nav.GetAttribute("name", String.Empty);
-
-            if(String.IsNullOrWhiteSpace(scriptFunctionName))
-                scriptFunctionName = "AddLanguageSpecificTextSet";
+            // This component has no configuration settings
         }
 
         /// <inheritdoc />
@@ -104,37 +86,29 @@ namespace Sandcastle.Tools.BuildComponents
             if(key == null)
                 throw new ArgumentNullException(nameof(key));
 
-            XmlNodeList langList;
-            XmlElement spanElement, scriptElement;
-            string uniqueId, langParam, idRoot = String.Format(CultureInfo.InvariantCulture, "LST{0:X}_",
-                key.GetHashCodeDeterministic());
+            string idRoot = $"LST{key.GetHashCodeDeterministic():X}_";
             int sequence = 0;
 
             foreach(XmlNode lstNode in document.SelectNodes("//span[@class='languageSpecificText']"))
             {
-                langList = lstNode.SelectNodes("span[@class]");
+                XmlNodeList langList = lstNode.SelectNodes("span[@class]");
 
                 // The language span count should match the total element count.  If not, we'll let it pass
                 // through as is.
                 if(langList.Count > 0 && langList.Count == lstNode.ChildNodes.Count)
                 {
-                    uniqueId = idRoot + sequence.ToString(CultureInfo.InvariantCulture);
-                    langParam = String.Join("|", langList.Cast<XmlNode>().Select(
-                        n => String.Concat(n.Attributes["class"].Value, "=", n.InnerText)));
+                    string uniqueId = idRoot + sequence.ToString(CultureInfo.InvariantCulture),
+                        langParam = String.Join("|", langList.Cast<XmlNode>().Select(
+                            n => String.Concat(n.Attributes["class"].Value, "=", n.InnerText)));
 
-                    spanElement = document.CreateElement("span");
+                    XmlElement spanElement = document.CreateElement("span");
                     spanElement.SetAttribute("id", uniqueId);
+                    spanElement.SetAttribute("data-languageSpecificText", langParam);
 
                     // Set the inner text to an empty string so that it is written out with full opening and
                     // closing elements.
                     spanElement.InnerText = String.Empty;
 
-                    scriptElement = document.CreateElement("script");
-                    scriptElement.SetAttribute("type", "text/javascript");
-                    scriptElement.InnerText = String.Format(CultureInfo.InvariantCulture, "{0}(\"{1}?{2}\");",
-                        scriptFunctionName, uniqueId, langParam);
-
-                    lstNode.ParentNode.InsertAfter(scriptElement, lstNode);
                     lstNode.ParentNode.ReplaceChild(spanElement, lstNode);
 
                     sequence++;

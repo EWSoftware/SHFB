@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/01/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 07/04/2022
+// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
 //
@@ -136,7 +136,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private bool buildCancelling;
 
         // Various paths and other strings
-        private string templateFolder, projectFolder, outputFolder, workingFolder, hhcFolder, languageFolder,
+        private string templateFolder, projectFolder, outputFolder, workingFolder, hhcFolder,
             defaultTopic, reflectionFile;
 
         private CultureInfo language;   // The project language
@@ -208,6 +208,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public string Help1CompilerFolder => hhcFolder;
 
         /// <summary>
+        /// This provides access to the title and keyword HTML extract tool during the
+        /// <see cref="BuildStep.ExtractingHtmlInfo" /> build step.
+        /// </summary>
+        /// <remarks>This can be used by plug-ins to adjust how the tool runs</remarks>
+        public TitleAndKeywordHtmlExtract HtmlExtractTool { get; private set; }
+
+        /// <summary>
         /// This returns the name of the folder that contains the reflection data for the selected framework
         /// platform and version (.NETFramework 4.5, .NETCore 4.5, Silverlight 5.0, etc.).
         /// </summary>
@@ -217,11 +224,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// This read-only property returns the language used for resource items, etc.
         /// </summary>
         public CultureInfo Language => language;
-
-        /// <summary>
-        /// This read-only property returns the resource item file language folder name
-        /// </summary>
-        public string LanguageFolder => languageFolder;
 
         /// <summary>
         /// This returns the presentation instance being used by the build process
@@ -234,13 +236,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         public string PresentationStyleFolder => FolderPath.TerminatePath(presentationStyle.ResolvePath(
             presentationStyle.BasePath));
-
-        /// <summary>
-        /// This returns the name of the presentation style resource items folder determined by the build
-        /// process.
-        /// </summary>
-        public string PresentationStyleResourceItemsFolder => FolderPath.TerminatePath(Path.Combine(
-            presentationStyle.ResolvePath(presentationStyle.ResourceItemsPath), languageFolder));
 
         /// <summary>
         /// This read-only property returns a collection of the output folders specific to each help file format
@@ -257,6 +252,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// This returns the name of the reflection information file
         /// </summary>
         public string ReflectionInfoFilename => reflectionFile;
+
+        /// <summary>
+        /// This returns the name of the BuildAssembler topic manifest file
+        /// </summary>
+        public string BuildAssemblerManifestFile { get; private set; }
+
+        /// <summary>
+        /// This returns the name of the BuildAssembler configuration file
+        /// </summary>
+        public string BuildAssemblerConfigurationFile { get; private set; }
 
         /// <summary>
         /// This read-only property returns the framework reflection data dictionary used by the build
@@ -465,9 +470,39 @@ namespace SandcastleBuilder.Utils.BuildEngine
         internal CompositionContainer ComponentContainer => componentContainer;
 
         /// <summary>
+        /// This read-only property returns the build components that are available for use in the build
+        /// </summary>
+        internal IReadOnlyDictionary<string, BuildComponentFactory> BuildComponents
+        {
+            get
+            {
+                if(buildComponents == null)
+                {
+                    buildComponents = componentContainer.GetExports<BuildComponentFactory,
+                        IBuildComponentMetadata>().GroupBy(c => c.Metadata.Id).Select(g => g.First()).ToDictionary(
+                            key => key.Metadata.Id, value => value.Value);
+                }
+
+                return buildComponents;
+            }
+        }
+
+        /// <summary>
         /// This read-only property returns the syntax generator metadata
         /// </summary>
-        internal IEnumerable<ISyntaxGeneratorMetadata> SyntaxGenerators => syntaxGenerators;
+        internal IEnumerable<ISyntaxGeneratorMetadata> SyntaxGenerators
+        {
+            get
+            {
+                if(syntaxGenerators == null)
+                {
+                    syntaxGenerators = componentContainer.GetExports<ISyntaxGeneratorFactory,
+                        ISyntaxGeneratorMetadata>().Select(sf => sf.Metadata).ToList();
+                }
+
+                return syntaxGenerators;
+            }
+        }
 
         #endregion
 
@@ -513,7 +548,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             ComponentAssemblyResolver resolver = null;
             Project msBuildProject = null;
             ProjectItem projectItem;
-            string resolvedPath, helpFile, languageFile, scriptFile, hintPath;
+            string helpFile, scriptFile, hintPath;
             SandcastleProject originalProject = null;
             bool success = true;
 
@@ -588,16 +623,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 else
                     workingFolder = project.WorkingPath;
 
-                if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
-                    VerifySafePath("OutputPath", outputFolder, projectFolder);
-
-                // The output folder and the working folder cannot be the same
-                if(workingFolder == outputFolder)
-                    throw new BuilderException("BE0030", "The OutputPath and WorkingPath properties cannot be " +
-                        "set to the same path");
-
-                // Make sure we can find the tools
-                this.FindTools();
+                this.ExecutePlugIns(ExecutionBehaviors.Before);
+                this.ReportProgress("The Sandcastle tools are located in '{0}'", ComponentUtilities.RootFolder);
+                this.ExecutePlugIns(ExecutionBehaviors.After);
 
                 // Check for the SHFBROOT environment variable.  It may not be present yet if a reboot hasn't
                 // occurred after installation.  In such cases, set it to the proper folder for this process so
@@ -628,34 +656,34 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 frameworkReflectionData = reflectionDataDictionary.CoreFrameworkByTitle(project.FrameworkVersion, true);
 
                 if(frameworkReflectionData == null)
+                {
                     throw new BuilderException("BE0071", String.Format(CultureInfo.CurrentCulture,
                         "Unable to locate information for the project framework version '{0}' or a suitable " +
                         "redirected version on this system.  See error number help topic for details.",
                         project.FrameworkVersion));
+                }
 
                 this.ReportProgress("Using framework reflection data for '{0}' located in '{1}'",
                     this.FrameworkReflectionData.Title, this.FrameworkReflectionDataFolder);
 
                 if(!Directory.EnumerateFiles(this.FrameworkReflectionDataFolder, "*.xml").Any())
+                {
                     throw new BuilderException("BE0032", "Reflection data files for the selected framework " +
                         "do not exist yet (" + frameworkReflectionData.Title + ").  See help file for " +
                         "details about this error number.");
+                }
 
                 // Warn if a different framework is being used for the build
                 if(frameworkReflectionData.Title != project.FrameworkVersion)
+                {
                     this.ReportWarning("BE0072", "Project framework version '{0}' not found.  It has been " +
                         "redirected and will use '{1}' instead.", project.FrameworkVersion,
                         frameworkReflectionData.Title);
+                }
 
                 // Get the composition container used to find build components in the rest of the build process
                 componentContainer = ComponentUtilities.CreateComponentContainer(project.ComponentSearchPaths,
-                    this.CancellationToken);
-
-                syntaxGenerators = componentContainer.GetExports<ISyntaxGeneratorFactory,
-                    ISyntaxGeneratorMetadata>().Select(sf => sf.Metadata).ToList();
-                buildComponents = componentContainer.GetExports<BuildComponentFactory,
-                    IBuildComponentMetadata>().GroupBy(c => c.Metadata.Id).Select(g => g.First()).ToDictionary(
-                        key => key.Metadata.Id, value => value.Value);
+                    resolver, this.CancellationToken);
 
                 // Figure out which presentation style to use
                 var style = componentContainer.GetExports<PresentationStyleSettings,
@@ -663,8 +691,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         project.PresentationStyle, StringComparison.OrdinalIgnoreCase));
 
                 if(style == null)
+                {
                     throw new BuilderException("BE0001", "The PresentationStyle property value of '" +
                         project.PresentationStyle + "' is not recognized as a valid presentation style definition");
+                }
 
                 presentationStyle = style.Value;
 
@@ -674,17 +704,46 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 var psErrors = presentationStyle.CheckForErrors();
 
                 if(psErrors.Any())
+                {
                     throw new BuilderException("BE0004", String.Format(CultureInfo.CurrentCulture,
                         "The selected presentation style ({0}) is not valid.  Reason(s):\r\n{1}",
                         style.Metadata.Id, String.Join("\r\n", psErrors)));
+                }
+
+                // If no help file format is specified in the project, use the first available format based on
+                // the selected presentation style.
+                if(project.HelpFileFormat == 0)
+                {
+                    foreach(int v in Enum.GetValues(typeof(HelpFileFormats)))
+                        if(((int)presentationStyle.SupportedFormats & v) != 0)
+                        {
+                            project.SetDefaultHelpFileFormat((HelpFileFormats)v);
+                            break;
+                        }
+                }
+
+                if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
+                    this.FindHtmlHelpCompiler();
+
+                if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
+                    VerifySafePath("OutputPath", outputFolder, projectFolder);
+
+                // The output folder and the working folder cannot be the same
+                if(workingFolder == outputFolder)
+                {
+                    throw new BuilderException("BE0030", "The OutputPath and WorkingPath properties cannot be " +
+                        "set to the same path");
+                }
 
                 // If the presentation style does not support one or more of the selected help file formats,
                 // stop now.
                 if((project.HelpFileFormat & ~presentationStyle.SupportedFormats) != 0)
+                {
                     throw new BuilderException("BE0074", String.Format(CultureInfo.CurrentCulture,
                         "The selected presentation style ({0}) does not support one or more of the selected " +
                         "help file formats.  Supported formats: {1}", style.Metadata.Id,
                         presentationStyle.SupportedFormats));
+                }
 
                 // Create the substitution tag replacement handler now as we have everything it needs
                 substitutionTags = new SubstitutionTagReplacement(this);
@@ -827,56 +886,31 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // Transform the shared builder content files
                 language = project.Language;
-                languageFile = Path.Combine(presentationStyle.ResolvePath(presentationStyle.ToolResourceItemsPath),
-                    language.Name + ".xml");
 
                 this.ReportProgress(BuildStep.GenerateSharedContent, "Generating shared content files ({0}, {1})...",
                     language.Name, language.DisplayName);
 
-                if(!File.Exists(languageFile))
-                {
-                    languageFile = Path.Combine(presentationStyle.ResolvePath(presentationStyle.ToolResourceItemsPath),
-                        "en-US.xml");
-
-                    // Warn the user about the default being used
-                    this.ReportWarning("BE0002", "Help file builder content for the '{0}, {1}' language could " +
-                        "not be found.  Using 'en-US, English (US)' defaults.", language.Name, language.DisplayName);
-                }
-
-                // See if the user has translated the Sandcastle resources.  If not found, default to US English.
-                languageFolder = Path.Combine(presentationStyle.ResolvePath(presentationStyle.ResourceItemsPath),
-                    language.Name);
-
-                if(Directory.Exists(languageFolder))
-                    languageFolder = language.Name + @"\";
-                else
+                // See if the user has translated the Sandcastle resources.  If not found, default to English (US).
+                if(!presentationStyle.ResourceItemFiles(language.Name).Any(
+                  f => Path.GetFileNameWithoutExtension(f).EndsWith(language.Name, StringComparison.OrdinalIgnoreCase)))
                 {
                     // Warn the user about the default being used.  The language will still be used for the help
                     // file though.
                     if(language.Name != "en-US")
+                    {
                         this.ReportWarning("BE0003", "Sandcastle shared content for the '{0}, {1}' language " +
                             "could not be found.  Using 'en-US, English (US)' defaults.", language.Name,
                             language.DisplayName);
-
-                    languageFolder = String.Empty;
+                    }
                 }
 
                 if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 {
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                    substitutionTags.TransformTemplate(Path.GetFileName(languageFile),
-                        Path.GetDirectoryName(languageFile), workingFolder);
-                    File.Move(Path.Combine(workingFolder, Path.GetFileName(languageFile)),
-                        Path.Combine(workingFolder, "SHFBContent.xml"));
-
-                    if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
-                        substitutionTags.TransformTemplate("WebsiteContent.xml", Path.GetDirectoryName(languageFile),
-                            workingFolder);
-
                     // Copy the stop word list
-                    languageFile = Path.Combine(ComponentUtilities.CoreComponentsFolder, "Shared",
-                        "StopWordList", Path.GetFileNameWithoutExtension(languageFile) +".txt");
+                    string languageFile = Path.Combine(ComponentUtilities.CoreComponentsFolder, "Shared",
+                        "StopWordList", language.Name + ".txt");
                     File.Copy(languageFile, Path.Combine(workingFolder, "StopWordList.txt"));
                     File.SetAttributes(Path.Combine(workingFolder, "StopWordList.txt"), FileAttributes.Normal);
 
@@ -1181,7 +1215,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // If F# syntax is being generated, add some of the F# namespaces as the syntax sections generate
                 // references to types that may not be there in non-F# projects.
-                if(ComponentUtilities.SyntaxFiltersFrom(syntaxGenerators, project.SyntaxFilters).Any(
+                if(ComponentUtilities.SyntaxFiltersFrom(this.SyntaxGenerators, project.SyntaxFilters).Any(
                   f => f.Id == "F#"))
                 {
                     rn.Add("Microsoft.FSharp.Core");
@@ -1197,61 +1231,122 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 {
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                    this.ReportProgress("    sandcastle.config");
-
-                    // The configuration varies based on the style.  We'll use a common name (sandcastle.config).
-                    resolvedPath = presentationStyle.ResolvePath(presentationStyle.BuildAssemblerConfiguration);
-                    substitutionTags.TransformTemplate(Path.GetFileName(resolvedPath), Path.GetDirectoryName(resolvedPath),
-                        workingFolder);
-
-                    if(!Path.GetFileName(resolvedPath).Equals("sandcastle.config", StringComparison.OrdinalIgnoreCase))
-                    {
-                        File.Move(Path.Combine(workingFolder, Path.GetFileName(resolvedPath)),
-                            Path.Combine(workingFolder, "sandcastle.config"));
-                    }
+                    // The configuration varies based on the style
+                    this.BuildAssemblerConfigurationFile = presentationStyle.ResolvePath(
+                        presentationStyle.BuildAssemblerConfiguration);
+                    this.BuildAssemblerConfigurationFile = substitutionTags.TransformTemplate(
+                        Path.GetFileName(this.BuildAssemblerConfigurationFile),
+                        Path.GetDirectoryName(this.BuildAssemblerConfigurationFile), workingFolder);
 
                     this.ExecutePlugIns(ExecutionBehaviors.After);
                 }
-
-                // Merge the build component custom configurations
-                this.MergeComponentConfigurations();
 
                 commentsFiles = null;
-
-                // Build the help topics
-                this.ReportProgress(BuildStep.BuildTopics, "Building help topics...");
-
-                if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
-                {
-                    scriptFile = substitutionTags.TransformTemplate("BuildTopics.proj", templateFolder,
-                        workingFolder);
-
-                    this.ExecutePlugIns(ExecutionBehaviors.Before);
-                                        
-                    taskRunner.RunProject("BuildTopics.proj", false);
-                    
-                    this.ExecutePlugIns(ExecutionBehaviors.After);
-                }
 
                 // Combine the conceptual and API intermediate TOC files into one
                 this.CombineIntermediateTocFiles();
 
+                try
+                {
+                    // Switch to the working folder for relative paths in the Build Assembler configuration file
+                    Directory.SetCurrentDirectory(this.WorkingFolder);
+                    bool notInsteadOf = true;
+
+                    using(var buildAssembler = new BuildAssemblerInternal(this))
+                    {
+                        // Merge the build component custom configurations
+                        this.MergeComponentConfigurations();
+
+                        // Set the language filter items used by the presentation style transformation
+                        presentationStyle.TopicTranformation.AddLanguageFilterItems(
+                            ComponentUtilities.SyntaxFilterLanguagesFrom(this.SyntaxGenerators,
+                            project.SyntaxFilters));
+
+                        // Build the help topics
+                        this.ReportProgress(BuildStep.BuildTopics, "Building help topics...");
+
+                        if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
+                        {
+                            this.ExecutePlugIns(ExecutionBehaviors.Before);
+
+                            buildAssembler.BuildTopics();
+                        }
+                        else
+                            notInsteadOf = false;
+                    }
+
+                    // Execute "after" context plug-ins after disposal of the build assembler instance.  If not,
+                    // build assembler's save component may still be writing out topics and they might not all
+                    // exist.  After disposal, we can guarantee that they all exist.
+                    if(notInsteadOf)
+                        this.ExecutePlugIns(ExecutionBehaviors.After);
+                }
+                finally
+                {
+                    // Switch back after disposing of the build assembler instance as some components copy
+                    // files to the working folder when shutting down.
+                    Directory.SetCurrentDirectory(this.ProjectFolder);
+                }
+
+                // Determine the default topic for Help 1, website, and markdown output if one was not specified in a
+                // site map or content layout file.
+                if(defaultTopic == null && (project.HelpFileFormat & (HelpFileFormats.HtmlHelp1 |
+                  HelpFileFormats.Website | HelpFileFormats.Markdown)) != 0)
+                {
+                    var defTopic = ComponentUtilities.XmlStreamAxis(Path.Combine(workingFolder, "toc.xml"), "topic").FirstOrDefault(
+                        t => t.Attribute("file") != null);
+
+                    if(defTopic != null)
+                    {
+                        // Find the file.  Could be .htm, .html, or .md so just look for any file with the given name.
+                        defaultTopic = Directory.EnumerateFiles(workingFolder + "Output",
+                            defTopic.Attribute("file").Value + ".*", SearchOption.AllDirectories).FirstOrDefault();
+
+                        if(defaultTopic != null)
+                        {
+                            defaultTopic = defaultTopic.Substring(workingFolder.Length + 7);
+
+                            if(defaultTopic.IndexOf('\\') != -1)
+                                defaultTopic = defaultTopic.Substring(defaultTopic.IndexOf('\\') + 1);
+                        }
+                    }
+
+                    // This shouldn't happen anymore, but just in case...
+                    if(defaultTopic == null)
+                        throw new BuilderException("BE0026", "Unable to determine default topic in toc.xml.  Mark " +
+                            "one as the default topic manually in the content layout file.");
+                }
+
                 // The last part differs based on the help file format
-                if((project.HelpFileFormat & (HelpFileFormats.HtmlHelp1 | HelpFileFormats.Website)) != 0)
+
+                // NOTE: For website output, this is only used by the legacy VS2013 presentation style.  When
+                //       that is removed at some point in the future, this can go away and this step doesn't have
+                //       to be ran for website output anymore.
+                if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0 ||
+                  ((project.HelpFileFormat & HelpFileFormats.Website) != 0 &&
+                    presentationStyle.BasePath == "VS2013"))
                 {
                     this.ReportProgress(BuildStep.ExtractingHtmlInfo,
                         "Extracting HTML info for HTML Help 1 and/or website...");
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
-                        scriptFile = substitutionTags.TransformTemplate("ExtractHtmlInfo.proj", templateFolder,
-                            workingFolder);
+                        this.HtmlExtractTool = new TitleAndKeywordHtmlExtract(this)
+                        {
+                            Help1Folder = ((this.CurrentProject.HelpFileFormat & HelpFileFormats.HtmlHelp1) == 0) ?
+                                null : Path.Combine(this.WorkingFolder, "Output", HelpFileFormats.HtmlHelp1.ToString()),
+                            WebsiteFolder = ((this.CurrentProject.HelpFileFormat & HelpFileFormats.Website) == 0) ?
+                                null : Path.Combine(this.WorkingFolder, "Output", HelpFileFormats.Website.ToString()),
+                        };
 
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                        taskRunner.RunProject("ExtractHtmlInfo.proj", true);
+                        this.HtmlExtractTool.ExtractHtmlInfo();
 
                         this.ExecutePlugIns(ExecutionBehaviors.After);
+
+                        // Keep the HTML extract tool around until after the help file is build as plug-ins
+                        // may rely on it for values such as the localized file folder.
                     }
                 }
 
@@ -1270,7 +1365,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        substitutionTags.TransformTemplate("Help1x.hhp", templateFolder, workingFolder);
+                        substitutionTags.TransformTemplate("Help1x.hhp", templateFolder,
+                            Path.Combine(this.WorkingFolder, "Output", HelpFileFormats.HtmlHelp1.ToString()));
                         this.ExecutePlugIns(ExecutionBehaviors.After);
                     }
 
@@ -1290,6 +1386,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         this.ExecutePlugIns(ExecutionBehaviors.After);
                     }
                 }
+
+                this.HtmlExtractTool = null;
 
                 if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
                 {
@@ -1371,12 +1469,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
-                        scriptFile = substitutionTags.TransformTemplate("BuildOpenXmlFile.proj", templateFolder,
-                            workingFolder);
-
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                        taskRunner.RunProject("BuildOpenXmlFile.proj", true);
+                        new OpenXmlFileGenerator(this).Execute();
 
                         this.GatherBuildOutputFilenames();
                         this.ExecutePlugIns(ExecutionBehaviors.After);
@@ -1403,12 +1498,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
-                        scriptFile = substitutionTags.TransformTemplate("GenerateMarkdownContent.proj",
-                            templateFolder, workingFolder);
-
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                        taskRunner.RunProject("GenerateMarkdownContent.proj", true);
+                        new MarkdownContentGenerator(this).Execute();
 
                         this.GatherBuildOutputFilenames();
                         this.ExecutePlugIns(ExecutionBehaviors.After);
@@ -1579,9 +1671,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <param name="message">The message to report</param>
         /// <param name="args">A list of arguments to format into the message text</param>
         /// <remarks>This just reports the error.  The caller must abort the build</remarks>
-        private void ReportError(BuildStep step, string errorCode, string message, params object[] args)
+        public void ReportError(BuildStep step, string errorCode, string message, params object[] args)
         {
-            string errorMessage = String.Format(CultureInfo.CurrentCulture, message, args);
+            // If the message has no arguments, use it as is rather than formatting it to avoid issues if it
+            // contains braces which will look like format arguments.
+            string errorMessage = args.Length == 0 ? message : String.Format(CultureInfo.CurrentCulture, message, args);
 
             this.ReportProgress(step, "\r\nSHFB: Error {0}: {1}\r\n", errorCode, errorMessage);
         }
@@ -1594,7 +1688,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <param name="args">A list of arguments to format into the message text</param>
         public void ReportWarning(string warningCode, string message, params object[] args)
         {
-            string warningMessage = String.Format(CultureInfo.CurrentCulture, message, args);
+            // If the message has no arguments, use it as is rather than formatting it to avoid issues if it
+            // contains braces which will look like format arguments.
+            string warningMessage = args.Length == 0 ? message : String.Format(CultureInfo.CurrentCulture, message, args);
 
             this.ReportProgress(this.CurrentBuildStep, "SHFB: Warning {0}: {1}", warningCode, warningMessage);
         }
@@ -1836,103 +1932,50 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         /// <summary>
-        /// Find the Sandcastle tools and the HTML help compiler
+        /// Find the HTML help compiler
         /// </summary>
-        /// <exception cref="BuilderException">This is thrown if any of the tools cannot be found</exception>
-        protected void FindTools()
+        /// <exception cref="BuilderException">This is thrown if the HTML help compiler cannot be found</exception>
+        protected void FindHtmlHelpCompiler()
         {
-            this.ReportProgress("Finding tools...");
-            this.ExecutePlugIns(ExecutionBehaviors.Before);
+            hhcFolder = project.HtmlHelp1xCompilerPath;
 
-            this.ReportProgress("The Sandcastle tools are located in '{0}'", ComponentUtilities.RootFolder);
-
-            // Find the help compilers by looking on all fixed drives but only if the related format is used
-            if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
+            if(hhcFolder.Length == 0)
             {
-                hhcFolder = project.HtmlHelp1xCompilerPath;
+                this.ReportProgress("Searching for HTML Help 1 compiler...");
 
-                if(hhcFolder.Length == 0)
+                // Check for a 64-bit process.  The tools will be in the x86 folder.  If running as a 32-bit
+                // process, the folder will contain "(x86)" already if on a 64-bit OS.
+                StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.Is64BitProcess ?
+                    Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles));
+
+                sb.Append(@"\HTML Help Workshop");
+
+                foreach(DriveInfo di in DriveInfo.GetDrives())
                 {
-                    this.ReportProgress("Searching for HTML Help 1 compiler...");
-                    hhcFolder = FindOnFixedDrives(@"\HTML Help Workshop");
-                }
-
-                if(hhcFolder.Length == 0 || !Directory.Exists(hhcFolder))
-                    throw new BuilderException("BE0037", "Could not find the path to the HTML Help 1 compiler.  " +
-                        "Is the HTML Help Workshop installed?  See the error number topic in the help file " +
-                        "for details.\r\n");
-
-                if(hhcFolder[hhcFolder.Length - 1] != '\\')
-                    hhcFolder += @"\";
-
-                this.ReportProgress("Found HTML Help 1 compiler in '{0}'", hhcFolder);
-            }
-
-            this.ExecutePlugIns(ExecutionBehaviors.After);
-        }
-
-        /// <summary>
-        /// Find a folder by searching the Program Files folders on all fixed drives.
-        /// </summary>
-        /// <param name="path">The path for which to search</param>
-        /// <returns>The path if found or an empty string if not found</returns>
-        protected internal static string FindOnFixedDrives(string path)
-        {
-            // Check for a 64-bit process.  The tools will be in the x86 folder.  If running as a 32-bit process,
-            // the folder will contain "(x86)" already if on a 64-bit OS.
-            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.Is64BitProcess ?
-                Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles));
-
-            sb.Append(path);
-
-            foreach(DriveInfo di in DriveInfo.GetDrives())
-                if(di.DriveType == DriveType.Fixed)
-                {
-                    sb[0] = di.Name[0];
-
-                    if(Directory.Exists(sb.ToString()))
-                        return sb.ToString();
-                }
-
-            return String.Empty;
-        }
-
-        /// <summary>
-        /// This is used to find the named executable in one of the Visual Studio SDK installation folders.
-        /// </summary>
-        /// <param name="exeName">The name of the executable to find</param>
-        /// <returns>The path if found or an empty string if not found</returns>
-        /// <remarks>The search looks in all "*Visual*SDK*" folders under the Program Files special folder on all
-        /// fixed drives.</remarks>
-        protected internal static string FindSdkExecutable(string exeName)
-        {
-            // Check for a 64-bit process.  The tools will be in the x86 folder.  If running as a 32-bit process,
-            // the folder will contain "(x86)" already if on a 64-bit OS.
-            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.Is64BitProcess ?
-                Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles));
-            string folder;
-
-            foreach(DriveInfo di in DriveInfo.GetDrives())
-                if(di.DriveType == DriveType.Fixed)
-                {
-                    sb[0] = di.Name[0];
-                    folder = sb.ToString();
-
-                    if(!Directory.Exists(folder))
-                        continue;
-
-                    foreach(string dir in Directory.EnumerateDirectories(folder, "*Visual*SDK*"))
+                    if(di.DriveType == DriveType.Fixed)
                     {
-                        // If more than one, sort them and take the last one as it should be the most recent.
-                        var file = Directory.EnumerateFiles(dir, exeName, SearchOption.AllDirectories).OrderBy(
-                            f => f).LastOrDefault();
+                        sb[0] = di.Name[0];
 
-                        if(file != null)
-                            return Path.GetDirectoryName(file);
+                        if(Directory.Exists(sb.ToString()))
+                        {
+                            hhcFolder = sb.ToString();
+                            break;
+                        }
                     }
                 }
+            }
 
-            return String.Empty;
+            if(hhcFolder.Length == 0 || !Directory.Exists(hhcFolder))
+            {
+                throw new BuilderException("BE0037", "Could not find the path to the HTML Help 1 compiler.  " +
+                    "Is the HTML Help Workshop installed?  See the error number topic in the help file " +
+                    "for details.\r\n");
+            }
+
+            if(hhcFolder[hhcFolder.Length - 1] != '\\')
+                hhcFolder += @"\";
+
+            this.ReportProgress("Found HTML Help 1 compiler in '{0}'", hhcFolder);
         }
         #endregion
 
@@ -2168,7 +2211,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                         if(commonTarget != null)
                         {
-                            this.ReportProgress("    Multi-targeted projects where found.  The common target " +
+                            this.ReportProgress("    Multi-targeted projects were found.  The common target " +
                                 "framework '{0}' will be used.  Override using the TargetFramework property on " +
                                 "the documentation sources.", commonTarget);
 
@@ -2178,7 +2221,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         else
                         {
                             // This may work or it may not depending on their compatibility
-                            this.ReportProgress("    Multi-targeted projects where found but no common target " +
+                            this.ReportProgress("    Multi-targeted projects were found but no common target " +
                                 "framework could be determined.  The first target framework in each will be " +
                                 "used.  Override using the TargetFramework property on the documentation sources.");
                         }

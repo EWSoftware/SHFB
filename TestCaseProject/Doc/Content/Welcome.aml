@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="303c996a-2911-4c08-b492-6496c82b3edb" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <summary abstract="true"><para>Test the summary element</para></summary>
     <introduction>
       <para>Welcome to the Sandcastle MAML Guide. This is intended to be a
 reference that you can use to find out all that you need to know about

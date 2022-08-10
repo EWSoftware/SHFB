@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/01/2021
-// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
+// Updated : 04/17/2022
+// Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
 //
@@ -28,8 +28,6 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml;
-using System.Xml.XPath;
 
 using Microsoft.Build.Evaluation;
 
@@ -412,39 +410,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// The resource items folder
-        /// </summary>
-        /// <returns>The resource items folder</returns>
-        [SubstitutionTag]
-        private string ResourceItemsFolder()
-        {
-            return FolderPath.TerminatePath(Path.Combine(presentationStyle.ResolvePath(presentationStyle.ResourceItemsPath),
-                currentBuild.LanguageFolder));
-        }
-
-        /// <summary>
-        /// The HTML Help 1 output folder
-        /// </summary>
-        /// <returns>The HTML Help 1 output folder</returns>
-        [SubstitutionTag]
-        private string Help1Folder()
-        {
-            return ((sandcastleProject.HelpFileFormat & HelpFileFormats.HtmlHelp1) == 0) ? String.Empty :
-                @"Output\" + HelpFileFormats.HtmlHelp1.ToString();
-        }
-
-        /// <summary>
-        /// The website output folder
-        /// </summary>
-        /// <returns>The website output folder</returns>
-        [SubstitutionTag]
-        private string WebsiteFolder()
-        {
-            return ((sandcastleProject.HelpFileFormat & HelpFileFormats.Website) == 0) ? String.Empty :
-                @"Output\" + HelpFileFormats.Website.ToString();
-        }
-
-        /// <summary>
         /// The MEF component locations
         /// </summary>
         /// <returns>The MEF component locations</returns>
@@ -507,24 +472,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private string CodeSnippetGrouping()
         {
             return presentationStyle.SupportsCodeSnippetGrouping.ToString().ToLowerInvariant();
-        }
-
-        /// <summary>
-        /// The Transform Component argument list
-        /// </summary>
-        /// <returns>The Transform Component argument list</returns>
-        [SubstitutionTag]
-        private string TransformComponentArguments()
-        {
-            replacementValue.Clear();
-
-            foreach(var arg in sandcastleProject.TransformComponentArguments)
-                if(arg.Value != null)
-                    replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<argument key=\"{0}\" value=\"{1}\" />\r\n", arg.Key, arg.Value);
-                else
-                    replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<argument key=\"{0}\">{1}</argument>\r\n", arg.Key, arg.Content);
-
-            return replacementValue.ToString();
         }
 
         /// <summary>
@@ -627,15 +574,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         /// <summary>
-        /// Build assembler verbosity
+        /// Disabled the code block component
         /// </summary>
-        /// <returns>The build assembler verbosity</returns>
+        /// <returns>"True" if the presentation style does not use the legacy colorizer or if the project setting
+        /// is set to true, "false" if not</returns>
         [SubstitutionTag]
-        private string BuildAssemblerVerbosity()
+        private string DisableCodeBlockComponent()
         {
-            return (sandcastleProject.BuildAssemblerVerbosity == Utils.BuildAssemblerVerbosity.AllMessages) ? "Info" :
-                (sandcastleProject.BuildAssemblerVerbosity == Utils.BuildAssemblerVerbosity.OnlyWarningsAndErrors) ?
-                "Warn" : "Error";
+            return (!currentBuild.PresentationStyle.TopicTranformation.UsesLegacyCodeColorizer ||
+                currentBuild.CurrentProject.DisableCodeBlockComponent).ToString().ToLowerInvariant();
         }
 
         /// <summary>
@@ -871,16 +818,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// The "preliminary" warning in the header text
-        /// </summary>
-        /// <returns>Include the "preliminary" warning in the header text if wanted</returns>
-        [SubstitutionTag]
-        private string Preliminary()
-        {
-            return sandcastleProject.Preliminary ? "<include item=\"preliminary\"/>" :String.Empty;
-        }
-
-        /// <summary>
         /// The SDK link target
         /// </summary>
         /// <returns>The SDK link target converted to lowercase and prefixed with an underscore</returns>
@@ -900,19 +837,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
             return ComponentUtilities.SyntaxFilterGeneratorsFrom(currentBuild.SyntaxGenerators,
                 sandcastleProject.SyntaxFilters);
         }
-
-        /// <summary>
-        /// The syntax filter language settings for the Transform Component
-        /// </summary>
-        /// <returns>The syntax filter language settings for the Transform Component.  It is not technically a
-        /// dropdown anymore but I can't be bothered to go change it everywhere.</returns>
-        [SubstitutionTag]
-        private string SyntaxFiltersDropDown()
-        {
-            return ComponentUtilities.SyntaxFilterLanguagesFrom(currentBuild.SyntaxGenerators,
-                sandcastleProject.SyntaxFilters);
-        }
-
         #endregion
 
         #region Help 1 format substitution tags
@@ -1091,39 +1015,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         /// <summary>
-        /// The HTML table of contents for websites
-        /// </summary>
-        /// <returns>The HTML table of contents for websites</returns>
-        /// <remarks>If the legacy web content is ever removed, this handler and its related method,
-        /// <see cref="AppendTocEntry"/>, can be removed</remarks>
-        [SubstitutionTag]
-        private string HtmlTOC()
-        {
-            XPathDocument tocDoc;
-            Encoding enc = Encoding.Default;
-
-            // When reading the file, use the default encoding but detect the encoding if byte order marks are
-            // present.
-            using(StringReader sr = new StringReader(Utility.ReadWithEncoding(currentBuild.WorkingFolder +
-              "WebTOC.xml", ref enc)))
-            using(var reader = XmlReader.Create(sr, new XmlReaderSettings { CloseInput = true }))
-            {
-                tocDoc = new XPathDocument(reader);
-            }
-
-            var navToc = tocDoc.CreateNavigator();
-
-            // Get the TOC entries from the HelpTOC node
-            var entries = navToc.Select("HelpTOC/*");
-
-            replacementValue.Clear();
-
-            this.AppendTocEntry(entries, replacementValue);
-
-            return replacementValue.ToString();
-        }
-
-        /// <summary>
         /// The website ad content that should appear in on each page
         /// </summary>
         /// <returns>The website ad content</returns>
@@ -1229,11 +1120,58 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// Help 1 project file list
         /// </summary>
         /// <returns>The help 1 project file list</returns>
+        /// <remarks>The help file list is expanded to ensure that we get all additional content including all
+        /// nested subfolders.</remarks>
         [SubstitutionTag]
         private string Help1xProjectFiles()
         {
-            return this.HelpProjectFileList(String.Format(CultureInfo.InvariantCulture, @"{0}Output\{1}",
-                currentBuild.WorkingFolder, HelpFileFormats.HtmlHelp1), HelpFileFormats.HtmlHelp1);
+            string sourceFolder = Path.Combine(currentBuild.WorkingFolder, "Output",
+                HelpFileFormats.HtmlHelp1.ToString()) + Path.DirectorySeparatorChar,
+                filename, checkName;
+
+            if(sourceFolder.IndexOf(',') != -1 || sourceFolder.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
+            {
+                currentBuild.ReportWarning("BE0060", "The file path '{0}' contains a comma or '.h' which may " +
+                    "cause the Help 1 compiler to fail.", sourceFolder);
+            }
+
+            if(currentBuild.ResolvedHtmlHelpName.IndexOf(',') != -1 ||
+                currentBuild.ResolvedHtmlHelpName.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
+            {
+                currentBuild.ReportWarning("BE0060", "The HtmlHelpName property value '{0}' contains a comma " +
+                    "or '.h' which may cause the Help 1 compiler to fail.", currentBuild.ResolvedHtmlHelpName);
+            }
+
+            replacementValue.Clear();
+
+            foreach(string name in Directory.EnumerateFiles(sourceFolder, "*.*", SearchOption.AllDirectories))
+            {
+                filename = checkName = name.Replace(sourceFolder, String.Empty);
+
+                // Ignore the project, index, and TOC files
+                if(checkName.EndsWith(".hhc", StringComparison.OrdinalIgnoreCase) ||
+                    checkName.EndsWith(".hhk", StringComparison.OrdinalIgnoreCase) ||
+                    checkName.EndsWith(".hhp", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                if(checkName.EndsWith(".htm", StringComparison.OrdinalIgnoreCase) ||
+                  checkName.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
+                {
+                    checkName = checkName.Substring(0, checkName.LastIndexOf(".htm", StringComparison.OrdinalIgnoreCase));
+                }
+
+                if(checkName.IndexOf(',') != -1 || checkName.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    currentBuild.ReportWarning("BE0060", "The filename '{0}' contains a comma or '.h' " +
+                        "which may cause the Help 1 compiler to fail.", filename);
+                }
+
+                replacementValue.AppendFormat(CultureInfo.InvariantCulture, "{0}\r\n", filename);
+            }
+
+            return replacementValue.ToString();
         }
 
         /// <summary>
@@ -1275,9 +1213,30 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             replacementValue.Clear();
 
+            // Add resource items files from the presentation style.  These are always listed first so as to
+            // allow the files below to override the stock items.  Files are copied and transformed as they may
+            // contain substitution tags.
+            foreach(string psItemFile in currentBuild.PresentationStyle.ResourceItemFiles(currentBuild.Language.Name))
+            {
+                replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<content file=\"{0}\" />\r\n",
+                    Path.GetFileName(psItemFile));
+
+                this.TransformTemplate(Path.GetFileName(psItemFile), Path.GetDirectoryName(psItemFile),
+                    currentBuild.WorkingFolder);
+            }
+
+            // If generating web content, add the website content override file.  We just transform it and add
+            // it to the working folder.  The website specific part of the build assembler configuration file
+            // will pick it up.
+            if((currentBuild.CurrentProject.HelpFileFormat & HelpFileFormats.Website) == HelpFileFormats.Website)
+            {
+                this.TransformTemplate("WebsiteContent.xml", Path.Combine(ComponentUtilities.CoreComponentsFolder,
+                    "Shared", "Content"), currentBuild.WorkingFolder);
+            }
+
             // Add syntax generator resource item files.  All languages are included regardless of the project
             // filter settings since code examples can be in any language.  Files are copied and transformed as
-            // they may contain substitution tags
+            // they may contain substitution tags.
             foreach(string itemFile in ComponentUtilities.SyntaxGeneratorResourceItemFiles(
               currentBuild.ComponentContainer, sandcastleProject.Language))
             {
@@ -1436,123 +1395,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
             }
 
             return replacementValue.ToString();
-        }
-
-        /// <summary>
-        /// This returns a complete list of files for inclusion in the compiled help file
-        /// </summary>
-        /// <param name="folder">The folder to expand</param>
-        /// <param name="format">The help file format</param>
-        /// <returns>The full list of all files for the help project</returns>
-        /// <remarks>The help file list is expanded to ensure that we get all additional content including all
-        /// nested subfolders.  The <paramref name="format"/> parameter determines the format of the returned
-        /// file list.  For HTML Help 1, it returns a list of the filenames.  For all others, it returns the list
-        /// formatted with the necessary XML markup.</remarks>
-        private string HelpProjectFileList(string folder, HelpFileFormats format)
-        {
-            string itemFormat, filename, checkName, sourceFolder = folder;
-            bool encode;
-
-            if(folder == null)
-                throw new ArgumentNullException(nameof(folder));
-
-            if(folder.Length != 0 && folder[folder.Length - 1] != '\\')
-                folder += @"\";
-
-            if((format & HelpFileFormats.HtmlHelp1) != 0)
-            {
-                if(folder.IndexOf(',') != -1 || folder.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
-                    currentBuild.ReportWarning("BE0060", "The file path '{0}' contains a comma or '.h' which may " +
-                        "cause the Help 1 compiler to fail.", folder);
-
-                if(currentBuild.ResolvedHtmlHelpName.IndexOf(',') != -1 ||
-                  currentBuild.ResolvedHtmlHelpName.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
-                    currentBuild.ReportWarning("BE0060", "The HtmlHelpName property value '{0}' contains a comma " +
-                        "or '.h' which may cause the Help 1 compiler to fail.", currentBuild.ResolvedHtmlHelpName);
-
-                itemFormat = "{0}\r\n";
-                encode = false;
-            }
-            else
-            {
-                itemFormat = "	<File Url=\"{0}\" />\r\n";
-                encode = true;
-            }
-
-            replacementValue.Clear();
-
-            foreach(string name in Directory.EnumerateFiles(sourceFolder, "*.*", SearchOption.AllDirectories))
-                if(!encode)
-                {
-                    filename = checkName = name.Replace(folder, String.Empty);
-
-                    if(checkName.EndsWith(".htm", StringComparison.OrdinalIgnoreCase) ||
-                      checkName.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
-                        checkName = checkName.Substring(0, checkName.LastIndexOf(".htm", StringComparison.OrdinalIgnoreCase));
-
-                    if(checkName.IndexOf(',') != -1 || checkName.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
-                        currentBuild.ReportWarning("BE0060", "The filename '{0}' contains a comma or '.h' " +
-                            "which may cause the Help 1 compiler to fail.", filename);
-
-                    replacementValue.AppendFormat(CultureInfo.InvariantCulture, itemFormat, filename);
-                }
-                else
-                {
-                    replacementValue.AppendFormat(CultureInfo.InvariantCulture, itemFormat,
-                        WebUtility.HtmlEncode(name.Replace(folder, String.Empty)));
-                }
-
-            return replacementValue.ToString();
-        }
-
-        /// <summary>
-        /// This is called to recursively append the child nodes to the HTML table of contents in the specified
-        /// string builder.
-        /// </summary>
-        /// <param name="entries">The list over which to iterate recursively</param>
-        /// <param name="tableOfContents">The string builder to which the entries are appended</param>
-        private void AppendTocEntry(XPathNodeIterator entries, StringBuilder tableOfContents)
-        {
-            string url, target, title;
-
-            foreach(XPathNavigator node in entries)
-                if(node.HasChildren)
-                {
-                    url = node.GetAttribute("Url", String.Empty);
-                    title = node.GetAttribute("Title", String.Empty);
-
-                    if(!String.IsNullOrWhiteSpace(url))
-                        target = " target=\"TopicContent\"";
-                    else
-                    {
-                        url = "#";
-                        target = String.Empty;
-                    }
-
-                    tableOfContents.AppendFormat(CultureInfo.InvariantCulture, "<div class=\"TreeNode\">\r\n" +
-                        "<img class=\"TreeNodeImg\" onclick=\"javascript: Toggle(this);\" " +
-                        "src=\"Collapsed.gif\"/><a class=\"UnselectedNode\" " +
-                        "onclick=\"javascript: return Expand(this);\" href=\"{0}\"{1}>{2}</a>\r\n" +
-                        "<div class=\"Hidden\">\r\n", WebUtility.HtmlEncode(url), target, WebUtility.HtmlEncode(title));
-
-                    this.AppendTocEntry(node.Select("*"), tableOfContents);
-
-                    tableOfContents.Append("</div>\r\n</div>\r\n");
-                }
-                else
-                {
-                    title = node.GetAttribute("Title", String.Empty);
-                    url = node.GetAttribute("Url", String.Empty);
-
-                    if(String.IsNullOrWhiteSpace(url))
-                        url = "about:blank";
-
-                    tableOfContents.AppendFormat(CultureInfo.InvariantCulture, "<div class=\"TreeItem\">\r\n" +
-                        "<img src=\"Item.gif\"/>" +
-                        "<a class=\"UnselectedNode\" onclick=\"javascript: return SelectNode(this);\" " +
-                        "href=\"{0}\" target=\"TopicContent\">{1}</a>\r\n" +
-                        "</div>\r\n", WebUtility.HtmlEncode(url), WebUtility.HtmlEncode(title));
-                }
         }
         #endregion
     }

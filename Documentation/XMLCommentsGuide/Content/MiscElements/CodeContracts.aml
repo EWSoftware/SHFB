@@ -12,9 +12,9 @@
 after a build to insert contract XML documentation elements into the XML comments file for an assembly.</para>
 
 			<alert class="important">
-				<para>The Code Contracts Library contains an outdated patch to several Sandcastle presentation style
-files.  Since code contracts element support is built into the latest release of the presentation styles, do not
-apply this patch.</para>
+				<para>The Code Contracts Library project appears to have been abandoned.  As such the Sandcastle Help
+File Builder no longer provides any support for these elements.  Support could be added through a plug-in to add
+handlers for them if necessary.</para>
 			</alert>
 		</introduction>
 

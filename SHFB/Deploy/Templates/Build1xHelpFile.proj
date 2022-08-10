@@ -31,16 +31,6 @@
 
 	<!-- The Build Help 1.x file target -->
 	<Target Name="Build1xHelpFile">
-		<!-- Copy files to the working folder -->
-		<Copy SourceFiles =
-        "$(HelpProjectName);
-         $(HtmlHelpName).hhc;
-         $(HtmlHelpName).hhk"
-      DestinationFiles =
-        "$(WorkingFolder)\$(HelpProjectName);
-         $(WorkingFolder)\$(HtmlHelpName).hhc;
-         $(WorkingFolder)\$(HtmlHelpName).hhk" />
-
 		<!-- Build the help file -->
 		<SandcastleBuilder.MSBuild.Build1xHelpFile
       WorkingFolder="$(WorkingFolder)"

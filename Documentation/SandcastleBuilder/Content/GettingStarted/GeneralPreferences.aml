@@ -100,12 +100,20 @@ can be disabled if you do not wish to use the extended elements or if you think 
 causing issues with Visual Studio.</para>
 
 						<para>For extended XML comments completion support in Visual Studio 2019 and later, install the
+<legacyBold>Extended XML Documentation Comments Completion Provider</legacyBold> extension which can be
+downloaded and installed from the Visual Studio Gallery.  Versions are available for 
 <externalLink>
-<linkText>Extended XML Documentation Comments Completion Provider</linkText>
-<linkAlternateText>Extended XML Documentation Comments Completion Provider</linkAlternateText>
-<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.ExtendedDocCommentsProvider</linkUri>
-<linkTarget>_blank</linkTarget>
-</externalLink> package which can be downloaded and installed from the Visual Studio Gallery.</para>
+	<linkText>Visual Studio 2019</linkText>
+	<linkAlternateText>Extended XML Documentation Comments Completion Provider (VS2019)</linkAlternateText>
+	<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.ExtendedDocCommentsProvider</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink> and 
+<externalLink>
+	<linkText>Visual Studio 2022 and later</linkText>
+	<linkAlternateText>Extended XML Documentation Comments Completion Provider (VS2022+)</linkAlternateText>
+	<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.ExtendedDocCommentsProvider2022</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink>.</para>
 					</listItem>
 
 					<listItem>

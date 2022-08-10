@@ -34,6 +34,7 @@ using System.Xml.XPath;
 
 using Sandcastle.Tools.BuildComponents.Targets;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
@@ -116,7 +117,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected ResolveReferenceLinksComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected ResolveReferenceLinksComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion
@@ -136,11 +137,11 @@ namespace Sandcastle.Tools.BuildComponents
             resolver = new LinkTextResolver(targets);
 
             // Get the shared instances dictionary.  Create it if it doesn't exist.
-            if(BuildComponentCore.Data.ContainsKey(SharedReferenceTargetsId))
-                sharedTargets = BuildComponentCore.Data[SharedReferenceTargetsId] as Dictionary<string, TargetDictionary>;
+            if(this.BuildAssembler.Data.ContainsKey(SharedReferenceTargetsId))
+                sharedTargets = this.BuildAssembler.Data[SharedReferenceTargetsId] as Dictionary<string, TargetDictionary>;
 
             if(sharedTargets == null)
-                BuildComponentCore.Data[SharedReferenceTargetsId] = sharedTargets = new Dictionary<string, TargetDictionary>();
+                this.BuildAssembler.Data[SharedReferenceTargetsId] = sharedTargets = new Dictionary<string, TargetDictionary>();
 
             // base-url is an xpath expression applied against the current document to pick up the save location of the
             // document. If specified, local links will be made relative to the base-url.
@@ -422,7 +423,7 @@ namespace Sandcastle.Tools.BuildComponents
                         // If the link was intentionally suppressed, write it out as an identifier (i.e. links
                         // in the syntax section).
                         if(link.RenderAsLink)
-                            writer.WriteAttributeString("class", "nolink");
+                            writer.WriteAttributeString("class", "noLink");
                         else
                             writer.WriteAttributeString("class", "identifier");
                         break;
@@ -588,7 +589,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// <returns>An <see cref="IMemberIdUrlResolver"/> instance</returns>
         /// <remarks>This can be overridden in derived classes to provide persistent caches with backing stores
         /// other than the default dictionary serialized to a binary file.  It also allows sharing the cache
-        /// across instances by placing it in the <see cref="BuildComponentCore.Data"/> dictionary using the key
+        /// across instances by placing it in the <see cref="IBuildAssembler.Data"/> dictionary using the key
         /// name <see cref="SharedMemberUrlCacheId"/>.
         /// 
         /// <para>If overridden, the <see cref="UpdateUrlCache"/> method should also be overridden to
@@ -602,8 +603,8 @@ namespace Sandcastle.Tools.BuildComponents
             IMemberIdUrlResolver newResolver;
             IDictionary<string, string> cache = null;
 
-            if(Data.ContainsKey(SharedMemberUrlCacheId))
-                cache = Data[SharedMemberUrlCacheId] as IDictionary<string, string>;
+            if(this.BuildAssembler.Data.ContainsKey(SharedMemberUrlCacheId))
+                cache = this.BuildAssembler.Data[SharedMemberUrlCacheId] as IDictionary<string, string>;
 
             // If the shared cache already exists, return an instance that uses it.  It is assumed that all
             // subsequent instances will use the same cache.
@@ -653,7 +654,7 @@ namespace Sandcastle.Tools.BuildComponents
                     }
             }
 
-            Data[SharedMemberUrlCacheId] = newResolver.CachedUrls;
+            this.BuildAssembler.Data[SharedMemberUrlCacheId] = newResolver.CachedUrls;
 
             return newResolver;
         }

@@ -65,8 +65,9 @@ been produced using the word processing application of your choice.</para>
 					
 					<listItem>
 						<para>There are many different bibliography formats available in applications such as Microsoft Word.
-As such, the bibliography elements and plug-in are not supported.  If desired, add a bibliography in the desired
-format to the document after it is produced with the word processing application of your choice.</para>
+The bibliography XML comments and MAML elements are supported but produce a bibliography section within the topic
+in which they appear.  If desired, add a bibliography in the desired format to the document after it is produced
+with the word processing application of your choice.</para>
 					</listItem>
 
 					<listItem>
@@ -86,15 +87,15 @@ markup directly into the document.  HTML markup is <legacyBold>not</legacyBold> 
 Any HTML in MAML <codeInline>markup</codeInline> elements will likely corrupt the document.</para>
 
 						<alert class="tip">
-							<para>A few HTML elements are recognized and used in the XSL transformations as a requirement of
-the presentation style to handle certain cases that cannot be taken care of in the XSL transformations and to
+							<para>A few HTML elements are recognized and used in the transformations as a requirement of
+the presentation style to handle certain cases that cannot be taken care of in the transformations and to
 support certain build component output and localized resource items.  The Open XML file builder task translates
 these elements into Open XML elements when the topics are merged into a single document body.</para>
 
 							<para>Those elements are: <codeInline>a</codeInline> (anchor), <codeInline>br</codeInline> (line
 break), <codeInline>img</codeInline> (image), <codeInline>span</codeInline> (used for a limited set of named
 styles), <codeInline>ul</codeInline>/<codeInline>li</codeInline> (used to define lists).  If these elements
-appear in a <codeInline>markup</codeInline> element, they will be passed through and processed as if the XSL
+appear in a <codeInline>markup</codeInline> element, they will be passed through and processed as if the
 transformations or a build component had added them.  Note that they will only be processed based on the
 conditions expected by the Open XML file builder task.  Additional attributes on the elements other than those
 expected will be ignored.  As always, it is best to avoid use of the <codeInline>markup</codeInline> element
@@ -190,55 +191,63 @@ conform to the Open XML schema.  Deviation from the expected format usually resu
 reporting that the file is corrupted in some way.  This section covers how to diagnose the issue.</para>
 
 				<para>The consuming application, such as Microsoft Word, will typically display a dialog box stating that
-the content is corrupt.  In Microsoft Word, clicking the <ui>Details</ui> button will provide more information
-about the problem and gives a line number within the XML content.  By default, the content is rendered without
-whitespace between elements so the line number is not of much use.  To obtain a useful line number and locate the
-invalid content, do the following:</para>
+the content is corrupt.  In Microsoft Word, clicking the <ui>Details</ui> button may provide more information
+about the problem and gives a line number within the XML content.  However, most recent versions of Word simply
+state that the content is invalid and give the line number as zero.</para>
 
-				<list class="ordered">
+				<para>To diagnose issues with Open XML files, it is useful to install the <externalLink>
+	<linkText>Open XML Productivity Tool</linkText>
+	<linkUri>https://github.com/OfficeDev/Open-XML-SDK/releases/tag/v2.5</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink> which allows you to open, validate, and inspect the structure of an Open XML document.  To use
+it:</para>
+
+				<list class="bullet">
 					<listItem>
-						<para>In your help file project, select the <ui>Build</ui> property category.
-					</para>
+						<para>Open the invalid document in the productivity tool.</para>
 					</listItem>
 
 					<listItem>
-						<para>Disable the <ui>Clean intermediate files after a successful build</ui> option.
-					</para>
+						<para>In the <ui>Settings</ui> menu, select the <ui>Validate Options</ui> item, and make sure that
+it is using the <ui>Against Microsoft Office 2010 Formats</ui> option.</para>
 					</listItem>
 
 					<listItem>
-						<para>Enable the <ui>Indent rendered HTML</ui> option.  In this case, it's rendered XML but the
-result we need is the same.</para>
+						<para>In the Document Explorer pane, expand the "/word/document.xml" node, then the
+"w:document (Document)" node, and finally the "w:body (Body)" node.  You will then see the elements that make
+up the content of the document body.</para>
 					</listItem>
 
 					<listItem>
-						<para>Rebuild your project and open the resulting document.  Use the error dialog within the
-application to display the line number at which the failure is occurring as described above.</para>
+						<para>Click the <ui>Validate</ui> button in the tool bar.  A <ui>Validation Results</ui> tab will
+appear in the right-hand pane.  Click the icon in the tab to enable syncing the pane with the selected document
+node.  The tooltip on the tab will state that it will sync the content.  The icon on the tab will show green
+angle brackets if it is syncing to the selected node.  If a small red "X" appears over the brackets in the tab
+icon, it will not sync to the selected node and you will have to manually click the Validate button to update the
+state for the selected node.</para>
 					</listItem>
 
 					<listItem>
-						<para>Navigate to the working folder for your project that contains the Open XML content generated
-by the build.  This is typically the <localUri>.\Help\Working\Output\OpenXml\word</localUri> folder beneath the
-project folder unless you defined a different location using the <ui>Working files path</ui> project property.</para>
+						<para>Select a document node in the left-hand pane to view any validation warnings for the selected
+node.  This part boils down to searching nodes with issues.</para>
+
+						<alert class="tip">
+							<para>If your project is quite large, using the API filter to limit the number of members included
+in the output and disabling topics in the content layout file can reduce the size of the resulting document XML
+and may help narrow down the location of the failure.</para>
+						</alert>
 					</listItem>
 
 					<listItem>
-						<para>In that folder, locate and open the <localUri>document.xml</localUri> file in the text editor
-of your choice and go to the line number reported as the point of failure.  You should find the invalid content
-such as HTML elements within a few lines of that location.  By scrolling up, you can usually use the topic title
-to identify the MAML topic or API member that contains the invalid content.</para>
+						<para>Once you find a node with an issue, you an right click on it and select the <ui>Reflect code</ui>
+option.  This will show another tab with the XML and related code that produces it.  You can ignore the code as
+it will not be relevant to how the file is produced.  What is important is the XML that is shown.  Using it along
+with the validation error message, you should be able to determine the cause of the problem.  By selecting the
+nodes around the one with the issue and viewing their content you should be able to locate text that will help
+you identify the member or topic that contains the text causing the problem.  With that information you can
+usually track down and fix the problem in the XML comments or the MAML topic.</para>
 					</listItem>
 
-					<listItem>
-						<para>Once the topic or API member has been determined, you can open the topic or go to the source
-code and fix the offending content.</para>
-					</listItem>
-
-					<listItem>
-						<para>Once the problem has been fixed and a valid document is being produced, be sure to turn off
-the <ui>Indent rendered HTML</ui> option as it is only for debugging purposes, it can affect the layout of the
-rendered content, and produces much larger content than is necessary.</para>
-					</listItem>
 				</list>
 
 				<para>Another common issue is missing images.  While this may not necessarily result in a corrupted
@@ -247,11 +256,6 @@ Check the build log as it will contain warning messages about image files that w
 but could not be found.  The causes of missing images are usually an invalid path or the image not being marked
 as content so that it is included in the build output.</para>
 
-				<alert class="tip">
-					<para>If your project is quite large, using the API filter to limit the number of members included in
-the output and disabling topics in the content layout file can reduce the size of the resulting document XML and
-may help narrow down the location of the failure.</para>
-				</alert>
 			</content>
 		</section>
 

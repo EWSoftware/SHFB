@@ -4,10 +4,10 @@
 		<introduction>
 			<para>The <application>BuildAssembler</application> tool contains a transformation build component that
 takes the reflection data, XML comments, and/or MAML topics and converts them to a format suitable for use in
-the resulting help file.  The XSL transformations that it uses to accomplish this vary by presentation style and
-may expose arguments that can be used to customize the transformation.  For example, the existing XSL
-transformations for the standard Sandcastle presentation styles expose a set of arguments used to insert a logo
-image into the page headers.  Such arguments are exposed to your project using this property page.</para>
+the resulting help file.  The transformations that it uses to accomplish this vary by presentation style and
+may expose arguments that can be used to customize the transformation.  For example, the existing transformations
+for the standard Sandcastle presentation styles expose a set of arguments used to insert a logo image into the
+page headers.  Such arguments are exposed to your project using this property page.</para>
 		</introduction>
 
 		<section>

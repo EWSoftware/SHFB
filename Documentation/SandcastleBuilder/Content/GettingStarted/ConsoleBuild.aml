@@ -185,7 +185,7 @@ quotes.</para>
     <HtmlHelpName>TestDoc</HtmlHelpName>
     <CleanIntermediates>True</CleanIntermediates>
     <RootNamespaceTitle>Root Namespace Container</RootNamespaceTitle>
-    <PresentationStyle>VS2013</PresentationStyle>
+    <PresentationStyle>Default2022</PresentationStyle>
     <HelpTitle>Test Help File</HelpTitle>
   </PropertyGroup>
 </Project>]]>
@@ -193,7 +193,7 @@ quotes.</para>
 
 				<para>The help file builder target definition file contains several targets that can be overridden to
 define custom behavior that occurs before and after the help file builder build targets.  These can be defined in
-a custom project file specified with the <codeInline>CustomAfterSHFBTargets</codeInline>property.</para>
+a custom project file specified with the <codeInline>CustomAfterSHFBTargets</codeInline> property.</para>
 
 				<alert class="note">
 					<para>These targets are not executed when built from within the standalone help file builder GUI.

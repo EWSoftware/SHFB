@@ -6,7 +6,7 @@
 topics use Microsoft Assistance Markup Language (MAML).  This is basically XML conforming to a well defined
 schema that describes the structure of the conceptual content much like XML comments describe the structure of
 the code comments. There is no layout or style information within the MAML files. Instead, they are ran through
-a series of XSL transformations using Sandcastle's <application>BuildAssembler</application> tool similar to the
+a series of transformations using Sandcastle's <application>BuildAssembler</application> tool similar to the
 reference (API) content so that they match it in appearance and features.  This allows you to utilize the various
 build components to alter and extend the presentation style of the topics.
 </para>
@@ -20,6 +20,10 @@ optional XML elements.  When building conceptual content, each topic requires a 
 globally unique identifier (GUID) and a revision number.  These are specified in a containing <codeInline>topic</codeInline>
 element in the content file as shown in this example.</para>
 
+					<para>While GUIDs are used throughout this guide and also by default in tools such as the Sandcastle
+Help File Builder, the IDs can be any value you like.  GUIDs ensure unique values by default.  If you chose to
+use more human readable IDs, you are responsible for ensuring that each topic's ID is unique.</para>
+				
         <code language="xml" title="Topic Example"><![CDATA[
 <!-- The topic element contains the unique ID and revision number -->
 <topic id="303c996a-2911-4c08-b492-6496c82b3edb" revisionNumber="1">

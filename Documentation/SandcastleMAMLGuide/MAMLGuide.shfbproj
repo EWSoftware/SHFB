@@ -34,8 +34,8 @@
     <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
     <CopyrightText>[v{%40HelpFileVersion}] Sandcastle MAML Guide</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
-    <PresentationStyle>VS2013</PresentationStyle>
-    <HelpFileVersion>2017.5.15.0</HelpFileVersion>
+    <PresentationStyle>Default2022</PresentationStyle>
+    <HelpFileVersion>2022.4.16.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <PlugInConfigurations>
@@ -43,14 +43,8 @@
         <configuration />
       </PlugInConfig>
       <PlugInConfig id="Output Deployment" enabled="True">
-        <configuration deleteAfterDeploy="true">
-          <deploymentLocation id="help1x" location="..\..\SHFB\Deploy\Help\">
-            <userCredentials useDefault="true" userName="" password="" />
-            <proxyCredentials useProxy="false" proxyServer="">
-              <userCredentials useDefault="true" userName="" password="" />
-            </proxyCredentials>
-          </deploymentLocation>
-          <deploymentLocation id="help2x" location="">
+        <configuration deleteAfterDeploy="true" verboseLogging="false">
+          <deploymentLocation id="help1x" location="">
             <userCredentials useDefault="true" userName="" password="" />
             <proxyCredentials useProxy="false" proxyServer="">
               <userCredentials useDefault="true" userName="" password="" />
@@ -74,10 +68,16 @@
               <userCredentials useDefault="true" userName="" password="" />
             </proxyCredentials>
           </deploymentLocation>
+          <deploymentLocation id="markdown" location="">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
         </configuration>
       </PlugInConfig>
     </PlugInConfigurations>
-    <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
+    <HelpFileFormat>Website</HelpFileFormat>
     <ProductTitle>Sandcastle MAML Guide</ProductTitle>
     <VendorName>EWSoftware</VendorName>
     <TocOrder>9999</TocOrder>
@@ -103,17 +103,25 @@
     <CatalogVersion>100</CatalogVersion>
     <CatalogProductId>VS</CatalogProductId>
     <TransformComponentArguments>
-      <Argument Key="logoFile" Value="Sandcastle.jpg" />
-      <Argument Key="logoHeight" Value="" />
-      <Argument Key="logoWidth" Value="" />
-      <Argument Key="logoAltText" Value="Sandcastle MAML Guide" />
-      <Argument Key="logoPlacement" Value="left" />
-      <Argument Key="logoAlignment" Value="left" />
-      <Argument Key="maxVersionParts" Value="" />
-      <Argument Key="defaultLanguage" Value="cs" />
-      <Argument Key="includeEnumValues" Value="true" />
-      <Argument Key="baseSourceCodeUrl" Value="" />
-      <Argument Key="requestExampleUrl" Value="" />
+      <Argument Key="RobotsMetadata" Value="" />
+      <Argument Key="BibliographyDataFile" Value="Bibliography.xml" />
+      <Argument Key="RootBreadcrumbTitleText" Value="MAML Guide" />
+      <Argument Key="CollapsibleSections" Value="True" />
+      <Argument Key="LogoFile" Value="Sandcastle.jpg" />
+      <Argument Key="LogoHeight" Value="50" />
+      <Argument Key="LogoWidth" Value="" />
+      <Argument Key="LogoAltText" Value="Sandcastle MAML Guide" />
+      <Argument Key="LogoPlacement" Value="Left" />
+      <Argument Key="LogoAlignment" Value="Left" />
+      <Argument Key="LogoUrl" Value="https://github.com/EWSoftware/SHFB" />
+      <Argument Key="MaxVersionParts" Value="" />
+      <Argument Key="DefaultLanguage" Value="cs" />
+      <Argument Key="IncludeEnumValues" Value="True" />
+      <Argument Key="EnumMemberSortOrder" Value="Value" />
+      <Argument Key="FlagsEnumValueFormat" Value="HexValue" />
+      <Argument Key="FlagsEnumSeparatorSize" Value="0" />
+      <Argument Key="BaseSourceCodeUrl" Value="" />
+      <Argument Key="RequestExampleUrl" Value="" />
     </TransformComponentArguments>
     <FeedbackEMailLinkText>Eric Woodruff</FeedbackEMailLinkText>
     <MaximumGroupParts>2</MaximumGroupParts>
@@ -138,6 +146,8 @@
 &amp;lt%3bdiv data-type=&amp;quot%3bad&amp;quot%3b data-publisher=&amp;quot%3bewsoftware.github.io&amp;quot%3b data-format=&amp;quot%3b728x90&amp;quot%3b data-zone=&amp;quot%3bMAMLGuide&amp;quot%3b&amp;gt%3b&amp;lt%3b/div&amp;gt%3b
 </WebsiteAdContent>
     <AppendMarkdownFileExtensionsToUrls>False</AppendMarkdownFileExtensionsToUrls>
+    <HeaderText>
+    </HeaderText>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->
@@ -195,13 +205,15 @@
     </Tokens>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Bibliography.xml" />
     <None Include="ConceptualTemplates\ConceptualTemplates.vsspell" />
+    <None Include="Content\BlockElements\bibliography.aml" />
+    <None Include="Content\CommonInline\languageKeyword.aml" />
     <None Include="Content\CommonInline\lineBreak.aml" />
     <None Include="Content\Donate.aml" />
     <None Include="Content\License.aml" />
     <None Include="Content\MiscElements\markup.aml" />
     <None Include="Content\VersionHistory\v1.1.0.1.aml" />
-    <None Include="Content\MSHelpViewerRoot.aml" />
     <None Include="Content\BlockElements\table.aml" />
     <None Include="Content\BlockElements\definitionTable.aml" />
     <None Include="Content\BlockElements\list.aml" />
@@ -227,7 +239,8 @@
     <None Include="ConceptualTemplates\Conceptual.aml" />
     <None Include="Content\VersionHistory\v1.1.0.2.aml" />
     <None Include="Content\VersionHistory\v1.1.0.3.aml" />
-    <None Include="Content\VersionHistory\v20175.15.0.aml" />
+    <None Include="Content\VersionHistory\v2017.5.15.0.aml" />
+    <None Include="Content\VersionHistory\v2022.4.16.0.aml" />
     <None Include="ExampleFiles\MediaContent.xml" />
     <None Include="ExampleFiles\Tokens.xml" />
     <None Include="Content\VersionHistory\VersionHistory.aml" />
@@ -271,7 +284,7 @@
     <None Include="Content\CommonInline\codeInline.aml" />
     <None Include="Content\CommonInline\application.aml" />
     <None Include="Content\CommonInline\CommonInline.aml" />
-    <None Include="Content\BlockElements\title.aml" />
+    <None Include="Content\BlockElements\section.aml" />
     <None Include="Content\BlockElements\relatedTopics.aml" />
     <None Include="Content\BlockElements\quote.aml" />
     <None Include="Content\BlockElements\para.aml" />

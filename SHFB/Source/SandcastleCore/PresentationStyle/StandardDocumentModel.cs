@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : StandardDocumentModel.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/16/2021
-// Note    : Copyright 2021, Eric Woodruff, All rights reserved
+// Updated : 02/27/2022
+// Note    : Copyright 2021-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to modify the reflection information file by adding elements needed for the
 // standard documentation model.
@@ -101,7 +101,7 @@ namespace Sandcastle.Core.PresentationStyle
                             {
                                 case "api":
                                     var node = (XElement)XNode.ReadFrom(reader);
-                                    var apiMember = new ApiMember(node) { Node = node };
+                                    var apiMember = new ApiMember(node, null) { Node = node };
 
                                     apiMembers[apiMember.MemberId] = apiMember;
                                     break;
@@ -161,15 +161,15 @@ namespace Sandcastle.Core.PresentationStyle
 
                                     var apiMember = apiMembers[id];
 
-                                    if(apiMember.Group == ApiMemberGroup.Type)
+                                    if(apiMember.ApiGroup == ApiMemberGroup.Type)
                                         this.UpdateTypeApiNode(apiMember);
                                     else
                                         this.UpdateGeneralApiNode(apiMember);
 
                                     apiMember.Node.WriteTo(writer);
 
-                                    if(apiMember.Group == ApiMemberGroup.Type && 
-                                      apiMember.Subgroup != ApiMemberGroup.Enumeration &&
+                                    if(apiMember.ApiGroup == ApiMemberGroup.Type && 
+                                      apiMember.ApiSubgroup != ApiMemberGroup.Enumeration &&
                                       apiMember.Node.Element("elements") != null)
                                     {
                                         this.AddMemberListApiElement(writer, ApiMemberGroup.Methods, apiMember);
@@ -214,7 +214,7 @@ namespace Sandcastle.Core.PresentationStyle
 
             writer.WriteStartElement("elements");
 
-            foreach(var ns in apiMembers.Values.Where(m => m.Group == ApiMemberGroup.Namespace))
+            foreach(var ns in apiMembers.Values.Where(m => m.ApiGroup == ApiMemberGroup.Namespace))
             {
                 writer.WriteStartElement("element");
                 writer.WriteAttributeString("api", ns.MemberId);
@@ -240,7 +240,7 @@ namespace Sandcastle.Core.PresentationStyle
                 foreach(var l in containers.Elements("library"))
                     this.AddLibraryAssemblyData(l, false);
 
-            if(typeNode.Subgroup != ApiMemberGroup.Enumeration && typeNode.Node.Element("elements") != null)
+            if(typeNode.ApiSubgroup != ApiMemberGroup.Enumeration && typeNode.Node.Element("elements") != null)
             {
                 var memberList = new List<ApiMember>();
                 var elements = typeNode.Node.Element("elements");
@@ -262,7 +262,7 @@ namespace Sandcastle.Core.PresentationStyle
                         */
                     }
                     else
-                        memberList.Add(new ApiMember(element) { Node = element });
+                        memberList.Add(new ApiMember(element, null) { Node = element });
                 }
 
                 // Update the element list with overloads topics
@@ -288,7 +288,7 @@ namespace Sandcastle.Core.PresentationStyle
             var type = containers?.Element("type");
             var topicData = new XElement("topicdata",
                 new XAttribute("group", ApiMemberGroup.Api.ToString().ToLowerInvariant()),
-                (type != null && apiMembers[type.Attribute("api").Value].Subgroup == ApiMemberGroup.Enumeration) ?
+                (type != null && apiMembers[type.Attribute("api").Value].ApiSubgroup == ApiMemberGroup.Enumeration) ?
                     new XAttribute("notopic", String.Empty) : null);
             string implementedApiType = null;
 
@@ -314,7 +314,7 @@ namespace Sandcastle.Core.PresentationStyle
 
             var memberData = memberNode.Node.Element("memberdata");
 
-            if(memberData == null || memberNode.Subgroup == ApiMemberGroup.Field)
+            if(memberData == null || memberNode.ApiSubgroup == ApiMemberGroup.Field)
                 return;
 
             // Add an overload ID to the memberdata element if needed.
@@ -381,12 +381,12 @@ namespace Sandcastle.Core.PresentationStyle
                 // For overloads, use the first element so that we get the proper subgroup for comparison
                 if(element.Attribute("api").Value.StartsWith("Overload:", StringComparison.Ordinal))
                 {
-                    listElement = new ApiMember(element) { Node = element };
+                    listElement = new ApiMember(element, null) { Node = element };
                     var firstEl = element.Element("element");
 
                     if(!apiMembers.TryGetValue(firstEl.Attribute("api").Value, out compareElement))
                     {
-                        compareElement = new ApiMember(firstEl) { Node = firstEl };
+                        compareElement = new ApiMember(firstEl, null) { Node = firstEl };
                     }
                 }
                 else
@@ -395,19 +395,19 @@ namespace Sandcastle.Core.PresentationStyle
                     if(element.Element("apidata") == null)
                         listElement = compareElement = apiMembers[element.Attribute("api").Value];
                     else
-                        listElement = compareElement = new ApiMember(element) { Node = element };
+                        listElement = compareElement = new ApiMember(element, null) { Node = element };
                 }
 
                 if(subgroup == ApiMemberGroup.Method)
                 {
                     // For methods we want everything but operators
-                    if(compareElement.Subgroup == subgroup && compareElement.SubSubgroup != ApiMemberGroup.Operator)
+                    if(compareElement.ApiSubgroup == subgroup && compareElement.ApiSubSubgroup != ApiMemberGroup.Operator)
                         memberList.Add(listElement);
                 }
                 else
                 {
-                    if((subgroup == ApiMemberGroup.None && compareElement.SubSubgroup == subsubgroup) ||
-                      (subgroup == compareElement.Subgroup && subsubgroup == compareElement.SubSubgroup))
+                    if((subgroup == ApiMemberGroup.None && compareElement.ApiSubSubgroup == subsubgroup) ||
+                      (subgroup == compareElement.ApiSubgroup && subsubgroup == compareElement.ApiSubSubgroup))
                     {
                         memberList.Add(listElement);
                     }
@@ -465,7 +465,7 @@ namespace Sandcastle.Core.PresentationStyle
                 // Members with an apidata element are extension methods
                 if(element.Attribute("api").Value.StartsWith("Overload:", StringComparison.Ordinal))
                 {
-                    var ol = new ApiMember(element) { Node = element };
+                    var ol = new ApiMember(element, null) { Node = element };
 
                     // Only generate an overload topic if there is at least one member in the containing type.
                     // If all overloads are inherited, ignore it.
@@ -499,7 +499,7 @@ namespace Sandcastle.Core.PresentationStyle
                 var firstEl = m.Node.Element("element");
 
                 if(!apiMembers.TryGetValue(firstEl.Attribute("api").Value, out ApiMember firstMember))
-                    firstMember = new ApiMember(firstEl) { Node = firstEl };
+                    firstMember = new ApiMember(firstEl, null) { Node = firstEl };
 
                 var apidata = firstMember.Node.Element("apidata");
 
@@ -509,7 +509,7 @@ namespace Sandcastle.Core.PresentationStyle
                         new XAttribute("name", firstMember.Name),
                         new XAttribute("group", ApiMemberGroup.List.ToString().ToLowerInvariant()),
                         new XAttribute("subgroup", ApiMemberGroup.Overload.ToString().ToLowerInvariant()),
-                        new XAttribute("memberSubgroup", firstMember.Subgroup.ToString().ToLowerInvariant()),
+                        new XAttribute("memberSubgroup", firstMember.ApiSubgroup.ToString().ToLowerInvariant()),
                         new XAttribute("pseudo", "true")),
                     apidata,
                     new XElement("elements",
@@ -538,7 +538,7 @@ namespace Sandcastle.Core.PresentationStyle
                     eiiMembers.Add(m);
                 else
                 {
-                    if(m.SubSubgroup == ApiMemberGroup.Extension)
+                    if(m.ApiSubSubgroup == ApiMemberGroup.Extension)
                         extensionMethods.Add(m);
                     else
                         nonEiiMembers.Add(m);
@@ -547,10 +547,10 @@ namespace Sandcastle.Core.PresentationStyle
 
             // Extension methods are never grouped even when overloaded.  We just mark them with an attribute.
             var groupedMembers = eiiMembers.GroupBy(m => m.ImplementedType + "/" + m.Name + "/" +
-                m.Subgroup.ToString() + "/" + m.SubSubgroup).Concat(
-                nonEiiMembers.GroupBy(m => m.Name + "/" + m.Subgroup.ToString() + "/" + m.SubSubgroup)).Concat(
+                m.ApiSubgroup.ToString() + "/" + m.ApiSubSubgroup).Concat(
+                nonEiiMembers.GroupBy(m => m.Name + "/" + m.ApiSubgroup.ToString() + "/" + m.ApiSubSubgroup)).Concat(
                 extensionMethods.GroupBy(m => m.Name)).OrderBy(
-                    m => m.First().SubSubgroup == ApiMemberGroup.Extension ? 0 : 1).ThenBy(
+                    m => m.First().ApiSubSubgroup == ApiMemberGroup.Extension ? 0 : 1).ThenBy(
                     m => m.First().MemberId).ToList();
 
             foreach(var g in groupedMembers)
@@ -562,7 +562,7 @@ namespace Sandcastle.Core.PresentationStyle
                 else
                 {
                     // Extension methods just get an attribute
-                    if(firstMember.SubSubgroup == ApiMemberGroup.Extension)
+                    if(firstMember.ApiSubSubgroup == ApiMemberGroup.Extension)
                     {
                         foreach(var m in g.OrderBy(m => m.ParameterCount).ThenBy(m => m.FirstParameterTypeName))
                         {
@@ -615,11 +615,11 @@ namespace Sandcastle.Core.PresentationStyle
             {
                 overloadId = typeNode.MemberIdWithoutPrefix;
 
-                if(member.Subgroup == ApiMemberGroup.Constructor)
+                if(member.ApiSubgroup == ApiMemberGroup.Constructor)
                     overloadId += ".#ctor";
                 else
                 {
-                    if(member.SubSubgroup == ApiMemberGroup.Operator)
+                    if(member.ApiSubSubgroup == ApiMemberGroup.Operator)
                         overloadId += ".op_" + member.Name;
                     else
                         overloadId += "." + member.Name;

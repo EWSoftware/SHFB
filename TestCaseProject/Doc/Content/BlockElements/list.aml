@@ -123,7 +123,37 @@ link target.</para></listItem>
   <listItem><para>Item 9</para></listItem>
   <listItem><para>Item 10</para></listItem>
 </list>
-      </content>
+
+				<para>Test the start attribute</para>
+
+				<list class="ordered">
+					<listItem>
+						<para>Item 1</para>
+					</listItem>
+					<listItem>
+						<para>Item 2</para>
+					</listItem>
+					<listItem>
+						<para>Item 3</para>
+					</listItem>
+				</list>
+
+				<para>The next list uses the custom <codeInline>start</codeInline> attribute to continue numbering from
+the last list.</para>
+
+				<list class="ordered" start="4">
+					<listItem>
+						<para>Item 4</para>
+					</listItem>
+					<listItem>
+						<para>Item 5</para>
+					</listItem>
+					<listItem>
+						<para>Item 6</para>
+					</listItem>
+				</list>
+
+			</content>
     </section>
 
     <relatedTopics>

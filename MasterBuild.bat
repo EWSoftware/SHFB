@@ -30,7 +30,7 @@ ECHO *
 IF ERRORLEVEL 1 GOTO End
 
 ECHO *
-ECHO * VS2017 and later package
+ECHO * VS2017/2019 package
 ECHO *
 
 "%MSBUILD%" /nr:false /r /nologo /v:m /m "VSIX_VS2017.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"

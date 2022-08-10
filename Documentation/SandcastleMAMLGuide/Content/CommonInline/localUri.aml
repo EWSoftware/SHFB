@@ -15,7 +15,8 @@ text.</para>
       <title>Example</title>
       <content>
         <code language="xml" title=" ">
-Sandcastle is installed in the &lt;localUri&gt;C:\Program Files\Sandcastle&lt;/localUri&gt;
+The Sandcastle Help File Builder is installed in the &lt;localUri&gt;C:\Program
+Files (x86)\EWSoftware\Sandcastle Help File Builder&lt;/localUri&gt;
 folder by default.
 </code>
       </content>
@@ -23,8 +24,8 @@ folder by default.
     <section>
       <title>Example Output</title>
       <content>
-        <para>Sandcastle is installed in the <localUri>C:\Program
-Files\Sandcastle</localUri> folder by default.</para>
+        <para>The Sandcastle Help File Builder is installed in the <localUri>C:\Program Files
+(x86)\EWSoftware\Sandcastle Help File Builder</localUri> folder by default.</para>
       </content>
     </section>
 

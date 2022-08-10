@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Static.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 04/15/2022
+// Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the static data definitions used by the MAML to flow document converter class
 //
@@ -125,6 +125,7 @@ namespace SandcastleBuilder.WPF.Maml
             { "security", "Security Note" },
             { "security note", "Security Note" },
             { "tip", "Tip" },
+            { "todo", "To Do" },
             { "vb", "Visual Basic Note" },
             { "VB", "Visual Basic Note" },
             { "visual basic", "Visual Basic Note" },
@@ -166,6 +167,7 @@ namespace SandcastleBuilder.WPF.Maml
             { "security", "AlertSecurity" },
             { "security note", "AlertSecurity" },
             { "tip", "AlertNote" },
+            { "todo", "AlertNote" },
             { "vb", "AlertNote" },
             { "VB", "AlertNote" },
             { "visual basic", "AlertNote" },

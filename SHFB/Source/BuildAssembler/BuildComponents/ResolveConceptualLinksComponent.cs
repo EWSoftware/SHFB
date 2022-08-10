@@ -32,6 +32,7 @@ using System.Xml.XPath;
 
 using Sandcastle.Tools.BuildComponents.Targets;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
@@ -116,7 +117,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected ResolveConceptualLinksComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected ResolveConceptualLinksComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion
@@ -248,7 +249,7 @@ namespace Sandcastle.Tools.BuildComponents
                 {
                     case ConceptualLinkType.None:
                         writer.WriteStartElement("span");
-                        writer.WriteAttributeString("class", "nolink");
+                        writer.WriteAttributeString("class", "noLink");
                         break;
 
                     case ConceptualLinkType.Local:

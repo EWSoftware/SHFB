@@ -645,7 +645,7 @@
 		<w:rsid w:val="0088377C"/>
 		<w:pPr>
 			<w:spacing w:before="200"/>
-			<w:ind w:left="864" w:right="864"/>
+			<w:ind w:left="432" w:right="432"/>
 		</w:pPr>
 		<w:rPr>
 			<w:i/>
@@ -739,7 +739,7 @@
 			<w:spacing w:after="0"/>
 		</w:pPr>
 		<w:rPr>
-			<w:rFonts w:ascii="Courier New" w:hAnsi="Courier New"/>
+			<w:rFonts w:ascii="Consolas" w:hAnsi="Consolas"/>
 			<w:color w:val="000066"/>
 		</w:rPr>
 	</w:style>
@@ -749,7 +749,20 @@
 		<w:uiPriority w:val="1" />
 		<w:rsid w:val="0034120D" />
 		<w:rPr>
-			<w:rFonts w:ascii="Courier New" w:hAnsi="Courier New" />
+			<w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" />
+			<w:b w:val="0" />
+			<w:i w:val="0" />
+			<w:color w:val="000066" />
+			<w:sz w:val="20" />
+		</w:rPr>
+	</w:style>
+	<w:style w:type="character" w:styleId="SelfLink" w:customStyle="1">
+		<w:name w:val="Self Link" />
+		<w:basedOn w:val="DefaultParagraphFont" />
+		<w:uiPriority w:val="1" />
+		<w:rsid w:val="0034120D" />
+		<w:rPr>
+			<w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" />
 			<w:b w:val="0" />
 			<w:i w:val="0" />
 			<w:color w:val="000066" />
@@ -762,7 +775,7 @@
 		<w:uiPriority w:val="1" />
 		<w:rsid w:val="0034120D" />
 		<w:rPr>
-			<w:rFonts w:ascii="Courier New" w:hAnsi="Courier New" />
+			<w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" />
 			<w:b w:val="0" />
 			<w:i w:val="0" />
 			<w:color w:val="000066" />
@@ -1024,40 +1037,108 @@
 			<w:color w:val="CC0000"/>
 		</w:rPr>
 	</w:style>
-	<w:style w:type="table" w:styleId="AlertTable" w:customStyle="1">
-		<w:name w:val="Alert Table" />
-		<w:basedOn w:val="TableNormal" />
-		<w:uiPriority w:val="99" />
-		<w:rsid w:val="00550A37" />
+	<w:style w:type="table" w:customStyle="1" w:styleId="NoteAlertTable">
+		<w:name w:val="Note Alert Table"/>
+		<w:basedOn w:val="TableNormal"/>
+		<w:uiPriority w:val="99"/>
+		<w:rsid w:val="001A6798"/>
 		<w:pPr>
-			<w:spacing w:after="120" w:line="240" w:lineRule="auto" />
+			<w:spacing w:after="120" w:line="240" w:lineRule="auto"/>
 		</w:pPr>
 		<w:tblPr>
-			<w:tblInd w:w="0" w:type="dxa" />
 			<w:tblBorders>
-				<w:top w:val="single" w:color="BFBFBF" w:themeColor="background1" w:themeShade="BF" w:sz="4" w:space="0" />
-				<w:left w:val="single" w:color="BFBFBF" w:themeColor="background1" w:themeShade="BF" w:sz="4" w:space="0" />
-				<w:bottom w:val="single" w:color="BFBFBF" w:themeColor="background1" w:themeShade="BF" w:sz="4" w:space="0" />
-				<w:right w:val="single" w:color="BFBFBF" w:themeColor="background1" w:themeShade="BF" w:sz="4" w:space="0" />
+				<w:top w:val="single" w:sz="4" w:space="0" w:color="BFBFBF" w:themeColor="background1" w:themeShade="BF"/>
+				<w:left w:val="single" w:sz="4" w:space="0" w:color="BFBFBF" w:themeColor="background1" w:themeShade="BF"/>
+				<w:bottom w:val="single" w:sz="4" w:space="0" w:color="BFBFBF" w:themeColor="background1" w:themeShade="BF"/>
+				<w:right w:val="single" w:sz="4" w:space="0" w:color="BFBFBF" w:themeColor="background1" w:themeShade="BF"/>
 			</w:tblBorders>
 			<w:tblCellMar>
-				<w:top w:w="43" w:type="dxa" />
-				<w:left w:w="43" w:type="dxa" />
-				<w:bottom w:w="43" w:type="dxa" />
-				<w:right w:w="43" w:type="dxa" />
+				<w:top w:w="43" w:type="dxa"/>
+				<w:left w:w="43" w:type="dxa"/>
+				<w:bottom w:w="43" w:type="dxa"/>
+				<w:right w:w="43" w:type="dxa"/>
 			</w:tblCellMar>
 		</w:tblPr>
 		<w:tblStylePr w:type="firstRow">
 			<w:pPr>
-				<w:wordWrap />
-				<w:spacing w:after="0" w:afterLines="0" w:afterAutospacing="0" />
+				<w:wordWrap/>
+				<w:spacing w:afterLines="0" w:after="0" w:afterAutospacing="0"/>
 			</w:pPr>
 			<w:rPr>
-				<w:b />
+				<w:b/>
 			</w:rPr>
-			<w:tblPr />
+			<w:tblPr/>
 			<w:tcPr>
-				<w:shd w:val="clear" w:color="auto" w:fill="B8CCE4" w:themeFill="accent1" w:themeFillTint="66" />
+				<w:shd w:val="clear" w:color="auto" w:fill="BDD6EE"/>
+			</w:tcPr>
+		</w:tblStylePr>
+	</w:style>
+	<w:style w:type="table" w:customStyle="1" w:styleId="CautionAlertTable">
+		<w:name w:val="Caution Alert Table"/>
+		<w:basedOn w:val="NoteAlertTable"/>
+		<w:uiPriority w:val="99"/>
+		<w:rsid w:val="001A6798"/>
+		<w:pPr>
+			<w:spacing w:after="0"/>
+		</w:pPr>
+		<w:tblPr/>
+		<w:tblStylePr w:type="firstRow">
+			<w:pPr>
+				<w:wordWrap/>
+				<w:spacing w:afterLines="0" w:after="0" w:afterAutospacing="0"/>
+			</w:pPr>
+			<w:rPr>
+				<w:b/>
+			</w:rPr>
+			<w:tblPr/>
+			<w:tcPr>
+				<w:shd w:val="clear" w:color="auto" w:fill="FFF2CC"/>
+			</w:tcPr>
+		</w:tblStylePr>
+	</w:style>
+	<w:style w:type="table" w:customStyle="1" w:styleId="SecurityAlertTable">
+		<w:name w:val="Security Alert Table"/>
+		<w:basedOn w:val="NoteAlertTable"/>
+		<w:uiPriority w:val="99"/>
+		<w:rsid w:val="001A6798"/>
+		<w:pPr>
+			<w:spacing w:after="0"/>
+		</w:pPr>
+		<w:tblPr/>
+		<w:tblStylePr w:type="firstRow">
+			<w:pPr>
+				<w:wordWrap/>
+				<w:spacing w:afterLines="0" w:after="0" w:afterAutospacing="0"/>
+			</w:pPr>
+			<w:rPr>
+				<w:b/>
+			</w:rPr>
+			<w:tblPr/>
+			<w:tcPr>
+				<w:shd w:val="clear" w:color="auto" w:fill="F68A9F"/>
+			</w:tcPr>
+		</w:tblStylePr>
+	</w:style>
+	<w:style w:type="table" w:customStyle="1" w:styleId="ToDoAlertTable">
+		<w:name w:val="To Do Alert Table"/>
+		<w:basedOn w:val="NoteAlertTable"/>
+		<w:uiPriority w:val="99"/>
+		<w:rsid w:val="001A6798"/>
+		<w:pPr>
+			<w:spacing w:after="0"/>
+		</w:pPr>
+		<w:tblPr/>
+		<w:tblStylePr w:type="firstRow">
+			<w:pPr>
+				<w:wordWrap/>
+				<w:spacing w:afterLines="0" w:after="0" w:afterAutospacing="0"/>
+			</w:pPr>
+			<w:rPr>
+				<w:b/>
+			</w:rPr>
+			<w:tblPr/>
+			<w:tcPr>
+				<w:shd w:val="clear" w:color="auto" w:fill="97F3DF"/>
 			</w:tcPr>
 		</w:tblStylePr>
 	</w:style>
@@ -1096,7 +1177,46 @@
 			</w:rPr>
 			<w:tblPr />
 			<w:tcPr>
-				<w:shd w:val="clear" w:color="auto" w:fill="B8CCE4" w:themeFill="accent1" w:themeFillTint="66" />
+				<w:shd w:val="clear" w:color="auto" w:fill="E6E6E6" />
+			</w:tcPr>
+		</w:tblStylePr>
+	</w:style>
+	<w:style w:type="table" w:styleId="GeneralTableNoBorder" w:customStyle="1">
+		<w:name w:val="General Table No Border" />
+		<w:basedOn w:val="TableNormal" />
+		<w:uiPriority w:val="99" />
+		<w:rsid w:val="00550A37" />
+		<w:pPr>
+			<w:spacing w:after="0" w:line="240" w:lineRule="auto" />
+		</w:pPr>
+		<w:tblPr>
+			<w:tblInd w:w="0" w:type="dxa" />
+			<w:tblBorders>
+				<w:top w:val="none" w:color="auto" w:sz="0" w:space="0" />
+				<w:left w:val="none" w:color="auto" w:sz="0" w:space="0" />
+				<w:bottom w:val="none" w:color="auto" w:sz="0" w:space="0" />
+				<w:right w:val="none" w:color="auto" w:sz="0" w:space="0" />
+				<w:insideH w:val="none" w:color="auto" w:sz="0" w:space="0" />
+				<w:insideV w:val="none" w:color="auto" w:sz="0" w:space="0" />
+			</w:tblBorders>
+			<w:tblCellMar>
+				<w:top w:w="43" w:type="dxa" />
+				<w:left w:w="43" w:type="dxa" />
+				<w:bottom w:w="43" w:type="dxa" />
+				<w:right w:w="43" w:type="dxa" />
+			</w:tblCellMar>
+		</w:tblPr>
+		<w:tblStylePr w:type="firstRow">
+			<w:pPr>
+				<w:wordWrap />
+				<w:spacing w:after="0" w:afterLines="0" w:afterAutospacing="0" />
+			</w:pPr>
+			<w:rPr>
+				<w:b />
+			</w:rPr>
+			<w:tblPr />
+			<w:tcPr>
+				<w:shd w:val="clear" w:color="auto" w:fill="E6E6E6" />
 			</w:tcPr>
 		</w:tblStylePr>
 	</w:style>
@@ -1109,7 +1229,7 @@
 			<w:spacing w:after="0" w:line="240" w:lineRule="auto" />
 		</w:pPr>
 		<w:rPr>
-			<w:rFonts w:ascii="Courier New" w:hAnsi="Courier New" />
+			<w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" />
 			<w:sz w:val="20" />
 		</w:rPr>
 		<w:tblPr>
@@ -1140,7 +1260,7 @@
 			</w:rPr>
 			<w:tblPr />
 			<w:tcPr>
-				<w:shd w:val="clear" w:color="auto" w:fill="BDD6EE" w:themeFill="accent1" w:themeFillTint="66" />
+				<w:shd w:val="clear" w:color="auto" w:fill="E6E6E6" />
 			</w:tcPr>
 		</w:tblStylePr>
 	</w:style>

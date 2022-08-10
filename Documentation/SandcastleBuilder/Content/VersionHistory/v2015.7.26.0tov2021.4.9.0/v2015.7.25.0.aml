@@ -140,10 +140,10 @@ the items are copied to the build process.</para>
 					</listItem>
 
 					<listItem>
-						<para>Moved the manual visibility and API filter methods from the build engine into a new
-<link xlink:href="d377a638-6dfc-4041-ba7b-97561de26f0d" />.  If your plug-in made use of the old methods in the
-build engine that manually applied the API filter and/or visibility options, remove the related code and note in
-your plug-in's documentation and description that the new plug-in should be used in conjunction with it.</para>
+						<para>Moved the manual visibility and API filter methods from the build engine into a new Manual
+Visibility/API Filter plug-in.  If your plug-in made use of the old methods in the build engine that manually
+applied the API filter and/or visibility options, remove the related code and note in your plug-in's
+documentation and description that the new plug-in should be used in conjunction with it.</para>
 					</listItem>
 
 					<listItem>

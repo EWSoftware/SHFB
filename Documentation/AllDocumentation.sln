@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31424.327
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{21CF8CF5-DA35-41C6-B04F-B307C0CA80B1}"
 	ProjectSection(SolutionItems) = preProject
@@ -17,10 +17,6 @@ Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "XMLCommentsGuide", "XMLComm
 	ProjectSection(ProjectDependencies) = postProject
 		{46157C34-C925-4733-8682-957F3D97345A} = {46157C34-C925-4733-8682-957F3D97345A}
 	EndProjectSection
-EndProject
-Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "HtmlToMamlDocs", "..\SHFB\Source\HtmlToMaml\Doc\HtmlToMamlDocs.shfbproj", "{C1AB8F68-82B0-4DA3-B9EE-84703C939B66}"
-EndProject
-Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "EWSoftwareCodeDom", "..\SHFB\Source\WebCodeProviders\Doc\EWSoftwareCodeDom.shfbproj", "{AACC5248-C357-442F-B789-17488EE609D9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLCommentsExamples", "..\SHFB\Source\XMLCommentsExamples\XMLCommentsExamples.csproj", "{46157C34-C925-4733-8682-957F3D97345A}"
 EndProject
@@ -42,14 +38,6 @@ Global
 		{721BD6EC-48F5-4391-95BD-FEFEFC528993}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{721BD6EC-48F5-4391-95BD-FEFEFC528993}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{721BD6EC-48F5-4391-95BD-FEFEFC528993}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C1AB8F68-82B0-4DA3-B9EE-84703C939B66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1AB8F68-82B0-4DA3-B9EE-84703C939B66}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C1AB8F68-82B0-4DA3-B9EE-84703C939B66}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C1AB8F68-82B0-4DA3-B9EE-84703C939B66}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AACC5248-C357-442F-B789-17488EE609D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AACC5248-C357-442F-B789-17488EE609D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AACC5248-C357-442F-B789-17488EE609D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AACC5248-C357-442F-B789-17488EE609D9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{46157C34-C925-4733-8682-957F3D97345A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{46157C34-C925-4733-8682-957F3D97345A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46157C34-C925-4733-8682-957F3D97345A}.Release|Any CPU.ActiveCfg = Release|Any CPU

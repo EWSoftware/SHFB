@@ -213,20 +213,20 @@ details are still written to the log file and can be viewed after the build.</pa
 
 				<para>If the build is running out of memory during the BuildAssembler step, you can utilize the cached
 build components which can drastically reduce the amount of memory used by BuildAssembler as they utilize
-databases to cache the information.  See the <link xlink:href="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" /> help
-topic and its subtopics for full details.  Add the components to the project using the Components category in the
-project properties window.  There are two version (ESent and SQL Server) and each is comprised of three separate
-components (Comments Index Cache, Reflection Index Data Cache, and Resolve Reference Links Cache).  Be sure to
-add them as a matched set to get the full benefits.  The ESent build components are the easiest to use as they
-require no additional set up.  They use ESE databases created on first use to cache the information.  It takes a
-good 30 minutes to an hour to build the initial caches when they don’t exist for the base framework information.
-Once done, subsequent builds are faster than the first and require much less memory.  The SQL Server components
-index the base framework data a lot faster thus the initial cache building process is quicker but it does require
-access to a SQL server instance (Full, Express, and LocalDB versions are supported).  Once the caches exist,
-subsequent builds are pretty much equivalent to the ESent version with regard to speed and memory usage.  It is
-suggested that you only caching the base framework data first.  If BuildAssembler still runs out of memory, you
-can enable caching of the project data as well.  This caches just about everything in the database and frees up
-the most memory but that comes at the expense of longer build times.</para>
+databases to cache the information.  You will need to add the legacy data caching component NuGet packages to the
+project.  Add the components to the project using the Components category in the project properties window.
+There are two version (ESent and SQL Server) and each is comprised of three separate components (Comments Index
+Cache, Reflection Index Data Cache, and Resolve Reference Links Cache).  Be sure to add them as a matched set to
+get the full benefits.  The ESent build components are the easiest to use as they require no additional set up.
+They use ESE databases created on first use to cache the information.  It takes a good 30 minutes to an hour to
+build the initial caches when they don’t exist for the base framework information.  Once done, subsequent builds
+are faster than the first and require much less memory.  The SQL Server components index the base framework data
+a lot faster thus the initial cache building process is quicker but it does require access to a SQL server
+instance (Full, Express, and LocalDB versions are supported).  Once the caches exist, subsequent builds are
+pretty much equivalent to the ESent version with regard to speed and memory usage.  It is suggested that you only
+caching the base framework data first.  If BuildAssembler still runs out of memory, you can enable caching of the
+project data as well.  This caches just about everything in the database and frees up the most memory but that
+comes at the expense of longer build times.</para>
 
 				<para>If the error persists, you may be trying to document too many assemblies or one that contains an
 extremely large number of namespaces and/or types.  The only solution in this case is to break up the project

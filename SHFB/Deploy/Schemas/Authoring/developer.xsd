@@ -68,6 +68,7 @@
 			<element ref="maml:buildInstructions" minOccurs="0"/>
 			<element ref="maml:robustProgramming" minOccurs="0"/>
 			<element ref="maml:security" minOccurs="0"/>
+			<element ref="maml:bibliography" minOccurs="0" />
 			<!-- Always a section for related items -->
 			<element ref="maml:relatedTopics" />
 		</sequence>
@@ -94,6 +95,7 @@
 			<element ref="maml:introduction" />
 			<!-- One or more sections -->
 			<element ref="maml:section" minOccurs="0" maxOccurs="unbounded" />
+			<element ref="maml:bibliography" minOccurs="0" />
 			<!-- Always a section for related items -->
 			<element ref="maml:relatedTopics" />
 		</sequence>
@@ -128,6 +130,7 @@
 			</choice>
 			<!-- Optional Next Steps section -->
 			<element name="nextSteps" type="maml:namedSectionType" minOccurs="0" />
+			<element ref="maml:bibliography" minOccurs="0" />
 			<!-- Always a section for related items -->
 			<element ref="maml:relatedTopics" />
 		</sequence>
@@ -160,6 +163,7 @@
 			<element name="relatedSections" type="maml:namedSectionType" minOccurs="0" />
 			<!-- Optional External Resources section -->
 			<element name="externalResources" type="maml:externalResourcesType" minOccurs="0" />
+			<element ref="maml:bibliography" minOccurs="0" />
 			<!-- Optional section for related items -->
 			<element ref="maml:relatedTopics" minOccurs="0" />
 		</sequence>
@@ -193,6 +197,7 @@
 			<!-- Optional code example -->
 			<element ref="maml:codeExample" minOccurs="0" maxOccurs="unbounded"/>
 			<element ref="maml:section" minOccurs="0" maxOccurs="unbounded" />
+			<element ref="maml:bibliography" minOccurs="0" />
 			<!-- Always a section for related items -->
 			<element ref="maml:relatedTopics" />
 		</sequence>
@@ -220,6 +225,7 @@
 			<!-- Zero or more sections -->
 			<!-- Note: sections can contain procedures -->
 			<element ref="maml:section" minOccurs="0" maxOccurs="unbounded" />
+			<element ref="maml:bibliography" minOccurs="0" />
 			<!-- Always a section for related items -->
 			<element ref="maml:relatedTopics" />
 		</sequence>
@@ -251,6 +257,7 @@
 			<!-- Optional Code Example section -->
 			<element ref="maml:codeExample" minOccurs="0" maxOccurs="unbounded"/>
 			</choice>
+			<element ref="maml:bibliography" minOccurs="0" />
 			<!-- Always a section for related items -->
 			<element ref="maml:relatedTopics" />
 		</sequence>
@@ -294,6 +301,7 @@
 			<element name="requirements" type="maml:namedSectionType" minOccurs="0" />
 			<element ref="maml:section" minOccurs="0" maxOccurs="unbounded" />
 			</choice>
+			<element ref="maml:bibliography" minOccurs="0" />
 			<!-- Always a section for related items -->
 			<element ref="maml:relatedTopics" />
 		</sequence>
@@ -326,6 +334,7 @@
 			<element ref="maml:procedure" minOccurs="0" maxOccurs="unbounded" />
 			<!-- Optional code example -->
 			<element ref="maml:codeExample" minOccurs="0" maxOccurs="unbounded"/>
+			<element ref="maml:bibliography" minOccurs="0" />
 			<!-- Always a section for related items -->
 			<element ref="maml:relatedTopics" minOccurs="0" />
 		</sequence>
@@ -358,6 +367,7 @@
 			<!-- Always a UI Element List section -->
 			<element name="uiElementList" type="maml:namedSectionType" />
 			</choice>
+			<element ref="maml:bibliography" minOccurs="0" />
 			<!-- Always a section for related items -->
 			<element ref="maml:relatedTopics" />
 		</sequence>
@@ -425,6 +435,7 @@
 			<element name="technologyNameClassesAtAGlance" type="maml:sectionType" />
 			<!-- Optional What's New section -->
 			<element name="whatsNew" type="maml:namedSectionType" minOccurs="0" />
+			<element ref="maml:bibliography" minOccurs="0" />
 			<!-- Always a section for related items -->
 			<element ref="maml:relatedTopics" />
 		</sequence>
@@ -477,6 +488,7 @@
 			<element ref="maml:introduction" />
 			<!-- Always a Code List section -->
 			<element name="codeList" type="maml:namedSectionType" />
+			<element ref="maml:bibliography" minOccurs="0" />
 			<!-- Always a section for related items -->
 			<element ref="maml:relatedTopics" />
 		</sequence>
@@ -506,6 +518,7 @@
 			<element ref="maml:introduction"/>
 			<element ref="maml:section" minOccurs="0" maxOccurs="unbounded"/>
 			<element ref="maml:conclusion"/>
+			<element ref="maml:bibliography" minOccurs="0" />
 			<element ref="maml:relatedTopics" minOccurs="0"/>
 			<element name="additionalInformation" type="maml:namedSectionType" minOccurs="0"/>
 			<element name="authorBio" type="maml:namedSectionType" minOccurs="0"/>
@@ -563,6 +576,7 @@
 			<element name="remarks" type="maml:namedSectionType" minOccurs="0"/>
 			<element ref="maml:codeExample" minOccurs="0" maxOccurs="unbounded"/>
 			<element ref="maml:elementInformation" minOccurs="0"/>
+			<element ref="maml:bibliography" minOccurs="0" />
 			<element ref="maml:relatedTopics"/>
 			<!-- Always a title - but titles are stored outside the file -->
 			<!-- Optional Search Results Summary -->

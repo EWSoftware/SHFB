@@ -322,12 +322,14 @@ namespace Sandcastle.Tools.SyntaxGenerators
             }
             writer.WriteString(".");
             writer.WriteIdentifier(name);
-            writer.WriteLine();
 
             // set value
             if(isLiteral || isInitOnly)
                 return;
+
             writer.WriteLine();
+            writer.WriteLine();
+
             if(isStatic)
             {
                 WriteTypeReference(declaringType, writer);
@@ -367,7 +369,7 @@ namespace Sandcastle.Tools.SyntaxGenerators
             // if static, no usage
 
             WriteParameterDeclarations(reflection, writer);
-            writer.WriteLine();
+
             writer.WriteKeyword("Dim");
             writer.WriteString(" ");
             writer.WriteParameter("instance");
@@ -426,10 +428,14 @@ namespace Sandcastle.Tools.SyntaxGenerators
 
                 if(!(isStatic || isFamily))
                     ParameterDeclaration("instance", declaringType, writer);
+
                 WriteParameterDeclarations(reflection, writer);
+
                 if(returnType != null)
+                {
                     ParameterDeclaration("returnValue", returnType, writer);
-                writer.WriteLine();
+                    writer.WriteLine();
+                }
 
                 if(returnType != null)
                 {
@@ -711,9 +717,10 @@ namespace Sandcastle.Tools.SyntaxGenerators
                 }   //throw new InvalidOperationException("An operator has the wrong number of parameters.");
 
                 WriteParameterDeclarations(reflection, writer);
+                
                 ParameterDeclaration("returnValue", returnType, writer);
-
                 writer.WriteLine();
+
                 writer.WriteParameter("returnValue");
                 writer.WriteString(" = ");
 
@@ -830,7 +837,6 @@ namespace Sandcastle.Tools.SyntaxGenerators
                     writer.WriteString(" = ");
                     WriteMemberName(reflection, writer);
                     WritePropertyParameters(reflection, writer);
-                    writer.WriteLine();
                 }
             }
 
@@ -849,7 +855,6 @@ namespace Sandcastle.Tools.SyntaxGenerators
                     writer.WriteParameter("value");
                 }
             }
-
         }
 
         /// <inheritdoc />
@@ -882,15 +887,17 @@ namespace Sandcastle.Tools.SyntaxGenerators
             WriteMemberName(reflection, writer);
             writer.WriteString(", ");
             writer.WriteParameter("handler");
-            writer.WriteLine();
         }
 
         private void WriteParameterDeclarations(XPathNavigator reflection, SyntaxWriter writer)
         {
             XPathNodeIterator parameters = reflection.Select(apiParametersExpression);
-            if(parameters.Count == 0)
-                return;
-            WriteParameterDeclarations(parameters, writer);
+
+            if(parameters.Count != 0)
+            {
+                WriteParameterDeclarations(parameters, writer);
+                writer.WriteLine();
+            }
         }
 
         private void WriteParameterDeclarations(XPathNodeIterator parameters, SyntaxWriter writer)

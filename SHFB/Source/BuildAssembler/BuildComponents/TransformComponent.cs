@@ -9,17 +9,18 @@
 // 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
 // 04/27/2014 - EFW - Added support for a "transforming topic" event that happens prior to transformation
 // 01/18/2022 - EFW - Replaced the transformed/transforming events with more generic applying/applied changes events
+// 02/27/2022 - EFW - Renamed to Transform Component, dropped all references to XSL, and updated it to use the
+// new code-based transformation process.
 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.XPath;
-using System.Xml.Xsl;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
+using Sandcastle.Core.PresentationStyle.Transformation;
 
 namespace Sandcastle.Tools.BuildComponents
 {
@@ -35,7 +36,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// <summary>
         /// This is used to create a new instance of the build component
         /// </summary>
-        [BuildComponentExport("XSL Transform Component")]
+        [BuildComponentExport("Transform Component")]
         public sealed class Factory : BuildComponentFactory
         {
             /// <inheritdoc />
@@ -49,18 +50,7 @@ namespace Sandcastle.Tools.BuildComponents
         #region Private data members
         //=====================================================================
 
-        private readonly List<Transform> transforms = new List<Transform>();
-
-        #endregion
-
-        #region Properties
-        //=====================================================================
-
-        /// <summary>
-        /// This read-only property returns an enumerable list of XSL transformations that will be applied to
-        /// the topics.
-        /// </summary>
-        protected IEnumerable<Transform> Transformations => transforms;
+        private TopicTransformationCore transformation;
 
         #endregion
 
@@ -71,7 +61,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        protected TransformComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        protected TransformComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
         }
         #endregion
@@ -82,79 +72,11 @@ namespace Sandcastle.Tools.BuildComponents
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
-            if(configuration == null)
-                throw new ArgumentNullException(nameof(configuration));
-
-            // Load the transforms
-            XPathNodeIterator transformNodes = configuration.Select("transform");
-
-            foreach(XPathNavigator transformNode in transformNodes)
-            {
-                // Load the transform
-                string file = transformNode.GetAttribute("file", String.Empty);
-
-                if(String.IsNullOrEmpty(file))
-                    this.WriteMessage(MessageLevel.Error, "Each transform element must specify a file attribute.");
-
-                file = Environment.ExpandEnvironmentVariables(file);
-
-                Transform transform = null;
-
-                try
-                {
-                    transform = new Transform(file);
-                }
-                catch(IOException e)
-                {
-                    this.WriteMessage(MessageLevel.Error, "The transform file '{0}' could not be loaded. The " +
-                        "error message is: {1}", file, e.GetExceptionMessage());
-                }
-                catch(XmlException e)
-                {
-                    this.WriteMessage(MessageLevel.Error, "The transform file '{0}' is not a valid XML file. " +
-                        "The error message is: {1}", file, e.GetExceptionMessage());
-                }
-                catch(XsltException e)
-                {
-                    this.WriteMessage(MessageLevel.Error, "The XSL transform '{0}' contains an error. The " +
-                        "error message is: {1}", file, e.GetExceptionMessage());
-                }
-
-                transforms.Add(transform);
-
-                // Load any arguments
-                XPathNodeIterator argumentNodes = transformNode.Select("argument");
-
-                foreach(XPathNavigator argumentNode in argumentNodes)
-                {
-                    string key = argumentNode.GetAttribute("key", String.Empty);
-
-                    if(String.IsNullOrWhiteSpace(key))
-                        this.WriteMessage(MessageLevel.Error, "When creating a transform argument, you must " +
-                            "specify a key using the key attribute");
-
-                    // Don't allow "key" as a key name.  That's reserved for the build process.
-                    if(key == "key")
-                        this.WriteMessage(MessageLevel.Error, "The key name 'key' is reserved for use by " +
-                            "the build process.  Choose another key name.");
-
-                    // Set "expand-value" attribute to true to expand environment variables embedded in "value".
-                    string expandAttr = argumentNode.GetAttribute("expand-value", String.Empty);
-                    bool expandValue = !String.IsNullOrEmpty(expandAttr) && Convert.ToBoolean(expandAttr, CultureInfo.InvariantCulture);
-
-                    // If a value attribute is supplied, use that.  If not, use the argument node itself
-                    string value = argumentNode.GetAttribute("value", String.Empty);
-
-                    if(!String.IsNullOrEmpty(value))
-                        transform.Arguments[key] =  expandValue ? Environment.ExpandEnvironmentVariables(value) : value;
-                    else
-                        transform.Arguments[key] = argumentNode.Clone();
-                }
-            }
+            transformation = this.BuildAssembler.TopicTransformation;
         }
 
         /// <summary>
-        /// This is overridden to apply the XSL transformations to the document
+        /// This is overridden to apply the presentation style transformations to the document
         /// </summary>
         /// <param name="document">The document to transform</param>
         /// <param name="key">The topic key</param>
@@ -166,80 +88,41 @@ namespace Sandcastle.Tools.BuildComponents
                 throw new ArgumentNullException(nameof(document));
 
             // Raise a component event to signal that the topic is about to be transformed
-            this.OnComponentEvent(new ApplyingChangesEventArgs(this.GroupId, "XSL Transform Component", key, document));
+            this.OnComponentEvent(new ApplyingChangesEventArgs(this.GroupId, "Transform Component", key, document));
 
-            foreach(Transform transform in transforms)
+            // Historically, the document has been an XmlDocument.  The transformation uses an XDocument so we
+            // need to convert it.  Longer term, changing the entire build component chain to use XDocument may
+            // be considered.
+            using(var reader = new XmlNodeReader(document))
             {
-                // Create the argument list and add the key as a parameter
-                var transformArgs = new XsltArgumentList();
+                reader.MoveToContent();
 
-                foreach(var kv in transform.Arguments)
-                    transformArgs.AddParam(kv.Key, String.Empty, kv.Value);
-
-                transformArgs.AddParam("key", String.Empty, key);
-
-                // Create a buffer into which output can be written
-                using(MemoryStream buffer = new MemoryStream())
+                try
                 {
-                    // Do the transform, routing output to the buffer
-                    XmlWriterSettings settings = transform.Xslt.OutputSettings;
-                    XmlWriter writer = XmlWriter.Create(buffer, settings);
+                    var transformedDoc = transformation.Render(key, XDocument.Load(reader));
 
                     try
                     {
-                        transform.Xslt.Transform(document, transformArgs, writer);
-                    }
-                    catch(XsltException e)
-                    {
-                        this.WriteMessage(key, MessageLevel.Error, "An error occurred while executing the " +
-                            "transform '{0}', on line {1}, at position {2}. The error message was: {3}",
-                            e.SourceUri, e.LineNumber, e.LinePosition, (e.InnerException == null) ? e.Message :
-                            e.InnerException.Message);
-                    }
-                    catch(XmlException e)
-                    {
-                        this.WriteMessage(key, MessageLevel.Error, "An error occurred while executing the " +
-                            "transform '{0}', on line {1}, at position {2}. The error message was: {3}",
-                            e.SourceUri, e.LineNumber, e.LinePosition, (e.InnerException == null) ? e.Message :
-                            e.InnerException.Message);
-                    }
-                    finally
-                    {
-                        writer.Close();
-                    }
-
-                    // Replace the document by the contents of the buffer
-                    buffer.Seek(0, SeekOrigin.Begin);
-
-                    // Some settings to ensure that we don't try to go get, parse, and validate using any
-                    // referenced schemas or DTDs
-                    XmlReaderSettings readerSettings = new XmlReaderSettings
-                    {
-                        //!EFW - Update. Uses DtdProcessing property now rather than the obsolete ProhibitDtd property.
-                        // The old property value was false which translates to Parse for the new property.
-                        DtdProcessing = DtdProcessing.Parse,
-                        XmlResolver = null
-                    };
-
-                    using(XmlReader reader = XmlReader.Create(buffer, readerSettings))
-                    {
-                        try
+                        using(var xmlReader = transformedDoc.CreateReader())
                         {
-                            document.Load(reader);
-                        }
-                        catch(XmlException e)
-                        {
-                            this.WriteMessage(key, MessageLevel.Error, "An error occurred while executing the " +
-                                "transform '{0}', on line {1}, at position {2}. The error message was: {3}",
-                                e.SourceUri, e.LineNumber, e.LinePosition, (e.InnerException == null) ? e.Message :
-                                e.InnerException.Message);
+                            document.Load(xmlReader);
                         }
                     }
+                    catch(Exception xmlEx)
+                    {
+                        this.WriteMessage(key, MessageLevel.Error, "An error occurred while attempting to " +
+                            "reload the transformed topic. The error message was: {0}", xmlEx);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    this.WriteMessage(key, MessageLevel.Error, "An error occurred while attempting to " +
+                        "transform the reflection data to a topic. The error message was: {0}", ex);
                 }
             }
 
             // Raise a component event to signal that the topic has been transformed
-            this.OnComponentEvent(new AppliedChangesEventArgs(this.GroupId, "XSL Transform Component", key, document));
+            this.OnComponentEvent(new AppliedChangesEventArgs(this.GroupId, "Transform Component", key, document));
         }
         #endregion
     }
