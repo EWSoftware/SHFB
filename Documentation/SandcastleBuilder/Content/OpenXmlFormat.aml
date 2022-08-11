@@ -166,9 +166,9 @@ it may be better to add it in a single topic somewhere near the start of the doc
 
 						<alert class="tip">
 							<para>As in other help file formats, stock content file overrides are supported.  Including a
-<localUri>word/header.xml</localUri> and/or <localUri>word/footer.xml</localUri> file containing appropriate,
+<localUri>word\header.xml</localUri> and/or <localUri>word\footer.xml</localUri> file containing appropriate,
 valid content in your project with the Build Action set to <codeInline>Content</codeInline> will override the
-default header and/or footer in the generated document.  Similarly, including a <localUri>word/styles.xml</localUri>
+default header and/or footer in the generated document.  Similarly, including a <localUri>word\styles.xml</localUri>
 file containing valid content with the Build Action set to <codeInline>Content</codeInline> will override the
 default style sheet used in the document.</para>
 						</alert>
@@ -199,8 +199,8 @@ state that the content is invalid and give the line number as zero.</para>
 	<linkText>Open XML Productivity Tool</linkText>
 	<linkUri>https://github.com/OfficeDev/Open-XML-SDK/releases/tag/v2.5</linkUri>
 	<linkTarget>_blank</linkTarget>
-</externalLink> which allows you to open, validate, and inspect the structure of an Open XML document.  To use
-it:</para>
+</externalLink> which allows you to open, validate, and inspect the structure of an Open XML document.  Install
+both the SDK and the productivity tool.  To use it:</para>
 
 				<list class="bullet">
 					<listItem>
@@ -215,7 +215,8 @@ it is using the <ui>Against Microsoft Office 2010 Formats</ui> option.</para>
 					<listItem>
 						<para>In the Document Explorer pane, expand the "/word/document.xml" node, then the
 "w:document (Document)" node, and finally the "w:body (Body)" node.  You will then see the elements that make
-up the content of the document body.</para>
+up the content of the document body.  Note that for a large document, it can take a while to expand the body
+node.</para>
 					</listItem>
 
 					<listItem>
@@ -229,7 +230,9 @@ state for the selected node.</para>
 
 					<listItem>
 						<para>Select a document node in the left-hand pane to view any validation warnings for the selected
-node.  This part boils down to searching nodes with issues.</para>
+node.  This part boils down to searching nodes for with issues.  Clicking on a higher level node to see its
+children with issues can sometimes give you an idea of where to look.  There is usually a node number although it
+may not be of much use when there are many nodes of the same type.</para>
 
 						<alert class="tip">
 							<para>If your project is quite large, using the API filter to limit the number of members included
@@ -239,7 +242,7 @@ and may help narrow down the location of the failure.</para>
 					</listItem>
 
 					<listItem>
-						<para>Once you find a node with an issue, you an right click on it and select the <ui>Reflect code</ui>
+						<para>Once you find a node with an issue, you can right click on it and select the <ui>Reflect code</ui>
 option.  This will show another tab with the XML and related code that produces it.  You can ignore the code as
 it will not be relevant to how the file is produced.  What is important is the XML that is shown.  Using it along
 with the validation error message, you should be able to determine the cause of the problem.  By selecting the
