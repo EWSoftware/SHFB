@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : PackageReferenceResolver.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/30/2021
-// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
+// Updated : 08/13/2022
+// Note    : Copyright 2017-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to resolve PackageReference elements in MSBuild project files
 //
@@ -311,6 +311,19 @@ namespace SandcastleBuilder.Utils.MSBuild
                         {
                             resolvedDependencies.Add(packageName);
                             match = m;
+                        }
+
+                        // Other times, it leaves off all trailing zero parts
+                        while(packageName.EndsWith(".0", StringComparison.Ordinal))
+                        {
+                            packageName = packageName.Substring(0, packageName.Length - 2);
+
+                            if(packages.Value.Value.TryGetProperty(packageName, out m))
+                            {
+                                resolvedDependencies.Add(packageName);
+                                match = m;
+                                break;
+                            }
                         }
                     }
                     else

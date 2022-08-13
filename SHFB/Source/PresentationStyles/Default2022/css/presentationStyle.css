@@ -216,6 +216,11 @@ span.keyword {
     text-align: left;
 }
 
+.missing {
+    color: #dc143c;
+    font-weight: bold;
+}
+
 /* Inheritance hierarchy styles */
 .inheritanceHierarchy, .implementsList {
     display: flex;

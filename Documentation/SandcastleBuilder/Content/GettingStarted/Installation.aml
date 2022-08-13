@@ -61,12 +61,12 @@ installed.  You will also need to ensure the requirements noted below are also p
 					<listItem>
 						<para>If you are using the standalone GUI to build help file projects, you will need to install the
 <externalLink>
-	<linkText>Microsoft Build Tools for <token>VisualStudioMinVersion</token> or later</linkText>
-	<linkUri>https://visualstudio.microsoft.com/downloads</linkUri>
+	<linkText>Microsoft Build Tools for Visual Studio 2017 or 2019</linkText>
+	<linkUri>https://visualstudio.microsoft.com/vs/older-downloads/</linkUri>
 	<linkTarget>_blank</linkTarget>
 </externalLink>.  If you are using <token>VisualStudioMinVersion</token> or later to build help file projects,
 there is no need to install the build tools separately.  The version of MSBuild deployed with Visual Studio will
-work as expected.</para>
+work as expected from the command line or within Visual Studio.</para>
 					</listItem>
 				</list>
 

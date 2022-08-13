@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Namespaces.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/05/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 08/13/2022
+// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the code used to generate the namespace summary file and to purge the unwanted namespaces
 // from the reflection information file.
@@ -337,11 +337,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             }
                             else
                             {
+                                // This one does not generate a topic
                                 xw.WriteStartElement("api");
                                 xw.WriteAttributeString("id", "G:");
 
                                 xw.WriteStartElement("topicdata");
                                 xw.WriteAttributeString("group", "rootGroup");
+                                xw.WriteAttributeString("notopic", String.Empty);
                                 xw.WriteEndElement();
 
                                 xw.WriteStartElement("elements");

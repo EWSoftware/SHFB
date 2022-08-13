@@ -207,7 +207,7 @@ now shown in the quick info in Visual Studio 2019 16.6 and later.</para>
 						<para>Removed all MSBuild assemblies from the distribution and updated the standalone GUI and all
 tools to use the MSBuild Locator to find a copy of MSBuild to use.  This should remove the dependency on a
 specific version of the MSBuild tools in the standalone GUI.  As long as some version of the MSBuild Tools is
-installed (2017 or later), it should work as expected.</para>
+installed (2017 or 2019), it should work as expected.</para>
 					</listItem>
 
 					<listItem>

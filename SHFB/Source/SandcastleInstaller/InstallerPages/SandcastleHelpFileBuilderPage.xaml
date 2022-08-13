@@ -29,8 +29,9 @@ for it to work correctly and must be installed first.</Paragraph>
 
         <Paragraph Margin="20" Padding="10" Background="#FFFFCC" BorderThickness="1" BorderBrush="Black">
 <Bold>IMPORTANT:</Bold> Use of the standalone GUI requires installation of the
-<Hyperlink NavigateUri="https://visualstudio.microsoft.com/downloads">Build Tools for Visual Studio 2017 or later</Hyperlink>.
-If you will only use Visual Studio 2017 or later, the separate build tools are not required.</Paragraph>
+<Hyperlink NavigateUri="https://visualstudio.microsoft.com/vs/older-downloads/">Build Tools for Visual Studio
+2017 or 2019</Hyperlink>.  If you will only use Visual Studio 2017 or 2019, the separate build tools are not
+					required.</Paragraph>
 
         <Paragraph >See the topics in the <Bold>Getting Started</Bold> section of the Sandcastle Help File
 Builder help file for information on additional tools that you may find useful and how to create your first

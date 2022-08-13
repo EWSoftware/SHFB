@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/11/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 08/13/2022
+// Note    : Copyright 2007-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to extract the XML comments into files that can be used for
 // IntelliSense.  Only the basic set of tags needed for IntelliSense are exported and only for documented API
@@ -155,6 +155,11 @@ namespace Sandcastle.Tools.BuildComponents
             public XPathNavigator Value { get; set; }
 
             /// <summary>
+            /// The remarks element comments
+            /// </summary>
+            public XPathNavigator Remarks { get; set; }
+
+            /// <summary>
             /// The exception element comments
             /// </summary>
             public XPathNodeIterator Exceptions { get; set; }
@@ -186,6 +191,7 @@ namespace Sandcastle.Tools.BuildComponents
                 this.TypeParams = comments.Select(component.typeparamExpression);
                 this.Returns = comments.SelectSingleNode(component.returnsExpression);
                 this.Value = comments.SelectSingleNode(component.valueExpression);
+                this.Remarks = comments.SelectSingleNode(component.remarksExpression);
                 this.Exceptions = comments.Select(component.exceptionExpression);
                 this.CodeContracts = comments.Select(component.codeContractsExpression);
 
@@ -216,7 +222,7 @@ namespace Sandcastle.Tools.BuildComponents
         private XPathExpression assemblyExpression, subgroupExpression, elementsExpression;
 
         private XPathExpression summaryExpression, paramExpression, typeparamExpression, returnsExpression,
-            valueExpression, exceptionExpression, codeContractsExpression;
+            valueExpression, remarksExpression, exceptionExpression, codeContractsExpression;
 
         private BlockingCollection<CommentsInfo> commentsList;
         private Task commentsWriter;
@@ -265,6 +271,7 @@ namespace Sandcastle.Tools.BuildComponents
             typeparamExpression = XPathExpression.Compile("typeparam");
             returnsExpression = XPathExpression.Compile("returns");
             valueExpression = XPathExpression.Compile("value");
+            remarksExpression = XPathExpression.Compile("remarks");
             exceptionExpression = XPathExpression.Compile("exception");
             codeContractsExpression = XPathExpression.Compile("requires|ensures|ensuresOnThrow|pure|invariant|" +
                 "getter|setter");
@@ -425,6 +432,10 @@ namespace Sandcastle.Tools.BuildComponents
 
                     if(comments.Value != null)
                         writer.WriteNode(comments.Value, true);
+
+                    // Remarks aren't shown for IntelliSense but are shown for quick info tips in VS 2022
+                    if(comments.Remarks != null)
+                        writer.WriteNode(comments.Remarks, true);
 
                     foreach(XPathNavigator nav in comments.Exceptions)
                         writer.WriteNode(nav, true);

@@ -358,6 +358,11 @@ property was added to the build engine to allow plug-ins to adjust how the tool 
 						<para> Removed generation of the website keyword index file (<localUri>WebKI.xml</localUri>) file as
 it is not longer used anywhere.</para>
 					</listItem>
+
+					<listItem>
+						<para>Update the IntelliSense build component to include remarks elements.  These are shown by
+Visual Studio 2022 in the quick info tips now.</para>
+					</listItem>
 				</list>
 			</content>
 		</section>
@@ -367,6 +372,18 @@ it is not longer used anywhere.</para>
 			<content>
 
 				<list class="bullet">
+					<listItem>
+						<para>Fixed an issue with the package reference resolver so that it correctly finds package
+reference assemblies whether or not the version number contains or does not contain the trailing zeros in the
+version numbers.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a <codeInline>notopic</codeInline> attribute to the root group API entry (G:) generated
+by the namespace grouping code when the root namespace container option is disabled.  This prevents the topic ID
+from being incorrectly included in the topic manifest. </para>
+					</listItem>
+					
 					<listItem>
 						<para>Removed the HTML to MAML converter tool from the tools distribution.  It has been moved into
 its own <externalLink>
@@ -402,6 +419,13 @@ packages at a later date.</para>
 					<listItem>
 						<para>The presentation style project templates have been temporarily removed from the Visual Studio
 package.  Updated presentation style project templates will be added to a future release.</para>
+					</listItem>
+
+					<listItem>
+						<para>Due to a breaking change in the version of MSBuild deployed with Visual Studio 2022 17.3, the
+standalone GUI is restricted to using a version of MSBuild for Visual Studio 2017, 2019, or a version of 2022
+less than 17.3.  If you do not have Visual Studio 2017 or 2019 installed, install the related version of the
+build tools instead.  See the installation instructions for a link.</para>
 					</listItem>
 				</list>
 

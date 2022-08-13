@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : StartUp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/20/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 08/13/2022
+// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This application provides a GUI that is used to edit configuration files that can be used to build HTML
 // documentation help files using Sandcastle.
@@ -19,6 +19,7 @@
 //===============================================================================================================
 
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 using Microsoft.Build.Locator;
@@ -55,12 +56,21 @@ namespace SandcastleBuilder.Gui
 
             try
             {
-                MSBuildLocator.RegisterDefaults();
+                // VS 2022 v17.3 breaks MSBuild somehow and it doesn't work with the standalone GUI.  I probably
+                // need to update the references but I'm still supporting VS 2017 so for now, require the build
+                // tools from VS 2017 or 2019.
+                var maxVersion = new Version(17, 3);
+                var vs = MSBuildLocator.QueryVisualStudioInstances().FirstOrDefault(v => v.Version < maxVersion);
+
+                if(vs == null)
+                    throw new InvalidOperationException("Build Tools 2017 or 2019 not found");
+
+                MSBuildLocator.RegisterInstance(vs);
             }
             catch(Exception ex)
             {
                 MessageBox.Show("Unable to register MSBuild defaults: " + ex.Message + "\r\n\r\nYou probably " +
-                    "need to install the Microsoft Build Tools for Visual Studio 2017 or later.", Constants.AppName,
+                    "need to install the Microsoft Build Tools for Visual Studio 2017 or 2019.", Constants.AppName,
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
