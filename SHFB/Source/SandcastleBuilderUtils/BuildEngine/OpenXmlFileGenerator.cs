@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : OpenXmlFileGenerator.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/03/2022
+// Updated : 08/13/2022
 // Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to finish up creation of the Open XML file parts and compress the
@@ -401,6 +401,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // Wrap stray text nodes in run/text elements and add containing paragraphs first since the
             // subsequent updates rely on well-formed paragraphs.
             WrapStrayElementNodes(document);
+            MakeSpansInTextSiblings(document);
             AddContainingParagraphs(document);
 
             AddBlankCellParagraphs(document);
@@ -655,6 +656,43 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         new XAttribute(XNamespace.Xml + "space", "preserve"), text.Value));
 
                 text.ReplaceWith(wrap);
+            }
+        }
+
+        /// <summary>
+        /// Move spans inside of text elements outside the parent text element as a sibling
+        /// </summary>
+        /// <param name="document">The document to check for spans inside of text elements</param>
+        /// <remarks>This can occur when unresolved links occur within a paragraph</remarks>
+        private static void MakeSpansInTextSiblings(XDocument document)
+        {
+            foreach(var span in document.Descendants("span").Where(s => s.Parent.Name.LocalName == "t"))
+            {
+                XElement parent = span.Parent.Parent;
+                XNode next = span.NextNode;
+                span.Remove();
+                parent.AddAfterSelf(span);
+
+                // Move all following nodes after the span as well
+                XNode nn = span;
+
+                while(next != null)
+                {
+                    var n = next;
+                    next = next.NextNode;
+                    n.Remove();
+
+                    if(n is XText t)
+                    {
+                        nn.AddAfterSelf(new XElement(w + "r", new XElement(w + "t", t)));
+                        nn = t.Parent.Parent;
+                    }
+                    else
+                    {
+                        nn.AddAfterSelf(n);
+                        nn = n;
+                    }
+                }
             }
         }
 

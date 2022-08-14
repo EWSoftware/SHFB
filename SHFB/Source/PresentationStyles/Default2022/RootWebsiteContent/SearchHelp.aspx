@@ -5,8 +5,8 @@
 // System  : Sandcastle Help File Builder
 // File    : SearchHelp.aspx
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/15/2014
-// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
+// Updated : 08/13/2022
+// Note    : Copyright 2007-202, Eric Woodruff, All rights reserved
 //
 // This file contains the code used to search for keywords within the help topics using the full-text index
 // files created by the help file builder.
@@ -119,7 +119,7 @@ private List<string> ParseKeywords(string keywords)
     {
         checkWord = word.ToLower(CultureInfo.InvariantCulture);
         
-        if(checkWord.Length > 2 && !Char.IsDigit(checkWord[0]) && !keywordList.Contains(checkWord))
+        if(checkWord.Length >= 2 && !Char.IsDigit(checkWord[0]) && !keywordList.Contains(checkWord))
             keywordList.Add(checkWord);
     }
 
@@ -140,7 +140,8 @@ private string Search(List<string> keywords, List<string> fileInfo,
     StringBuilder sb = new StringBuilder(10240);
     Dictionary<string, List<long>> matches = new Dictionary<string, List<long>>();
     List<long> occurrences;
-    List<int> matchingFileIndices = new List<int>(), occurrenceIndices = new List<int>();
+    HashSet<int> matchingFileIndices = new HashSet<int>();
+    List<int> occurrenceIndices = new List<int>();
     List<Ranking> rankings = new List<Ranking>();
 
     string filename, title;
@@ -150,7 +151,13 @@ private string Search(List<string> keywords, List<string> fileInfo,
 
     foreach(string word in keywords)
     {
-        if(!wordDictionary.TryGetValue(word, out occurrences))
+        occurrences = new List<long>();
+
+        foreach(KeyValuePair<string, List<long>> kv in wordDictionary)
+            if(kv.Key.Contains(word))
+                occurrences.AddRange(kv.Value);
+
+        if(occurrences.Count == 0)
             return "<strong>Nothing found</strong>";
 
         matches.Add(word, occurrences);
@@ -163,18 +170,14 @@ private string Search(List<string> keywords, List<string> fileInfo,
         if(isFirst)
         {
             isFirst = false;
-            matchingFileIndices.AddRange(occurrenceIndices);
+            matchingFileIndices.UnionWith(occurrenceIndices);
         }
         else
         {
-            // After the first match, remove files that do not appear for
-            // all found keywords.
-            for(idx = 0; idx < matchingFileIndices.Count; idx++)
-                if(!occurrenceIndices.Contains(matchingFileIndices[idx]))
-                {
-                    matchingFileIndices.RemoveAt(idx);
-                    idx--;
-                }
+            // After the first match, remove files that do not appear for all found keywords
+            foreach(int i in matchingFileIndices.ToArray())
+                if(!occurrenceIndices.Contains(i))
+                    matchingFileIndices.Remove(i);
         }
     }
 
@@ -217,7 +220,7 @@ private string Search(List<string> keywords, List<string> fileInfo,
     });
 
     // Format the file list and return the results
-		sb.Append("<ol>");
+	sb.Append("<ol>");
 
     foreach(Ranking r in rankings)
         sb.AppendFormat("<li><a href=\"{0}\" target=\"_blank\">{1}</a></li>", r.Filename, r.PageTitle);

@@ -30,7 +30,7 @@ function ParseKeywords($keywords)
     {
         $checkWord = strtolower($word);
         $first = substr($checkWord, 0, 1);
-        if(strlen($checkWord) > 2 && !ctype_digit($first) && !in_array($checkWord, $keywordList))
+        if(strlen($checkWord) >= 2 && !ctype_digit($first) && !in_array($checkWord, $keywordList))
         {
             array_push($keywordList, $checkWord);
         }

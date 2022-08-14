@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : branding-Website.js
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/24/2022
+// Updated : 08/13/2022
 // Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
 //           Portions Copyright 2014-2022 Sam Harwell, All rights reserved
 //
@@ -516,7 +516,7 @@ function ParseKeywords(keywords)
     {
         checkWord = words[idx].toLowerCase();
 
-        if(checkWord.length > 2)
+        if(checkWord.length >= 2)
         {
             var charCode = checkWord.charCodeAt(0);
 

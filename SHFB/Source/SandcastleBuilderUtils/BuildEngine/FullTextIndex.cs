@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FullTextIndex.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/15/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 08/13/2022
+// Note    : Copyright 2007-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to create a full-text index used to search for topics in the ASP.NET web
 // pages.  It's a really basic implementation but should get the job done.
@@ -37,6 +37,7 @@ using System.Threading.Tasks;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
+using System.Linq;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -86,7 +87,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// Constructor
         /// </summary>
         /// <param name="exclusions">The file containing common word exclusions.  The file should contain one
-        /// work per line in lowercase.  These words will not appear in the index.</param>
+        /// word per line in lowercase.  These words will not appear in the index.</param>
         /// <param name="language">The culture information</param>
         public FullTextIndex(string exclusions, CultureInfo language)
         {
@@ -105,7 +106,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             words = reSplitWords.Split(content);
 
             foreach(string word in words)
-                if(word.Length > 2)
+                if(word.Length >= 2)
                     exclusionWords.Add(word);
 
             fileList = new ConcurrentQueue<string>();
@@ -184,11 +185,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 var wordCounts = new Dictionary<string, int>();
 
                 // Get a list of all unique words and the number of time that they appear in this file.
-                // Exclude words that are less than three characters in length, start with a digit, or
+                // Exclude words that are less than two characters in length, start with a digit, or
                 // are in the common words exclusion list.
                 foreach(string word in words)
                 {
-                    if(word.Length < 3 || Char.IsDigit(word[0]) || exclusionWords.Contains(word))
+                    if(word.Length < 2 || exclusionWords.Contains(word) || word.Any(c => Char.IsDigit(c)))
                         continue;
 
                     // The number of times it occurs helps determine the ranking of the search results
