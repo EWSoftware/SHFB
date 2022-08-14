@@ -1198,7 +1198,7 @@
       <HelpKeyword index="K" term="customize, build tags" />
     </HelpKeywords>
   </Topic>
-  <Topic id="c5e7e920-2cb4-4f78-b167-634361d85263" visible="True" isSelected="true" title="Open XML Document Help File Format">
+  <Topic id="c5e7e920-2cb4-4f78-b167-634361d85263" visible="True" title="Open XML Document Help File Format">
     <HelpKeywords>
       <HelpKeyword index="K" term="open XML" />
     </HelpKeywords>
@@ -1369,9 +1369,9 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="502f1147-eaa4-4150-813d-a57eb6b521e8" visible="True" title="Version vNext">
+    <Topic id="502f1147-eaa4-4150-813d-a57eb6b521e8" visible="True" isSelected="true" title="Version 2022.8.14.0">
       <HelpKeywords>
-        <HelpKeyword index="K" term="versions, vNext" />
+        <HelpKeyword index="K" term="versions, 2022.8.14.0" />
       </HelpKeywords>
     </Topic>
     <Topic id="5491f230-cc0d-4604-8710-c046584907bd" visible="True" title="Version 2022.2.6.0">
