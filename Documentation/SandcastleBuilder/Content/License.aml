@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="24504fda-d3ef-4dd9-8335-6db8b25d00f2" revisionNumber="1">
-	<!-- Ignore Spelling: Maierhofer -->
+	<!-- Ignore Spelling: Maierhofer Fonticons Bulma Sagalaev -->
 	<developerConceptualDocument
     xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -103,6 +103,29 @@ implied warranties of merchantability, fitness for a particular purpose and non-
 		<section address="Copyrights">
 			<title>Copyright Notices</title>
 			<content>
+				<para>Bulma is Copyright &#169; 2022 Jeremy Thomas, All Rights Reserved.  Code released under the MIT
+license (<externalLink>
+					<linkText>https://github.com/jgthms/bulma</linkText>
+					<linkAlternateText>Bulma</linkAlternateText>
+					<linkUri>https://github.com/jgthms/bulma</linkUri>
+					<linkTarget>_blank</linkTarget>
+				</externalLink>).</para>
+
+				<para>Font Awesome Free - License - <externalLink>
+					<linkText>https://fontawesome.com/license/free</linkText>
+					<linkAlternateText>Font Awesome</linkAlternateText>
+					<linkUri>https://fontawesome.com/license/free</linkUri>
+					<linkTarget>_blank</linkTarget>
+				</externalLink> (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License).  Copyright &#169; 2022
+Fonticons, Inc., All Rights Reserved.</para>
+
+				<para>Highlight.js is Copyright (c) 2006-2022 Ivan Sagalaev and other contributors (<externalLink>
+					<linkText>https://highlightjs.org/</linkText>
+					<linkAlternateText>highlight.js</linkAlternateText>
+					<linkUri>https://highlightjs.org/</linkUri>
+					<linkTarget>_blank</linkTarget>
+				</externalLink>) License: BSD-3-Clause.</para>
+
 				<para>The <externalLink>
 						<linkText>ICSharpCode.TextEditor</linkText>
 						<linkUri>https://github.com/icsharpcode</linkUri>

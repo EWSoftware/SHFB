@@ -218,6 +218,16 @@ namespace TestDoc.IndexTocBugs
         }
 
         /// <summary>
+        /// Implicit conversion overload
+        /// </summary>
+        /// <param name="test1">Test</param>
+        /// <returns>Integer</returns>
+        public static implicit operator Int32(Test1 test1)
+        {
+            return 0;
+        }
+
+        /// <summary>
         /// Explicit conversion
         /// </summary>
         /// <param name="s">String</param>

@@ -839,7 +839,17 @@ $("".toggleSection"").keypress(function () {
                     title = new XText(this.ApiMember.Name);
                 }
                 else
-                    title = this.ApiTopicTocTitleSimple();
+                {
+                    // Use simple titles except for operators which need the parameter details to differentiate
+                    // them in many cases.
+                    if(this.ApiMember.ApiTopicSubgroup == ApiMemberGroup.Overload ||
+                      this.ApiMember.ApiSubSubgroup != ApiMemberGroup.Operator)
+                    {
+                        title = this.ApiTopicTocTitleSimple();
+                    }
+                    else
+                        title = this.ApiTopicTitle(false, true);
+                }
 
                 this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "Title"),
                     new XElement("includeAttribute",

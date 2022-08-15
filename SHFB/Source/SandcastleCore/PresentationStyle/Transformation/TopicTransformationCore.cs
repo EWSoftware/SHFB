@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/07/2022
+// Updated : 08/15/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
@@ -1287,7 +1287,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                 titleParam.Add(this.ApiTopicShortNameDecorated());
 
             // Only show parameters for operators and overloaded members
-            if(this.ApiMember.ApiSubSubgroup == ApiMemberGroup.Operator &&
+            if(this.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload &&
+              this.ApiMember.ApiSubSubgroup == ApiMemberGroup.Operator &&
               (this.ApiMember.Name.Equals("Explicit", StringComparison.Ordinal) ||
                this.ApiMember.Name.Equals("Implicit", StringComparison.Ordinal)))
             {

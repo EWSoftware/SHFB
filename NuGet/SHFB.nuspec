@@ -6,6 +6,7 @@
 		<title>Sandcastle Help File Builder</title>
 		<authors>Eric Woodruff</authors>
 		<owners>Eric Woodruff</owners>
+		<!-- <readme>readme.md</readme> -->
 		<license type="expression">MS-PL</license>
 		<projectUrl>https://github.com/EWSoftware/SHFB</projectUrl>
 		<icon>SHFB.png</icon>
