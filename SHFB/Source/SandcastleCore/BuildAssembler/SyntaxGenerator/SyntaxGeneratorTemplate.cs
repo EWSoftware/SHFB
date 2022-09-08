@@ -16,6 +16,7 @@
 // 10/08/2015 - EFW - Added support for writing out the value of constant fields
 // 03/14/2021 - EFW - Added support for nullable type syntax
 // 03/19/2021 - EFW - Added support for nullable reference types
+// 09/08/2022 - EFW - Added support for init only setters
 
 using System;
 using System.Globalization;
@@ -134,6 +135,7 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         // property data
         protected static readonly XPathExpression apiIsReadPropertyExpression = XPathExpression.Compile("boolean(propertydata/@get='true')");
         protected static readonly XPathExpression apiIsWritePropertyExpression = XPathExpression.Compile("boolean(propertydata/@set='true')");
+        protected static readonly XPathExpression apiIsInitOnlyExpression = XPathExpression.Compile("boolean(propertydata/@initOnly='true')");
         protected static readonly XPathExpression apiGetVisibilityExpression = XPathExpression.Compile("string(propertydata/@get-visibility)");
         protected static readonly XPathExpression apiSetVisibilityExpression = XPathExpression.Compile("string(propertydata/@set-visibility)");
         // !EFW - Added for property attributes

@@ -143,7 +143,7 @@ namespace Sandcastle.Tools
                         if(extendedType.NodeType == NodeType.Reference)
                             extendedType = ((Reference)extendedType).ElementType ?? extendedType;
 
-                        if(extendedType.IsNullable && extendedType.TemplateArguments.Count != 0)
+                        if(extendedType.IsNullable && (extendedType.TemplateArguments?.Count ?? 0) != 0)
                             extendedType = extendedType.TemplateArguments[0];
 
                         if(!index.TryGetValue(extendedType, out List<Method> methods))

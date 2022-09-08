@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AutoOutlineElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/16/2022
+// Updated : 09/08/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle autoOutline elements
@@ -105,7 +105,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 throw new ArgumentNullException(nameof(element));
 
             string leadIn = element.Attribute("lead")?.Value.NormalizeWhiteSpace();
-            AutoOutlineType outlineType = ((bool?)element.Attribute("excludeRelatedTopics") ?? false) ?
+            AutoOutlineType outlineType = element.Attribute("excludeRelatedTopics").ToBoolean() ?
                 AutoOutlineType.TopNoRelated : AutoOutlineType.TopLevel;
 
             if(!Int32.TryParse(element.Value, out int maxDepth))

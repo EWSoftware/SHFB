@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SeeElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/31/2022
+// Updated : 09/08/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle see/seealso elements
@@ -75,8 +75,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
         /// <param name="apiMemberId">The member ID to use for the link</param>
         private static void RenderApiTopicLink(TopicTransformationCore transformation, XElement element, string apiMemberId)
         {
-            bool qualifyHint = (bool?)element.Attribute("qualifyHint") ?? false,
-                autoUpgrade = (bool?)element.Attribute("autoUpgrade") ?? false;
+            bool qualifyHint = element.Attribute("qualifyHint").ToBoolean(),
+                autoUpgrade = element.Attribute("autoUpgrade").ToBoolean();
 
             if(apiMemberId.StartsWith("O:", StringComparison.Ordinal))
                 apiMemberId = "Overload:" + apiMemberId.Substring(2);

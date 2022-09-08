@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : CodeEntityReferenceElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/23/2022
+// Updated : 09/08/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle codeEntityReference elements
@@ -43,8 +43,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 
             string linkTarget = element.Value.NormalizeWhiteSpace(),
                 linkText = element.Attribute("linkText")?.Value.NormalizeWhiteSpace();
-            bool qualifyHint = (bool?)element.Attribute("qualifyHint") ?? false,
-                autoUpgrade = (bool?)element.Attribute("autoUpgrade") ?? false;
+            bool qualifyHint = element.Attribute("qualifyHint").ToBoolean(),
+                autoUpgrade = element.Attribute("autoUpgrade").ToBoolean();
 
             var link = new XElement("referenceLink",
                 new XAttribute("target", linkTarget));

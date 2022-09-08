@@ -21,6 +21,7 @@
 // 04/03/2021 - EFW - Moved duplicate type/member merging and XAML syntax attributes to MRefBuilder and removed
 // the MergeDuplicates.xsl and AddXamlSyntaxData.xsl transformations.
 // 06/13/2022 - EFW - Added support for writing out hierarchy info for structures
+// 09/08/2022 - EFW - Added support for init only setters
 
 using System;
 using System.Collections.Generic;
@@ -1317,6 +1318,7 @@ namespace Sandcastle.Tools
             writer.WriteStartElement("propertydata");
 
             if(getter != null)
+            {
                 if(this.ApiFilter.IsVisible(getter))
                 {
                     this.WriteBooleanAttribute("get", true);
@@ -1328,11 +1330,19 @@ namespace Sandcastle.Tools
                 }
                 else
                     getter = null;
+            }
 
             if(setter != null)
+            {
                 if(this.ApiFilter.IsVisible(setter))
                 {
                     this.WriteBooleanAttribute("set", true);
+
+                    if(setter.ReturnType != null && setter.ReturnType.StructuralElementTypes != null &&
+                      setter.ReturnType.StructuralElementTypes.Any(s => s.FullName == "System.Runtime.CompilerServices.IsExternalInit"))
+                    {
+                        this.WriteBooleanAttribute("initOnly", true);
+                    }
 
                     string setterVisibility = this.ApiFilter.GetVisibility(setter);
 
@@ -1341,6 +1351,7 @@ namespace Sandcastle.Tools
                 }
                 else
                     setter = null;
+            }
 
             writer.WriteEndElement();
 

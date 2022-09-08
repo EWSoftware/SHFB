@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationExtensions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/08/2022
+// Updated : 09/08/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains various extension and utility methods for presentation styles
@@ -444,6 +444,25 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
             }
 
             return ((format == EnumValueFormat.HexValue) ? "0x" : "0b") + formattedValue;
+        }
+
+        /// <summary>
+        /// This converts an attribute value to a Boolean value.  If not present, blank, or invalid, it
+        /// returns false.
+        /// </summary>
+        /// <param name="attribute">The attribute to convert</param>
+        /// <returns>The attribute value if it is a Boolean or false if not</returns>
+        /// <remarks>Explicit casting of an attribute to <c>bool</c> or <c>bool?</c> works but if the value is
+        /// invalid or blank, the cast throws an exception.  This will return false in those cases too.</remarks>
+        public static bool ToBoolean(this XAttribute attribute)
+        {
+            if(String.IsNullOrWhiteSpace(attribute?.Value))
+                return false;
+
+            if(!Boolean.TryParse(attribute.Value, out bool value))
+                value = false;
+
+            return value;
         }
         #endregion
     }

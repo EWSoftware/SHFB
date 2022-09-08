@@ -14,5 +14,10 @@
         /// Y value
         /// </summary>
         public int Y { get; set; }
+
+        /// <summary>
+        /// Init only setter test
+        /// </summary>
+        public int XInitOnly { get; init; }
     }
 }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SummaryElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/04/2022
+// Updated : 09/08/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the summary element based on the topic type
@@ -62,7 +62,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
             // The ddue:summary element is redundant since it is optional in the MAML schema but
             // ddue:introduction is not.  Using abstract="true" will prevent the summary from being included in
             // the topic.  If it is true, it will be used for the Abstract help metadata element.
-            if(!transformation.IsMamlTopic || !((bool?)element.Attribute("abstract") ?? false))
+            if(!transformation.IsMamlTopic || !element.Attribute("abstract").ToBoolean())
             {
                 switch(transformation.SupportedFormats)
                 {

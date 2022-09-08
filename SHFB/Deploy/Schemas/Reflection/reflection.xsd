@@ -285,8 +285,9 @@
 
 	<xsd:element name="propertydata">
 		<xsd:complexType>
-			<xsd:attribute name="get" type="xsd:boolean" />
-			<xsd:attribute name="set" type="xsd:boolean" />
+			<xsd:attribute name="get" type="xsd:boolean" use="optional" />
+			<xsd:attribute name="set" type="xsd:boolean" use="optional" />
+			<xsd:attribute name="initOnly" type="xsd:boolean" use="optional" />
 			<xsd:attribute name="get-visibility" type="visibilityType" use="optional" />
 			<xsd:attribute name="set-visibility" type="visibilityType" use="optional" />
 		</xsd:complexType>

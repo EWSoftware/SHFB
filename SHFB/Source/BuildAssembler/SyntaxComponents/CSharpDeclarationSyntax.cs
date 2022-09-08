@@ -13,6 +13,7 @@
 // 11/20/2014 - EFW - Added support for writing out method parameter attributes
 // 10/08/2015 - EFW - Added support for writing out the value of constant fields
 // 03/14/2021 - EFW - Added support for defaultValue element
+// 09/08/2022 - EFW - Added support for init only setters
 
 using System;
 using System.Globalization;
@@ -494,6 +495,7 @@ namespace Sandcastle.Tools.SyntaxGenerators
             bool isDefault = (bool)reflection.Evaluate(apiIsDefaultMemberExpression);
             bool isGettable = (bool)reflection.Evaluate(apiIsReadPropertyExpression);
             bool isSettable = (bool)reflection.Evaluate(apiIsWritePropertyExpression);
+            bool isInitOnly = (bool)reflection.Evaluate(apiIsInitOnlyExpression);
             bool isExplicit = (bool)reflection.Evaluate(apiIsExplicitImplementationExpression);
             XPathNodeIterator parameters = reflection.Select(apiParametersExpression);
 
@@ -585,7 +587,11 @@ namespace Sandcastle.Tools.SyntaxGenerators
                     writer.WriteString(" ");
                 }
 
-                writer.WriteKeyword("set");
+                if(isInitOnly)
+                    writer.WriteKeyword("init");
+                else
+                    writer.WriteKeyword("set");
+
                 writer.WriteString(";");
 
                 if(setter != null && setter.HasChildren)
