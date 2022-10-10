@@ -4,7 +4,24 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="refresh" content="1;url={@WebDefaultTopic}">
 	<script type="text/javascript">
-		window.location.replace("{@WebDefaultTopic}")
+		// Use an alternate default page if a topic is specified in the query string
+		var location = window.location;
+		var queryString = location.search;
+		if(queryString != "")
+		{
+			var idx, options = queryString.split(/[\?\=\&]/);
+			for(idx = 0; idx < options.length; idx++)
+			{
+				// Don't allow javascript, or references outside the current site
+				if(options[idx] == "topic" && idx + 1 < options.length && options[idx + 1].match(/^\w[\w\/.-]*$/))
+				{
+					location.replace(location.origin + location.pathname + options[idx + 1]);
+					break;
+				}
+			}
+		}
+		else
+			location.replace("{@WebDefaultTopic}");
 	</script>
 	<title>{@HtmlEncHelpTitle} - Redirect</title>
 </head>

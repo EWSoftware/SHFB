@@ -89,12 +89,13 @@
 		<PackageReference Include="Microsoft.Build" Version="15.1.548">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Build.Locator" Version="1.4.1" />
+		<PackageReference Include="Microsoft.Build.Locator" Version="1.5.5" />
 		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.548">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
 		<PackageReference Include="ICSharpCode.TextEditor" Version="3.2.1.6466" />
 		<PackageReference Include="NHunspell" Version="1.2.5554.16953" />
+		<PackageReference Include="System.Memory" Version="4.5.5" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -265,7 +266,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="4.6.97" />
+		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.103" />
 		<Reference Include="PresentationFramework.Aero">
 			<Private>False</Private>
 		</Reference>

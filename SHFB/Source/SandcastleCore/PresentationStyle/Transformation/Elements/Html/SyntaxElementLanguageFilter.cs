@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SyntaxElementLanguageFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/26/2022
+// Updated : 10/07/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle syntax section elements in presentation styles that use a
@@ -440,7 +440,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             if(fixedBufferAttr != null)
                 typeInfo = fixedBufferAttr.Element("argument").Element("typeValue").Element("type");
             else if(isReadOnlyAttr != null)
-                typeInfo = fixedBufferAttr.Element("argument").Element("typeValue").Element("type");
+                typeInfo = isReadOnlyAttr.Element("argument").Element("typeValue").Element("type");
             else if(isByRefLikeAttr != null)
                 typeInfo = isByRefLikeAttr.Element("argument").Element("typeValue").Element("type");
             else if(transformation.ApiMember.ApiSubgroup == ApiMemberGroup.Event)

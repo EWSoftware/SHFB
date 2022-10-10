@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/13/2022
+// Updated : 10/10/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the code used to modify the help file project files to create a better table of contents
@@ -404,19 +404,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         tocXml = conceptualXml;
                     }
 
-                    // Fix up empty container nodes by removing the file attribute and setting the ID attribute to
-                    // the title attribute value.
+                    // Fix up empty container nodes by removing the file attribute
                     foreach(XmlNode n in tocXml.SelectNodes("//topic[@title]"))
                     {
                         attr = n.Attributes["file"];
 
                         if(attr != null)
                             n.Attributes.Remove(attr);
-
-                        attr = n.Attributes["id"];
-
-                        if(attr != null)
-                            attr.Value = n.Attributes["title"].Value;
                     }
 
                     tocXml.Save(Path.Combine(workingFolder, "toc.xml"));

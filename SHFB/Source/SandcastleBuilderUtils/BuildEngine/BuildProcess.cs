@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/04/2022
+// Updated : 10/07/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -1742,7 +1742,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             }
 
             pa = new BuildProgressEventArgs(this.CurrentBuildStep, stepChanged,
-                String.Format(CultureInfo.CurrentCulture, message, args));
+                args == null || args.Length == 0 ? message : String.Format(CultureInfo.CurrentCulture, message, args));
 
             // Save the message to the log file
             if(swLog != null)

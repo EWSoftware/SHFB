@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : StartUp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/13/2022
+// Updated : 09/12/2022
 // Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This application provides a GUI that is used to edit configuration files that can be used to build HTML
@@ -56,21 +56,22 @@ namespace SandcastleBuilder.Gui
 
             try
             {
-                // VS 2022 v17.3 breaks MSBuild somehow and it doesn't work with the standalone GUI.  I probably
-                // need to update the references but I'm still supporting VS 2017 so for now, require the build
-                // tools from VS 2017 or 2019.
-                var maxVersion = new Version(17, 3);
-                var vs = MSBuildLocator.QueryVisualStudioInstances().FirstOrDefault(v => v.Version < maxVersion);
+                // The version of MSBuild that comes with Visual Studio 17.3 introduced a binary incompatibility.
+                // A workaround is in place.  If that doesn't work, we may need to add a command line option to
+                // specify what version to use.
+                var vs = MSBuildLocator.QueryVisualStudioInstances().FirstOrDefault();
 
                 if(vs == null)
-                    throw new InvalidOperationException("Build Tools 2017 or 2019 not found");
+                    throw new InvalidOperationException("Build Tools 2017 or later not found");
 
                 MSBuildLocator.RegisterInstance(vs);
             }
             catch(Exception ex)
             {
                 MessageBox.Show("Unable to register MSBuild defaults: " + ex.Message + "\r\n\r\nYou probably " +
-                    "need to install the Microsoft Build Tools for Visual Studio 2017 or 2019.", Constants.AppName,
+                    "need to install the Microsoft Build Tools for Visual Studio 2017 or later.\r\n\r\n" +
+                    "As an alternative, if you have Visual Studio 2017 or later and have installed the help " +
+                    "file builder package, use it to manage the project.", Constants.AppName,
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }

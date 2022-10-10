@@ -35,8 +35,9 @@
     <ProjectSummary>Test nullable reference types</ProjectSummary>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="NullableTypesTest" isDocumented="True">Test nullable reference types</NamespaceSummaryItem>
-<NamespaceSummaryItem name="NullableTypesTestNet5" isDocumented="True">Test nullable reference types</NamespaceSummaryItem>
-<NamespaceSummaryItem name="DotNetStandardTestCases" isDocumented="True">Test cases</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="NullableTypesTestNet5" isDocumented="True">Test nullable reference types</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="DotNetStandardTestCases" isDocumented="True">Test cases</NamespaceSummaryItem>
+    </NamespaceSummaries>
     <SourceCodeBasePath>..\</SourceCodeBasePath>
     <WarnOnMissingSourceContext>False</WarnOnMissingSourceContext>
     <TransformComponentArguments>
@@ -52,6 +53,7 @@
       <Argument Key="baseSourceCodeUrl" Value="https://github.com/YourUserID/YourProject/blob/BranchNameOrCommitHash/BaseSourcePath/" xmlns="" />
       <Argument Key="requestExampleUrl" Value="" xmlns="" />
     </TransformComponentArguments>
+    <VisibleItems>ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected, NonBrowsable</VisibleItems>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->

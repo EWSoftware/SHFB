@@ -155,7 +155,7 @@
         <HelpKeyword index="K" term="Block Elements, code" />
       </HelpKeywords>
     </Topic>
-    <Topic id="96149756-b6e1-4af6-9fdc-9f1cdd7cbb64" visible="True" noFile="true" isExpanded="true" title="Test Empy Container Node">
+    <Topic id="96149756-b6e1-4af6-9fdc-9f1cdd7cbb64" visible="True" noFile="true" isExpanded="true" title="Test Empty Container Node">
       <Topic id="91a45341-e368-463e-a9ed-9e05286d2c25" visible="True" title="codeReference">
         <HelpKeywords>
           <HelpKeyword index="K" term="Miscellaneous Elements, codeReference" />
@@ -228,15 +228,17 @@
         <HelpKeyword index="K" term="Common Inline Elements, command" />
       </HelpKeywords>
     </Topic>
-    <Topic id="b433ede9-8813-4020-b5dd-74b3204ebe0c" visible="True" title="computerOutputInline">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="Common Inline Elements, computerOutputInline" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="28f99529-1e07-4a5e-978f-d2a27c3c7fb1" visible="True" title="database">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="Common Inline Elements, database" />
-      </HelpKeywords>
+    <Topic id="3d8f783c-27b7-4172-b496-cde4fa57b40b" visible="True" noFile="true" isExpanded="true" isSelected="true" title="Test Empty Container Node">
+      <Topic id="b433ede9-8813-4020-b5dd-74b3204ebe0c" visible="True" title="computerOutputInline">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="Common Inline Elements, computerOutputInline" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="28f99529-1e07-4a5e-978f-d2a27c3c7fb1" visible="True" title="database">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="Common Inline Elements, database" />
+        </HelpKeywords>
+      </Topic>
     </Topic>
     <Topic id="a0424e7f-823c-449c-a2e4-012c1f556674" visible="True" title="environmentVariable">
       <HelpKeywords>
@@ -278,7 +280,7 @@
         <HelpKeyword index="K" term="Common Inline Elements, legacyUnderline" />
       </HelpKeywords>
     </Topic>
-    <Topic id="da613e19-4d41-4e92-830e-0c776f14e751" visible="True" isSelected="true" title="lineBreak">
+    <Topic id="da613e19-4d41-4e92-830e-0c776f14e751" visible="True" title="lineBreak">
       <HelpKeywords>
         <HelpKeyword index="K" term="Common Inline Elements, lineBreak" />
       </HelpKeywords>
