@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/15/2022
+// Updated : 10/11/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
@@ -2025,7 +2025,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                 typeName += ApiTypeNameWithTemplateCount(t) + ".";
             }
 
-            typeName += typeInfo.Element("apidata").Attribute("name").Value;
+            typeName += typeInfo.Element("apidata")?.Attribute("name").Value;
 
             int count = typeInfo.Element("templates")?.Elements("template").Count() ?? 0;
 

@@ -111,15 +111,6 @@ namespace SandcastleBuilder.WPF.PropertyPages
         }
 
         /// <summary>
-        /// This is used to get or set whether or not to use the external browser when viewing website output
-        /// </summary>
-        public bool UseExternalWebBrowser
-        {
-            get => chkUseExternalBrowser.IsChecked.Value;
-            set => chkUseExternalBrowser.IsChecked = value;
-        }
-
-        /// <summary>
         /// This is used to get or set whether or not to open the help file after a successful build
         /// </summary>
         public bool OpenHelpAfterBuild

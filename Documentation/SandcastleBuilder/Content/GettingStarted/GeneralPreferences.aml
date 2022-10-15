@@ -85,12 +85,6 @@ menu.</para>
 					</listItem>
 
 					<listItem>
-						<para><ui>Use external browser to view help websites</ui> - (Visual Studio extension package only)
-If checked, the default external web browser will be used to open help website output.  If left unchecked, help
-website output will be opened in a tabbed document window within Visual Studio.</para>
-					</listItem>
-
-					<listItem>
 						<para><ui>Enable extended XML comments completion options</ui> - (Visual Studio 2017 extension package
 only) If checked, extended XML comments completion items specific to the Sandcastle tools will appear as options
 in the completion pop-up when entering XML comments in C# projects.  These can be used to quickly enter

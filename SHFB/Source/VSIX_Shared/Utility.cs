@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : Utility.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 10/15/2022
+// Note    : Copyright 2011-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a utility class with extension and utility methods.
 //
@@ -194,35 +194,6 @@ namespace SandcastleBuilder.Package
                     String.Empty, 0, OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST, icon, 0,
                     out _));
             }
-        }
-
-        /// <summary>
-        /// Open a URL within Visual Studio using the <see cref="IVsWebBrowsingService"/> service
-        /// </summary>
-        /// <param name="url">The URL to display</param>
-        public static void OpenUrl(string url)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            bool useExternalBrowser = false;
-
-            if(String.IsNullOrEmpty(url))
-                return;
-
-            var options = SandcastleBuilderPackage.Instance.GeneralOptions;
-
-            if(options != null)
-                useExternalBrowser = options.UseExternalWebBrowser;
-
-            if(!useExternalBrowser && MsVsShellPackage.GetGlobalService(typeof(SVsWebBrowsingService)) is IVsWebBrowsingService webBrowsingService)
-            {
-                ErrorHandler.ThrowOnFailure(webBrowsingService.Navigate(url, 0, out IVsWindowFrame frame));
-
-                if(frame != null)
-                    frame.Show();
-            }
-            else
-                System.Diagnostics.Process.Start(url);
         }
         #endregion
     }

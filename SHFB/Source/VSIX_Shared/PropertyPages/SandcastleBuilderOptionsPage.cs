@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderOptions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2019
-// Note    : Copyright 2011-2019, Eric Woodruff, All rights reserved
+// Updated : 10/15/2022
+// Note    : Copyright 2011-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class that defines the general package options
 //
@@ -62,11 +62,6 @@ namespace SandcastleBuilder.Package.PropertyPages
         public bool VerboseLogging { get; set; }
 
         /// <summary>
-        /// This is used to get or set whether or not to use the external browser when viewing website output
-        /// </summary>
-        public bool UseExternalWebBrowser { get; set; }
-
-        /// <summary>
         /// This is used to get or set whether or not to open the help file after a successful build
         /// </summary>
         public bool OpenHelpAfterBuild { get; set; }
@@ -120,7 +115,6 @@ namespace SandcastleBuilder.Package.PropertyPages
                 control.VerboseLogging  = this.VerboseLogging;
                 control.OpenLogViewerOnFailedBuild = this.OpenLogViewerOnFailedBuild;
                 control.OpenHelpAfterBuild = this.OpenHelpAfterBuild;
-                control.UseExternalWebBrowser = this.UseExternalWebBrowser;
 
                 // MEF provider options are stored separately to avoid loading the entire package just to access
                 // these options.
@@ -143,7 +137,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             this.MSHelpViewerPath = null;
             this.AspNetDevelopmentServerPort = 12345;
-            this.VerboseLogging = this.UseExternalWebBrowser = this.OpenHelpAfterBuild = false;
+            this.VerboseLogging = this.OpenHelpAfterBuild = false;
             this.SetValues();
         }
 
@@ -177,7 +171,6 @@ namespace SandcastleBuilder.Package.PropertyPages
                     this.VerboseLogging = control.VerboseLogging;
                     this.OpenLogViewerOnFailedBuild = control.OpenLogViewerOnFailedBuild;
                     this.OpenHelpAfterBuild = control.OpenHelpAfterBuild;
-                    this.UseExternalWebBrowser = control.UseExternalWebBrowser;
 
                     // MEF provider options are stored separately to avoid loading the entire package just to
                     // access these options.

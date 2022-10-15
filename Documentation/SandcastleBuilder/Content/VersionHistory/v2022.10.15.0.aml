@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="5e4cbd92-c668-4774-95ea-4e2032c2729c" revisionNumber="1">
+	<!-- Ignore Spelling: init -->
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2022.10.15.0.  See the prior version release notes for information on the
+breaking changes made to the presentation styles implementation.</para>
+		</introduction>
+
+		<section address="SandcastleTools">
+			<title>Sandcastle Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Updated MRefBuilder and the C# syntax generator to support init only property setters.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the MRefBuilder extension method add-in so that it handles nullable types in extension
+methods properly.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+		
+		<section address="PresenationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed some issues with the new presentation style transformations.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the legacy <codeInline>topic</codeInline> query string option in the VS2013
+and Default2022 presentation styles.</para>
+					</listItem>
+				</list>
+			</content>
+		
+		</section>
+			
+		<section address="SHFB">
+			<title>Sandcastle Help File Builder</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Removed the build tools version limitation in the standalone GUI.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed setting of the topic ID to the title on empty container nodes.</para>
+					</listItem>
+				
+				<listItem>
+					<para>Fixed build logging so that an exception isn't thrown for messages with no parameters that
+contain braces in the text.</para>
+				</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

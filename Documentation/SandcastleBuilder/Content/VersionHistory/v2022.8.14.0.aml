@@ -3,7 +3,6 @@
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 			<!-- Ignore Spelling: Html Bulma noindex nofollow -->
 			<introduction>
-			<!-- TODO: Update the release version number in MigrationSupport.aml (search for vNext) -->
 			<para>This release contains significant breaking changes related to how the presentation styles are
 implemented.  All XSL transformations have been removed and a new code-based API is now used to generate all
 topics.  This makes it much easier to extend and modify presentation styles with simple plug-ins and build

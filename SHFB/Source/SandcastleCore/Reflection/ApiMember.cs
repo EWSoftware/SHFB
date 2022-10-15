@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ApiMember.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/16/2022
+// Updated : 10/11/2022
 // Note    : Copyright 2021-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to contain information about an API member entry in a reflection
@@ -202,8 +202,12 @@ namespace Sandcastle.Core.Reflection
 
             if(this.IsExplicitlyImplemented)
             {
-                this.ImplementedType = apiMember.Element("implements").Element("member").Element(
+                this.ImplementedType = apiMember.Element("implements")?.Element("member").Element(
                     "type").Attribute("api").Value;
+
+                // In some cases, usually private members, the info is not there so treat it as not explicit
+                if(this.ImplementedType == null)
+                    this.IsExplicitlyImplemented = false;
             }
 
             int pos = this.MemberId.IndexOf('(');

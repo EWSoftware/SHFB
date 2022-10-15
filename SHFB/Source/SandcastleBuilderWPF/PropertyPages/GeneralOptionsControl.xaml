@@ -40,10 +40,8 @@
 					HorizontalAlignment="Left" />
 				<CheckBox Name="chkOpenLogViewerOnFailure" Content="Open b_uild log viewer on failed build"
 					Margin="0,3,0,3" HorizontalAlignment="Left" />
-				<CheckBox Name="chkOpenHelpAfterBuild" Content="_Open help file after successful build" Margin="0,3,0,3"
+				<CheckBox Name="chkOpenHelpAfterBuild" Content="_Open help file after successful build" Margin="0,3,0,15"
 					HorizontalAlignment="Left" />
-				<CheckBox Name="chkUseExternalBrowser" Content="Use _external web browser to view help websites"
-					Margin="0,3,0,15" HorizontalAlignment="Left" />
 				<CheckBox Name="chkEnableExtendedXmlComments" Content="E_nable extended XML comments completion options"
 					Margin="0,3,0,3" HorizontalAlignment="Left" />
 				<CheckBox Name="chkEnableGoToDefinition" Content="Enable MAM_L/XML comments Go To Definition"

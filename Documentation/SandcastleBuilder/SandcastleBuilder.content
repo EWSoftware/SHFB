@@ -1364,12 +1364,17 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isSelected="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="502f1147-eaa4-4150-813d-a57eb6b521e8" visible="True" isSelected="true" title="Version 2022.8.14.0">
+    <Topic id="5e4cbd92-c668-4774-95ea-4e2032c2729c" visible="True" title="Version 2022.10.15.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions 2022.10.15.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="502f1147-eaa4-4150-813d-a57eb6b521e8" visible="True" title="Version 2022.8.14.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2022.8.14.0" />
       </HelpKeywords>

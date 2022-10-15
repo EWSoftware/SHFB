@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/12/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 10/15/2022
+// Note    : Copyright 2011-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class that defines the Sandcastle Help File Builder Visual Studio package
 //
@@ -31,10 +31,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-
 using EnvDTE;
 
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -439,14 +439,22 @@ namespace SandcastleBuilder.Package
                 if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
                     ViewBuiltHelpFile(project, PkgCmdIDList.ViewHtmlHelp);
                 else
+                {
                     if((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
                         ViewBuiltHelpFile(project, PkgCmdIDList.ViewDocxHelp);
                     else
+                    {
                         if((project.HelpFileFormat & HelpFileFormats.Markdown) != 0)
                             ViewBuiltHelpFile(project, 0);
                         else
+                        {
                             if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
-                                Utility.OpenUrl(projectNode.StartWebServerInstance());
+                            {
+                                string url = projectNode.StartWebServerInstance();
+
+                                if(!String.IsNullOrWhiteSpace(url))
+                                    System.Diagnostics.Process.Start(url);
+                            }
                             else
                             {
                                 // This format opens a modal dialog box so we'll use it last if nothing else
@@ -459,6 +467,9 @@ namespace SandcastleBuilder.Package
                                     dlg.ShowModalDialog();
                                 }
                             }
+                        }
+                    }
+                }
 #pragma warning restore VSTHRD010
             }
         }
@@ -537,6 +548,7 @@ namespace SandcastleBuilder.Package
                     System.Diagnostics.Process.Start(outputPath);
                 }
                 else
+                {
                     if(outputPath.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
                     {
                         if(Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) is DTE dte)
@@ -548,7 +560,8 @@ namespace SandcastleBuilder.Package
                         }
                     }
                     else
-                        Utility.OpenUrl(outputPath);
+                        System.Diagnostics.Process.Start(outputPath);
+                }
             }
             catch(Exception ex)
             {
@@ -679,7 +692,12 @@ namespace SandcastleBuilder.Package
             var pn = CurrentProjectNode;
 
             if(pn != null)
-                Utility.OpenUrl(pn.StartWebServerInstance());
+            {
+                string url = pn.StartWebServerInstance();
+
+                if(!String.IsNullOrWhiteSpace(url))
+                    System.Diagnostics.Process.Start(url);
+            }
         }
 
         /// <summary>
