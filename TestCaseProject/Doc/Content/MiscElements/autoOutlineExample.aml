@@ -59,6 +59,20 @@ is included, this paragraph can be omitted.</para>
         <para>This is section 2.</para>
       </content>
     </section>
+    
+<section address="MySection">
+  <title>My Section</title>
+  <sections>
+    <section address="MySubsection">
+      <title>My Subsection</title>
+      <content>
+        <para>Sections inside a section with no content element or an empty one
+should still appear.</para>
+      </content>
+    </section>
+  </sections>
+</section>
+    
     <relatedTopics>
       <link xlink:href="b9a1daac-a2d8-41b7-83b0-b7dc7b28b898" />
     </relatedTopics>

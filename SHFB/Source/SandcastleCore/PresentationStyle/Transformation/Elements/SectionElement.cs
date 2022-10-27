@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SectionElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/24/2022
+// Updated : 10/17/2022
 // Note    : Copyright 2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle general section elements
@@ -78,9 +78,10 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                 throw new ArgumentNullException(nameof(element));
 
             XElement title = null, content = null, childContent = element.Element(Ddue + "content");
+            var sections = element.Elements(Ddue + "sections");
 
-            if(childContent != null && (childContent.Elements().Any() ||
-              childContent.Value.NormalizeWhiteSpace().Length != 0))
+            if((childContent != null && (childContent.Elements().Any() ||
+              childContent.Value.NormalizeWhiteSpace().Length != 0)) || sections.Any())
             {
                 string address = element.Attribute("address")?.Value;
                 var titleText = element.Element(Ddue + "title")?.Value.NormalizeWhiteSpace();
@@ -125,7 +126,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 
                 // Render this section's content and any subsections
                 transformation.RenderChildElements(content ?? transformation.CurrentElement,
-                    new[] { childContent }.Concat(element.Elements(Ddue + "sections")));
+                    new[] { childContent }.Concat(sections));
             }
         }
         #endregion
