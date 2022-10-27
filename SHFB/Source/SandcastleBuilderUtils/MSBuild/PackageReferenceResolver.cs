@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : PackageReferenceResolver.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/13/2022
+// Updated : 10/27/2022
 // Note    : Copyright 2017-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to resolve PackageReference elements in MSBuild project files
@@ -22,7 +22,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-
 using Microsoft.Build.Evaluation;
 
 using SandcastleBuilder.Utils.BuildEngine;
@@ -120,11 +119,12 @@ namespace SandcastleBuilder.Utils.MSBuild
             // This is mostly guesswork so it may still need some revisions
             string targetingPackRoot = project.GetPropertyValue("NetCoreTargetingPackRoot");
 
-            // Strip off the OS part if there
+            // Strip off the OS part if there as it won't be needed for the framework path
+            string frameworkPath = targetFramework;
             int dash = targetFramework.IndexOf('-');
 
             if(dash > 0)
-                targetFramework = targetFramework.Substring(0, dash);
+                frameworkPath = targetFramework.Substring(0, dash);
 
             try
             {
@@ -147,7 +147,31 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                         if(root.TryGetProperty("targets", out JsonElement targets))
                         {
-                            packages = targets.EnumerateObject().First();
+                            // Find the most appropriate target based on the target framework value
+                            var allTargets = targets.EnumerateObject().ToDictionary(k => k.Name, v => v);
+
+                            if(!allTargets.TryGetValue(targetFramework, out JsonProperty match))
+                            {
+                                var (tfi, v) = targetFramework.IdentifierAndVersionFromTargetFramework();
+
+                                string tfName = $"{tfi},Version=v{v}";
+
+                                if(!allTargets.TryGetValue(tfName, out match))
+                                {
+                                    // Try for a key that starts with the target framework (e.g net6.0-windows7.0
+                                    // for net6.0-windows.
+                                    string key = allTargets.Keys.FirstOrDefault(k => k.StartsWith(targetFramework,
+                                        StringComparison.OrdinalIgnoreCase));
+
+                                    // If a match cannot be found, use the first one
+                                    if(key != null)
+                                        match = allTargets[key];
+                                    else
+                                        match = targets.EnumerateObject().First();
+                                }
+                            }
+
+                            packages = match;
 
                             string folders = project.GetPropertyValue("NuGetPackageFolders");
 
@@ -175,10 +199,22 @@ namespace SandcastleBuilder.Utils.MSBuild
                         // with the implicit package references below.
                         if(root.TryGetProperty("project", out JsonElement projectNode))
                         {
-                            if(projectNode.TryGetProperty("frameworks", out JsonElement frameworks) &&
-                              frameworks.EnumerateObject().Any())
+                            if(projectNode.TryGetProperty("frameworks", out JsonElement frameworks))
                             {
-                                var f = frameworks.EnumerateObject().First();
+                                // Find the most appropriate target based on the target framework value
+                                var allFrameworks = frameworks.EnumerateObject().ToDictionary(k => k.Name, v => v);
+
+                                if(!allFrameworks.TryGetValue(targetFramework, out JsonProperty f))
+                                {
+                                    // Try for a key that starts with the target framework (e.g net6.0-windows7.0
+                                    // for net6.0-windows.
+                                    string key = allFrameworks.Keys.FirstOrDefault(k => k.StartsWith(targetFramework,
+                                        StringComparison.OrdinalIgnoreCase));
+
+                                    // If a match cannot be found, use the first one
+                                    if(key != null)
+                                        f = allFrameworks[key];
+                                }
 
                                 if(f.Value.TryGetProperty("frameworkReferences", out JsonElement references))
                                 {
@@ -211,7 +247,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                                         if(Directory.Exists(rootPath))
                                         {
                                             foreach(string path in Directory.EnumerateDirectories(rootPath, "*", SearchOption.AllDirectories))
-                                                if(path.EndsWith(targetFramework, StringComparison.OrdinalIgnoreCase))
+                                                if(path.EndsWith(frameworkPath, StringComparison.OrdinalIgnoreCase))
                                                     implicitPackageFolders.Add(path);
                                         }
                                     }
@@ -272,7 +308,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                         if(Directory.Exists(rootPath))
                         {
                             foreach(string path in Directory.EnumerateDirectories(rootPath, "*", SearchOption.AllDirectories))
-                                if(path.EndsWith(targetFramework, StringComparison.OrdinalIgnoreCase))
+                                if(path.EndsWith(frameworkPath, StringComparison.OrdinalIgnoreCase))
                                     implicitPackageFolders.Add(path);
                         }
                     }

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : Utility.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/14/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 10/27/2022
+// Note    : Copyright 2011-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a utility class with extension and utility methods
 //
@@ -17,6 +17,9 @@
 // 12/15/2011  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: netcoreapp
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -123,6 +126,56 @@ namespace SandcastleBuilder.Utils
             }
 
             return content;
+        }
+
+        /// <summary>
+        /// This is used to determine the target framework identifier and version from the given target framework
+        /// value.
+        /// </summary>
+        /// <param name="targetFramework">The target framework value for which to identify the target framework
+        /// identifier and version.</param>
+        /// <returns>A tuple containing the target framework identifier and version if it could be determined
+        /// or two empty strings if not.</returns>
+        public static (string TargetFrameworkIdentifier, string Version) IdentifierAndVersionFromTargetFramework(
+          this string targetFramework)
+        {
+            if(!String.IsNullOrWhiteSpace(targetFramework))
+            {
+                /*
+                netstandardx.x  .NETStandard vx.x
+                netcoreappx.x   .NETCoreApp vx.x
+                netx.x          .NETCoreApp vx.x
+                netxxx          .NETFramework vx.x[.x]  (.NET 1.0 - 4.8, may be three digits such as net451)
+                */
+                if(targetFramework.StartsWith("netstandard", StringComparison.OrdinalIgnoreCase))
+                    return (".NETStandard", targetFramework.Substring(11));
+
+                if(targetFramework.StartsWith("netcoreapp", StringComparison.OrdinalIgnoreCase))
+                    return (".NETCoreApp", targetFramework.Substring(10));
+
+                if(targetFramework.StartsWith("net", StringComparison.OrdinalIgnoreCase) &&
+                  targetFramework.Length > 3 && Char.IsDigit(targetFramework[3]))
+                {
+                    if(targetFramework.Length > 5 && targetFramework[4] == '.')
+                    {
+                        string version = targetFramework.Substring(3);
+                        int pos = version.IndexOf('-');
+
+                        if(pos != -1)
+                            version = version.Substring(0, pos);
+
+                        return (".NETCoreApp", version);
+                    }
+
+                    if(targetFramework.Length == 5)
+                        return (".NETFramework", $"{targetFramework[3]}.{targetFramework[4]}");
+
+                    if(targetFramework.Length == 6)
+                        return (".NETFramework", $"{targetFramework[3]}.{targetFramework[4]}.{targetFramework[5]}");
+                }
+            }
+
+            return (String.Empty, String.Empty);
         }
         #endregion
     }

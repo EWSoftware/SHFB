@@ -406,7 +406,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                     return prop.EvaluatedValue;
 
                 // If not found, determine it from the target framework
-                return this.IdentifierAndVersionFromTargetFramework.TargetFrameworkIdentifier;
+                return this.TargetFramework.IdentifierAndVersionFromTargetFramework().TargetFrameworkIdentifier;
             }
         }
 
@@ -434,7 +434,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                         if(properties.TryGetValue("TargetFrameworkVersion", out prop))
                             versionValue = prop.EvaluatedValue;
                         else
-                            versionValue = this.IdentifierAndVersionFromTargetFramework.Version;
+                            versionValue = this.TargetFramework.IdentifierAndVersionFromTargetFramework().Version;
                         break;
                 }
 
@@ -445,54 +445,6 @@ namespace SandcastleBuilder.Utils.MSBuild
                     versionValue = versionValue.Substring(1);
 
                 return versionValue;
-            }
-        }
-
-        /// <summary>
-        /// This read-only property is used to determine the target framework identifier and version from the
-        /// target framework.
-        /// </summary>
-        /// <returns>A tuple containing the target framework identifier and version if it could be determined
-        /// or two empty strings if not.</returns>
-        private (string TargetFrameworkIdentifier, string Version) IdentifierAndVersionFromTargetFramework
-        {
-            get
-            {
-                string tf = this.TargetFramework;
-
-                /*
-                netstandardx.x  .NETStandard vx.x
-                netcoreappx.x   .NETCoreApp vx.x
-                net5.0          .NETCoreApp v5.0
-                netxxx          .NETFramework vx.x[.x]  (.NET 1.0 - 4.8, may be three digits such as net451)
-                */
-                if(tf.StartsWith("netstandard", StringComparison.OrdinalIgnoreCase))
-                    return (".NETStandard", tf.Substring(11));
-
-                if(tf.StartsWith("netcoreapp", StringComparison.OrdinalIgnoreCase))
-                    return (".NETCoreApp", tf.Substring(10));
-
-                if(tf.StartsWith("net", StringComparison.OrdinalIgnoreCase) && tf.Length > 3 && Char.IsDigit(tf[3]))
-                {
-                    if(tf.Length > 5 && tf[4] == '.')
-                    {
-                        string version = tf.Substring(3);
-                        int pos = version.IndexOf('-');
-
-                        if(pos != -1)
-                            version = version.Substring(0, pos);
-
-                        return (".NETCoreApp", version);
-                    }
-
-                    if(tf.Length == 5)
-                        return (".NETFramework", $"{tf[3]}.{tf[4]}");
-
-                    if(tf.Length == 6)
-                        return (".NETFramework", $"{tf[3]}.{tf[4]}.{tf[5]}");
-                }
-
-                return (String.Empty, String.Empty);
             }
         }
 
