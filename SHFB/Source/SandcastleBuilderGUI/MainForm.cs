@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/25/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 11/04/2022
+// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the main form for the application.
 //
@@ -252,8 +252,6 @@ namespace SandcastleBuilder.Gui
         /// <param name="mustExist">True if it must exist or false if it is a new, unnamed project</param>
         private void CreateProject(string projectName, bool mustExist)
         {
-            List<string> values;
-
             project = new SandcastleProject(projectName, mustExist, false);
 
             projectExplorer.CurrentProject = projectProperties.CurrentProject = project;
@@ -264,12 +262,14 @@ namespace SandcastleBuilder.Gui
             this.UpdateFilenameInfo();
 
             // Get the configuration and platform values
-            values = project.MSBuildProject.ConditionedProperties["Configuration"];
-
             tcbConfig.Items.Clear();
+            tcbPlatform.Items.Clear();
 
-            foreach(string value in values)
-                tcbConfig.Items.Add(value);
+            if(project.MSBuildProject.ConditionedProperties.TryGetValue("Configuration", out var values))
+            {
+                foreach(string value in values)
+                    tcbConfig.Items.Add(value);
+            }
 
             if(tcbConfig.Items.Count == 0)
             {
@@ -277,12 +277,11 @@ namespace SandcastleBuilder.Gui
                 tcbConfig.Items.Add("Release");
             }
 
-            values = project.MSBuildProject.ConditionedProperties["Platform"];
-
-            tcbPlatform.Items.Clear();
-
-            foreach(string value in values)
-                tcbPlatform.Items.Add(value);
+            if(project.MSBuildProject.ConditionedProperties.TryGetValue("Platform", out values))
+            {
+                foreach(string value in values)
+                    tcbPlatform.Items.Add(value);
+            }
 
             if(tcbPlatform.Items.Count == 0)
                 tcbPlatform.Items.Add("AnyCPU");

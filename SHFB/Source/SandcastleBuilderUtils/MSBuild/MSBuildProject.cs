@@ -344,8 +344,11 @@ namespace SandcastleBuilder.Utils.MSBuild
                 if(properties == null)
                     throw new InvalidOperationException("Configuration has not been set");
 
-                if(properties.TryGetValue("TargetFramework", out ProjectProperty prop))
+                if(properties.TryGetValue("TargetFramework", out ProjectProperty prop) &&
+                  !String.IsNullOrWhiteSpace(prop.EvaluatedValue))
+                {
                     return prop.EvaluatedValue;
+                }
 
                 // If multi-targeting, return the requested target type if present or the first one if not
                 if(this.TargetFrameworks.Any())
