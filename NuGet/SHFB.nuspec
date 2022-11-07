@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
 	<metadata>
 		<id>EWSoftware.SHFB</id>
-		<version>2022.10.15.0</version>
+		<version>2022.10.15.1</version>
 		<title>Sandcastle Help File Builder</title>
 		<authors>Eric Woodruff</authors>
 		<owners>Eric Woodruff</owners>
@@ -20,6 +20,7 @@
 	</metadata>
 	<files>
 		<file src="..\SHFB\Deploy\**\*" target="tools" exclude="..\SHFB\Deploy\Data\**\*;..\SHFB\Deploy\Extras\**\*;..\SHFB\Deploy\Help\**\*;..\SHFB\Deploy\Schemas\**\*;..\SHFB\Deploy\Snippets\**\*;..\SHFB\Deploy\Tools\**\*;..\SHFB\Deploy\**\.gitignore;..\SHFB\Deploy\**\*.pdb" />
+		<file src="..\SHFB\Deploy\Tools\HelpLibraryManagerLauncher.exe*" target="tools\Tools" />
 		<file src="ReadMe.txt" target="ReadMe.txt" />
 		<file src="EWSoftware.SHFB.props" target="build" />
 		<file src="SHFB.png" target="SHFB.png" />
