@@ -51,7 +51,7 @@ namespace Sandcastle.PresentationStyles.Markdown
 
             this.DocumentModelApplicator = new StandardDocumentModel();
             this.ApiTableOfContentsGenerator = new StandardApiTocGenerator();
-            this.TopicTranformation = new MarkdownTransformation(this.ResolvePath);
+            this.TopicTransformation = new MarkdownTransformation(this.ResolvePath);
 
             // If relative, these paths are relative to the base path
             this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";

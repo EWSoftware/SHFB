@@ -113,13 +113,13 @@ namespace SandcastleBuilder.PlugIns
                     parentTopics.Add(t);
                 }
 
-                tocPath = builder.PresentationStyle.TopicTranformation.ScriptPath;
+                tocPath = builder.PresentationStyle.TopicTransformation.ScriptPath;
 
                 int pathEnd = tocPath.Substring(0, tocPath.Length - 1).LastIndexOf('/') + 1;
 
                 tocPath = tocPath.Substring(0, pathEnd) + "toc/";
 
-                if(builder.PresentationStyle.TopicTranformation.TransformationArguments.TryGetValue("RootBreadcrumbTitleText",
+                if(builder.PresentationStyle.TopicTransformation.TransformationArguments.TryGetValue("RootBreadcrumbTitleText",
                   out var btArg))
                 {
                     rootBreadcrumbTitleText = btArg.Value;
@@ -130,7 +130,7 @@ namespace SandcastleBuilder.PlugIns
 
                 // Register the script to load the initial page TOC on startup and also add the TOC file metadata
                 // when the topic starts to be rendered.
-                builder.PresentationStyle.TopicTranformation.RenderStarting += this.TopicTranformation_RenderStarting;
+                builder.PresentationStyle.TopicTransformation.RenderStarting += this.TopicTransformation_RenderStarting;
                 return;
             }
 
@@ -311,7 +311,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void TopicTranformation_RenderStarting(object sender, RenderTopicEventArgs e)
+        private void TopicTransformation_RenderStarting(object sender, RenderTopicEventArgs e)
         {
             // MS Help Viewer root content topics will not be in the help file TOC so ignore them
             if(tocEntries.TryGetValue(e.Key, out XElement tocEntry))
@@ -332,7 +332,7 @@ namespace SandcastleBuilder.PlugIns
                     new XAttribute("name", "tocFile"),
                     new XAttribute("content", $"{tocPath}{tocFile}.xml")));
 
-                builder.PresentationStyle.TopicTranformation.RegisterStartupScript(100, "LoadTocFile(null, null);");
+                builder.PresentationStyle.TopicTransformation.RegisterStartupScript(100, "LoadTocFile(null, null);");
             }
         }
         #endregion

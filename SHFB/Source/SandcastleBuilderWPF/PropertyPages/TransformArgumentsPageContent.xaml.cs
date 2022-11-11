@@ -371,7 +371,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 lastStyle = projectSettings.PresentationStyle;
 
                 // Create an entry for each transform component argument in the presentation style
-                foreach(var arg in pss.TopicTranformation.TransformationArguments.Values)
+                foreach(var arg in pss.TopicTransformation.TransformationArguments.Values)
                 {
                     clone = arg.Clone();
 

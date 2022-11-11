@@ -1,6 +1,6 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
-// File    : TranformationArgument.cs
+// File    : TransformationArgument.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 01/31/2022
 // Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved

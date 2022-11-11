@@ -1258,7 +1258,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         this.MergeComponentConfigurations();
 
                         // Set the language filter items used by the presentation style transformation
-                        presentationStyle.TopicTranformation.AddLanguageFilterItems(
+                        presentationStyle.TopicTransformation.AddLanguageFilterItems(
                             ComponentUtilities.SyntaxFilterLanguagesFrom(this.SyntaxGenerators,
                             project.SyntaxFilters));
 

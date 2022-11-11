@@ -52,7 +52,7 @@ namespace Sandcastle.PresentationStyles.Default2022
 
             this.DocumentModelApplicator = new StandardDocumentModel();
             this.ApiTableOfContentsGenerator = new StandardApiTocGenerator();
-            this.TopicTranformation = new Default2022Transformation(this);
+            this.TopicTransformation = new Default2022Transformation(this);
 
             // If relative, these paths are relative to the base path
             this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";

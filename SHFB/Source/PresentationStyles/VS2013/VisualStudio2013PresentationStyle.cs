@@ -54,7 +54,7 @@ namespace Sandcastle.PresentationStyles.VS2013
 
             this.DocumentModelApplicator = new StandardDocumentModel();
             this.ApiTableOfContentsGenerator = new StandardApiTocGenerator();
-            this.TopicTranformation = new VisualStudio2013Transformation(this.SupportedFormats, this.ResolvePath);
+            this.TopicTransformation = new VisualStudio2013Transformation(this.SupportedFormats, this.ResolvePath);
 
             // If relative, these paths are relative to the base path
             this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";

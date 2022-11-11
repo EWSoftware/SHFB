@@ -62,7 +62,7 @@ namespace Sandcastle.PresentationStyles.OpenXml
 
             this.DocumentModelApplicator = new StandardDocumentModel();
             this.ApiTableOfContentsGenerator = new StandardApiTocGenerator();
-            this.TopicTranformation = new OpenXmlTransformation(this.ResolvePath);
+            this.TopicTransformation = new OpenXmlTransformation(this.ResolvePath);
 
             // If relative, these paths are relative to the base path
             this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";

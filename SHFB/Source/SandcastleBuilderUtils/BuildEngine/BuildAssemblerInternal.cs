@@ -73,7 +73,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 MessageLevel.Warn : MessageLevel.Error;
 
             // Get the transformation to use and set any transformation argument values
-            this.TopicTransformation = currentBuild.PresentationStyle.TopicTranformation;
+            this.TopicTransformation = currentBuild.PresentationStyle.TopicTransformation;
 
             foreach(var arg in currentBuild.CurrentProject.TransformComponentArguments)
             {
@@ -88,6 +88,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             this.TopicTransformation.HasHeaderText = !String.IsNullOrWhiteSpace(currentBuild.CurrentProject.HeaderText);
             this.TopicTransformation.IsPreliminaryDocumentation = currentBuild.CurrentProject.Preliminary;
+            this.TopicTransformation.Locale = currentBuild.Language.Name;
 
             // Special case.  If the transformation contains a BibliographyDataFile argument, set the filename
             // on the transformation.  If relative, use the project path to fully qualify it.

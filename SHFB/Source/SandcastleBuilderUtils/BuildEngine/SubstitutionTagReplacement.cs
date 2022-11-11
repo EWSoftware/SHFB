@@ -581,7 +581,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         [SubstitutionTag]
         private string DisableCodeBlockComponent()
         {
-            return (!currentBuild.PresentationStyle.TopicTranformation.UsesLegacyCodeColorizer ||
+            return (!currentBuild.PresentationStyle.TopicTransformation.UsesLegacyCodeColorizer ||
                 currentBuild.CurrentProject.DisableCodeBlockComponent).ToString().ToLowerInvariant();
         }
 

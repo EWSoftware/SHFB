@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PresentationStyleSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/06/2022
+// Updated : 11/11/2022
 // Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain settings information for a specific presentation style
@@ -116,7 +116,7 @@ namespace Sandcastle.Core.PresentationStyle
         /// <summary>
         /// This read-only property returns the topic transformation to use
         /// </summary>
-        public TopicTransformationCore TopicTranformation { get; protected set; }
+        public TopicTransformationCore TopicTransformation { get; protected set; }
 
         /// <summary>
         /// This read-only property returns any plug-in dependencies required by the presentation style
@@ -172,8 +172,8 @@ namespace Sandcastle.Core.PresentationStyle
             if(this.ApiTableOfContentsGenerator == null)
                 errors.Add(nameof(ApiTableOfContentsGenerator) + " has not been specified");
 
-            if(this.TopicTranformation == null)
-                errors.Add(nameof(TopicTranformation) + " has not been specified");
+            if(this.TopicTransformation == null)
+                errors.Add(nameof(TopicTransformation) + " has not been specified");
 
             if(String.IsNullOrWhiteSpace(this.BuildAssemblerConfiguration))
                 errors.Add(nameof(BuildAssemblerConfiguration) + " has not been specified");
