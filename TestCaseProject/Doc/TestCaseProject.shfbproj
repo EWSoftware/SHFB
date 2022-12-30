@@ -398,8 +398,8 @@
   <!-- Uncomment this to use the nuget packages when SHFB is not installed locally, e.g. in the CI build pipeline.
        Update the package versions as required.
   <ItemGroup>
-    <PackageReference Include="EWSoftware.SHFB" Version="2019.9.15" />
-    <PackageReference Include="EWSoftware.SHFB.NETFramework" Version="4.8.0" />
+    <PackageReference Include="EWSoftware.SHFB" Version="2022.10.15.0" />
+    <PackageReference Include="EWSoftware.SHFB.NETFramework" Version="4.8.0.2" />
   </ItemGroup> -->
   <!-- Import the common build targets during NuGet restore because before the packages are installed, $(SHFBROOT) is not set yet -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="'$(MSBuildRestoreSessionId)' != ''" />
