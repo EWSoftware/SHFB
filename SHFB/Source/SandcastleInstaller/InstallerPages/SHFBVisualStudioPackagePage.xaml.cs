@@ -157,7 +157,9 @@ namespace Sandcastle.Installer.InstallerPages
                 var supportedVersions = package.Attribute("supportedVersions").Value.Split(new[] { ',', ' ' },
                     StringSplitOptions.RemoveEmptyEntries);
                 var versionsFound = VisualStudioInstance.AllInstances.Where(i => supportedVersions.Any(v =>
-                    i.Version.StartsWith(v, StringComparison.Ordinal))).OrderBy(i => i.Version).ToList();
+                    i.Version.StartsWith(v, StringComparison.Ordinal) &&
+                        !String.IsNullOrWhiteSpace(i.VSIXInstallerPath) &&
+                        File.Exists(i.VSIXInstallerPath))).OrderBy(i => i.Version).ToList();
 
                 // Use the latest VSIX installer found
                 if(versionsFound.Any())
