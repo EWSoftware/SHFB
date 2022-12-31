@@ -128,9 +128,9 @@ namespace Sandcastle.Tools.BuildComponents.Targets
 
             target.File = (string)topic.Evaluate(topicFileExpression);
 
+            // Reflection data sets won't have a filename so just use the ID as the distinct name
             if(String.IsNullOrEmpty(target.File))
-                throw new XmlSchemaValidationException(String.Format(CultureInfo.InvariantCulture,
-                    "The target file '{0}' is not valid (no target file specified).", topic.BaseURI));
+                target.File = target.Id;
 
             return target;
         }

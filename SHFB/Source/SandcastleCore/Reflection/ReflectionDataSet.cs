@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSet.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/06/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 12/30/2022
+// Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to contain information used to obtain reflection data and comments for a
 // specific set of assemblies.
@@ -530,6 +530,7 @@ namespace Sandcastle.Core.Reflection
             string path;
 
             foreach(var l in assemblyLocations)
+            {
                 if(platform != PlatformType.DotNetPortable || version.Major != 4 || version.Minor > 0)
                 {
                     // If localized, the comments files will be in a sub-folder based on the language
@@ -545,8 +546,7 @@ namespace Sandcastle.Core.Reflection
                         path = CultureSpecificCommentsFileFolder(l, CultureInfo.CurrentCulture);
 
                     // If not found, check for localized versions using the default English language
-                    if(path == null && !CultureInfo.CurrentCulture.Name.StartsWith("en",
-                      StringComparison.OrdinalIgnoreCase))
+                    if(path == null && !CultureInfo.CurrentCulture.Name.StartsWith("en", StringComparison.OrdinalIgnoreCase))
                         path = CultureSpecificCommentsFileFolder(l, CultureInfo.GetCultureInfo("en"));
 
                     // If no culture-specific folder was found, try the same location as the assemblies
@@ -568,6 +568,7 @@ namespace Sandcastle.Core.Reflection
                                 path = Path.Combine(externalPath, language.Name);
                             }
                             else
+                            {
                                 if(language != null && Directory.Exists(Path.Combine(externalPath,
                                   language.TwoLetterISOLanguageName)) && Directory.EnumerateFiles(
                                   Path.Combine(externalPath, language.TwoLetterISOLanguageName), "*.xml").Any())
@@ -576,6 +577,7 @@ namespace Sandcastle.Core.Reflection
                                 }
                                 else
                                     path = externalPath;
+                            }
                         }
                     }
 
@@ -583,6 +585,7 @@ namespace Sandcastle.Core.Reflection
                         yield return Path.Combine(path, "*.xml");
                 }
                 else
+                {
                     if(Directory.Exists(l.Path))
                     {
                         // The .NET Portable Library Framework 4.0 duplicates most of its comments files across
@@ -608,6 +611,8 @@ namespace Sandcastle.Core.Reflection
                                     yield return Path.Combine(g.Key, Path.GetFileName(f));
                         }
                     }
+                }
+            }
         }
 
         /// <summary>
@@ -626,14 +631,18 @@ namespace Sandcastle.Core.Reflection
             if(Directory.Exists(Path.Combine(path, language.Name)))
                 path = Path.Combine(path, language.Name);
             else
+            {
                 if(Directory.Exists(Path.Combine(path, language.TwoLetterISOLanguageName)))
                     path = Path.Combine(path, language.TwoLetterISOLanguageName);
                 else
                     path = null;
+            }
 
             if(path != null && !location.IncludedAssemblies.Any(a => File.Exists(Path.ChangeExtension(
               Path.Combine(path, Path.GetFileName(a.Filename)), ".xml"))))
+            {
                 path = null;
+            }
 
             return path;
         }
@@ -653,8 +662,10 @@ namespace Sandcastle.Core.Reflection
                 throw new ArgumentNullException(nameof(assemblyName));
 
             if(assemblyName.IndexOf(',') != -1)
+            {
                 return assemblyLocations.Any(al => al.IncludedAssemblies.Any(a => assemblyName.StartsWith(
                     a.Description, StringComparison.OrdinalIgnoreCase) && File.Exists(a.Filename)));
+            }
 
             return assemblyLocations.Any(al => al.IncludedAssemblies.Any(a => assemblyName.Equals(a.Name,
                 StringComparison.OrdinalIgnoreCase) && File.Exists(a.Filename)));
@@ -685,8 +696,10 @@ namespace Sandcastle.Core.Reflection
                         StringComparison.OrdinalIgnoreCase) && File.Exists(a.Filename));
                 }
                 else
+                {
                     ad = al.IncludedAssemblies.FirstOrDefault(a => assemblyName.Equals(a.Name,
                         StringComparison.OrdinalIgnoreCase) && File.Exists(a.Filename));
+                }
 
                 if(ad != null)
                     break;
@@ -735,6 +748,7 @@ namespace Sandcastle.Core.Reflection
                         el => (string)el.Attribute("cref")).Where(c => c != null);
 
                     foreach(string refId in crefs)
+                    {
                         if(refId.Length > 2 && refId[1] == ':' && refId.IndexOfAny(new[] { '.', '(' }) != -1)
                         {
                             ns = refId.Trim();
@@ -763,6 +777,7 @@ namespace Sandcastle.Core.Reflection
                                 yield return ns;
                             }
                         }
+                    }
                 }
         }
         #endregion

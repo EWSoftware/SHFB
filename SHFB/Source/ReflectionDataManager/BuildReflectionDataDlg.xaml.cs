@@ -2,8 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : BuildReflectionDataDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/10/2021
-// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
+// Updated : 12/30/2022
+// Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the window class that is used to manage the build settings and build the reflection data
 //
@@ -88,8 +88,7 @@ namespace ReflectionDataManager
                 if(MessageBox.Show("A build is currently taking place.  Do you want to abort it and exit?",
                   "Reflection Data Manager", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    if(cancellationTokenSource != null)
-                        cancellationTokenSource.Cancel();
+                    cancellationTokenSource?.Cancel();
                 }
 
                 e.Cancel = true;

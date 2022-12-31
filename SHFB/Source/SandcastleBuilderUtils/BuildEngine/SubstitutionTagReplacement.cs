@@ -496,7 +496,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         [SubstitutionTag]
         private string TargetFrameworkIdentifier()
         {
-            // If the reflection data is for .NETStandard or .NET 5.0 use .NET Framework use v4.8
+            // If the reflection data is for .NETStandard or .NET 5.0 use .NET Framework
             if(currentBuild.FrameworkReflectionData.Platform == PlatformType.DotNet ||
               currentBuild.FrameworkReflectionData.Platform == PlatformType.DotNetStandard)
             {

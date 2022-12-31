@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="14daa2da-119b-4b45-b24a-1c8010d0aa06" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2022.12.30.0.  See the prior version release notes for information on the
+breaking changes made to the presentation styles implementation.</para>
+		</introduction>
+
+		<section address="SandcastleTools">
+			<title>Sandcastle Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed BuildAssembler so that it sets the locale in the topic transformation to the selected
+project's language.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the spelling of the <codeInline>PresentationStyleSettings.TopicTransformation</codeInline>
+property name.  Third-party components will need to be rebuilt against the latest version of the NuGet packages.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the .NET Core/.NET Standard/.NET 5.0+ reflection data set to include .NET 7.0
+assembly information.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed framework comments inclusion so that if a target framework is not present (.NET 5.0 or
+later), it defaults to using the comments from the latest version that is available.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section address="PresenationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the <codeInline>section</codeInline> element handler so that it will render subsections
+even when the content element is missing or empty. </para>
+					</listItem>
+
+				</list>
+			</content>
+
+		</section>
+
+		<section address="SHFB">
+			<title>Sandcastle Help File Builder</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Updated the package reference resolver to pick the most appropriate target and framework assets
+based on the specified target framework rather than just picking the first target asset.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed handling of the <codeInline>TargetFramework</codeInline> property in documentation source
+projects if it is blank.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added <localUri>Tools\HelpLibraryManagerLauncher.exe</localUri> to the help file builder NuGet
+package.</para>
+					</listItem>
+
+					<listItem>
+						<para>Changed the help file builder NuGet package build properties file to use
+<codeInline>BuildingInsideVisualStudio</codeInline> instead of an empty <codeInline>SHFBROOT</codeInline> value
+to determine when to define <codeInline>SHFBROOT</codeInline> for command line builds.  Visual Studio and the
+standalone GUI will continue to use the installed version of the help file builder tools when building projects.
+Command line builds will use whatever version of the help file builder NuGet package is included in the project
+regardless of any locally installed version of the tools.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

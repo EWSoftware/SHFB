@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AssemblyLocation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/06/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 12/30/2022
+// Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain information about a location and the assemblies for a
 // specific location.
@@ -168,6 +168,43 @@ namespace Sandcastle.Core.Reflection
         {
             AssemblyLocation al = new AssemblyLocation(location.Attribute("Path").Value);
 
+            try
+            {
+                if(!Directory.Exists(al.Path))
+                {
+                    string path = IOPath.GetDirectoryName(al.Path);
+
+                    // .NETCore and .NET 5+ folders may not exist if the user hasn't got the version used in the
+                    // reflection data set installed.  In such cases, use the latest one installed.
+                    if(path.EndsWith(@"\ref", StringComparison.OrdinalIgnoreCase))
+                    {
+                        path = IOPath.GetDirectoryName(IOPath.GetDirectoryName(path));
+
+                        var latestVersion = Directory.EnumerateDirectories(path).Select(
+                            p => new { Version = IOPath.GetFileName(p), Path = p }).Where(p =>
+                                Version.TryParse(p.Version, out _)).OrderByDescending(p => p.Version).FirstOrDefault();
+
+                        if(latestVersion != null)
+                        {
+                            path = IOPath.Combine(latestVersion.Path, "ref");
+
+                            if(Directory.Exists(path))
+                            {
+                                path = Directory.EnumerateDirectories(path).FirstOrDefault();
+
+                                if(path != null)
+                                    al = new AssemblyLocation(path);
+                            }
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                // Ignore exceptions and just use the path given
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+
             foreach(var a in location.Descendants("AssemblyDetails"))
                 al.assemblyDetails.Add(AssemblyDetails.FromXml(al.Path, a));
 
@@ -245,10 +282,12 @@ namespace Sandcastle.Core.Reflection
                         if(File.Exists(assemblyName + ".dll"))
                             assemblyName += ".dll";
                         else
+                        {
                             if(File.Exists(assemblyName + ".winmd"))
                                 assemblyName += ".winmd";
                             else
                                 assemblyName = null;
+                        }
 
                         if(assemblyName != null)
                         {
@@ -274,10 +313,12 @@ namespace Sandcastle.Core.Reflection
                         if(File.Exists(assemblyName + ".dll"))
                             assemblyName += ".dll";
                         else
+                        {
                             if(File.Exists(assemblyName + ".winmd"))
                                 assemblyName += ".winmd";
                             else
                                 assemblyName = null;
+                        }
 
                         if(assemblyName != null)
                         {

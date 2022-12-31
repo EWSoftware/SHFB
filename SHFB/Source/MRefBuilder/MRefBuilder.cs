@@ -2,7 +2,7 @@
 // System  : Sandcastle MRefBuilder Tool
 // File    : MRefBuilder.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/31/2021
+// Updated : 12/30/2022
 //
 // This file contains the class used to make MRefBuilder callable from MSBuild projects.
 //
@@ -43,7 +43,9 @@ namespace Sandcastle.Tools.MSBuild
         //=====================================================================
 
         private ManagedReflectionWriter apiVisitor;
-
+#if DEBUG
+        private bool waitCancelled;
+#endif
         #endregion
 
         #region Task properties
@@ -79,6 +81,12 @@ namespace Sandcastle.Tools.MSBuild
         /// <value>References are optional</value>
         public ITaskItem[] References { get; set; }
 
+#if DEBUG
+        /// <summary>
+        /// This is used to indicate whether or not to wait for the debugger to attach to the process
+        /// </summary>
+        public bool WaitForDebugger { get; set; }
+#endif
         #endregion
 
         #region ICancelableTask Members
@@ -92,6 +100,9 @@ namespace Sandcastle.Tools.MSBuild
         {
             if(apiVisitor != null)
                 apiVisitor.Canceled = true;
+#if DEBUG
+            waitCancelled = true;
+#endif
         }
         #endregion
 
@@ -106,14 +117,28 @@ namespace Sandcastle.Tools.MSBuild
         {
             string currentDirectory = null;
             bool success = false;
+#if DEBUG
+            if(this.WaitForDebugger)
+            {
+                while(!Debugger.IsAttached && !waitCancelled)
+                {
+                    this.Log.LogMessage("DEBUG MODE: Waiting for debugger to attach");
+                    System.Threading.Thread.Sleep(1000);
+                }
 
+                if(waitCancelled)
+                    return false;
+
+                Debugger.Break();
+            }
+#endif
             Assembly application = Assembly.GetCallingAssembly();
             System.Reflection.AssemblyName applicationData = application.GetName();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(application.Location);
 
             this.Log.LogMessage("{0} (v{1})", applicationData.Name, fvi.ProductVersion);
 
-            object[] copyrightAttributes = application.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true);
+            var copyrightAttributes = application.GetCustomAttributes<AssemblyCopyrightAttribute>();
 
             foreach(AssemblyCopyrightAttribute copyrightAttribute in copyrightAttributes)
                 this.Log.LogMessage(copyrightAttribute.Copyright);
@@ -592,11 +617,8 @@ namespace Sandcastle.Tools.MSBuild
             }
             finally
             {
-                if(apiVisitor != null)
-                    apiVisitor.Dispose();
-
-                if(output != null)
-                    output.Close();
+                apiVisitor?.Dispose();
+                output?.Close();
             }
 
             return apiVisitor != null && !apiVisitor.Canceled;

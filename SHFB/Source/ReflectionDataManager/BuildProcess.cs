@@ -2,8 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/17/2021
-// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
+// Updated : 12/30/2022
+// Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to build the reflection data
 //
@@ -197,22 +197,19 @@ namespace ReflectionDataManager
 
             string targetPath = Path.GetDirectoryName(dataSet.Filename);
 
-            if(this.ProgressProvider != null)
-                this.ProgressProvider.Report(String.Format(CultureInfo.InvariantCulture,
-                    "Clearing reflection data files from {0}...", targetPath));
+            this.ProgressProvider?.Report(String.Format(CultureInfo.InvariantCulture,
+                "Clearing reflection data files from {0}...", targetPath));
 
             foreach(string file in Directory.EnumerateFiles(targetPath, "*.xml"))
                 File.Delete(file);
 
-            if(this.ProgressProvider != null)
-                this.ProgressProvider.Report(String.Format(CultureInfo.InvariantCulture,
-                    "Copying new reflection data files to {0}...", targetPath));
+            this.ProgressProvider?.Report(String.Format(CultureInfo.InvariantCulture,
+                "Copying new reflection data files to {0}...", targetPath));
 
             foreach(string file in Directory.EnumerateFiles(Path.Combine(workingFolder, "Segregated")))
                 File.Copy(file, Path.Combine(targetPath, Path.GetFileName(file)));
 
-            if(this.ProgressProvider != null)
-                this.ProgressProvider.Report("\r\nBuild completed successfully");
+            this.ProgressProvider?.Report("\r\nBuild completed successfully");
         }
 
         /// <summary>
@@ -229,9 +226,8 @@ namespace ReflectionDataManager
             if(processFilename == null)
                 throw new ArgumentNullException(nameof(processFilename));
 
-            if(this.ProgressProvider != null)
-                this.ProgressProvider.Report(String.Format(CultureInfo.InvariantCulture, "[{0}{1}]", processFilename,
-                    !String.IsNullOrWhiteSpace(targetFile) ? " - " + targetFile : String.Empty));
+            this.ProgressProvider?.Report(String.Format(CultureInfo.InvariantCulture, "[{0}{1}]", processFilename,
+                !String.IsNullOrWhiteSpace(targetFile) ? " - " + targetFile : String.Empty));
 
             if(arguments == null)
                 arguments = String.Empty;
@@ -305,8 +301,7 @@ namespace ReflectionDataManager
             }
             finally
             {
-                if(currentProcess != null)
-                    currentProcess.Dispose();
+                currentProcess?.Dispose();
             }
         }
 
@@ -350,8 +345,7 @@ namespace ReflectionDataManager
                     if(reErrorCheck.IsMatch(line))
                         errorDetected = true;
 
-                    if(this.ProgressProvider != null)
-                        this.ProgressProvider.Report(line);
+                    this.ProgressProvider?.Report(line);
                 }
 
             } while(line != null);
