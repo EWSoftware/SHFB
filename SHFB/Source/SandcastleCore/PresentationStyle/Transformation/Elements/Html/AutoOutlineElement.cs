@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AutoOutlineElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/08/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 01/08/2023
+// Note    : Copyright 2022-2023, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle autoOutline elements
 //
@@ -192,10 +192,10 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
             foreach(var s in content.Elements(Ddue + "section"))
             {
-                string title = s.Element(Ddue + "title").Value.NormalizeWhiteSpace();
+                string title = s.Element(Ddue + "title")?.Value.NormalizeWhiteSpace();
 
                 // Ignore sections without a title
-                if(title.Length == 0)
+                if(String.IsNullOrWhiteSpace(title))
                     continue;
 
                 var li = new XElement("li");
