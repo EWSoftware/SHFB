@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/04/2022
-// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
+// Updated : 01/28/2023
+// Note    : Copyright 2006-2023, Eric Woodruff, All rights reserved
 //
 // This file contains the main form for the application.
 //
@@ -1475,10 +1475,9 @@ namespace SandcastleBuilder.Gui
             try
             {
                 // See if the web server needs to be started
-                if(webServer == null || webServer.HasExited)
+                if(webServer?.HasExited ?? true)
                 {
-                    if(webServer != null)
-                        webServer.Dispose();
+                    webServer?.Dispose();
 
                     outputPath = Path.GetDirectoryName(outputPath);
 
@@ -1510,8 +1509,10 @@ namespace SandcastleBuilder.Gui
                     if(!File.Exists(webServerPath))
                     {
                         MessageBox.Show("Unable to locate ASP.NET Development Web Server or IIS Express.  " +
-                            "View the HTML website instead.", Constants.AppName, MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
+                            "A local web server instance is required to view the built help project website " +
+                            "output on this system.  Opening the output from the file system alone will not " +
+                            "usually work as the browser will likely block the scripts from running.",
+                            Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
 
@@ -1657,8 +1658,7 @@ namespace SandcastleBuilder.Gui
             if(!(dockPanel.ActiveContent is BaseContentEditor content) || !content.CanSaveContent)
                 content = projectExplorer;
 
-            if(content != null)
-                content.Save();
+            content?.Save();
         }
 
         /// <summary>
@@ -1944,9 +1944,7 @@ namespace SandcastleBuilder.Gui
 
                                     content.DockHandler.Close();
                                     editor = projectExplorer.CreateFileEditor(filename, null);
-
-                                    if(editor != null)
-                                        editor.Show(dockPanel);
+                                    editor?.Show(dockPanel);
                                 }
                             }
                 }

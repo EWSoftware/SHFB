@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/21/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 01/28/2023
+// Note    : Copyright 2011-2023, Eric Woodruff, All rights reserved
 //
 // This file contains the class that represents a project node in a Sandcastle Help File Builder Visual Studio
 // project.
@@ -350,8 +350,11 @@ namespace SandcastleBuilder.Package.Nodes
 
                     if(!File.Exists(webServerPath))
                     {
-                        Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "Unable to locate ASP.NET " +
-                            "Development Web Server or IIS Express.  View the HTML website instead.");
+                        Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "Unable to locate ASP.NET Development " +
+                            "Web Server or IIS Express.  A local web server instance is required to view the " +
+                            "built help project website output on this system.  Opening the output from the " +
+                            "file system alone will not usually work as the browser will likely block the " +
+                            "scripts from running.");
                         return null;
                     }
 
@@ -841,8 +844,7 @@ namespace SandcastleBuilder.Package.Nodes
                 this.AddChild(docSources);
             }
 
-            if(docSources != null)
-			    docSources.LoadDocSourcesFromBuildProject();
+            docSources?.LoadDocSourcesFromBuildProject();
 
             base.LoadNonBuildInformation();
         }

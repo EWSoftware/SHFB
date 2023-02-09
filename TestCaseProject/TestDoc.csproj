@@ -88,6 +88,8 @@
     <Compile Include="DummyAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EmptyNamespace.cs" />
+    <Compile Include="EmptyTypes.cs" />
     <Compile Include="Generics\DotNet40Generics.cs" />
     <Compile Include="Generics\InterfaceFailure.cs" />
     <Compile Include="InterfaceTests\DerivedInterfaces.cs" />
