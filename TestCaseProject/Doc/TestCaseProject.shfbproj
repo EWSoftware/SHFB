@@ -32,7 +32,7 @@
     <BuildLogFile>
     </BuildLogFile>
     <FrameworkVersion>.NET Framework 4.7.2</FrameworkVersion>
-    <IndentHtml>True</IndentHtml>
+    <IndentHtml>False</IndentHtml>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <RootNamespaceTitle>Test Root Namespace Title</RootNamespaceTitle>
     <CopyrightHref>http://www.EWoodruff.us</CopyrightHref>
@@ -94,33 +94,34 @@
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False">Empty types test.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc" isDocumented="True">Test Namespace.  See &lt;see cref="T:TestDoc.TestClass"/&gt; and &lt;see cref="T:TestDoc.TestDerivedClass"&gt;Test Sealed Derived Class&lt;/see&gt; for some additional information.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.DocumentationInheritance" isDocumented="True">This namespace contains examples of documentation inheritance using the &amp;lt;inheritdoc /&amp;gt; tag.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.Generics" isDocumented="True">&lt;inheritdoc cref="N:TestDoc"/&gt;
+      <NamespaceSummaryItem name="TestDoc" isDocumented="True">Test Namespace.  See &lt;see cref="T:TestDoc.TestClass"/&gt; and &lt;see cref="T:TestDoc.TestDerivedClass"&gt;Test Sealed Derived Class&lt;/see&gt; for some additional information.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.DocumentationInheritance" isDocumented="True">This namespace contains examples of documentation inheritance using the &amp;lt;inheritdoc /&amp;gt; tag.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.Generics" isDocumented="True">&lt;inheritdoc cref="N:TestDoc"/&gt;
 &lt;p/&gt;Test of the &amp;lt;inheritdoc /&amp;gt; tag in namespace comments.  The stuff from the &lt;b&gt;TestDoc&lt;/b&gt; namespace should be above this paragraph.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.IndexTocBugs" isDocumented="True">CHM duplicate index keyword test and &amp;lt;see&amp;gt;/&amp;lt;seealso&amp;gt; inner text tests.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.ExtensionMethods" isDocumented="True">Extension method tests</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.Generics.InheritanceBug" isDocumented="True">Inheritance bug tests</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.Generics.InterfaceFailure" isDocumented="True">Interface failure test</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.Generics.MissingMembersBug" isDocumented="True">Missing members bugs</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.Generics.OverloadBug" isDocumented="True" />
-<NamespaceSummaryItem name="TestDoc.HierarchicalToc.WoodDreams.Report.Excel" isDocumented="True">Excel namespace</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.HierarchicalToc.WoodDreams.Reporting" isDocumented="True">Reporting namespace</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.HierarchicalToc.WoodDreams.Reporting.Standard" isDocumented="True">Reporting standard namespace</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.HierarchicalToc.WoodDreams.Reporting.WordXML" isDocumented="True">Reporting Word XML namespace</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.InterfaceTests" isDocumented="True">Interface tests</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.InteropAttributesBug" isDocumented="True">Interop attribute bugs</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.InteropBug" isDocumented="True">Interop bug</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.NestedClasses" isDocumented="True">Nested class tests</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.Overloads" isDocumented="True">Overloads tests</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.SealedOverrideBug" isDocumented="True" />
-<NamespaceSummaryItem name="TestDoc.CodeSnippetGrouping" isDocumented="True">Code snippet grouping test cases for the new SyntaxComponent grouping and sorting support.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc.BrowsableAttributes" isDocumented="True" />
-<NamespaceSummaryItem name="TestDoc.LanguageFeatures" isDocumented="True">Language feature tests</NamespaceSummaryItem>
-<NamespaceSummaryItem name="TestDoc (Group)" isGroup="True" isDocumented="True" />
-<NamespaceSummaryItem name="TestDoc.Generics (Group)" isGroup="True" isDocumented="True" />
-<NamespaceSummaryItem name="TestDoc.HierarchicalToc (Group)" isGroup="True" isDocumented="True" />
-<NamespaceSummaryItem name="TestDoc.EmptyTypes" isDocumented="True" /></NamespaceSummaries>
+      <NamespaceSummaryItem name="TestDoc.IndexTocBugs" isDocumented="True">CHM duplicate index keyword test and &amp;lt;see&amp;gt;/&amp;lt;seealso&amp;gt; inner text tests.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.ExtensionMethods" isDocumented="True">Extension method tests</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.Generics.InheritanceBug" isDocumented="True">Inheritance bug tests</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.Generics.InterfaceFailure" isDocumented="True">Interface failure test</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.Generics.MissingMembersBug" isDocumented="True">Missing members bugs</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.Generics.OverloadBug" isDocumented="True" />
+      <NamespaceSummaryItem name="TestDoc.HierarchicalToc.WoodDreams.Report.Excel" isDocumented="True">Excel namespace</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.HierarchicalToc.WoodDreams.Reporting" isDocumented="True">Reporting namespace</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.HierarchicalToc.WoodDreams.Reporting.Standard" isDocumented="True">Reporting standard namespace</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.HierarchicalToc.WoodDreams.Reporting.WordXML" isDocumented="True">Reporting Word XML namespace</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.InterfaceTests" isDocumented="True">Interface tests</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.InteropAttributesBug" isDocumented="True">Interop attribute bugs</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.InteropBug" isDocumented="True">Interop bug</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.NestedClasses" isDocumented="True">Nested class tests</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.Overloads" isDocumented="True">Overloads tests</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.SealedOverrideBug" isDocumented="True" />
+      <NamespaceSummaryItem name="TestDoc.CodeSnippetGrouping" isDocumented="True">Code snippet grouping test cases for the new SyntaxComponent grouping and sorting support.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.BrowsableAttributes" isDocumented="True" />
+      <NamespaceSummaryItem name="TestDoc.LanguageFeatures" isDocumented="True">Language feature tests</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc (Group)" isGroup="True" isDocumented="True" />
+      <NamespaceSummaryItem name="TestDoc.Generics (Group)" isGroup="True" isDocumented="True" />
+      <NamespaceSummaryItem name="TestDoc.HierarchicalToc (Group)" isGroup="True" isDocumented="True" />
+      <NamespaceSummaryItem name="TestDoc.EmptyTypes" isDocumented="True">Test empty types.</NamespaceSummaryItem>
+    </NamespaceSummaries>
     <PlugInConfigurations>
       <PlugInConfig id="Additional Content Only" enabled="False">
         <configuration />

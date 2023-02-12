@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : MarkdownTransformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/28/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 02/10/2023
+// Note    : Copyright 2022-2023, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
 // Open XML presentation style.
@@ -921,10 +921,10 @@ namespace Sandcastle.PresentationStyles.Markdown
         /// <param name="transformation">The topic transformation to use</param>
         private static void RenderApiRootList(TopicTransformationCore transformation)
         {
-            var elements = transformation.ReferenceNode.Element("elements").Elements("element").OrderBy(
+            var elements = transformation.ReferenceNode.Element("elements")?.Elements("element").OrderBy(
                 e => e.Element("apidata").Attribute("name").Value).ToList();
 
-            if(elements.Count == 0)
+            if((elements?.Count ?? 0) == 0)
                 return;
 
             var (title, _) = transformation.CreateSection(elements[0].GenerateUniqueId(), true, "title_namespaces", null);
@@ -965,13 +965,13 @@ namespace Sandcastle.PresentationStyles.Markdown
         /// <param name="transformation">The topic transformation to use</param>
         private static void RenderApiNamespaceGroupList(TopicTransformationCore transformation)
         {
-            var elements = transformation.ReferenceNode.Element("elements").Elements("element").OrderBy(e =>
+            var elements = transformation.ReferenceNode.Element("elements")?.Elements("element").OrderBy(e =>
             {
                 string name = e.Attribute("api").Value;
                 return name.Substring(name.IndexOf(':') + 1);
             }).ToList();
 
-            if(elements.Count == 0)
+            if((elements?.Count ?? 0) == 0)
                 return;
 
             var (title, _) = transformation.CreateSection(elements[0].GenerateUniqueId(), true,
@@ -1084,12 +1084,12 @@ namespace Sandcastle.PresentationStyles.Markdown
             // Sort order is configurable for enumeration members
             EnumMemberSortOrder enumMemberSortOrder = thisTransform.EnumMemberSortOrder;
 
-            var elements = thisTransform.ReferenceNode.Element("elements").Elements("element").OrderBy(
+            var elements = thisTransform.ReferenceNode.Element("elements")?.Elements("element").OrderBy(
                 el => enumMemberSortOrder == EnumMemberSortOrder.Name ?
                     el.Element("apidata").Attribute("name").Value :
                     el.Element("value").Value.PadLeft(20, ' ')).ToList();
 
-            if(elements.Count == 0)
+            if((elements?.Count ?? 0) == 0)
                 return;
 
             var enumValues = elements.Select(e => e.Element("value").Value).ToList();
@@ -1211,7 +1211,7 @@ namespace Sandcastle.PresentationStyles.Markdown
         {
             var allMembers = transformation.ReferenceNode.Element("elements")?.Elements("element").ToList();
 
-            if(allMembers == null || allMembers.Count == 0)
+            if((allMembers?.Count ?? 0) == 0)
                 return;
 
             var overloads = allMembers.Where(e => e.Attribute("api").Value.StartsWith("Overload:",
@@ -1489,7 +1489,7 @@ namespace Sandcastle.PresentationStyles.Markdown
                     table.Add(new XElement("tr", "\n",
                         new XElement("td",
                             new XElement("referenceLink",
-                                new XAttribute("target", se.Attribute("cref")?.Value),
+                                new XAttribute("target", se.Attribute("cref")?.Value ?? String.Empty),
                                 new XAttribute("qualified", "false"))), "\n",
                         descCell), "\n");
 

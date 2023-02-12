@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/24/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 02/10/2023
+// Note    : Copyright 2022-2023, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
 // Visual Studio 2013 presentation style.
@@ -919,7 +919,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                     }
 
                     // Enumerations get an entry for each member
-                    if(t.ApiSubgroup == ApiMemberGroup.Enumeration)
+                    if(t.ApiSubgroup == ApiMemberGroup.Enumeration && this.ReferenceNode.Element("elements") != null)
                     {
                         foreach(var enumMember in this.ReferenceNode.Element("elements").Elements("element"))
                         {
@@ -1177,7 +1177,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                         new XAttribute("content", typeName)));
 
                     // Enumerations get an entry for each member (Namespace.Type.Member or Type.Member)
-                    if(t.ApiSubgroup == ApiMemberGroup.Enumeration)
+                    if(t.ApiSubgroup == ApiMemberGroup.Enumeration && this.ReferenceNode.Element("elements") != null)
                     {
                         foreach(var enumMember in this.ReferenceNode.Element("elements").Elements("element"))
                         {
@@ -1636,10 +1636,10 @@ namespace Sandcastle.PresentationStyles.VS2013
         /// <param name="transformation">The topic transformation to use</param>
         private static void RenderApiRootList(TopicTransformationCore transformation)
         {
-            var elements = transformation.ReferenceNode.Element("elements").Elements("element").OrderBy(
+            var elements = transformation.ReferenceNode.Element("elements")?.Elements("element").OrderBy(
                 e => e.Element("apidata").Attribute("name").Value).ToList();
 
-            if(elements.Count == 0)
+            if((elements?.Count ?? 0) == 0)
                 return;
 
             var (title, content) = transformation.CreateSection(elements[0].GenerateUniqueId(), true, "title_namespaces", null);
@@ -1688,13 +1688,13 @@ namespace Sandcastle.PresentationStyles.VS2013
         /// <param name="transformation">The topic transformation to use</param>
         private static void RenderApiNamespaceGroupList(TopicTransformationCore transformation)
         {
-            var elements = transformation.ReferenceNode.Element("elements").Elements("element").OrderBy(e =>
+            var elements = transformation.ReferenceNode.Element("elements")?.Elements("element").OrderBy(e =>
             {
                 string name = e.Attribute("api").Value;
                 return name.Substring(name.IndexOf(':') + 1);
             }).ToList();
 
-            if(elements.Count == 0)
+            if((elements?.Count ?? 0) == 0)
                 return;
 
             var (title, content) = transformation.CreateSection(elements[0].GenerateUniqueId(), true,
@@ -1854,12 +1854,12 @@ namespace Sandcastle.PresentationStyles.VS2013
             // Sort order is configurable for enumeration members
             EnumMemberSortOrder enumMemberSortOrder = thisTransform.EnumMemberSortOrder;
 
-            var elements = thisTransform.ReferenceNode.Element("elements").Elements("element").OrderBy(
+            var elements = thisTransform.ReferenceNode.Element("elements")?.Elements("element").OrderBy(
                 el => enumMemberSortOrder == EnumMemberSortOrder.Name ?
                     el.Element("apidata").Attribute("name").Value :
                     el.Element("value").Value.PadLeft(20, ' ')).ToList();
 
-            if(elements.Count == 0)
+            if((elements?.Count ?? 0) == 0)
                 return;
 
             var enumValues = elements.Select(e => e.Element("value").Value).ToList();
@@ -1998,7 +1998,7 @@ namespace Sandcastle.PresentationStyles.VS2013
         {
             var allMembers = transformation.ReferenceNode.Element("elements")?.Elements("element").ToList();
 
-            if(allMembers == null || allMembers.Count == 0)
+            if((allMembers?.Count ?? 0) == 0)
                 return;
 
             var overloads = allMembers.Where(e => e.Attribute("api").Value.StartsWith("Overload:",
@@ -2389,7 +2389,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                     table.Add(new XElement("tr",
                         new XElement("td",
                             new XElement("referenceLink",
-                                new XAttribute("target", se.Attribute("cref")?.Value),
+                                new XAttribute("target", se.Attribute("cref")?.Value ?? String.Empty),
                                 new XAttribute("qualified", "false"))),
                         descCell));
 

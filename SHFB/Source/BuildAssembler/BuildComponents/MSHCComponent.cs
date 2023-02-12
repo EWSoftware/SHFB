@@ -1,7 +1,7 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Build Components
 // File    : MSHCComponent.cs
-// Note    : Copyright 2010-2022 Microsoft Corporation
+// Note    : Copyright 2010-2023 Microsoft Corporation
 //
 // This file contains a modified version of the original MSHCComponent that allows the inclusion of a sortOrder
 // attribute on the table of contents file elements.  This allows the sort order of the elements to be defined
@@ -230,6 +230,14 @@ namespace Sandcastle.Tools.BuildComponents
 
                 AddMHSMeta(head, "Microsoft.Help.TocOrder", tocInfo.Order.ToString(CultureInfo.InvariantCulture));
             }
+
+            // Work around an odd bug in the help viewer.  Depending on the ordering of the metadata and lack of
+            // whitespace, it can miss the title element and the TOC is blank.  By adding a CR/LF before and
+            // after the title element, we can work around the issue.
+            XmlNode title = head.SelectSingleNode("title");
+
+            head.InsertBefore(document.CreateTextNode("\r\n"), title);
+            head.InsertAfter(document.CreateTextNode("\r\n"), title);
         }
         #endregion
 

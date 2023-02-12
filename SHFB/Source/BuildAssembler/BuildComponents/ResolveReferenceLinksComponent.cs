@@ -137,8 +137,8 @@ namespace Sandcastle.Tools.BuildComponents
             resolver = new LinkTextResolver(targets);
 
             // Get the shared instances dictionary.  Create it if it doesn't exist.
-            if(this.BuildAssembler.Data.ContainsKey(SharedReferenceTargetsId))
-                sharedTargets = this.BuildAssembler.Data[SharedReferenceTargetsId] as Dictionary<string, TargetDictionary>;
+            if(this.BuildAssembler.Data.TryGetValue(SharedReferenceTargetsId, out object cacheValue))
+                sharedTargets = cacheValue as Dictionary<string, TargetDictionary>;
 
             if(sharedTargets == null)
                 this.BuildAssembler.Data[SharedReferenceTargetsId] = sharedTargets = new Dictionary<string, TargetDictionary>();
@@ -248,11 +248,13 @@ namespace Sandcastle.Tools.BuildComponents
                 DisplayOptions options = link.DisplayOptions;
                 ReferenceLinkType type = ReferenceLinkType.None;
 
-                if(String.IsNullOrWhiteSpace(targetId))
+                if(String.IsNullOrWhiteSpace(targetId) || targetId == "!:")
                 {
                     this.WriteMessage(key, MessageLevel.Warn, "The target attribute is missing or has no " +
                         "value.  You have most likely omitted a cref attribute or left it blank on an XML " +
                         "comments element such as see, seealso, or exception.");
+
+                    linkNode.DeleteSelf();
                     continue;
                 }
 
@@ -350,11 +352,15 @@ namespace Sandcastle.Tools.BuildComponents
                 if(!link.RenderAsLink)
                     type = ReferenceLinkType.None;
                 else
+                {
                     if(targetId == key)
                         type = ReferenceLinkType.Self;
                     else
+                    {
                         if(target != null && targets.TryGetValue(key, out Target keyTarget) && target.File == keyTarget.File)
                             type = ReferenceLinkType.Self;
+                    }
+                }
 
                 // !EFW - Redirect enumeration fields to the containing enumerated type so that we
                 // get a valid link target.  Enum fields don't have a topic to themselves.
@@ -370,6 +376,7 @@ namespace Sandcastle.Tools.BuildComponents
 
                 // Get the URL for the member ID if needed
                 if(type == ReferenceLinkType.Msdn)
+                {
                     if(this.UrlResolver != null && !this.UrlResolver.IsDisabled)
                     {
                         memberUrl = this.UrlResolver.ResolveUrlForId(targetId);
@@ -411,6 +418,7 @@ namespace Sandcastle.Tools.BuildComponents
                     }
                     else
                         type = ReferenceLinkType.None;
+                }
 
                 // Write opening link tag and target info
                 XmlWriter writer = linkNode.InsertAfter();
@@ -603,8 +611,8 @@ namespace Sandcastle.Tools.BuildComponents
             IMemberIdUrlResolver newResolver;
             IDictionary<string, string> cache = null;
 
-            if(this.BuildAssembler.Data.ContainsKey(SharedMemberUrlCacheId))
-                cache = this.BuildAssembler.Data[SharedMemberUrlCacheId] as IDictionary<string, string>;
+            if(this.BuildAssembler.Data.TryGetValue(SharedMemberUrlCacheId, out object cacheValue))
+                cache = cacheValue as IDictionary<string, string>;
 
             // If the shared cache already exists, return an instance that uses it.  It is assumed that all
             // subsequent instances will use the same cache.

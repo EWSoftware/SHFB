@@ -1977,7 +1977,7 @@ $("".toggleSection"").keypress(function () {
                     table.Add(new XElement("tr",
                         new XElement("td",
                             new XElement("referenceLink",
-                                new XAttribute("target", se.Attribute("cref")?.Value),
+                                new XAttribute("target", se.Attribute("cref")?.Value ?? String.Empty),
                                 new XAttribute("qualified", "false"))),
                         descCell));
 
