@@ -18,6 +18,8 @@
 // element type pairings.
 // 09/19/2017 - EFW - Not done yet.  Added another comparison case to try and match template members with
 // generic and array element parameter types.
+// 02/17/2023 - EFW - Yet another fix to ParametersMatch() to handle a variation of the template argument
+// comparisons.
 
 using System;
 using System.Collections.Generic;
@@ -481,58 +483,76 @@ namespace Sandcastle.Tools.Reflection
                       type1.NodeType == NodeType.Interface || type1.NodeType == NodeType.EnumNode ||
                       type1.NodeType == NodeType.DelegateNode)
                     {
-                        type1 = type1.GetTemplateType();
-                        type2 = type2.GetTemplateType();
-
                         if(!type2.IsStructurallyEquivalentTo(type1))
-                            return false;
-                    }
-
-                    // !EFW - Comparing array types may be dangerous but, as it turns out, is necessary.  If
-                    // two overloads take an array as a parameter, it always returns the first overload as the
-                    // match in derived types.  As such, we do need to compare the array element types.  For
-                    // generic types, we can get the underlying template type from the declaring method's type
-                    // and match that.
-                    // https://github.com/EWSoftware/SHFB/issues/57
-                    if(type1.NodeType == NodeType.ArrayType)
-                    {
-                        type1 = ((ArrayType)type1).ElementType;
-                        type2 = ((ArrayType)type2).ElementType;
-
-                        if(type2.IsTemplateParameter)
                         {
-                            // Get the position from the second set of parameters
-                            int pos = GetTemplateParameterPosition(parameters2[i].DeclaringMethod.DeclaringType,
-                                type2.Name.Name);
-
-                            // Get the actual type from the first set of parameters
-                            var declType = parameters1[i].DeclaringMethod.DeclaringType;
-
-                            if(pos != -1 && declType.TemplateArguments != null && pos < declType.TemplateArguments.Count)
-                                type2 = declType.TemplateArguments[pos];
-                        }
-
-                        if(type1.NodeType != type2.NodeType || !type2.IsStructurallyEquivalentTo(type1))
-                        {
-                            // !EFW - Yet another edge case to check.  In this case for example,
-                            // KeyValue<int, int> didn't match KeyValue<TKey, TValue> and it failed to find any
-                            // matches.  The fix is to see if both types are generic and compare the template
-                            // parameter names.  This is getting rather complicated isn't it?
-                            // https://github.com/EWSoftware/SHFB/issues/154
-                            if(!type1.IsGeneric || !type2.IsGeneric || type1.Template == null || type2.Template == null ||
-                              type1.Template.TemplateParameters.Count != type2.Template.TemplateParameters.Count ||
-                              type1.Template.TemplateParameters.Select(t => t.Name.Name).Except(
-                              type2.Template.TemplateParameters.Select(t => t.Name.Name)).Any())
+                            // !EFW - Assume we've got a mix of concrete and template parameter types.  Try to
+                            // get back to the first type with template arguments and see if they match.
+                            while((type1.TemplateArguments?.Count ?? 0) != 0 && type1.TemplateArguments.Any(
+                              t => !t.IsTemplateParameter))
                             {
-                                // If this is the last ditch attempt and were allowing mismatched array types,
-                                // we're pretty much screwed so carry on.  This can happen in some really
-                                // complex cases were we end up with an intrinsic type and a template parameter:
-                                // https://github.com/EWSoftware/SHFB/issues/302
-                                if(!allowMismatchedArrayTypes || type1.StructuralElementTypes == null ||
-                                  type2.StructuralElementTypes == null || type1.StructuralElementTypes.Count == 0 ||
-                                  type2.StructuralElementTypes.Count == 0 ||
-                                  type1.StructuralElementTypes[0].IsTemplateParameter == type2.StructuralElementTypes[0].IsTemplateParameter)
-                                    return false;
+                                type1 = type1.GetTemplateType();
+                            }
+
+                            while((type2.TemplateArguments?.Count ?? 0) != 0 && type2.TemplateArguments.Any(
+                              t => !t.IsTemplateParameter))
+                            {
+                                type2 = type1.GetTemplateType();
+                            }
+
+                            if(!type2.IsStructurallyEquivalentTo(type1))
+                                return false;
+                        }
+                    }
+                    else
+                    {
+                        // !EFW - Comparing array types may be dangerous but, as it turns out, is necessary.  If
+                        // two overloads take an array as a parameter, it always returns the first overload as the
+                        // match in derived types.  As such, we do need to compare the array element types.  For
+                        // generic types, we can get the underlying template type from the declaring method's type
+                        // and match that.
+                        // https://github.com/EWSoftware/SHFB/issues/57
+                        if(type1.NodeType == NodeType.ArrayType)
+                        {
+                            type1 = ((ArrayType)type1).ElementType;
+                            type2 = ((ArrayType)type2).ElementType;
+
+                            if(type2.IsTemplateParameter)
+                            {
+                                // Get the position from the second set of parameters
+                                int pos = GetTemplateParameterPosition(parameters2[i].DeclaringMethod.DeclaringType,
+                                    type2.Name.Name);
+
+                                // Get the actual type from the first set of parameters
+                                var declType = parameters1[i].DeclaringMethod.DeclaringType;
+
+                                if(pos != -1 && declType.TemplateArguments != null && pos < declType.TemplateArguments.Count)
+                                    type2 = declType.TemplateArguments[pos];
+                            }
+
+                            if(type1.NodeType != type2.NodeType || !type2.IsStructurallyEquivalentTo(type1))
+                            {
+                                // !EFW - Yet another edge case to check.  In this case for example,
+                                // KeyValue<int, int> didn't match KeyValue<TKey, TValue> and it failed to find any
+                                // matches.  The fix is to see if both types are generic and compare the template
+                                // parameter names.  This is getting rather complicated isn't it?
+                                // https://github.com/EWSoftware/SHFB/issues/154
+                                if(!type1.IsGeneric || !type2.IsGeneric || type1.Template == null || type2.Template == null ||
+                                  type1.Template.TemplateParameters.Count != type2.Template.TemplateParameters.Count ||
+                                  type1.Template.TemplateParameters.Select(t => t.Name.Name).Except(
+                                  type2.Template.TemplateParameters.Select(t => t.Name.Name)).Any())
+                                {
+                                    // If this is the last ditch attempt and were allowing mismatched array types,
+                                    // we're pretty much screwed so carry on.  This can happen in some really
+                                    // complex cases were we end up with an intrinsic type and a template parameter:
+                                    // https://github.com/EWSoftware/SHFB/issues/302
+                                    if(!allowMismatchedArrayTypes || type1.StructuralElementTypes == null ||
+                                      type2.StructuralElementTypes == null || type1.StructuralElementTypes.Count == 0 ||
+                                      type2.StructuralElementTypes.Count == 0 ||
+                                      type1.StructuralElementTypes[0].IsTemplateParameter == type2.StructuralElementTypes[0].IsTemplateParameter)
+                                    {
+                                        return false;
+                                    }
+                                }
                             }
                         }
                     }

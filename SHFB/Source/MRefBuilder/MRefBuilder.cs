@@ -122,7 +122,8 @@ namespace Sandcastle.Tools.MSBuild
             {
                 while(!Debugger.IsAttached && !waitCancelled)
                 {
-                    this.Log.LogMessage("DEBUG MODE: Waiting for debugger to attach");
+                    this.Log.LogMessage("DEBUG MODE: Waiting for debugger to attach (process ID: {0})",
+                        Process.GetCurrentProcess().Id);
                     System.Threading.Thread.Sleep(1000);
                 }
 
