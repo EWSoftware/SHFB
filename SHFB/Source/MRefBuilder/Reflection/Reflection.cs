@@ -456,7 +456,10 @@ namespace Sandcastle.Tools.Reflection
                     int p1 = GetTemplateParameterPosition(parameters1[i].DeclaringMethod.DeclaringType, type1.Name.Name),
                         p2 = GetTemplateParameterPosition(parameters2[i].DeclaringMethod.DeclaringType, type2.Name.Name);
 
-                    if(p1 != -1 && p2 != -1 && p1 != p2)
+                    if(p1 == -1 || p2 == -1)
+                        return false;
+
+                    if(p1 != p2)
                     {
                         // !EFW - Another test case supplied by Jared Moore.  If the types are something like
                         // MyBaseClass<T, T> and MyBaseClass<T, U> we can still provide a match by comparing

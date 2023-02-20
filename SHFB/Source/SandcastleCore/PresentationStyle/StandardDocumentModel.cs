@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : StandardDocumentModel.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2022
-// Note    : Copyright 2021-2022, Eric Woodruff, All rights reserved
+// Updated : 02/20/2023
+// Note    : Copyright 2021-2023, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to modify the reflection information file by adding elements needed for the
 // standard documentation model.
@@ -255,8 +255,10 @@ namespace Sandcastle.Core.PresentationStyle
                         if(apiMembers.TryGetValue(element.Attribute("api").Value, out ApiMember m))
                             memberList.Add(m);
                         /*
-                        // TODO: Should probably look into this but.  Only happens on a couple of designer
-                        // classes in the .NET Framework so ignoring for now.
+                        // TODO: These are inherited members from types marked as EditorBrowsableState.Never
+                        // such as a couple of designer classes in the .NET Framework.  May look into fixing this
+                        // later but it's a minor issue resolved by omitting them here as they shouldn't appear
+                        // anyway.
                         else
                             System.Diagnostics.Debug.WriteLine("No API entry for " + element.Attribute("api").Value);
                         */

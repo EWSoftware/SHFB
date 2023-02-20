@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/08/2023
+// Updated : 02/18/2023
 // Note    : Copyright 2022-2023, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -1824,7 +1824,7 @@ $("".toggleSection"").keypress(function () {
 
                 // Sort by EII name if present else the member name and then by template count
                 foreach(var e in members.OrderBy(el => el.Element("topicdata")?.Attribute("eiiName")?.Value ??
-                    el.Element("apidata").Attribute("name").Value).ThenBy(
+                    el.Element("apidata")?.Attribute("name").Value ?? String.Empty).ThenBy(
                     el => el.Element("templates")?.Elements()?.Count() ?? 0))
                 {
                     XElement referenceLink = new XElement("referenceLink",

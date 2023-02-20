@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : WebsiteTableOfContentsGeneratorPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Sam Harwell
-// Updated : 04/16/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved.
+// Updated : 02/18/2023
+// Note    : Copyright 2022-2023, Eric Woodruff, All rights reserved.
 //
 // This file contains a plug-in that is used to generate table of contents information for website-based
 // presentation styles.
@@ -99,7 +99,26 @@ namespace SandcastleBuilder.PlugIns
 
                 // Add a unique ID to each topic that has children.  These will have a TOC fragment file
                 // generated for them containing the child elements.
-                tocEntries = helpToc.Descendants("topic").ToDictionary(k => k.Attribute("id").Value, v => v);
+                tocEntries= new Dictionary<string, XElement>();
+
+                foreach(var te in helpToc.Descendants("topic"))
+                {
+                    // There's an odd case were we can get a duplicate TOC entry if using the wrong framework
+                    // type to document assemblies from a different framework type (e.g. using .NET Framework for
+                    // a .NET Standard assembly).  These are typically solved by choosing the proper framework
+                    // version in the documentation project.
+                    string id = te.Attribute("id").Value;
+
+                    if(!tocEntries.ContainsKey(id))
+                        tocEntries.Add(id, te);
+                    else
+                    {
+                        builder.ReportWarning("WTOC0001", "Duplicate key found in TOC.  This was unexpected.  " +
+                            "Do you have the right framework version selected in the documentation project?  " +
+                            "Duplicate key: {0}", id);
+                    }
+                }
+
                 parentTopics = new List<XElement>
                 {
                     helpToc.Root
