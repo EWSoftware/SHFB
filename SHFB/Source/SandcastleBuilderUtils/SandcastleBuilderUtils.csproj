@@ -46,7 +46,7 @@
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
 		<PackageReference Include="System.ComponentModel.Composition" Version="5.0.0" />
-		<PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+		<PackageReference Include="System.Drawing.Common" Version="5.0.3" />
 		<PackageReference Include="System.Text.Json" Version="5.0.2" />
 	</ItemGroup>
 
