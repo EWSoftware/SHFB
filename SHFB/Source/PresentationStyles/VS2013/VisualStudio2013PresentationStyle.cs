@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013PresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/06/2022
-// Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
+// Updated : 03/03/2023
+// Note    : Copyright 2014-2023, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Visual Studio 2013 presentation style.
 //
@@ -20,7 +20,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 using Sandcastle.Core;
@@ -51,6 +50,9 @@ namespace Sandcastle.PresentationStyles.VS2013
                 HelpFileFormats.Website;
 
             this.SupportsNamespaceGrouping = this.SupportsCodeSnippetGrouping = true;
+
+            // This is the legacy format and requires the HTML extract build step for website output
+            this.RequiresHtmlExtractBuildStep = true;
 
             this.DocumentModelApplicator = new StandardDocumentModel();
             this.ApiTableOfContentsGenerator = new StandardApiTocGenerator();

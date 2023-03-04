@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PresentationStyleSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/11/2022
-// Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
+// Updated : 03/03/2023
+// Note    : Copyright 2012-2023, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain settings information for a specific presentation style
 //
@@ -86,6 +86,13 @@ namespace Sandcastle.Core.PresentationStyle
         /// <remarks>If true, code snippets will be grouped and sorted based on the syntax generators present
         /// in the project.</remarks>
         public bool SupportsCodeSnippetGrouping { get; protected set; }
+
+        /// <summary>
+        /// This is used to get or set whether or not the presentation style requires the HTML extract build step
+        /// for website output.
+        /// </summary>
+        /// <value>This is false by default and is currently only used by the legacy VS2013 presentation style</value>
+        public bool RequiresHtmlExtractBuildStep { get; protected set; }
 
         /// <summary>
         /// This read-only property returns the list of help content file locations

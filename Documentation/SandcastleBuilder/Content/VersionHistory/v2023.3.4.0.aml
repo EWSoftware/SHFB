@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ed81b95f-c8d2-4d9e-9397-b50494fc0cc5" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2023.3.4.0.  See the prior version release notes for information on the
+breaking changes made to the presentation styles implementation.</para>
+		</introduction>
+
+		<section>
+			<title>Build Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Updated the MSHC Component to add whitespace before and after the title element to work around
+an apparent bug in the help viewer that causes it to render a blank TOC.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the Resolve Reference Links component to issue a better warning describing the issue of
+missing/empty <codeInline>cref</codeInline> attribute values.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed some issues in MRefBuilder so that it handles some variations of the template argument
+comparisons when trying to match inherited members.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section>
+			<title>Sandcastle Help File Builder</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Removed wording about using the HTML website option if a local web server cannot be found to
+view the output.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed an odd case where selecting the wrong framework type to document assemblies caused
+duplicate TOC entries.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section>
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed handling of section elements without a title when building the auto-outline.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added handling of empty types and enumerations.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the presentation styles to handle missing or blank <codeInline>cref</codeInline>
+attribute values.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

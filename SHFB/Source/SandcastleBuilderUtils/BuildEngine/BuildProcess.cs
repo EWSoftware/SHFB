@@ -1,9 +1,9 @@
-//===============================================================================================================
+//=============================================================================================================== 
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/07/2022
-// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
+// Updated : 03/03/2023
+// Note    : Copyright 2006-2023, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
 //
@@ -1324,7 +1324,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 //       to be ran for website output anymore.
                 if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0 ||
                   ((project.HelpFileFormat & HelpFileFormats.Website) != 0 &&
-                    presentationStyle.BasePath == "VS2013"))
+                    presentationStyle.RequiresHtmlExtractBuildStep))
                 {
                     this.ReportProgress(BuildStep.ExtractingHtmlInfo,
                         "Extracting HTML info for HTML Help 1 and/or website...");
@@ -1345,7 +1345,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                         this.ExecutePlugIns(ExecutionBehaviors.After);
 
-                        // Keep the HTML extract tool around until after the help file is build as plug-ins
+                        // Keep the HTML extract tool around until after the help 1 file is built as plug-ins
                         // may rely on it for values such as the localized file folder.
                     }
                 }
@@ -1622,8 +1622,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     this.ExecutePlugIns(ExecutionBehaviors.After);
 
-                    if(componentContainer != null)
-                        componentContainer.Dispose();
+                    componentContainer?.Dispose();
                 }
                 catch(Exception ex)
                 {
@@ -1642,8 +1641,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(this.CurrentBuildStep == BuildStep.Completed && !project.KeepLogFile)
                         File.Delete(this.LogFilename);
 
-                    if(resolver != null)
-                        resolver.Dispose();
+                    resolver?.Dispose();
                 }
             }
         }
@@ -1723,33 +1721,27 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "{0:00}:{1:00}:{2:00.0000}", Math.Floor(runtime.TotalSeconds / 3600),
                         Math.Floor((runtime.TotalSeconds % 3600) / 60), (runtime.TotalSeconds % 60)));
 
-                    if(swLog != null)
-                        swLog.WriteLine(pa.Message);
+                    swLog?.WriteLine(pa.Message);
 
-                    if(this.ProgressReportProvider != null)
-                        this.ProgressReportProvider.Report(pa);
+                    this.ProgressReportProvider?.Report(pa);
                 }
 
-                if(this.ProgressReportProvider != null)
-                    this.ProgressReportProvider.Report(new BuildProgressEventArgs(this.CurrentBuildStep, false,
-                        "-------------------------------"));
+                this.ProgressReportProvider?.Report(new BuildProgressEventArgs(this.CurrentBuildStep, false,
+                    "-------------------------------"));
 
                 stepStart = DateTime.Now;
                 this.CurrentBuildStep = step;
 
-                if(swLog != null)
-                    swLog.WriteLine("</buildStep>\r\n<buildStep step=\"{0}\">", step);
+                swLog?.WriteLine("</buildStep>\r\n<buildStep step=\"{0}\">", step);
             }
 
             pa = new BuildProgressEventArgs(this.CurrentBuildStep, stepChanged,
                 args == null || args.Length == 0 ? message : String.Format(CultureInfo.CurrentCulture, message, args));
 
             // Save the message to the log file
-            if(swLog != null)
-                swLog.WriteLine(HttpUtility.HtmlEncode(pa.Message));
+            swLog?.WriteLine(HttpUtility.HtmlEncode(pa.Message));
 
-            if(this.ProgressReportProvider != null)
-                this.ProgressReportProvider.Report(pa);
+            this.ProgressReportProvider?.Report(pa);
         }
         #endregion
 

@@ -31,11 +31,11 @@
     <FrameworkVersion>.NET Core/.NET Standard/.NET 5.0+</FrameworkVersion>
     <HelpTitle>Sandcastle Help File Builder Documentation</HelpTitle>
     <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
-    <CopyrightText>[v{%40HelpFileVersion}] Copyright \xA9 2006-2022, Eric Woodruff, All rights reserved</CopyrightText>
+    <CopyrightText>[v{%40HelpFileVersion}] Copyright \xA9 2006-2023, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>Default2022</PresentationStyle>
     <SyntaxFilters>Standard</SyntaxFilters>
-    <HelpFileVersion>2022.12.30.0</HelpFileVersion>
+    <HelpFileVersion>2023.3.4.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -404,6 +404,7 @@
     <None Include="Content\VersionHistory\v2022.12.30.0.aml" />
     <None Include="Content\VersionHistory\v2022.2.6.0.aml" />
     <None Include="Content\VersionHistory\v2022.8.14.0.aml" />
+    <None Include="Content\VersionHistory\v2023.3.4.0.aml" />
     <None Include="Content\VisualStudio\GoToDefinition.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />
