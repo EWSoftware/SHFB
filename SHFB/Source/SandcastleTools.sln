@@ -5,9 +5,8 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{341E6822-C748-44AB-88CF-9FF3490D5D04}"
 	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-		IgnoredWords.dic = IgnoredWords.dic
-		SandcastleTools.sln.vsspell = SandcastleTools.sln.vsspell
+		..\..\.editorconfig = ..\..\.editorconfig
+		..\..\IgnoredWords.dic = ..\..\IgnoredWords.dic
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandcastleCore", "SandcastleCore\SandcastleCore.csproj", "{D697864E-6D79-42EF-BD6A-953505E5C1F0}"

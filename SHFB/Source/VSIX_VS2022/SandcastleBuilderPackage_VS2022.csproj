@@ -99,7 +99,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <EmbeddedResource Include="..\VSIX_VS2017\Resources\SandcastleBuilderProjectNode.bmp" Link="Resources\SandcastleBuilderProjectNode.bmp" />
-    <None Include="..\VSIX_VS2017\Templates\Templates.vsspell" Link="Templates\Templates.vsspell" />
     <Resource Include="..\VSIX_VS2017\Resources\AspNetWebsite.png" Link="Resources\AspNetWebsite.png" />
     <Resource Include="..\VSIX_VS2017\Resources\CodeSnippets.ico" Link="Resources\CodeSnippets.ico" />
     <Resource Include="..\VSIX_VS2017\Resources\Component.ico" Link="Resources\Component.ico" />

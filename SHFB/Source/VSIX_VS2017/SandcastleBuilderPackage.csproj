@@ -473,7 +473,6 @@
   <ItemGroup>
     <None Include="Templates\.gitignore" />
     <None Include="Templates\ReadMe.txt" />
-    <None Include="Templates\Templates.vsspell" />
     <Content Include="Templates\Projects\BuildComponentCS\AssemblyInfo.cs">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>

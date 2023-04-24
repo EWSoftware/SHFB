@@ -206,7 +206,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Bibliography.xml" />
-    <None Include="ConceptualTemplates\ConceptualTemplates.vsspell" />
     <None Include="Content\BlockElements\bibliography.aml" />
     <None Include="Content\CommonInline\languageKeyword.aml" />
     <None Include="Content\CommonInline\lineBreak.aml" />

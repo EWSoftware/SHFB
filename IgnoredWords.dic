@@ -6,7 +6,9 @@ api
 apidata
 apis
 arg
+argc
 args
+argv
 aspnet
 assemblydata
 attachedeventdata
@@ -19,6 +21,7 @@ blockquote
 bool
 br
 Buchner
+bulma
 byref
 callingconvention
 cctor
@@ -30,6 +33,7 @@ colspan
 comimport
 concat
 const
+cout
 cpp
 cref
 csharp
@@ -39,7 +43,9 @@ datalist
 dd
 ddue
 dduetools
+de
 del
+dep
 dl
 dll
 dotnet
@@ -55,16 +61,20 @@ eventdata
 eventhandler
 exactspelling
 exe
+expr
 fastcall
 fielddata
 figcaption
 fillcolor
 filterpriority
+foreach
 fs
 fscript
 fsscript
 gcnew
+Grande
 guid
+Halleux
 hashtable
 hljs
 hoverable
@@ -99,6 +109,7 @@ li
 listheader
 localhost
 mailto
+Maml
 mb
 memberdata
 microsoft
@@ -147,6 +158,7 @@ safeprojectname
 sbyte
 seealso
 selflink
+Semibold
 Sergey
 setlasterror
 shfb
@@ -186,6 +198,7 @@ ulong
 unicode
 uri
 url
+username
 ushort
 utf
 varargs
@@ -202,6 +215,7 @@ wbr
 webfonts
 xaml
 xamlusage
+xcopy
 xhelp
 xhtml
 xlink

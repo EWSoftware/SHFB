@@ -1,11 +1,108 @@
-# Top-most EditorConfig file
-root = true
-
 # Don't use tabs for indentation unless otherwise overridden
 [*]
 indent_style = space
 end_of_line = crlf
+guidelines = 80 dotted, 114 dotted
 # (Please don't specify an indent_size here; that has too many unintended consequences.)
+vsspell_section_id = 4ab9fbff07c9470c9a57edd4ce8100fb
+vsspell_ignored_words_4ab9fbff07c9470c9a57edd4ce8100fb = File:IgnoredWords.dic
+
+[*de-DE.xml]
+# VSSPELL: Spell checker settings for German resource files
+vsspell_section_id = 6a5d672665244bd0aedf29be0c54a902
+vsspell_dictionary_languages_6a5d672665244bd0aedf29be0c54a902 = de-DE,en-US
+vsspell_include_in_project_spell_check = false
+
+[de-DE/**]
+# VSSPELL: Spell checker settings for German resource files
+vsspell_section_id = 6a5d672665244bd0aedf29be0c54a902
+vsspell_dictionary_languages_6a5d672665244bd0aedf29be0c54a902 = de-DE,en-US
+vsspell_include_in_project_spell_check = false
+
+[*es-ES.xml]
+# VSSPELL: Spell checker settings for Spanish resource files
+vsspell_section_id = a41b390e15ca4b0c9d7d4c99cbf21725
+vsspell_dictionary_languages_a41b390e15ca4b0c9d7d4c99cbf21725 = es-ES,en-US
+vsspell_include_in_project_spell_check = false
+
+[*fr-FR.xml]
+# VSSPELL: Spell checker settings for French resource files
+vsspell_section_id = 80884a2915f2422f822e4571fc9c4691
+vsspell_dictionary_languages_80884a2915f2422f822e4571fc9c4691 = fr-FR,en-US
+vsspell_include_in_project_spell_check = false
+
+[*it-IT.xml]
+# VSSPELL: Spell checker settings for Italian resource files
+vsspell_section_id = e4e701d542234faf82224f784fee7d01
+vsspell_dictionary_languages_e4e701d542234faf82224f784fee7d01 = it-IT,en-US
+vsspell_include_in_project_spell_check = false
+
+[*ja-JP.xml]
+# VSSPELL: Ignore spell checking in Japanese resource files
+vsspell_spell_check_as_you_type = false
+vsspell_include_in_project_spell_check = false
+
+[*ko-KR.xml]
+# VSSPELL: Ignore spell checking in Korean resource files
+vsspell_spell_check_as_you_type = false
+vsspell_include_in_project_spell_check = false
+
+[*pt-BR.xml]
+# VSSPELL: Spell checker settings for Portuguese resource files
+vsspell_section_id = 4639b537fef6440d84b193b898f2c231
+vsspell_dictionary_languages_4639b537fef6440d84b193b898f2c231 = pt-BR,en-US
+vsspell_include_in_project_spell_check = false
+
+[*ru-RU.xml]
+# VSSPELL: Spell checker settings for Russian resource files
+vsspell_section_id = cd212683dfbd4ba6b4b5ef951da3f795
+vsspell_dictionary_languages_cd212683dfbd4ba6b4b5ef951da3f795 = ru-RU,en-US
+vsspell_include_in_project_spell_check = false
+
+[ru-RU/**]
+# VSSPELL: Spell checker settings for German resource files
+vsspell_section_id = 6a5d672665244bd0aedf29be0c54a902
+vsspell_dictionary_languages_6a5d672665244bd0aedf29be0c54a902 = ru-RU,en-US
+vsspell_include_in_project_spell_check = false
+
+[*zh-CHS.xml]
+# VSSPELL: Ignore spell checking in Chinese resource files
+vsspell_spell_check_as_you_type = false
+vsspell_include_in_project_spell_check = false
+
+[*zh-CN.xml]
+# VSSPELL: Ignore spell checking in Chinese resource files
+vsspell_spell_check_as_you_type = false
+vsspell_include_in_project_spell_check = false
+
+[StopWordList/**]
+# VSSPELL: Ignore spell checking in stop word lists
+vsspell_spell_check_as_you_type = false
+vsspell_include_in_project_spell_check = false
+
+[highlight.xml]
+# VSSPELL: Ignore spell checking in highlighter XML configuration file
+vsspell_spell_check_as_you_type = false
+vsspell_include_in_project_spell_check = false
+
+[branding-Website.js]
+# VSSPELL: Ignore spell checking in branding website script
+vsspell_spell_check_as_you_type = false
+vsspell_include_in_project_spell_check = false
+
+[bulma.css]
+# VSSPELL: Ignore spell checking in Bulma CSS
+vsspell_spell_check_as_you_type = false
+vsspell_include_in_project_spell_check = false
+
+[font-awesome.css]
+# VSSPELL: Ignore spell checking in Font Awesome CSS
+vsspell_spell_check_as_you_type = false
+vsspell_include_in_project_spell_check = false
+
+[MPFProj_Shared/**]
+# VSSPELL: Ignore spell checking in the MPF project
+vsspell_include_in_project_spell_check = false
 
 # XML files of various types
 [*.{aml,asax,ascx,asmx,asp,aspx,axml,config,content,cshtml,csproj,database,datasource,dbml,disco,discomap,dtsx,edmx,exclude,fxcop,htm,html,items,layout,maml,manifest,master,msha,myapp,nunit,nuspec,proj,projitems,props,publishproj,pubxml,rdl,rdlc,resx,ruleset,settings,shfbproj,shproj,sitemap,snippets,soap,svc,svcinfo,svcmap,targets,tasks,tokens,vbhtml,vbproj,vcxproj,vcxproj.filters,vsct,vsixmanifest,vstemplate,webinfo,wsdl,xaml,xamlcfg,xml,xsd,xsl,xslt,xsx}]

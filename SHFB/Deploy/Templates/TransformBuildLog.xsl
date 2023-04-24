@@ -2,7 +2,6 @@
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:msxsl="urn:schemas-microsoft-com:xslt"
     xmlns:shfb="urn:shfb-extensions">
-
 <!--
 // System  : Sandcastle Help File Builder
 // File    : BuildLog.xsl
@@ -12,8 +11,9 @@
 //
 // This is used to convert a SHFB build log into a viewable HTML page.
 -->
+<!-- Ignore Spelling: arning rror sb-->
 
-  <xsl:param name="filterOn" select="'false'" />
+	<xsl:param name="filterOn" select="'false'" />
 	<xsl:param name="highlightOn" select="'false'" />
 
 	<msxsl:script language="C#" implements-prefix="shfb">

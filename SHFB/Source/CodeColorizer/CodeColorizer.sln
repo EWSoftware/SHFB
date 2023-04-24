@@ -5,8 +5,8 @@ VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C894AE5E-8F27-44C6-BF48-902775D4775F}"
 	ProjectSection(SolutionItems) = preProject
-		..\.editorconfig = ..\.editorconfig
-		CodeColorizer.sln.vsspell = CodeColorizer.sln.vsspell
+		..\..\..\.editorconfig = ..\..\..\.editorconfig
+		..\..\..\IgnoredWords.dic = ..\..\..\IgnoredWords.dic
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorizerLibrary", "ColorizerLibrary\ColorizerLibrary.csproj", "{AFCAE462-7625-4E9A-AB87-C37820470977}"
@@ -14,6 +14,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowDocumentTest", "FlowDocumentTest\FlowDocumentTest.csproj", "{EE1A372C-52AC-472E-BCB3-23ECA906FB8A}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TextColorizerTest", "TextColorizerTest\", "{D7F11A0C-3E65-42D0-8743-82CEA117A003}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AFCAE462-7625-4E9A-AB87-C37820470977} = {AFCAE462-7625-4E9A-AB87-C37820470977}
+	EndProjectSection
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.7.2"
 		ProjectReferences = ""
@@ -33,9 +36,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TextColorizerTest", "TextCo
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "1789"
 		SlnRelativePath = "TextColorizerTest\"
-	EndProjectSection
-	ProjectSection(ProjectDependencies) = postProject
-		{AFCAE462-7625-4E9A-AB87-C37820470977} = {AFCAE462-7625-4E9A-AB87-C37820470977}
 	EndProjectSection
 EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "ColorizerLibraryDocs", "Doc\ColorizerLibraryDocs.shfbproj", "{398EAD70-EE9B-401B-B0D8-FBDA6CFD5B23}"

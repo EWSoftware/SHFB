@@ -74,9 +74,6 @@
   </ItemGroup>
   <!-- Conditionally include Visual Studio version specific references -->
   <ItemGroup>
-    <None Include="Microsoft.VisualStudio.Project_VS2022.csproj.vsspell" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="..\MPFProj_VS2010\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>

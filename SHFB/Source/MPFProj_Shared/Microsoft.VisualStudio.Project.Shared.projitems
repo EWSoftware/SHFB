@@ -101,7 +101,4 @@
     <Compile Include="$(MSBuildThisFileDirectory)VsCommands.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VSShellUtilities.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.Project.Shared.shproj.vsspell" />
-  </ItemGroup>
 </Project>

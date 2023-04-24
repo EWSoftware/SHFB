@@ -1,14 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31105.61
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateInheritedDocs", "GenerateInheritedDocs.csproj", "{A96308E6-1F59-4378-9605-9D19DF9F697D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{555FE8BA-ADF6-45A0-B003-F41CD426E33E}"
 	ProjectSection(SolutionItems) = preProject
-		..\.editorconfig = ..\.editorconfig
-		GenerateInheritedDocs.sln.vsspell = GenerateInheritedDocs.sln.vsspell
+		..\..\..\.editorconfig = ..\..\..\.editorconfig
+		..\..\..\IgnoredWords.dic = ..\..\..\IgnoredWords.dic
 	EndProjectSection
 EndProject
 Global
