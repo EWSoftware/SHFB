@@ -40,7 +40,7 @@ namespace Sandcastle.Core.CommandLine
                 return ParseResult.MalformedArgument;
 
             if(this.IsPresent)
-                return ParseResult.MultipleOccurence;
+                return ParseResult.MultipleOccurrence;
 
             this.Value = this.Name;
 

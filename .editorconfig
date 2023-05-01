@@ -4,7 +4,17 @@ indent_style = space
 end_of_line = crlf
 guidelines = 80 dotted, 114 dotted
 # (Please don't specify an indent_size here; that has too many unintended consequences.)
+
+# VSSPELL: Spell checker settings for all files
 vsspell_section_id = 4ab9fbff07c9470c9a57edd4ce8100fb
+vsspell_code_analyzer_ignore_identifier_if_private = true
+vsspell_code_analyzer_ignore_identifier_if_internal = true
+vsspell_code_analyzer_ignore_identifier_if_all_uppercase = true
+vsspell_code_analyzer_ignore_identifiers_within_member_bodies = true
+vsspell_code_analyzer_ignore_if_compiler_generated = true
+vsspell_code_analyzer_ignore_delimited_comments = true
+vsspell_code_analyzer_ignore_quadruple_slash_comments = true
+vsspell_code_analyzer_apply_to_all_c_style_languages = true
 vsspell_ignored_words_4ab9fbff07c9470c9a57edd4ce8100fb = File:IgnoredWords.dic
 
 [*de-DE.xml]

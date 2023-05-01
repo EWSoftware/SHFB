@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/11/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 04/29/2023
+// Note    : Copyright 2022-2023, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
 // specific presentation style topic transformation.
@@ -1612,26 +1612,26 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// <returns>An enumerable list of one or more XML nodes representing the parameter and return types</returns>
         protected virtual IEnumerable<XNode> ApiTopicOperatorTypes(bool plainText)
         {
-            var parameters = this.ReferenceNode.Element("parameters").Elements();
+            var parameters = this.ReferenceNode.Element("parameters")?.Elements();
             var returns = this.ReferenceNode.Element("returns").Elements();
 
             if(plainText)
             {
                 var sb = new StringBuilder(1024);
 
-                if(parameters.Count() == 1 || returns.Count() == 1)
+                if((parameters != null && parameters.Count() == 1) || returns.Count() == 1)
                     sb.Append('(');
 
-                if(parameters.Count() == 1)
+                if(parameters != null && parameters.Count() == 1)
                     this.ApiTypeNamePlainText(sb, parameters.First().Elements().First());
 
-                if(parameters.Count() == 1 || returns.Count() == 1)
+                if(parameters != null && parameters.Count() == 1 && returns.Count() == 1)
                     sb.Append(" to ");
 
                 if(returns.Count() == 1)
                     this.ApiTypeNamePlainText(sb, returns.First());
 
-                if(parameters.Count() == 1 || returns.Count() == 1)
+                if((parameters != null && parameters.Count() == 1) || returns.Count() == 1)
                     sb.Append(')');
 
                 return new[] { new XText(sb.ToString()) };
@@ -1640,19 +1640,19 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
             // This isn't returned, just its content
             var opsElement = new XElement("parameters");
 
-            if(parameters.Count() == 1 || returns.Count() == 1)
+            if((parameters != null && parameters.Count() == 1) || returns.Count() == 1)
                 opsElement.Add("(");
 
-            if(parameters.Count() == 1)
+            if(parameters != null && parameters.Count() == 1)
                 this.ApiTypeNameDecorated(opsElement, parameters.First().Elements().First());
 
-            if(parameters.Count() == 1 || returns.Count() == 1)
+            if(parameters != null && parameters.Count() == 1 && returns.Count() == 1)
                 opsElement.Add(" to ");
 
             if(returns.Count() == 1)
                 this.ApiTypeNameDecorated(opsElement, returns.First());
 
-            if(parameters.Count() == 1 || returns.Count() == 1)
+            if((parameters != null && parameters.Count() == 1) || returns.Count() == 1)
                 opsElement.Add(")");
 
             return opsElement.Nodes();

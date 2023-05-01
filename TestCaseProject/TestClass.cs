@@ -547,6 +547,26 @@ namespace TestDoc
         /// </description>
         /// </item>
         /// </list>
+        /// 
+        /// <para>List with term element only</para>
+        /// <list type="bullet">
+        /// <item><term>apartment</term></item>
+        /// <item><term>free     </term></item>
+        /// <item><term>both     </term></item>
+        /// <item><term>neutral  </term></item>
+        /// <item><term>single   </term></item>
+        /// <item><term>rental   </term></item>
+        /// </list>
+        ///
+        /// <para>List with description element only</para>
+        /// <list type="bullet">
+        /// <item><description>apartment</description></item>
+        /// <item><description>free     </description></item>
+        /// <item><description>both     </description></item>
+        /// <item><description>neutral  </description></item>
+        /// <item><description>single   </description></item>
+        /// <item><description>rental   </description></item>
+        /// </list>
         /// </remarks>
         public static double Sum(double[] values)
         {

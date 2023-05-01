@@ -113,7 +113,7 @@ namespace Sandcastle.Core.CommandLine
                         message = this.Options[error.Key].RequiredMessage;
                         break;
 
-                    case ParseResult.MultipleOccurence:
+                    case ParseResult.MultipleOccurrence:
                         message = "The option cannot occur more than once";
                         break;
 

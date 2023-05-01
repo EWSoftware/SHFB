@@ -24,6 +24,6 @@ namespace Sandcastle.Core.CommandLine
         /// <summary>Unrecognized option</summary>
         UnrecognizedOption,
         /// <summary>A single-use option appeared multiple times</summary>
-        MultipleOccurence
+        MultipleOccurrence
     }
 }

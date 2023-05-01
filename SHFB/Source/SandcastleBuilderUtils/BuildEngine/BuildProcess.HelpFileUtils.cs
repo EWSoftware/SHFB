@@ -507,15 +507,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// copied recursively.
         /// </summary>
         /// <param name="sourcePath">The source path from which to copy</param>
-        /// <param name="destPath">The destination path to which to copy</param>
+        /// <param name="destinationPath">The destination path to which to copy</param>
         /// <param name="fileCount">A reference to the file count variable</param>
-        private void RecursiveCopy(string sourcePath, string destPath, ref int fileCount)
+        private void RecursiveCopy(string sourcePath, string destinationPath, ref int fileCount)
         {
             if(sourcePath == null)
                 throw new ArgumentNullException(nameof(sourcePath));
 
-            if(destPath == null)
-                throw new ArgumentNullException(nameof(destPath));
+            if(destinationPath == null)
+                throw new ArgumentNullException(nameof(destinationPath));
 
             int idx = sourcePath.LastIndexOf('\\');
 
@@ -523,10 +523,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             foreach(string name in Directory.EnumerateFiles(dirName, fileSpec))
             {
-                filename = destPath + Path.GetFileName(name);
+                filename = destinationPath + Path.GetFileName(name);
 
-                if(!Directory.Exists(destPath))
-                    Directory.CreateDirectory(destPath);
+                if(!Directory.Exists(destinationPath))
+                    Directory.CreateDirectory(destinationPath);
 
                 // All attributes are turned off so that we can delete it later
                 File.Copy(name, filename, true);
@@ -544,7 +544,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // Ignore hidden folders as they may be under source control and are not wanted
                 foreach(string folder in Directory.EnumerateDirectories(dirName))
                     if((File.GetAttributes(folder) & FileAttributes.Hidden) != FileAttributes.Hidden)
-                        this.RecursiveCopy(folder + @"\*.*", destPath + folder.Substring(dirName.Length + 1) + @"\",
+                        this.RecursiveCopy(folder + @"\*.*", destinationPath + folder.Substring(dirName.Length + 1) + @"\",
                             ref fileCount);
             }
         }

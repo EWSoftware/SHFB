@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ListElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/29/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 04/29/2023
+// Note    : Copyright 2022-2023, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle list elements based on the topic type
 //
@@ -187,6 +187,13 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml
                             container = new XElement(OpenXmlElement.WordProcessingML + "p");
                             li.Add(container);
 
+                            // If there's a term but no description, render the term as the description
+                            if(term != null && description == null)
+                            {
+                                description = term;
+                                term = null;
+                            }
+
                             if(term != null)
                             {
                                 bold = new XElement("span", new XAttribute("class", "Bold"));
@@ -195,7 +202,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml
                                 transformation.RenderChildElements(bold, term.Nodes());
                             }
 
-                            transformation.RenderChildElements(container, description.Nodes());
+                            if(description != null)
+                                transformation.RenderChildElements(container, description.Nodes());
                         }
                         else
                             transformation.RenderChildElements(li, item.Nodes());
