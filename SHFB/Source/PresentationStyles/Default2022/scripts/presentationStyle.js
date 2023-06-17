@@ -22,6 +22,41 @@
 // Ignore Spelling: fti json
 
 //===============================================================================================================
+// This section contains the methods used to handle resizing the TOC section
+
+var resizer, tocDiv;
+
+window.onload = function() {
+    resizer = document.getElementById("Resizer");
+    tocDiv = document.getElementById("TOCColumn");
+
+    resizer.addEventListener("mousedown", function(e) {
+        e.preventDefault();
+        document.addEventListener("mousemove", ResizerMouseMove);
+        document.addEventListener("mouseup", ResizerMouseUp);
+    });
+}
+
+function ResizerMouseMove(e) {
+    const container = document.getElementById("ContentContainer");
+    const containerRect = container.getBoundingClientRect();
+    const newWidth = e.clientX - containerRect.left - 80;
+
+    // Ensure that divs are not smaller than some arbitrary minimal width
+    const minWidth = 50; // pixels
+    const contentDivWidth = containerRect.width - newWidth;
+
+    if (newWidth > minWidth && contentDivWidth > minWidth) {
+        tocDiv.style.width = newWidth + 'px';
+    }
+}
+
+function ResizerMouseUp() {
+    document.removeEventListener("mousemove", ResizerMouseMove);
+    document.removeEventListener("mouseup", ResizerMouseUp);
+}
+
+//===============================================================================================================
 // This section contains the methods used to implement the language filter
 
 // The IDs of language-specific text (LST) spans are used as dictionary keys so that we can get access to the

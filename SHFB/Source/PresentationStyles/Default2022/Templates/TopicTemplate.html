@@ -118,12 +118,12 @@
 				</ul>
 			</nav>
 
-			<div class="columns pl-5 pr-5 fixedContent">
+			<div id="ContentContainer" class="columns pl-5 pr-5 fixedContent">
 				<div id="ShowHideTOCColumn" class="column is-hidden-tablet">
 					<a id="ShowHideTOC"><include item="showHideTOC" /></a>
 				</div>
 
-				<div id="TOCColumn" class="column is-hidden-mobile">
+				<div id="TOCColumn" class="column is-hidden-mobile" style="flex-basis: initial; flex-grow: 0.25">
 					<nav class="toc">
 						<ul id="TableOfContents" class="toc-menu">
 							<!-- TOC entries will be added client-side from the TOC fragment file -->
@@ -131,7 +131,9 @@
 					</nav>
 				</div>
 
-				<div id="TopicContent" class="column content is-7">
+				<div id="Resizer" style="cursor: ew-resize; width: 5px; background: #e6e6e6; margin-top: 8px; margin-bottom: 12px"></div>
+
+				<div id="TopicContent" class="column content is-7" style="flex-grow: 1">
 					<!-- Topic content will go here -->
 				</div>
 
