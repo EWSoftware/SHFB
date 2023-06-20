@@ -116,7 +116,7 @@ namespace TestDoc.DocumentationInheritance
         // can allow you to merge comments from various sources into one
         // set of comments in a given tag.  An implied filter that limits
         // the selection to the <remarks> tag is added automatically.  If
-        // the select attribute were omitted, the entire set of remarks
+        // the path attribute were omitted, the entire set of remarks
         // from the base class would be inherited.
 
         /// <inheritdoc cref="Object.ToString" />
@@ -217,7 +217,7 @@ namespace TestDoc.DocumentationInheritance
         /// </example>
         public void MethodUsingSharedExample()
         {
-            // This method uses a cref attribute and a select tag to inherit
+            // This method uses a cref attribute and a path tag to inherit
             // a specific example from a member to which it has no relation.
         }
     }
