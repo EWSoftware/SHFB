@@ -20,6 +20,7 @@
 // generic and array element parameter types.
 // 02/17/2023 - EFW - Yet another fix to ParametersMatch() to handle a variation of the template argument
 // comparisons.
+// 05/03/2023 - EFW - Are we done yet?  Another fix to ParametersMatch() for another variation.
 
 using System;
 using System.Collections.Generic;
@@ -457,7 +458,19 @@ namespace Sandcastle.Tools.Reflection
                         p2 = GetTemplateParameterPosition(parameters2[i].DeclaringMethod.DeclaringType, type2.Name.Name);
 
                     if(p1 == -1 || p2 == -1)
+                    {
+                        // If the names match and there's a template argument on the method that matches, use it
+                        if(type1.Name.Name == type2.Name.Name &&
+                          parameters1[i].DeclaringMethod.TemplateParameters != null &&
+                          parameters1[i].DeclaringMethod.TemplateParameters.Any(ta => ta.Name.Name == type1.Name.Name) &&
+                          parameters2[i].DeclaringMethod.TemplateParameters != null &&
+                          parameters2[i].DeclaringMethod.TemplateParameters.Any(ta => ta.Name.Name == type2.Name.Name))
+                        {
+                            return true;
+                        }
+
                         return false;
+                    }
 
                     if(p1 != p2)
                     {

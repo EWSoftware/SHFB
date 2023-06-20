@@ -1,0 +1,6 @@
+[*]
+# VSSPELL: No spell checking for this project
+vsspell_spell_check_as_you_type = false
+vsspell_include_in_project_spell_check = false
+vsspell_code_analyzers_enabled = false
+

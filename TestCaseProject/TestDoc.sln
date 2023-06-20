@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDoc", "TestDoc.csproj", "{E69FEF3D-FB49-4FB6-9EBD-651D2BD11E3E}"
 EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "TestCaseProject", "Doc\TestCaseProject.shfbproj", "{538D8A1F-3A67-4E72-AF21-6C51458543D5}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E69FEF3D-FB49-4FB6-9EBD-651D2BD11E3E} = {E69FEF3D-FB49-4FB6-9EBD-651D2BD11E3E}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1637A9BB-EAC6-4DEA-9540-8CDF8435AE16}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
 Global
