@@ -21,6 +21,7 @@
 // 02/17/2023 - EFW - Yet another fix to ParametersMatch() to handle a variation of the template argument
 // comparisons.
 // 05/03/2023 - EFW - Are we done yet?  Another fix to ParametersMatch() for another variation.
+// 07/01/2023 - EFW - Not yet.  More fixes for more variations.
 
 using System;
 using System.Collections.Generic;
@@ -326,7 +327,22 @@ namespace Sandcastle.Tools.Reflection
                 while(pi < parameters.Count)
                 {
                     if(parameters[pi].Type.FullName != cp[pi].Type.FullName)
-                        break;
+                    {
+                        // In really complex cases with multiple derived interfaces and constraints with templates,
+                        // we can get mismatched parameter names that are effectively equivalent.  I haven't found
+                        // a good way of tracking them back to a common source for a proper match so at this point,
+                        // just assume they are equivalent if the namespace is "type parameter" and any trailing
+                        // text after the ID is the same (D[][][] will match D1[][][]).  There's a chance it may
+                        // not be correct but if you've got a better idea, feel free to have a go.
+                        // https://github.com/EWSoftware/SHFB/issues/1006
+                        if(parameters[pi].Type.Namespace.Name != "type parameter" ||
+                          cp[pi].Type.Namespace.Name != "type parameter" ||
+                          !parameters[pi].Type.Name.Name.SkipWhile(c => c == '_' || Char.IsLetterOrDigit(c)).SequenceEqual(
+                          cp[pi].Type.Name.Name.SkipWhile(c => c == '_' || Char.IsLetterOrDigit(c))))
+                        {
+                            break;
+                        }
+                    }
 
                     pi++;
                 }
@@ -516,7 +532,33 @@ namespace Sandcastle.Tools.Reflection
                             }
 
                             if(!type2.IsStructurallyEquivalentTo(type1))
+                            {
+                                // It's possible a constraint with a different name does match.  The template for
+                                // it will contain the original type parameter name so try to match the template.
+                                // https://github.com/EWSoftware/SHFB/issues/994
+                                type1 = parameters1[i].Type;
+                                type2 = parameters2[i].Type;
+
+                                while(type1?.Template != null)
+                                {
+                                    if(type1.Template.IsStructurallyEquivalentTo(type2))
+                                        return true;
+
+                                    type1 = type1.Template;
+                                }
+
+                                type1 = parameters1[i].Type;
+
+                                while(type2?.Template != null)
+                                {
+                                    if(type2.Template.IsStructurallyEquivalentTo(type1))
+                                        return true;
+
+                                    type2 = type2.Template;
+                                }
+
                                 return false;
+                            }
                         }
                     }
                     else

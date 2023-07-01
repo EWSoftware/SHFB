@@ -403,4 +403,84 @@ namespace TestDoc.Generics.HardToMatchSignatures
         }
         #endregion
     }
+
+    #region Derived interfaces with templates and constraints
+    //=====================================================================
+
+    /// <summary>
+    /// Interface Number
+    /// </summary>
+    /// <typeparam name="T">Type</typeparam>
+    public interface INumber<T>
+        where T : INumber<T>
+    {
+    }
+
+    /// <summary>
+    /// Interface Real Number
+    /// </summary>
+    /// <typeparam name="T">Real Type</typeparam>
+    public interface IRealNumber<T> : INumber<T>
+        where T : IRealNumber<T>
+    {
+    }
+
+    /// <summary>
+    /// Interface Complex Number
+    /// </summary>
+    /// <typeparam name="T1">Complex Type</typeparam>
+    /// <typeparam name="T2">Real Type</typeparam>
+    public interface IComplexNumber<T1, T2> : INumber<T1>
+        where T1 : IComplexNumber<T1, T2>
+        where T2 : IRealNumber<T2>
+    {
+    }
+
+    /// <summary>
+    /// Interface Array
+    /// </summary>
+    /// <typeparam name="T">Array Type</typeparam>
+    /// <typeparam name="D">Element Type</typeparam>
+    public interface INArray<T, D>
+        where T : INArray<T, D>
+        where D : INumber<D>
+    {
+        /// <summary>
+        /// Initializes a 3D-Array
+        /// </summary>
+        /// <param name="data">Data</param>
+        void Init(D[,,] data);
+        /// <summary>
+        /// Initializes a 3D-Array
+        /// </summary>
+        /// <param name="data">Data</param>
+        void Init(D[][][] data);
+    }
+
+    /// <summary>
+    /// Interface Real Array
+    /// </summary>
+    /// <typeparam name="T">Real Array Type</typeparam>
+    /// <typeparam name="D">Real Element Type</typeparam>
+    public interface IRealNArray<T, D> : INArray<T, D>
+        where T : IRealNArray<T, D>
+        where D : IRealNumber<D>
+    {
+    }
+
+    /// <summary>
+    /// Interface Complex Array
+    /// </summary>
+    /// <typeparam name="T1">Complex Array Type</typeparam>
+    /// <typeparam name="T2">Real Array Type</typeparam>
+    /// <typeparam name="D1">Complex Element Type</typeparam>
+    /// <typeparam name="D2">Real Element Type</typeparam>
+    public interface IComplexNArray<T1, T2, D1, D2> : INArray<T1, D1>
+        where T1 : IComplexNArray<T1, T2, D1, D2>
+        where T2 : IRealNArray<T2, D2>
+        where D1 : IComplexNumber<D1, D2>
+        where D2 : IRealNumber<D2>
+    {
+    }
+    #endregion
 }
