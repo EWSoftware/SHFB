@@ -608,14 +608,17 @@ namespace Sandcastle.PresentationStyles.Default2022
                 if(!File.Exists(localeSpecificStyleSheet))
                     localeSpecificStyleSheet = String.Empty;
                 else
-                    localeSpecificStyleSheet = this.StyleSheetPath + Path.GetFileName(localeSpecificStyleSheet);
+                {
+                    localeSpecificStyleSheet = "<link rel=\"stylesheet\" " +
+                        $"href=\"{this.StyleSheetPath + Path.GetFileName(localeSpecificStyleSheet)}\" />";
+                }
 
                 pageTemplate = LoadTemplateFile(this.TopicTemplatePath, new[] {
                     ("{@Locale}", this.Locale),
                     ("{@LocaleLowercase}", this.Locale.ToLowerInvariant()),
                     ("{@IconPath}", this.IconPath),
                     ("{@StyleSheetPath}", this.StyleSheetPath),
-                    ("{@LocalSpecificStyleSheet}", localeSpecificStyleSheet),
+                    ("{@LocaleSpecificStyleSheet}", localeSpecificStyleSheet),
                     ("{@ScriptPath}", this.ScriptPath),
                     ("{@DefaultLanguage}", this.DefaultLanguage) });
             }
@@ -647,8 +650,7 @@ namespace Sandcastle.PresentationStyles.Default2022
                         var headerText = headerPrelimContainer.Descendants().Where(
                             d => d.Attribute("id")?.Value == "HeaderTextContainer").FirstOrDefault();
 
-                        if(headerText != null)
-                            headerText.Remove();
+                        headerText?.Remove();
                     }
 
                     if(!this.IsPreliminaryDocumentation)
@@ -656,20 +658,15 @@ namespace Sandcastle.PresentationStyles.Default2022
                         var prelimDocs = headerPrelimContainer.Descendants().Where(
                             d => d.Attribute("id")?.Value == "PreliminaryContainer").FirstOrDefault();
 
-                        if(prelimDocs != null)
-                            prelimDocs.Remove();
+                        prelimDocs?.Remove();
                     }
                 }
             }
 
             // Add language filter selections
-            var languageFilter = html.Descendants().FirstOrDefault(d => d.Attribute("id")?.Value == "LanguageSelections");
-
-            if(languageFilter == null)
-            {
+            var languageFilter = html.Descendants().FirstOrDefault(d => d.Attribute("id")?.Value == "LanguageSelections") ??
                 throw new InvalidOperationException("An element with the ID 'LanguageSelections' was not found " +
                     "to contain the language filter elements");
-            }
 
             foreach(var language in this.LanguageFilter)
             {
@@ -950,9 +947,7 @@ $("".toggleSection"").keypress(function () {
 
             if(!String.IsNullOrWhiteSpace(logoFile))
             {
-                var headerDiv = body.Descendants("div").FirstOrDefault(d => d.Attribute("id")?.Value == "Header");
-
-                if(headerDiv == null)
+                var headerDiv = body.Descendants("div").FirstOrDefault(d => d.Attribute("id")?.Value == "Header") ??
                     throw new InvalidOperationException("A div element with the ID 'Header' was not found");
 
                 string logoAltText = this.LogoAltText, logoUrl = this.LogoUrl;
@@ -1017,9 +1012,7 @@ $("".toggleSection"").keypress(function () {
 
                     case LogoPlacement.Right:
                         var langFilterContainer = headerDiv.Descendants("div").FirstOrDefault(d =>
-                            d.Attribute("id")?.Value == "LangFilterSearchContainer");
-
-                        if(langFilterContainer == null)
+                            d.Attribute("id")?.Value == "LangFilterSearchContainer") ??
                             throw new InvalidOperationException("A div element with the ID 'LangFilterSearchContainer' was not found");
 
                         langFilterContainer.Add(new XElement("div",
@@ -1029,9 +1022,7 @@ $("".toggleSection"").keypress(function () {
 
                     default:        // Left
                         var titleContainer = headerDiv.Descendants("div").FirstOrDefault(d =>
-                            d.Attribute("id")?.Value == "TitleContainer");
-
-                        if(titleContainer == null)
+                            d.Attribute("id")?.Value == "TitleContainer") ??
                             throw new InvalidOperationException("A div element with the ID 'TitleContainer' was not found");
 
                         titleContainer.AddFirst(new XElement("div",
@@ -2125,12 +2116,9 @@ $("".toggleSection"").keypress(function () {
                 seeAlsoCRef = seeAlsoNotInOverloads.Except(seeAlsoHRef).ToList();
 
             // Combine those with see also elements from element overloads comments
-            var elements = transformation.ReferenceNode.Element("elements");
-
-            if(elements == null)
-                elements = new XElement("elements");
-
+            var elements = transformation.ReferenceNode.Element("elements") ?? new XElement("elements");
             var elementOverloads = elements.Elements("element").SelectMany(e => e.Descendants("overloads")).ToList();
+
             seeAlsoHRef.AddRange(elementOverloads.Descendants("seealso").Where(s => s.Attribute("href") != null));
             seeAlsoCRef.AddRange(elementOverloads.Descendants("seealso").Where(s => s.Attribute("href") == null));
 

@@ -31,7 +31,6 @@
 	<ItemGroup>
 		<None Remove="Default2022\Templates\LanguageAlertTemplate.html" />
 		<None Remove="Default2022\Templates\ToDoAlertTemplate.html" />
-		<None Remove="PresentationStyles.sln.vsspell" />
 		<None Remove="VS2013\Templates\LanguageAlertTemplate.html" />
 		<None Remove="VS2013\Templates\ToDoAlertTemplate.html" />
 	</ItemGroup>
@@ -80,11 +79,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Remove="Default2022\**\*.vsspell" />
-		<Content Remove="Markdown\**\*.vsspell" />
-		<Content Remove="OpenXml\**\*.vsspell" />
-		<Content Remove="Shared\**\*.vsspell" />
-		<Content Remove="VS2013\**\*.vsspell" />
 		<Content Remove="Default2022\**\*.cs" />
 		<Content Remove="Markdown\**\*.cs" />
 		<Content Remove="OpenXml\**\*.cs" />

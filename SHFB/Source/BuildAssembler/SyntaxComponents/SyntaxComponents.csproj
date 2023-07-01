@@ -36,7 +36,6 @@
 		<Content Include="SyntaxContent\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Remove="SyntaxContent\**\*.vsspell" />
 	</ItemGroup>
 
 	<ItemGroup>

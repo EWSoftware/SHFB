@@ -28,10 +28,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Remove="GenerateInheritedDocs.sln.vsspell" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Compile Include="..\SandcastleBuilderUtils\InheritedDocumentation\CommentsCacheEventArgs.cs" Link="CommentsCacheEventArgs.cs" />
 		<Compile Include="..\SandcastleBuilderUtils\InheritedDocumentation\IndexedCommentsCache.cs" Link="IndexedCommentsCache.cs" />
 		<Compile Include="..\SandcastleBuilderUtils\InheritedDocumentation\InheritedDocsException.cs" Link="InheritedDocsException.cs" />

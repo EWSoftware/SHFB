@@ -212,7 +212,7 @@ namespace Microsoft.VisualStudio.Project
 
         #region fields
 
-        private static readonly FrameworkName DefaultTargetFrameworkMoniker = new FrameworkName(".NETFramework", new Version(4, 0));
+        private static readonly FrameworkName DefaultTargetFrameworkMoniker = new FrameworkName(".NETFramework", new Version(4, 8));
 
         private static Guid addComponentLastActiveTab = VSConstants.GUID_SolutionPage;
 

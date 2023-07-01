@@ -41,7 +41,6 @@
 
 	<ItemGroup>
 		<None Remove="MRefBuilder.config" />
-		<None Remove="MRefBuilder.sln.vsspell" />
 	</ItemGroup>
 
 	<ItemGroup>
