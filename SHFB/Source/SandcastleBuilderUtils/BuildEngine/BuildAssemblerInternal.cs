@@ -138,8 +138,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 this.ClearComponents();
 
-                if(messageLog != null)
-                    messageLog.Dispose();
+                messageLog?.Dispose();
             }
         }
         #endregion
@@ -262,7 +261,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(!messageLog.IsAddingCompleted)
                         messageLog.Add((level, text));
                     else
-                        this.WriteMessage(level, text);
+                    {
+                        // Prevent a possible race condition.  Ignore if still flushing the message log.  This
+                        // case is highly unlikely and the text will be in the exception below.
+                        if(messageLog.Count == 0)
+                            this.WriteMessage(level, text);
+                    }
 
                     if(System.Diagnostics.Debugger.IsAttached)
                         System.Diagnostics.Debugger.Break();
@@ -277,7 +281,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if(!messageLog.IsAddingCompleted)
                     messageLog.Add((level, text));
                 else
-                    this.WriteMessage(level, text);
+                {
+                    // Prevent a possible race condition.  Ignore if still flushing the message log.  Not ideal
+                    // here but it's an extremely rare occurrence likely related to a component logging a message
+                    // such as the save component perhaps raising a component event after all topics have been
+                    // built while it waits for it's queue to empty and the event handler tries to log a message
+                    // and the message log is still being flushed as well.
+                    if(messageLog.Count == 0)
+                        this.WriteMessage(level, text);
+                }
             }
         }
         #endregion
