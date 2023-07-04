@@ -118,12 +118,12 @@
 				</ul>
 			</nav>
 
-			<div class="columns pl-5 pr-5 fixedContent">
+			<div id="ContentContainer" class="columns pl-5 pr-5 fixedContent">
 				<div id="ShowHideTOCColumn" class="column is-hidden-tablet">
 					<a id="ShowHideTOC"><include item="showHideTOC" /></a>
 				</div>
 
-				<div id="TOCColumn" class="column is-hidden-mobile">
+				<div id="TOCColumn" class="column is-hidden-mobile{@ResizableTocStyle}">
 					<nav class="toc">
 						<ul id="TableOfContents" class="toc-menu">
 							<!-- TOC entries will be added client-side from the TOC fragment file -->
@@ -131,7 +131,9 @@
 					</nav>
 				</div>
 
-				<div id="TopicContent" class="column content is-7">
+				<div id="Resizer" class="{@ResizerStyle}"></div>
+				
+				<div id="TopicContent" class="column content is-7{@ResizableContentStyle}">
 					<!-- Topic content will go here -->
 				</div>
 

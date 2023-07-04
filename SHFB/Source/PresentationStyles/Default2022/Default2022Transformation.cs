@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/18/2023
+// Updated : 07/04/2023
 // Note    : Copyright 2022-2023, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -18,7 +18,7 @@
 // 03/16/2022  EFW  Created the code
 //===============================================================================================================
 
-// Ignore Spelling: fa
+// Ignore Spelling: fa resizer
 
 using System;
 using System.Collections.Generic;
@@ -75,6 +75,12 @@ namespace Sandcastle.PresentationStyles.Default2022
         /// Root breadcrumb title text
         /// </summary>
         private string RootBreadcrumbTitleText => this.TransformationArguments[nameof(RootBreadcrumbTitleText)].Value;
+
+        /// <summary>
+        /// Enable the resizable table of contents column
+        /// </summary>
+        private bool ResizableTocColumn => Boolean.TryParse(this.TransformationArguments[nameof(ResizableTocColumn)].Value,
+            out bool resizableTocColumn) && resizableTocColumn;
 
         /// <summary>
         /// Render collapsible sections
@@ -198,8 +204,10 @@ namespace Sandcastle.PresentationStyles.Default2022
                     "Sandcastle MAML Guide or XML Comments Guide."),
                 new TransformationArgument(nameof(RootBreadcrumbTitleText), true, true, "Docs", "Specify the " +
                     "text to use for the root breadcrumb's title.  The default if blank is \"Docs\"."),
+                new TransformationArgument(nameof(ResizableTocColumn), true, true, "False", "Indicate whether " +
+                    "or not to enable the resizable table of contents column.  True to enable it, false if not."),
                 new TransformationArgument(nameof(CollapsibleSections), true, true, "True", "Indicate whether " +
-                    "whether or not collapsible sections are rendered.  True to include them, false if not."),
+                    "or not collapsible sections are rendered.  True to include them, false if not."),
                 new TransformationArgument(nameof(LogoFile), true, true, null,
                     "An optional logo file to insert into the topic headers.  Specify the filename only, omit " +
                     "the path.\r\n\r\n" +
@@ -613,6 +621,15 @@ namespace Sandcastle.PresentationStyles.Default2022
                         $"href=\"{this.StyleSheetPath + Path.GetFileName(localeSpecificStyleSheet)}\" />";
                 }
 
+                string resizableTocStyle = String.Empty, resizerStyle = "is-hidden", resizableContentStyle = String.Empty;
+
+                if(this.ResizableTocColumn)
+                {
+                    resizableTocStyle = " toc-resizable";
+                    resizerStyle = "toc-resizer";
+                    resizableContentStyle = " toc-resizable-content";
+                }
+
                 pageTemplate = LoadTemplateFile(this.TopicTemplatePath, new[] {
                     ("{@Locale}", this.Locale),
                     ("{@LocaleLowercase}", this.Locale.ToLowerInvariant()),
@@ -620,7 +637,11 @@ namespace Sandcastle.PresentationStyles.Default2022
                     ("{@StyleSheetPath}", this.StyleSheetPath),
                     ("{@LocaleSpecificStyleSheet}", localeSpecificStyleSheet),
                     ("{@ScriptPath}", this.ScriptPath),
-                    ("{@DefaultLanguage}", this.DefaultLanguage) });
+                    ("{@DefaultLanguage}", this.DefaultLanguage),
+                    ("{@ResizableTocStyle}", resizableTocStyle),
+                    ("{@ResizerStyle}", resizerStyle),
+                    ("{@ResizableContentStyle}", resizableContentStyle),
+                });
             }
 
             // Set the default language and connect the language-specific text, and language filter on startup

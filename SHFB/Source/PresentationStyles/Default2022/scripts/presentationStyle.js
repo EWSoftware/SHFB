@@ -2,9 +2,9 @@
 // System  : Sandcastle Help File Builder
 // File    : presentationStyle.js
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/13/2022
-// Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
-//           Portions Copyright 2010-2022 Microsoft, All rights reserved
+// Updated : 07/04/2023
+// Note    : Copyright 2014-2023, Eric Woodruff, All rights reserved
+//           Portions Copyright 2010-2023 Microsoft, All rights reserved
 //
 // This file contains the methods necessary to implement the language filtering, collapsible section, and
 // copy to clipboard options.
@@ -19,7 +19,7 @@
 // 05/04/2014  EFW  Created the code based on the MS Help Viewer script
 //===============================================================================================================
 
-// Ignore Spelling: fti json
+// Ignore Spelling: fti json Resizer mousedown mouseup mousemove
 
 //===============================================================================================================
 // This section contains the methods used to implement the language filter
@@ -683,4 +683,45 @@ function SearchForKeywords(keywords, fileInfo, wordDictionary, sortByTitle)
         content += "<p>Omitted " + (matchingFileIndices.length - rankings.length) + " more results</p>";
 
     return content;
+}
+
+//===============================================================================================================
+// This section contains the methods used to handle resizing the TOC section.
+// Changes made by J. Ritchie Carroll.
+
+var resizer, tocDiv;
+
+window.onload = function ()
+{
+    resizer = document.getElementById("Resizer");
+    tocDiv = document.getElementById("TOCColumn");
+
+    resizer.addEventListener("mousedown", function (e)
+    {
+        e.preventDefault();
+        document.addEventListener("mousemove", ResizerMouseMove);
+        document.addEventListener("mouseup", ResizerMouseUp);
+    });
+}
+
+function ResizerMouseMove(e)
+{
+    const container = document.getElementById("ContentContainer");
+    const containerRect = container.getBoundingClientRect();
+    const newWidth = e.clientX - containerRect.left - 80;
+
+    // Ensure that divs are not smaller than some arbitrary minimal width
+    const minWidth = 50; // pixels
+    const contentDivWidth = containerRect.width - newWidth;
+
+    if(newWidth > minWidth && contentDivWidth > minWidth)
+    {
+        tocDiv.style.width = newWidth + 'px';
+    }
+}
+
+function ResizerMouseUp()
+{
+    document.removeEventListener("mousemove", ResizerMouseMove);
+    document.removeEventListener("mouseup", ResizerMouseUp);
 }

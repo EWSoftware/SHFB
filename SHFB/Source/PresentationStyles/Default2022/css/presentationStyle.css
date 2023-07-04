@@ -401,3 +401,21 @@ sup.citation a:link a:visited a:active {
     .toc-menu li a.has-submenu {
         margin-left: -1.75em;
     }
+
+/* Resizable TOC styles */
+.toc-resizable {
+    flex-basis: initial;
+    flex-grow: 0.25;
+}
+
+.toc-resizer {
+    cursor: ew-resize;
+    width: 5px;
+    background: #e6e6e6;
+    margin-top: 8px;
+    margin-bottom: 12px;
+}
+
+.toc-resizable-content {
+    flex-grow: 1;
+}
