@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="238d9fb1-5eb0-4e0e-a9bc-80fa0c1422d6" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2023.7.8.0.  See the prior version release notes for information on the
+breaking changes made to the presentation styles implementation.</para>
+		</introduction>
+
+		<section>
+			<title>Build Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed a parameter matching issue in MRefBuilder caused by a template parameter on the method
+that did not appear in the parameter list.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a couple of other issues related to type parameter matching in MRefBuilder.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added code to prevent a possible race condition in component message logging.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+			
+		<section>
+			<title>Presentation Styles</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Fixed handling of list items with a term element but no description.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed handling of implicit operators that have no parameters.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed handling of the locale-specific stylesheet link generation in the Default2022
+presentation style.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged changes from J. Ritchie Carroll to support a resizable table of contents column in the
+Default2022 presentation style.  Added a new <codeInline>ResizableTocColumn</codeInline> transformation argument
+to allow it to be enabled.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

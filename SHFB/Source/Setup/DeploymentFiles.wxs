@@ -4080,9 +4080,6 @@
           <Component Id="cmp983A6C864A0C0CE6177F7E434C41413D" Guid="{A373E5EC-C8BF-4B82-9DEC-F75CAA7785B1}">
             <File Id="filA4E52A2B4B4507EE2C6B5EE836B1CCB1" KeyPath="yes" Source="$(var.RootFolder)\Tools\ItemTemplates\Html Page.html" />
           </Component>
-          <Component Id="cmp25425562AC03FF495D1641D2EAE0D122" Guid="{4FC9C0C4-EEFF-4BC3-8441-115907EC4167}">
-            <File Id="filEB3E4C754756FCE5E6EDF2FDCAA453EC" KeyPath="yes" Source="$(var.RootFolder)\Tools\ItemTemplates\ItemTemplates.vsspell" />
-          </Component>
           <Component Id="cmp9D915E269136EB25AD5C42E1268684A3" Guid="{55B56BFE-E55C-48B5-8A7B-4B2C2A8D0CD0}">
             <File Id="fil9D14C35F960EA545A2BF7AE06F8025F5" KeyPath="yes" Source="$(var.RootFolder)\Tools\ItemTemplates\Resource Item File.items" />
           </Component>
@@ -5431,7 +5428,6 @@
       <ComponentRef Id="cmp641E31F7E9200BD5C715C1DEC4764C3A" />
       <ComponentRef Id="cmpAD0E65CCF97F994E0DE8A412500F51A8" />
       <ComponentRef Id="cmp983A6C864A0C0CE6177F7E434C41413D" />
-      <ComponentRef Id="cmp25425562AC03FF495D1641D2EAE0D122" />
       <ComponentRef Id="cmp9D915E269136EB25AD5C42E1268684A3" />
       <ComponentRef Id="cmp40D71EA3620D53E655E1C1EC5177FA98" />
       <ComponentRef Id="cmpEF0906CBEDB2FEF15DE7E081CBBC7165" />
