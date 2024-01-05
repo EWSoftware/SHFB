@@ -285,26 +285,47 @@ namespace Sandcastle.Tools.SyntaxGenerators
 
             WriteAttributes(reflection, writer);
 
-            if(!isExplicit)
-                WriteProcedureModifiers(reflection, writer);
+            string overrideMemberName = (string)reflection.Evaluate(apiOverridesMemberExpression);
 
-            WriteReturnValue(reflection, writer);
-            writer.WriteString(" ");
-
-            if(isExplicit)
+            if(String.IsNullOrWhiteSpace(overrideMemberName) || !overrideMemberName.Equals("M:System.Object.Finalize",
+              StringComparison.Ordinal))
             {
-                XPathNavigator member = reflection.SelectSingleNode(apiImplementedMembersExpression);
-                XPathNavigator contract = member.SelectSingleNode(memberDeclaringTypeExpression);
-                WriteTypeReference(contract, writer);
-                writer.WriteString(".");
-                WriteMemberReference(member, writer);
+                if(!isExplicit)
+                    WriteProcedureModifiers(reflection, writer);
+                else
+                {
+                    // .NET 7 supports static EII members so include that when needed
+                    if((bool)reflection.Evaluate(apiIsStaticExpression))
+                    {
+                        writer.WriteKeyword("static");
+                        writer.WriteString(" ");
+                    }
+                }
+
+                WriteReturnValue(reflection, writer);
+                writer.WriteString(" ");
+
+                if(isExplicit)
+                {
+                    XPathNavigator member = reflection.SelectSingleNode(apiImplementedMembersExpression);
+                    XPathNavigator contract = member.SelectSingleNode(memberDeclaringTypeExpression);
+                    WriteTypeReference(contract, writer);
+                    writer.WriteString(".");
+                    WriteMemberReference(member, writer);
+                }
+                else
+                    writer.WriteIdentifier(name);
+
+                WriteGenericTemplates(reflection, writer, false);
+                WriteMethodParameters(reflection, writer);
+                WriteGenericTemplateConstraints(reflection, writer);
             }
             else
+            {
+                writer.WriteString("~");
                 writer.WriteIdentifier(name);
-
-            WriteGenericTemplates(reflection, writer, false);
-            WriteMethodParameters(reflection, writer);
-            WriteGenericTemplateConstraints(reflection, writer);
+                writer.WriteString("()");
+            }
         }
 
         /// <inheritdoc />

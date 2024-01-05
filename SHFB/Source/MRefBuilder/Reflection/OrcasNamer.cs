@@ -7,6 +7,7 @@
 // 11/20/2013 - EFW - Replaced the StringWriter with a StringBuilder and cleared out dead code.
 // 09/16/2014 - EFW - Fixed WriteTemplate() so that it treats nested class separators like periods
 // 05/20/2019 - EFW - Skipped writing out required modifiers for in attributes
+// 01/04/2024 - EFW - Added support for .NET 7 static interface members
 
 using System;
 using System.Linq;
@@ -250,12 +251,10 @@ namespace Sandcastle.Tools.Reflection
         {
             WriteType(property.DeclaringType, sb);
 
-            Property eiiProperty = null;
+            Property eiiProperty = property.GetImplementedProperties().FirstOrDefault();
 
-            if(property.IsPrivate && property.IsVirtual)
-                eiiProperty = property.GetImplementedProperties().FirstOrDefault();
-
-            if(eiiProperty != null)
+            // If we have an implemented property and this one is private, it's explicitly implemented
+            if(eiiProperty != null && property.IsPrivate)
             {
                 TypeNode eiiType = eiiProperty.DeclaringType;
 
@@ -295,12 +294,10 @@ namespace Sandcastle.Tools.Reflection
         {
             WriteType(trigger.DeclaringType, sb);
 
-            Event eiiTrigger = null;
+            Event eiiTrigger = trigger.GetImplementedEvents().FirstOrDefault();
 
-            if(trigger.IsPrivate && trigger.IsVirtual)
-                eiiTrigger = trigger.GetImplementedEvents().FirstOrDefault();
-
-            if(eiiTrigger != null)
+            // If we have an implemented property and this one is private, it's explicitly implemented
+            if(eiiTrigger != null && trigger.IsPrivate)
             {
                 TypeNode eiiType = eiiTrigger.DeclaringType;
 
@@ -364,12 +361,10 @@ namespace Sandcastle.Tools.Reflection
 
             WriteType(method.DeclaringType, sb);
 
-            Method eiiMethod = null;
+            Method eiiMethod = method.GetImplementedMethods().FirstOrDefault();
 
-            if(method.IsPrivate && method.IsVirtual)
-                eiiMethod = method.ImplementedInterfaceMethods.FirstOrDefault();
-
-            if(eiiMethod != null)
+            // If we have an implemented property and this one is private, it's explicitly implemented
+            if(eiiMethod != null && method.IsPrivate)
             {
                 TypeNode eiiType = eiiMethod.DeclaringType;
 

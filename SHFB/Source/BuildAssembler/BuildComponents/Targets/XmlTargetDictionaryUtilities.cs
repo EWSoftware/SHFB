@@ -38,7 +38,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
 
         // explicit implementation data
         private static readonly XPathExpression apiIsExplicitImplementationExpression = XPathExpression.Compile(
-            "boolean(memberdata/@visibility='private' and proceduredata/@virtual='true' and boolean(implements/member))");
+            "boolean(proceduredata/@eii='true' and boolean(implements/member))");
         private static readonly XPathExpression apiImplementedMembersExpression = XPathExpression.Compile("implements/member");
 
         // op_explicit and op_implicit data

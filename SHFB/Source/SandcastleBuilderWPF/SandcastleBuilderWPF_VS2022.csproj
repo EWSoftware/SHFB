@@ -48,7 +48,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="4.6.97" />
+		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.113" />
 		<PackageReference Include="Microsoft.Build" Version="16.11.0">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>

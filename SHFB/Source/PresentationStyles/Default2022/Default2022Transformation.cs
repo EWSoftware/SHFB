@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/04/2023
-// Note    : Copyright 2022-2023, Eric Woodruff, All rights reserved
+// Updated : 01/04/2024
+// Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
 // Default 2022 presentation style.
@@ -1757,8 +1757,7 @@ $("".toggleSection"").keypress(function () {
                     {
                         // The order of checks is important here and doesn't match the order of the rendered
                         // sections.  It minimizes the conditions we need to check in each subsequent case.
-                        case var mbr when memberData.Attribute("visibility").Value == "private" &&
-                          procedureData?.Attribute("virtual").Value == "true":
+                        case var mbr when procedureData?.Attribute("eii")?.Value == "true":
                             memberGroups[ApiMemberGroup.ExplicitInterfaceImplementation].Add(mbr);
                             break;
 

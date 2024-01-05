@@ -894,7 +894,7 @@
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, HHC3002" />
           <HelpKeyword index="K" term="errors, HHC3004" />
-          <HelpKeyword index="K" term="warnings, BE0060" />
+          <HelpKeyword index="K" term="errors, BE0060" />
         </HelpKeywords>
       </Topic>
       <Topic id="fe808500-7b87-4f68-ae13-c3e68cae8b13" visible="True" title="BE0061: File '[file]' could not be loaded and will not be used as an XML comments file">

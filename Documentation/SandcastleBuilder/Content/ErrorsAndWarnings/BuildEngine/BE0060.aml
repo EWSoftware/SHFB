@@ -3,7 +3,7 @@
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<!-- Ignore Spelling: hlp -->
     <introduction>
-      <para>Warning BE0060: The <legacyItalic>[itemType]</legacyItalic>
+      <para>Error BE0060: The <legacyItalic>[itemType]</legacyItalic>
 '<legacyItalic>[item]</legacyItalic>' contains a comma or '.h' which may cause
 the Help 1 compiler to fail.</para>
     </introduction>
@@ -11,7 +11,7 @@ the Help 1 compiler to fail.</para>
     <section>
       <title>Cause</title>
       <content>
-        <para>This warning is issued if the build process detects the text
+        <para>This error is issued if the build process detects the text
 ".h" or a comma within the value of the indicated item while generating the
 file list for the Help 1 project file.  In such cases, the help compiler may
 generate spurious <codeInline>HHC3002</codeInline> and <codeInline>HHC3004</codeInline>

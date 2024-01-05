@@ -22,6 +22,7 @@
 // the MergeDuplicates.xsl and AddXamlSyntaxData.xsl transformations.
 // 06/13/2022 - EFW - Added support for writing out hierarchy info for structures
 // 09/08/2022 - EFW - Added support for init only setters
+// 01/04/2024 - EFW - Added support for .NET 7 static interface members
 
 using System;
 using System.Collections.Generic;
@@ -302,10 +303,9 @@ namespace Sandcastle.Tools
         {
             Stack<string> typeNameParts = new Stack<string>(fullTypeName.Split('.'));
             string sourceFile = null, searchPattern = typeNameParts.Pop();
-            int pos;
 
             // For nested types, look for the parent type
-            pos = searchPattern.IndexOf('+');
+            int pos = searchPattern.IndexOf('+');
 
             if(pos != -1)
                 searchPattern = searchPattern.Substring(0, pos);
@@ -317,12 +317,17 @@ namespace Sandcastle.Tools
 
                 // If we didn't get a match and the name contains a template parameter count, remove it and
                 // try again.
-                if(matches.Count == 0 && searchPattern.IndexOf('`') != -1)
+                if(matches.Count == 0)
                 {
-                    searchPattern = searchPattern.Substring(0, searchPattern.IndexOf('`'));
+                    pos = searchPattern.IndexOf('`');
 
-                    matches = Directory.EnumerateFiles(this.SourceCodeBasePath, searchPattern + "*",
-                        SearchOption.AllDirectories).ToList();
+                    if(pos != -1)
+                    {
+                        searchPattern = searchPattern.Substring(0, pos);
+
+                        matches = Directory.EnumerateFiles(this.SourceCodeBasePath, searchPattern + "*",
+                            SearchOption.AllDirectories).ToList();
+                    }
                 }
 
                 if(matches.Count > 1)
@@ -357,9 +362,13 @@ namespace Sandcastle.Tools
                         sourceFile = matches[0];
                 }
                 else
+                {
                     if(matches.Count == 1 && Path.GetFileNameWithoutExtension(matches[0]).EndsWith(searchPattern,
                       StringComparison.OrdinalIgnoreCase))
+                    {
                         sourceFile = matches[0];
+                    }
+                }
 
                 if(sourceFile != null && sourceFile.StartsWith(this.SourceCodeBasePath, StringComparison.OrdinalIgnoreCase))
                     sourceFile = sourceFile.Substring(this.SourceCodeBasePath.Length);
@@ -777,7 +786,7 @@ namespace Sandcastle.Tools
 
             // !EFW - Change from ComponentOne
             writer.WriteAttributeString("id", namer.GetTypeName(type).TranslateToValidXmlValue());
-#if DEBUG
+#if DEBUG_SHOW_NULLABLE_STATE
             writer.WriteAttributeString("nullableContext", type.NullableContext.ToString());
 #endif            
             this.StartElementCallbacks("api", type);
@@ -1003,13 +1012,13 @@ namespace Sandcastle.Tools
             writer.WriteEndElement();
 
             // Write descendants
-            if(descendantIndex.ContainsKey(type))
+            if(descendantIndex.TryGetValue(type, out List<TypeNode> descendants))
             {
                 // Yes, it's misspelled but it's been that way for years and changing it would break all the
                 // presentation styles so we'll leave it alone.
                 writer.WriteStartElement("descendents");
 
-                foreach(TypeNode descendant in descendantIndex[type])
+                foreach(TypeNode descendant in descendants)
                     this.WriteTypeReference(descendant);
 
                 writer.WriteEndElement();
@@ -1306,13 +1315,8 @@ namespace Sandcastle.Tools
 
             Method getter = property.Getter, setter = property.Setter;
 
-            Method accessor = getter;
-
-            if(accessor == null)
-                accessor = setter;
-
             // Procedure data
-            this.WriteProcedureData(accessor, property.OverriddenMember);
+            this.WriteProcedureData(getter ?? setter, property.OverriddenMember);
 
             // Property data
             writer.WriteStartElement("propertydata");
@@ -1594,7 +1598,7 @@ namespace Sandcastle.Tools
                         names = exp.Value as string[];
 
                         if(names != null)
-                            this.SetElementNames(type, names);
+                            SetElementNames(type, names);
                     }
                 }
             }
@@ -1608,7 +1612,7 @@ namespace Sandcastle.Tools
         /// </summary>
         /// <param name="type">The type in which to find the <c>ValueTuple</c> type</param>
         /// <param name="names">The tuple element names</param>
-        private bool SetElementNames(TypeNode type, string[] names)
+        private static bool SetElementNames(TypeNode type, string[] names)
         {
             if(type.FullName.StartsWith("System.ValueTuple`", StringComparison.Ordinal))
             {
@@ -1635,7 +1639,7 @@ namespace Sandcastle.Tools
 
                 if(arguments != null && arguments.Count != 0)
                     foreach(var arg in arguments)
-                        if(this.SetElementNames(arg, names))
+                        if(SetElementNames(arg, names))
                             return true;
             }
 
@@ -2010,7 +2014,8 @@ namespace Sandcastle.Tools
             this.WriteBooleanAttribute("final", method.IsFinal, false);
             this.WriteBooleanAttribute("varargs", method.CallingConvention == CallingConventionFlags.VarArg, false);
 
-            if(method.IsPrivate && method.IsVirtual)
+            // If it's private and has any implemented methods, it's explicitly implemented
+            if(method.IsPrivate && method.GetImplementedMethods().Any())
                 this.WriteBooleanAttribute("eii", true);
 
             // Interop attribute data.  In code, these are attributes.  However, the compiler converts the
@@ -2122,7 +2127,7 @@ namespace Sandcastle.Tools
                 case NodeType.ArrayType:
                     ArrayType array = type as ArrayType;
                     writer.WriteStartElement("arrayOf");
-#if DEBUG
+#if DEBUG_SHOW_NULLABLE_STATE
                     if(ns != NullableState.NotSpecified)
                         writer.WriteAttributeString("nullableState", ns.ToString());
 #endif
@@ -2136,7 +2141,7 @@ namespace Sandcastle.Tools
                 case NodeType.Reference:
                     Reference reference = type as Reference;
                     writer.WriteStartElement("referenceTo");
-#if DEBUG
+#if DEBUG_SHOW_NULLABLE_STATE
                     if(ns != NullableState.NotSpecified)
                         writer.WriteAttributeString("nullableState", ns.ToString());
 #endif
@@ -2149,7 +2154,7 @@ namespace Sandcastle.Tools
                 case NodeType.Pointer:
                     Pointer pointer = type as Pointer;
                     writer.WriteStartElement("pointerTo");
-#if DEBUG
+#if DEBUG_SHOW_NULLABLE_STATE
                     if(ns != NullableState.NotSpecified)
                         writer.WriteAttributeString("nullableState", ns.ToString());
 #endif
@@ -2163,7 +2168,7 @@ namespace Sandcastle.Tools
                     TypeModifier optionalModifierClause = type as TypeModifier;
                     this.WriteStartTypeReference(optionalModifierClause.ModifiedType);
                     writer.WriteStartElement("optionalModifier");
-#if DEBUG
+#if DEBUG_SHOW_NULLABLE_STATE
                     if(ns != NullableState.NotSpecified)
                         writer.WriteAttributeString("nullableState", ns.ToString());
 #endif
@@ -2178,7 +2183,7 @@ namespace Sandcastle.Tools
                     TypeModifier requiredModifierClause = type as TypeModifier;
                     this.WriteStartTypeReference(requiredModifierClause.ModifiedType);
                     writer.WriteStartElement("requiredModifier");
-#if DEBUG
+#if DEBUG_SHOW_NULLABLE_STATE
                     if(ns != NullableState.NotSpecified)
                         writer.WriteAttributeString("nullableState", ns.ToString());
 #endif
@@ -2203,7 +2208,7 @@ namespace Sandcastle.Tools
                     else
                     {
                         writer.WriteStartElement("type");
-#if DEBUG
+#if DEBUG_SHOW_NULLABLE_STATE
                         if(ns != NullableState.NotSpecified)
                             writer.WriteAttributeString("nullableState", ns.ToString());
 #endif
@@ -2524,11 +2529,7 @@ namespace Sandcastle.Tools
 
                                     if(id[0] == 'T')
                                     {
-                                        var thisNodesElements = apiNode.Element("elements");
-
-                                        if(thisNodesElements == null)
-                                            thisNodesElements = new XElement("elements");
-
+                                        var thisNodesElements = apiNode.Element("elements") ?? new XElement("elements");
                                         var allElements = duplicates.SelectMany(d => d.Descendants("element")).Concat(
                                             thisNodesElements.Descendants("element"));
                                         int count = duplicates.Count + 1;

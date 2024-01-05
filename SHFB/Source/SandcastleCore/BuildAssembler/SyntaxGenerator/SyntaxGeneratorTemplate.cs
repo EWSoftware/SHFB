@@ -117,10 +117,10 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         protected static readonly XPathExpression apiIsVirtualExpression = XPathExpression.Compile("boolean(proceduredata[@virtual='true'])");
         protected static readonly XPathExpression apiIsFinalExpression = XPathExpression.Compile("boolean(proceduredata[@final='true'])");
         protected static readonly XPathExpression apiIsVarargsExpression = XPathExpression.Compile("boolean(proceduredata[@varargs='true'])");
-        protected static readonly XPathExpression apiOverridesMemberExpression = XPathExpression.Compile("string(proceduredata/@overrides/member)");
-        protected static readonly XPathExpression apiIsExplicitImplementationExpression = XPathExpression.Compile("boolean(memberdata/@visibility='private' and proceduredata/@virtual='true' and boolean(implements/member))");
+        protected static readonly XPathExpression apiIsExplicitImplementationExpression = XPathExpression.Compile("boolean(proceduredata/@eii='true' and boolean(implements/member))");
         protected static readonly XPathExpression apiImplementedMembersExpression = XPathExpression.Compile("implements/member");
         protected static readonly XPathExpression apiIsOverrideExpression = XPathExpression.Compile("boolean(overrides/member)");
+        protected static readonly XPathExpression apiOverridesMemberExpression = XPathExpression.Compile("string(overrides/member/@api)");
         // !EFW - Added support for interop metadata
         protected static readonly XPathExpression apiPreserveSigProcedureExpression = XPathExpression.Compile("boolean(proceduredata[@preservesig='true'])");
         protected static readonly XPathExpression apiModuleProcedureExpression = XPathExpression.Compile("string(proceduredata/@module)");

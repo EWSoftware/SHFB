@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.PlugIns.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 01/04/2024
+// Note    : Copyright 2007-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the methods that handle the plug-ins during the build process
 //
@@ -170,22 +170,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 {
                     // Wrap plug-in output in an element so that it can be formatted differently.  Ignore it if
                     // the log is closed (plug-ins that run in the completion steps).
-                    if(swLog != null)
-                    {
-                        swLog.WriteLine("<plugIn name=\"{0}\" behavior=\"{1}\" priority=\"{2}\">", metadata.Id,
-                            behavior, plugIn.ExecutionPoints.PriorityFor(step, behavior));
-                    }
+                    swLog?.WriteLine("<plugIn name=\"{0}\" behavior=\"{1}\" priority=\"{2}\">", metadata.Id,
+                        behavior, plugIn.ExecutionPoints.PriorityFor(step, behavior));
 
                     context.Executed = true;
                     plugIn.Execute(context);
 
-                    if(swLog != null)
-                        swLog.Write("</plugIn>");
+                    swLog?.Write("</plugIn>");
                 }
                 catch(Exception ex)
                 {
-                    if(swLog != null)
-                        swLog.WriteLine("</plugIn>");
+                    swLog?.WriteLine("</plugIn>");
 
                     throw new BuilderException("BE0029", "Unexpected error while executing plug-in '" +
                         metadata.Id + "': " + ex.ToString(), ex);

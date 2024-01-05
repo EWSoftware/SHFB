@@ -82,11 +82,8 @@ namespace Sandcastle.Tools.Reflection
                 Identifier name = new Identifier(String.Format(CultureInfo.InvariantCulture, "{0}`{1}",
                     type.GetUnmangledNameWithoutTypeParameters(), type.TemplateArguments.Count));
 
-                TypeNode template = type.DeclaringModule.GetType(type.Namespace, name);
-
                 // !EFW - Added by ComponentOne
-                if(template == null)
-                    template = type;
+                TypeNode template = type.DeclaringModule.GetType(type.Namespace, name) ?? type;
 
                 return template;
             }
@@ -147,11 +144,7 @@ namespace Sandcastle.Tools.Reflection
             if(property == null)
                 throw new ArgumentNullException(nameof(property));
 
-            // Get an accessor
-            Method accessor = property.Getter;
-
-            if(accessor == null)
-                accessor = property.Setter;
+            Method accessor = property.Getter ?? property.Setter;
 
             if(accessor != null)
             {
@@ -202,15 +195,24 @@ namespace Sandcastle.Tools.Reflection
             MethodList explicitImplementations = method.ImplementedInterfaceMethods;
 
             if(explicitImplementations != null)
+            {
                 foreach(var explicitImplementation in explicitImplementations)
-                    yield return explicitImplementation;
+                {
+                    // Ignore anything that isn't on an interface such as System.Object.Finalize which shows up
+                    // here but isn't an EII member.
+                    if(explicitImplementation.DeclaringType.NodeType == NodeType.Interface)
+                        yield return explicitImplementation;
+                }
+            }
 
             // Then return implicit implementations if any
             MethodList implicitImplementations = method.ImplicitlyImplementedInterfaceMethods;
 
             if(implicitImplementations != null)
+            {
                 foreach(var implicitImplementation in implicitImplementations)
                     yield return implicitImplementation;
+            }
         }
 
         /// <summary>
@@ -499,7 +501,7 @@ namespace Sandcastle.Tools.Reflection
                             type2.Name.Name);
 
                         // If we found any but none of them are the same, then no match.
-                        if(positions1.Any() && positions2.Any() && !positions1.Intersect(positions2).Any())
+                        if(positions1.Count != 0 && positions2.Count != 0 && !positions1.Intersect(positions2).Any())
                             return false;
                     }
                 }
@@ -528,7 +530,7 @@ namespace Sandcastle.Tools.Reflection
                             while((type2.TemplateArguments?.Count ?? 0) != 0 && type2.TemplateArguments.Any(
                               t => !t.IsTemplateParameter))
                             {
-                                type2 = type1.GetTemplateType();
+                                type2 = type2.GetTemplateType();
                             }
 
                             if(!type2.IsStructurallyEquivalentTo(type1))
@@ -658,7 +660,7 @@ namespace Sandcastle.Tools.Reflection
         /// <param name="name">The parameter name to look up</param>
         /// <returns>An enumerable list of the possible parameter positions or an empty list if no positions
         /// match.</returns>
-        private static IEnumerable<int> GetTemplateParameterPositions(TypeNode declaringType, string name)
+        private static List<int> GetTemplateParameterPositions(TypeNode declaringType, string name)
         {
             List<int> positions = new List<int>();
 

@@ -24,6 +24,7 @@
 // and/or a BrowsableAttribute.
 // 10/05/2021 - EFW - Added support for excluding internal members inherited from base types in other assemblies
 // and private members from base types.
+// 01/04/2024 - EFW - Added support for .NET 7 static interface members
 
 using System;
 using System.Collections.Generic;
@@ -755,9 +756,9 @@ namespace Sandcastle.Tools.Reflection
             if(member.IsPrivate && member.NodeType == NodeType.Method)
             {
                 Method method = (Method)member;
-                MethodList implements = method.ImplementedInterfaceMethods;
+                var  implements = method.ImplementedInterfaceMethods?.FirstOrDefault();
 
-                if(implements != null && implements.Count > 0 && !this.IsExposedMember(implements[0]))
+                if(implements != null && !this.IsExposedMember(implements))
                     return false;
             }
 
@@ -765,9 +766,9 @@ namespace Sandcastle.Tools.Reflection
             if(member.IsPrivate && member.NodeType == NodeType.Property)
             {
                 Property property = (Property)member;
-                var implements = property.GetImplementedProperties().ToList();
+                var implements = property.GetImplementedProperties().FirstOrDefault();
 
-                if(implements.Count > 0 && !this.IsExposedMember(implements[0]))
+                if(implements != null && !this.IsExposedMember(implements))
                     return false;
             }
 
@@ -775,9 +776,9 @@ namespace Sandcastle.Tools.Reflection
             if(member.IsPrivate && member.NodeType == NodeType.Event)
             {
                 Event evt = (Event)member;
-                var implements = evt.GetImplementedEvents().ToList();
+                var implements = evt.GetImplementedEvents().FirstOrDefault();
 
-                if(implements.Count > 0 && !this.IsExposedMember(implements[0]))
+                if(implements != null && !this.IsExposedMember(implements))
                     return false;
             }
 
@@ -852,9 +853,9 @@ namespace Sandcastle.Tools.Reflection
             Method method = member as Method;
 
             // Explicit member implementation?
-            if((property != null && property.IsPrivate && property.IsVirtual) ||
-              (evt != null && evt.IsPrivate && evt.IsVirtual) ||
-              (method != null && method.IsPrivate && method.IsVirtual))
+            if((property != null && property.IsPrivate && property.GetImplementedProperties().Any()) ||
+              (evt != null && evt.IsPrivate && evt.GetImplementedEvents().Any()) ||
+              (method != null && method.IsPrivate && method.GetImplementedMethods().Any()))
             {
                 if(!this.IsVisible(type))
                     return false;
@@ -928,9 +929,9 @@ namespace Sandcastle.Tools.Reflection
                 Method method = member as Method;
 
                 // Explicit member implementation?  Keep these unless removing all framework members.
-                if((property != null && property.IsPrivate && property.IsVirtual) ||
-                  (evt != null && evt.IsPrivate && evt.IsVirtual) ||
-                  (method != null && method.IsPrivate && method.IsVirtual))
+                if((property != null && property.IsPrivate && property.GetImplementedProperties().Any()) ||
+                  (evt != null && evt.IsPrivate && evt.GetImplementedEvents().Any()) ||
+                  (method != null && method.IsPrivate && method.GetImplementedMethods().Any()))
                 {
                     return !this.IncludeInheritedFrameworkMembers;
                 }

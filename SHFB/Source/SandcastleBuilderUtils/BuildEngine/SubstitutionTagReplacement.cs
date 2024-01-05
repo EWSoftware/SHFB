@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2022
-// Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
+// Updated : 01/04/2024
+// Note    : Copyright 2015-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
 //
@@ -17,7 +17,7 @@
 // 05/10/2015  EFW  Refactored the substitution tag replacement code and moved it into its own class
 //===============================================================================================================
 
-// Ignore Spelling: concat Url img src onclick javascript
+// Ignore Spelling: concat Url img src onclick javascript dest
 
 using System;
 using System.Collections.Generic;
@@ -1131,15 +1131,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             if(sourceFolder.IndexOf(',') != -1 || sourceFolder.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
             {
-                currentBuild.ReportWarning("BE0060", "The file path '{0}' contains a comma or '.h' which may " +
-                    "cause the Help 1 compiler to fail.", sourceFolder);
+                currentBuild.ReportError(currentBuild.CurrentBuildStep, "BE0060", "The file path '{0}' contains " +
+                    "a comma or '.h' which may cause the Help 1 compiler to fail.", sourceFolder);
             }
 
             if(currentBuild.ResolvedHtmlHelpName.IndexOf(',') != -1 ||
                 currentBuild.ResolvedHtmlHelpName.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
             {
-                currentBuild.ReportWarning("BE0060", "The HtmlHelpName property value '{0}' contains a comma " +
-                    "or '.h' which may cause the Help 1 compiler to fail.", currentBuild.ResolvedHtmlHelpName);
+                currentBuild.ReportError(currentBuild.CurrentBuildStep, "BE0060", "The HtmlHelpName property " +
+                    "value '{0}' contains a comma or '.h' which may cause the Help 1 compiler to fail.",
+                    currentBuild.ResolvedHtmlHelpName);
             }
 
             replacementValue.Clear();
@@ -1164,8 +1165,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 if(checkName.IndexOf(',') != -1 || checkName.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
                 {
-                    currentBuild.ReportWarning("BE0060", "The filename '{0}' contains a comma or '.h' " +
-                        "which may cause the Help 1 compiler to fail.", filename);
+                    currentBuild.ReportError(currentBuild.CurrentBuildStep, "BE0060", "The filename '{0}' " +
+                        "contains a comma or '.h' which may cause the Help 1 compiler to fail.", filename);
                 }
 
                 replacementValue.AppendFormat(CultureInfo.InvariantCulture, "{0}\r\n", filename);

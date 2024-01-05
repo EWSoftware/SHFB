@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : MarkdownTransformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/18/2023
-// Note    : Copyright 2022-2023, Eric Woodruff, All rights reserved
+// Updated : 01/04/2024
+// Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
 // Open XML presentation style.
@@ -1263,8 +1263,7 @@ namespace Sandcastle.PresentationStyles.Markdown
                     {
                         // The order of checks is important here and doesn't match the order of the rendered
                         // sections.  It minimizes the conditions we need to check in each subsequent case.
-                        case var mbr when memberData.Attribute("visibility").Value == "private" &&
-                          procedureData?.Attribute("virtual").Value == "true":
+                        case var mbr when procedureData?.Attribute("eii")?.Value == "true":
                             memberGroups[ApiMemberGroup.ExplicitInterfaceImplementation].Add(mbr);
                             break;
 
@@ -1635,12 +1634,9 @@ namespace Sandcastle.PresentationStyles.Markdown
                 seeAlsoCRef = seeAlsoNotInOverloads.Except(seeAlsoHRef).ToList();
 
             // Combine those with see also elements from element overloads comments
-            var elements = transformation.ReferenceNode.Element("elements");
-
-            if(elements == null)
-                elements = new XElement("elements");
-
+            var elements = transformation.ReferenceNode.Element("elements") ?? new XElement("elements");
             var elementOverloads = elements.Elements("element").SelectMany(e => e.Descendants("overloads")).ToList();
+
             seeAlsoHRef.AddRange(elementOverloads.Descendants("seealso").Where(s => s.Attribute("href") != null));
             seeAlsoCRef.AddRange(elementOverloads.Descendants("seealso").Where(s => s.Attribute("href") == null));
 

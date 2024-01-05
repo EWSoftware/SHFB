@@ -134,10 +134,6 @@
       <AssemblyDetails Filename="WindowsFormsIntegration.dll" Name="WindowsFormsIntegration" Version="4.0.0.0" PublicKeyToken="31bf3856ad364e35" />
       <AssemblyDetails Filename="XamlBuildTask.dll" Name="XamlBuildTask" Version="4.0.0.0" PublicKeyToken="31bf3856ad364e35" />
     </Location>
-    <Location Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\FSharp\.NETFramework\v4.0\4.4.0.0">
-      <AssemblyDetails Filename="FSharp.Core.dll" Name="FSharp.Core" Version="4.4.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
-      <AssemblyDetails Filename="policy.4.4.0.0.FSharp.Core.dll" Name="policy.4.4.0.0.FSharp.Core" Version="4.4.0.0" PublicKeyToken="b03f5f7f11d50a3a" IsExcluded="true" />
-    </Location>
   </AssemblyLocations>
   <IgnoredNamespaces>
     <Namespace>&lt;CppImplementationDetails&gt;</Namespace>

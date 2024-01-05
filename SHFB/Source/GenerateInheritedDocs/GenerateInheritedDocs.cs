@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : GenerateInheritedDocs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/20/2022
-// Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
+// Updated : 01/04/2024
+// Note    : Copyright 2008-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the build task that scans XML comments files for <inheritdoc /> tags and produces a new
 // XML comments file containing the inherited documentation for use by Sandcastle.
@@ -272,8 +272,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
             }
 
             // Add explicit interface implementations that do not have member comments already
-            foreach(XPathNavigator api in reflectionFiles.Select(
-              "api[memberdata/@visibility='private' and proceduredata/@virtual='true']/@id"))
+            foreach(XPathNavigator api in reflectionFiles.Select("api[proceduredata/@eii='true']/@id"))
             {
                 if(commentsCache[api.Value] == null && !members.ContainsKey(api.Value))
                 {
@@ -287,7 +286,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
 #else
                     node.InnerXml = String.Format(CultureInfo.InvariantCulture,
                         "<member name=\"{0}\"><inheritdoc /></member>",
-                        (api.Value.IndexOf('<', StringComparison.Ordinal) != -1) ? WebUtility.HtmlEncode(api.Value) : api.Value);
+                        api.Value.Contains('<', StringComparison.Ordinal) ? WebUtility.HtmlEncode(api.Value) : api.Value);
 #endif
                     docMemberList.AppendChild(node);
                 }
@@ -328,12 +327,8 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                             // exist for the field, don't bother and let it generate a "missing comments" error
                             // if needed.  This prevents false GID0002 errors for inherited attached events and
                             // properties that never actually appear in the documentation.
-                            object fieldNode = docMemberList.SelectSingleNode($"member[@name='{apiField.Value}']");
-
-                            if(fieldNode == null)
-                                fieldNode = commentsCache[apiField.Value];
-
-                            if(fieldNode != null)
+                            if(docMemberList.SelectSingleNode($"member[@name='{apiField.Value}']") != null ||
+                              commentsCache[apiField.Value] != null)
                             {
                                 node = inheritedDocs.CreateDocumentFragment();
                                 node.InnerXml = String.Format(CultureInfo.InvariantCulture,
@@ -384,7 +379,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
             XmlAttribute cref, filter;
             string name, ctorName, baseMemberName;
             bool commentsFound;
-            int idx;
+            int idx, namePosition;
 
             name = member.SelectSingleNode("@name").Value;
 
@@ -483,25 +478,27 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                     // that the user-defined interface is used first.  In the unlikely event that this still
                     // picks the wrong type, an explicit cref attribute can be used to specify the proper one.
                     foreach(string lastResortType in lastResortInheritableTypes)
+                    {
                         if(sources.Contains(lastResortType))
                         {
                             sources.Remove(lastResortType);
                             sources.Add(lastResortType);
                         }
+                    }
                 }
                 else
                 {
                     // Constructors aren't like normal overrides.  They can call base copies that take the
                     // same arguments but the overrides aren't listed in the reflection info.  We'll just
                     // search all base types for a matching signature.
-                    if(name.IndexOf("#ctor", StringComparison.Ordinal) != -1 ||
-                      name.IndexOf("#cctor", StringComparison.Ordinal) != -1)
-                    {
-                        if(name.IndexOf("#ctor", StringComparison.Ordinal) != -1)
-                            ctorName = name.Substring(name.IndexOf("#ctor", StringComparison.Ordinal));
-                        else
-                            ctorName = name.Substring(name.IndexOf("#cctor", StringComparison.Ordinal));
+                    namePosition = name.IndexOf("#ctor", StringComparison.Ordinal);
 
+                    if(namePosition == -1)
+                        namePosition = name.IndexOf("#cctor", StringComparison.Ordinal);
+
+                    if(namePosition != -1)
+                    {
+                        ctorName = name.Substring(namePosition);
                         baseMember = apiNode.SelectSingleNode("containers/type/@api");
                         apiNode = reflectionFiles.SelectSingleNode("api[@id='" + baseMember.Value + "']");
 
@@ -639,7 +636,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                     $"    Member ID: {memberStack.Peek()}\r\n   Expression: {filter}\r\n", xpe);
             }
         }
-        #endregion
+#endregion
 
         #region Nested documentation inheritance methods
         //=====================================================================
@@ -657,7 +654,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         {
             StringBuilder sb = new StringBuilder(256);
             XPathNavigator baseMember;
-            XmlNode copyMember, content, newNode;
+            XmlNode copyMember, newNode;
             XmlAttribute cref, filter, autoFilter;
             string name;
 
@@ -728,7 +725,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
 
                 if(baseMember != null && sb.Length != 0)
                 {
-                    content = inheritedDocs.CreateDocumentFragment();
+                    var content = inheritedDocs.CreateDocumentFragment();
 
                     // Merge the content
                     try
@@ -793,6 +790,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
             XPathNavigator apiNode, baseMember;
             XmlNode copyMember;
             string ctorName, baseMemberName;
+            int namePosition;
 
             // Is the base explicitly specified?
             if(cref != null)
@@ -838,14 +836,14 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                 // Constructors aren't like normal overrides.  They can call base copies that take the same
                 // arguments but the overrides aren't listed in the reflection info.  We'll just search all
                 // base types for a matching signature.
-                if(name.IndexOf("#ctor", StringComparison.Ordinal) != -1 ||
-                  name.IndexOf("#cctor", StringComparison.Ordinal) != -1)
-                {
-                    if(name.IndexOf("#ctor", StringComparison.Ordinal) != -1)
-                        ctorName = name.Substring(name.IndexOf("#ctor", StringComparison.Ordinal));
-                    else
-                        ctorName = name.Substring(name.IndexOf("#cctor", StringComparison.Ordinal));
+                namePosition = name.IndexOf("#ctor", StringComparison.Ordinal);
 
+                if(namePosition == -1)
+                    namePosition = name.IndexOf("#cctor", StringComparison.Ordinal);
+
+                if(namePosition != -1)
+                {
+                    ctorName = name.Substring(namePosition);
                     baseMember = apiNode.SelectSingleNode("containers/type/@api");
                     apiNode = reflectionFiles.SelectSingleNode("api[@id='" + baseMember.Value + "']");
 
@@ -898,6 +896,6 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
 
             return baseMember;
         }
-        #endregion
+#endregion
     }
 }

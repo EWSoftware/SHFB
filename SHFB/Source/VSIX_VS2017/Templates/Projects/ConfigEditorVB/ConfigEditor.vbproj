@@ -16,7 +16,7 @@
 							 as configuration types etc.
 		<ProjectReference Include="..\ComponentPlugInName\ComponentPlugInName.csproj" />
 		-->
-		<PackageReference Include="System.ComponentModel.Composition" Version="5.0.0" />
+		<PackageReference Include="System.ComponentModel.Composition" Version="6.0.0" />
 		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2022.12.30.0" />
 		<PackageReference Include="EWSoftware.SandcastleBuilder.Utils" Version="2022.12.30.0" />
 	</ItemGroup>

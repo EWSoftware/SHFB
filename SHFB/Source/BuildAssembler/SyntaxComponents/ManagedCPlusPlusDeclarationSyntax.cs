@@ -278,32 +278,43 @@ namespace Sandcastle.Tools.SyntaxGenerators
 
             string name = (string)reflection.Evaluate(apiNameExpression);
             string typeSubgroup = (string)reflection.Evaluate(apiContainingTypeSubgroupExpression);
+            string overrideMemberName = (string)reflection.Evaluate(apiOverridesMemberExpression);
 
-            if(typeSubgroup == "interface")
+            if(String.IsNullOrWhiteSpace(overrideMemberName) || !overrideMemberName.Equals("M:System.Object.Finalize",
+              StringComparison.Ordinal))
             {
-                WriteAttributes(reflection, writer);
-                WriteGenericTemplates(reflection, writer);
-                WriteReturnValue(reflection, writer);
-                writer.WriteString(" ");
-                writer.WriteIdentifier(name);
-                WriteMethodParameters(reflection, writer);
+                if(typeSubgroup == "interface")
+                {
+                    WriteAttributes(reflection, writer);
+                    WriteGenericTemplates(reflection, writer);
+                    WriteReturnValue(reflection, writer);
+                    writer.WriteString(" ");
+                    writer.WriteIdentifier(name);
+                    WriteMethodParameters(reflection, writer);
+                }
+                else
+                {
+                    // EFW - Write visibility before attributes
+                    WriteProcedureVisibility(reflection, writer);
+
+                    WriteAttributes(reflection, writer);
+                    WriteGenericTemplates(reflection, writer);
+                    WritePrefixProcedureModifiers(reflection, writer);
+                    WriteReturnValue(reflection, writer);
+                    writer.WriteString(" ");
+                    writer.WriteIdentifier(name);
+                    WriteMethodParameters(reflection, writer);
+                    WritePostfixProcedureModifiers(reflection, writer);
+                }
+
+                WriteExplicitImplementations(reflection, writer);
             }
             else
             {
-                // EFW - Write visibility before attributes
-                WriteProcedureVisibility(reflection, writer);
-
-                WriteAttributes(reflection, writer);
-                WriteGenericTemplates(reflection, writer);
-                WritePrefixProcedureModifiers(reflection, writer);
-                WriteReturnValue(reflection, writer);
-                writer.WriteString(" ");
+                writer.WriteString("!");
                 writer.WriteIdentifier(name);
-                WriteMethodParameters(reflection, writer);
-                WritePostfixProcedureModifiers(reflection, writer);
+                writer.WriteString("()");
             }
-
-            WriteExplicitImplementations(reflection, writer);
         }
 
         private void WriteExplicitImplementations(XPathNavigator reflection, SyntaxWriter writer)

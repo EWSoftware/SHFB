@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : WebsiteTableOfContentsGeneratorPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Sam Harwell
-// Updated : 02/18/2023
-// Note    : Copyright 2022-2023, Eric Woodruff, All rights reserved.
+// Updated : 01/04/2024
+// Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved.
 //
 // This file contains a plug-in that is used to generate table of contents information for website-based
 // presentation styles.
@@ -172,9 +172,7 @@ namespace SandcastleBuilder.PlugIns
                     // The title isn't available until now as the static parts are resolved from shared content items
                     string topicFile = Path.Combine(builder.WorkingFolder, @"Output\Website\html", file + ".htm");
 
-                    var head = ComponentUtilities.XmlStreamAxis(topicFile, "head").FirstOrDefault();
-
-                    if(head == null)
+                    var head = ComponentUtilities.XmlStreamAxis(topicFile, "head").FirstOrDefault() ??
                         throw new InvalidOperationException($"Head element not found in topic file {topicFile}");
 
                     var tocTitle = head.Elements("meta").Where(m => m.Attribute("name")?.Value == "Title").FirstOrDefault();
@@ -335,9 +333,7 @@ namespace SandcastleBuilder.PlugIns
             // MS Help Viewer root content topics will not be in the help file TOC so ignore them
             if(tocEntries.TryGetValue(e.Key, out XElement tocEntry))
             {
-                var head = e.TopicContent.Descendants("head").FirstOrDefault();
-
-                if(head == null)
+                var head = e.TopicContent.Descendants("head").FirstOrDefault() ??
                     throw new InvalidOperationException("Rendered topic did not contain a head element");
 
                 string tocFile;

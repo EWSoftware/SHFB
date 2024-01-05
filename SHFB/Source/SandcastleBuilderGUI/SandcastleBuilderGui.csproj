@@ -266,7 +266,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.103" />
+		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.113" />
 		<Reference Include="PresentationFramework.Aero">
 			<Private>False</Private>
 		</Reference>
