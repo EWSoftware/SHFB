@@ -116,7 +116,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                             attrName = tagSpan.GetText().Trim();
                             identifier = null;
 
-                            if(attrName == "cref")
+                            if(attrName == "cref" || attrName == "name")
                                 attrName = null;
                             break;
 
