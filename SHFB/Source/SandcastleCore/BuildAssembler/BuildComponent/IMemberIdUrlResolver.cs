@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : IMemberIdUrlResolver.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/06/2021
-// Note    : Copyright 2019-2021, Eric Woodruff, All rights reserved
+// Updated : 01/16/2024
+// Note    : Copyright 2019-2024, Eric Woodruff, All rights reserved
 //
 // This file contains a class that defines an interface used to resolve an API member ID to an online help
 // website URL.
@@ -29,26 +29,14 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
     public interface IMemberIdUrlResolver : IDisposable
     {
         /// <summary>
-        /// This is used to get or set the locale for the reference links if applicable to the resolver
+        /// This read-only property returns the base URL for the links
         /// </summary>
-        string Locale { get; set; }
+        string BaseUrl { get; }
 
         /// <summary>
         /// This read-only property can be used to determine whether or not the resolver has been disposed
         /// </summary>
         bool IsDisposed { get; }
-
-        /// <summary>
-        /// This read-only property indicates whether or not the resolver is disabled
-        /// </summary>
-        /// <value>If true, reference links cannot be looked up</value>
-        bool IsDisabled { get; }
-
-        /// <summary>
-        /// This read-only property returns the reason the resolver is disabled if <see cref="IsDisabled"/>
-        /// returns true.
-        /// </summary>
-        string DisabledReason { get; }
 
         /// <summary>
         /// This read-only property returns the URL cache
@@ -57,19 +45,11 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         IDictionary<string, string> CachedUrls { get; }
 
         /// <summary>
-        /// This read-only property is used to return the number of items added to the cache during the latest
-        /// run.
+        /// This is used to get the help website URL for the given member ID
         /// </summary>
-        /// <value>Returns a non-zero number if items were added or zero if no new items were added or errors
-        /// occurred that invalidate the updates made.  This can be used to determine if the cache should be
-        /// persisted in some fashion.</value>
-        int CacheItemsAdded { get; }
-
-        /// <summary>
-        /// This is used to get the help website URL for the given .NET Framework member ID
-        /// </summary>
-        /// <param name="id">The member ID to look up</param>
-        /// <returns>The URL for the member ID or null if not found or an error occurred looking it up</returns>
-        string ResolveUrlForId(string id);
+        /// <param name="id">The member ID to convert to a URL</param>
+        /// <param name="fragmentId">The ID to use for the URL fragment or null if there isn't one</param>
+        /// <returns>The URL for the member ID or null if it could not be resolved</returns>
+        string ResolveUrlForId(string id, string fragmentId);
     }
 }

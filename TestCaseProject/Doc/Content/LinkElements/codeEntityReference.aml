@@ -85,10 +85,14 @@ if set to false and it takes you to the method page.</para></entry>
 &lt;codeEntityReference qualifyHint="true" autoUpgrade="true"&gt;
   M:System.IO.FileStream.Write(System.Byte[],System.Int32,System.Int32)
 &lt;/codeEntityReference&gt;
+&lt;codeEntityReference qualifyHint="true" autoUpgrade="false"&gt;
+  M:System.IO.FileStream.Flush(System.Boolean)
+&lt;/codeEntityReference&gt;
 &lt;codeEntityReference qualifyHint="false"&gt;P:System.IO.FileStream.Length
 &lt;/codeEntityReference&gt;
 &lt;codeEntityReference qualifyHint="false" autoUpgrade="true"&gt;
   M:System.IO.FileStream.Flush&lt;/codeEntityReference&gt;
+&lt;codeEntityReference qualifyHint="true"&gt;F:System.Windows.Forms.AnchorStyles.Right&lt;/codeEntityReference&gt;
 </code>
       </content>
     </section>
@@ -109,12 +113,20 @@ if set to false and it takes you to the method page.</para></entry>
 </codeEntityReference>
         </para>
         <para>
+          <codeEntityReference qualifyHint="true" autoUpgrade="false">
+  M:System.IO.FileStream.Flush(System.Boolean)
+</codeEntityReference>
+        </para>
+        <para>
           <codeEntityReference qualifyHint="false">P:System.IO.FileStream.Length
 </codeEntityReference>
         </para>
         <para>
           <codeEntityReference qualifyHint="false" autoUpgrade="true">
   M:System.IO.FileStream.Flush</codeEntityReference>
+        </para>
+        <para>
+          <codeEntityReference qualifyHint="true">F:System.Windows.Forms.AnchorStyles.Right</codeEntityReference>
         </para>
 
 <para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_Addition(TestDoc.IndexTocBugs.Test1,TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>

@@ -20,6 +20,8 @@
 // 06/05/2015 - EFW - Removed support for the Help 2 Index and LocalOrIndex link types
 // 03/24/2017 - EFW - Updated to try and resolve missing overload IDs to an equivalent non-overload method ID
 // 08/15/2019 - EFW - Replaced the MSDN resolver with the new Microsoft Docs resolver
+// 01/16/2024 - EFW - Removed use of the URL cache file and the Microsoft Docs resolver replacing them with the
+// Microsoft Learn member ID resolver.
 
 // Ignore Spelling: Stazzz noopener noreferrer
 
@@ -28,7 +30,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -87,7 +88,7 @@ namespace Sandcastle.Tools.BuildComponents
 
         private LinkTextResolver resolver;
 
-        private string linkTarget, memberIdUrlCacheFile;
+        private string linkTarget;
 
         // WebDocs target URL formatting (legacy Microsoft stuff)
         private XPathExpression baseUrl;
@@ -179,7 +180,7 @@ namespace Sandcastle.Tools.BuildComponents
                     this.WriteMessage(MessageLevel.Error, "Each targets element must have a type attribute " +
                         "that specifies which type of links to create");
 
-                if(!Enum.TryParse<ReferenceLinkType>(attrValue, true, out ReferenceLinkType type))
+                if(!Enum.TryParse(attrValue, true, out ReferenceLinkType type))
                     this.WriteMessage(MessageLevel.Error, "'{0}' is not a supported reference link type",
                         attrValue);
 
@@ -202,10 +203,7 @@ namespace Sandcastle.Tools.BuildComponents
             this.WriteMessage(MessageLevel.Diagnostic, "Load time: {0} seconds", loadTime.TotalSeconds);
 
             // Dump targets for comparison to other versions
-//            targets.DumpTargetDictionary(Path.GetFullPath("TargetDictionary.xml"));
-
-            // Serialization test
-//            targets.SerializeDictionary(Directory.GetCurrentDirectory());
+            //targets.DumpTargetDictionary(Path.GetFullPath("TargetDictionary.xml"));
 #endif
             // Getting the count from a database cache can be expensive so only report it if it will be seen
             if(this.BuildAssembler.VerbosityLevel == MessageLevel.Info)
@@ -214,13 +212,7 @@ namespace Sandcastle.Tools.BuildComponents
             if(targets.NeedsMemberIdUrlResolver)
             {
                 this.WriteMessage(MessageLevel.Info, "Creating member ID URL resolver");
-
                 this.UrlResolver = this.CreateMemberIdResolver(configuration);
-
-                string localeValue = (string)configuration.Evaluate("string(locale/@value)");
-
-                if(this.UrlResolver != null && !String.IsNullOrWhiteSpace(localeValue))
-                    this.UrlResolver.Locale = localeValue;
             }
 
             linkTarget = (string)configuration.Evaluate("string(linkTarget/@value)");
@@ -234,9 +226,6 @@ namespace Sandcastle.Tools.BuildComponents
         {
             if(document == null)
                 throw new ArgumentNullException(nameof(document));
-
-            Target target = null;
-            string memberUrl = null;
 
             foreach(XPathNavigator linkNode in document.CreateNavigator().Select(referenceLinkExpression).ToArray())
             {
@@ -258,7 +247,7 @@ namespace Sandcastle.Tools.BuildComponents
                     continue;
                 }
 
-                bool targetFound = targets.TryGetValue(targetId, out target, out type);
+                bool targetFound = targets.TryGetValue(targetId, out Target target, out type);
 
                 // If it's an overload ID that wasn't found, it's possible that the overloads got excluded.
                 // As such, see if we can find a match for a method using the same ID regardless of any
@@ -362,56 +351,43 @@ namespace Sandcastle.Tools.BuildComponents
                     }
                 }
 
-                // !EFW - Redirect enumeration fields to the containing enumerated type so that we
-                // get a valid link target.  Enum fields don't have a topic to themselves.
-                if(type != ReferenceLinkType.None && type != ReferenceLinkType.Self && type != ReferenceLinkType.Local &&
-                  targetId.StartsWith("F:", StringComparison.Ordinal))
+                string memberUrl = null, memberUrlFragmentId = null;
+
+                if(type == ReferenceLinkType.Msdn || type == ReferenceLinkType.Id)
                 {
-                    if(target is MemberTarget member && member.ContainingType is SimpleTypeReference typeRef &&
-                      targets[typeRef.Id] is EnumerationTarget)
+                    var member = target as MemberTarget;
+
+                    // !EFW - Redirect enumeration fields to the containing enumerated type so that we
+                    // get a valid link target.  Enum fields don't have a topic to themselves.  The enum
+                    // member ID will be used as the fragment.
+                    if(member != null && member.ContainingType is SimpleTypeReference typeRef &&
+                      targets[typeRef.Id] is EnumerationTarget && targetId.StartsWith("F:", StringComparison.Ordinal))
                     {
+                        memberUrlFragmentId = targetId;
                         targetId = typeRef.Id;
+                    }
+                    else
+                    {
+                        // !EFW - For overloads, use the overload ID and add the member ID as the fragment
+                        if(member != null && !String.IsNullOrWhiteSpace(member.OverloadId))
+                        {
+                            memberUrlFragmentId = targetId;
+                            targetId = member.OverloadId;
+                        }
                     }
                 }
 
                 // Get the URL for the member ID if needed
                 if(type == ReferenceLinkType.Msdn)
                 {
-                    if(this.UrlResolver != null && !this.UrlResolver.IsDisabled)
+                    if(this.UrlResolver != null)
                     {
-                        memberUrl = this.UrlResolver.ResolveUrlForId(targetId);
-
-                        // The Microsoft Docs cross reference service doesn't appear to support overloads links
-                        // so try to convert to one of the overload members and use that as the target instead.
-                        if(String.IsNullOrWhiteSpace(memberUrl) && !this.UrlResolver.IsDisabled &&
-                          targetId.StartsWith("Overload:", StringComparison.Ordinal) ||
-                          targetId.StartsWith("O:", StringComparison.Ordinal))
-                        {
-                            string methodTargetId = "M:" + targetId.Substring(targetId.IndexOf(':') + 1);
-                            methodTargetId = targets.Keys.FirstOrDefault(k => k.StartsWith(methodTargetId,
-                                StringComparison.Ordinal));
-
-                            if(methodTargetId != null)
-                            {
-                                memberUrl = this.UrlResolver.ResolveUrlForId(methodTargetId);
-
-                                if(memberUrl != null)
-                                    this.UrlResolver.CachedUrls[targetId] = memberUrl;
-                            }
-                        }
+                        memberUrl = this.UrlResolver.ResolveUrlForId(targetId, memberUrlFragmentId);
 
                         if(String.IsNullOrWhiteSpace(memberUrl))
                         {
-                            // If the web service failed, report the reason
-                            if(this.UrlResolver.IsDisabled)
-                            {
-                                this.WriteMessage(key, MessageLevel.Warn, "Member ID URL resolver service failed.  " +
-                                    "No further look ups will be performed for this build.\r\nReason: {0}",
-                                    this.UrlResolver.DisabledReason);
-                            }
-                            else
-                                this.WriteMessage(key, MessageLevel.Warn, "Member ID URL not found for target '{0}'.",
-                                    targetId);
+                            this.WriteMessage(key, MessageLevel.Warn,
+                                "Member ID URL could not be resolved for target '{0}'.", targetId);
 
                             type = ReferenceLinkType.None;
                         }
@@ -605,10 +581,6 @@ namespace Sandcastle.Tools.BuildComponents
         /// <overloads>There are two overloads for this method</overloads>
         protected virtual IMemberIdUrlResolver CreateMemberIdResolver(XPathNavigator configuration)
         {
-            if(configuration == null)
-                throw new ArgumentNullException(nameof(configuration));
-
-            IMemberIdUrlResolver newResolver;
             IDictionary<string, string> cache = null;
 
             if(this.BuildAssembler.Data.TryGetValue(SharedMemberUrlCacheId, out object cacheValue))
@@ -619,50 +591,9 @@ namespace Sandcastle.Tools.BuildComponents
             if(cache != null)
                 return this.CreateMemberIdResolver(cache, true);
 
-            // If a <cache> element is not specified, we'll use the standard resolver without a persistent cache.
-            // We will share it across all instances though.
-            XPathNavigator node = configuration.SelectSingleNode("memberIdUrlCache");
+            var newResolver = this.CreateMemberIdResolver(null, false);
 
-            if(node == null)
-                newResolver = this.CreateMemberIdResolver(null, false);
-            else
-            {
-                // Keep the filename.  If we own it, we'll update the cache file when disposed.
-                memberIdUrlCacheFile = node.GetAttribute("path", String.Empty);
-
-                if(String.IsNullOrWhiteSpace(memberIdUrlCacheFile))
-                    this.WriteMessage(MessageLevel.Error, "You must specify a path attribute value on the " +
-                        "memberIdUrlCache element.");
-
-                // Create the folder if it doesn't exist
-                memberIdUrlCacheFile = Path.GetFullPath(Environment.ExpandEnvironmentVariables(memberIdUrlCacheFile));
-                string path = Path.GetDirectoryName(memberIdUrlCacheFile);
-
-                if(!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
-
-                // Load the cache if it exists
-                if(!File.Exists(memberIdUrlCacheFile))
-                {
-                    // Logged as a diagnostic message since looking up all IDs can significantly slow the build
-                    this.WriteMessage(MessageLevel.Diagnostic, "The member ID URL cache '" + memberIdUrlCacheFile +
-                        "' does not exist yet.  All IDs will be looked up in this build which will slow it down.");
-
-                    newResolver = this.CreateMemberIdResolver(null, false);
-                }
-                else
-                    using(FileStream fs = new FileStream(memberIdUrlCacheFile, FileMode.Open, FileAccess.Read,
-                      FileShare.Read))
-                    {
-                        BinaryFormatter bf = new BinaryFormatter();
-                        newResolver = this.CreateMemberIdResolver((IDictionary<string, string>)bf.Deserialize(fs), false);
-
-                        this.WriteMessage(MessageLevel.Info, "Loaded {0} cached member ID URL entries",
-                            newResolver.CachedUrls.Count);
-                    }
-            }
-
-            this.BuildAssembler.Data[SharedMemberUrlCacheId] = newResolver.CachedUrls;
+            this.BuildAssembler.Data[SharedMemberUrlCacheId] = newResolver;
 
             return newResolver;
         }
@@ -679,44 +610,17 @@ namespace Sandcastle.Tools.BuildComponents
         protected virtual IMemberIdUrlResolver CreateMemberIdResolver(IDictionary<string, string> cache, bool isShared)
         {
             if(cache != null)
-                return new MicrosoftDocsXRefServiceResolver(cache, isShared);
+                return new MicrosoftLearnMemberIdUrlResolver(cache, isShared);
 
-            return new MicrosoftDocsXRefServiceResolver();
+            return new MicrosoftLearnMemberIdUrlResolver();
         }
 
         /// <summary>
         /// This is used to update the URL cache file
         /// </summary>
-        /// <remarks>The default implementation serializes the standard dictionary to a file using binary
-        /// serialization if new entries were added and it loaded the cache file.</remarks>
+        /// <remarks>The default implementation does not utilize a cache file</remarks>
         public virtual void UpdateUrlCache()
         {
-            if(memberIdUrlCacheFile != null && this.UrlResolver != null && this.UrlResolver.CacheItemsAdded != 0)
-            {
-                this.WriteMessage(MessageLevel.Info, "Member ID URL cache updated.  Saving new information to " +
-                    memberIdUrlCacheFile);
-
-                try
-                {
-                    using(FileStream fs = new FileStream(memberIdUrlCacheFile, FileMode.Create, FileAccess.ReadWrite,
-                      FileShare.None))
-                    {
-                        BinaryFormatter bf = new BinaryFormatter();
-                        bf.Serialize(fs, this.UrlResolver.CachedUrls);
-                    }
-
-                    this.WriteMessage(MessageLevel.Diagnostic, "{0} entries added to the member ID URL cache.  " +
-                        "New cache size: {1} entries", this.UrlResolver.CacheItemsAdded,
-                        this.UrlResolver.CachedUrls.Count);
-                }
-                catch(IOException ex)
-                {
-                    // Most likely it couldn't access the file.  We'll issue a warning but will continue with
-                    // the build.
-                    this.WriteMessage(MessageLevel.Warn, "Unable to create member ID URL cache file.  It will " +
-                        "be created or updated on a subsequent build: " + ex.Message);
-                }
-            }
         }
 
         /// <summary>

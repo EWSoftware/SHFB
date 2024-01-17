@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : TargetTypeDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/11/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 01/16/2024
+// Note    : Copyright 2012-2024, Eric Woodruff, All rights reserved
 //
 // This file contains a target type dictionary used to contain common target dictionaries with their associated
 // link type.
@@ -21,9 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 
 namespace Sandcastle.Tools.BuildComponents.Targets
@@ -287,41 +285,6 @@ namespace Sandcastle.Tools.BuildComponents.Targets
 
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
-            }
-        }
-
-        /// <summary>
-        /// Test serialization of the target dictionaries
-        /// </summary>
-        /// <param name="folder">The folder in which to place the serialized files</param>
-        public void SerializeDictionary(string folder)
-        {
-            using(TargetTypeDictionary tempTD = new TargetTypeDictionary())
-            {
-                TargetDictionary targetDictionary;
-                BinaryFormatter bf = new BinaryFormatter();
-                string filename;
-
-                foreach(var td in targetDictionaries.Reverse<KeyValuePair<ReferenceLinkType, TargetDictionary>>())
-                {
-                    filename = Path.Combine(folder, td.Value.DictionaryId);
-
-                    // Fair warning, this is really slow for the main .NET Framework target dictionary hence the
-                    // reason not to offer the option to serialize the InMemoryTargetDictionary to a persistent cache.
-                    using(FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite, FileShare.None))
-                    {
-                        bf.Serialize(fs, td.Value);
-                    }
-
-                    using(FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
-                    {
-                        targetDictionary = (TargetDictionary)bf.Deserialize(fs);
-                    }
-
-                    tempTD.Add(ReferenceLinkType.None, targetDictionary);
-                }
-
-                tempTD.DumpTargetDictionary(Path.Combine(folder, "SerializedIn.xml"));
             }
         }
 #endif
