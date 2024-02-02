@@ -87,6 +87,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
             }
 
             this.TopicTransformation.HasHeaderText = !String.IsNullOrWhiteSpace(currentBuild.CurrentProject.HeaderText);
+            this.TopicTransformation.HasFooterContent = !String.IsNullOrWhiteSpace(currentBuild.CurrentProject.FooterText) ||
+                !String.IsNullOrWhiteSpace(currentBuild.CurrentProject.CopyrightText) ||
+                !String.IsNullOrWhiteSpace(currentBuild.CurrentProject.CopyrightHref) ||
+                !String.IsNullOrWhiteSpace(currentBuild.CurrentProject.FeedbackEMailAddress);
+            this.TopicTransformation.HasWebsiteAdContent = !String.IsNullOrWhiteSpace(currentBuild.CurrentProject.WebsiteAdContent);
             this.TopicTransformation.IsPreliminaryDocumentation = currentBuild.CurrentProject.Preliminary;
             this.TopicTransformation.Locale = currentBuild.Language.Name;
 

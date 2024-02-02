@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2024
+// Updated : 02/01/2024
 // Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -680,6 +680,32 @@ namespace Sandcastle.PresentationStyles.Default2022
                             d => d.Attribute("id")?.Value == "PreliminaryContainer").FirstOrDefault();
 
                         prelimDocs?.Remove();
+                    }
+                }
+            }
+
+            var footer = html.Descendants().Where(d => d.Attribute("id")?.Value == "PageFooter").FirstOrDefault();
+
+            if(footer != null)
+            {
+                if(!this.HasFooterContent && !this.HasWebsiteAdContent)
+                    footer.Remove();
+                else
+                {
+                    if(!this.HasFooterContent)
+                    {
+                        var footerContent = footer.Descendants().Where(
+                            d => d.Attribute("id")?.Value == "FooterContent").FirstOrDefault();
+
+                        footerContent?.Remove();
+                    }
+
+                    if(!this.HasWebsiteAdContent)
+                    {
+                        var adContent = footer.Descendants().Where(
+                            d => d.Attribute("id")?.Value == "AdContent").FirstOrDefault();
+
+                        adContent?.Remove();
                     }
                 }
             }

@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/29/2023
-// Note    : Copyright 2022-2023, Eric Woodruff, All rights reserved
+// Updated : 02/01/2024
+// Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
 // specific presentation style topic transformation.
@@ -154,6 +154,21 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// </summary>
         /// <value>This will be true if the project's header text property contains a value, false if not</value>
         public bool HasHeaderText { get; set; }
+
+        /// <summary>
+        /// This property is used to get or set whether or not all pages should be have the footer content item
+        /// inserted into them.
+        /// </summary>
+        /// <value>This will be true if the project's footer text, copyright URL, copyright text, and/or feedback
+        /// e-mail address property contains a value, false if not.</value>
+        public bool HasFooterContent { get; set; }
+
+        /// <summary>
+        /// This property is used to get or set whether or not all pages should be have the website ad content
+        /// item inserted into them.
+        /// </summary>
+        /// <value>This will be true if the project's website ad content property contains a value, false if not</value>
+        public bool HasWebsiteAdContent { get; set; }
 
         /// <summary>
         /// This property is used to get or set whether or not all pages should be marked with a "preliminary

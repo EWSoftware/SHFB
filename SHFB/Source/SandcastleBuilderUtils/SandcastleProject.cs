@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/13/2022
-// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
+// Updated : 02/01/2024
+// Note    : Copyright 2006-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the project class.
 //
@@ -1276,7 +1276,7 @@ namespace SandcastleBuilder.Utils
         /// format.
         /// </summary>
         [EscapeValue]
-        public string WebsiteAdContent { get; set; }
+        public string WebsiteAdContent { get; private set; }
 
         #endregion
 
