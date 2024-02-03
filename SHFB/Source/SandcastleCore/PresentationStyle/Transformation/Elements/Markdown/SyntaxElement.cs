@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SyntaxElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/07/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 02/02/2024
+// Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle syntax section elements in markdown presentation styles
 //
@@ -86,9 +86,6 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Markdown
             if(element == null)
                 throw new ArgumentNullException(nameof(element));
 
-            if(!element.Elements().Any())
-                return;
-
             var (title, content) = transformation.CreateSection(element.GenerateUniqueId(), true,
                 "title_definition", null);
 
@@ -102,7 +99,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Markdown
 
             this.NamespaceAndAssemblyInfoRenderer?.Invoke(transformation, content);
 
-            RenderSyntaxSections(transformation, element, content);
+            if(element.Elements().Any())
+                RenderSyntaxSections(transformation, element, content);
 
             string baseSourceCodeUrl = null;
             var sourceContext = transformation.ReferenceNode.Element("sourceContext");

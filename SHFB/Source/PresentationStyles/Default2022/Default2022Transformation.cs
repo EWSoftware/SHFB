@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/01/2024
+// Updated : 02/02/2024
 // Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -85,8 +85,8 @@ namespace Sandcastle.PresentationStyles.Default2022
         /// <summary>
         /// Render collapsible sections
         /// </summary>
-        private bool CollapsibleSections => !Boolean.TryParse(this.TransformationArguments[nameof(CollapsibleSections)].Value,
-            out bool collapsibleSections) || collapsibleSections;
+        private bool CollapsibleSections => Boolean.TryParse(this.TransformationArguments[nameof(CollapsibleSections)].Value,
+            out bool collapsibleSections) && collapsibleSections;
 
         /// <summary>
         /// Logo file
@@ -172,6 +172,12 @@ namespace Sandcastle.PresentationStyles.Default2022
         /// Request example URL
         /// </summary>
         private string RequestExampleUrl => this.TransformationArguments[nameof(RequestExampleUrl)].Value;
+
+        /// <summary>
+        /// Show parameters on all methods on the member list page, not just on overloads
+        /// </summary>
+        private bool ShowParametersOnAllMethods => Boolean.TryParse(this.TransformationArguments[nameof(ShowParametersOnAllMethods)].Value,
+            out bool showParameters) && showParameters;
 
         #endregion
 
@@ -266,7 +272,11 @@ namespace Sandcastle.PresentationStyles.Default2022
                     "to which the request will be sent.  This can be a web page URL or an e-mail URL.  Only include " +
                     "the URL as the parameters will be added automatically by the topic.  For example:\r\n\r\n" +
                     "Create a new issue on GitHub: https://github.com/YourUserID/YourProject/issues/new \r\n" +
-                    "Send via e-mail: mailto:YourEmailAddress@Domain.com") });
+                    "Send via e-mail: mailto:YourEmailAddress@Domain.com"),
+                new TransformationArgument(nameof(ShowParametersOnAllMethods), false, true, "False",
+                    "If false, the default, parameters are hidden on all but overloaded methods on the member " +
+                    "list pages.  If set to true, parameters are shown on all methods.")
+            });
         }
 
         /// <inheritdoc />
@@ -715,12 +725,29 @@ namespace Sandcastle.PresentationStyles.Default2022
                 throw new InvalidOperationException("An element with the ID 'LanguageSelections' was not found " +
                     "to contain the language filter elements");
 
-            foreach(var language in this.LanguageFilter)
+            if(this.LanguageFilter.Any())
             {
+                foreach(var language in this.LanguageFilter)
+                {
+                    languageFilter.Add(new XElement("a",
+                        new XAttribute("class", "dropdown-item languageFilterItem"),
+                        new XAttribute("data-languageId", language.KeywordStyle),
+                        new XElement("include", new XAttribute("item", language.SharedContentItemId))));
+                }
+            }
+            else
+            {
+                // This presentation style requires at least one entry in the language filter dropdown.  If none
+                // are defined, we'll add a default C# entry to the dropdown and hide it.
                 languageFilter.Add(new XElement("a",
                     new XAttribute("class", "dropdown-item languageFilterItem"),
-                    new XAttribute("data-languageId", language.KeywordStyle),
-                    new XElement("include", new XAttribute("item", language.SharedContentItemId))));
+                    new XAttribute("data-languageId", "cs"),
+                    new XElement("include", new XAttribute("item", "devlang_C#"))));
+
+                var dropdownClass = languageFilter.Parent?.Parent?.Attribute("class");
+
+                if(dropdownClass != null)
+                    dropdownClass.Value += " is-hidden";
             }
 
             this.OnRenderStarting(document);
@@ -1323,7 +1350,7 @@ $("".toggleSection"").keypress(function () {
                 string version = l.Element("assemblydata").Attribute("version").Value,
                     extension = l.Attribute("kind").Value.Equals(
                         "DynamicallyLinkedLibrary", StringComparison.Ordinal) ? "dll" : "exe";
-                string[] versionParts = version.Split(new[] { ' ', '.' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] versionParts = version.Split(VersionNumberSeparators, StringSplitOptions.RemoveEmptyEntries);
 
                 // Limit the version number parts if requested
                 if(maxVersionParts > 1 && maxVersionParts < 5)
@@ -1866,7 +1893,8 @@ $("".toggleSection"").keypress(function () {
                 {
                     XElement referenceLink = new XElement("referenceLink",
                             new XAttribute("target", e.Attribute("api").Value));
-                    string showParameters = (transformation.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload &&
+                    string showParameters = (!((Default2022Transformation)transformation).ShowParametersOnAllMethods &&
+                        transformation.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload &&
                         e.Element("memberdata").Attribute("overload") == null &&
                         !(e.Parent.Attribute("api")?.Value ?? String.Empty).StartsWith(
                             "Overload:", StringComparison.Ordinal)) ? "false" : "true";

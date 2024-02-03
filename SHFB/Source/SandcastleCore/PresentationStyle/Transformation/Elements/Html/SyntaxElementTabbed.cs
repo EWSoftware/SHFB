@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SyntaxElementTabbed.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/07/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 02/02/2022
+// Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle syntax section elements in legacy presentation styles such as
 // the VS2013 presentation style.
@@ -152,9 +152,6 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             if(element == null)
                 throw new ArgumentNullException(nameof(element));
 
-            if(!element.Elements().Any())
-                return;
-
             var (title, content) = transformation.CreateSection(element.GenerateUniqueId(), true,
                 "title_syntax", null);
 
@@ -166,7 +163,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             else
                 content = transformation.CurrentElement;
 
-            this.RenderSyntaxSections(transformation, element, content);
+            if(element.Elements().Any())
+                this.RenderSyntaxSections(transformation, element, content);
 
             XElement sourceContext = transformation.ReferenceNode.Element("sourceContext"),
                 parameters = transformation.ReferenceNode.Element("parameters"),

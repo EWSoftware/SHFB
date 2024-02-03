@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2024
+// Updated : 02/02/2024
 // Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -154,6 +154,12 @@ namespace Sandcastle.PresentationStyles.VS2013
         /// </summary>
         private string RequestExampleUrl => this.TransformationArguments[nameof(RequestExampleUrl)].Value;
 
+        /// <summary>
+        /// Show parameters on all methods on the member list page, not just on overloads
+        /// </summary>
+        private bool ShowParametersOnAllMethods => Boolean.TryParse(this.TransformationArguments[nameof(ShowParametersOnAllMethods)].Value,
+            out bool showParameters) && showParameters;
+
         #endregion
 
         #region TopicTransformationCore implementation
@@ -241,7 +247,11 @@ namespace Sandcastle.PresentationStyles.VS2013
                     "to which the request will be sent.  This can be a web page URL or an e-mail URL.  Only include " +
                     "the URL as the parameters will be added automatically by the topic.  For example:\r\n\r\n" +
                     "Create a new issue on GitHub: https://github.com/YourUserID/YourProject/issues/new \r\n" +
-                    "Send via e-mail: mailto:YourEmailAddress@Domain.com") });
+                    "Send via e-mail: mailto:YourEmailAddress@Domain.com"),
+                new TransformationArgument(nameof(ShowParametersOnAllMethods), false, true, "False",
+                    "If false, the default, parameters are hidden on all but overloaded methods on the member " +
+                    "list pages.  If set to true, parameters are shown on all methods.")
+            });
         }
 
         /// <inheritdoc />
@@ -1530,7 +1540,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 string version = l.Element("assemblydata").Attribute("version").Value,
                     extension = l.Attribute("kind").Value.Equals(
                         "DynamicallyLinkedLibrary", StringComparison.Ordinal) ? "dll" : "exe";
-                string[] versionParts = version.Split(new[] { ' ', '.' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] versionParts = version.Split(VersionNumberSeparators, StringSplitOptions.RemoveEmptyEntries);
 
                 // Limit the version number parts if requested
                 if(maxVersionParts > 1 && maxVersionParts < 5)
@@ -2167,7 +2177,8 @@ namespace Sandcastle.PresentationStyles.VS2013
                     XElement codeExampleImage = null, staticImage = null, eiiImage = null,
                         referenceLink = new XElement("referenceLink",
                             new XAttribute("target", e.Attribute("api").Value));
-                    string showParameters = (transformation.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload &&
+                    string showParameters = (!((VisualStudio2013Transformation)transformation).ShowParametersOnAllMethods &&
+                        transformation.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload &&
                         e.Element("memberdata").Attribute("overload") == null &&
                         !(e.Parent.Attribute("api")?.Value ?? String.Empty).StartsWith(
                             "Overload:", StringComparison.Ordinal)) ? "false" : "true";

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/01/2024
+// Updated : 02/02/2024
 // Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
@@ -60,6 +60,11 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
 
         #region Properties
         //=====================================================================
+
+        /// <summary>
+        /// This returns the assembly version number separator characters
+        /// </summary>
+        protected static readonly char[] VersionNumberSeparators = new char[] { ' ', '.', '+' };
 
         /// <summary>
         /// This read-only property returns the topic key
@@ -592,13 +597,9 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                 throw new ArgumentNullException(nameof(sectionHandler));
 
             var match = apiTopicSections.FirstOrDefault(s => s.SectionType == sectionHandler.SectionType &&
-                s.CustomSectionName == sectionHandler.CustomSectionName);
-
-            if(match == null)
-            {
-                throw new ArgumentException("No section handler has been defined for " +
-                    $"{sectionHandler.SectionType} {sectionHandler.CustomSectionName}");
-            }
+                s.CustomSectionName == sectionHandler.CustomSectionName) ??
+                    throw new ArgumentException("No section handler has been defined for " +
+                        $"{sectionHandler.SectionType} {sectionHandler.CustomSectionName}");
 
             apiTopicSections.Insert(apiTopicSections.IndexOf(match), sectionHandler);
             apiTopicSections.Remove(match);

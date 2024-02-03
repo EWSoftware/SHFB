@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SyntaxElementLanguageFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/07/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 02/02/2024
+// Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle syntax section elements in presentation styles that use a
 // page-level language filter selector.
@@ -105,9 +105,6 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             if(element == null)
                 throw new ArgumentNullException(nameof(element));
 
-            if(!element.Elements().Any())
-                return;
-
             // Resolve unset paths on first use
             if(String.IsNullOrWhiteSpace(this.SyntaxSectionCodeTemplatePath))
                 this.SyntaxSectionCodeTemplatePath = transformation.ResolvePath(@"Templates\SyntaxSectionCodeTemplate.html");
@@ -125,7 +122,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
             this.NamespaceAndAssemblyInfoRenderer?.Invoke(transformation, content);
 
-            this.RenderSyntaxSections(transformation, element, content);
+            if(element.Elements().Any())
+                this.RenderSyntaxSections(transformation, element, content);
 
             if(transformation.ApiMember.ApiGroup == ApiMemberGroup.Type)
                 this.InheritanceHierarchyRenderer?.Invoke(transformation, content);
