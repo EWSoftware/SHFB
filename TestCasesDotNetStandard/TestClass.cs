@@ -11,17 +11,16 @@
         public int X { get; set; }
 
         /// <summary>
-        /// Y value
-        /// </summary>
-        public int Y { get; set; }
-
-        /// <summary>
         /// Init only setter test
         /// </summary>
         public int XInitOnly { get; init; }
 
-        /// <summary>**DO NOT DOCUMENT**</summary>
-        private protected class DocTest { }
+        /// <summary>
+        /// Y value
+        /// </summary>
+        public int Y { get; set; }
+
+        // These non-nested private protected members do not show up
 
         /// <summary>**DO NOT DOCUMENT**</summary>
         private protected int Field;
@@ -33,6 +32,14 @@
         private protected void Method() { this.Event?.Invoke(42); }
 
         /// <summary>**DO NOT DOCUMENT**</summary>
+        private protected event Delegate Event;
+
+        // These nested items are showing up when they should not
+
+        /// <summary>**DO NOT DOCUMENT**</summary>
+        private protected class DocTest { }
+
+        /// <summary>**DO NOT DOCUMENT**</summary>
         private protected readonly struct MemberStruct { }
 
         /// <summary>**DO NOT DOCUMENT**</summary>
@@ -40,8 +47,5 @@
 
         /// <summary>**DO NOT DOCUMENT**</summary>
         private protected delegate void Delegate(int n);
-
-        /// <summary>**DO NOT DOCUMENT**</summary>
-        private protected event Delegate Event;
     }
 }

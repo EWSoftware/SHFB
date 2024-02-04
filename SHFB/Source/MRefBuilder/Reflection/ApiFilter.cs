@@ -844,6 +844,10 @@ namespace Sandcastle.Tools.Reflection
                   (!this.IncludeProtected && (type.IsFamily || (type.IsFamilyOrAssembly && !this.IncludeInternals))))
                     return false;
 
+                // Ignore private protected types unless including internals
+                if(!this.IncludeInternals && type.IsFamilyAndAssembly)
+                    return false;
+
                 return true;
             }
 
