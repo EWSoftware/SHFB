@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/02/2024
+// Updated : 02/18/2024
 // Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -179,6 +179,12 @@ namespace Sandcastle.PresentationStyles.Default2022
         private bool ShowParametersOnAllMethods => Boolean.TryParse(this.TransformationArguments[nameof(ShowParametersOnAllMethods)].Value,
             out bool showParameters) && showParameters;
 
+        /// <summary>
+        /// Always show top level auto-outline
+        /// </summary>
+        private bool AlwaysShowTopLevelAutoOutline => Boolean.TryParse(this.TransformationArguments[nameof(AlwaysShowTopLevelAutoOutline)].Value,
+            out bool alwaysShowOutOutline) && alwaysShowOutOutline;
+
         #endregion
 
         #region TopicTransformationCore implementation
@@ -275,7 +281,11 @@ namespace Sandcastle.PresentationStyles.Default2022
                     "Send via e-mail: mailto:YourEmailAddress@Domain.com"),
                 new TransformationArgument(nameof(ShowParametersOnAllMethods), false, true, "False",
                     "If false, the default, parameters are hidden on all but overloaded methods on the member " +
-                    "list pages.  If set to true, parameters are shown on all methods.")
+                    "list pages.  If set to true, parameters are shown on all methods."),
+                new TransformationArgument(nameof(AlwaysShowTopLevelAutoOutline), true, false, "False",
+                    "If false, the default, top-level auto-outlines are hidden unless the display is small " +
+                    "enough (typically mobile displays).  If set to true, top-level auto-outlines are always " +
+                    "shown regardless of the display size.")
             });
         }
 
@@ -466,7 +476,7 @@ namespace Sandcastle.PresentationStyles.Default2022
                 new ConvertibleElement("application", "strong"),
                 new NamedSectionElement("appliesTo"),
                 // Only display top-level auto-outlines on mobile devices.  For tablet and above, the In This
-                // Article quick links serve the same purpose.
+                // Article quick links serve the same purpose.  This can be overridden by the transformation argument.
                 new AutoOutlineElement { TopLevelStyleName = "is-hidden-tablet" },
                 new NamedSectionElement("background"),
                 new NamedSectionElement("buildInstructions"),
@@ -621,6 +631,10 @@ namespace Sandcastle.PresentationStyles.Default2022
         {
             if(pageTemplate == null)
             {
+                // Clear the top level style if auto-outlines are always shown
+                if(this.AlwaysShowTopLevelAutoOutline)
+                    ((AutoOutlineElement)this.ElementHandlerFor("autoOutline")).TopLevelStyleName = null;
+
                 string localeSpecificStyleSheet = presentationStyle.ResolvePath($"css\\{this.Locale}.css");
 
                 if(!File.Exists(localeSpecificStyleSheet))

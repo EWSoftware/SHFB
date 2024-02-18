@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AutoOutlineElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/08/2023
-// Note    : Copyright 2022-2023, Eric Woodruff, All rights reserved
+// Updated : 02/06/2024
+// Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle autoOutline elements
 //
@@ -162,14 +162,24 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             if(leadIn == null || !leadIn.Equals("none", StringComparison.Ordinal))
             {
                 if(!String.IsNullOrWhiteSpace(leadIn))
+                {
+                    // No class on this one as the text may not refer to the auto-outline so it should always
+                    // be visible.
                     renderTo.Add(new XElement("p", leadIn));
+                }
                 else
                 {
                     if(outlineType < AutoOutlineType.Subsection)
                     {
-                        renderTo.Add(new XElement("p",
+                        var para = new XElement("p",
                             new XElement("include",
-                                new XAttribute("item", "boilerplate_autoOutlineTopLevelIntro"))));
+                                new XAttribute("item", "boilerplate_autoOutlineTopLevelIntro")));
+
+                        // Apply the top level style so that the lead-in text is hidden when the outline is hidden
+                        if(!String.IsNullOrWhiteSpace(this.TopLevelStyleName))
+                            para.Add(new XAttribute("class", this.TopLevelStyleName));
+
+                        renderTo.Add(para);
                     }
                     else
                     {
