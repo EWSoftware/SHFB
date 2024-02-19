@@ -2271,39 +2271,6 @@
           <Component Id="cmpF60D5A1DCC6DA90B13F016CEE918B5E3" Guid="{AFE76F0D-A616-46CE-B8E5-A71539D9D272}">
             <File Id="fil3401541ED5338B3ECDA9E4FB794129CB" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\Microsoft.CSharp.xml" />
           </Component>
-          <Component Id="cmp8DE7A769A55689356A9C69DEC63D7BCF" Guid="{7D5F1BF2-E66F-492E-BF17-D47F56FFB37E}">
-            <File Id="fil35C1AF763CE269F63FFC466988887C08" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\Microsoft.FSharp.Collections.xml" />
-          </Component>
-          <Component Id="cmp69415A61A3653CE1017BECE59074322C" Guid="{3AF0ABA3-164A-4755-A62D-D280B3C8CB65}">
-            <File Id="filDF58C916BBEC5F45060B0D4F48F9BB8F" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\Microsoft.FSharp.Control.xml" />
-          </Component>
-          <Component Id="cmp835AAD73523A9096A4FBBFF6DE54221B" Guid="{2E576AC8-1A4D-46E9-8789-9F03FD0F4B13}">
-            <File Id="filFB9F13329F4247AB3D8F5703F08CA1A6" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\Microsoft.FSharp.Core.CompilerServices.xml" />
-          </Component>
-          <Component Id="cmp32E98C5E5F16D93CF36D201407D46C0B" Guid="{823170D1-F5ED-45C5-B4C9-AE4A0F40B136}">
-            <File Id="fil612EBA99102E148C67D3397EEE4479AE" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\Microsoft.FSharp.Core.xml" />
-          </Component>
-          <Component Id="cmp704BB2CAB51FFB9A83B0FE7135EF321A" Guid="{96B893C3-E1F1-4356-8D1D-06A4D5B074D1}">
-            <File Id="fil8431763F66872C06B4C6FCE30BFD7C2A" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\Microsoft.FSharp.Data.UnitSystems.SI.UnitNames.xml" />
-          </Component>
-          <Component Id="cmpF9C0195D6D729F605CE50F76BF172F02" Guid="{4D38A11B-70F1-4E71-AFC1-6DA2FF54827F}">
-            <File Id="fil0F4BA105E4A2F00F16526FB624F24753" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\Microsoft.FSharp.Linq.QueryRunExtensions.xml" />
-          </Component>
-          <Component Id="cmp7B3592444CA43477DFCFBEE892379CF6" Guid="{8C207C94-956A-4645-B83F-896C994B3C1B}">
-            <File Id="filBBA687841A0E5D4E0FFB444849D01D54" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\Microsoft.FSharp.Linq.RuntimeHelpers.xml" />
-          </Component>
-          <Component Id="cmp7E18874AD2F1FDF751B0822A42846DFB" Guid="{265E68B4-5884-4CBB-B4C1-F5DC042D509B}">
-            <File Id="fil55C01712848CCFE6D5F37B8AF0B20ABD" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\Microsoft.FSharp.Linq.xml" />
-          </Component>
-          <Component Id="cmp65CA188795B210C26F7C7F3EC2880F3E" Guid="{248496DA-301F-466A-9920-2F4173ED1CA7}">
-            <File Id="fil14C4C1F6801ADF289DDB6AD0D8D27193" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\Microsoft.FSharp.NativeInterop.xml" />
-          </Component>
-          <Component Id="cmpFF1E86D7E136D520E3801FB51293D9CE" Guid="{58D63130-9973-4150-A572-41B008C21113}">
-            <File Id="fil24A743B7CDE5C2E7F5DDD667AF2A10C0" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\Microsoft.FSharp.Quotations.xml" />
-          </Component>
-          <Component Id="cmp72C3E471C58D0BA5D02671C129C6A189" Guid="{BD78E1C6-EA2D-4873-8EC7-BA967F1C8F93}">
-            <File Id="fil67E73335C1AC338803B6464495AB8F7B" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\Microsoft.FSharp.Reflection.xml" />
-          </Component>
           <Component Id="cmpABBE6044A2A9615E9E7093F1ACC5BC51" Guid="{AC1DD4C5-7422-4B3F-88D9-8BC1F2B4B304}">
             <File Id="fil9A278D73C8D51CC9A98372AC61EB2741" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\Microsoft.JScript.Vsa.xml" />
           </Component>
@@ -3606,9 +3573,6 @@
         <Component Id="cmp46486B5538B89E26CAB75CEA70AFE959" Guid="{4352E529-0DEE-4F40-A2FB-682B20C2D747}">
           <File Id="fil37B55FF6B356136D38682313AD8CE0E5" KeyPath="yes" Source="$(var.RootFolder)\net472\SandcastleBuilder.Utils.dll" />
         </Component>
-        <Component Id="cmpCC98D096F603880996561F34B0714F0A" Guid="{BAAA3DD2-5F35-4163-B3BB-241CC1D6703C}">
-          <File Id="fil236AF7B2DA23B1043CC79DDBF5EB46F3" KeyPath="yes" Source="$(var.RootFolder)\net472\SandcastleBuilder.Utils.dll.config" />
-        </Component>
         <Component Id="cmpBB36B154DCDB505AEE92A48D617F4307" Guid="{4001F826-E347-4389-A59B-FA8212B01686}">
           <File Id="filCF1A8A8359665AF840984208982DE11B" KeyPath="yes" Source="$(var.RootFolder)\net472\SandcastleBuilder.Utils.xml" />
         </Component>
@@ -3706,9 +3670,6 @@
         </Component>
         <Component Id="cmp94C3F62B799FC57BC861F0F07AE3037A" Guid="{2651A262-286C-4C49-BA95-CCD243FF2FDE}">
           <File Id="fil0A88C33544E4D8F5227C6BC1F0E5CE00" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\SandcastleBuilder.Utils.dll" />
-        </Component>
-        <Component Id="cmp1B3EA4A82A3F55D7A6C824F39638C678" Guid="{4C3635B6-14F4-4976-ABD2-50E1E2D83D2C}">
-          <File Id="fil3961391EC704F3AE3945FD80F7B80D61" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\SandcastleBuilder.Utils.dll.config" />
         </Component>
         <Component Id="cmpCB0AD024EA778817B15E43BDCAE1CBF4" Guid="{CFD44148-4F65-473C-ACDB-CFFF081472BE}">
           <File Id="filF6A0961C247AD654D693B3A95E36140F" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\SandcastleBuilder.Utils.xml" />
@@ -3992,9 +3953,6 @@
         </Component>
         <Component Id="cmpFCDA3784F0F802D1EFAD6361FB62C633" Guid="{D14E1380-25D7-4018-85FE-67CE02707F1B}">
           <File Id="fil3A1C6482DE35547B45A131DEEDB875C3" KeyPath="yes" Source="$(var.RootFolder)\Tools\SandcastleBuilder.Utils.dll" />
-        </Component>
-        <Component Id="cmp9AF97CAC3CDEE5B6D515EAF904B867A7" Guid="{C10E283A-FE8A-4D93-BA6C-6AE3481D09A2}">
-          <File Id="filA33752E5A8067F28F5E8D2B8B76266B0" KeyPath="yes" Source="$(var.RootFolder)\Tools\SandcastleBuilder.Utils.dll.config" />
         </Component>
         <Component Id="cmp805A882F85EE3C9A2976EC1F44C257E9" Guid="{66E790A4-3DA2-4F2D-99A7-BC7A6427D743}">
           <File Id="fil933906457B5A5817CC0107BECECECC61" KeyPath="yes" Source="$(var.RootFolder)\Tools\SandcastleBuilder.Utils.xml" />
@@ -4911,17 +4869,6 @@
       <ComponentRef Id="cmp1803B2199473C635F0EC490ED50B645D" />
       <ComponentRef Id="cmp4A9312F6CE71497EB118B8EBBF08B46B" />
       <ComponentRef Id="cmpF60D5A1DCC6DA90B13F016CEE918B5E3" />
-      <ComponentRef Id="cmp8DE7A769A55689356A9C69DEC63D7BCF" />
-      <ComponentRef Id="cmp69415A61A3653CE1017BECE59074322C" />
-      <ComponentRef Id="cmp835AAD73523A9096A4FBBFF6DE54221B" />
-      <ComponentRef Id="cmp32E98C5E5F16D93CF36D201407D46C0B" />
-      <ComponentRef Id="cmp704BB2CAB51FFB9A83B0FE7135EF321A" />
-      <ComponentRef Id="cmpF9C0195D6D729F605CE50F76BF172F02" />
-      <ComponentRef Id="cmp7B3592444CA43477DFCFBEE892379CF6" />
-      <ComponentRef Id="cmp7E18874AD2F1FDF751B0822A42846DFB" />
-      <ComponentRef Id="cmp65CA188795B210C26F7C7F3EC2880F3E" />
-      <ComponentRef Id="cmpFF1E86D7E136D520E3801FB51293D9CE" />
-      <ComponentRef Id="cmp72C3E471C58D0BA5D02671C129C6A189" />
       <ComponentRef Id="cmpABBE6044A2A9615E9E7093F1ACC5BC51" />
       <ComponentRef Id="cmp7295CCE5784B855C719AF20E6FE14384" />
       <ComponentRef Id="cmp437DCFBACDF906CD34C6069B6FDB6D78" />
@@ -5355,7 +5302,6 @@
       <ComponentRef Id="cmpA064FFFF17200290AE495A71F7934A4A" />
       <ComponentRef Id="cmp37E3513D10600159EBE5403DB1A3A813" />
       <ComponentRef Id="cmp46486B5538B89E26CAB75CEA70AFE959" />
-      <ComponentRef Id="cmpCC98D096F603880996561F34B0714F0A" />
       <ComponentRef Id="cmpBB36B154DCDB505AEE92A48D617F4307" />
       <ComponentRef Id="cmp482F231CE16F6B566467B2205FB84950" />
       <ComponentRef Id="cmp5F2E66D2182A3D88D3AF3A7E93B396AC" />
@@ -5388,7 +5334,6 @@
       <ComponentRef Id="cmp2E35D5985443D394FAC97B5F14857828" />
       <ComponentRef Id="cmp083C0322BC44D9C5DE448F63F6B7AE0B" />
       <ComponentRef Id="cmp94C3F62B799FC57BC861F0F07AE3037A" />
-      <ComponentRef Id="cmp1B3EA4A82A3F55D7A6C824F39638C678" />
       <ComponentRef Id="cmpCB0AD024EA778817B15E43BDCAE1CBF4" />
       <ComponentRef Id="cmp5E1B24FBBFEAC10452BE20C1CDCDCEB8" />
       <ComponentRef Id="cmp1E78D95C5948B682F37D1728EAEC551D" />
@@ -5470,7 +5415,6 @@
       <ComponentRef Id="cmp3CCF8C88A1D61387E62B5943745A6869" />
       <ComponentRef Id="cmpE5CBDB8CEFB5E43A53A6CEF94C0D803D" />
       <ComponentRef Id="cmpFCDA3784F0F802D1EFAD6361FB62C633" />
-      <ComponentRef Id="cmp9AF97CAC3CDEE5B6D515EAF904B867A7" />
       <ComponentRef Id="cmp805A882F85EE3C9A2976EC1F44C257E9" />
       <ComponentRef Id="cmpF95A8E96F98A360231EBAFF5CFB7CAF3" />
       <ComponentRef Id="cmp2F8B74C9DE21A20C8130412E8A4A9F5F" />

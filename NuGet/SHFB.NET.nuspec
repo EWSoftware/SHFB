@@ -13,7 +13,7 @@
 		<projectUrl>https://github.com/EWSoftware/SHFB</projectUrl>
 		<iconUrl>https://raw.githubusercontent.com/EWSoftware/SHFB/master/NuGet/SHFB.png</iconUrl>
 		<description>This package contains the reflection data set for .NET Core, .NET Standard, and .NET 5.0 or later for use with the EWSoftware.SHFB package (version 2021.3.29 or later only).</description>
-		<copyright>Eric Woodruff (c) 2021</copyright>
+		<copyright>Eric Woodruff (c) 2021-2024</copyright>
 		<tags>SHFB sandcastle reflection information data set</tags>
 		<!-- A dependency on the EWSoftware.SHFB package would be good to have but unfortunately, adding one
 				 renders the package uninstallable because its "not compatible with any projects in the solution".

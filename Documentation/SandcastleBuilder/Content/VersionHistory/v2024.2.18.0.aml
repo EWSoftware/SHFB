@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="a4050331-ee69-42e2-8c84-2f3a9a890b13" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2024.2.18.0.  See the prior version release notes for information on the
+breaking changes made to the presentation styles implementation.</para>
+		</introduction>
+
+		<section address="BreakingChanges">
+			<title>Breaking Changes in This Release</title>
+			<content>
+				<alert class="important">
+					<para>If you have created custom build components, syntax generators, plug-ins, or presentation styles,
+you will need to rebuild them against the latest release of the help file builder NuGet packages.</para>
+				</alert>
+				
+				<list class="bullet">
+					<listItem>
+						<para>The Microsoft Learn cross-reference resolver service used to generate links to the online .NET
+Framework API topics is being shut down.  As such, this release replaces the resolver service with a code-based
+implementation that no longer requires an external service nor a persistent cache to store previously resolved
+URLs to online topics.  The removal of the persistent cache also allows it to work with more recent versions of
+the <localUri>dotnet build</localUri> tool that use a version of .NET that disables binary serialization.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added <codeInline>HasFooterContent</codeInline> and <codeInline>HasWebsiteAdContent</codeInline>
+properties to <codeInline>TopicTransformationCore</codeInline> to allow Build Assembler to indicate whether or
+not the current project contains those items.  If not, the transformation is free to remove any related elements
+to preserve page formatting and layout.</para>
+					</listItem>
+
+					<listItem>
+						<para>A couple of new transformation arguments were added as noted below.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+		
+		<section>
+			<title>Build Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed an issue with the MRefBuilder name matching.</para>
+					</listItem>
+				
+					<listItem>
+						<para>Added support for .NET 7 static interface members.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the syntax for finalizers in the C# and managed C++ syntax generators.</para>
+					</listItem>
+
+					<listItem>
+						<para>Private protected nested types are now excluded unless including internals.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section>
+			<title>Sandcastle Help File Builder</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Regenerated the .NET reflection data set to include .NET 8.0 members.  Also regenerated the
+.NET Framework data set to correct a few minor issues with implemented member information.</para>
+					</listItem>
+
+					<listItem>
+						<para>Made BE0060 an error instead of a warning since the vast majority of the time the problem does
+cause invalid Help 1 (CHM) file output even if the build succeeds.</para>
+					</listItem>
+
+					<listItem>
+						<para>Disabled Go To Definition on <codeInline>name</codeInline> attribute values.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section>
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Added a <codeInline>ShowParametersOnAllMethods</codeInline> transformation argument to all
+presentation styles to allow showing parameters on all methods, not just overloads, on member list pages.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Added an <codeInline>AlwaysShowTopLevelAutoOutline</codeInline> transformation argument to the
+Default 2022 presentation style to allow always showing the top-level auto-outlines regardless of the display
+size.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed all presentation styles so that they render a syntax section even if all syntax
+generators are disabled so that parameters, returns, and implements info is included in the topic.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added '+' to the list of version number separators so that Git commit IDs can be removed from
+<codeInline>AssemblyInformationalVersion</codeInline> attribute values by specifying a fixed number of version
+number parts to include.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the auto-outline element so that it hides the default lead-in text as well.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

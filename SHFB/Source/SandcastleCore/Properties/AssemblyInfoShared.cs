@@ -1,8 +1,8 @@
 //===============================================================================================================
 // System  : Sandcastle Tools
 // File    : AssemblyInfoShared.cs
-// Updated : 07/08/2023
-// Note    : Copyright 2006-2023, Microsoft Corporation, All rights reserved
+// Updated : 02/18/2024
+// Note    : Copyright 2006-2024, Microsoft Corporation, All rights reserved
 //
 // Sandcastle tools common assembly attributes.
 //
@@ -67,21 +67,21 @@ internal static partial class AssemblyInfo
     // This is used to set the assembly version in the strong name.  This should remain unchanged to maintain
     // binary compatibility with prior releases.  It should only be changed if a breaking change is made that
     // requires assemblies that reference older versions to be recompiled against the newer version.
-    public const string StrongNameVersion = "2022.12.30.0";
+    public const string StrongNameVersion = "2024.2.18.0";
 
     // Common assembly file version
     //
     // This is used to set the assembly file version.  This will change with each new release.  MSIs only
     // support a Major value between 0 and 255 so we drop the century from the year on this one.
-    public const string FileVersion = "23.7.8.0";
+    public const string FileVersion = "24.2.18.0";
 
     // Common product version
     //
     // This may contain additional text to indicate Alpha or Beta states.  The version number will always match
     // the file version above but includes the century on the year.
-    public const string ProductVersion = "2023.7.8.0";
+    public const string ProductVersion = "2024.2.18.0";
 
     // Assembly copyright information
-    public const string Copyright = "Copyright \xA9 2006-2023, Microsoft Corporation, All Rights Reserved.\r\n" +
-        "Portions Copyright \xA9 2006-2023, Eric Woodruff, All Rights Reserved.";
+    public const string Copyright = "Copyright \xA9 2006-2024, Microsoft Corporation, All Rights Reserved.\r\n" +
+        "Portions Copyright \xA9 2006-2024, Eric Woodruff, All Rights Reserved.";
 }
