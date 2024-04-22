@@ -261,7 +261,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // Save each part.  The letter is specified as an integer to allow for Unicode characters
             foreach(char letter in letters.Keys)
                 using(StreamWriter sw = new StreamWriter(String.Format(CultureInfo.InvariantCulture,
-                  $"{{0}}{Path.DirectorySeparatorChar}FTI_{1}.json", indexPath, (int)letter)))
+                  $"{{0}}{Path.DirectorySeparatorChar}FTI_{{1}}.json", indexPath, (int)letter)))
                 {
                     sw.Write(JsonSerializer.Serialize(letters[letter]));
                 }
