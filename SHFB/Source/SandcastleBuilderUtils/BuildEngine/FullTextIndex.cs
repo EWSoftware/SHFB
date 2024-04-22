@@ -38,6 +38,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Linq;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -130,7 +131,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             if(filePath == null)
                 throw new ArgumentNullException(nameof(filePath));
 
-            if(filePath[filePath.Length - 1] == '\\')
+            filePath = filePath.EnsurePlatformPathSeparators();
+            if(filePath[filePath.Length - 1] == Path.DirectorySeparatorChar)
                 rootPathLength = filePath.Length;
             else
                 rootPathLength = filePath.Length + 1;
@@ -259,7 +261,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // Save each part.  The letter is specified as an integer to allow for Unicode characters
             foreach(char letter in letters.Keys)
                 using(StreamWriter sw = new StreamWriter(String.Format(CultureInfo.InvariantCulture,
-                  "{0}\\FTI_{1}.json", indexPath, (int)letter)))
+                  $"{{0}}{Path.DirectorySeparatorChar}FTI_{1}.json", indexPath, (int)letter)))
                 {
                     sw.Write(JsonSerializer.Serialize(letters[letter]));
                 }

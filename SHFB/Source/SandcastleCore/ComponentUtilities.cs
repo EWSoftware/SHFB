@@ -677,7 +677,7 @@ namespace Sandcastle.Core
         /// </overloads>
         public static IEnumerable<XElement> XmlStreamAxis(string xmlFile, string elementName)
         {
-            using(XmlReader reader = XmlReader.Create(xmlFile, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore }))
+            using(XmlReader reader = XmlReader.Create(xmlFile.EnsurePlatformPathSeparators(), new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore }))
             {
                 while(reader.ReadToFollowing(elementName))
                     yield return (XElement)XNode.ReadFrom(reader);
@@ -698,7 +698,7 @@ namespace Sandcastle.Core
         {
             HashSet<string> elements = new HashSet<string>(elementNames);
 
-            using(XmlReader reader = XmlReader.Create(xmlFile, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore }))
+            using(XmlReader reader = XmlReader.Create(xmlFile.EnsurePlatformPathSeparators(), new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore }))
             {
                 reader.MoveToContent();
 

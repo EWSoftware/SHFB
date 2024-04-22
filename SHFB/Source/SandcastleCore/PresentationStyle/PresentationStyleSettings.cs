@@ -301,12 +301,12 @@ namespace Sandcastle.Core.PresentationStyle
             if(destPath == null)
                 throw new ArgumentNullException(nameof(destPath));
 
-            int idx = sourcePath.LastIndexOf('\\');
+            int idx = sourcePath.LastIndexOf(Path.DirectorySeparatorChar);
 
             string dirName = sourcePath.Substring(0, idx), fileSpec = sourcePath.Substring(idx + 1), filename;
 
-            if(destPath[destPath.Length - 1] != '\\')
-                destPath += @"\";
+            if(destPath[destPath.Length - 1] != Path.DirectorySeparatorChar)
+                destPath += Path.DirectorySeparatorChar;
 
             foreach(string name in Directory.EnumerateFiles(dirName, fileSpec))
             {
@@ -340,7 +340,7 @@ namespace Sandcastle.Core.PresentationStyle
                 // Ignore hidden folders as they may be under source control and are not wanted
                 foreach(string folder in Directory.EnumerateDirectories(dirName))
                     if((File.GetAttributes(folder) & FileAttributes.Hidden) != FileAttributes.Hidden)
-                        RecursiveCopy(folder + @"\*.*", destPath + folder.Substring(dirName.Length + 1) + @"\",
+                        RecursiveCopy(folder + $"{Path.DirectorySeparatorChar}*.*", destPath + folder.Substring(dirName.Length + 1) + Path.DirectorySeparatorChar,
                             progressReporter, templateFileExtensions, transformTemplate);
             }
         }

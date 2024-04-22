@@ -28,6 +28,7 @@ using System.Text.RegularExpressions;
 
 using SandcastleBuilder.Utils.BuildEngine;
 using SandcastleBuilder.Utils.BuildComponent;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.Utils
 {
@@ -100,6 +101,7 @@ namespace SandcastleBuilder.Utils
         {
             Encoding fileEnc;
             string content;
+            filename = filename.EnsurePlatformPathSeparators();
 
             using(StreamReader sr = new StreamReader(filename, encoding, true))
             {

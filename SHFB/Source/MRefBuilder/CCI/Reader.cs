@@ -1,4 +1,4 @@
-// Copyright © Microsoft Corporation.
+// Copyright ï¿½ Microsoft Corporation.
 // This source file is subject to the Microsoft Permissive License.
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
@@ -225,7 +225,7 @@ namespace System.Compiler.Metadata
             this.fileName = fileName;
             this.directory = System.IO.Path.GetDirectoryName(fileName);
             this.getDebugSymbols = getDebugInfo;
-            this.doNotLockFile = doNotLockFile;
+            this.doNotLockFile = doNotLockFile && RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
             this.useStaticCache = useStaticCache;
             this.preserveShortBranches = preserveShortBranches;
             //^ base();
@@ -236,7 +236,7 @@ namespace System.Compiler.Metadata
             this.localAssemblyCache = localAssemblyCache;
             this.directory = System.IO.Directory.GetCurrentDirectory();
             this.getDebugSymbols = getDebugInfo;
-            this.doNotLockFile = doNotLockFile;
+            this.doNotLockFile = doNotLockFile && RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
             this.useStaticCache = useStaticCache;
             this.preserveShortBranches = preserveShortBranches;
             //^ base();
@@ -266,8 +266,23 @@ namespace System.Compiler.Metadata
                     this.ReadFileIntoUnmanagedBuffer(inputStream);
                 }
             }
-            if (this.unmanagedBuffer == null)
-                this.tables = new MetadataReader(this.fileName); //Uses a memory map that locks the file
+
+            if(this.unmanagedBuffer == null)
+            {
+                if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    this.tables = new MetadataReader(this.fileName); //Uses a memory map that locks the file
+                }
+                else
+                {
+                    var buffer = File.ReadAllBytes(this.fileName);
+                    this.bufferLength = buffer.Length;
+                    this.unmanagedBuffer = new UnmanagedBuffer(buffer.Length);
+                    byte* pb = (byte*)this.unmanagedBuffer.Pointer;
+                    for(int i = 0; i < buffer.Length; i++) *pb++ = buffer[i];
+                    this.tables = new MetadataReader((byte*)this.unmanagedBuffer.Pointer, this.bufferLength);
+                }
+            }
             else
                 this.tables = new MetadataReader((byte*)this.unmanagedBuffer.Pointer, this.bufferLength);
 
@@ -1143,7 +1158,7 @@ nextModRef:     ;
 
                 //Probe the GAC
                 string gacLocation = null;
-                if (strongName != null)
+                if (strongName != null && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
                     //Look for the assembly in the system's Global Assembly Cache
                     gacLocation = GlobalAssemblyCache.GetLocation(assemblyReference);

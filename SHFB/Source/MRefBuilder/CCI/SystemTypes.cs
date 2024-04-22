@@ -151,7 +151,7 @@ namespace System.Compiler
                 // Odd case.  If mixing .NETFramework with .NET Standard 2+, it doesn't like using the
                 // netstandard assembly so defer to the full framework's mscorlib
                 if(dataSet.Platform == Sandcastle.Core.Reflection.PlatformType.DotNetFramework &&
-                  coreFile.IndexOf(@"ref\netstandard2", StringComparison.OrdinalIgnoreCase) != -1)
+                  coreFile.IndexOf($"ref{Path.DirectorySeparatorChar}netstandard2", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     continue;
                 }

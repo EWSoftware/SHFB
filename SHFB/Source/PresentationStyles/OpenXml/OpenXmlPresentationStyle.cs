@@ -65,7 +65,7 @@ namespace Sandcastle.PresentationStyles.OpenXml
             this.TopicTransformation = new OpenXmlTransformation(this.ResolvePath);
 
             // If relative, these paths are relative to the base path
-            this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";
+            this.BuildAssemblerConfiguration = $"Configuration{Path.DirectorySeparatorChar}BuildAssembler.config";
 
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, null, @"DocumentParts\*.*",
                 String.Empty, new[] { ".xml" } ));

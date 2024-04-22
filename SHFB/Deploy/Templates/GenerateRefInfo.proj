@@ -22,6 +22,13 @@
 		<OutputPath>.\</OutputPath>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
+
 	<!-- Import the common targets -->
 	<Import Project="$(MSBuildBinPath)\Microsoft.Common.targets" />
 

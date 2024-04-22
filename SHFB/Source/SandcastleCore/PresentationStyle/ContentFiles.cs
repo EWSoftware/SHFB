@@ -115,9 +115,9 @@ namespace Sandcastle.Core.PresentationStyle
             }
 
             this.HelpFileFormats = helpFileFormats;
-            this.BasePath = basePath;
-            this.SourcePathWildcard = sourcePath;
-            this.DestinationFolder = destination;
+            this.BasePath = basePath.EnsurePlatformPathSeparators();
+            this.SourcePathWildcard = sourcePath.EnsurePlatformPathSeparators();
+            this.DestinationFolder = destination.EnsurePlatformPathSeparators();
             this.TemplateFileExtensions = templateFileExtensions.ToList();
         }
         #endregion

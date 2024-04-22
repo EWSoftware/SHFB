@@ -100,7 +100,7 @@ namespace Sandcastle.Tools.BuildComponents
             string baseValue = saveNode.GetAttribute("base", String.Empty);
 
             if(!String.IsNullOrWhiteSpace(baseValue))
-                basePath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(baseValue));
+                basePath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(baseValue)).EnsurePlatformPathSeparators();
 
             string pathValue = saveNode.GetAttribute("path", String.Empty);
 
@@ -238,7 +238,7 @@ namespace Sandcastle.Tools.BuildComponents
                     xpath.SetContext(context);
 
                     // Evaluate the path
-                    path = document.CreateNavigator().Evaluate(xpath).ToString();
+                    path = document.CreateNavigator().Evaluate(xpath).ToString().EnsurePlatformPathSeparators();
 
                     if(basePath != null)
                         path = Path.Combine(basePath, path);

@@ -160,24 +160,24 @@ namespace SandcastleBuilder.Utils.BuildEngine
             if(destFolder == null)
                 throw new ArgumentNullException(nameof(destFolder));
 
-            if(sourceFolder.Length != 0 && sourceFolder[sourceFolder.Length - 1] != '\\')
-                sourceFolder += @"\";
+            if(sourceFolder.Length != 0 && sourceFolder[sourceFolder.Length - 1] != Path.DirectorySeparatorChar)
+                sourceFolder += Path.DirectorySeparatorChar;
 
-            if(destFolder.Length != 0 && destFolder[destFolder.Length - 1] != '\\')
-                destFolder += @"\";
+            if(destFolder.Length != 0 && destFolder[destFolder.Length - 1] != Path.DirectorySeparatorChar)
+                destFolder += Path.DirectorySeparatorChar;
 
             try
             {
                 // When reading the file, use the default encoding but detect the encoding if byte order marks
                 // are present.
-                templateText = Utility.ReadWithEncoding(sourceFolder + templateFile, ref enc);
+                templateText = Utility.ReadWithEncoding(Path.Combine(sourceFolder, templateFile), ref enc);
 
                 // Find and replace all substitution tags with a matching value from the project.  They can be
                 // nested.
                 while(reField.IsMatch(templateText))
                     templateText = reField.Replace(templateText, fieldMatchEval);
 
-                transformedFile = destFolder + templateFile;
+                transformedFile = Path.Combine(destFolder, templateFile);
 
                 // Write the file back out using its original encoding
                 using(StreamWriter sw = new StreamWriter(transformedFile, false, enc))

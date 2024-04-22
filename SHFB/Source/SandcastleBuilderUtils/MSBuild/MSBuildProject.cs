@@ -32,7 +32,7 @@ using System.Text.RegularExpressions;
 
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Exceptions;
-
+using Sandcastle.Core;
 using Sandcastle.Core.Reflection;
 
 namespace SandcastleBuilder.Utils.MSBuild
@@ -94,9 +94,9 @@ namespace SandcastleBuilder.Utils.MSBuild
                 // Give precedence to OutDir if defined.  Ignore ".\" as that's our default.
                 if(properties.TryGetValue(BuildItemMetadata.OutDir, out ProjectProperty prop))
                 {
-                    outputPath = prop.EvaluatedValue;
+                    outputPath = prop.EvaluatedValue.EnsurePlatformPathSeparators();
                   
-                    if(outputPath == @".\")
+                    if(outputPath == $".{Path.DirectorySeparatorChar}")
                         outputPath = null;
                     else
                     {
@@ -109,16 +109,16 @@ namespace SandcastleBuilder.Utils.MSBuild
                         {
                             outputPath = outputPath.Substring(0, outputPath.Length - 1);
 
-                            if(outputPath.LastIndexOf('\\') != -1)
+                            if(outputPath.LastIndexOf(Path.DirectorySeparatorChar) != -1)
                             {
-                                outputPath = outputPath.Substring(0, outputPath.LastIndexOf('\\'));
+                                outputPath = outputPath.Substring(0, outputPath.LastIndexOf(Path.DirectorySeparatorChar));
 
                                 // The ProjectName property can override the actual project name
                                 if(properties.TryGetValue(BuildItemMetadata.ProjectName, out prop))
                                     outputPath = Path.Combine(outputPath, prop.EvaluatedValue);
                                 else
                                     outputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(
-                                        this.ProjectFile.FullPath));
+                                        this.ProjectFile.FullPath.EnsurePlatformPathSeparators()));
 
                                 // If still not there, give up and go for the default
                                 if(!Directory.Exists(outputPath))
@@ -129,7 +129,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                 }
 
                 if(String.IsNullOrEmpty(outputPath) && properties.TryGetValue("OutputPath", out prop))
-                    outputPath = prop.EvaluatedValue;
+                    outputPath = prop.EvaluatedValue.EnsurePlatformPathSeparators();
 
                 if(!String.IsNullOrEmpty(outputPath))
                 {
@@ -246,7 +246,7 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                 if(properties.TryGetValue("DocumentationFile", out ProjectProperty prop))
                 {
-                    docFile = prop.EvaluatedValue;
+                    docFile = prop.EvaluatedValue.EnsurePlatformPathSeparators();
 
                     if(!String.IsNullOrEmpty(docFile))
                     {
@@ -261,7 +261,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                             {
                                 outputPath = prop.EvaluatedValue;
 
-                                if(outputPath == @".\")
+                                if(outputPath == $".{Path.DirectorySeparatorChar}")
                                     outputPath = null;
                                 else
                                 {
@@ -275,9 +275,9 @@ namespace SandcastleBuilder.Utils.MSBuild
                                     {
                                         outputPath = outputPath.Substring(0, outputPath.Length - 1);
 
-                                        if(outputPath.LastIndexOf('\\') != -1)
+                                        if(outputPath.LastIndexOf(Path.DirectorySeparatorChar) != -1)
                                         {
-                                            outputPath = outputPath.Substring(0, outputPath.LastIndexOf('\\'));
+                                            outputPath = outputPath.Substring(0, outputPath.LastIndexOf(Path.DirectorySeparatorChar));
 
                                             // The ProjectName property can override the actual project name
                                             if(properties.TryGetValue(BuildItemMetadata.ProjectName, out prop))
@@ -611,7 +611,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                     if(usesProjectSpecificOutput)
                     {
                         // The output directory will contain the SHFB project name so we need to remove it first
-                        if(outDir[outDir.Length - 1] == '\\')
+                        if(outDir[outDir.Length - 1] == Path.DirectorySeparatorChar)
                             outDir = outDir.Substring(0, outDir.Length - 1);
 
                         outDir = Path.Combine(Path.GetDirectoryName(outDir),

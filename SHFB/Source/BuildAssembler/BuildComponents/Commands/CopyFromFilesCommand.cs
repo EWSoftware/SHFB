@@ -51,7 +51,7 @@ namespace Sandcastle.Tools.BuildComponents.Commands
         public CopyFromFilesCommand(BuildComponentCore parent, string basePath, string fileXPath, string sourceXPath,
           string targetXPath) : base(parent, sourceXPath, targetXPath)
         {
-            this.BasePath = basePath;
+            this.BasePath = basePath.EnsurePlatformPathSeparators();
             this.SourceFile = XPathExpression.Compile(fileXPath);
         }
         #endregion
@@ -73,7 +73,7 @@ namespace Sandcastle.Tools.BuildComponents.Commands
             fileExpr.SetContext(context);
 
             string filename = (string)targetDocument.CreateNavigator().Evaluate(fileExpr);
-            string filePath = Path.Combine(this.BasePath, filename);
+            string filePath = Path.Combine(this.BasePath, filename.EnsurePlatformPathSeparators());
 
             if(File.Exists(filePath))
             {
