@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : OpenXmlFileGenerator.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/13/2022
-// Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
+// Updated : 05/30/2024
+// Note    : Copyright 2014-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to finish up creation of the Open XML file parts and compress the
 // help content into an Open XML document (a ZIP file with a .docx extension).
@@ -24,7 +24,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
@@ -34,6 +33,9 @@ using System.Xml;
 using System.Xml.Linq;
 
 using Sandcastle.Core;
+
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Metadata;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -80,6 +82,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         private readonly BuildProcess buildProcess;
         private readonly string workingFolder;
+
+        private static readonly string[] reorderRunProps = new[] { "rStyle", "rFonts", "b", "bCs", "i", "iCs", "caps",
+                "smallCaps", "strike", "dstrike", "outline", "shadow", "emboss", "imprint", "noProof",
+                "snapToGrid", "vanish", "webHidden", "color", "spacing", "w", "kern", "position", "sz", "szCs",
+                "highlight", "u", "effect", "bdr", "shd", "fitText", "vertAlign", "rtl", "cs", "em", "lang",
+                "eastAsianLayout", "specVanish", "oMath" };
+        private static readonly char[] hrefSeparators = new[] { ':', '/', '\\' };
 
         #endregion
 
@@ -963,11 +972,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             }
 
             // Ensure that the order of rPr children is correct
-            runProps = ReorderChildren(runProps, new[] { "rStyle", "rFonts", "b", "bCs", "i", "iCs", "caps",
-                "smallCaps", "strike", "dstrike", "outline", "shadow", "emboss", "imprint", "noProof",
-                "snapToGrid", "vanish", "webHidden", "color", "spacing", "w", "kern", "position", "sz", "szCs",
-                "highlight", "u", "effect", "bdr", "shd", "fitText", "vertAlign", "rtl", "cs", "em", "lang",
-                "eastAsianLayout", "specVanish", "oMath" });
+            runProps = ReorderChildren(runProps, reorderRunProps);
 
             // Add the run properties to each child run
             if(runProps.HasElements)
@@ -1135,7 +1140,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         }
                     }
 
-                    if(href.IndexOfAny(new[] { ':', '/', '\\' }) != -1)
+                    if(href.IndexOfAny(hrefSeparators) != -1)
                     {
                         // External link.  Add a relationship ID and track the id/URL pair.  These are stored in
                         // the relationships file.
@@ -1346,10 +1351,30 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     buildProcess.ReportWarning("BOF0002", "Unable to locate image file: {0}", imageFilename);
                 else
                 {
-                    using(Image image = Image.FromFile(imageFilename))
+                    using(var image = Image.Load(imageFilename))
                     {
-                        size.Width = image.Width / image.HorizontalResolution;
-                        size.Height = image.Height / image.VerticalResolution;
+                        switch(image.Metadata.ResolutionUnits)
+                        {
+                            case PixelResolutionUnit.AspectRatio:
+                                size.Width = image.Width;
+                                size.Height = image.Height;
+                                break;
+
+                            case PixelResolutionUnit.PixelsPerInch:
+                                size.Width = image.Width / (float)image.Metadata.HorizontalResolution;
+                                size.Height = image.Height / (float)image.Metadata.VerticalResolution;
+                                break;
+
+                            case PixelResolutionUnit.PixelsPerCentimeter:
+                                size.Width = image.Width / ((float)image.Metadata.HorizontalResolution * 2.54f);
+                                size.Height = image.Height / ((float)image.Metadata.VerticalResolution * 2.54f);
+                                break;
+
+                            case PixelResolutionUnit.PixelsPerMeter:
+                                size.Width = image.Width / ((float)image.Metadata.HorizontalResolution * 0.0254f);
+                                size.Height = image.Height / ((float)image.Metadata.VerticalResolution * 0.0254f);
+                                break;
+                        }
                     }
                 }
 
