@@ -417,8 +417,8 @@ namespace Sandcastle.Tools.BuildComponents
 
             // The syntax and style files must also exist.  The "copy" image URL is just a location and it
             // doesn't have to exist yet.
-            syntaxFile = Path.GetFullPath(syntaxFile);
-            styleFile = Path.GetFullPath(styleFile);
+            syntaxFile = Path.GetFullPath(syntaxFile).EnsurePlatformPathSeparators();
+            styleFile = Path.GetFullPath(styleFile).EnsurePlatformPathSeparators();
 
             if(!File.Exists(syntaxFile))
             {
@@ -434,8 +434,8 @@ namespace Sandcastle.Tools.BuildComponents
 
             if(!isOpenXml && !isMarkdown)
             {
-                stylesheet = Path.GetFullPath(stylesheet);
-                scriptFile = Path.GetFullPath(scriptFile);
+                stylesheet = Path.GetFullPath(stylesheet).EnsurePlatformPathSeparators();
+                scriptFile = Path.GetFullPath(scriptFile).EnsurePlatformPathSeparators();
 
                 if(!File.Exists(stylesheet))
                     throw new ArgumentException("Could not find style sheet file: " + stylesheet, nameof(configuration));
@@ -515,7 +515,7 @@ namespace Sandcastle.Tools.BuildComponents
                 // If the default transform is specified, switch to the Open XML version.  This can happen if
                 // the user adds the code block component to their project to override the default settings.
                 string defaultTransform = Path.Combine(Path.GetDirectoryName(asm.Location),
-                    @"Colorizer\highlight.xsl");
+                    $"Colorizer{Path.DirectorySeparatorChar}highlight.xsl");
 
                 if(styleFile.Equals(defaultTransform, StringComparison.OrdinalIgnoreCase))
                 {
@@ -778,11 +778,8 @@ namespace Sandcastle.Tools.BuildComponents
                     destStylesheet = Path.Combine(outputPath, stylesheetAttrPath.Replace("../", String.Empty));
                     destScriptFile = Path.Combine(outputPath, scriptFileAttrPath.Replace("../", String.Empty));
 
-                    if(Path.DirectorySeparatorChar != '/')
-                    {
-                        destStylesheet = destStylesheet.Replace('/', Path.DirectorySeparatorChar);
-                        destScriptFile = destScriptFile.Replace('/', Path.DirectorySeparatorChar);
-                    }
+                    destStylesheet = destStylesheet.EnsurePlatformPathSeparators();
+                    destScriptFile = destScriptFile.EnsurePlatformPathSeparators();
 
                     if(!Directory.Exists(Path.GetDirectoryName(destStylesheet)))
                         Directory.CreateDirectory(Path.GetDirectoryName(destStylesheet));

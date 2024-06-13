@@ -1,4 +1,4 @@
-﻿//===============================================================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : TaskRunner.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
@@ -23,6 +23,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -89,6 +90,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             this.MSBuildExePath = Path.Combine(ProjectCollection.GlobalProjectCollection.Toolsets.First(
                 t => t.ToolsVersion == latestToolsVersion).ToolsPath, "MSBuild.exe");
 
+            var dotnetExecutable = "dotnet" + (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ".exe" : String.Empty);
+
             // If invoked using dotnet.exe, it works differently.  If MSBuild.exe doesn't exist, search up the
             // folder tree looking for dotnet.exe.  If found, we know it's a .NET Core build and we'll use it
             // instead.
@@ -100,10 +103,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if(this.MSBuildExePath.Length < 5)
                     break;
 
-                this.MSBuildExePath = Path.Combine(this.MSBuildExePath, "dotnet.exe");
+                this.MSBuildExePath = Path.Combine(this.MSBuildExePath, dotnetExecutable);
             }
 
-            this.IsDotNetCoreBuild = this.MSBuildExePath.IndexOf("dotnet.exe", StringComparison.OrdinalIgnoreCase) != -1;
+            this.IsDotNetCoreBuild = this.MSBuildExePath.IndexOf(dotnetExecutable, StringComparison.OrdinalIgnoreCase) != -1;
         }
         #endregion
 
@@ -120,7 +123,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// systems.</remarks>
         public void RunProject(string projectFile, bool minimalOutput)
         {
-            this.Run(this.MSBuildExePath, projectFile, (this.IsDotNetCoreBuild ? "msbuild " : String.Empty) +
+            this.Run(this.MSBuildExePath, projectFile, (this.IsDotNetCoreBuild ? "build " : String.Empty) +
                 "/nologo /clp:NoSummary /v:" + (minimalOutput ? "m" : "n"));
         }
 

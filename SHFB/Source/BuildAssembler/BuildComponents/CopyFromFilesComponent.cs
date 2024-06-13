@@ -80,7 +80,7 @@ namespace Sandcastle.Tools.BuildComponents
                 if(String.IsNullOrWhiteSpace(basePath))
                     basePath = Environment.CurrentDirectory;
 
-                basePath = Environment.ExpandEnvironmentVariables(basePath);
+                basePath = Environment.ExpandEnvironmentVariables(basePath.EnsurePlatformPathSeparators());
 
                 if(!Directory.Exists(basePath))
                     this.WriteMessage(MessageLevel.Error, "The base directory '{0}' does not exist", basePath);

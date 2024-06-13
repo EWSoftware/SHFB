@@ -85,7 +85,7 @@ namespace Sandcastle.Tools.BuildComponents
                     this.WriteMessage(MessageLevel.Error, "Data elements must have a file attribute specifying " +
                         "a file from which to load data");
 
-                dataFile = Environment.ExpandEnvironmentVariables(dataFile);
+                dataFile = Environment.ExpandEnvironmentVariables(dataFile.EnsurePlatformPathSeparators());
 
                 string dataName = dataNode.GetAttribute("name", String.Empty);
 

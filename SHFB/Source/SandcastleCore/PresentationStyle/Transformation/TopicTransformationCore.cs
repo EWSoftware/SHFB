@@ -307,7 +307,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
             codeSnippetLanguageConversions = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             this.SupportedFormats = supportedFormats;
-            this.ResolvePath = resolvePath;
+            this.ResolvePath = s => resolvePath(s).EnsurePlatformPathSeparators();
 
             // Add language IDs used by the legacy colorizer and their highlight.js equivalents
             foreach(var (oldId, newId) in new[] {

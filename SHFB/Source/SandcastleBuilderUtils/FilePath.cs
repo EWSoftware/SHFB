@@ -30,6 +30,7 @@ using System.Xml.Serialization;
 using IOPath = System.IO.Path;
 
 using SandcastleBuilder.Utils.Design;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.Utils
 {
@@ -129,7 +130,7 @@ namespace SandcastleBuilder.Utils
                 }
                 else
                 {
-                    filePath = value.Trim();
+                    filePath = value.Trim().EnsurePlatformPathSeparators();
 
                     // Perform custom path resolution and expand environment
                     // variables for the rooted check.
@@ -583,7 +584,7 @@ namespace SandcastleBuilder.Utils
         public FilePath(string path, IBasePathProvider provider)
         {
             basePathProvider = provider;
-            this.Path = path;
+            this.Path = path.EnsurePlatformPathSeparators();
         }
 
         /// <summary>
@@ -595,7 +596,7 @@ namespace SandcastleBuilder.Utils
         public FilePath(string path, bool isFixed, IBasePathProvider provider)
         {
             basePathProvider = provider;
-            this.Path = path;
+            this.Path = path.EnsurePlatformPathSeparators();
             isFixedPath = isFixed;
         }
         #endregion
