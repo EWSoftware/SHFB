@@ -611,7 +611,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     if(t.TopicFile != null)
                     {
                         entry.SourceFile = new FilePath(t.TopicFile.FullPath, t.TopicFile.ContentFile.BasePathProvider);
-                        entry.DestinationFile = "html\\" + t.Id + ".htm";
+                        entry.DestinationFile = "html" + Path.DirectorySeparatorChar + t.Id + ".htm";
                     }
 
                     entry.Id = t.Id;

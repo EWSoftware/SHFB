@@ -54,7 +54,7 @@ namespace Sandcastle.PresentationStyles.Markdown
             this.TopicTransformation = new MarkdownTransformation(this.ResolvePath);
 
             // If relative, these paths are relative to the base path
-            this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";
+            this.BuildAssemblerConfiguration = $"Configuration{Path.DirectorySeparatorChar}BuildAssembler.config";
 
             // Note that UNIX based web servers may be case-sensitive with regard to folder and filenames so
             // match the case of the folder and filenames in the literals to their actual casing on the file

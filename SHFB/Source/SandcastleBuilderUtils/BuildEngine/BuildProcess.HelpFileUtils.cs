@@ -517,7 +517,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             if(destinationPath == null)
                 throw new ArgumentNullException(nameof(destinationPath));
 
-            int idx = sourcePath.LastIndexOf('\\');
+            sourcePath = sourcePath.EnsurePlatformPathSeparators();
+            int idx = sourcePath.LastIndexOf(Path.DirectorySeparatorChar);
 
             string dirName = sourcePath.Substring(0, idx), fileSpec = sourcePath.Substring(idx + 1), filename;
 
@@ -544,7 +545,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // Ignore hidden folders as they may be under source control and are not wanted
                 foreach(string folder in Directory.EnumerateDirectories(dirName))
                     if((File.GetAttributes(folder) & FileAttributes.Hidden) != FileAttributes.Hidden)
-                        this.RecursiveCopy(folder + @"\*.*", destinationPath + folder.Substring(dirName.Length + 1) + @"\",
+                        this.RecursiveCopy(folder + $"{Path.DirectorySeparatorChar}*.*", destinationPath + folder.Substring(dirName.Length + 1) + Path.DirectorySeparatorChar,
                             ref fileCount);
             }
         }
@@ -634,7 +635,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         private void GenerateWebsite()
         {
-            string webWorkingFolder = String.Format(CultureInfo.InvariantCulture, "{0}Output\\{1}",
+            string webWorkingFolder = String.Format(CultureInfo.InvariantCulture, $"{{0}}Output{Path.DirectorySeparatorChar}{{1}}",
                 workingFolder, HelpFileFormats.Website);
             int fileCount = 0;
 
@@ -647,7 +648,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 FullTextIndex index = new FullTextIndex(workingFolder + "StopWordList.txt", language);
                 index.CreateFullTextIndex(webWorkingFolder);
-                index.SaveIndex(webWorkingFolder + @"\fti\");
+                index.SaveIndex(webWorkingFolder + $"{Path.DirectorySeparatorChar}fti{Path.DirectorySeparatorChar}");
 
                 this.ExecutePlugIns(ExecutionBehaviors.After);
             }
@@ -660,7 +661,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             this.ExecutePlugIns(ExecutionBehaviors.Before);
 
             // Copy the help pages and related content
-            this.RecursiveCopy(webWorkingFolder + @"\*.*", outputFolder, ref fileCount);
+            this.RecursiveCopy(webWorkingFolder + $"{Path.DirectorySeparatorChar}*.*", outputFolder, ref fileCount);
             this.ReportProgress("Copied {0} files for the website content", fileCount);
 
             this.GatherBuildOutputFilenames();
@@ -680,7 +681,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 foreach(HelpFileFormats value in Enum.GetValues(typeof(HelpFileFormats)))
                     if((project.HelpFileFormat & value) != 0)
                         this.HelpFormatOutputFolders.Add(String.Format(CultureInfo.InvariantCulture,
-                            @"{0}Output\{1}\", workingFolder, value));
+                            $"{{0}}Output{Path.DirectorySeparatorChar}{{1}}{Path.DirectorySeparatorChar}", workingFolder, value));
             }
 
             foreach(string baseFolder in this.HelpFormatOutputFolders)
