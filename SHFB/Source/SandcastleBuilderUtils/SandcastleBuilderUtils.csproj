@@ -45,7 +45,7 @@
 		<PackageReference Include="Microsoft.Build.Framework" Version="15.1.548">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
-		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.8" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.9" />
 		<PackageReference Include="System.ComponentModel.Composition" Version="6.0.0" />
 		<PackageReference Include="System.Text.Json" Version="6.0.0" />
 	</ItemGroup>
