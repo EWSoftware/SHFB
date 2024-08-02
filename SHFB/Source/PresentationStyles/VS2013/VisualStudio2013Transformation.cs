@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/02/2024
+// Updated : 08/02/2024
 // Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -1861,142 +1861,170 @@ namespace Sandcastle.PresentationStyles.VS2013
             // Convert to this type so that we can access the argument shortcuts easily
             var thisTransform = (VisualStudio2013Transformation)transformation;
 
-            // Sort order is configurable for enumeration members
-            EnumMemberSortOrder enumMemberSortOrder = thisTransform.EnumMemberSortOrder;
+            var allMembers = transformation.ReferenceNode.Element("elements")?.Elements("element").ToList();
 
-            var elements = thisTransform.ReferenceNode.Element("elements")?.Elements("element").OrderBy(
-                el => enumMemberSortOrder == EnumMemberSortOrder.Name ?
+            if(allMembers == null)
+                return;
+
+            List<XElement> fieldMembers = new List<XElement>(), extensionsMethods = new List<XElement>();
+
+            // Enumerations can have extension methods which need to be rendered in a separate section
+            foreach(var m in allMembers)
+            {
+                XElement apiData = m.Element("apidata");
+
+                // Some members such as inherited interface members on a derived interface, contain no
+                // metadata and we'll ignore them.
+                if(apiData == null)
+                    continue;
+
+                if(Enum.TryParse<ApiMemberGroup>(apiData.Attribute("subgroup")?.Value, true, out var subgroup) &&
+                  subgroup == ApiMemberGroup.Field)
+                {
+                    fieldMembers.Add(m);
+                }
+                else
+                    extensionsMethods.Add(m);
+            }
+
+            if(fieldMembers.Count != 0)
+            {
+                // Sort order is configurable for enumeration members
+                EnumMemberSortOrder enumMemberSortOrder = thisTransform.EnumMemberSortOrder;
+
+                var elements = fieldMembers.OrderBy(el => enumMemberSortOrder == EnumMemberSortOrder.Name ?
                     el.Element("apidata").Attribute("name").Value :
                     el.Element("value").Value.PadLeft(20, ' ')).ToList();
 
-            if((elements?.Count ?? 0) == 0)
-                return;
-
-            var enumValues = elements.Select(e => e.Element("value").Value).ToList();
-            bool includeEnumValues = thisTransform.IncludeEnumValues;
-            int idx;
-
-            if(includeEnumValues)
-            {
-                EnumValueFormat enumFormat = thisTransform.FlagsEnumValueFormat;
-                int groupSize = 0, minWidth = 0;
-                bool signedValues = enumValues.Any(v => v.Length > 0 && v[0] == '-');
-
-                if(enumFormat != EnumValueFormat.IntegerValue &&
-                  thisTransform.ReferenceNode.AttributeOfType("T:System.FlagsAttribute") != null)
-                {
-                    groupSize = thisTransform.FlagsEnumSeparatorSize;
-
-                    if(groupSize != 0 && groupSize != 4 && groupSize != 8)
-                        groupSize = 0;
-
-                    // Determine the minimum width of the values
-                    if(signedValues)
-                    {
-                        minWidth = enumValues.Select(v => TopicTransformationExtensions.FormatSignedEnumValue(v,
-                            enumFormat, 0, 0)).Max(v => v.Length) - 2;
-                    }
-                    else
-                    {
-                        minWidth = enumValues.Select(v => TopicTransformationExtensions.FormatUnsignedEnumValue(v,
-                            enumFormat, 0, 0)).Max(v => v.Length) - 2;
-                    }
-
-                    if(minWidth < 3)
-                        minWidth = 2;
-                    else
-                    {
-                        if((minWidth % 4) != 0)
-                            minWidth += 4 - (minWidth % 4);
-                    }
-                }
-                else
-                    enumFormat = EnumValueFormat.IntegerValue;   // Enforce integer format for non-flags enums
-
-                for(idx = 0; idx < enumValues.Count; idx++)
-                {
-                    if(signedValues)
-                    {
-                        enumValues[idx] = TopicTransformationExtensions.FormatSignedEnumValue(enumValues[idx],
-                            enumFormat, minWidth, groupSize);
-                    }
-                    else
-                    {
-                        enumValues[idx] = TopicTransformationExtensions.FormatUnsignedEnumValue(enumValues[idx],
-                            enumFormat, minWidth, groupSize);
-                    }
-                }
-            }
-
-            var (title, content) = thisTransform.CreateSection(elements.First().GenerateUniqueId(), true,
-                "topicTitle_enumMembers", null);
-
-            thisTransform.CurrentElement.Add(title);
-            thisTransform.CurrentElement.Add(content);
-
-            XElement valueHeaderCell = null;
-
-            if(includeEnumValues)
-            {
-                valueHeaderCell = new XElement("th",
-                    new XElement("include", new XAttribute("item", "header_memberValue")));
-            }
-
-            var table = new XElement("table",
-                    new XAttribute("id", "enumMemberList"),
-                    new XAttribute("class", "members"),
-                new XElement("tr",
-                    new XElement("th",
-                        new XElement("include", new XAttribute("item", "header_memberName"))),
-                    valueHeaderCell,
-                    new XElement("th",
-                        new XElement("include", new XAttribute("item", "header_memberDescription")))));
-
-            content.Add(table);
-            idx = 0;
-
-            foreach(var e in elements)
-            {
-                var summaryCell = new XElement("td");
-
-                if(e.AttributeOfType("T:System.ObsoleteAttribute") != null)
-                {
-                    summaryCell.Add(new XElement("strong",
-                        new XElement("include", new XAttribute("item", "boilerplate_obsoleteShort"))),
-                        new XElement("br"));
-                }
-
-                XElement valueCell = null;
+                var enumValues = elements.Select(e => e.Element("value").Value).ToList();
+                bool includeEnumValues = thisTransform.IncludeEnumValues;
+                int idx;
 
                 if(includeEnumValues)
                 {
-                    valueCell = new XElement("td", enumValues[idx]);
-                    idx++;
+                    EnumValueFormat enumFormat = thisTransform.FlagsEnumValueFormat;
+                    int groupSize = 0, minWidth = 0;
+                    bool signedValues = enumValues.Any(v => v.Length > 0 && v[0] == '-');
+
+                    if(enumFormat != EnumValueFormat.IntegerValue &&
+                      thisTransform.ReferenceNode.AttributeOfType("T:System.FlagsAttribute") != null)
+                    {
+                        groupSize = thisTransform.FlagsEnumSeparatorSize;
+
+                        if(groupSize != 0 && groupSize != 4 && groupSize != 8)
+                            groupSize = 0;
+
+                        // Determine the minimum width of the values
+                        if(signedValues)
+                        {
+                            minWidth = enumValues.Select(v => TopicTransformationExtensions.FormatSignedEnumValue(v,
+                                enumFormat, 0, 0)).Max(v => v.Length) - 2;
+                        }
+                        else
+                        {
+                            minWidth = enumValues.Select(v => TopicTransformationExtensions.FormatUnsignedEnumValue(v,
+                                enumFormat, 0, 0)).Max(v => v.Length) - 2;
+                        }
+
+                        if(minWidth < 3)
+                            minWidth = 2;
+                        else
+                        {
+                            if((minWidth % 4) != 0)
+                                minWidth += 4 - (minWidth % 4);
+                        }
+                    }
+                    else
+                        enumFormat = EnumValueFormat.IntegerValue;   // Enforce integer format for non-flags enums
+
+                    for(idx = 0; idx < enumValues.Count; idx++)
+                    {
+                        if(signedValues)
+                        {
+                            enumValues[idx] = TopicTransformationExtensions.FormatSignedEnumValue(enumValues[idx],
+                                enumFormat, minWidth, groupSize);
+                        }
+                        else
+                        {
+                            enumValues[idx] = TopicTransformationExtensions.FormatUnsignedEnumValue(enumValues[idx],
+                                enumFormat, minWidth, groupSize);
+                        }
+                    }
                 }
 
-                table.Add(new XElement("tr",
-                    new XElement("td", e.Element("apidata").Attribute("name").Value),
-                    valueCell,
-                    summaryCell));
+                var (title, content) = thisTransform.CreateSection(elements.First().GenerateUniqueId(), true,
+                    "topicTitle_enumMembers", null);
 
-                var summary = e.Element("summary");
-                var remarks = e.Element("remarks");
+                thisTransform.CurrentElement.Add(title);
+                thisTransform.CurrentElement.Add(content);
 
-                if(summary != null || remarks != null)
+                XElement valueHeaderCell = null;
+
+                if(includeEnumValues)
                 {
-                    if(summary != null)
-                        thisTransform.RenderChildElements(summaryCell, summary.Nodes());
-
-                    // Enum members may have additional authored content in the remarks node
-                    if(remarks != null)
-                        thisTransform.RenderChildElements(summaryCell, remarks.Nodes());
+                    valueHeaderCell = new XElement("th",
+                        new XElement("include", new XAttribute("item", "header_memberValue")));
                 }
-                else
+
+                var table = new XElement("table",
+                        new XAttribute("id", "enumMemberList"),
+                        new XAttribute("class", "members"),
+                    new XElement("tr",
+                        new XElement("th",
+                            new XElement("include", new XAttribute("item", "header_memberName"))),
+                        valueHeaderCell,
+                        new XElement("th",
+                            new XElement("include", new XAttribute("item", "header_memberDescription")))));
+
+                content.Add(table);
+                idx = 0;
+
+                foreach(var e in elements)
                 {
-                    if(summaryCell.IsEmpty)
-                        summaryCell.Add(Element.NonBreakingSpace);
+                    var summaryCell = new XElement("td");
+
+                    if(e.AttributeOfType("T:System.ObsoleteAttribute") != null)
+                    {
+                        summaryCell.Add(new XElement("strong",
+                            new XElement("include", new XAttribute("item", "boilerplate_obsoleteShort"))),
+                            new XElement("br"));
+                    }
+
+                    XElement valueCell = null;
+
+                    if(includeEnumValues)
+                    {
+                        valueCell = new XElement("td", enumValues[idx]);
+                        idx++;
+                    }
+
+                    table.Add(new XElement("tr",
+                        new XElement("td", e.Element("apidata").Attribute("name").Value),
+                        valueCell,
+                        summaryCell));
+
+                    var summary = e.Element("summary");
+                    var remarks = e.Element("remarks");
+
+                    if(summary != null || remarks != null)
+                    {
+                        if(summary != null)
+                            thisTransform.RenderChildElements(summaryCell, summary.Nodes());
+
+                        // Enum members may have additional authored content in the remarks node
+                        if(remarks != null)
+                            thisTransform.RenderChildElements(summaryCell, remarks.Nodes());
+                    }
+                    else
+                    {
+                        if(summaryCell.IsEmpty)
+                            summaryCell.Add(Element.NonBreakingSpace);
+                    }
                 }
             }
+
+            if(extensionsMethods.Count != 0)
+                RenderApiTypeMemberLists(transformation);
         }
 
         /// <summary>
@@ -2119,6 +2147,10 @@ namespace Sandcastle.PresentationStyles.VS2013
             }
             else
                 memberGroups[ApiMemberGroup.Overload].AddRange(allMembers);
+
+            // When called for an enumeration's extension methods, ignore fields as they've already been rendered
+            if(transformation.ApiMember.ApiTopicSubgroup == ApiMemberGroup.Enumeration)
+                memberGroups[ApiMemberGroup.Field].Clear();
 
             // Render each section with at least one member
             foreach(var memberType in new[] { ApiMemberGroup.Constructor, ApiMemberGroup.Property,

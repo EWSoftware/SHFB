@@ -390,6 +390,10 @@ namespace TestDoc
         /// <code lang="sql" source="ExampleFiles\Test.sql" title="Whole SQL File" />
         /// <code lang="sql" source="ExampleFiles\Test.sql" region="SQL Snippet"
         ///   title="Test region from SQL file" />
+        /// <code lang="fs" source="ExampleFiles\FSharp.fs" region="sample"
+        ///   title="Test region from F# file using // comments" />
+        /// <code lang="fs" source="ExampleFiles\FSharp.fs" region="sample2"
+        ///   title="Test region from F# file using (* *) comments" />
         /// </example>
         protected internal virtual string ProtectedInternalMethod()
         {

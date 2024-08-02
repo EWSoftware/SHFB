@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/08/2022
-// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
+// Updated : 07/20/2024
+// Note    : Copyright 2006-2024, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to search for <code> XML comment tags and colorize the code
 // within them.  It can also include code from an external file or a region within the file.
@@ -942,15 +942,21 @@ namespace Sandcastle.Tools.BuildComponents
                 if(codeBlock.EndsWith("<!--", StringComparison.Ordinal))
                     codeBlock = codeBlock.Substring(0, codeBlock.Length - 4);
 
-                // C or SQL style commented #endregion statement
+                // C, F#, or SQL style commented #endregion statement
                 if(codeBlock.EndsWith("/*", StringComparison.Ordinal) ||
+                  codeBlock.EndsWith("//", StringComparison.Ordinal) ||
+                  codeBlock.EndsWith("(*", StringComparison.Ordinal) ||
                   codeBlock.EndsWith("--", StringComparison.Ordinal))
+                {
                     codeBlock = codeBlock.Substring(0, codeBlock.Length - 2);
+                }
 
                 // Batch file remark
                 if(codeBlock.EndsWith("REM", StringComparison.OrdinalIgnoreCase) && codeBlock.Length > 3 &&
                   (codeBlock[codeBlock.Length - 4] == '\r' || codeBlock[codeBlock.Length - 4] == '\n'))
+                {
                     codeBlock = codeBlock.Substring(0, codeBlock.Length - 3);
+                }
             }
 
             if(code.Attributes["removeRegionMarkers"] != null &&
