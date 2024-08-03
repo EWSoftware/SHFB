@@ -2,9 +2,9 @@
 // System  : Sandcastle Help File Builder
 // File    : presentationStyle.js
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/04/2023
-// Note    : Copyright 2014-2023, Eric Woodruff, All rights reserved
-//           Portions Copyright 2010-2023 Microsoft, All rights reserved
+// Updated : 08/02/2024
+// Note    : Copyright 2014-2024, Eric Woodruff, All rights reserved
+//           Portions Copyright 2010-2024 Microsoft, All rights reserved
 //
 // This file contains the methods necessary to implement the language filtering, collapsible section, and
 // copy to clipboard options.
@@ -568,13 +568,8 @@ function ParseKeywords(keywords)
     {
         checkWord = words[idx].toLowerCase();
 
-        if(checkWord.length >= 2)
-        {
-            var charCode = checkWord.charCodeAt(0);
-
-            if((charCode < 48 || charCode > 57) && $.inArray(checkWord, keywordList) === -1)
-                keywordList.push(checkWord);
-        }
+        if(checkWord.length >= 2 && $.inArray(checkWord, keywordList) === -1)
+            keywordList.push(checkWord);
     }
 
     return keywordList;

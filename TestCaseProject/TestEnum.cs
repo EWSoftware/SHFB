@@ -68,4 +68,53 @@ namespace TestDoc
         /// <summary>Four</summary>
         Four = 0x4
     }
+
+    /// <summary>
+    /// Test flags with large numbers for testing the separator formatting options
+    /// </summary>
+    [Serializable]
+    public enum TestEnumFormatting
+    {
+        /// <summary>One thousand</summary>
+        OneThousand = 1000,
+        /// <summary>Two thousand</summary>
+        TwoThousand = 2000,
+        /// <summary>Ten thousand</summary>
+        TenThousand = 10000,
+        /// <summary>One hundred thousand</summary>
+        OneHundredThousand = 100000,
+    }
+
+
+    /// <summary>
+    /// Test full text index with words containing digits
+    /// </summary>
+    [Serializable]
+    public enum Foo1
+    {
+        /// <summary>One thousand</summary>
+        OneThousand = 1000,
+        /// <summary>Two thousand</summary>
+        TwoThousand = 2000,
+        /// <summary>Ten thousand</summary>
+        TenThousand = 10000,
+        /// <summary>One hundred thousand</summary>
+        OneHundredThousand = 100000,
+    }
+
+    /// <summary>
+    /// Test full text index with words containing digits
+    /// </summary>
+    [Serializable]
+    public enum Foo2
+    {
+        /// <summary>One thousand</summary>
+        OneThousand = 1000,
+        /// <summary>Two thousand</summary>
+        TwoThousand = 2000,
+        /// <summary>Ten thousand</summary>
+        TenThousand = 10000,
+        /// <summary>One hundred thousand</summary>
+        OneHundredThousand = 100000,
+    }
 }

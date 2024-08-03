@@ -5,8 +5,8 @@
 // System  : Sandcastle Help File Builder
 // File    : SearchHelp.aspx
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/13/2022
-// Note    : Copyright 2007-202, Eric Woodruff, All rights reserved
+// Updated : 08/02/2024
+// Note    : Copyright 2007-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the code used to search for keywords within the help topics using the full-text index
 // files created by the help file builder.
@@ -119,7 +119,7 @@ private List<string> ParseKeywords(string keywords)
     {
         checkWord = word.ToLower(CultureInfo.InvariantCulture);
         
-        if(checkWord.Length >= 2 && !Char.IsDigit(checkWord[0]) && !keywordList.Contains(checkWord))
+        if(checkWord.Length >= 2 && !keywordList.Contains(checkWord))
             keywordList.Add(checkWord);
     }
 

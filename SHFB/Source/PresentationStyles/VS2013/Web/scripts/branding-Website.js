@@ -2,9 +2,9 @@
 // System  : Sandcastle Help File Builder
 // File    : branding-Website.js
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/13/2022
-// Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
-//           Portions Copyright 2014-2022 Sam Harwell, All rights reserved
+// Updated : 08/02/2024
+// Note    : Copyright 2014-2024, Eric Woodruff, All rights reserved
+//           Portions Copyright 2014-2024 Sam Harwell, All rights reserved
 //
 // This file contains the methods necessary to implement the lightweight TOC and search functionality.
 //
@@ -516,13 +516,8 @@ function ParseKeywords(keywords)
     {
         checkWord = words[idx].toLowerCase();
 
-        if(checkWord.length >= 2)
-        {
-            var charCode = checkWord.charCodeAt(0);
-
-            if((charCode < 48 || charCode > 57) && $.inArray(checkWord, keywordList) == -1)
-                keywordList.push(checkWord);
-        }
+        if(checkWord.length >= 2 && $.inArray(checkWord, keywordList) == -1)
+            keywordList.push(checkWord);
     }
 
     return keywordList;

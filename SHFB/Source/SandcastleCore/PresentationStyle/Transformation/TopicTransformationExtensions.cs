@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationExtensions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/08/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 08/02/2024
+// Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains various extension and utility methods for presentation styles
 //
@@ -327,7 +327,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                 return enumValue;
 
             if(format == EnumValueFormat.IntegerValue)
+            {
+                if(separatorGroupSize == 0)
+                    return enumValue;
+
                 return value.ToString("N0", CultureInfo.InvariantCulture);
+            }
 
             string formattedValue;
 
@@ -392,7 +397,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                 return enumValue;
 
             if(format == EnumValueFormat.IntegerValue)
+            {
+                if(separatorGroupSize == 0)
+                    return enumValue;
+
                 return value.ToString("N0", CultureInfo.InvariantCulture);
+            }
 
             string formattedValue;
 

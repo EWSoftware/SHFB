@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FullTextIndex.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/13/2022
-// Note    : Copyright 2007-2022, Eric Woodruff, All rights reserved
+// Updated : 08/02/2024
+// Note    : Copyright 2007-2024, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to create a full-text index used to search for topics in the ASP.NET web
 // pages.  It's a really basic implementation but should get the job done.
@@ -37,7 +37,6 @@ using System.Threading.Tasks;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
-using System.Linq;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -68,6 +67,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private static readonly Regex reCondenseWS = new Regex(@"\s+");
 
         private static readonly Regex reSplitWords = new Regex(@"\W");
+
+        private static readonly Regex reTopicContent = new Regex(@"<div id=""TopicContent"".*?(div|footer) " +
+            @"id=""(InThisArticleColumn|PageFooter).*?>", RegexOptions.Singleline);
 
         // Exclusion word list
         private readonly HashSet<string> exclusionWords;
@@ -121,8 +123,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// Create a full-text index from web pages found in the specified file path
         /// </summary>
         /// <param name="filePath">The path containing the files to index</param>
-        /// <remarks>Words in the exclusion list, those that are less than three characters long, and anything
-        /// starting with a digit will not appear in the index.</remarks>
+        /// <remarks>Words in the exclusion list and those that are less than two characters long will not appear
+        /// in the index.</remarks>
         public void CreateFullTextIndex(string filePath)
         {
             int rootPathLength;
@@ -152,6 +154,21 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 else
                     title = m.Groups["Title"].Value.Trim();
 
+                // Limit the indexed text to the page content if possible.  This avoids indexing things in the
+                // page header and footer that probably don't need to be in the index such as copyright text
+                // that appears on every page.
+                var contentMatch = reTopicContent.Match(content);
+
+                if(contentMatch.Success)
+                    content = contentMatch.Value;
+//#if DEBUG
+//                else
+//                {
+//                    // If it stops here, the regex needs updating or we should probably let the presentation
+//                    // style tell us how to find its content div.  For now, the layout is common.
+//                    System.Diagnostics.Debugger.Break();
+//                }
+//#endif
                 // Put some space between tags
                 content = content.Replace("><", "> <");
 
@@ -184,19 +201,18 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 var wordCounts = new Dictionary<string, int>();
 
-                // Get a list of all unique words and the number of time that they appear in this file.
-                // Exclude words that are less than two characters in length, start with a digit, or
-                // are in the common words exclusion list.
+                // Get a list of all unique words and the number of time that they appear in this file.  Exclude
+                // words that are less than two characters in length or are in the common words exclusion list.
                 foreach(string word in words)
                 {
-                    if(word.Length < 2 || exclusionWords.Contains(word) || word.Any(c => Char.IsDigit(c)))
-                        continue;
-
-                    // The number of times it occurs helps determine the ranking of the search results
-                    if(wordCounts.ContainsKey(word))
-                        wordCounts[word] += 1;
-                    else
-                        wordCounts.Add(word, 1);
+                    if(word.Length > 1 && !exclusionWords.Contains(word))
+                    {
+                        // The number of times it occurs helps determine the ranking of the search results
+                        if(wordCounts.ContainsKey(word))
+                            wordCounts[word] += 1;
+                        else
+                            wordCounts.Add(word, 1);
+                    }
                 }
 
                 // Shouldn't happen but just in case, ignore files with no usable words

@@ -158,23 +158,27 @@
     <TransformComponentArguments>
       <Argument Key="RobotsMetadata" Value="" />
       <Argument Key="BibliographyDataFile" Value="Bibliography.xml" />
-      <Argument Key="RootBreadcrumbTitleText" Value="SHFB Test" />
+      <Argument Key="RootBreadcrumbTitleText" Value="Docs" />
+      <Argument Key="ResizableTocColumn" Value="False" />
       <Argument Key="CollapsibleSections" Value="True" />
-      <Argument Key="LogoFile" Value="Sandcastle.jpg" />
-      <Argument Key="LogoHeight" Value="32" />
+      <Argument Key="LogoFile" Value="" />
+      <Argument Key="LogoHeight" Value="" />
       <Argument Key="LogoWidth" Value="" />
-      <Argument Key="LogoAltText" Value="Test logo" />
+      <Argument Key="LogoAltText" Value="" />
       <Argument Key="LogoPlacement" Value="Left" />
-      <Argument Key="LogoAlignment" Value="Right" />
-      <Argument Key="LogoUrl" Value="https://github.com/EWSoftware/SHFB" />
+      <Argument Key="LogoAlignment" Value="Left" />
+      <Argument Key="LogoUrl" Value="" />
       <Argument Key="MaxVersionParts" Value="" />
       <Argument Key="DefaultLanguage" Value="cs" />
       <Argument Key="IncludeEnumValues" Value="True" />
       <Argument Key="EnumMemberSortOrder" Value="Value" />
       <Argument Key="FlagsEnumValueFormat" Value="HexValue" />
       <Argument Key="FlagsEnumSeparatorSize" Value="4" />
+      <Argument Key="IncludeIntegerEnumSeparators" Value="false" />
       <Argument Key="BaseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/TestCaseProject/" />
-      <Argument Key="RequestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" />
+      <Argument Key="RequestExampleUrl" Value="" />
+      <Argument Key="ShowParametersOnAllMethods" Value="False" />
+      <Argument Key="AlwaysShowTopLevelAutoOutline" Value="False" />
     </TransformComponentArguments>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>True</NamespaceGrouping>

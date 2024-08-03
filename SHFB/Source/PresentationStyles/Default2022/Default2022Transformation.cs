@@ -164,6 +164,12 @@ namespace Sandcastle.PresentationStyles.Default2022
             out int groupSize) ? groupSize : 0;
 
         /// <summary>
+        /// Include separators for integer enumeration values
+        /// </summary>
+        private bool IncludeIntegerEnumSeparators => Boolean.TryParse(this.TransformationArguments[nameof(IncludeIntegerEnumSeparators)].Value,
+            out bool includeSeparators) && includeSeparators;
+
+        /// <summary>
         /// Base source code URL
         /// </summary>
         private string BaseSourceCodeUrl => this.TransformationArguments[nameof(BaseSourceCodeUrl)].Value;
@@ -263,6 +269,8 @@ namespace Sandcastle.PresentationStyles.Default2022
                     "The separator group size for flags enumeration values (0, 4, or 8).  This determines where " +
                     "separators are placed in the formatted value (e.g. 0b0000_0000, 0x1234_ABCD).  If set to " +
                     "zero, no separators will be inserted."),
+                new TransformationArgument(nameof(IncludeIntegerEnumSeparators), false, true, "true",
+                    "Set this to true to include separators in integer enumeration values (1,000 vs 1000)."),
                 new TransformationArgument(nameof(BaseSourceCodeUrl), false, true, null,
                     "If you set the Source Code Base Path property in the Paths category, specify the URL to " +
                     "the base source code folder on your project's website here.  Some examples for GitHub are " +
@@ -1679,7 +1687,7 @@ $("".toggleSection"").keypress(function () {
                 if(includeEnumValues)
                 {
                     EnumValueFormat enumFormat = thisTransform.FlagsEnumValueFormat;
-                    int groupSize = 0, minWidth = 0;
+                    int groupSize = thisTransform.IncludeIntegerEnumSeparators ? 3 : 0, minWidth = 0;
                     bool signedValues = enumValues.Any(v => v.Length > 0 && v[0] == '-');
 
                     if(enumFormat != EnumValueFormat.IntegerValue &&
