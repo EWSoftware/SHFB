@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/20/2024
+// Updated : 08/30/2024
 // Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -293,7 +293,7 @@ namespace Sandcastle.PresentationStyles.Default2022
                 new TransformationArgument(nameof(AlwaysShowTopLevelAutoOutline), true, false, "False",
                     "If false, the default, top-level auto-outlines are hidden unless the display is small " +
                     "enough (typically mobile displays).  If set to true, top-level auto-outlines are always " +
-                    "shown regardless of the display size.")
+                    "shown regardless of the display size and the In This Article section is hidden.")
             });
         }
 
@@ -2400,7 +2400,7 @@ $("".toggleSection"").keypress(function () {
             var inThisArticleMenu = body.Descendants("ul").FirstOrDefault(
                 u => u.Attribute("id")?.Value == "InThisArticleMenu");
 
-            if(inThisArticleMenu == null)
+            if(inThisArticleMenu == null || this.AlwaysShowTopLevelAutoOutline)
                 return;
 
             var parent = inThisArticleMenu;
