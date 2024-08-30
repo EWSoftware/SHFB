@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Namespaces.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/13/2022
-// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
+// Updated : 08/30/2024
+// Note    : Copyright 2006-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the code used to generate the namespace summary file and to purge the unwanted namespaces
 // from the reflection information file.
@@ -159,11 +159,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             }
             catch(Exception ex)
             {
-                // Eat the error in a partial build so that the user can get into the namespace comments editor
-                // to fix it.
-                if(this.PartialBuildType != PartialBuildType.None)
-                    throw new BuilderException("BE0012", String.Format(CultureInfo.CurrentCulture,
-                        "Error generating namespace summaries (Namespace = {0}): {1}", nsName, ex.Message), ex);
+                throw new BuilderException("BE0012", String.Format(CultureInfo.CurrentCulture,
+                    "Error generating namespace summaries (Namespace = {0}): {1}", nsName, ex.Message), ex);
             }
 
             this.ExecutePlugIns(ExecutionBehaviors.After);
@@ -280,10 +277,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     var reflection = source.CreateNavigator().SelectSingleNode("reflection");
 
                     // Copy assembly elements
-                    var assemblies = reflection.SelectSingleNode("assemblies");
-
-                    if(assemblies != null)
-                        assemblies.WriteSubtree(xw);
+                    reflection.SelectSingleNode("assemblies")?.WriteSubtree(xw);
 
                     // Copy the API elements and track all of the namespace elements
                     xw.WriteStartElement("apis");
