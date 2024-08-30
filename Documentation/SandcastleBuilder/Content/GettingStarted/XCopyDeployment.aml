@@ -64,6 +64,21 @@ will be used.</para>
 additional tools and components to be installed.  If these tools and components are missing on the build server,
 the help file build will fail.  Only the MS Help Viewer, Open XML, website, and markdown help file formats are
 guaranteed to work as they have no external tool dependencies.</para>
+
+					<para>It is possible to install the tools and the Help 1 compiler in Docker.  See the following online
+topics for more information:
+<externalLink>
+						<linkText>Installation in Docker Image</linkText>
+						<linkAlternateText>Installation in Docker Image</linkAlternateText>
+						<linkUri>https://github.com/EWSoftware/SHFB/issues/1017#issuecomment-2106312821</linkUri>
+						<linkTarget>_blank</linkTarget>
+					</externalLink> and <externalLink>
+						<linkText>Install current HTML Help 1 Compiler for Client, Server or Docker image</linkText>
+						<linkAlternateText>Install current HTML Help 1 Compiler for Client, Server or Docker image</linkAlternateText>
+						<linkUri>https://github.com/EWSoftware/SHFB/issues/1060</linkUri>
+						<linkTarget>_blank</linkTarget>
+					</externalLink>.
+				</para>
 				</alert>
 
 			</content>

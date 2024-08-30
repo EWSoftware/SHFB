@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : PackageReferenceResolver.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/27/2022
-// Note    : Copyright 2017-2022, Eric Woodruff, All rights reserved
+// Updated : 08/09/2024
+// Note    : Copyright 2017-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to resolve PackageReference elements in MSBuild project files
 //
@@ -45,6 +45,8 @@ namespace SandcastleBuilder.Utils.MSBuild
         private JsonProperty? packages;
         private string projectFilename;
         private string[] nugetPackageFolders;
+
+        private static readonly char[] separator = new[] { ';' };
 
         #endregion
 
@@ -182,10 +184,13 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                             foreach(var reference in project.GetItems("PackageReference"))
                             {
+                                // If central package management is used, there may not be a version
                                 var version = reference.Metadata.FirstOrDefault(m => m.Name == "Version");
 
                                 if(version != null)
                                     packageReferences.Add(reference.EvaluatedInclude + "/" + version.EvaluatedValue);
+                                else
+                                    packageReferences.Add(reference.EvaluatedInclude);
                             }
                         }
                         else
@@ -279,7 +284,7 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                 if(!String.IsNullOrWhiteSpace(defaultImplicitPackages) && !String.IsNullOrWhiteSpace(targetingPackRoot))
                 {
-                    foreach(string package in defaultImplicitPackages.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+                    foreach(string package in defaultImplicitPackages.Split(separator, StringSplitOptions.RemoveEmptyEntries))
                     {
                         string rootPath = Path.Combine(targetingPackRoot, package);
 
@@ -325,7 +330,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <param name="referencesToResolve">The package references to resolve</param>
         /// <returns>An enumerable list of assembly names.</returns>
         /// <remarks>If a package has dependencies, those will be resolved and returned as well</remarks>
-        private IEnumerable<string> ResolvePackageReferencesInternal(IEnumerable<string> referencesToResolve)
+        private HashSet<string> ResolvePackageReferencesInternal(IEnumerable<string> referencesToResolve)
         {
             HashSet<string> references = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
@@ -359,6 +364,23 @@ namespace SandcastleBuilder.Utils.MSBuild
                                 resolvedDependencies.Add(packageName);
                                 match = m;
                                 break;
+                            }
+                        }
+
+                        // If central package management is used, the references might not contain a version so
+                        // try to get the first package matching the given name alone.
+                        if(match == null && packageName.IndexOf('/') == -1)
+                        {
+                            foreach(var pr in packages.Value.Value.EnumerateObject())
+                            {
+                                if(pr.Name.StartsWith(packageName, StringComparison.OrdinalIgnoreCase) &&
+                                  packages.Value.Value.TryGetProperty(pr.Name, out m))
+                                {
+                                    packageName = pr.Name;
+                                    resolvedDependencies.Add(packageName);
+                                    match = m;
+                                    break;
+                                }
                             }
                         }
                     }
