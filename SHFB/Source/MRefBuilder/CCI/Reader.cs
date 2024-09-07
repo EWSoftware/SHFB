@@ -9,6 +9,7 @@
 // 08/23/2016 - EFW - Added support for reading source code context from PDB files
 // 11/24/2019 - EFW - Fixed incorrect handling of missing security attributes
 // 03/15/2021 - EFW - Added support for reading portable PDB files for source context information
+// 09/07/2024 - EFW - Fixed handling of reference assemblies to give precedence to those specified in the project
 
 // Ignore Spelling: typelib mscorlib vararg Struct param
 
@@ -980,6 +981,7 @@ nextModRef:     ;
             }
             return null;
         }
+
         internal AssemblyNode/*!*/ GetAssemblyFromReference(AssemblyReference/*!*/ assemblyReference)
         {
             lock(this)
@@ -998,6 +1000,7 @@ nextModRef:     ;
                     if (cachedValue == null)
                     {
                         cachedValue = this.localAssemblyCache[assemblyReference.Name];
+
                         if (cachedValue != null && assemblyReference.Location != null)
                             this.localAssemblyCache[assemblyReference.Location] = cachedValue;
                     }
@@ -1005,71 +1008,100 @@ nextModRef:     ;
                 else
                 {
                     strongName = assemblyReference.StrongName;
+
                     if (this.useStaticCache)
                     {
-                        //See if reference is to an assembly that lives in the GAC.
+                        // See if reference is to an assembly that lives in the GAC.
                         if (assemblyReference.Location != null)
                             cachedValue = Reader.StaticAssemblyCache[assemblyReference.Location];
+
                         if (cachedValue == null)
                             cachedValue = Reader.StaticAssemblyCache[strongName];
                     }
+
                     if (cachedValue == null)
                         cachedValue = this.localAssemblyCache[strongName];
                 }
+
                 if (cachedValue == null)
                 {
-                    //See if assembly is a platform assembly (and apply unification)
-                    AssemblyReference aRef = (AssemblyReference)TargetPlatform.AssemblyReferenceFor[Identifier.For(assemblyReference.Name).UniqueIdKey];
-                    if (aRef != null && assemblyReference.Version != null && aRef.Version >= assemblyReference.Version && aRef.MatchesIgnoringVersion(assemblyReference))
+                    // EFW - If we have a module and its assembly cache contains the reference, use that instead
+                    // of anything matched in the target platform.  This avoids conflicts between different
+                    // versions of assemblies in the platform cache and the project.
+                    if(this.module?.Resolve(assemblyReference) == null)
                     {
-                        AssemblyNode platformAssembly = aRef.assembly;
-                        if (platformAssembly == null)
+                        // See if assembly is a platform assembly (and apply unification)
+                        AssemblyReference aRef = (AssemblyReference)TargetPlatform.AssemblyReferenceFor[Identifier.For(assemblyReference.Name).UniqueIdKey];
+
+                        if(aRef != null && assemblyReference.Version != null &&
+                          aRef.Version >= assemblyReference.Version && aRef.MatchesIgnoringVersion(assemblyReference))
                         {
-                            Debug.Assert(aRef.Location != null);
-                            platformAssembly = AssemblyNode.GetAssembly(aRef.Location, this.doNotLockFile, this.getDebugSymbols, this.useStaticCache);
-                        }
-                        if (platformAssembly != null)
-                        {
-                            if (strongName == null) strongName = assemblyReference.Name;
-                            lock (Reader.StaticAssemblyCache)
+                            AssemblyNode platformAssembly = aRef.assembly;
+
+                            if(platformAssembly == null)
                             {
-                                if (aRef.Location != null)
-                                    Reader.StaticAssemblyCache[aRef.Location] = platformAssembly;
-                                Reader.StaticAssemblyCache[strongName] = platformAssembly;
+                                Debug.Assert(aRef.Location != null);
+                                platformAssembly = AssemblyNode.GetAssembly(aRef.Location, this.doNotLockFile, this.getDebugSymbols, this.useStaticCache);
                             }
-                            return aRef.assembly = platformAssembly;
+
+                            if(platformAssembly != null)
+                            {
+                                if(strongName == null)
+                                    strongName = assemblyReference.Name;
+
+                                lock(Reader.StaticAssemblyCache)
+                                {
+                                    if(aRef.Location != null)
+                                        Reader.StaticAssemblyCache[aRef.Location] = platformAssembly;
+
+                                    Reader.StaticAssemblyCache[strongName] = platformAssembly;
+                                }
+
+                                return aRef.assembly = platformAssembly;
+                            }
                         }
                     }
                 }
-                AssemblyNode assembly = cachedValue as AssemblyNode;
-                if (assembly != null) goto done;
 
-                //No cached assembly and no cached reader for this assembly. Look for a resolver.
+                AssemblyNode assembly = cachedValue as AssemblyNode;
+
+                if (assembly != null)
+                    goto done;
+
+                // No cached assembly and no cached reader for this assembly. Look for a resolver.
                 if (this.module != null)
                 {
                     assembly = this.module.Resolve(assemblyReference);
+
                     if (assembly != null)
                     {
                         if (strongName == null)
                         {
                             this.localAssemblyCache[assembly.Name] = assembly;
-                            if (assembly.Location != null) this.localAssemblyCache[assembly.Location] = assembly;
+
+                            if (assembly.Location != null)
+                                this.localAssemblyCache[assembly.Location] = assembly;
                         }
                         else
                         {
-                            if (CoreSystemTypes.SystemAssembly != null && CoreSystemTypes.SystemAssembly.Name == assembly.Name) return CoreSystemTypes.SystemAssembly;
+                            if (CoreSystemTypes.SystemAssembly != null && CoreSystemTypes.SystemAssembly.Name == assembly.Name)
+                                return CoreSystemTypes.SystemAssembly;
+
                             lock (Reader.StaticAssemblyCache)
                             {
                                 if (this.useStaticCache)
                                 {
                                     if (assembly.Location != null)
                                         Reader.StaticAssemblyCache[assembly.Location] = assembly;
+
                                     Reader.StaticAssemblyCache[strongName] = assembly;
                                 }
                                 else
                                 {
                                     this.localAssemblyCache[strongName] = assembly;
-                                    if (assembly.Location != null) this.localAssemblyCache[assembly.Location] = assembly;
+                                    
+                                    if (assembly.Location != null)
+                                        this.localAssemblyCache[assembly.Location] = assembly;
                                 }
                             }
                         }
@@ -1077,81 +1109,115 @@ nextModRef:     ;
                     }
                 }
 
-                //Look for an assembly with the given name in the same directory as the referencing module
+                // Look for an assembly with the given name in the same directory as the referencing module
                 if (this.directory != null)
                 {
-                    string fileName = System.IO.Path.Combine(this.directory, assemblyReference.Name + ".dll");
-                    if (System.IO.File.Exists(fileName))
+                    string fileName = Path.Combine(this.directory, assemblyReference.Name + ".dll");
+
+                    if (File.Exists(fileName))
                     {
                         assembly = AssemblyNode.GetAssembly(fileName, this.localAssemblyCache, this.doNotLockFile, this.getDebugSymbols, this.useStaticCache);
+
                         if (assembly != null)
                         {
-                            if (strongName == null) goto cacheIt; //found something
-                            //return assembly only if it matches the strong name of the reference
-                            if (assemblyReference.Matches(assembly.Name, assembly.Version, assembly.Culture, assembly.PublicKeyToken)) goto cacheIt;
+                            if (strongName == null)
+                                goto cacheIt;
+
+                            // Return assembly only if it matches the strong name of the reference
+                            if (assemblyReference.Matches(assembly.Name, assembly.Version, assembly.Culture, assembly.PublicKeyToken))
+                                goto cacheIt;
                         }
                     }
-                    fileName = System.IO.Path.Combine(this.directory, assemblyReference.Name + ".exe");
-                    if (System.IO.File.Exists(fileName))
+
+                    fileName = Path.Combine(this.directory, assemblyReference.Name + ".exe");
+
+                    if (File.Exists(fileName))
                     {
                         assembly = AssemblyNode.GetAssembly(fileName, this.localAssemblyCache, this.doNotLockFile, this.getDebugSymbols, this.useStaticCache);
+
                         if (assembly != null)
                         {
-                            if (strongName == null) goto cacheIt; //found something
-                            //return assembly only if it matches the strong name of the reference
-                            if (assemblyReference.Matches(assembly.Name, assembly.Version, assembly.Culture, assembly.PublicKeyToken)) goto cacheIt;
+                            if (strongName == null)
+                                goto cacheIt;
+                            
+                            // Return assembly only if it matches the strong name of the reference
+                            if (assemblyReference.Matches(assembly.Name, assembly.Version, assembly.Culture, assembly.PublicKeyToken))
+                                goto cacheIt;
                         }
                     }
-                    fileName = System.IO.Path.Combine(this.directory, assemblyReference.Name + ".ill");
-                    if (System.IO.File.Exists(fileName))
+
+                    fileName = Path.Combine(this.directory, assemblyReference.Name + ".ill");
+
+                    if (File.Exists(fileName))
                     {
                         assembly = AssemblyNode.GetAssembly(fileName, this.localAssemblyCache, this.doNotLockFile, this.getDebugSymbols, this.useStaticCache);
+
                         if (assembly != null)
                         {
-                            if (strongName == null) goto cacheIt; //found something
-                            //return assembly only if it matches the strong name of the reference
-                            if (assemblyReference.Matches(assembly.Name, assembly.Version, assembly.Culture, assembly.PublicKeyToken)) goto cacheIt;
+                            if (strongName == null)
+                                goto cacheIt;
+                            
+                            // Return assembly only if it matches the strong name of the reference
+                            if (assemblyReference.Matches(assembly.Name, assembly.Version, assembly.Culture, assembly.PublicKeyToken))
+                                goto cacheIt;
                         }
                     }
                 }
-                //Look for an assembly in the same directory as the application using Reader.
+
+                // Look for an assembly in the same directory as the application using Reader.
                 {
-                    string fileName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, assemblyReference.Name + ".dll");
-                    if (System.IO.File.Exists(fileName))
+                    string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, assemblyReference.Name + ".dll");
+
+                    if (File.Exists(fileName))
                     {
                         assembly = AssemblyNode.GetAssembly(fileName, this.localAssemblyCache, this.doNotLockFile, this.getDebugSymbols, this.useStaticCache);
+
                         if (assembly != null)
                         {
-                            if (strongName == null) goto cacheIt; //found something
-                            //return assembly only if it matches the strong name of the reference
-                            if (assemblyReference.Matches(assembly.Name, assembly.Version, assembly.Culture, assembly.PublicKeyToken)) goto cacheIt;
+                            if (strongName == null)
+                                goto cacheIt;
+
+                            // Return assembly only if it matches the strong name of the reference
+                            if (assemblyReference.Matches(assembly.Name, assembly.Version, assembly.Culture, assembly.PublicKeyToken))
+                                goto cacheIt;
                         }
                     }
-                    fileName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, assemblyReference.Name + ".exe");
-                    if (System.IO.File.Exists(fileName))
+
+                    fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, assemblyReference.Name + ".exe");
+
+                    if (File.Exists(fileName))
                     {
                         assembly = AssemblyNode.GetAssembly(fileName, this.localAssemblyCache, this.doNotLockFile, this.getDebugSymbols, this.useStaticCache);
+
                         if (assembly != null)
                         {
-                            if (strongName == null) goto cacheIt; //found something
-                            //return assembly only if it matches the strong name of the reference
-                            if (assemblyReference.Matches(assembly.Name, assembly.Version, assembly.Culture, assembly.PublicKeyToken)) goto cacheIt;
+                            if (strongName == null)
+                                goto cacheIt;
+
+                            // Return assembly only if it matches the strong name of the reference
+                            if (assemblyReference.Matches(assembly.Name, assembly.Version, assembly.Culture, assembly.PublicKeyToken))
+                                goto cacheIt;
                         }
                     }
                 }
+                
                 assembly = null;
 
-                //Probe the GAC
+                // Probe the GAC
                 string gacLocation = null;
+
                 if (strongName != null)
                 {
                     //Look for the assembly in the system's Global Assembly Cache
                     gacLocation = GlobalAssemblyCache.GetLocation(assemblyReference);
-                    if (gacLocation != null && gacLocation.Length == 0) gacLocation = null;
+
+                    if (gacLocation != null && gacLocation.Length == 0)
+                        gacLocation = null;
 
                     if (gacLocation != null)
                     {
                         assembly = AssemblyNode.GetAssembly(gacLocation, this.useStaticCache ? Reader.StaticAssemblyCache : this.localAssemblyCache, this.doNotLockFile, this.getDebugSymbols, this.useStaticCache);
+
                         if (assembly != null)
                         {
                             lock (Reader.StaticAssemblyCache)
@@ -1171,39 +1237,54 @@ nextModRef:     ;
                     }
                 }
                 goto done;
+
             cacheIt:
                 if (strongName == null)
                 {
                     this.localAssemblyCache[assembly.Name] = assembly;
-                    if (assembly.Location != null) this.localAssemblyCache[assembly.Location] = assembly;
+
+                    if (assembly.Location != null)
+                        this.localAssemblyCache[assembly.Location] = assembly;
                 }
                 else
                 {
                     this.localAssemblyCache[strongName] = assembly;
-                    if (assembly.Location != null) this.localAssemblyCache[assembly.Location] = assembly;
+
+                    if (assembly.Location != null)
+                        this.localAssemblyCache[assembly.Location] = assembly;
                 }
+
             done:
                 if (assembly != null)
                     assembly.InitializeAssemblyReferenceResolution(this.module);
-                if (assembly == null)
+                else
                 {
                     if (this.module != null)
                     {
                         assembly = this.module.ResolveAfterProbingFailed(assemblyReference);
-                        if (assembly != null) goto cacheIt;
+
+                        if (assembly != null)
+                            goto cacheIt;
+                        
                         HandleError(this.module, String.Format(CultureInfo.CurrentCulture, ExceptionStrings.AssemblyReferenceNotResolved, assemblyReference.StrongName));
                     }
-                    assembly = new AssemblyNode();
-                    assembly.Culture = assemblyReference.Culture;
-                    assembly.Name = assemblyReference.Name;
-                    assembly.PublicKeyOrToken = assemblyReference.PublicKeyOrToken;
-                    assembly.Version = assemblyReference.Version;
-                    assembly.Location = "unknown:location";
+
+                    assembly = new AssemblyNode
+                    {
+                        Culture = assemblyReference.Culture,
+                        Name = assemblyReference.Name,
+                        PublicKeyOrToken = assemblyReference.PublicKeyOrToken,
+                        Version = assemblyReference.Version,
+                        Location = "unknown:location"
+                    };
+
                     goto cacheIt;
                 }
+
                 return assembly;
             }
         }
+
         private static void GetAndCheckSignatureToken(int expectedToken, MemoryCursor/*!*/ sigReader)
         {
             int tok = sigReader.ReadCompressedInt();
