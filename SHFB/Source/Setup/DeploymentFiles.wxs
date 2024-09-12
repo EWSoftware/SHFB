@@ -75,7 +75,10 @@
         <Component Id="cmpC40B1F5CC1790CA6A0CCB90B4DD13CA6" Guid="{B70DEFC3-232D-4561-B7A8-76E8AA01FC67}">
           <File Id="fil1292A35440FDC5C467EBFDB49C52BD55" KeyPath="yes" Source="$(var.RootFolder)\Components\SandcastleBuilder.PlugIns.xml" />
         </Component>
-        <Component Id="cmp79D897BF4BF4D3CDE06FAAAFD793B7F6" Guid="{7B01F881-B679-41C8-AE0E-BBA411A3A787}">
+        <Component Id="cmp54CDCB40851EF6B508C78AD6C45025B4" Guid="{3BB7597E-8D86-472E-9936-396E46A06754}">
+          <File Id="fil099A63BDA49FBE41548A7101F78F91F4" KeyPath="yes" Source="$(var.RootFolder)\Components\SixLabors.ImageSharp.dll" />
+        </Component>
+        <Component Id="cmp79D897BF4BF4D3CDE06FAAAFD793B7F6" Guid="{A546C5EB-9448-4602-BA30-B31EE5A8410C}">
           <File Id="fil61951FC4FE103D1EC21E4E2300FF294A" KeyPath="yes" Source="$(var.RootFolder)\Components\System.Buffers.dll" />
         </Component>
         <Component Id="cmp8440F6A1221308FF7C0E66A86E318FD6" Guid="{2E4AA7AC-A436-414F-B814-7B39C290BFBA}">
@@ -90,7 +93,10 @@
         <Component Id="cmp022AE3946F8373D7789F80133DB6AD07" Guid="{FBBBBC9E-0A1D-4523-9A46-ACD4C8AB503C}">
           <File Id="fil9B1A66D9A12BEC70810F462D7230B20B" KeyPath="yes" Source="$(var.RootFolder)\Components\System.Runtime.CompilerServices.Unsafe.dll" />
         </Component>
-        <Component Id="cmp3D66DC1F76DAA1172FAFFE66B6C4D26F" Guid="{78CE3795-60BE-410F-BD09-B3672C0B0903}">
+        <Component Id="cmp68ED62D7C937AC381527E2C204F5AF6C" Guid="{E02DF613-5F9D-42A2-BE03-F6ED17565265}">
+          <File Id="fil07EC54102BDC00087D5D40BE57D27B6E" KeyPath="yes" Source="$(var.RootFolder)\Components\System.Text.Encoding.CodePages.dll" />
+        </Component>
+        <Component Id="cmp3D66DC1F76DAA1172FAFFE66B6C4D26F" Guid="{82A6271C-4E87-4691-9D7F-FCF3F3FFFD52}">
           <File Id="fil84C96FA90145065E3E9F9BE672627753" KeyPath="yes" Source="$(var.RootFolder)\Components\System.Text.Encodings.Web.dll" />
         </Component>
         <Component Id="cmpBC36D468255EB2B5F0DE1E842FACDF69" Guid="{C309441D-66E1-4A29-87B5-2EC82DD00378}">
@@ -3576,7 +3582,10 @@
         <Component Id="cmpBB36B154DCDB505AEE92A48D617F4307" Guid="{4001F826-E347-4389-A59B-FA8212B01686}">
           <File Id="filCF1A8A8359665AF840984208982DE11B" KeyPath="yes" Source="$(var.RootFolder)\net472\SandcastleBuilder.Utils.xml" />
         </Component>
-        <Component Id="cmp482F231CE16F6B566467B2205FB84950" Guid="{8CB65081-834C-4015-B2BB-3E1F00B7ACFF}">
+        <Component Id="cmpD44E3886AACD3DC1FDAAEA2F384FED32" Guid="{766904FB-ED22-42A4-8924-6D7AEACCC520}">
+          <File Id="fil4DBD33881FD91AA1B04235A52A9A96CD" KeyPath="yes" Source="$(var.RootFolder)\net472\SixLabors.ImageSharp.dll" />
+        </Component>
+        <Component Id="cmp482F231CE16F6B566467B2205FB84950" Guid="{5EDCF131-D29B-41FD-B5C2-5B7E528CFB18}">
           <File Id="fil51C894FBEBD1D077D23B8589EFB9056F" KeyPath="yes" Source="$(var.RootFolder)\net472\System.Buffers.dll" />
         </Component>
         <Component Id="cmp5F2E66D2182A3D88D3AF3A7E93B396AC" Guid="{6A227272-B325-4089-B782-CA24E619D1B9}">
@@ -3585,10 +3594,7 @@
         <Component Id="cmp2B11466786CCFEC36A805846A5B3340E" Guid="{A0E22916-6719-45F1-B0C6-1ED6ACC8BA7F}">
           <File Id="filE2DB784036EA00E60AF79716231F2420" KeyPath="yes" Source="$(var.RootFolder)\net472\System.Collections.Immutable.dll" />
         </Component>
-        <Component Id="cmpD81CF77D39A11EEC4CE43FB9F994D3FA" Guid="{82E526BC-1544-45EC-9904-62EFC41B3DEE}">
-          <File Id="fil89F76BA2F7F02ECD5A4E4E31355B9D86" KeyPath="yes" Source="$(var.RootFolder)\net472\System.Drawing.Common.dll" />
-        </Component>
-        <Component Id="cmp77C2C84A7E6268DF33B3FA7B5E2F9E86" Guid="{566EA9E6-D3CB-4180-AFE1-D5503BCE2556}">
+        <Component Id="cmp77C2C84A7E6268DF33B3FA7B5E2F9E86" Guid="{4C96E2D8-DBAB-451E-9886-4ABC020D41C8}">
           <File Id="filC8E77BE6D0C8F59BA8D2DD53C5BB8E07" KeyPath="yes" Source="$(var.RootFolder)\net472\System.Memory.dll" />
         </Component>
         <Component Id="cmp6B3FAA20E799B4E2F70DEE53464B5C12" Guid="{921405C7-56E1-4EC0-8C06-5F52278B45F6}">
@@ -3609,7 +3615,10 @@
         <Component Id="cmp6F2D3FBCDE5597E4E518C097F10A68E9" Guid="{9DF5B8C2-1F30-4E87-913F-4B01A421F070}">
           <File Id="fil84F87ACD1C86B9AF38EFF993EA610376" KeyPath="yes" Source="$(var.RootFolder)\net472\System.Security.Principal.Windows.dll" />
         </Component>
-        <Component Id="cmp3BC53E30495E8D71280DF5F4E81FDA81" Guid="{196B74B8-E540-475C-9E86-A7C9C45E6FFD}">
+        <Component Id="cmpE958AF78FF4AED57BF216B693EF66BC2" Guid="{F05D723E-7029-49E1-BDE4-85B4C67D7C65}">
+          <File Id="filB6FF81319F66D221393FE5A3D1A493F9" KeyPath="yes" Source="$(var.RootFolder)\net472\System.Text.Encoding.CodePages.dll" />
+        </Component>
+        <Component Id="cmp3BC53E30495E8D71280DF5F4E81FDA81" Guid="{026332F0-E10C-4AC1-968C-91210980BB6D}">
           <File Id="filA79456B1E43ADE4FFF45FE0490F7FE45" KeyPath="yes" Source="$(var.RootFolder)\net472\System.Text.Encodings.Web.dll" />
         </Component>
         <Component Id="cmp4743EA9A564113219B081C03EDEFEFA5" Guid="{BE1F9FE0-161A-454D-BA7D-3F992B291B6C}">
@@ -3635,7 +3644,10 @@
         <Component Id="cmp31200E88396F0404714557BE496FB9D4" Guid="{ACC7AF36-CFAB-45FC-9E02-ABD0DFEECD1B}">
           <File Id="filC84C7F0729AC0130D8B9D2BE30FA4615" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\GenerateInheritedDocs.xml" />
         </Component>
-        <Component Id="cmp90AB487F7AD916B6F04EAB72B5E06E16" Guid="{37DE8056-D617-43B5-B4CB-B26CF0830CB7}">
+        <Component Id="cmpBC1C5512CBA4683F1D173101CABAB9B6" Guid="{9B5EB88C-F261-4CB9-9072-7A7E8EFBCD7B}">
+          <File Id="fil9F66C28F322926CB52DA803FFF2B751E" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll" />
+        </Component>
+        <Component Id="cmp90AB487F7AD916B6F04EAB72B5E06E16" Guid="{EEE90FE3-EFC0-47B8-8986-058E34D3CA42}">
           <File Id="filC7E8EC3B5577E4836851F1492FD66ECF" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\Microsoft.DiaSymReader.dll" />
         </Component>
         <Component Id="cmp55416A4302E561E7CAF298035FB3068D" Guid="{32FE4AD8-0447-4419-A66C-EBB5F811036C}">
@@ -3674,7 +3686,10 @@
         <Component Id="cmpCB0AD024EA778817B15E43BDCAE1CBF4" Guid="{CFD44148-4F65-473C-ACDB-CFFF081472BE}">
           <File Id="filF6A0961C247AD654D693B3A95E36140F" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\SandcastleBuilder.Utils.xml" />
         </Component>
-        <Component Id="cmp5E1B24FBBFEAC10452BE20C1CDCDCEB8" Guid="{B861B03C-6140-4AC3-ACBB-CE47575A1DAE}">
+        <Component Id="cmp473CA8EE5E4797909CD4A5D0CC79E579" Guid="{77CDA87B-BDC2-4716-89D5-D2360235C009}">
+          <File Id="filC6B7AF55DD89117E480AA43E354107E0" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\SixLabors.ImageSharp.dll" />
+        </Component>
+        <Component Id="cmp5E1B24FBBFEAC10452BE20C1CDCDCEB8" Guid="{4961C96A-9D94-45DD-8028-A8A464DD9E89}">
           <File Id="filB2DFA2F1D6F60794392839A5A0F46467" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\System.CodeDom.dll" />
         </Component>
         <Component Id="cmp1E78D95C5948B682F37D1728EAEC551D" Guid="{573DFA62-EC91-481F-A5B9-4E19FA6FBEAB}">
@@ -3695,7 +3710,10 @@
         <Component Id="cmp8E994154304513AA237EE60391016D8E" Guid="{44F2D385-1993-4C39-9CA5-9E4504DD82A0}">
           <File Id="fil6FBFACB8F274A2C73631FA459A74A0FC" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\System.Security.Principal.Windows.dll" />
         </Component>
-        <Component Id="cmp2D06D20916DCF963D5896924680AE77B" Guid="{98032433-2FAE-4D83-AE3F-813EC3C31F02}">
+        <Component Id="cmp5AD346FA94AECAD4985A9293D4D7AF2E" Guid="{8C0BA8B3-CB07-4CE3-801A-B947E52E54D9}">
+          <File Id="filEF2F02E95A2F06845C57D5D41C3FF03E" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\System.Text.Encoding.CodePages.dll" />
+        </Component>
+        <Component Id="cmp2D06D20916DCF963D5896924680AE77B" Guid="{7A2FD5CA-FF5F-4876-8996-BE9FEFB7707F}">
           <File Id="filA6FCBBBE5F61B53BD1DD4E2B5764585F" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\System.Text.Encodings.Web.dll" />
         </Component>
         <Component Id="cmp37FADC1FAF02D38D6CEB9436F4803F11" Guid="{E24E9B36-C984-4138-813C-771C9A683C07}">
@@ -3717,11 +3735,6 @@
                   <File Id="fil405E55A7F8A253A7113AD38E98657020" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll" />
                 </Component>
               </Directory>
-              <Directory Id="dir639E24B14EB2A2D200D3CCCBB00285A7" Name="netcoreapp3.1">
-                <Component Id="cmp317B3677F743D3AC1EF84B516DCFC2B5" Guid="{A6E58027-293D-4DBE-8507-7D848D400336}">
-                  <File Id="fil4D842473FA5427531000C4E7C179292E" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.1\System.Drawing.Common.dll" />
-                </Component>
-              </Directory>
             </Directory>
           </Directory>
           <Directory Id="dirBBE90AEF39966FB05C9725D9B6E522F7" Name="win">
@@ -3729,6 +3742,9 @@
               <Directory Id="dirB3EC513DAAB43732F699C13699A1B3ED" Name="netcoreapp2.0">
                 <Component Id="cmp1A6664E28864DBE2C5E5B2C55D51969B" Guid="{1B08E52E-6F12-4FD4-8F57-4110E8C545D7}">
                   <File Id="fil98BA66A549E0756E06BAA5CA93BCA692" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Security.AccessControl.dll" />
+                </Component>
+                <Component Id="cmp3758E71C6A955FEA9D5DD080614D4319" Guid="{3435109F-8697-44CC-AAA4-27DCAB48F10A}">
+                  <File Id="fil73BF02E80DBD6A44138F71CDA8E9FB64" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Text.Encoding.CodePages.dll" />
                 </Component>
               </Directory>
               <Directory Id="dir0B531A79D1444965C6BAD7A56C642759" Name="netcoreapp2.1">
@@ -3745,14 +3761,6 @@
                 </Component>
                 <Component Id="cmp45D2480AE7CA70CC59B3FBEB00206136" Guid="{3BF8622A-988F-4399-AB21-8CCACE75839C}">
                   <File Id="fil445FF96593A8C9E3910CB47FC9ACEBC5" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll" />
-                </Component>
-              </Directory>
-              <Directory Id="dirDCFCF44C1897EBF8BDFB562F724E7C6D" Name="netcoreapp3.1">
-                <Component Id="cmp55AD33EE9D8BBE7022F70AA971E95F84" Guid="{38FC4390-2DA3-4FF3-94BC-19C3FEB4B68A}">
-                  <File Id="fil0C1BFAAF95F6E5C415BFD2775842FCC1" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll" />
-                </Component>
-                <Component Id="cmp2FC5BA399CC79179CF050AC7E147E400" Guid="{F92506EE-C53F-4468-997D-F06525B7E0BD}">
-                  <File Id="fil2446E804976FC2A93B7AB2CB0B1A7622" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\System.Drawing.Common.dll" />
                 </Component>
               </Directory>
             </Directory>
@@ -3997,10 +4005,16 @@
         <Component Id="cmp9FEB08217760AE076A10CE95C8A365B6" Guid="{3601F2B6-BDF7-4C4F-ADED-179D02CB0C41}">
           <File Id="fil9E829270C82D7A1E584EF10A9E4746B4" KeyPath="yes" Source="$(var.RootFolder)\Tools\SHFBProjectLauncher.exe.config" />
         </Component>
-        <Component Id="cmp0574EAB4F30C8B41B70EDFE718ECA663" Guid="{D025120B-FAFE-4FEB-8FC3-AC19609CA1CE}">
+        <Component Id="cmpF58CE795BC21EE84876874C6C9B8F8C4" Guid="{5FD3A31F-7385-4415-AF6B-0BE4BFA86628}">
+          <File Id="fil373C0EA5B8208AF2CE6319C3A3716387" KeyPath="yes" Source="$(var.RootFolder)\Tools\SixLabors.ImageSharp.dll" />
+        </Component>
+        <Component Id="cmp0574EAB4F30C8B41B70EDFE718ECA663" Guid="{8BC08580-0680-4FDD-B7DB-BC3B9280B822}">
           <File Id="filF83D4C025F82BCC26898CF464C1F07B8" KeyPath="yes" Source="$(var.RootFolder)\Tools\System.Buffers.dll" />
         </Component>
-        <Component Id="cmpE1E87979858C6CC4F467FB14057DDF8F" Guid="{B7C16DC3-2F35-4934-945A-5F1325BA3259}">
+        <Component Id="cmp6CBC6A253E7FC81AE3C0C431B0286D75" Guid="{B794D2F4-4760-4C83-81C4-0B90279BDE2B}">
+          <File Id="filD9A2AFD255170A0CE20633D15F57B7C8" KeyPath="yes" Source="$(var.RootFolder)\Tools\System.ComponentModel.Composition.dll" />
+        </Component>
+        <Component Id="cmpE1E87979858C6CC4F467FB14057DDF8F" Guid="{2D3A7DD8-105E-4711-A01B-4EE55A974219}">
           <File Id="fil42C1ECADB0338C24E1660F4CEC5CC340" KeyPath="yes" Source="$(var.RootFolder)\Tools\System.Drawing.Common.dll" />
         </Component>
         <Component Id="cmp74C375C8067977CFFE3E7345A857A2FF" Guid="{59D4DC18-5628-4928-9863-22697BD7BE14}">
@@ -4012,7 +4026,10 @@
         <Component Id="cmpB61A9C5B9B041D283A8FBFE1C9E96315" Guid="{C633F93B-F812-4D6E-A53A-14A72F5151C3}">
           <File Id="fil83F9F2698011B01FEDF342BA84A6B9C3" KeyPath="yes" Source="$(var.RootFolder)\Tools\System.Runtime.CompilerServices.Unsafe.dll" />
         </Component>
-        <Component Id="cmp38D34AF568B10DFE297F26E3E4E30F9C" Guid="{592DB6CF-1E9C-4EE9-9CF6-B75667F078BE}">
+        <Component Id="cmp4B7B0D5C85DD883E63E3C8ACC7522F50" Guid="{F35FF02D-D25C-4DC3-ADE2-0695E394F0DC}">
+          <File Id="fil6B82464544B74CC701E18C15EF5460AB" KeyPath="yes" Source="$(var.RootFolder)\Tools\System.Text.Encoding.CodePages.dll" />
+        </Component>
+        <Component Id="cmp38D34AF568B10DFE297F26E3E4E30F9C" Guid="{30CE5E71-6365-44AB-A369-5F600BAE8CC5}">
           <File Id="fil10D942D99895922D7EA9A86A7592E490" KeyPath="yes" Source="$(var.RootFolder)\Tools\System.Text.Encodings.Web.dll" />
         </Component>
         <Component Id="cmpD83F9104AFA3A2BDA7D522167E4C37BB" Guid="{58876296-E2E8-4D87-902F-459181663235}">
@@ -4166,11 +4183,13 @@
       <ComponentRef Id="cmpB35DCE2AD127008E38BCDDCDE1974348" />
       <ComponentRef Id="cmp86BB6A5C8CF7938AF3B0BEDB075D75F3" />
       <ComponentRef Id="cmpC40B1F5CC1790CA6A0CCB90B4DD13CA6" />
+      <ComponentRef Id="cmp54CDCB40851EF6B508C78AD6C45025B4" />
       <ComponentRef Id="cmp79D897BF4BF4D3CDE06FAAAFD793B7F6" />
       <ComponentRef Id="cmp8440F6A1221308FF7C0E66A86E318FD6" />
       <ComponentRef Id="cmpDA133495101008784D97F6CAE32FE8D9" />
       <ComponentRef Id="cmp61F4E65B1A3BB2D8B85FC6A9C2942E9F" />
       <ComponentRef Id="cmp022AE3946F8373D7789F80133DB6AD07" />
+      <ComponentRef Id="cmp68ED62D7C937AC381527E2C204F5AF6C" />
       <ComponentRef Id="cmp3D66DC1F76DAA1172FAFFE66B6C4D26F" />
       <ComponentRef Id="cmpBC36D468255EB2B5F0DE1E842FACDF69" />
       <ComponentRef Id="cmp67B4872C1B22CD64E79C941D86966FCF" />
@@ -5303,10 +5322,10 @@
       <ComponentRef Id="cmp37E3513D10600159EBE5403DB1A3A813" />
       <ComponentRef Id="cmp46486B5538B89E26CAB75CEA70AFE959" />
       <ComponentRef Id="cmpBB36B154DCDB505AEE92A48D617F4307" />
+      <ComponentRef Id="cmpD44E3886AACD3DC1FDAAEA2F384FED32" />
       <ComponentRef Id="cmp482F231CE16F6B566467B2205FB84950" />
       <ComponentRef Id="cmp5F2E66D2182A3D88D3AF3A7E93B396AC" />
       <ComponentRef Id="cmp2B11466786CCFEC36A805846A5B3340E" />
-      <ComponentRef Id="cmpD81CF77D39A11EEC4CE43FB9F994D3FA" />
       <ComponentRef Id="cmp77C2C84A7E6268DF33B3FA7B5E2F9E86" />
       <ComponentRef Id="cmp6B3FAA20E799B4E2F70DEE53464B5C12" />
       <ComponentRef Id="cmp9CE87113E058064AD88164B205BF8E9F" />
@@ -5314,6 +5333,7 @@
       <ComponentRef Id="cmp7A05279324FA2F5CEBF9909C9377FDF0" />
       <ComponentRef Id="cmpFA46AC97483482E92337E88DEDA25686" />
       <ComponentRef Id="cmp6F2D3FBCDE5597E4E518C097F10A68E9" />
+      <ComponentRef Id="cmpE958AF78FF4AED57BF216B693EF66BC2" />
       <ComponentRef Id="cmp3BC53E30495E8D71280DF5F4E81FDA81" />
       <ComponentRef Id="cmp4743EA9A564113219B081C03EDEFEFA5" />
       <ComponentRef Id="cmp92FB1758C69D110AF7949071B07B29C2" />
@@ -5322,6 +5342,7 @@
       <ComponentRef Id="cmp68A29C624C8A09AC7C38CD707F623F38" />
       <ComponentRef Id="cmpDAB3F1E91D23018AC6537528CC38EA9F" />
       <ComponentRef Id="cmp31200E88396F0404714557BE496FB9D4" />
+      <ComponentRef Id="cmpBC1C5512CBA4683F1D173101CABAB9B6" />
       <ComponentRef Id="cmp90AB487F7AD916B6F04EAB72B5E06E16" />
       <ComponentRef Id="cmp55416A4302E561E7CAF298035FB3068D" />
       <ComponentRef Id="cmp0043080FE766EEB16B35CC3706D23EBC" />
@@ -5335,6 +5356,7 @@
       <ComponentRef Id="cmp083C0322BC44D9C5DE448F63F6B7AE0B" />
       <ComponentRef Id="cmp94C3F62B799FC57BC861F0F07AE3037A" />
       <ComponentRef Id="cmpCB0AD024EA778817B15E43BDCAE1CBF4" />
+      <ComponentRef Id="cmp473CA8EE5E4797909CD4A5D0CC79E579" />
       <ComponentRef Id="cmp5E1B24FBBFEAC10452BE20C1CDCDCEB8" />
       <ComponentRef Id="cmp1E78D95C5948B682F37D1728EAEC551D" />
       <ComponentRef Id="cmpCBFEECF7E88356EB126E333D8C688751" />
@@ -5342,19 +5364,18 @@
       <ComponentRef Id="cmp9DC0A6536CD8707001368D872DB03B46" />
       <ComponentRef Id="cmpC5B45F88B6DB12BBD6DE0406D77EC363" />
       <ComponentRef Id="cmp8E994154304513AA237EE60391016D8E" />
+      <ComponentRef Id="cmp5AD346FA94AECAD4985A9293D4D7AF2E" />
       <ComponentRef Id="cmp2D06D20916DCF963D5896924680AE77B" />
       <ComponentRef Id="cmp37FADC1FAF02D38D6CEB9436F4803F11" />
       <ComponentRef Id="cmp342D4EB663EAF58A9A770E4EACB905C7" />
       <ComponentRef Id="cmp9164A53BA325CBDFACB254278A78D7D4" />
       <ComponentRef Id="cmp24374BB6041278A2448A22765FD26479" />
-      <ComponentRef Id="cmp317B3677F743D3AC1EF84B516DCFC2B5" />
       <ComponentRef Id="cmp1A6664E28864DBE2C5E5B2C55D51969B" />
+      <ComponentRef Id="cmp3758E71C6A955FEA9D5DD080614D4319" />
       <ComponentRef Id="cmpB5DDC19254239B8D0CB9A307B151D5BD" />
       <ComponentRef Id="cmpE9475A7FC8D86A7E07694D92FCBEE929" />
       <ComponentRef Id="cmpC2B0B1F25872D730DF84DB1D620F84C4" />
       <ComponentRef Id="cmp45D2480AE7CA70CC59B3FBEB00206136" />
-      <ComponentRef Id="cmp55AD33EE9D8BBE7022F70AA971E95F84" />
-      <ComponentRef Id="cmp2FC5BA399CC79179CF050AC7E147E400" />
       <ComponentRef Id="cmp69C1130FD411BFD37EC7C1AA27941135" />
       <ComponentRef Id="cmpC92191338F597A2F1FCA31D3DDFB2AF6" />
       <ComponentRef Id="cmpC7CF7DCE3EA1AB291D6F02D5E0295BB9" />
@@ -5422,11 +5443,14 @@
       <ComponentRef Id="cmpEEEF4CA8406BCF0140C0DAEE15FF93A4" />
       <ComponentRef Id="SHFBProjectLauncher.exe" />
       <ComponentRef Id="cmp9FEB08217760AE076A10CE95C8A365B6" />
+      <ComponentRef Id="cmpF58CE795BC21EE84876874C6C9B8F8C4" />
       <ComponentRef Id="cmp0574EAB4F30C8B41B70EDFE718ECA663" />
+      <ComponentRef Id="cmp6CBC6A253E7FC81AE3C0C431B0286D75" />
       <ComponentRef Id="cmpE1E87979858C6CC4F467FB14057DDF8F" />
       <ComponentRef Id="cmp74C375C8067977CFFE3E7345A857A2FF" />
       <ComponentRef Id="cmp6D0E45676CF672FB1416F2CD0EDD73D8" />
       <ComponentRef Id="cmpB61A9C5B9B041D283A8FBFE1C9E96315" />
+      <ComponentRef Id="cmp4B7B0D5C85DD883E63E3C8ACC7522F50" />
       <ComponentRef Id="cmp38D34AF568B10DFE297F26E3E4E30F9C" />
       <ComponentRef Id="cmpD83F9104AFA3A2BDA7D522167E4C37BB" />
       <ComponentRef Id="cmp60CE2D36819889B3B702A6E77A4CA76D" />

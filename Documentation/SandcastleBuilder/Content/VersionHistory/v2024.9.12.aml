@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="5d844018-a4b8-47ec-af4e-c087b758b868" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2024.9.12.0.</para>
+		</introduction>
+
+		<section>
+			<title>Build Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed an issue with the Open XML file generator caused by the version of
+<localUri>System.Drawing.Common</localUri> used by Visual Studio 2022.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the code block component so that it removes the trailing comment characters on F# regions.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Added support for NuGet central package management.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Fixed error reporting for namespace summary issues.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Fixed handling of reference assemblies in MRefBuilder.  It now gives precedence to those
+specified in the project over those from the target platform to avoid conflicts when there is a matching assembly
+in both.</para>
+					</listItem>
+					
+				</list>
+
+			</content>
+		</section>
+
+		<section>
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed all presentation styles so that they correctly handle extension methods on the
+enumeration type member pages.</para>
+					</listItem>
+
+					<listItem>
+						<para>Changed the handling of the <codeInline>AlwaysShowTopLevelAutoOutline</codeInline> transform
+argument in the Default2022 presentation style to hide the In This Article section if set to true since there's
+no real need to have both visible.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Updated the full text index to allow numbers and words with digits.  This allows searching for
+enumeration values and member names containing digits.  The text indexed is now limited to the topic content to
+prevent including lots of unwanted index words from the page header and footer such as copyright and contact info
+that appears in every page.</para>
+					</listItem>
+				
+					<listItem>
+						<para>Updated the web search in the Default2022 and VS2013 presentation styles to allow for numbers
+as keywords.  Also added support for the new <codeInline>IncludeIntegerEnumSeparators</codeInline> transformation
+argument to all presentation styles that can be set to false to prevent integer enumeration values from being
+formatted with separators.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+		
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>
