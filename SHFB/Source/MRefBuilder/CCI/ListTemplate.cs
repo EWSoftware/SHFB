@@ -203,18 +203,7 @@ namespace System.Compiler
     public sealed class ResourceList : List<Resource>
     {
     }
-
-    public sealed class SecurityAttributeList : List<SecurityAttribute>
-    {
-        public SecurityAttributeList()
-        {
-        }
-
-        public SecurityAttributeList(IEnumerable<SecurityAttribute> collection) : base(collection)
-        {
-        }
-    }
-
+    
     public sealed class StatementList : List<Statement>
     {
         public StatementList()

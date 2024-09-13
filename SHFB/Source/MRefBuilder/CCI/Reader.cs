@@ -165,6 +165,7 @@ namespace System.Compiler.Metadata
             this.Dispose();
         }
     }
+
     internal unsafe class Reader : IDisposable
     {
         private string directory;
@@ -1353,120 +1354,6 @@ nextModRef:     ;
             module.Win32Resources = this.tables.ReadWin32Resources();
         }
 
-        private SecurityAttribute GetSecurityAttribute(int i)
-        {
-            DeclSecurityRow dsr = this.tables.DeclSecurityTable[i];
-            SecurityAttribute attr = new SecurityAttribute();
-            attr.Action = (System.Security.Permissions.SecurityAction)dsr.Action;
-            if (this.module.MetadataFormatMajorVersion > 1 || this.module.MetadataFormatMinorVersion > 0)
-            {
-                attr.PermissionAttributes = this.GetPermissionAttributes(dsr.PermissionSet, attr.Action);
-                if (attr.PermissionAttributes != null) return attr;
-            }
-            attr.SerializedPermissions = (string)this.tables.GetBlobString(dsr.PermissionSet);
-            return attr;
-        }
-        private AttributeList GetPermissionAttributes(int blobIndex, System.Security.Permissions.SecurityAction action)
-        {
-            AttributeList result = new AttributeList();
-            int blobLength;
-            MemoryCursor sigReader = this.tables.GetBlobCursor(blobIndex, out blobLength);
-            if (blobLength == 0) return null;
-            byte header = sigReader.ReadByte();
-            if (header != (byte)'*')
-            {
-                if (header == (byte)'<') return null;
-                if (header == (byte)'.') return this.GetPermissionAttributes2(blobIndex, action);
-                HandleError(this.module, ExceptionStrings.BadSecurityPermissionSetBlob);
-                return null;
-            }
-            sigReader.ReadInt32(); //Skip over the token for the attribute target
-            sigReader.ReadInt32(); //Skip over the security action
-            int numAttrs = sigReader.ReadInt32();
-            for (int i = 0; i < numAttrs; i++)
-                result.Add(this.GetPermissionAttribute(sigReader));
-            return result;
-        }
-        private AttributeNode GetPermissionAttribute(MemoryCursor/*!*/ sigReader)
-        {
-            sigReader.ReadInt32(); //Skip over index
-            int typeNameLength = sigReader.ReadInt32();
-            sigReader.ReadUTF8(typeNameLength); //Skip over type name
-            int constructorToken = sigReader.ReadInt32();
-            sigReader.ReadInt32(); //Skip over attribute type token
-            sigReader.ReadInt32(); //Skip over assembly ref token
-            int caBlobLength = sigReader.ReadInt32();
-            sigReader.ReadInt32(); //Skip over the number of parameters in the CA blob
-            TypeNodeList varArgTypes; //Ignored because vararg constructors are not allowed in Custom Attributes
-            Method cons = this.GetConstructorDefOrRef(constructorToken, out varArgTypes);
-            if (cons == null) cons = new Method();
-            return this.GetCustomAttribute(cons, sigReader, caBlobLength);
-        }
-
-        private AttributeList GetPermissionAttributes2(int blobIndex, System.Security.Permissions.SecurityAction action)
-        {
-            AttributeList result = new AttributeList();
-            int blobLength;
-            MemoryCursor sigReader = this.tables.GetBlobCursor(blobIndex, out blobLength);
-            if (blobLength == 0) return null;
-            byte header = sigReader.ReadByte();
-            if (header != (byte)'.')
-            {
-                HandleError(this.module, ExceptionStrings.BadSecurityPermissionSetBlob);
-                return null;
-            }
-            int numAttrs = sigReader.ReadCompressedInt();
-            for (int i = 0; i < numAttrs; i++)
-                result.Add(this.GetPermissionAttribute2(sigReader, action));
-            return result;
-        }
-
-        private AttributeNode GetPermissionAttribute2(MemoryCursor/*!*/ sigReader, System.Security.Permissions.SecurityAction action)
-        {
-            int typeNameLength = sigReader.ReadCompressedInt();
-            string serializedTypeName = sigReader.ReadUTF8(typeNameLength);
-
-            sigReader.ReadCompressedInt(); // caBlobLength
-
-            int numProps = sigReader.ReadCompressedInt(); // Skip over the number of properties in the CA blob
-
-            ExpressionList arguments = new ExpressionList
-            {
-                new Literal(action, CoreSystemTypes.SecurityAction)
-            };
-
-            this.GetCustomAttributeNamedArguments(arguments, (ushort)numProps, sigReader);
-
-            // EFW - Get the constructor after reading the above as we still need to keep the reader in the
-            // right location by skipping the parameter info.
-            TypeNode attrType = null;
-
-            try
-            {
-                attrType = this.GetTypeFromSerializedName(serializedTypeName);
-            }
-            catch(InvalidMetadataException)
-            {
-            }
-
-            if(attrType == null)
-            {
-                HandleError(this.module, String.Format(CultureInfo.CurrentCulture, ExceptionStrings.CouldNotResolveType, serializedTypeName));
-                return null;
-            }
-
-            InstanceInitializer cons = attrType.GetConstructor(CoreSystemTypes.SecurityAction);
-
-            if(cons == null)
-            {
-                HandleError(this.module, String.Format(CultureInfo.CurrentCulture,
-                ExceptionStrings.SecurityAttributeTypeDoesNotHaveADefaultConstructor, serializedTypeName));
-                return null;
-            }
-
-            return new AttributeNode(new MemberBinding(null, cons), arguments);
-        }
-
         private static void HandleError(Module mod, string errorMessage)
         {
             if (mod != null)
@@ -1897,7 +1784,6 @@ nextModRef:     ;
                     return;
                 }
                 AssemblyNode assembly = (AssemblyNode)module;
-                assembly.SecurityAttributes = this.GetSecurityAttributesFor((1 << 2) | 2);
                 assembly.Attributes = this.GetCustomAttributesFor((1 << 5) | 14);
                 assembly.ModuleAttributes = this.GetCustomAttributesFor((1 << 5) | 7);
             }
@@ -1949,42 +1835,7 @@ nextModRef:     ;
 
             return attributes;
         }
-        private SecurityAttributeList GetSecurityAttributesFor(int parentIndex)
-        {
-            DeclSecurityRow[] securityAttributes = this.tables.DeclSecurityTable;
-            SecurityAttributeList attributes = new SecurityAttributeList();
-            try
-            {
-                int i = 0, n = securityAttributes.Length, j = n - 1;
-                if (n == 0) return attributes;
-                bool sorted = (this.sortedTablesMask >> (int)TableIndices.DeclSecurity) % 2 == 1;
-                if (sorted)
-                {
-                    while (i < j)
-                    {
-                        int k = (i + j) / 2;
-                        if (securityAttributes[k].Parent < parentIndex)
-                            i = k + 1;
-                        else
-                            j = k;
-                    }
-                    while (i > 0 && securityAttributes[i - 1].Parent == parentIndex) i--;
-                }
-                for (; i < n; i++)
-                    if (securityAttributes[i].Parent == parentIndex)
-                        attributes.Add(this.GetSecurityAttribute(i));
-                    else if (sorted)
-                        break;
-            }
-            catch (Exception e)
-            {
-                if (this.module == null) return attributes;
-                if (this.module.MetadataImportErrors == null) this.module.MetadataImportErrors = new ArrayList();
-                this.module.MetadataImportErrors.Add(e);
-            }
 
-            return attributes;
-        }
         private void GetTypeParameterConstraints(int parentIndex, TypeNodeList parameters)
         {
             if (parameters == null) return;
@@ -2772,9 +2623,6 @@ nextModRef:     ;
                 }
             }
 
-            //if ((method.Flags & MethodFlags.HasSecurity) != 0)
-            //  method.SecurityAttributes = this.GetSecurityAttributesFor((index << 2)|1);
-
             if ((method.Flags & MethodFlags.PInvokeImpl) != 0)
             {
                 ImplMapRow[] implMaps = this.tables.ImplMapTable;
@@ -2827,9 +2675,6 @@ nextModRef:     ;
                 method.Attributes = this.GetCustomAttributesFor((index << 5) | 0);
                 this.currentTypeParameters = savedCurrentTypeParameters;
                 this.currentMethodTypeParameters = savedCurrentMethodTypeParameters;
-                //Get security attributes
-                if ((method.Flags & MethodFlags.HasSecurity) != 0)
-                    method.SecurityAttributes = this.GetSecurityAttributesFor((index << 2) | 1);
             }
             catch(Exception e)
             {
@@ -4034,9 +3879,6 @@ nextModRef:     ;
                 //Get custom attributes   
                 type.Attributes = this.GetCustomAttributesFor((typeTableIndex << 5) | 3);
                 this.currentTypeParameters = savedCurrentTypeParameters;
-                //Get security attributes
-                if ((type.Flags & TypeFlags.HasSecurity) != 0)
-                    type.SecurityAttributes = this.GetSecurityAttributesFor((typeTableIndex << 2) | 0);
             }
             catch(Exception e)
             {

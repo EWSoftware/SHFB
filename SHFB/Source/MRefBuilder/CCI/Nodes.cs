@@ -25,11 +25,12 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Compiler.Metadata;
 using System.Diagnostics;
-using System.Linq;
+using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
 
@@ -633,7 +634,7 @@ TryAgain:
         {
             //^ base();
             ISymUnmanagedDocument idoc =
-              (ISymUnmanagedDocument)System.Runtime.InteropServices.Marshal.GetTypedObjectForIUnknown(ptrToISymUnmanagedDocument, typeof(ISymUnmanagedDocument));
+              (ISymUnmanagedDocument)Runtime.InteropServices.Marshal.GetTypedObjectForIUnknown(ptrToISymUnmanagedDocument, typeof(ISymUnmanagedDocument));
             if(idoc != null)
             {
                 try
@@ -658,7 +659,7 @@ TryAgain:
                 }
                 finally
                 {
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(idoc);
+                    Runtime.InteropServices.Marshal.ReleaseComObject(idoc);
                 }
             }
 
@@ -1684,7 +1685,7 @@ TryAgain:
             get
             {
                 if(key <= 0)
-                    throw new ArgumentException(ExceptionStrings.KeyNeedsToBeGreaterThanZero, "key");
+                    throw new ArgumentException(ExceptionStrings.KeyNeedsToBeGreaterThanZero, nameof(key));
                 HashEntry[] entries = this.entries;
                 int n = entries.Length;
                 int i = key & (n - 1);
@@ -2064,13 +2065,14 @@ TryAgain:
                 Debug.Assert(false); //This must be a bug, the calling visitor is the one that should handle the nodeType
                 return null;
             }
-            System.Reflection.AssemblyName visitorAssemblyName = null;
-            System.Reflection.Assembly assembly = null;
+            
+            Reflection.Assembly assembly = null;
             WeakReference wref = (WeakReference)Node.VisitorTypeFor[customVisitorClassName];
             Type visitorType = wref == null ? null : (System.Type)wref.Target;
+            
             if(visitorType == typeof(object))
                 return null;
-            string callerDirectory = null;
+
             if(visitorType == null)
             {
                 assembly = nodeType.Assembly;
@@ -2083,26 +2085,26 @@ TryAgain:
                 //^ assert assembly != null;
                 if(assembly.Location == null)
                     return null;
-                callerDirectory = Path.GetDirectoryName(assembly.Location);
-                visitorAssemblyName = new System.Reflection.AssemblyName();
-                visitorAssemblyName.Name = "Visitors";
-                visitorAssemblyName.CodeBase = "file:///" + Path.Combine(callerDirectory, "Visitors.dll");
+                
+                string callerDirectory = Path.GetDirectoryName(assembly.Location);
+
                 try
                 {
-                    assembly = System.Reflection.Assembly.Load(visitorAssemblyName);
+                    assembly = Reflection.Assembly.LoadFile(Path.Combine(callerDirectory, "Visitors.dll"));
                 }
                 catch { }
+
                 if(assembly != null)
                     visitorType = assembly.GetType(customVisitorClassName, false);
+
                 if(visitorType == null)
                 {
-                    visitorAssemblyName.Name = customVisitorClassName;
-                    visitorAssemblyName.CodeBase = "file:///" + Path.Combine(callerDirectory, customVisitorClassName + ".dll");
                     try
                     {
-                        assembly = System.Reflection.Assembly.Load(visitorAssemblyName);
+                        assembly = Reflection.Assembly.LoadFile(Path.Combine(callerDirectory, customVisitorClassName + ".dll"));
                     }
                     catch { }
+
                     if(assembly != null)
                         visitorType = assembly.GetType(customVisitorClassName, false);
                 }
@@ -2113,6 +2115,7 @@ TryAgain:
                 visitorType = typeof(object);
                 assembly = nodeType.Assembly;
             }
+
             if(assembly != null)
             { //Only happens if there was a cache miss
                 lock(Node.VisitorTypeFor)
@@ -5128,147 +5131,6 @@ doUTF8decoding:
             return null;
         }
     }
-    public class SecurityAttribute : Node
-    {
-        public SecurityAttribute()
-            : base(NodeType.SecurityAttribute)
-        {
-        }
-        private System.Security.Permissions.SecurityAction action;
-        public System.Security.Permissions.SecurityAction Action
-        {
-            get { return this.action; }
-            set { this.action = value; }
-        }
-        private AttributeList permissionAttributes;
-        public AttributeList PermissionAttributes
-        {
-            get { return this.permissionAttributes; }
-            set { this.permissionAttributes = value; }
-        }
-        protected string serializedPermissions;
-        public string SerializedPermissions
-        {
-            get
-            {
-
-                if(this.serializedPermissions == null && this.PermissionAttributes != null)
-                {
-                    lock(this)
-                    {
-                        if(this.serializedPermissions != null)
-                            return this.serializedPermissions;
-                        System.Security.PermissionSet permissions = this.Permissions;
-                        if(permissions == null)
-                            return null;
-                        System.Security.SecurityElement xml = permissions.ToXml();
-                        if(xml == null)
-                            return null;
-                        this.serializedPermissions = xml.ToString();
-                        //TODO: if the target platform is different from the host platform, replace references to host platform
-                        //assemblies with references to target platform assemblies
-                    }
-                }
-
-                return this.serializedPermissions;
-            }
-            set
-            {
-                this.serializedPermissions = value;
-            }
-        }
-
-        protected System.Security.PermissionSet permissions;
-
-        public System.Security.PermissionSet Permissions
-        {
-            get
-            {
-                if(this.permissions == null)
-                {
-                    lock(this)
-                    {
-                        if(this.permissions != null)
-                            return this.permissions;
-                        System.Security.PermissionSet permissions = null;
-
-                        if(this.PermissionAttributes != null)
-                        {
-                            permissions = this.InstantiatePermissionAttributes();
-                        }
-                        else if(this.serializedPermissions != null)
-                        {
-                            permissions = new System.Security.PermissionSet(System.Security.Permissions.PermissionState.None);
-                            permissions.FromXml(this.GetSecurityElement());
-                        }
-
-                        this.permissions = permissions;
-                    }
-                }
-                return this.permissions;
-            }
-            set
-            {
-                this.permissions = value;
-            }
-        }
-
-        protected System.Security.SecurityElement GetSecurityElement()
-        {
-            return System.Security.SecurityElement.FromString(this.serializedPermissions);
-        }
-
-        protected System.Security.PermissionSet InstantiatePermissionAttributes()
-        {
-            System.Security.PermissionSet permissions = new System.Security.PermissionSet(System.Security.Permissions.PermissionState.None);
-            AttributeList permissionAttributes = this.PermissionAttributes;
-            for(int i = 0, n = permissionAttributes == null ? 0 : permissionAttributes.Count; i < n; i++)
-            {
-                //^ assert permissionAttributes != null;
-                object result = this.GetPermissionOrSetOfPermissionsFromAttribute(permissionAttributes[i]);
-                if(result == null)
-                    continue;
-                if(result is System.Security.PermissionSet)
-                    permissions = permissions.Union((System.Security.PermissionSet)result);
-                else
-                {
-                    System.Security.IPermission permission = result as System.Security.IPermission;
-                    if(permission == null)
-                        continue;
-                    permissions.AddPermission(permission);
-                }
-            }
-            return permissions;
-        }
-
-        protected object GetPermissionOrSetOfPermissionsFromAttribute(AttributeNode attr)
-        {
-            if(attr == null)
-                return null;
-            System.Security.Permissions.SecurityAttribute secAttr = attr.GetRuntimeAttribute() as System.Security.Permissions.SecurityAttribute;
-            if(secAttr == null)
-                return null;
-            System.Security.Permissions.PermissionSetAttribute pSetAttr = secAttr as System.Security.Permissions.PermissionSetAttribute;
-            if(pSetAttr != null)
-                return pSetAttr.CreatePermissionSet();
-            else
-                return this.CreatePermission(secAttr);
-        }
-
-        private System.Security.IPermission CreatePermission(System.Security.Permissions.SecurityAttribute/*!*/ secAttr)
-        {
-            //This could execute partially trusted code, so set up a very restrictive execution environment
-            System.Security.PermissionSet perm = new System.Security.PermissionSet(System.Security.Permissions.PermissionState.None);
-            //TODO: add permissions if the attribute is from a trusted assembly
-            perm.PermitOnly();
-            try
-            {
-                return secAttr.CreatePermission();
-            }
-            catch { }
-            return null;
-        }
-    }
 
     public struct Resource
     {
@@ -5549,32 +5411,6 @@ doUTF8decoding:
             set
             {
                 this.attributes = value;
-            }
-        }
-
-        protected SecurityAttributeList securityAttributes;
-        /// <summary>
-        /// Declarative security for the module or assembly.
-        /// </summary>
-        public virtual SecurityAttributeList SecurityAttributes
-        {
-            get
-            {
-                if(this.securityAttributes != null)
-                    return this.securityAttributes;
-                if(this.provideCustomAttributes != null)
-                {
-                    AttributeList dummy = this.Attributes; //As a side effect, this.securityAttributes gets populated
-                    if(dummy != null)
-                        dummy = null;
-                }
-                else
-                    this.securityAttributes = new SecurityAttributeList();
-                return this.securityAttributes;
-            }
-            set
-            {
-                this.securityAttributes = value;
             }
         }
 
@@ -6698,66 +6534,54 @@ notfound:
                 result.Append(", Retargetable=Yes");
             return result.ToString();
         }
-        private System.Reflection.AssemblyName assemblyName;
-        public System.Reflection.AssemblyName GetAssemblyName()
+
+        private Reflection.AssemblyName assemblyName;
+        
+        public Reflection.AssemblyName GetAssemblyName()
         {
             if(this.assemblyName == null)
             {
-                System.Reflection.AssemblyName aName = new System.Reflection.AssemblyName();
-                if(this.Location != null && this.Location != "unknown:location")
+                this.assemblyName = new Reflection.AssemblyName
                 {
-                    StringBuilder sb = new StringBuilder("file:///");
-                    sb.Append(Path.GetFullPath(this.Location));
-                    sb.Replace('\\', '/');
-                    aName.CodeBase = sb.ToString();
-                }
-                aName.CultureInfo = new System.Globalization.CultureInfo(this.Culture);
+                    CultureInfo = new CultureInfo(this.Culture),
+                    Name = this.Name,
+                    Version = this.Version
+                };
+
                 if(this.PublicKeyOrToken != null && this.PublicKeyOrToken.Length > 8)
-                    aName.Flags = System.Reflection.AssemblyNameFlags.PublicKey;
+                    assemblyName.Flags = Reflection.AssemblyNameFlags.PublicKey;
+                
                 if((this.Flags & AssemblyFlags.Retargetable) != 0)
-                    aName.Flags |= (System.Reflection.AssemblyNameFlags)AssemblyFlags.Retargetable;
-                aName.HashAlgorithm = (System.Configuration.Assemblies.AssemblyHashAlgorithm)this.HashAlgorithm;
+                    assemblyName.Flags |= (Reflection.AssemblyNameFlags)AssemblyFlags.Retargetable;
+                
                 if(this.PublicKeyOrToken != null && this.PublicKeyOrToken.Length > 0)
-                    aName.SetPublicKey(this.PublicKeyOrToken);
+                    assemblyName.SetPublicKey(this.PublicKeyOrToken);
                 else
-                    aName.SetPublicKey(new byte[0]);
-                aName.Name = this.Name;
-                aName.Version = this.Version;
-                switch(this.Flags & AssemblyFlags.CompatibilityMask)
-                {
-                    case AssemblyFlags.NonSideBySideCompatible:
-                        aName.VersionCompatibility = System.Configuration.Assemblies.AssemblyVersionCompatibility.SameDomain;
-                        break;
-                    case AssemblyFlags.NonSideBySideProcess:
-                        aName.VersionCompatibility = System.Configuration.Assemblies.AssemblyVersionCompatibility.SameProcess;
-                        break;
-                    case AssemblyFlags.NonSideBySideMachine:
-                        aName.VersionCompatibility = System.Configuration.Assemblies.AssemblyVersionCompatibility.SameMachine;
-                        break;
-                }
-                this.assemblyName = aName;
+                    assemblyName.SetPublicKey(new byte[0]);
             }
+
             return this.assemblyName;
         }
 
         private sealed class CachedRuntimeAssembly : IDisposable
         {
-            internal System.Reflection.Assembly Value;
-            internal CachedRuntimeAssembly(System.Reflection.Assembly assembly)
+            internal Reflection.Assembly Value;
+            
+            internal CachedRuntimeAssembly(Reflection.Assembly assembly)
             {
                 this.Value = assembly;
             }
+            
             ~CachedRuntimeAssembly()
             {
                 this.Dispose();
             }
+            
             public void Dispose()
             {
                 if(this.Value != null)
-                {
-                    if(AssemblyNode.CompiledAssemblies != null)
-                        AssemblyNode.CompiledAssemblies.Remove(this.Value);
-                }
+                    AssemblyNode.CompiledAssemblies?.Remove(this.Value);
+
                 this.Value = null;
                 GC.SuppressFinalize(this);
             }
@@ -6765,66 +6589,59 @@ notfound:
 
         private CachedRuntimeAssembly cachedRuntimeAssembly;
         
-        public System.Reflection.Assembly GetRuntimeAssembly()
+        public Reflection.Assembly GetRuntimeAssembly()
         {
-            return this.GetRuntimeAssembly(/*null,*/ null);
+            return this.GetRuntimeAssembly(null);
         }
 
-        /* These do not appear to be used
-        public System.Reflection.Assembly GetRuntimeAssembly(System.Security.Policy.Evidence evidence)
+        public Reflection.Assembly GetRuntimeAssembly(AppDomain targetAppDomain)
         {
-            return this.GetRuntimeAssembly(evidence, null);
-        }
-        public System.Reflection.Assembly GetRuntimeAssembly(AppDomain targetAppDomain)
-        {
-            return this.GetRuntimeAssembly(null, targetAppDomain);
-        }
-        */
+            Reflection.Assembly result = this.cachedRuntimeAssembly?.Value;
 
-        // Evidence does not appear to be used
-        public System.Reflection.Assembly GetRuntimeAssembly(/*System.Security.Policy.Evidence evidence,*/ AppDomain targetAppDomain)
-        {
-            System.Reflection.Assembly result = this.cachedRuntimeAssembly == null ? null : this.cachedRuntimeAssembly.Value;
-            if(result == null || /*evidence != null ||*/ targetAppDomain != null)
+            if(result == null || targetAppDomain != null)
             {
                 lock(this)
                 {
-                    if(this.cachedRuntimeAssembly != null && /*evidence == null &&*/ targetAppDomain == null)
+                    if(this.cachedRuntimeAssembly != null && targetAppDomain == null)
                         return this.cachedRuntimeAssembly.Value;
+                    
                     if(targetAppDomain == null)
                         targetAppDomain = AppDomain.CurrentDomain;
+                    
                     if(this.Location != null)
                     {
                         string name = this.StrongName;
-                        System.Reflection.Assembly[] alreadyLoadedAssemblies = targetAppDomain.GetAssemblies();
+                        Reflection.Assembly[] alreadyLoadedAssemblies = targetAppDomain.GetAssemblies();
+
                         if(alreadyLoadedAssemblies != null)
+                        {
                             for(int i = 0, n = alreadyLoadedAssemblies.Length; i < n; i++)
                             {
-                                System.Reflection.Assembly a = alreadyLoadedAssemblies[i];
+                                Reflection.Assembly a = alreadyLoadedAssemblies[i];
+
                                 if(a == null)
                                     continue;
+                                
                                 if(a.FullName == name)
                                 {
                                     result = a;
                                     break;
                                 }
                             }
-                        if(result == null)
-                        {
-                            /*if(evidence != null)
-                                result = targetAppDomain.Load(this.GetAssemblyName(), evidence);
-                            else*/
-                                result = targetAppDomain.Load(this.GetAssemblyName());
                         }
+
+                        if(result == null)
+                            result = targetAppDomain.Load(this.GetAssemblyName());
                     }
 
-                    if(result != null && /*evidence == null &&*/ targetAppDomain == AppDomain.CurrentDomain)
+                    if(result != null && targetAppDomain == AppDomain.CurrentDomain)
                     {
                         this.AddCachedAssembly(result);
                         this.cachedRuntimeAssembly = new CachedRuntimeAssembly(result);
                     }
                 }
             }
+
             return result;
         }
 
@@ -6839,27 +6656,40 @@ notfound:
         {
             if(publicKey == null)
                 return null;
+
             int n = publicKey.Length;
             StringBuilder str;
+
             if(n > 8)
             {
-                System.Security.Cryptography.SHA1 sha1 = new System.Security.Cryptography.SHA1CryptoServiceProvider();
-                publicKey = sha1.ComputeHash(publicKey);
-                byte[] token = new byte[8];
-                for(int i = 0, m = publicKey.Length - 1; i < 8; i++)
-                    token[i] = publicKey[m - i];
-                publicKey = token;
-                n = 8;
+                using(var sha1 = SHA1.Create())
+                {
+                    publicKey = sha1.ComputeHash(publicKey);
+                    byte[] token = new byte[8];
+
+                    for(int i = 0, m = publicKey.Length - 1; i < 8; i++)
+                        token[i] = publicKey[m - i];
+                    
+                    publicKey = token;
+                    n = 8;
+                }
             }
+
             if(n == 0)
                 str = new StringBuilder(", PublicKeyToken=null");
             else
+            {
                 str = new StringBuilder(", PublicKeyToken=", n * 2 + 17);
-            for(int i = 0; i < n; i++)
-                str.Append(publicKey[i].ToString("x2"));
+
+                for(int i = 0; i < n; i++)
+                    str.Append(publicKey[i].ToString("x2"));
+            }
+
             return str.ToString();
         }
+
         protected TrivialHashtable friends;
+
         public virtual bool MayAccessInternalTypesOf(AssemblyNode assembly)
         {
             if(this == assembly)
@@ -7032,12 +6862,16 @@ notfound:
                 if(this.PublicKeyOrToken.Length == 8)
                     return this.token = this.PublicKeyOrToken;
 
-                System.Security.Cryptography.SHA1 sha1 = new System.Security.Cryptography.SHA1CryptoServiceProvider();
-                byte[] hashedKey = sha1.ComputeHash(this.PublicKeyOrToken);
-                byte[] token = new byte[8];
-                for(int i = 0, n = hashedKey.Length - 1; i < 8; i++)
-                    token[i] = hashedKey[n - i];
-                return this.token = token;
+                using(var sha1 = SHA1.Create())
+                {
+                    byte[] hashedKey = sha1.ComputeHash(this.PublicKeyOrToken);
+                    byte[] token = new byte[8];
+
+                    for(int i = 0, n = hashedKey.Length - 1; i < 8; i++)
+                        token[i] = hashedKey[n - i];
+                    
+                    return this.token = token;
+                }
             }
         }
 
@@ -7069,12 +6903,6 @@ notfound:
             this.location = assembly.Location;
             this.version = assembly.Version;
             this.assembly = assembly;
-        }
-
-        public AssemblyReference(string assemblyStrongName, SourceContext sctx)
-            : this(assemblyStrongName)
-        {
-            this.SourceContext = sctx;
         }
 
         public AssemblyReference(string assemblyStrongName)
@@ -7282,45 +7110,7 @@ throwError:
                 return this.strongName;
             }
         }
-        private System.Reflection.AssemblyName assemblyName;
-        public System.Reflection.AssemblyName GetAssemblyName()
-        {
-            if(this.assemblyName == null)
-            {
-                System.Reflection.AssemblyName aName = new System.Reflection.AssemblyName();
-                aName.CultureInfo = new System.Globalization.CultureInfo(this.Culture == null ? "" : this.Culture);
-                if(this.PublicKeyOrToken != null && this.PublicKeyOrToken.Length > 8)
-                    aName.Flags = System.Reflection.AssemblyNameFlags.PublicKey;
-                if((this.Flags & AssemblyFlags.Retargetable) != 0)
-                    aName.Flags |= (System.Reflection.AssemblyNameFlags)AssemblyFlags.Retargetable;
-                aName.HashAlgorithm = System.Configuration.Assemblies.AssemblyHashAlgorithm.SHA1;
-                if(this.PublicKeyOrToken != null)
-                {
-                    if(this.PublicKeyOrToken.Length > 8)
-                        aName.SetPublicKey(this.PublicKeyOrToken);
-                    else if(this.PublicKeyOrToken.Length > 0)
-                        aName.SetPublicKeyToken(this.PublicKeyOrToken);
-                }
-                else
-                    aName.SetPublicKey(new byte[0]);
-                aName.Name = this.Name;
-                aName.Version = this.Version;
-                switch(this.Flags & AssemblyFlags.CompatibilityMask)
-                {
-                    case AssemblyFlags.NonSideBySideCompatible:
-                        aName.VersionCompatibility = System.Configuration.Assemblies.AssemblyVersionCompatibility.SameDomain;
-                        break;
-                    case AssemblyFlags.NonSideBySideProcess:
-                        aName.VersionCompatibility = System.Configuration.Assemblies.AssemblyVersionCompatibility.SameProcess;
-                        break;
-                    case AssemblyFlags.NonSideBySideMachine:
-                        aName.VersionCompatibility = System.Configuration.Assemblies.AssemblyVersionCompatibility.SameMachine;
-                        break;
-                }
-                this.assemblyName = aName;
-            }
-            return this.assemblyName;
-        }
+
         public bool Matches(string name, Version version, string culture, byte[] publicKeyToken)
         {
             if(culture != null && culture.Length == 0)
@@ -7365,12 +7155,16 @@ throwError:
                 if(this.PublicKeyOrToken.Length == 8)
                     return this.token = this.PublicKeyOrToken;
 
-                System.Security.Cryptography.SHA1 sha = new System.Security.Cryptography.SHA1CryptoServiceProvider();
-                byte[] hashedKey = sha.ComputeHash(this.PublicKeyOrToken);
-                byte[] token = new byte[8];
-                for(int i = 0, n = hashedKey.Length - 1; i < 8; i++)
-                    token[i] = hashedKey[n - i];
-                return this.token = token;
+                using(var sha = SHA1.Create())
+                {
+                    byte[] hashedKey = sha.ComputeHash(this.PublicKeyOrToken);
+                    byte[] token = new byte[8];
+
+                    for(int i = 0, n = hashedKey.Length - 1; i < 8; i++)
+                        token[i] = hashedKey[n - i];
+
+                    return this.token = token;
+                }
             }
         }
     }
@@ -8283,37 +8077,6 @@ throwError:
             set
             {
                 this.attributes = value;
-            }
-        }
-
-        protected SecurityAttributeList securityAttributes;
-
-        /// <summary>Contains declarative security information associated with the type.</summary>
-        public SecurityAttributeList SecurityAttributes
-        {
-            get
-            {
-                if(this.securityAttributes != null)
-                    return this.securityAttributes;
-
-                if(this.attributes == null)
-                {
-                    // Getting the type attributes also gets the security attributes in the case of a type that
-                    // was read in by the Reader
-                    AttributeList al = this.Attributes;
-
-                    if(al != null)
-                        al = null;
-
-                    if(this.securityAttributes != null)
-                        return this.securityAttributes;
-                }
-
-                return this.securityAttributes = new SecurityAttributeList();
-            }
-            set
-            {
-                this.securityAttributes = value;
             }
         }
 
@@ -15154,36 +14917,6 @@ returnFullName:
         protected TrivialHashtable/*!*/ Locals = new TrivialHashtable();
 
         public LocalList LocalList;
-        protected SecurityAttributeList securityAttributes;
-
-        /// <summary>Contains declarative security information associated with the type.</summary>
-        public SecurityAttributeList SecurityAttributes
-        {
-            get
-            {
-                if(this.securityAttributes != null)
-                    return this.securityAttributes;
-
-                if(this.attributes == null)
-                {
-                    // Getting the type attributes also gets the security attributes in the case of a type that
-                    // was read in by the Reader.
-                    AttributeList al = this.Attributes;
-
-                    if(al != null)
-                        al = null;
-
-                    if(this.securityAttributes != null)
-                        return this.securityAttributes;
-                }
-
-                return this.securityAttributes = new SecurityAttributeList();
-            }
-            set
-            {
-                this.securityAttributes = value;
-            }
-        }
 
         public delegate void MethodBodyProvider(Method/*!*/ method, object/*!*/ handle, bool asInstructionList);
         public MethodBodyProvider ProvideBody;

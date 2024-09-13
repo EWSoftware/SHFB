@@ -25,4 +25,9 @@ using System.Reflection;
 
 [assembly: CLSCompliant(false)]
 
+#if NET8_0_OR_GREATER
+// This tool is dependent on Windows APIs
+[assembly:System.Runtime.Versioning.SupportedOSPlatform("windows")]
+#endif
+
 // See AssemblyInfoShared.cs for the shared attributes common to all projects in the solution.

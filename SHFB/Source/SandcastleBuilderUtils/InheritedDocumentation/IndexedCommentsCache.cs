@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder - Generate Inherited Documentation
 // File    : IndexedCommentsCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/07/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 09/12/2024
+// Note    : Copyright 2008-2024, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to cache indexed XML comments files
 //
@@ -40,7 +40,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         /// <summary>
         /// This represents an indexed XML comments file
         /// </summary>
-        private class IndexedCommentsFile
+        private sealed class IndexedCommentsFile
         {
             #region Private data members
             //=====================================================================
@@ -178,10 +178,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         /// <param name="size">The maximum size of the cache</param>
         public IndexedCommentsCache(int size)
         {
-            if(size < 0)
-                throw new ArgumentOutOfRangeException(nameof(size));
-
-            cacheSize = size;
+            cacheSize = size < 0 ? 100 : size;
             index = new ConcurrentDictionary<string, string>();
             queue = new Queue<string>(size);
             cache = new Dictionary<string, IndexedCommentsFile>(cacheSize);
@@ -304,11 +301,13 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                 foreach(string key in this.GetKeys(filename))
                 {
                     // Only report the warning if wanted.  If there are duplicates, the last one found wins.
-                    if(this.ShowDuplicatesWarning && index.ContainsKey(key))
+                    if(this.ShowDuplicatesWarning && index.TryGetValue(key, out string value))
+                    {
                         this.OnReportWarning(new CommentsCacheEventArgs(String.Format(
                             CultureInfo.InvariantCulture, "SHFB: Warning GID0008: Entries for the key " +
                             "'{0}' occur in both '{1}' and '{2}'.  The entries in '{2}' will be used.", key,
-                            index[key], filename)));
+                            value, filename)));
+                    }
 
                     index[key] = filename;
                 }

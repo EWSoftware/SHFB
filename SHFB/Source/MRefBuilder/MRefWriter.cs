@@ -506,44 +506,18 @@ namespace Sandcastle.Tools
         /// This is used to get an enumerable list of the exposed attributes on a member
         /// </summary>
         /// <param name="attributes">The general attributes</param>
-        /// <param name="securityAttributes">The security attributes</param>
         /// <returns>An enumerable list of the exposed attributes on the member</returns>
-        private IEnumerable<AttributeNode> GetExposedAttributes(AttributeList attributes,
-          SecurityAttributeList securityAttributes)
+        private IEnumerable<AttributeNode> GetExposedAttributes(AttributeList attributes)
         {
-            if(attributes == null)
-                throw new ArgumentNullException(nameof(attributes));
-
-            if(securityAttributes == null)
-                throw new ArgumentNullException(nameof(securityAttributes));
-
-            foreach(var attribute in attributes)
+            if(attributes != null)
             {
-                if(attribute == null)
-                    throw new InvalidOperationException("Null attribute found");
-
-                if(this.ApiFilter.IsExposedAttribute(attribute))
-                    yield return attribute;
-            }
-
-            foreach(var securityAttribute in securityAttributes)
-            {
-                if(securityAttribute == null)
-                    throw new InvalidOperationException("Null security attribute found");
-
-                AttributeList permissionAttributes = securityAttribute.PermissionAttributes;
-                
-                if(permissionAttributes == null)
-                    continue;
-
-                foreach(var permissionAttribute in permissionAttributes)
+                foreach(var attribute in attributes)
                 {
-                    // Saw an example where this was null; IDLASM shows no permission attribute, so skip it
-                    if(permissionAttribute == null)
-                        continue;
+                    if(attribute == null)
+                        throw new InvalidOperationException("Null attribute found");
 
-                    if(this.ApiFilter.IsExposedAttribute(permissionAttribute))
-                        yield return permissionAttribute;
+                    if(this.ApiFilter.IsExposedAttribute(attribute))
+                        yield return attribute;
                 }
             }
         }
@@ -696,7 +670,7 @@ namespace Sandcastle.Tools
             writer.WriteEndElement();
 
             // Assembly attribute data
-            this.WriteAttributes(assembly.Attributes, assembly.SecurityAttributes);
+            this.WriteAttributes(assembly.Attributes);
 
             writer.WriteEndElement();
         }
@@ -832,7 +806,7 @@ namespace Sandcastle.Tools
             }
 
             this.WriteTypeContainers(type);
-            this.WriteAttributes(type.Attributes, type.SecurityAttributes);
+            this.WriteAttributes(type.Attributes);
 
             this.EndElementCallbacks("api", type);
             writer.WriteEndElement();
@@ -1097,8 +1071,6 @@ namespace Sandcastle.Tools
             this.WriteApiData(member);
             this.WriteMemberData(member);
 
-            SecurityAttributeList securityAttributes = new SecurityAttributeList();
-
             switch(member.NodeType)
             {
                 case NodeType.Field:
@@ -1141,9 +1113,6 @@ namespace Sandcastle.Tools
                     this.WriteReturnValue(method.ReturnType, method.ReturnAttributes,
                         DetermineNullableState(method, method.ReturnAttributes).GetEnumerator());
                     this.WriteImplementedMembers(method.GetImplementedMethods());
-
-                    if(method.SecurityAttributes != null)
-                        securityAttributes = method.SecurityAttributes;
                     break;
 
                 case NodeType.Property:
@@ -1186,7 +1155,7 @@ namespace Sandcastle.Tools
             }
 
             this.WriteMemberContainers(type);
-            this.WriteAttributes(member.Attributes, securityAttributes);
+            this.WriteAttributes(member.Attributes);
         }
 
         /// <summary>
@@ -1364,7 +1333,7 @@ namespace Sandcastle.Tools
                 writer.WriteStartElement("getter");
 
                 this.WriteStringAttribute("name", "get_" + property.Name.Name);
-                this.WriteAttributes(getter.Attributes, getter.SecurityAttributes);
+                this.WriteAttributes(getter.Attributes);
 
                 writer.WriteEndElement();
             }
@@ -1374,7 +1343,7 @@ namespace Sandcastle.Tools
                 writer.WriteStartElement("setter");
 
                 this.WriteStringAttribute("name", "set_" + property.Name.Name.ToString());
-                this.WriteAttributes(setter.Attributes, setter.SecurityAttributes);
+                this.WriteAttributes(setter.Attributes);
 
                 writer.WriteEndElement();
             }
@@ -1408,7 +1377,7 @@ namespace Sandcastle.Tools
                 writer.WriteStartElement("adder");
 
                 this.WriteStringAttribute("name", "add_" + trigger.Name.Name);
-                this.WriteAttributes(adder.Attributes, adder.SecurityAttributes);
+                this.WriteAttributes(adder.Attributes);
 
                 writer.WriteEndElement();
             }
@@ -1418,7 +1387,7 @@ namespace Sandcastle.Tools
                 writer.WriteStartElement("remover");
 
                 this.WriteStringAttribute("name", "remove_" + trigger.Name.Name);
-                this.WriteAttributes(remover.Attributes, remover.SecurityAttributes);
+                this.WriteAttributes(remover.Attributes);
 
                 writer.WriteEndElement();
             }
@@ -1676,10 +1645,9 @@ namespace Sandcastle.Tools
         /// Write out attributes
         /// </summary>
         /// <param name="attributes">The standard attributes to write</param>
-        /// <param name="securityAttributes">The security attributes to write</param>
-        protected void WriteAttributes(AttributeList attributes, SecurityAttributeList securityAttributes)
+        protected void WriteAttributes(AttributeList attributes)
         {
-            var exposed = this.GetExposedAttributes(attributes, securityAttributes);
+            var exposed = this.GetExposedAttributes(attributes);
 
             if(exposed.Any())
             {
@@ -1994,7 +1962,7 @@ namespace Sandcastle.Tools
                     a.Type.FullName != "System.ParamArrayAttribute"));
 
                 if(paramAttrs.Count != 0)
-                    this.WriteAttributes(paramAttrs, new SecurityAttributeList());
+                    this.WriteAttributes(paramAttrs);
             }
 
             writer.WriteEndElement();

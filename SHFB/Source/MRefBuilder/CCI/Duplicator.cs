@@ -55,27 +55,6 @@ namespace System.Compiler
             //^ base();
         }
 
-        public Duplicator(Visitor/*!*/ callingVisitor)
-            : base(callingVisitor)
-        {
-            /*^
-            //Dummy initializations to satisfy compiler.
-            Duplicator cdv = callingVisitor as Duplicator;
-            if (cdv == null) {
-              this.DuplicateFor = new TrivialHashtable();
-              this.TypesToBeDuplicated = new TrivialHashtable();
-              this.TargetModule = new Module();
-              this.TargetType = this.OriginalTargetType = new Class();
-            } else {
-              this.DuplicateFor = cdv.DuplicateFor;
-              this.TypesToBeDuplicated = cdv.TypesToBeDuplicated;
-              this.TargetModule = cdv.TargetModule;
-              this.TargetType = cdv.TargetType;
-              this.OriginalTargetType = cdv.OriginalTargetType;
-            }
-            base; //The real initializations happen here
-            ^*/
-        }
         public override void TransferStateTo(Visitor targetVisitor)
         {
             base.TransferStateTo(targetVisitor);
@@ -115,9 +94,12 @@ namespace System.Compiler
                     this.FindTypesToBeDuplicated(node);
             }
         }
+
         public virtual void FindTypesToBeDuplicated(Namespace nspace)
         {
-            if (nspace == null) return;
+            if (nspace == null)
+                return;
+
             this.FindTypesToBeDuplicated(nspace.Types);
             this.FindTypesToBeDuplicated(nspace.NestedNamespaces);
         }
@@ -1093,19 +1075,6 @@ namespace System.Compiler
             if (Return == null) return null;
             return base.VisitReturn((Return)Return.Clone());
         }
-        public override SecurityAttribute VisitSecurityAttribute(SecurityAttribute attribute)
-        {
-            if (attribute == null) return null;
-            return base.VisitSecurityAttribute((SecurityAttribute)attribute.Clone()); ;
-        }
-
-        public override SecurityAttributeList VisitSecurityAttributeList(SecurityAttributeList attributes)
-        {
-            if(attributes == null)
-                return null;
-
-            return base.VisitSecurityAttributeList(new SecurityAttributeList(attributes));
-        }
 
         public override Expression VisitSetterValue(SetterValue value)
         {
@@ -1272,9 +1241,12 @@ namespace System.Compiler
             TypeNode savedTargetType = this.TargetType;
             this.TargetType = dup;
             dup.Attributes = this.VisitAttributeList(type.Attributes);
-            dup.SecurityAttributes = this.VisitSecurityAttributeList(type.SecurityAttributes);
+
             Class c = dup as Class;
-            if (c != null) c.BaseClass = (Class)this.VisitTypeReference(c.BaseClass);
+            
+            if (c != null)
+                c.BaseClass = (Class)this.VisitTypeReference(c.BaseClass);
+            
             dup.Interfaces = this.VisitInterfaceReferenceList(dup.Interfaces);
             dup.TemplateParameters = this.VisitTypeReferenceList(type.TemplateParameters);
             dup.consolidatedTemplateParameters = null;
@@ -1844,12 +1816,12 @@ namespace System.Compiler
             return base.VisitUsedNamespace((UsedNamespace)usedNamespace.Clone());
         }
 
-        public override UsedNamespaceList VisitUsedNamespaceList(UsedNamespaceList usedNspaces)
+        public override UsedNamespaceList VisitUsedNamespaceList(UsedNamespaceList usedNamespaces)
         {
-            if(usedNspaces == null)
+            if(usedNamespaces == null)
                 return null;
 
-            return base.VisitUsedNamespaceList(new UsedNamespaceList(usedNspaces));
+            return base.VisitUsedNamespaceList(new UsedNamespaceList(usedNamespaces));
         }
 
         public override Statement VisitWhile(While While)

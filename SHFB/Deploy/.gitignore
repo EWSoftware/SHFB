@@ -2,5 +2,5 @@
 /Data/**/*.xml
 Components/*
 net472/*
-netcoreapp3.1/*
+net8.0/*
 Tools/*

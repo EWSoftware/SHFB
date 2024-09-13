@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder - Generate Inherited Documentation
 // File    : InheritedDocsException.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/09/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 09/12/2024
+// Note    : Copyright 2008-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the exception class for the inherited documentation generation process.
 //
@@ -18,14 +18,12 @@
 //===============================================================================================================
 
 using System;
-using System.Runtime.Serialization;
 
 namespace SandcastleBuilder.Utils.InheritedDocumentation
 {
     /// <summary>
     /// This exception class is thrown by the application if it encounters an unrecoverable error
     /// </summary>
-    [Serializable]
     public class InheritedDocsException : Exception
     {
         /// <summary>
@@ -43,11 +41,6 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
 
         /// <inheritdoc />
         public InheritedDocsException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        /// <inheritdoc />
-        protected InheritedDocsException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

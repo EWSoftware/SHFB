@@ -26,7 +26,7 @@ ECHO *
 ECHO * Core tools
 ECHO *
 
-"%MSBUILD%" /nr:false /r /nologo /v:m /m "SandcastleTools.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%MSBUILD2022%" /nr:false /r /nologo /v:m /m "SandcastleTools.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 IF ERRORLEVEL 1 GOTO End
 
 ECHO *

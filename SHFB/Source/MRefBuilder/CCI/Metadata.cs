@@ -263,20 +263,10 @@ namespace System.Compiler.Metadata
         internal int Signature;
         internal TypeNode Type;
     }
-    [Serializable]
-    public sealed class InvalidMetadataException : System.Exception
+
+    public sealed class InvalidMetadataException : Exception
     {
-        public InvalidMetadataException() { }
-        public InvalidMetadataException(string message)
-            : base(message)
-        {
-        }
-        public InvalidMetadataException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-        private InvalidMetadataException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
+        public InvalidMetadataException(string message) : base(message)
         {
         }
     }
@@ -615,9 +605,7 @@ namespace System.Compiler.Metadata
 
         public void Dispose()
         {
-            if(this.memmap != null)
-                this.memmap.Dispose();
-
+            this.memmap?.Dispose();
             this.memmap = null;
 
             //this.cursor = null;

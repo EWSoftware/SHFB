@@ -83,10 +83,11 @@ namespace System.Compiler
 
         public override Node Visit(Node node)
         {
-            if (node == null) return null;
+            if (node == null)
+                return null;
+
             switch (node.NodeType)
             {
-
                 case NodeType.Acquire:
                     return this.VisitAcquire((Acquire)node);
 
@@ -153,11 +154,11 @@ namespace System.Compiler
 
                 case NodeType.DebugBreak:
                     return node;
+
                 case NodeType.Call:
                 case NodeType.Calli:
                 case NodeType.Callvirt:
                 case NodeType.Jmp:
-
                 case NodeType.MethodCall:
                     return this.VisitMethodCall((MethodCall)node);
 
@@ -349,7 +350,8 @@ namespace System.Compiler
                     return this.VisitResourceUse((ResourceUse)node);
 
                 case NodeType.SecurityAttribute:
-                    return this.VisitSecurityAttribute((SecurityAttribute)node);
+                    // It shouldn't get here anymore
+                    throw new InvalidOperationException("NodeType.SecurityAttribute is unsupported but was encountered");
 
                 case NodeType.SetterValue:
                     return this.VisitSetterValue((SetterValue)node);
@@ -561,10 +563,12 @@ namespace System.Compiler
 
         public virtual AssemblyNode VisitAssembly(AssemblyNode assembly)
         {
-            if (assembly == null) return null;
+            if (assembly == null)
+                return null;
+            
             this.VisitModule(assembly);
             assembly.ModuleAttributes = this.VisitAttributeList(assembly.ModuleAttributes);
-            assembly.SecurityAttributes = this.VisitSecurityAttributeList(assembly.SecurityAttributes);
+            
             return assembly;
         }
         public virtual AssemblyReference VisitAssemblyReference(AssemblyReference assemblyReference)
@@ -1144,10 +1148,11 @@ namespace System.Compiler
         }
         public virtual Method VisitMethod(Method method)
         {
-            if (method == null) return null;
+            if (method == null)
+                return null;
+
             method.Attributes = this.VisitAttributeList(method.Attributes);
             method.ReturnAttributes = this.VisitAttributeList(method.ReturnAttributes);
-            method.SecurityAttributes = this.VisitSecurityAttributeList(method.SecurityAttributes);
             method.ReturnType = this.VisitTypeReference(method.ReturnType);
             method.ImplementedTypes = this.VisitTypeReferenceList(method.ImplementedTypes);
             method.Parameters = this.VisitParameterList(method.Parameters);
@@ -1348,18 +1353,6 @@ namespace System.Compiler
             return resourceUse;
         }
 
-        public virtual SecurityAttribute VisitSecurityAttribute(SecurityAttribute attribute)
-        {
-            return attribute;
-        }
-        public virtual SecurityAttributeList VisitSecurityAttributeList(SecurityAttributeList attributes)
-        {
-            if (attributes == null) return null;
-            for (int i = 0, n = attributes.Count; i < n; i++)
-                attributes[i] = this.VisitSecurityAttribute(attributes[i]);
-            return attributes;
-        }
-
         public virtual Expression VisitSetterValue(SetterValue value)
         {
             return value;
@@ -1504,16 +1497,23 @@ namespace System.Compiler
         }
         public virtual TypeNode VisitTypeNode(TypeNode typeNode)
         {
-            if (typeNode == null) return null;
+            if (typeNode == null)
+                return null;
+
             typeNode.Attributes = this.VisitAttributeList(typeNode.Attributes);
-            typeNode.SecurityAttributes = this.VisitSecurityAttributeList(typeNode.SecurityAttributes);
             Class c = typeNode as Class;
-            if (c != null) c.BaseClass = (Class)this.VisitTypeReference(c.BaseClass);
+            
+            if (c != null)
+                c.BaseClass = (Class)this.VisitTypeReference(c.BaseClass);
+            
             typeNode.Interfaces = this.VisitInterfaceReferenceList(typeNode.Interfaces);
             typeNode.TemplateArguments = this.VisitTypeReferenceList(typeNode.TemplateArguments);
             typeNode.TemplateParameters = this.VisitTypeParameterList(typeNode.TemplateParameters);
+            
             this.VisitMemberList(typeNode.Members);
-            if (this.memberListNamesChanged) { typeNode.ClearMemberTable(); }
+            
+            if (this.memberListNamesChanged)
+                typeNode.ClearMemberTable();
 
             return typeNode;
         }

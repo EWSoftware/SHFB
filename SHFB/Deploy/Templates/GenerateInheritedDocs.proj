@@ -2,7 +2,7 @@
 	<!-- Generate inherited documentation.  https://GitHub.com/EWSoftware/SHFB -->
 	<PropertyGroup>
 		<SHFBTaskFolder Condition=" '$(MSBuildRuntimeType)' != 'Core' ">net472\</SHFBTaskFolder>
-		<SHFBTaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' ">netcoreapp3.1\</SHFBTaskFolder>
+		<SHFBTaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' ">net8.0\</SHFBTaskFolder>
 	</PropertyGroup>
 	<UsingTask TaskName="SandcastleBuilder.Utils.InheritedDocumentation.GenerateInheritedDocs"
     AssemblyFile="{@SHFBRoot}$(SHFBTaskFolder)GenerateInheritedDocs.dll" />

@@ -3631,136 +3631,97 @@
           <File Id="fil2755EDFC3D9FF3D9ED9720CC9FCABE6C" KeyPath="yes" Source="$(var.RootFolder)\net472\System.ValueTuple.dll" />
         </Component>
       </Directory>
-      <Directory Id="dir4D5B751653AB3C8310D47A0CEBC57700" Name="netcoreapp3.1">
-        <Component Id="cmp7BB1EDF62627775D347C2FEBC391BE58" Guid="{4EE680FD-AF81-4C07-9477-F0A9661E7CA2}">
-          <File Id="fil2B53516B37D3BE379E799F09E2F3B1DB" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\GenerateInheritedDocs.config" />
+      <Directory Id="dir50BA78F06F76E713C16EF0C66529463E" Name="net8.0">
+        <Component Id="cmpB6D52E52850F49FE1F594E0B74665930" Guid="{C726AC9F-F3F6-45AB-A8FA-88D7872FF23E}">
+          <File Id="filDE38F3E2594D9DCE466DA4D232AC5AEA" KeyPath="yes" Source="$(var.RootFolder)\net8.0\GenerateInheritedDocs.config" />
         </Component>
-        <Component Id="cmp68A29C624C8A09AC7C38CD707F623F38" Guid="{450332B7-2C29-4288-8327-BAE2CF459CB3}">
-          <File Id="fil6FA45DD5811C9F5661A0953BFC527037" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\GenerateInheritedDocs.deps.json" />
+        <Component Id="cmp8B05F48E428B883FBC8A306629A7D2B5" Guid="{3D944D2B-0788-4F90-A08F-D1300EAA3DED}">
+          <File Id="filEB95CDEBEEA72CCB6D570DFAE865B7D9" KeyPath="yes" Source="$(var.RootFolder)\net8.0\GenerateInheritedDocs.deps.json" />
         </Component>
-        <Component Id="cmpDAB3F1E91D23018AC6537528CC38EA9F" Guid="{FDA04506-C223-43EF-9163-6E3B4F16513B}">
-          <File Id="fil651E8AF18656B92AD3503890620EA390" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\GenerateInheritedDocs.dll" />
+        <Component Id="cmpD0DAD78486B108D8ACFF3FE65BC75864" Guid="{F3D5DE90-5F7A-43FE-A5CA-86694E084E55}">
+          <File Id="fil7804C9E1F5615099160A0BC98141CE47" KeyPath="yes" Source="$(var.RootFolder)\net8.0\GenerateInheritedDocs.dll" />
         </Component>
-        <Component Id="cmp31200E88396F0404714557BE496FB9D4" Guid="{ACC7AF36-CFAB-45FC-9E02-ABD0DFEECD1B}">
-          <File Id="filC84C7F0729AC0130D8B9D2BE30FA4615" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\GenerateInheritedDocs.xml" />
+        <Component Id="cmpEA6B8759DA158C3CFE74C185C960E89B" Guid="{CA773772-1BF4-4362-B07C-709C250D60BF}">
+          <File Id="filBCE42086930703500EDDB3FF7C3046C8" KeyPath="yes" Source="$(var.RootFolder)\net8.0\GenerateInheritedDocs.xml" />
         </Component>
-        <Component Id="cmpBC1C5512CBA4683F1D173101CABAB9B6" Guid="{9B5EB88C-F261-4CB9-9072-7A7E8EFBCD7B}">
-          <File Id="fil9F66C28F322926CB52DA803FFF2B751E" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll" />
+        <Component Id="cmp62CDD209846A7BCCD25CD8F03DDA8973" Guid="{ADA4C01D-4862-4371-ABBA-8CDB867B2019}">
+          <File Id="filB431DE0591440CCEB5481EC915EF7959" KeyPath="yes" Source="$(var.RootFolder)\net8.0\Microsoft.DiaSymReader.dll" />
         </Component>
-        <Component Id="cmp90AB487F7AD916B6F04EAB72B5E06E16" Guid="{EEE90FE3-EFC0-47B8-8986-058E34D3CA42}">
-          <File Id="filC7E8EC3B5577E4836851F1492FD66ECF" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\Microsoft.DiaSymReader.dll" />
+        <Component Id="cmp9EC517804147E1200AA4A1C64B25FDB9" Guid="{133D1CFE-5EA9-46DF-BCB4-290BC6B68C51}">
+          <File Id="filA283783C0CD77016E44C7213E9EDA82E" KeyPath="yes" Source="$(var.RootFolder)\net8.0\Microsoft.DiaSymReader.PortablePdb.dll" />
         </Component>
-        <Component Id="cmp55416A4302E561E7CAF298035FB3068D" Guid="{32FE4AD8-0447-4419-A66C-EBB5F811036C}">
-          <File Id="fil037536809B63D59D02256AAEAE54D162" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\Microsoft.DiaSymReader.PortablePdb.dll" />
+        <Component Id="cmpDBD176E4DB0B335F39E7C55B2D77937D" Guid="{5DA6D17B-2BA8-4066-A052-F83A1CFA2754}">
+          <File Id="fil7C2CDD7DC7F607219E5A4929DDF36B7A" KeyPath="yes" Source="$(var.RootFolder)\net8.0\Microsoft.Win32.SystemEvents.dll" />
         </Component>
-        <Component Id="cmp0043080FE766EEB16B35CC3706D23EBC" Guid="{736A3EB3-1AE4-424C-A294-15C805A2C82D}">
-          <File Id="fil17D3A5EF671D9B74C8011D889816D01E" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll" />
+        <Component Id="cmp3C69DECC28AB2764FCDA332AC584C4DF" Guid="{598684D8-9D89-43E9-89B7-76C707B9E49F}">
+          <File Id="filEA3C88A86E229BA07D8BA7A178C30CB8" KeyPath="yes" Source="$(var.RootFolder)\net8.0\MRefBuilder.config" />
         </Component>
-        <Component Id="cmpEC64496A141CBB4C72D530299178D558" Guid="{5684A196-60FD-4308-A9CA-6F608DD10B37}">
-          <File Id="filD7FA6D76A4EBFD2D3259F11D4D7D33AE" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\MRefBuilder.config" />
+        <Component Id="cmp6065280FCBF52ED6A6AFCF12ACA8D38F" Guid="{918258E8-497A-456C-B64C-5723461912A3}">
+          <File Id="filFCCF2FFAB4B5FB96B60829999C3C5F4B" KeyPath="yes" Source="$(var.RootFolder)\net8.0\MRefBuilder.deps.json" />
         </Component>
-        <Component Id="cmpE35406CADD1D4426CA52A4CACBDD63FE" Guid="{D5064496-EDD4-41A7-8294-25CEE13D68CD}">
-          <File Id="fil3CE0A0ADA8F7297946C37405E2A4A7CB" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\MRefBuilder.deps.json" />
+        <Component Id="cmpC25A79800CAD91BAC4E53484223854E7" Guid="{7AB18124-AF6F-4981-9577-AB1DB76CFE7F}">
+          <File Id="fil4DED5AADC694E353B066FF423A3407A1" KeyPath="yes" Source="$(var.RootFolder)\net8.0\MRefBuilder.dll" />
         </Component>
-        <Component Id="cmpCFCBB2FB0F275F76CC28E73138DDBEA1" Guid="{CA62BF65-75D9-4A08-A78B-9A50FA7BF4C3}">
-          <File Id="fil66E430E802EF99BBF3BE32319DB2DF42" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\MRefBuilder.dll" />
+        <Component Id="cmp4D31D1093FC7DC8EA70CAC8893FB41E5" Guid="{92975B00-D180-4D6B-8F49-857862D0C066}">
+          <File Id="filFFD1818D5EF47805AEA9673130414DB5" KeyPath="yes" Source="$(var.RootFolder)\net8.0\Sandcastle.Core.dll" />
         </Component>
-        <Component Id="cmp092FA7721CBFCAD908BA46F621E1EF9A" Guid="{3EE15A75-5DC0-4CC2-B166-2EAD43671004}">
-          <File Id="filA91450CC3C0E79CB05F9EDE78C759628" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\Sandcastle.Core.dll" />
+        <Component Id="cmpA5109241AA05569E0D734B785518C81F" Guid="{6BFA1588-78FD-4F3F-A0B0-669FA7ADF7A4}">
+          <File Id="fil190F124A1C793E210147072C09CBCE37" KeyPath="yes" Source="$(var.RootFolder)\net8.0\Sandcastle.Core.xml" />
         </Component>
-        <Component Id="cmp01EAEB77E2EE0D5F8CAA2DCE516DDEA9" Guid="{0A2F248F-E1D5-4257-A94A-693C21851935}">
-          <File Id="fil38412253088874404BF9F6C15D89C772" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\Sandcastle.Core.xml" />
+        <Component Id="cmp4CE7BD57011608E68AC003D64048429C" Guid="{D49AFC6F-575F-4DC2-B86D-4E8DD62739F2}">
+          <File Id="fil6315D42FCFFA5DB3136B715316AC01FB" KeyPath="yes" Source="$(var.RootFolder)\net8.0\SandcastleBuilder.MSBuild.deps.json" />
         </Component>
-        <Component Id="cmpD761AEF2D913B2963220D806C6C3744C" Guid="{A5A82908-4643-49C5-86E8-D80739B3AEB9}">
-          <File Id="fil718E628BE6A3DD80C4D6EB254FD56F8A" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\SandcastleBuilder.MSBuild.deps.json" />
+        <Component Id="cmp36D0113746F6B10F548F449452FBB59A" Guid="{D2865576-960B-4343-AA48-B939E708D716}">
+          <File Id="filC2449B8D348F630F1C00C17C9034E1BB" KeyPath="yes" Source="$(var.RootFolder)\net8.0\SandcastleBuilder.MSBuild.dll" />
         </Component>
-        <Component Id="cmp2E35D5985443D394FAC97B5F14857828" Guid="{BB5087AE-7D46-4E7F-AD81-958D14CC3A8B}">
-          <File Id="fil79D4A875F35156BEEA6E0CD25B65FB84" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\SandcastleBuilder.MSBuild.dll" />
+        <Component Id="cmp5BA603396666641FF2BA27025BBA190E" Guid="{A0DC7929-5F78-4D35-9922-FB5B4FCE3585}">
+          <File Id="filD655B1EB68B198DBFD8B2EDCF6E71DF7" KeyPath="yes" Source="$(var.RootFolder)\net8.0\SandcastleBuilder.MSBuild.xml" />
         </Component>
-        <Component Id="cmp083C0322BC44D9C5DE448F63F6B7AE0B" Guid="{141BA5FD-B743-4961-9F7F-6C4FC876236B}">
-          <File Id="fil347A147B882DFECF57DB73EEA7434120" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\SandcastleBuilder.MSBuild.xml" />
+        <Component Id="cmp133100ECE9AF30B1C81B42E7546837A9" Guid="{10C7DAE9-E175-40C3-8845-E42BCCFFEEA2}">
+          <File Id="filC17BA4EFEE21C04532F9301CE24861AD" KeyPath="yes" Source="$(var.RootFolder)\net8.0\SandcastleBuilder.Utils.dll" />
         </Component>
-        <Component Id="cmp94C3F62B799FC57BC861F0F07AE3037A" Guid="{2651A262-286C-4C49-BA95-CCD243FF2FDE}">
-          <File Id="fil0A88C33544E4D8F5227C6BC1F0E5CE00" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\SandcastleBuilder.Utils.dll" />
+        <Component Id="cmpC9EC923CFD662ABA4B8D6A07F85D628F" Guid="{2D6D4B25-6F46-447C-9EBB-8F74ABB96971}">
+          <File Id="fil8F138B73A27BE3C9F74DB6E952D3AF7A" KeyPath="yes" Source="$(var.RootFolder)\net8.0\SandcastleBuilder.Utils.xml" />
         </Component>
-        <Component Id="cmpCB0AD024EA778817B15E43BDCAE1CBF4" Guid="{CFD44148-4F65-473C-ACDB-CFFF081472BE}">
-          <File Id="filF6A0961C247AD654D693B3A95E36140F" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\SandcastleBuilder.Utils.xml" />
+        <Component Id="cmp78FCECCFCE4D73D2D92BD799DFBDF537" Guid="{EADEE993-6643-4A32-A6F3-E3EBCFF798A4}">
+          <File Id="fil078A4E5FE25D1F30F105A26D8EA2A36A" KeyPath="yes" Source="$(var.RootFolder)\net8.0\SixLabors.ImageSharp.dll" />
         </Component>
-        <Component Id="cmp473CA8EE5E4797909CD4A5D0CC79E579" Guid="{77CDA87B-BDC2-4716-89D5-D2360235C009}">
-          <File Id="filC6B7AF55DD89117E480AA43E354107E0" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\SixLabors.ImageSharp.dll" />
+        <Component Id="cmpF15903D55F7D8DE5D7873BAA58A60FC0" Guid="{6F015F8F-0FA3-4D44-A238-6D020E9D678F}">
+          <File Id="filE469112AC78EC378FC860C07C06E50C5" KeyPath="yes" Source="$(var.RootFolder)\net8.0\System.CodeDom.dll" />
         </Component>
-        <Component Id="cmp5E1B24FBBFEAC10452BE20C1CDCDCEB8" Guid="{4961C96A-9D94-45DD-8028-A8A464DD9E89}">
-          <File Id="filB2DFA2F1D6F60794392839A5A0F46467" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\System.CodeDom.dll" />
+        <Component Id="cmp35A0A303A6CF687B65B3723B62536524" Guid="{28912C5D-8093-4DBF-96D5-8E9D8F12C7E8}">
+          <File Id="fil216BB630DC03B31A4B7C099782839666" KeyPath="yes" Source="$(var.RootFolder)\net8.0\System.ComponentModel.Composition.dll" />
         </Component>
-        <Component Id="cmp1E78D95C5948B682F37D1728EAEC551D" Guid="{573DFA62-EC91-481F-A5B9-4E19FA6FBEAB}">
-          <File Id="fil3E3D6B7658C48F8FACB64BA89C1EFDA2" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\System.ComponentModel.Composition.dll" />
+        <Component Id="cmpB1C5B069DF846EE3FBC5E9BB0C356880" Guid="{1A68FD2D-A6CC-45A2-9439-E0030DD57EB8}">
+          <File Id="filB2F1FFCE61B7E490ECFDA3E0919B8D4E" KeyPath="yes" Source="$(var.RootFolder)\net8.0\System.Drawing.Common.dll" />
         </Component>
-        <Component Id="cmpCBFEECF7E88356EB126E333D8C688751" Guid="{F1B45074-0700-451D-A305-06E0E4947EBE}">
-          <File Id="fil1E65BEC172AD1E0AF5D411D633929884" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\System.Drawing.Common.dll" />
+        <Component Id="cmp5089D2CB299FF681FF67BDE7BCBD03C7" Guid="{99F8CF77-6490-47F3-B141-E099FB37BDEF}">
+          <File Id="fil950159454B8A44A12F0A7DBB8C185ABD" KeyPath="yes" Source="$(var.RootFolder)\net8.0\System.Security.Permissions.dll" />
         </Component>
-        <Component Id="cmp51D925EA256C3435B13CA9B28B09AFB9" Guid="{1BDA8D02-3AE6-4C62-AA4D-89CF19477642}">
-          <File Id="fil14FE6DC6A2B43858DAB2772F66CD1D52" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\System.Runtime.CompilerServices.Unsafe.dll" />
+        <Component Id="cmp0EAFCE77BFA174401B05B720D34D0D76" Guid="{2FCE535F-564F-46D5-BFAB-F4F1CE325DC8}">
+          <File Id="filFB0F6E2C5C115792B456AC2D48CB71ED" KeyPath="yes" Source="$(var.RootFolder)\net8.0\System.Windows.Extensions.dll" />
         </Component>
-        <Component Id="cmp9DC0A6536CD8707001368D872DB03B46" Guid="{9E685677-4BDF-4778-B590-8B7350720FEE}">
-          <File Id="fil076871AA19ADED6CD350FE12D07E5AC5" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\System.Security.AccessControl.dll" />
-        </Component>
-        <Component Id="cmpC5B45F88B6DB12BBD6DE0406D77EC363" Guid="{6E49872E-AC8B-42B0-89CB-EB837AF7B26F}">
-          <File Id="fil93491E102A9916B68448CD47C3D3D14C" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\System.Security.Permissions.dll" />
-        </Component>
-        <Component Id="cmp8E994154304513AA237EE60391016D8E" Guid="{44F2D385-1993-4C39-9CA5-9E4504DD82A0}">
-          <File Id="fil6FBFACB8F274A2C73631FA459A74A0FC" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\System.Security.Principal.Windows.dll" />
-        </Component>
-        <Component Id="cmp5AD346FA94AECAD4985A9293D4D7AF2E" Guid="{8C0BA8B3-CB07-4CE3-801A-B947E52E54D9}">
-          <File Id="filEF2F02E95A2F06845C57D5D41C3FF03E" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\System.Text.Encoding.CodePages.dll" />
-        </Component>
-        <Component Id="cmp2D06D20916DCF963D5896924680AE77B" Guid="{7A2FD5CA-FF5F-4876-8996-BE9FEFB7707F}">
-          <File Id="filA6FCBBBE5F61B53BD1DD4E2B5764585F" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\System.Text.Encodings.Web.dll" />
-        </Component>
-        <Component Id="cmp37FADC1FAF02D38D6CEB9436F4803F11" Guid="{E24E9B36-C984-4138-813C-771C9A683C07}">
-          <File Id="fil3633F51B842447C5FF7F13B79AF9C651" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\System.Text.Json.dll" />
-        </Component>
-        <Component Id="cmp342D4EB663EAF58A9A770E4EACB905C7" Guid="{2567CC2C-30C0-4E6F-80DC-AE6B3514BCF2}">
-          <File Id="fil078533277698512BAEB5C44D44D85862" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\System.Windows.Extensions.dll" />
-        </Component>
-        <Directory Id="dir1243B179335B9ED95795C39362783CBC" Name="runtimes">
-          <Directory Id="dir31FFD3EC488B120E11AC4425C98B893A" Name="unix">
-            <Directory Id="dir5461BD0DE1CDFC31CF1AB44BBE728FCF" Name="lib">
-              <Directory Id="dirE3F9C52454637AD25F52E90445177C72" Name="netcoreapp2.1">
-                <Component Id="cmp9164A53BA325CBDFACB254278A78D7D4" Guid="{9EC9E981-A45B-4BDA-A40F-065A19893094}">
-                  <File Id="filCD1BFAA429FB2959CDDE2D6698F5B146" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Security.Principal.Windows.dll" />
-                </Component>
-              </Directory>
-              <Directory Id="dir00D6773187F0E45210BABC53C5D02FB3" Name="netcoreapp3.0">
-                <Component Id="cmp24374BB6041278A2448A22765FD26479" Guid="{38A16B5A-D516-4A20-8906-08CABFB44D6A}">
-                  <File Id="fil405E55A7F8A253A7113AD38E98657020" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll" />
+        <Directory Id="dir5867AC9AFF1D6AC187016C664F772B0E" Name="runtimes">
+          <Directory Id="dir66DF8A026426516D2A3E3CF1C7A10DDA" Name="unix">
+            <Directory Id="dirD8CAA686B48EB4429A769575030729C3" Name="lib">
+              <Directory Id="dir37C95688ECDC75E341453D58F6DDCFFC" Name="netcoreapp3.0">
+                <Component Id="cmp6FDCA971C50CEBCF08CB1D8EF5678F06" Guid="{3E75E093-AF6E-40E9-BE3A-F99BBCE85A05}">
+                  <File Id="filD9BE3BEB2E1CBB82E152B8BB93A2F322" KeyPath="yes" Source="$(var.RootFolder)\net8.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll" />
                 </Component>
               </Directory>
             </Directory>
           </Directory>
-          <Directory Id="dirBBE90AEF39966FB05C9725D9B6E522F7" Name="win">
-            <Directory Id="dirC3C42373E18304A52E68520F4A314DF0" Name="lib">
-              <Directory Id="dirB3EC513DAAB43732F699C13699A1B3ED" Name="netcoreapp2.0">
-                <Component Id="cmp1A6664E28864DBE2C5E5B2C55D51969B" Guid="{1B08E52E-6F12-4FD4-8F57-4110E8C545D7}">
-                  <File Id="fil98BA66A549E0756E06BAA5CA93BCA692" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Security.AccessControl.dll" />
+          <Directory Id="dir19C6B4369D9970975C6DA7908473EBDB" Name="win">
+            <Directory Id="dirC95355B66A3EF1250B2B38A814A9D2B5" Name="lib">
+              <Directory Id="dir330130FE87870B2D6A182E60132242D5" Name="netcoreapp3.0">
+                <Component Id="cmp8E03416953F4AE082A0F99155E7E849F" Guid="{DE0BB3E1-D2B0-4AD4-91C2-061BAC918DE0}">
+                  <File Id="fil6E6EC402EEFD48524F7A32BD63B1CE61" KeyPath="yes" Source="$(var.RootFolder)\net8.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll" />
                 </Component>
-                <Component Id="cmp3758E71C6A955FEA9D5DD080614D4319" Guid="{3435109F-8697-44CC-AAA4-27DCAB48F10A}">
-                  <File Id="fil73BF02E80DBD6A44138F71CDA8E9FB64" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Text.Encoding.CodePages.dll" />
+                <Component Id="cmp01E8D00190093B3883E43AB25B283175" Guid="{CD3CD8C2-1596-44D9-9223-14D9BCCB449B}">
+                  <File Id="filD5E8FDCF3ADBC13F62B04F049DF8073E" KeyPath="yes" Source="$(var.RootFolder)\net8.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll" />
                 </Component>
-              </Directory>
-              <Directory Id="dir0B531A79D1444965C6BAD7A56C642759" Name="netcoreapp2.1">
-                <Component Id="cmpB5DDC19254239B8D0CB9A307B151D5BD" Guid="{4F0C7393-D770-4A3F-87BD-D678A9FD1D13}">
-                  <File Id="fil4513A01FACFA36DCFA86348A63B6EADA" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Security.Principal.Windows.dll" />
-                </Component>
-              </Directory>
-              <Directory Id="dirA3A70BB20B06C1838DA6AFACCF6F1078" Name="netcoreapp3.0">
-                <Component Id="cmpE9475A7FC8D86A7E07694D92FCBEE929" Guid="{AADACE01-483E-44C2-987A-CEDD7F583052}">
-                  <File Id="filD4BC06E757E1C97E470AEE6AC0F97949" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll" />
-                </Component>
-                <Component Id="cmpC2B0B1F25872D730DF84DB1D620F84C4" Guid="{453EAA9B-2679-475F-85A2-E37B208203CF}">
-                  <File Id="filDF3E0FC23EA11B11261FF1A1C890A241" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll" />
-                </Component>
-                <Component Id="cmp45D2480AE7CA70CC59B3FBEB00206136" Guid="{3BF8622A-988F-4399-AB21-8CCACE75839C}">
-                  <File Id="fil445FF96593A8C9E3910CB47FC9ACEBC5" KeyPath="yes" Source="$(var.RootFolder)\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll" />
+                <Component Id="cmp2017C78D8642AD48C52C9362A2E3178F" Guid="{5ABB58E6-C44B-4ECB-AE30-9F63688A55FE}">
+                  <File Id="fil43AE25C209902042290434CCD818AEE8" KeyPath="yes" Source="$(var.RootFolder)\net8.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll" />
                 </Component>
               </Directory>
             </Directory>
@@ -5338,44 +5299,33 @@
       <ComponentRef Id="cmp4743EA9A564113219B081C03EDEFEFA5" />
       <ComponentRef Id="cmp92FB1758C69D110AF7949071B07B29C2" />
       <ComponentRef Id="cmpCCA7EB08632EBFE813096437CF968665" />
-      <ComponentRef Id="cmp7BB1EDF62627775D347C2FEBC391BE58" />
-      <ComponentRef Id="cmp68A29C624C8A09AC7C38CD707F623F38" />
-      <ComponentRef Id="cmpDAB3F1E91D23018AC6537528CC38EA9F" />
-      <ComponentRef Id="cmp31200E88396F0404714557BE496FB9D4" />
-      <ComponentRef Id="cmpBC1C5512CBA4683F1D173101CABAB9B6" />
-      <ComponentRef Id="cmp90AB487F7AD916B6F04EAB72B5E06E16" />
-      <ComponentRef Id="cmp55416A4302E561E7CAF298035FB3068D" />
-      <ComponentRef Id="cmp0043080FE766EEB16B35CC3706D23EBC" />
-      <ComponentRef Id="cmpEC64496A141CBB4C72D530299178D558" />
-      <ComponentRef Id="cmpE35406CADD1D4426CA52A4CACBDD63FE" />
-      <ComponentRef Id="cmpCFCBB2FB0F275F76CC28E73138DDBEA1" />
-      <ComponentRef Id="cmp092FA7721CBFCAD908BA46F621E1EF9A" />
-      <ComponentRef Id="cmp01EAEB77E2EE0D5F8CAA2DCE516DDEA9" />
-      <ComponentRef Id="cmpD761AEF2D913B2963220D806C6C3744C" />
-      <ComponentRef Id="cmp2E35D5985443D394FAC97B5F14857828" />
-      <ComponentRef Id="cmp083C0322BC44D9C5DE448F63F6B7AE0B" />
-      <ComponentRef Id="cmp94C3F62B799FC57BC861F0F07AE3037A" />
-      <ComponentRef Id="cmpCB0AD024EA778817B15E43BDCAE1CBF4" />
-      <ComponentRef Id="cmp473CA8EE5E4797909CD4A5D0CC79E579" />
-      <ComponentRef Id="cmp5E1B24FBBFEAC10452BE20C1CDCDCEB8" />
-      <ComponentRef Id="cmp1E78D95C5948B682F37D1728EAEC551D" />
-      <ComponentRef Id="cmpCBFEECF7E88356EB126E333D8C688751" />
-      <ComponentRef Id="cmp51D925EA256C3435B13CA9B28B09AFB9" />
-      <ComponentRef Id="cmp9DC0A6536CD8707001368D872DB03B46" />
-      <ComponentRef Id="cmpC5B45F88B6DB12BBD6DE0406D77EC363" />
-      <ComponentRef Id="cmp8E994154304513AA237EE60391016D8E" />
-      <ComponentRef Id="cmp5AD346FA94AECAD4985A9293D4D7AF2E" />
-      <ComponentRef Id="cmp2D06D20916DCF963D5896924680AE77B" />
-      <ComponentRef Id="cmp37FADC1FAF02D38D6CEB9436F4803F11" />
-      <ComponentRef Id="cmp342D4EB663EAF58A9A770E4EACB905C7" />
-      <ComponentRef Id="cmp9164A53BA325CBDFACB254278A78D7D4" />
-      <ComponentRef Id="cmp24374BB6041278A2448A22765FD26479" />
-      <ComponentRef Id="cmp1A6664E28864DBE2C5E5B2C55D51969B" />
-      <ComponentRef Id="cmp3758E71C6A955FEA9D5DD080614D4319" />
-      <ComponentRef Id="cmpB5DDC19254239B8D0CB9A307B151D5BD" />
-      <ComponentRef Id="cmpE9475A7FC8D86A7E07694D92FCBEE929" />
-      <ComponentRef Id="cmpC2B0B1F25872D730DF84DB1D620F84C4" />
-      <ComponentRef Id="cmp45D2480AE7CA70CC59B3FBEB00206136" />
+      <ComponentRef Id="cmpB6D52E52850F49FE1F594E0B74665930" />
+      <ComponentRef Id="cmp8B05F48E428B883FBC8A306629A7D2B5" />
+      <ComponentRef Id="cmpD0DAD78486B108D8ACFF3FE65BC75864" />
+      <ComponentRef Id="cmpEA6B8759DA158C3CFE74C185C960E89B" />
+      <ComponentRef Id="cmp62CDD209846A7BCCD25CD8F03DDA8973" />
+      <ComponentRef Id="cmp9EC517804147E1200AA4A1C64B25FDB9" />
+      <ComponentRef Id="cmpDBD176E4DB0B335F39E7C55B2D77937D" />
+      <ComponentRef Id="cmp3C69DECC28AB2764FCDA332AC584C4DF" />
+      <ComponentRef Id="cmp6065280FCBF52ED6A6AFCF12ACA8D38F" />
+      <ComponentRef Id="cmpC25A79800CAD91BAC4E53484223854E7" />
+      <ComponentRef Id="cmp4D31D1093FC7DC8EA70CAC8893FB41E5" />
+      <ComponentRef Id="cmpA5109241AA05569E0D734B785518C81F" />
+      <ComponentRef Id="cmp4CE7BD57011608E68AC003D64048429C" />
+      <ComponentRef Id="cmp36D0113746F6B10F548F449452FBB59A" />
+      <ComponentRef Id="cmp5BA603396666641FF2BA27025BBA190E" />
+      <ComponentRef Id="cmp133100ECE9AF30B1C81B42E7546837A9" />
+      <ComponentRef Id="cmpC9EC923CFD662ABA4B8D6A07F85D628F" />
+      <ComponentRef Id="cmp78FCECCFCE4D73D2D92BD799DFBDF537" />
+      <ComponentRef Id="cmpF15903D55F7D8DE5D7873BAA58A60FC0" />
+      <ComponentRef Id="cmp35A0A303A6CF687B65B3723B62536524" />
+      <ComponentRef Id="cmpB1C5B069DF846EE3FBC5E9BB0C356880" />
+      <ComponentRef Id="cmp5089D2CB299FF681FF67BDE7BCBD03C7" />
+      <ComponentRef Id="cmp0EAFCE77BFA174401B05B720D34D0D76" />
+      <ComponentRef Id="cmp6FDCA971C50CEBCF08CB1D8EF5678F06" />
+      <ComponentRef Id="cmp8E03416953F4AE082A0F99155E7E849F" />
+      <ComponentRef Id="cmp01E8D00190093B3883E43AB25B283175" />
+      <ComponentRef Id="cmp2017C78D8642AD48C52C9362A2E3178F" />
       <ComponentRef Id="cmp69C1130FD411BFD37EC7C1AA27941135" />
       <ComponentRef Id="cmpC92191338F597A2F1FCA31D3DDFB2AF6" />
       <ComponentRef Id="cmpC7CF7DCE3EA1AB291D6F02D5E0295BB9" />

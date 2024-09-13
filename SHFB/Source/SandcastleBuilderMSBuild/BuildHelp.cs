@@ -66,6 +66,8 @@ namespace SandcastleBuilder.MSBuild
         private static readonly Regex reWarning = new Regex(@"(Warn|Warning( HXC\d+)?):|" +
             @"SHFB\s*:\s*(W|w)arning\s.*?:|.*?(\(\d*,\d*\))?:\s*(W|w)arning\s.*?:");
 
+        private static readonly char[] separator = new[] { ';' };
+
         private SandcastleProject sandcastleProject;
         private BuildProcess buildProcess;
         private BuildStep lastBuildStep;
@@ -356,7 +358,7 @@ namespace SandcastleBuilder.MSBuild
                 // initialize properties that where provided in Properties
                 if(!String.IsNullOrWhiteSpace(Properties))
                 {
-                    foreach(string propertyKeyValue in this.Properties.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+                    foreach(string propertyKeyValue in this.Properties.Split(separator, StringSplitOptions.RemoveEmptyEntries))
                     {
 #if NET472_OR_GREATER
                         int length = propertyKeyValue.IndexOf('=');
@@ -553,9 +555,7 @@ namespace SandcastleBuilder.MSBuild
         public void Cancel()
         {
             buildCancelled = true;
-
-            if(cts != null)
-                cts.Cancel();
+            cts?.Cancel();
         }
         #endregion
 
@@ -572,7 +572,7 @@ namespace SandcastleBuilder.MSBuild
         public void Report(BuildProgressEventArgs value)
         {
             if(value == null)
-                throw new ArgumentNullException(nameof(value));
+                return;
 
             Match m = reParseMessage.Match(value.Message);
             string outputPath;

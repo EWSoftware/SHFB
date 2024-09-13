@@ -48,22 +48,17 @@ namespace System.Compiler
             this.TargetModule = targetModule;
         }
 
-        public Specializer(Visitor callingVisitor)
-            : base(callingVisitor)
-        {
-        }
-
         public override void TransferStateTo(Visitor targetVisitor)
         {
             base.TransferStateTo(targetVisitor);
 
-            if(!(targetVisitor is Specializer target))
-                return;
-            
-            target.args = this.args;
-            target.pars = this.pars;
-            target.CurrentMethod = this.CurrentMethod;
-            target.CurrentType = this.CurrentType;
+            if(targetVisitor is Specializer target)
+            {
+                target.args = this.args;
+                target.pars = this.pars;
+                target.CurrentMethod = this.CurrentMethod;
+                target.CurrentType = this.CurrentType;
+            }
         }
 
         public override DelegateNode VisitDelegateNode(DelegateNode delegateNode)
@@ -123,7 +118,7 @@ namespace System.Compiler
             Debug.Assert(false);
             return null;
         }
-        public readonly Block DummyBody = new Block();
+
         public override Method VisitMethod(Method method)
         {
             if (method == null) return null;
@@ -134,7 +129,6 @@ namespace System.Compiler
             method.ThisParameter = (This)this.VisitThis(method.ThisParameter);
             method.Attributes = this.VisitAttributeList(method.Attributes);
             method.ReturnAttributes = this.VisitAttributeList(method.ReturnAttributes);
-            method.SecurityAttributes = this.VisitSecurityAttributeList(method.SecurityAttributes);
             method.ReturnType = this.VisitTypeReference(method.ReturnType);
             method.ImplementedTypes = this.VisitTypeReferenceList(method.ImplementedTypes);
             method.Parameters = this.VisitParameterList(method.Parameters);
@@ -175,7 +169,6 @@ namespace System.Compiler
 
             this.CurrentType = typeNode;
             typeNode.Attributes = this.VisitAttributeList(typeNode.Attributes);
-            typeNode.SecurityAttributes = this.VisitSecurityAttributeList(typeNode.SecurityAttributes);
             Class c = typeNode as Class;
 
             if(c != null)
@@ -559,13 +552,13 @@ namespace System.Compiler
                                         //^ assert pars != null && args != null;
                                         if(TargetPlatform.UseGenerics)
                                         {
-                                            if(!(pars[j] is ITypeParameter par))
-                                                continue;
-
-                                            if(tparg == par || (tparg.ParameterListIndex == par.ParameterListIndex && tparg.DeclaringMember == par.DeclaringMember))
+                                            if(pars[j] is ITypeParameter par)
                                             {
-                                                targ = this.args[j];
-                                                break;
+                                                if(tparg == par || (tparg.ParameterListIndex == par.ParameterListIndex && tparg.DeclaringMember == par.DeclaringMember))
+                                                {
+                                                    targ = this.args[j];
+                                                    break;
+                                                }
                                             }
                                         }
                                         else
