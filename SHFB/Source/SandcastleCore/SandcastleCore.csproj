@@ -30,6 +30,7 @@
 		<PackageTags>SHFB sandcastle help file builder core tools</PackageTags>
 		<PackageProjectUrl>https://github.com/EWSoftware/SHFB</PackageProjectUrl>
 		<PackageLicenseExpression>MS-PL</PackageLicenseExpression>
+		<PackageReadmeFile>ReadMe.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -38,6 +39,7 @@
 
 	<ItemGroup>
 		<None Include="..\SandcastleLogo.png" Link="SandcastleLogo.png" Pack="true" PackagePath="\" />
+		<None Include="ReadMe.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<Target Name="CopyPackage" AfterTargets="Pack">

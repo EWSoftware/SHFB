@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2024
+// Updated : 09/13/2024
 // Note    : Copyright 2015-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -1083,17 +1083,25 @@ namespace SandcastleBuilder.Utils.BuildEngine
         [SubstitutionTag]
         private string FrameworkCommentList()
         {
-            return this.FrameworkCommentList(false);;
-        }
+            var dataSet = currentBuild.FrameworkReflectionData;
+            string folder, wildcard;
 
-        /// <summary>
-        /// Framework comments file list (import elements)
-        /// </summary>
-        /// <returns>The framework comments file list in <c>import</c> elements</returns>
-        [SubstitutionTag]
-        private string ImportFrameworkCommentList()
-        {
-            return this.FrameworkCommentList(true);
+            replacementValue.Clear();
+
+            // Build the list based on the type and what actually exists
+            foreach(var location in dataSet.CommentsFileLocations(sandcastleProject.Language))
+            {
+                folder = Path.GetDirectoryName(location);
+                wildcard = Path.GetFileName(location);
+
+                // Files are cached by platform, version, and location.  The groupId attribute can be used by
+                // caching components to identify the cache and its location.
+                replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<data base=\"{0}\" files=\"{1}\" " +
+                    "recurse=\"false\" duplicateWarning=\"false\" groupId=\"{2}_{3}_{4:X}\" />\r\n",
+                    folder, wildcard, dataSet.Platform, dataSet.Version, location.GetHashCodeDeterministic());
+            }
+
+            return replacementValue.ToString();
         }
 
         /// <summary>
@@ -1103,17 +1111,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         [SubstitutionTag]
         private string CommentFileList()
         {
-            return currentBuild.CommentsFiles.CommentFileList(currentBuild.WorkingFolder, false);
-        }
-
-        /// <summary>
-        /// XML comments file list for inherited documentation generation
-        /// </summary>
-        /// <returns>The XML comments file list for inherited documentation generation</returns>
-        [SubstitutionTag]
-        private string InheritedCommentFileList()
-        {
-            return currentBuild.CommentsFiles.CommentFileList(currentBuild.WorkingFolder, true);
+            return currentBuild.CommentsFiles.CommentFileList(currentBuild.WorkingFolder);
         }
 
         /// <summary>
@@ -1358,45 +1356,5 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
 #pragma warning restore IDE0051
 #pragma warning restore CA1822
-
-        #region Helper methods
-        //=====================================================================
-
-        /// <summary>
-        /// This is used to generate an appropriate list of entries that represent .NET Framework comments file
-        /// locations for the various configuration files.
-        /// </summary>
-        /// <param name="forImport">True if for import, false if not.  If true, it returns a list of the files
-        /// as <c>import</c> elements.  If false, it returns them in <c>data</c> elements.</param>
-        /// <returns>The list of framework comments file sources in the appropriate format</returns>
-        private string FrameworkCommentList(bool forImport)
-        {
-            var dataSet = currentBuild.FrameworkReflectionData;
-            string folder, wildcard;
-
-            replacementValue.Clear();
-
-            // Build the list based on the type and what actually exists
-            foreach(var location in dataSet.CommentsFileLocations(sandcastleProject.Language))
-            {
-                folder = Path.GetDirectoryName(location);
-                wildcard = Path.GetFileName(location);
-
-                if(!forImport)
-                {
-                    // Files are cached by platform, version, and location.  The groupId attribute can be used by
-                    // caching components to identify the cache and its location.
-                    replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<data base=\"{0}\" files=\"{1}\" " +
-                        "recurse=\"false\" duplicateWarning=\"false\" groupId=\"{2}_{3}_{4:X}\" />\r\n",
-                        folder, wildcard, dataSet.Platform, dataSet.Version, location.GetHashCodeDeterministic());
-                }
-                else
-                    replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<import path=\"{0}\" file=\"{1}\" " +
-                        "recurse=\"false\" />\r\n", folder, wildcard);
-            }
-
-            return replacementValue.ToString();
-        }
-        #endregion
     }
 }

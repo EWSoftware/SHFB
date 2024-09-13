@@ -30,6 +30,7 @@
 		<PackageTags>SHFB sandcastle help file builder utilities</PackageTags>
 		<PackageProjectUrl>https://github.com/EWSoftware/SHFB</PackageProjectUrl>
 		<PackageLicenseExpression>MS-PL</PackageLicenseExpression>
+		<PackageReadmeFile>ReadMe.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -61,6 +62,7 @@
 			<DependentUpon>Resources.resx</DependentUpon>
 		</Compile>
 		<None Include="..\SandcastleLogo.png" Link="SandcastleLogo.png" Pack="true" PackagePath="\" />
+		<None Include="ReadMe.md" Pack="True" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/03/2023
-// Note    : Copyright 2006-2023, Eric Woodruff, All rights reserved
+// Updated : 09/13/2024
+// Note    : Copyright 2006-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
 //
@@ -96,6 +96,7 @@ using SandcastleBuilder.Utils.MSBuild;
 
 using Microsoft.Build.Evaluation;
 using System.Xml;
+using SandcastleBuilder.Utils.InheritedDocumentation;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -138,6 +139,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         // Various paths and other strings
         private string templateFolder, projectFolder, outputFolder, workingFolder, hhcFolder,
             defaultTopic, reflectionFile;
+
+        private static readonly char[] invalidHtmlHelpNameChars = new[] { '.', '#', '&' };
 
         private CultureInfo language;   // The project language
 
@@ -213,6 +216,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         /// <remarks>This can be used by plug-ins to adjust how the tool runs</remarks>
         public TitleAndKeywordHtmlExtract HtmlExtractTool { get; private set; }
+
+        /// <summary>
+        /// This provides access to the generate inherited documentation tool during the
+        /// <see cref="BuildStep.GenerateInheritedDocumentation" /> build step.
+        /// </summary>
+        /// <remarks>This can be used by plug-ins to adjust how the tool runs</remarks>
+        public GenerateInheritedDocs GenerateInheritedDocsTool { get; private set; }
 
         /// <summary>
         /// This returns the name of the folder that contains the reflection data for the selected framework
@@ -787,10 +797,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     // For MS Help Viewer, the HTML Help Name cannot contain periods, ampersands, or pound signs
                     if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0 &&
-                      this.ResolvedHtmlHelpName.IndexOfAny(new[] { '.', '#', '&' }) != -1)
+                      this.ResolvedHtmlHelpName.IndexOfAny(invalidHtmlHelpNameChars) != -1)
+                    {
                         throw new BuilderException("BE0075", "For MS Help Viewer builds, the HtmlHelpName property " +
                             "cannot contain periods, ampersands, or pound signs as they are not valid in the " +
                             "help file name.");
+                    }
 
                     // If the help file is open, it will fail to build so try to get rid of it now before we
                     // get too far into it.
@@ -840,13 +852,18 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     // build log.  Read-only and/or hidden files and folders are ignored as they are assumed to
                     // be under source control.
                     foreach(string file in Directory.EnumerateFiles(outputFolder))
+                    {
                         if(!file.EndsWith(Path.GetFileName(this.LogFilename), StringComparison.Ordinal))
+                        {
                             if((File.GetAttributes(file) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) == 0)
                                 File.Delete(file);
                             else
                                 this.ReportProgress("    Ignoring read-only/hidden file {0}", file);
+                        }
+                    }
 
                     foreach(string folder in Directory.EnumerateDirectories(outputFolder))
+                    {
                         try
                         {
                             // Ignore the working folder in case it wasn't removed above
@@ -862,10 +879,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                                         "read-only or hidden folders/files", folder);
                                 }
                                 else
+                                {
                                     if((File.GetAttributes(folder) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) == 0)
                                         Directory.Delete(folder, true);
                                     else
                                         this.ReportProgress("    Ignoring read-only/hidden folder {0}", folder);
+                                }
                             }
                         }
                         catch(IOException ioEx)
@@ -876,6 +895,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         {
                             this.ReportProgress("    Ignoring folder '{0}': {1}", folder, uaEx.Message);
                         }
+                    }
                 }
 
                 Directory.CreateDirectory(workingFolder);
@@ -1101,21 +1121,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 {
                     commentsFiles.Save();
 
-                    // Transform the reflection output.
-                    this.ReportProgress(BuildStep.GenerateInheritedDocumentation,
-                        "Generating inherited documentation...");
+                    this.ReportProgress(BuildStep.GenerateInheritedDocumentation, "Generating inherited documentation...");
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
-                        substitutionTags.TransformTemplate("GenerateInheritedDocs.config", templateFolder, workingFolder);
-                        scriptFile = substitutionTags.TransformTemplate("GenerateInheritedDocs.proj", templateFolder,
-                            workingFolder);
-
+                        this.GenerateInheritedDocsTool = new GenerateInheritedDocs(this);
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
-
-                        taskRunner.RunProject("GenerateInheritedDocs.proj", true);
-                        
+                        this.GenerateInheritedDocsTool.Execute();
                         this.ExecutePlugIns(ExecutionBehaviors.After);
+                        this.GenerateInheritedDocsTool = null;
                     }
 
                     // This should always be last so that it overrides comments in the project XML comments files

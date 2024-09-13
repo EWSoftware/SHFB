@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFileCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/15/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 09/13/2024
+// Note    : Copyright 2006-2024, Eric Woodruff, All rights reserved
 //
 // This file contains a collection class used to hold the XML comments files
 //
@@ -43,6 +43,18 @@ namespace SandcastleBuilder.Utils.BuildEngine
     /// </summary>
     public class XmlCommentsFileCollection : BindingList<XmlCommentsFile>
     {
+        #region Private data members
+        //=====================================================================
+
+        private static readonly char[] idSeparators = new[] { '.', '(' };
+        private static readonly string[] referenceElements = new[] { "event", "exception", "inheritdoc",
+            "permission", "see", "seealso" };
+
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
+
         /// <summary>
         /// This read-only property returns true if any of the comments files contain an <c>inheritdoc</c>,
         /// <c>AttachedPropertyComments</c>, or <c>AttachedEventComments</c> tag indicating that the Inherited
@@ -53,9 +65,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
             get
             {
                 foreach(XmlCommentsFile f in this)
+                {
                     if(f.Members.SelectSingleNode(
                       "//inheritdoc|//AttachedPropertyComments|//AttachedEventComments") != null)
+                    {
                         return true;
+                    }
+                }
 
                 return false;
             }
@@ -131,41 +147,26 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         /// <summary>
         /// Returns a list of the comment file paths in a format suitable for inserting into a Sandcastle
-        /// Configuration file.
+        /// configuration file.
         /// </summary>
         /// <param name="workingFolder">The working folder path</param>
-        /// <param name="forInheritedDocs">True if generating the list for the inherited documentation tool or
-        /// false for the BuildAssembler configuration file.</param>
         /// <returns>The comment file list XML tags</returns>
-        internal string CommentFileList(string workingFolder, bool forInheritedDocs)
+        internal string CommentFileList(string workingFolder)
         {
             StringBuilder sb = new StringBuilder(2048);
-            string tagName, dupWarning = String.Empty, groupId = String.Empty;
-
-            if(forInheritedDocs)
-                tagName = "scan file";
-            else
-            {
-                tagName = "data files";
-                dupWarning = " duplicateWarning=\"false\" ";
-                groupId = " groupId=\"Project_Comments_{@UniqueId}\" ";
-            }
 
             foreach(XmlCommentsFile f in this.Where(cf => cf.IsValid))
             {
+                string path = f.SourcePath;
+
                 // The path is not altered if the file is already in or under the working folder (i.e. files
                 // added by plug-ins).
-                if(!f.SourcePath.StartsWith(workingFolder, StringComparison.OrdinalIgnoreCase))
-                {
-                    sb.AppendFormat(CultureInfo.InvariantCulture, "            <{0}=\"{1}{2}\"{3}{4} />\r\n",
-                        tagName, HttpUtility.HtmlEncode(workingFolder), Path.GetFileName(f.SourcePath),
-                        dupWarning, groupId);
-                }
-                else
-                {
-                    sb.AppendFormat(CultureInfo.InvariantCulture, "            <{0}=\"{1}\"{2}{3} />\r\n",
-                        tagName, HttpUtility.HtmlEncode(f.SourcePath), dupWarning, groupId);
-                }
+                if(!path.StartsWith(workingFolder, StringComparison.OrdinalIgnoreCase))
+                    path = Path.Combine(workingFolder, Path.GetFileName(path));
+                
+                sb.AppendFormat(CultureInfo.InvariantCulture, "            <data files=\"{0}\" " +
+                    "duplicateWarning=\"false\" groupId=\"Project_Comments_{{@UniqueId}}\" />\r\n",
+                    HttpUtility.HtmlEncode(path));
             }
 
             return sb.ToString();
@@ -185,12 +186,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 // Find all comments elements with a reference.  XML comments files may be ill-formed so
                 // ignore any elements without a cref attribute.
-                var crefs = ComponentUtilities.XmlStreamAxis(f.SourcePath, new[] { "event", "exception",
-                    "inheritdoc", "permission", "see", "seealso" }).Select(
+                var crefs = ComponentUtilities.XmlStreamAxis(f.SourcePath, referenceElements).Select(
                     el => (string)el.Attribute("cref")).Where(c => c != null);
 
                 foreach(string refId in crefs)
-                    if(refId.Length > 2 && refId[1] == ':' && refId.IndexOfAny(new[] { '.', '(' }) != -1)
+                {
+                    if(refId.Length > 2 && refId[1] == ':' && refId.IndexOfAny(idSeparators) != -1)
                     {
                         ns = refId.Trim();
 
@@ -218,7 +219,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             yield return ns;
                         }
                     }
+                }
             }
         }
+        #endregion
     }
 }

@@ -23,8 +23,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationStyles", "Prese
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SyntaxComponents", "BuildAssembler\SyntaxComponents\SyntaxComponents.csproj", "{8B6BC818-4E2D-4828-80BC-81BC1D90D0FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateInheritedDocs", "GenerateInheritedDocs\GenerateInheritedDocs.csproj", "{F70DBAB2-371B-48BD-B641-F5620B86F19D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRefBuilder", "MRefBuilder\MRefBuilder.csproj", "{AC07EC26-EC9B-4254-8C3E-F09C0B6E73B8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReflectionDataManager", "ReflectionDataManager\ReflectionDataManager.csproj", "{31F13676-C728-456C-B421-13D8B5062289}"
@@ -82,10 +80,6 @@ Global
 		{8B6BC818-4E2D-4828-80BC-81BC1D90D0FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B6BC818-4E2D-4828-80BC-81BC1D90D0FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B6BC818-4E2D-4828-80BC-81BC1D90D0FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F70DBAB2-371B-48BD-B641-F5620B86F19D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F70DBAB2-371B-48BD-B641-F5620B86F19D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F70DBAB2-371B-48BD-B641-F5620B86F19D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F70DBAB2-371B-48BD-B641-F5620B86F19D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AC07EC26-EC9B-4254-8C3E-F09C0B6E73B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AC07EC26-EC9B-4254-8C3E-F09C0B6E73B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC07EC26-EC9B-4254-8C3E-F09C0B6E73B8}.Release|Any CPU.ActiveCfg = Release|Any CPU

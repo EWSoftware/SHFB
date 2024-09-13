@@ -122,12 +122,12 @@ public sealed class BuildComponentEditorFactory : IConfigurationEditor
 		<section address="RecreateProjects">
 			<title>Support for MSBuild and .NET Core Builds</title>
 			<content>
-				<para>Starting with version <token>SandcastleVersion</token>, all component projects use an SDK format
-project and contain the necessary properties to generate a NuGet package when built.  This allows them to be
-shared publicly on NuGet.org or privately with a local repository.  So that they are platform independent and
-work with both MSBuild and the dotnet tool, the projects target .NET Standard 2.0.  Support for configuration has
-also been separated from the component assemblies.  If your component supports configuration within the IDE,
-create a new project to host the configuration forms.</para>
+				<para>Starting with version v2021.11.7.0, all component projects use an SDK format project and contain
+the necessary properties to generate a NuGet package when built.  This allows them to be shared publicly on
+NuGet.org or privately with a local repository.  So that they are platform independent and work with both MSBuild
+and the dotnet tool, the projects target .NET Standard 2.0.  Support for configuration has also been separated
+from the component assemblies.  If your component supports configuration within the IDE, create a new project to
+host the configuration forms.</para>
 
 				<para>It is recommended that you create a new project and import your existing code into the new project
 rather than modifying the old project file.  That way, all of the necessary NuGet properties and the build

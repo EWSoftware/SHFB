@@ -55,8 +55,6 @@
 		<None Include="..\..\Deploy\SandcastleHelpFileBuilder.targets" Link="SandcastleHelpFileBuilder.targets" />
 		<None Include="..\..\Deploy\Templates\Build1xHelpFile.proj" Link="Templates\Build1xHelpFile.proj" />
 		<None Include="..\..\Deploy\Templates\BuildHelpViewerFile.proj" Link="Templates\BuildHelpViewerFile.proj" />
-		<None Include="..\..\Deploy\Templates\GenerateInheritedDocs.config" Link="Templates\GenerateInheritedDocs.config" />
-		<None Include="..\..\Deploy\Templates\GenerateInheritedDocs.proj" Link="Templates\GenerateInheritedDocs.proj" />
 		<None Include="..\..\Deploy\Templates\GenerateRefInfo.proj" Link="Templates\GenerateRefInfo.proj" />
 		<None Include="..\..\Deploy\Templates\Help1x.hhp" Link="Templates\Help1x.hhp" />
 		<None Include="..\..\Deploy\Templates\HelpContentSetup.msha" Link="Templates\HelpContentSetup.msha" />

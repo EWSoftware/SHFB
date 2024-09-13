@@ -178,9 +178,9 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         /// <param name="size">The maximum size of the cache</param>
         public IndexedCommentsCache(int size)
         {
-            cacheSize = size < 0 ? 100 : size;
+            cacheSize = size < 1 ? 100 : size;
             index = new ConcurrentDictionary<string, string>();
-            queue = new Queue<string>(size);
+            queue = new Queue<string>(cacheSize);
             cache = new Dictionary<string, IndexedCommentsFile>(cacheSize);
 
             memberListExpr = XPathExpression.Compile("/doc/members/member");
@@ -219,12 +219,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                         string programFiles = Environment.GetFolderPath(Environment.Is64BitProcess ?
                             Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles);
 
-#if NET472_OR_GREATER || NETSTANDARD2_0
                         path = path.Replace("%PROGRAMFILESDIR%", programFiles + Path.DirectorySeparatorChar);
-#else
-                        path = path.Replace("%PROGRAMFILESDIR%", programFiles + Path.DirectorySeparatorChar,
-                            StringComparison.OrdinalIgnoreCase);
-#endif
                     }
 
                     if(!Path.IsPathRooted(path) || !File.Exists(path))
@@ -239,9 +234,8 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
             }
             catch(IOException e)
             {
-                throw new InheritedDocsException(String.Format(CultureInfo.CurrentCulture,
-                    "An access error occurred while attempting to load the file '{0}'. The error message is: {1}",
-                    filename, e.Message), e);
+                throw new BuilderException("An access error occurred while attempting to load the file " +
+                    $"'{filename}'. The error message is: {e.Message}", e);
             }
             catch(XmlException e)
             {

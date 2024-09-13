@@ -24,9 +24,7 @@ Sandcastle was originally created by Microsoft back in 2006.  The last official 
 in June 2010.  Until October 2012, it was hosted at the Sandcastle project site on CodePlex.  In October 2012,
 Microsoft officially declared that they were ceasing support and development of Sandcastle.  The Sandcastle
 tools have been merged into the Sandcastle Help File Builder project and all future development and support for
-them will be handled at this project site.  The Sandcastle tools themselves remain separate from and have no
-dependency on the help file builder.  As such, they can be used in a standalone fashion with your own scripts
-and build tools if that is your preference.
+them will be handled at this project site.
 
 See the [Installation Instructions](http://EWSoftware.GitHub.io/SHFB/html/8c0c97d0-c968-4c15-9fe9-e8f3a443c50a.htm)
 for information about the required set of additional tools that need to be installed, where to get them, and how
