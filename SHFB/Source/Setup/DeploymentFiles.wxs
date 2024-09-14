@@ -3540,16 +3540,7 @@
         </Directory>
       </Directory>
       <Directory Id="dir4DE04A9DCD562546BD3B9AFB0C25157B" Name="net472">
-        <Component Id="cmp74727AE14B30535CF5BD77B6613059CF" Guid="{1168B968-51D6-42FF-9F64-12E0B7301CBC}">
-          <File Id="fil42340F516486AAFADC27822045C87572" KeyPath="yes" Source="$(var.RootFolder)\net472\GenerateInheritedDocs.config" />
-        </Component>
-        <Component Id="cmp9DD91B5ADEA1252DF886809F1311B3C7" Guid="{1411E69E-9A53-4ACE-9AB1-BCD1F6561031}">
-          <File Id="filB66416DFA9598679DC51B119D21A15EA" KeyPath="yes" Source="$(var.RootFolder)\net472\GenerateInheritedDocs.dll" />
-        </Component>
-        <Component Id="cmp802A97C47259D5A4B0765A34B59474E9" Guid="{13753843-7670-48B0-84AC-036F7FFA7B6D}">
-          <File Id="fil625619EB8E8EF91D34C26E0E54E3F7FE" KeyPath="yes" Source="$(var.RootFolder)\net472\GenerateInheritedDocs.xml" />
-        </Component>
-        <Component Id="cmp7A6DC3254A61C32CA4A2DEC8B235BFA3" Guid="{E662F2EF-7651-4496-9A68-A6760F00C244}">
+        <Component Id="cmp7A6DC3254A61C32CA4A2DEC8B235BFA3" Guid="{BD8C8838-121B-4513-B44D-4837B84C092D}">
           <File Id="filFA828BCF340FAD7F23197C7593122ADE" KeyPath="yes" Source="$(var.RootFolder)\net472\Microsoft.Bcl.AsyncInterfaces.dll" />
         </Component>
         <Component Id="cmp800682630E8EBF4F0A4BB5B49D58BBE3" Guid="{29F8AD00-8D0C-4F25-805E-96AABB35B963}">
@@ -3632,19 +3623,7 @@
         </Component>
       </Directory>
       <Directory Id="dir50BA78F06F76E713C16EF0C66529463E" Name="net8.0">
-        <Component Id="cmpB6D52E52850F49FE1F594E0B74665930" Guid="{C726AC9F-F3F6-45AB-A8FA-88D7872FF23E}">
-          <File Id="filDE38F3E2594D9DCE466DA4D232AC5AEA" KeyPath="yes" Source="$(var.RootFolder)\net8.0\GenerateInheritedDocs.config" />
-        </Component>
-        <Component Id="cmp8B05F48E428B883FBC8A306629A7D2B5" Guid="{3D944D2B-0788-4F90-A08F-D1300EAA3DED}">
-          <File Id="filEB95CDEBEEA72CCB6D570DFAE865B7D9" KeyPath="yes" Source="$(var.RootFolder)\net8.0\GenerateInheritedDocs.deps.json" />
-        </Component>
-        <Component Id="cmpD0DAD78486B108D8ACFF3FE65BC75864" Guid="{F3D5DE90-5F7A-43FE-A5CA-86694E084E55}">
-          <File Id="fil7804C9E1F5615099160A0BC98141CE47" KeyPath="yes" Source="$(var.RootFolder)\net8.0\GenerateInheritedDocs.dll" />
-        </Component>
-        <Component Id="cmpEA6B8759DA158C3CFE74C185C960E89B" Guid="{CA773772-1BF4-4362-B07C-709C250D60BF}">
-          <File Id="filBCE42086930703500EDDB3FF7C3046C8" KeyPath="yes" Source="$(var.RootFolder)\net8.0\GenerateInheritedDocs.xml" />
-        </Component>
-        <Component Id="cmp62CDD209846A7BCCD25CD8F03DDA8973" Guid="{ADA4C01D-4862-4371-ABBA-8CDB867B2019}">
+        <Component Id="cmp62CDD209846A7BCCD25CD8F03DDA8973" Guid="{0E85894E-F7B3-46E4-8367-A688BD552382}">
           <File Id="filB431DE0591440CCEB5481EC915EF7959" KeyPath="yes" Source="$(var.RootFolder)\net8.0\Microsoft.DiaSymReader.dll" />
         </Component>
         <Component Id="cmp9EC517804147E1200AA4A1C64B25FDB9" Guid="{133D1CFE-5EA9-46DF-BCB4-290BC6B68C51}">
@@ -3828,13 +3807,7 @@
         <Component Id="cmpA082207B191D8A043F6FEDDEA78E8C2E" Guid="{4BF57815-A724-495A-9D5E-DC4A47BB449F}">
           <File Id="fil54E50987A8B8673A4AEABCC3BE48B95B" KeyPath="yes" Source="$(var.RootFolder)\Templates\BuildHelpViewerFile.proj" />
         </Component>
-        <Component Id="cmpB008DFF82923DF6D1214490A59FEFAA3" Guid="{83A02498-5192-4A79-A09F-8A3A4810773A}">
-          <File Id="fil1BCD6A00ADF0B0769C52799FF1D0AF8E" KeyPath="yes" Source="$(var.RootFolder)\Templates\GenerateInheritedDocs.config" />
-        </Component>
-        <Component Id="cmp1A97D15EBCE367E305131ED96A15D474" Guid="{5F1296C6-1A02-4F8F-8FE9-EF13437C009A}">
-          <File Id="filBB199AE617BF401F4EFD3455924AA842" KeyPath="yes" Source="$(var.RootFolder)\Templates\GenerateInheritedDocs.proj" />
-        </Component>
-        <Component Id="cmp98297E1AC6515DCC74BBB25DD07354BB" Guid="{F73BBCB2-CF17-49D5-BDD2-A9E25C035E4E}">
+        <Component Id="cmp98297E1AC6515DCC74BBB25DD07354BB" Guid="{A4CB9A8B-4FA4-4C03-90BC-4A4837B7C814}">
           <File Id="fil8BEE49B56D220DC17D5C8C93E95701D2" KeyPath="yes" Source="$(var.RootFolder)\Templates\GenerateRefInfo.proj" />
         </Component>
         <Component Id="cmpD5D795EC85FCC9607B62B1DD77B42AA4" Guid="{387A439F-DC5A-48D9-9E7E-4845C921EECD}">
@@ -5269,9 +5242,6 @@
       <ComponentRef Id="cmpBC5E002E39BA401C0FF1BF88E9421E0D" />
       <ComponentRef Id="cmp67A927465A5B75FD4627BD4DF2CA14FC" />
       <ComponentRef Id="cmp70900951E484584BDB0347AA39D0B3BC" />
-      <ComponentRef Id="cmp74727AE14B30535CF5BD77B6613059CF" />
-      <ComponentRef Id="cmp9DD91B5ADEA1252DF886809F1311B3C7" />
-      <ComponentRef Id="cmp802A97C47259D5A4B0765A34B59474E9" />
       <ComponentRef Id="cmp7A6DC3254A61C32CA4A2DEC8B235BFA3" />
       <ComponentRef Id="cmp800682630E8EBF4F0A4BB5B49D58BBE3" />
       <ComponentRef Id="cmpBD44783A77F2F87F911A421DCD7EA03F" />
@@ -5299,10 +5269,6 @@
       <ComponentRef Id="cmp4743EA9A564113219B081C03EDEFEFA5" />
       <ComponentRef Id="cmp92FB1758C69D110AF7949071B07B29C2" />
       <ComponentRef Id="cmpCCA7EB08632EBFE813096437CF968665" />
-      <ComponentRef Id="cmpB6D52E52850F49FE1F594E0B74665930" />
-      <ComponentRef Id="cmp8B05F48E428B883FBC8A306629A7D2B5" />
-      <ComponentRef Id="cmpD0DAD78486B108D8ACFF3FE65BC75864" />
-      <ComponentRef Id="cmpEA6B8759DA158C3CFE74C185C960E89B" />
       <ComponentRef Id="cmp62CDD209846A7BCCD25CD8F03DDA8973" />
       <ComponentRef Id="cmp9EC517804147E1200AA4A1C64B25FDB9" />
       <ComponentRef Id="cmpDBD176E4DB0B335F39E7C55B2D77937D" />
@@ -5355,8 +5321,6 @@
       <ComponentRef Id="cmpB6BFB57945A52C6BAA0D993D1AA60CFB" />
       <ComponentRef Id="cmp38A47323D0FADF71B0B6B1EC69CB2AA3" />
       <ComponentRef Id="cmpA082207B191D8A043F6FEDDEA78E8C2E" />
-      <ComponentRef Id="cmpB008DFF82923DF6D1214490A59FEFAA3" />
-      <ComponentRef Id="cmp1A97D15EBCE367E305131ED96A15D474" />
       <ComponentRef Id="cmp98297E1AC6515DCC74BBB25DD07354BB" />
       <ComponentRef Id="cmpD5D795EC85FCC9607B62B1DD77B42AA4" />
       <ComponentRef Id="cmp2F845808497EC0E864C09609420B894E" />

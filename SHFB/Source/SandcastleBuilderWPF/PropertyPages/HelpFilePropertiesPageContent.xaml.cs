@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : HelpFileProperitesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 06/01/2021
-// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
+// Updated : 09/14/2024
+// Note    : Copyright 2017-2024, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Help File category properties
 //
@@ -50,7 +50,6 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
             cboNamingMethod.ItemsSource = (new Dictionary<string, string> {
                 { NamingMethod.Guid.ToString(), "GUID" },
-                /* TODO: Add back if implemented: { NamingMethod.GuidFolder.ToString(), "GUID with folder" },*/
                 { NamingMethod.MemberName.ToString(), "Member name" },
                 { NamingMethod.HashedMemberName.ToString(), "Hashed member name" }
             }).ToList();

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ApiTopicNamer.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/17/2021
-// Note    : Copyright 2021, Eric Woodruff, All rights reserved
+// Updated : 09/14/2024
+// Note    : Copyright 2021-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate API member topic filenames based on the selected naming method
 //
@@ -43,7 +43,7 @@ namespace SandcastleBuilder.Utils
 
         private HashAlgorithm md5;
 
-        private static readonly Regex reInvalidChars = new Regex("[ :.`#<>*?|]");
+        private static readonly Regex reInvalidChars = new Regex("[ :.`@#{}<>*?|]");
 
         #endregion
 
@@ -76,8 +76,7 @@ namespace SandcastleBuilder.Utils
         /// <inheritdoc />
         public void Dispose()
         {
-            if(md5 != null)
-                md5.Dispose();
+            md5?.Dispose();
 
             GC.SuppressFinalize(this);
         }
@@ -106,13 +105,6 @@ namespace SandcastleBuilder.Utils
 
                 case NamingMethod.HashedMemberName:
                     return this.ToHashedMemberName(memberId);
-
-                /* TODO: Investigate later.  May end up removing this option
-                case NamingMethod.GuidFolder:
-                    // TODO: This needs some more testing.  Introducing the folder into the name may cause some
-                    // issues in places where it's not expected.  I fixed a couple but there may be others.
-                    string filename = this.ToMd5Hash(memberId);
-                    return filename.Substring(0, 2) + Path.DirectorySeparatorChar + filename;*/
 
                 default:
                     throw new InvalidOperationException("Unknown naming method");
