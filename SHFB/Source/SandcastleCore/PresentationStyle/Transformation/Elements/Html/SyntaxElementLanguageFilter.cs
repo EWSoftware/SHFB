@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SyntaxElementLanguageFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/02/2024
+// Updated : 09/21/2024
 // Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle syntax section elements in presentation styles that use a
@@ -263,26 +263,18 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                 if(position != 1)
                     codeBlock.Attribute("class").Value += " is-hidden";
 
-                var title = codeBlock.Descendants().FirstOrDefault(p => p.Attribute("id")?.Value == "Title");
-
-                if(title == null)
-                {
+                var title = codeBlock.Descendants().FirstOrDefault(p => p.Attribute("id")?.Value == "Title") ??
                     throw new InvalidOperationException("Unable to locate the title container with the id " +
                         "'Title' in the syntax section code template");
-                }
 
                 title.Attribute("id").Remove();
                 title.Add(new XElement("include",
                     new XAttribute("item", $"devlang_{codeLanguage}"),
                     new XAttribute("undefined", codeLanguage)));
 
-                var codeContainer = codeBlock.Descendants("pre").FirstOrDefault(p => p.Attribute("id")?.Value == "CodeBlock");
-
-                if(codeContainer == null)
-                {
+                var codeContainer = codeBlock.Descendants("pre").FirstOrDefault(p => p.Attribute("id")?.Value == "CodeBlock") ??
                     throw new InvalidOperationException("Unable to locate the code container with the id " +
                         "'CodeBlock' in the syntax section code template");
-                }
 
                 codeContainer.Attribute("id").Remove();
                 codeContainer.RemoveNodes();
@@ -433,17 +425,18 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             XElement fixedBufferAttr = transformation.ReferenceNode.AttributeOfType("T:System.Runtime.CompilerServices.FixedBufferAttribute"),
                 isReadOnlyAttr = transformation.ReferenceNode.AttributeOfType("T:System.Runtime.CompilerServices.IsReadOnlyAttribute"),
                 isByRefLikeAttr = transformation.ReferenceNode.AttributeOfType("T:System.Runtime.CompilerServices.IsByRefLikeAttribute");
-            XElement typeInfo;
+            XElement typeInfo = null;
 
             if(fixedBufferAttr != null)
-                typeInfo = fixedBufferAttr.Element("argument").Element("typeValue").Element("type");
+                typeInfo = fixedBufferAttr.Element("argument")?.Element("typeValue").Element("type");
             else if(isReadOnlyAttr != null)
-                typeInfo = isReadOnlyAttr.Element("argument").Element("typeValue").Element("type");
+                typeInfo = isReadOnlyAttr.Element("argument")?.Element("typeValue").Element("type");
             else if(isByRefLikeAttr != null)
-                typeInfo = isByRefLikeAttr.Element("argument").Element("typeValue").Element("type");
+                typeInfo = isByRefLikeAttr.Element("argument")?.Element("typeValue").Element("type");
             else if(transformation.ApiMember.ApiSubgroup == ApiMemberGroup.Event)
                 typeInfo = transformation.ReferenceNode.Element("eventhandler").Element("type");
-            else
+            
+            if(typeInfo == null)
                 typeInfo = transformation.ReferenceNode.Element("returns").Elements().First();
 
             transformation.RenderTypeReferenceLink(content, typeInfo, false);
