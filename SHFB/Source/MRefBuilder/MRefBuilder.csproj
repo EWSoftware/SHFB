@@ -58,8 +58,8 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.DiaSymReader" Version="1.3.0" />
 		<PackageReference Include="Microsoft.DiaSymReader.PortablePdb" Version="1.5.0" />
-		<PackageReference Include="System.CodeDom" Version="5.0.0" />
-		<PackageReference Include="System.Security.Permissions" Version="5.0.0" />
+		<PackageReference Include="System.CodeDom" Version="9.0.0" />
+		<PackageReference Include="System.Security.Permissions" Version="9.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

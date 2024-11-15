@@ -48,7 +48,7 @@
 		</PackageReference>
 		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.9" />
 		<PackageReference Include="System.ComponentModel.Composition" Version="6.0.0" />
-		<PackageReference Include="System.Text.Json" Version="6.0.0" />
+		<PackageReference Include="System.Text.Json" Version="9.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

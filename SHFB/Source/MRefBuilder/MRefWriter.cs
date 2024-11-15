@@ -31,13 +31,13 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Xml;
+using System.Xml.Linq;
 
 using System.Compiler;
 
 using Sandcastle.Tools.Reflection;
 
 using Sandcastle.Core;
-using System.Xml.Linq;
 
 namespace Sandcastle.Tools
 {
@@ -1647,9 +1647,30 @@ namespace Sandcastle.Tools
         /// <param name="attributes">The standard attributes to write</param>
         protected void WriteAttributes(AttributeList attributes)
         {
-            var exposed = this.GetExposedAttributes(attributes);
+            var exposed = this.GetExposedAttributes(attributes).ToList();
 
-            if(exposed.Any())
+            // Special case.  For ref structs, remove the obsolete attribute added by the compiler for versions
+            // that don't support them.  However, if the message doesn't match, assume it was added by the
+            // user and keep it.
+            if(exposed.Any(a => a.Type.FullName == "System.Runtime.CompilerServices.IsByRefLikeAttribute"))
+            {
+                var obsoleteAttr = exposed.FirstOrDefault(a => a.Type.FullName == "System.ObsoleteAttribute");
+
+                if(obsoleteAttr != null && obsoleteAttr.Expressions.Count != 0)
+                {
+                    var exp = obsoleteAttr.Expressions[0];
+
+                    if(exp.NodeType == NodeType.Literal)
+                    {
+                        var literal = (Literal)exp;
+
+                        if(literal.Value?.ToString() == "Types with embedded references are not supported in this version of your compiler.")
+                            exposed.Remove(obsoleteAttr);
+                    }
+                }
+            }
+
+            if(exposed.Count != 0)
             {
                 writer.WriteStartElement("attributes");
 

@@ -1,5 +1,23 @@
-﻿namespace DotNetStandardTestCases
+﻿using System;
+
+namespace DotNetStandardTestCases
 {
+    /// <summary>
+    /// Docs go here.
+    /// </summary>
+    //[Obsolete("This is obsolete")]
+    public ref struct TestRefStruct
+    {
+    }
+
+    /// <summary>
+    /// Docs go here.
+    /// </summary>
+    //[Obsolete("This is obsolete")]
+    public readonly ref struct TestReadOnlyRefStruct
+    {
+    }
+
     /// <summary>
     /// Test structure for extension method tests
     /// </summary>

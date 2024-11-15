@@ -137,7 +137,7 @@ namespace Sandcastle.Tools.SyntaxGenerators
             if(isSerializable)
                 WriteAttribute("T:System.SerializableAttribute", true, writer);
 
-            WriteAttributes(reflection, writer, ignoreObsoleteAttribute: isRefStruct);
+            WriteAttributes(reflection, writer);
             WriteVisibility(reflection, writer);
 
             if(isReadOnlyStruct)
@@ -145,7 +145,8 @@ namespace Sandcastle.Tools.SyntaxGenerators
                 writer.WriteString(" ");
                 writer.WriteKeyword("readonly");
             }
-            else if(isRefStruct)
+            
+            if(isRefStruct)
             {
                 writer.WriteString(" ");
                 writer.WriteKeyword("ref");
@@ -837,7 +838,7 @@ namespace Sandcastle.Tools.SyntaxGenerators
         // !EFW - Added indent parameter for property getter/setter attributes.  Added parameterAttributes to
         // suppress line feeds for method parameter attributes.
         private void WriteAttributes(XPathNavigator reflection, SyntaxWriter writer, string indent = null,
-            bool parameterAttributes = false, bool ignoreObsoleteAttribute = false)
+            bool parameterAttributes = false)
         {
             // Handle interop attributes first as they are output in metadata
             if(!parameterAttributes)
@@ -859,10 +860,6 @@ namespace Sandcastle.Tools.SyntaxGenerators
                 {
                     continue;
                 }
-
-                // Ref structs.
-                if(ignoreObsoleteAttribute && type.GetAttribute("api", String.Empty) == "T:System.ObsoleteAttribute")
-                    continue;
 
                 if(!String.IsNullOrEmpty(indent))
                     writer.WriteString(indent);
