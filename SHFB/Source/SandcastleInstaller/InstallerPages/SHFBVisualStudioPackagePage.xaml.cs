@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation - Sandcastle Help File Builder
 // File    : SHFBVisualStudioPackagePage.cs
 // Author  : Eric Woodruff
-// Updated : 09/08/2021
+// Updated : 12/14/2024
 //
 // This file contains a page used to help the user install the Sandcastle Help File Builder Visual Studio package
 //
@@ -82,6 +82,8 @@ namespace Sandcastle.Installer.InstallerPages
 
         private bool searchPerformed, installerExecuted;
 
+        private static readonly char[] separator = new[] { ',', ' ' };
+
         #endregion
 
         #region Properties
@@ -154,15 +156,16 @@ namespace Sandcastle.Installer.InstallerPages
 
                 vsixPackages.Add(vsix);
 
-                var supportedVersions = package.Attribute("supportedVersions").Value.Split(new[] { ',', ' ' },
+                var supportedVersions = package.Attribute("supportedVersions").Value.Split(separator,
                     StringSplitOptions.RemoveEmptyEntries);
                 var versionsFound = VisualStudioInstance.AllInstances.Where(i => supportedVersions.Any(v =>
                     i.Version.StartsWith(v, StringComparison.Ordinal) &&
+                        i.DisplayName.IndexOf("Build Tools", StringComparison.OrdinalIgnoreCase) == -1 &&
                         !String.IsNullOrWhiteSpace(i.VSIXInstallerPath) &&
                         File.Exists(i.VSIXInstallerPath))).OrderBy(i => i.Version).ToList();
 
                 // Use the latest VSIX installer found
-                if(versionsFound.Any())
+                if(versionsFound.Count != 0)
                     vsix.VsixInstallerPath = versionsFound.Last().VSIXInstallerPath;
 
                 foreach(var vs in versionsFound)

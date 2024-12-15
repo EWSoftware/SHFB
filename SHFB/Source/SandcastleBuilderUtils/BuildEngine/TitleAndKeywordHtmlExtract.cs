@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TitleAndKeywordHtmlExtract.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/31/2022
-// Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
+// Updated : 12/14/2024
+// Note    : Copyright 2008-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to extract title and keyword information from HTML files for use in creating
 // the Help 1 (CHM) table of contents and keyword index files.  It can also optionally convert the
@@ -108,6 +108,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         private readonly BuildProcess currentBuild;
+        private readonly object lockObject = new Object();
+        private static readonly char[] trimChars = new char[] { ' ' };
+        private static readonly char[] dirSepChars = new[] { '/', '\\' };
 
         // Options
         private string encodingName;
@@ -467,8 +470,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
             if(!titles.TryAdd(key, new TitleInfo(WebUtility.HtmlDecode(topicTitle),
               WebUtility.HtmlDecode(tocTitle), sourceFile)))
             {
-                currentBuild.ReportWarning("SHE0004", "The key '{0}' used for '{1}' is already in use by " +
-                    "'{2}'.  '{1}' will be ignored.", key, sourceFile, titles[key].File);
+                lock(lockObject)
+                {
+                    currentBuild.ReportWarning("SHE0004", "The key '{0}' used for '{1}' is already in use by " +
+                        "'{2}'.  '{1}' will be ignored.", key, sourceFile, titles[key].File);
+                }
             }
 
             // Extract K index keywords
@@ -489,7 +495,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(match.Success)
                     {
                         keyword.MainEntry = term.Substring(0, match.Index);
-                        keyword.SubEntry = term.Substring(match.Index + 1).TrimStart(new char[] { ' ' });
+                        keyword.SubEntry = term.Substring(match.Index + 1).TrimStart(trimChars);
                     }
                     else
                         keyword.MainEntry = term;
@@ -568,15 +574,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                                     // Remove any sub-folder if present as the titles are keyed on the name alone
                                     if(!String.IsNullOrWhiteSpace(key))
                                     {
-                                        int dirSep = key.IndexOfAny(new[] { '/', '\\' });
+                                        int dirSep = key.IndexOfAny(dirSepChars);
 
                                         if(dirSep != -1)
                                             key = key.Substring(dirSep + 1);
                                     }
 
-                                    if(!String.IsNullOrWhiteSpace(key) && titles.ContainsKey(key))
+                                    if(!String.IsNullOrWhiteSpace(key) && titles.TryGetValue(key, out TitleInfo value))
                                     {
-                                        titleInfo = titles[key];
+                                        titleInfo = value;
                                         title = titleInfo.TocTitle;
                                         htmlFile = titleInfo.File.Substring(baseFolderLength);
                                     }
@@ -636,7 +642,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <param name="writer">The writer to which the line is saved</param>
         /// <param name="indentCount">The amount of indent to use</param>
         /// <param name="value">The value to write</param>
-        private static void WriteContentLine(TextWriter writer, int indentCount, string value)
+        private static void WriteContentLine(StreamWriter writer, int indentCount, string value)
         {
             writer.WriteLine();
 
@@ -792,15 +798,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                                     // Remove any sub-folder if present as the titles are keyed on the name alone
                                     if(!String.IsNullOrWhiteSpace(key))
                                     {
-                                        int dirSep = key.IndexOfAny(new[] { '/', '\\' });
+                                        int dirSep = key.IndexOfAny(dirSepChars);
 
                                         if(dirSep != -1)
                                             key = key.Substring(dirSep + 1);
                                     }
 
-                                    if(!String.IsNullOrWhiteSpace(key) && titles.ContainsKey(key))
+                                    if(!String.IsNullOrWhiteSpace(key) && titles.TryGetValue(key, out TitleInfo value))
                                     {
-                                        titleInfo = titles[key];
+                                        titleInfo = value;
                                         title = titleInfo.TocTitle;
                                         htmlFile = titleInfo.File.Substring(baseFolderLength).Replace('\\', '/');
                                     }

@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="430ecc56-ffcb-4470-aa5c-23b125965164" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2024.12.15.0.</para>
+		</introduction>
+
+		<section>
+			<title>Build Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>The <localUri>dotnet build</localUri> version of the tools have been upgraded from the obsolete
+.NET Core 3.1 to .NET 8.0.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved the generate inherited documentation tool code into the build engine and removed the
+separate tool project and configuration file.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Fixed a crash in MRefBuilder when using a <codeInline>public static ref readonly</codeInline>
+property.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the HTML extract task to handle logging warnings properly when processing the files in
+parallel.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the .NET reflection data set with the .NET 9.0 assemblies.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<section>
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the presentation styles so that they do not incorrectly mark <codeInline>ref struct</codeInline>
+types as obsolete unless specifically marked by the user as such (it ignores the compiler added attribute for
+versions that don't support them).</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>
