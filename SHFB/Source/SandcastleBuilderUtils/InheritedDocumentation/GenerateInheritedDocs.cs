@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : GenerateInheritedDocs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/13/2024
+// Updated : 12/20/2024
 // Note    : Copyright 2008-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the build task that scans XML comments files for <inheritdoc /> tags and produces a new
@@ -74,6 +74,11 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         /// This read-only property returns the comments cache
         /// </summary>
         public IndexedCommentsCache CommentsCache => commentsCache;
+
+        /// <summary>
+        /// This read-only property returns the reflection file information
+        /// </summary>
+        public ReflectionFiles ReflectionFiles => reflectionFiles;
         
         #endregion
 
@@ -200,7 +205,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         private void ScanCommentsFiles()
         {
             XPathNavigator apiId, apiField, fieldComments, attachedComments;
-            XmlNode node;
+            XmlDocumentFragment node;
             Dictionary<string, XPathNavigator> members = new Dictionary<string, XPathNavigator>();
             string name;
 
@@ -208,6 +213,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
             // occurrences at the root level as well as those nested within other tags.  Root level stuff will
             // get handled first followed by any nested tags.
             foreach(XPathNavigator file in commentsFiles)
+            {
                 foreach(XPathNavigator tag in file.Select("//inheritdoc"))
                 {
                     while(tag.Name != "member")
@@ -222,6 +228,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                     if(apiId != null && !members.ContainsKey(name))
                         members.Add(name, tag);
                 }
+            }
 
             // For each one, create a new XML node that can be edited
             foreach(XPathNavigator nav in members.Values)
@@ -608,7 +615,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         {
             StringBuilder sb = new StringBuilder(256);
             XPathNavigator baseMember;
-            XmlNode copyMember, newNode;
+            XmlNode copyMember;
             XmlAttribute cref, filter, autoFilter;
             string name;
 
@@ -686,7 +693,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                     {
                         foreach(XPathNavigator element in baseMember.Select(sb.ToString()))
                         {
-                            newNode = inheritedDocs.CreateDocumentFragment();
+                            var newNode = inheritedDocs.CreateDocumentFragment();
 
                             // If there's no filter, we don't want the tag
                             if(filter != null)

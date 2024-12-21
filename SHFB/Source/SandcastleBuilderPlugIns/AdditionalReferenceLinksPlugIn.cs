@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/25/2022
-// Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
+// Updated : 12/20/2024
+// Note    : Copyright 2008-2024, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to add additional reference link targets to the Reflection Index Data
 // and Resolve Reference Links build components so that links can be created to other third party help in a
@@ -166,7 +166,14 @@ namespace SandcastleBuilder.PlugIns
 
             if(context.BuildStep == BuildStep.GenerateInheritedDocumentation)
             {
-                this.MergeInheritedDocConfig();
+                builder.ReportProgress("Adding references to generate inherited documentation tool...");
+
+                foreach(ReferenceLinkSettings vs in otherLinks)
+                {
+                    if(!String.IsNullOrEmpty(vs.ReflectionFilename))
+                        builder.GenerateInheritedDocsTool.ReflectionFiles.AddReflectionFile(vs.ReflectionFilename);
+                }
+
                 return;
             }
 
@@ -181,9 +188,13 @@ namespace SandcastleBuilder.PlugIns
                         f => Path.GetFileNameWithoutExtension(f)));
 
                 foreach(ReferenceLinkSettings vs in otherLinks)
+                {
                     if(!String.IsNullOrEmpty(vs.ReflectionFilename))
+                    {
                         foreach(var n in BuildProcess.GetReferencedNamespaces(vs.ReflectionFilename, validNamespaces))
                             rn.Add(n);
+                    }
+                }
 
                 return;
             }
@@ -191,25 +202,6 @@ namespace SandcastleBuilder.PlugIns
             // Merge the reflection file info into sancastle.config
             if(File.Exists(builder.BuildAssemblerConfigurationFile))
                 this.MergeReflectionInfo();
-        }
-
-        /// <summary>
-        /// This is used to merge the reflection file names into the inherited documentation tool's configuration
-        /// file.
-        /// </summary>
-        private void MergeInheritedDocConfig()
-        {
-            string configFilename = Path.Combine(builder.WorkingFolder, "GenerateInheritedDocs.config");
-
-            builder.ReportProgress("Adding references to {0}...", configFilename);
-            
-            var configFile = XDocument.Load(configFilename);
-
-            foreach(ReferenceLinkSettings vs in otherLinks)
-                if(!String.IsNullOrEmpty(vs.ReflectionFilename))
-                    configFile.Root.Add(new XElement("reflectionInfo", new XAttribute("file", vs.ReflectionFilename)));
-
-            configFile.Save(configFilename);
         }
 
         /// <summary>
@@ -228,24 +220,16 @@ namespace SandcastleBuilder.PlugIns
             // type but we only need the first one.  This only appears in the reference build's configuration
             // file.
             var component = configFile.XPathSelectElement("//component[@id='Copy From Index Component']/" +
-                "index[@name='reflection']");
-
-            // If not found, try for the cached version
-            if(component == null)
-            {
-                component = configFile.XPathSelectElement("//component[starts-with(@id, " +
-                    "'Reflection Index Data')]/index[@name='reflection']");
-            }
-
-            if(component == null)
-            {
+                "index[@name='reflection']") ??
+                configFile.XPathSelectElement("//component[starts-with(@id, " +
+                    "'Reflection Index Data')]/index[@name='reflection']") ??
                 throw new BuilderException("ARL0004", "Unable to locate Reflection Index Data component in " +
                     builder.BuildAssemblerConfigurationFile);
-            }
 
             var lastChild = component.Descendants().Last();
 
             foreach(ReferenceLinkSettings vs in otherLinks)
+            {
                 if(!String.IsNullOrEmpty(vs.ReflectionFilename))
                 {
                     target = new XElement("data",
@@ -255,6 +239,7 @@ namespace SandcastleBuilder.PlugIns
                     // Keep the current project's stuff listed last so that it takes precedence
                     lastChild.AddBeforeSelf(target);
                 }
+            }
 
             // Add them to the Resolve Reference Links component
             var matchingComponents = configFile.XPathSelectElements("//component[starts-with(@id, 'Resolve Reference Links')]").ToList();
