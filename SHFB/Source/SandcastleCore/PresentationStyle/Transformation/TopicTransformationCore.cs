@@ -1797,6 +1797,11 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                             if(pos != -1)
                                 api = api.Substring(pos + 1);
 
+                            pos = api.IndexOf('`');
+
+                            if(pos != -1)
+                                api = api.Substring(0, pos);
+
                             memberName.Append(api);
                         }
                     }
@@ -1942,6 +1947,11 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
 
                             if(pos != -1)
                                 api = api.Substring(pos + 1);
+
+                            pos = api.IndexOf('`');
+
+                            if(pos != -1)
+                                api = api.Substring(0, pos);
 
                             memberName.Add(api);
                         }
