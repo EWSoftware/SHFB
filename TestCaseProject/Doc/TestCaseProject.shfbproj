@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Import the common props to support NuGet restore -->
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -126,6 +126,22 @@
     <PlugInConfigurations>
       <PlugInConfig id="Additional Content Only" enabled="False">
         <configuration />
+      </PlugInConfig>
+      <PlugInConfig id="Attribute Renderer Plugin" enabled="True">
+        <configuration>
+          <attributeRepresentations>
+            <AttributeRepresentationEntry>
+              <AttributeClassName>T:System.ObsoleteAttribute</AttributeClassName>
+              <ShortRepresentation>&lt;h1&gt;OBSOLETE&lt;/h1&gt;</ShortRepresentation>
+              <LongRepresentation>This API is obsolete.</LongRepresentation>
+            </AttributeRepresentationEntry>
+            <AttributeRepresentationEntry>
+              <AttributeClassName>T:TestDoc.DummyAttribute</AttributeClassName>
+              <ShortRepresentation>Test Attr.</ShortRepresentation>
+              <LongRepresentation>Teeeeeeeeeest</LongRepresentation>
+            </AttributeRepresentationEntry>
+          </attributeRepresentations>
+        </configuration>
       </PlugInConfig>
     </PlugInConfigurations>
     <ApiFilter>
