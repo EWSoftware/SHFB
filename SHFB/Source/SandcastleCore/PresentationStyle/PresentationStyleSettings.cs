@@ -28,7 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Xml.Linq;
 using Sandcastle.Core.PresentationStyle.Transformation;
 
 namespace Sandcastle.Core.PresentationStyle
@@ -47,7 +47,9 @@ namespace Sandcastle.Core.PresentationStyle
         private readonly List<ContentFiles> contentFiles;
         private readonly List<PlugInDependency> plugInDependencies;
         private readonly List<string> additionalResourceItemsFiles;
-
+        private readonly Dictionary<string, XElement> dictShortAttributeRepresentations = new Dictionary<string, XElement>();
+        private readonly Dictionary<string, XElement> dictLongAttributeRepresentations = new Dictionary<string, XElement>();
+        
         #endregion
 
         #region Properties
@@ -133,6 +135,10 @@ namespace Sandcastle.Core.PresentationStyle
         /// override the default configuration supplied here.</remarks>
         public IList<PlugInDependency> PlugInDependencies => plugInDependencies;
 
+        public Dictionary<string, XElement> ShortAttributeRepresentations => dictShortAttributeRepresentations;
+        
+        public Dictionary<string, XElement> LongAttributeRepresentations => dictLongAttributeRepresentations;
+        
         #endregion
 
         #region Constructor

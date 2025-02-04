@@ -1,4 +1,4 @@
-﻿//===============================================================================================================
+//===============================================================================================================
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
@@ -1143,9 +1143,18 @@ $("".toggleSection"").keypress(function () {
         private static void RenderNotices(TopicTransformationCore transformation)
         {
             var preliminary = transformation.CommentsNode.Element("preliminary");
-            var obsolete = transformation.ReferenceNode.AttributeOfType("T:System.ObsoleteAttribute");
+            
+            List<XElement> attributeRepresentations = new List<XElement>();
 
-            if(preliminary != null || obsolete != null)
+            foreach(var keyValuePair in ((Default2022Transformation)transformation).presentationStyle.LongAttributeRepresentations)
+            {
+                if(transformation.ReferenceNode.AttributeOfType(keyValuePair.Key) != null)
+                {
+                    attributeRepresentations.Add(keyValuePair.Value);
+                }
+            }
+
+            if(preliminary != null || attributeRepresentations.Count > 0)
             {
                 var currentElement = transformation.CurrentElement;
                 var notes = new XElement("span", new XAttribute("class", "tags"));
@@ -1157,13 +1166,11 @@ $("".toggleSection"").keypress(function () {
                 if(preliminary != null)
                     transformation.RenderNode(preliminary);
 
-                if(obsolete != null)
+                foreach(XNode attributeRepresentation in attributeRepresentations)
                 {
-                    notes.Add(new XElement("span",
-                        new XAttribute("class", "tag is-danger is-medium"),
-                        new XElement("include", new XAttribute("item", "boilerplate_obsoleteLong"))));
+                    notes.Add(attributeRepresentation);
                 }
-
+                
                 transformation.CurrentElement = currentElement;
             }
         }
@@ -1604,20 +1611,26 @@ $("".toggleSection"").keypress(function () {
                         if(summary != null)
                             transformation.RenderChildElements(summaryCell, summary.Nodes());
 
-                        var obsoleteAttr = e.AttributeOfType("T:System.ObsoleteAttribute");
+                        List<XNode> attributeRepresentations = new List<XNode>();
+
+                        foreach(var keyValuePair in ((Default2022Transformation)transformation).presentationStyle.ShortAttributeRepresentations)
+                        {
+                            if(e.AttributeOfType(keyValuePair.Key) != null)
+                            {
+                                attributeRepresentations.Add(keyValuePair.Value);
+                            }
+                        }
+                        
                         var prelimComment = e.Element("preliminary");
 
-                        if(obsoleteAttr != null || prelimComment != null)
+                        if(attributeRepresentations.Count > 0 || prelimComment != null)
                         {
                             if(!summaryCell.IsEmpty)
                                 summaryCell.Add(new XElement("br"));
 
-                            if(obsoleteAttr != null)
+                            foreach(XNode attributeRepresentation in attributeRepresentations)
                             {
-                                summaryCell.Add(new XElement("span",
-                                        new XAttribute("class", "tag is-danger"),
-                                    new XElement("include",
-                                        new XAttribute("item", "boilerplate_obsoleteShort"))));
+                                summaryCell.Add(attributeRepresentation);
                             }
 
                             if(prelimComment != null)
@@ -1779,15 +1792,25 @@ $("".toggleSection"").keypress(function () {
                             thisTransform.RenderChildElements(summaryCell, remarks.Nodes());
                     }
 
-                    if(e.AttributeOfType("T:System.ObsoleteAttribute") != null)
+                    List<XNode> attributeRepresentations = new List<XNode>();
+
+                    foreach(var keyValuePair in ((Default2022Transformation)transformation).presentationStyle.ShortAttributeRepresentations)
+                    {
+                        if(e.AttributeOfType(keyValuePair.Key) != null)
+                        {
+                            attributeRepresentations.Add(keyValuePair.Value);
+                        }
+                    }
+                    
+                    if(attributeRepresentations.Count > 0)
                     {
                         if(!summaryCell.IsEmpty)
                             summaryCell.Add(new XElement("br"));
 
-                        summaryCell.Add(new XElement("span",
-                                new XAttribute("class", "tag is-danger"),
-                            new XElement("include",
-                                new XAttribute("item", "boilerplate_obsoleteShort"))));
+                        foreach(XNode attributeRepresentation in attributeRepresentations)
+                        {
+                            summaryCell.Add(attributeRepresentation);
+                        }
                     }
 
                     if(summaryCell.IsEmpty)
@@ -2036,20 +2059,25 @@ $("".toggleSection"").keypress(function () {
                         }
                     }
 
-                    var obsoleteAttr = e.AttributeOfType("T:System.ObsoleteAttribute");
+                    List<XNode> attributeRepresentations = new List<XNode>();
+
+                    foreach(var keyValuePair in ((Default2022Transformation)transformation).presentationStyle.ShortAttributeRepresentations)
+                    {
+                        if(e.AttributeOfType(keyValuePair.Key) != null)
+                        {
+                            attributeRepresentations.Add(keyValuePair.Value);
+                        }
+                    }
                     var prelimComment = e.Element("preliminary");
 
-                    if(obsoleteAttr != null || prelimComment != null)
+                    if(attributeRepresentations.Count > 0 || prelimComment != null)
                     {
                         if(!summaryCell.IsEmpty)
                             summaryCell.Add(new XElement("br"));
 
-                        if(obsoleteAttr != null)
+                        foreach(XNode attributeRepresentation in attributeRepresentations)
                         {
-                            summaryCell.Add(new XElement("span",
-                                    new XAttribute("class", "tag is-danger"),
-                                new XElement("include",
-                                    new XAttribute("item", "boilerplate_obsoleteShort"))));
+                            summaryCell.Add(attributeRepresentation);
                         }
 
                         if(prelimComment != null)
