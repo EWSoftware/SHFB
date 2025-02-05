@@ -200,9 +200,9 @@ namespace SandcastleBuilder.PlugIns
             if (String.IsNullOrWhiteSpace(longRepresentation)) return null;
             
             // try to parse XElement
-            var el = XElement.Parse(LongRepresentation);
+            var el = TryParseXElement(LongRepresentation);
 
-            if(el.IsEmpty)
+            if(el == null || el.IsEmpty)
             {
                 return new XElement("span",
                     new XAttribute("class", "tag is-danger is-medium"),
@@ -219,17 +219,36 @@ namespace SandcastleBuilder.PlugIns
             if (String.IsNullOrWhiteSpace(ShortRepresentation)) return null;
             
             // try to parse XElement
-            var el = XElement.Parse(ShortRepresentation);
+            var el = TryParseXElement(ShortRepresentation);
 
-            if(el.IsEmpty)
+            if(el == null || el.IsEmpty)
             {
                 return new XElement("span",
                     new XAttribute("class", "tag is-danger is-medium"),
-                    new XElement("include", new XAttribute("item", ShortRepresentation)));;
+                    new XElement("include", new XAttribute("item", LongRepresentation)));;
             }
             else
             {
                 return el;
+            }
+        }
+
+        /// <summary>
+        /// Tries to parse a <see cref="string"/> to <see cref="XElement"/>.
+        /// </summary>
+        /// <param name="content">The content to parse</param>
+        /// <returns>The <see cref="XElement"/> if successful, otherwise <see langword="null"/></returns>
+        private static XElement TryParseXElement(string content)
+        {
+            if (string.IsNullOrWhiteSpace(content)) return null;
+            
+            try
+            {
+                return XElement.Parse(content);
+            }
+            catch
+            {
+                return null;
             }
         }
     }
