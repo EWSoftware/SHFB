@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using SandcastleBuilder.Utils;
 
@@ -197,16 +198,19 @@ namespace SandcastleBuilder.PlugIns
 
         public XElement GetLongRepresentation()
         {
-            if (String.IsNullOrWhiteSpace(longRepresentation)) return null;
+            if (String.IsNullOrWhiteSpace(LongRepresentation)) return null;
             
             // try to parse XElement
             var el = TryParseXElement(LongRepresentation);
-
+            
             if(el == null || el.IsEmpty)
             {
+                object content = GetContent(LongRepresentation);
+                string classes = GetStyleClasses(LongRepresentation, "tag is-danger is-medium");
+
                 return new XElement("span",
-                    new XAttribute("class", "tag is-danger is-medium"),
-                    new XElement("include", new XAttribute("item", LongRepresentation)));;
+                    new XAttribute("class", classes),
+                    content);
             }
             else
             {
@@ -220,19 +224,22 @@ namespace SandcastleBuilder.PlugIns
             
             // try to parse XElement
             var el = TryParseXElement(ShortRepresentation);
-
+            
             if(el == null || el.IsEmpty)
             {
+                object content = GetContent(ShortRepresentation);
+                string classes = GetStyleClasses(ShortRepresentation, "tag is-danger");
+
                 return new XElement("span",
-                    new XAttribute("class", "tag is-danger is-medium"),
-                    new XElement("include", new XAttribute("item", LongRepresentation)));;
+                    new XAttribute("class", classes),
+                    content);
             }
             else
             {
                 return el;
             }
         }
-
+        
         /// <summary>
         /// Tries to parse a <see cref="string"/> to <see cref="XElement"/>.
         /// </summary>
@@ -240,7 +247,7 @@ namespace SandcastleBuilder.PlugIns
         /// <returns>The <see cref="XElement"/> if successful, otherwise <see langword="null"/></returns>
         private static XElement TryParseXElement(string content)
         {
-            if (string.IsNullOrWhiteSpace(content)) return null;
+            if (String.IsNullOrWhiteSpace(content)) return null;
             
             try
             {
@@ -250,6 +257,29 @@ namespace SandcastleBuilder.PlugIns
             {
                 return null;
             }
+        }
+        
+        private static string GetStyleClasses(string representation, string fallbackClasses)
+        {
+            if (String.IsNullOrWhiteSpace(representation)) return fallbackClasses;
+            
+            // tags can be added by [[mytag]]. Search for them
+            var matches = Regex.Matches(representation, @"(?<=\[\[).*?(?=\]\])");
+            
+            var classes = matches.Cast<Match>().Select(m => m.Value);
+            
+            return matches.Count == 0 ? fallbackClasses : String.Join(" ", classes);
+        }
+        
+        private static XNode GetContent(string representation)
+        {
+            // tags can be added by [[mytag]] so we need to remove this string carefully.
+            representation = Regex.Replace(representation, @"(?<=\[\[).*?(?=\]\])", "");
+            
+            XNode content = representation.StartsWith("@") 
+                ? new XElement("include", new XAttribute("item", representation.Substring(1).Trim())) as XNode 
+                : new XText(representation);
+            return content;
         }
     }
 }
