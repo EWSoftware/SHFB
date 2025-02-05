@@ -127,23 +127,20 @@
       <PlugInConfig id="Additional Content Only" enabled="False">
         <configuration />
       </PlugInConfig>
-      <PlugInConfig id="Attribute Renderer Plugin" enabled="True">
-        <configuration>
-          <attributeRepresentations>
-            <AttributeRepresentationEntry>
-              <AttributeClassName>T:System.ObsoleteAttribute</AttributeClassName>
-              <ShortRepresentation>&lt;h1&gt;OBSOLETE&lt;/h1&gt;</ShortRepresentation>
-              <LongRepresentation>This API is obsolete.</LongRepresentation>
-            </AttributeRepresentationEntry>
-            <AttributeRepresentationEntry>
-              <AttributeClassName>T:TestDoc.DummyAttribute</AttributeClassName>
-              <ShortRepresentation>Test Attr.</ShortRepresentation>
-              <LongRepresentation>Teeeeeeeeeest</LongRepresentation>
-            </AttributeRepresentationEntry>
-          </attributeRepresentations>
-        </configuration>
-      </PlugInConfig>
-    </PlugInConfigurations>
+<PlugInConfig id="Attribute Renderer Plugin" enabled="True"><configuration>
+  <attributeRepresentations>
+    <AttributeRepresentationEntry>
+      <AttributeClassName>T:System.ObsoleteAttribute</AttributeClassName>
+      <ShortRepresentation>@boilerplate_obsoleteShort</ShortRepresentation>
+      <LongRepresentation>@boilerplate_obsoleteLong</LongRepresentation>
+    </AttributeRepresentationEntry>
+    <AttributeRepresentationEntry>
+      <AttributeClassName>T:TestDoc.DummyAttribute</AttributeClassName>
+      <ShortRepresentation>Dummy 😏[[tag is-info]]</ShortRepresentation>
+      <LongRepresentation>@DummyAttributeRepresentation_Long [[tag is-info is-medium]]</LongRepresentation>
+    </AttributeRepresentationEntry>
+  </attributeRepresentations>
+</configuration></PlugInConfig></PlugInConfigurations>
     <ApiFilter>
     </ApiFilter>
     <HelpFileFormat>Website</HelpFileFormat>
@@ -278,6 +275,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Bibliography.xml" />
+    <ResourceItems Include="Content\MiscElements\OwnSnippets.xml" />
     <None Include="Content\CommonInline\lineBreak.aml" />
     <None Include="Content\GlossaryWithDivs.aml" />
     <None Include="Content\MiscElements\markup.aml" />

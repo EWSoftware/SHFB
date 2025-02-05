@@ -14,6 +14,8 @@ namespace TestDoc
     /// <para>NamespaceGroupDoc link test: <see cref="G:TestDoc.Generics"/></para>
     /// <para>NamespaceDoc link test: <see cref="N:TestDoc.DocumentationInheritance"/></para>
     /// </remarks>
+    [Obsolete]
+    [Dummy (StringValue = "Just a test")]
     public class TestClass
     {
         #region Fields
@@ -128,6 +130,8 @@ namespace TestDoc
         /// <code source="ExampleFiles\Class1.vb" region="Embedded snippet" />
         /// </code>
         /// </example>
+        [Obsolete]
+        [Dummy (StringValue = "Just a test")]
         public virtual string PublicProperty
         {
             [Dummy(StringValue = "Test get attribute")]
