@@ -7,7 +7,7 @@
     <introduction>
       <para>It is possible to replace the stock content files that are included in each help file (style sheets,
 scripts, icons, images, etc.).  The stock content is copied from a presentation style sub-folders which can be
-found under the <localUri>.\PresentationStyles</localUri> folder of the root help file builder installation
+found under the <localUri>.\Components</localUri> folder of the root help file builder installation
 folder.  Each presentation style has its own folder such as <localUri>.\Default2022</localUri>,
 <localUri>.\VS2013</localUri>, etc.</para>
     </introduction>

@@ -6,54 +6,24 @@
 
 		<introduction>
 			<para>Sandcastle uses a set of resource files to contain text such as table of contents item titles, common
-topic element titles, messages, etc.  Copies of the resource files are located in a <localUri>.\Content</localUri>
-subfolder beneath each presentation style folder.  The presentation style folders are located in the
-<localUri>.\PresentationStyles</localUri> folder in the root help file builder installation folder.</para>
+topic element titles, messages, etc.  Copies of the resource files are located in the
+<localUri>.\Components\Shared\Content</localUri> subfolder beneath the root help file builder installation folder.</para>
 		</introduction>
 
 		<section>
 			<title>The Resource Files</title>
 			<content>
-				<para>The actual content files and their names may vary by presentation style but typically include the
-following:</para>
+				<para>The common content files are named <localUri>SharedContent_*.xml</localUri> and presentation style
+specific content files are named after their presentation style (<localUri>Markdown_*.xml</localUri> and
+<localUri>OpenXml_*.xml</localUri>).  The suffix on the filenames indicates the language it represents.
+The corresponding files will be included based on the language specified in the help file builder project.
+If content files cannot be found for the selected language, the English (en-US) versions are used.</para>
 
-				<list class="bullet">
-					<listItem>
-						<para><localUri>conceptual_content.xml</localUri> contains titles for items in conceptual content
-files.</para>
-					</listItem>
+				<para>The supplied files can be translated into other languages for use in your help files.  The
+suffix on the filename is the language ID based on the value returned by the <codeInline>CultureInfo.Name</codeInline>
+property (i.e. en-US, fr-FR, de-DE).  Each file has a <localUri>.xml</localUri> extension.</para>
 
-					<listItem>
-						<para><localUri>reference_content.xml</localUri> contains titles for the various class library parts,
-filter text, and alternate image text.</para>
-					</listItem>
-
-					<listItem>
-						<para><localUri>shared_content.xml</localUri> contains paths to the shared content (art, scripts, and
-style sheets), code section labels, and customizable text for the header and footer in each page.  The help file
-builder overrides many of these using its own content file.</para>
-					</listItem>
-
-					<listItem>
-						<para><localUri>syntax_content.xml</localUri> contains some programming language limitation messages.</para>
-					</listItem>
-
-					<listItem>
-						<para><localUri>token_content.xml</localUri> contains some supplemental reference messages.</para>
-					</listItem>
-
-				</list>
-
-				<para>The supplied files are all in English but can be translated into other languages for use in your
-help files.  The help file builder includes its own shared content files which are used to override elements in
-the above files for such things as the help title, header and footer text, preliminary documentation message,
-etc.  There are several copies of the shared content files, each representing a different language.  You can find
-the files in the <localUri>.\SHFBContent</localUri> folder under the presentation style folder.  Each file is
-named after the language for which it contains resource items.  The name is the language ID based on the value
-returned by the <codeInline>CultureInfo.Name</codeInline> property (i.e. en-US, fr-FR, de-DE).  Each file has a
-<localUri>.xml</localUri> extension.</para>
-
-				<para>A set of stop word list files also exists in the <localUri>.\PresentationStyles\Shared\StopWordList</localUri>
+				<para>A set of stop word list files also exists in the <localUri>.\Components\Shared\StopWordList</localUri>
 folder that are used when creating the full text index for the website build.  The files contain a list of common
 words that are excluded from the full-text index.  This prevents the index files from getting too large and
 containing useless information.  You can add additional words to these files as needed.  The files all named
@@ -66,9 +36,12 @@ property (i.e. en-US, fr-FR, de-DE).  Each file has a<localUri>.txt</localUri> e
 		<section>
 			<title>Localizing Language Resources</title>
 			<content>
-				<para>To create a help file builder resource file for a new language, copy one of the existing files and
-change the name to use the culture name's ID as described above.  If you are not sure what ID to use in the
-filename, go to the <externalLink><linkText>Locale Identifier Constants and Strings</linkText>
+				<para>When you do a build with a language other than English, the help file builder will automatically
+look for a files named after the selected language and will use the translated files if it finds them.  If the
+translated files cannot be found, a warning is issued in the log file and the English versions will be used.
+To create a help file builder resource file for a new language, copy one of the existing files and change the
+name to use the culture name's ID as described above.  If you are not sure what ID to use in the filename, go
+to the <externalLink><linkText>Locale Identifier Constants and Strings</linkText>
 <linkUri>https://docs.microsoft.com/windows/win32/intl/language-identifier-constants-and-strings</linkUri>
 <linkTarget>_blank</linkTarget></externalLink> help topic and locate the locale that you need.  The primary
 language and sub-language columns contain the ID values in parentheses.  Combine the two values in parentheses
@@ -81,18 +54,9 @@ possible to provide a matching set of Sandcastle's content files for each langua
 localized copies of them for each language that you want.  As above, if people are kind enough to supply
 additional translated files, they will be added to later releases.  The standard files in the noted
 <localUri>.\Content</localUri> folders will always be used when English (en-US) is used as the selected language
-or if files for the selected language cannot be found.  Note that these files tend to change with each new
-release of Sandcastle so you may have to compare and merge changes with your localized versions after each new
+or if files for the selected language cannot be found.  Note that these files may change in new releases of
+the help file builder so you may have to compare and merge changes with your localized versions after each new
 release is issued.</para>
-
-				<para>To create your own localized versions of the content files, create a folder below each of the
-noted <localUri>.\Content</localUri> folders. The new folder should be named after the selected language ID
-(i.e. fr-FR, de-DE, etc.).  Copy the Sandcastle content files to the new language folder and translate their
-content.  When translating <localUri>shared_content.xml</localUri>, be sure to set the value of the item with the
-<legacyBold>locale</legacyBold> ID to the correct language ID.  When you do a build with a language other than
-English, the help file builder will automatically look for a folder named after the selected language and will
-use the translated files if it finds them.  If the translated files cannot be found, a warning is issued in the
-log file and the English versions will be used.</para>
 
 				<para>How the files are encoded is very important if they contain extended characters.  To ensure that
 the help file builder and the Sandcastle tools properly interpret the encoding within the files, it is best to
