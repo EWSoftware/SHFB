@@ -38,20 +38,20 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.ehEntityReferencesHost.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ehEntityReferencesHost.Location = new System.Drawing.Point(0, 0);
             this.ehEntityReferencesHost.Name = "ehEntityReferencesHost";
-            this.ehEntityReferencesHost.Size = new System.Drawing.Size(358, 384);
+            this.ehEntityReferencesHost.Size = new System.Drawing.Size(582, 384);
             this.ehEntityReferencesHost.TabIndex = 0;
             this.ehEntityReferencesHost.Child = this.ucEntityReferences;
             // 
             // EntityReferenceWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.ClientSize = new System.Drawing.Size(358, 384);
+            this.ClientSize = new System.Drawing.Size(582, 384);
             this.Controls.Add(this.ehEntityReferencesHost);
             this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((((WeifenLuo.WinFormsUI.Docking.DockAreas.Float | WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft) 
             | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) 
             | WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) 
             | WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom)));
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HideOnClose = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;

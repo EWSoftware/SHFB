@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/02/2024
+// Updated : 02/23/2025
 // Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -1366,7 +1366,7 @@ namespace Sandcastle.PresentationStyles.VS2013
         //=====================================================================
 
         /// <summary>
-        /// This is used to render the preliminary and obsolete API notices
+        /// This is used to render the preliminary, obsolete, and experimental API notices
         /// </summary>
         /// <param name="transformation">The topic transformation to use</param>
         private static void RenderNotices(TopicTransformationCore transformation)
@@ -1377,6 +1377,13 @@ namespace Sandcastle.PresentationStyles.VS2013
             {
                 transformation.CurrentElement.Add(new XElement("p", new XElement("strong",
                     new XElement("include", new XAttribute("item", "boilerplate_obsoleteLong")))));
+            }
+
+            if(transformation.ReferenceNode.AttributeOfType(
+              "T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute") != null)
+            {
+                transformation.CurrentElement.Add(new XElement("p", new XElement("strong",
+                    new XElement("include", new XAttribute("item", "boilerplate_experimentalLong")))));
             }
         }
 
@@ -1828,6 +1835,13 @@ namespace Sandcastle.PresentationStyles.VS2013
                                 new XElement("br"));
                         }
 
+                        if(e.AttributeOfType("T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute") != null)
+                        {
+                            summaryCell.Add(new XElement("strong",
+                                new XElement("include", new XAttribute("item", "boilerplate_experimentalShort"))),
+                                new XElement("br"));
+                        }
+
                         table.Add(new XElement("tr",
                             new XElement("td",
                                 new XElement("img",
@@ -1995,6 +2009,13 @@ namespace Sandcastle.PresentationStyles.VS2013
                     {
                         summaryCell.Add(new XElement("strong",
                             new XElement("include", new XAttribute("item", "boilerplate_obsoleteShort"))),
+                            new XElement("br"));
+                    }
+
+                    if(e.AttributeOfType("T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute") != null)
+                    {
+                        summaryCell.Add(new XElement("strong",
+                            new XElement("include", new XAttribute("item", "boilerplate_experimentalShort"))),
                             new XElement("br"));
                     }
 
@@ -2268,6 +2289,13 @@ namespace Sandcastle.PresentationStyles.VS2013
                     {
                         summaryCell.Add(new XElement("strong",
                             new XElement("include", new XAttribute("item", "boilerplate_obsoleteShort"))),
+                            new XElement("br"));
+                    }
+
+                    if(e.AttributeOfType("T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute") != null)
+                    {
+                        summaryCell.Add(new XElement("strong",
+                            new XElement("include", new XAttribute("item", "boilerplate_experimentalShort"))),
                             new XElement("br"));
                     }
 

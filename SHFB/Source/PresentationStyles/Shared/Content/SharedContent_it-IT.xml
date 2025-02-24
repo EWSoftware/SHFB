@@ -249,6 +249,10 @@
   <item id="boilerplate_obsoleteShort">Obsoleto.</item>
   <item id="boilerplate_obsoleteLong">Nota: questa API è obsoleta.</item>
 	
+	<!-- Experimental API text -->
+  <item id="boilerplate_experimentalShort">Experimental.</item>
+  <item id="boilerplate_experimentalLong">Note: This API is for evaluation purposes only and is subject to change or removal in future updates.</item>
+
 	<!-- See Also section text-->
   <item id="boilerplate_seeAlsoNamespaceLink">Namespace {0}</item>
   <item id="boilerplate_seeAlsoOverloadLink">Overload di {0}</item>

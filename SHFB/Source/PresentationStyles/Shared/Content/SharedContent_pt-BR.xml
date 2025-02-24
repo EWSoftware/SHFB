@@ -250,6 +250,10 @@
   <item id="boilerplate_obsoleteShort">Obsoleto.</item>
   <item id="boilerplate_obsoleteLong">Nota: Esta API está obsoleta.</item>
 	
+	<!-- Experimental API text -->
+  <item id="boilerplate_experimentalShort">Experimental.</item>
+  <item id="boilerplate_experimentalLong">Note: This API is for evaluation purposes only and is subject to change or removal in future updates.</item>
+	
 	<!-- See Also section text-->
   <item id="boilerplate_seeAlsoNamespaceLink">{0} Namespace</item>
   <item id="boilerplate_seeAlsoOverloadLink">{0} Overload</item>

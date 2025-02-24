@@ -6,9 +6,15 @@
     public class TestClass
     {
         /// <summary>
+        /// Test C# required modifier rendering on a field
+        /// </summary>
+        public required string RequiredField;
+
+        /// <summary>
         /// X value
         /// </summary>
-        public int X { get; set; }
+        /// <remarks>Test C# required modifier rendering on a property</remarks>
+        public required int X { get; set; }
 
         /// <summary>
         /// Init only setter test

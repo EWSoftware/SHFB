@@ -16,7 +16,10 @@ namespace TestDoc
         /// <summary>Two</summary>
         Two,
         /// <summary>Three</summary>
-        Three
+        Three,
+        /// <summary>Test obsolete attribute</summary>
+        [Obsolete]
+        Obsolete
     }
 
     /// <summary>

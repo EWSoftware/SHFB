@@ -250,6 +250,10 @@
   <item id="boilerplate_obsoleteShort">廃止予定。</item>
   <item id="boilerplate_obsoleteLong">注意: このAPIは廃止予定です。</item>
 
+	<!-- Experimental API text -->
+  <item id="boilerplate_experimentalShort">Experimental.</item>
+  <item id="boilerplate_experimentalLong">Note: This API is for evaluation purposes only and is subject to change or removal in future updates.</item>
+	
 	<!-- See Also section text-->
   <item id="boilerplate_seeAlsoNamespaceLink">{0} 名前空間</item>
   <item id="boilerplate_seeAlsoOverloadLink">{0} オーバーロード</item>

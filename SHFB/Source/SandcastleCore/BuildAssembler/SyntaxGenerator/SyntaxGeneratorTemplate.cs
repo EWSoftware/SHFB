@@ -17,6 +17,7 @@
 // 03/14/2021 - EFW - Added support for nullable type syntax
 // 03/19/2021 - EFW - Added support for nullable reference types
 // 09/08/2022 - EFW - Added support for init only setters
+// 02/23/2025 - EFW - Added support for required modifier
 
 using System;
 using System.Globalization;
@@ -111,6 +112,9 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
             "'T:System.Runtime.CompilerServices.FixedBufferAttribute']");
         protected static readonly XPathExpression apiFixedBufferType = XPathExpression.Compile("argument[1]/typeValue/type");
         protected static readonly XPathExpression apiFixedBufferSize = XPathExpression.Compile("argument[2]/value");
+        // !EFW - Added support for required keyword
+        protected static readonly XPathExpression apiRequiredMemberAttribute = XPathExpression.Compile("attributes//attribute[type/@api=" +
+            "'T:System.Runtime.CompilerServices.RequiredMemberAttribute']");
 
         // procedure data
         protected static readonly XPathExpression apiIsAbstractProcedureExpression = XPathExpression.Compile("boolean(proceduredata[@abstract='true'])");

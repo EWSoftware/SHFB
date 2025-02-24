@@ -6,7 +6,7 @@
 	xmlns:shfbWPF="clr-namespace:SandcastleBuilder.WPF"
 	xmlns:shfbBehaviors="clr-namespace:SandcastleBuilder.WPF.Behaviors"
 	xmlns:shfbUserControls="clr-namespace:SandcastleBuilder.WPF.UserControls"
-	mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="300"
+	mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="500"
 	Background="{DynamicResource ToolWindowBackgroundBrushKey}" Name="ucEntityReferences"
 	IsVisibleChanged="ucEntityReferences_IsVisibleChanged">
   <UserControl.CommandBindings>
@@ -65,7 +65,12 @@
         <ComboBoxItem Content="Code Snippets" />
         <ComboBoxItem Content="Code Entities" />
       </ComboBox>
-      <Separator />
+			<Separator />
+			<Label Name="lblInsertAs" Content="_Insert As" VerticalAlignment="Center" Target="{Binding ElementName=cboInsertAs}"
+        ToolBar.OverflowMode="Never"/>
+			<ComboBox Name="cboInsertAs" MinWidth="110" ToolBar.OverflowMode="Never"
+				Style="{StaticResource {x:Type ComboBox}}" />
+			<Separator Name="sepInsertAs" />
       <Button Name="btnHelp" ToolTip="View help for this tool window (F1)" Command="ApplicationCommands.Help"
         CommandTarget="{Binding ElementName=tvEntities}">
         <Image Source="{StaticResource Help}" Style="{StaticResource toolbarImageStyle}" />
@@ -83,25 +88,9 @@
       <Button Grid.Column="2" Name="btnGo" Content="_Go" ToolTip="Find the next occurrence" Padding="3" Click="btnGo_Click" Margin="0,0,3,0" />
     </Grid>
     <StackPanel Grid.Row="2">
-      <StackPanel Name="spImageFormats" Margin="3">
-				<TextBlock Text="Insert as:" Margin="0,5" Style="{StaticResource PlainText}" />
-        <RadioButton Content="MAML media link" IsChecked="True" Margin="15, 0, 0, 0" Name="rbMediaLink" />
-        <RadioButton Content="MAML inline media link" Margin="15, 0, 0, 0" Name="rbMediaLinkInline" />
-        <RadioButton Content="MAML external link" Margin="15, 0, 0, 0" Name="rbExternalLink" />
-        <RadioButton Content="HTML image link" Margin="15, 0, 0, 0" Name="rbHtmlImageLink" />
-			</StackPanel>
-      <StackPanel Name="spTocFormats" Margin="3">
-				<TextBlock Text="Insert as:" Margin="0,5" Style="{StaticResource PlainText}" />
-        <RadioButton Content="MAML link" IsChecked="True" Margin="15, 0, 0, 0" Name="rbMamlLink" />
-        <RadioButton Content="XML comments conceptualLink" Margin="15, 0, 0, 0" Name="rbConceptualLink" />
-        <RadioButton Content="HTML anchor link" Margin="15, 0, 0, 0" Name="rbHtmlAnchor" />
-      </StackPanel>
       <StackPanel Name="spCodeEntityRefFormats" Margin="3">
         <TextBlock Text="Enter search text or a regular expression above to find matching code entities." TextWrapping="Wrap"
 					Style="{StaticResource PlainText}" />
-				<TextBlock Text="Insert as:" Margin="0,5" Style="{StaticResource PlainText}" />
-        <RadioButton Content="MAML code entity reference" IsChecked="True" Margin="15, 0, 0, 0" Name="rbCodeEntityRef" />
-        <RadioButton Content="XML comments see link"  Margin="15, 0, 0, 0" Name="rbXmlSeeLink" />
       </StackPanel>
       <StackPanel Orientation="Horizontal" Name="spIndexingPanel" Margin="3">
 				<shfbUserControls:SpinnerControl Margin="0,0,10,0"/>
@@ -122,7 +111,7 @@
       </TreeView.ItemContainerStyle>
       <TreeView.Resources>
         <HierarchicalDataTemplate ItemsSource="{Binding SubEntities}" DataType="{x:Type shfbWPF:EntityReference}">
-          <StackPanel Orientation="Horizontal">
+          <StackPanel Orientation="Horizontal" PreviewMouseLeftButtonDown="tvItem_PreviewMouseLeftButtonDown">
             <Image Name="imgEntity" Margin="0,0,3,0" Source="{StaticResource Entity}" />
 						<TextBlock Text="{Binding Label}" ToolTip="{Binding ToolTip}" />
           </StackPanel>

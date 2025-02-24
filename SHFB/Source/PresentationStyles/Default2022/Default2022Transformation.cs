@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/30/2024
-// Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
+// Updated : 02/23/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
 // Default 2022 presentation style.
@@ -1137,15 +1137,17 @@ $("".toggleSection"").keypress(function () {
         //=====================================================================
 
         /// <summary>
-        /// This is used to render the preliminary and obsolete API notices
+        /// This is used to render the preliminary, obsolete, and experimental API notices
         /// </summary>
         /// <param name="transformation">The topic transformation to use</param>
         private static void RenderNotices(TopicTransformationCore transformation)
         {
             var preliminary = transformation.CommentsNode.Element("preliminary");
             var obsolete = transformation.ReferenceNode.AttributeOfType("T:System.ObsoleteAttribute");
+            var experimental = transformation.ReferenceNode.AttributeOfType(
+                "T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute");
 
-            if(preliminary != null || obsolete != null)
+            if(preliminary != null || obsolete != null || experimental != null)
             {
                 var currentElement = transformation.CurrentElement;
                 var notes = new XElement("span", new XAttribute("class", "tags"));
@@ -1162,6 +1164,13 @@ $("".toggleSection"").keypress(function () {
                     notes.Add(new XElement("span",
                         new XAttribute("class", "tag is-danger is-medium"),
                         new XElement("include", new XAttribute("item", "boilerplate_obsoleteLong"))));
+                }
+
+                if(experimental != null)
+                {
+                    notes.Add(new XElement("span",
+                        new XAttribute("class", "tag is-warning is-medium"),
+                        new XElement("include", new XAttribute("item", "boilerplate_experimentalLong"))));
                 }
 
                 transformation.CurrentElement = currentElement;
@@ -1606,8 +1615,9 @@ $("".toggleSection"").keypress(function () {
 
                         var obsoleteAttr = e.AttributeOfType("T:System.ObsoleteAttribute");
                         var prelimComment = e.Element("preliminary");
+                        var experimentalAttr = e.AttributeOfType("T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute");
 
-                        if(obsoleteAttr != null || prelimComment != null)
+                        if(obsoleteAttr != null || prelimComment != null || experimentalAttr != null)
                         {
                             if(!summaryCell.IsEmpty)
                                 summaryCell.Add(new XElement("br"));
@@ -1618,6 +1628,14 @@ $("".toggleSection"").keypress(function () {
                                         new XAttribute("class", "tag is-danger"),
                                     new XElement("include",
                                         new XAttribute("item", "boilerplate_obsoleteShort"))));
+                            }
+
+                            if(experimentalAttr != null)
+                            {
+                                summaryCell.Add(new XElement("span",
+                                        new XAttribute("class", "tag is-warning"),
+                                    new XElement("include",
+                                        new XAttribute("item", "boilerplate_experimentalShort"))));
                             }
 
                             if(prelimComment != null)
@@ -1779,7 +1797,9 @@ $("".toggleSection"").keypress(function () {
                             thisTransform.RenderChildElements(summaryCell, remarks.Nodes());
                     }
 
-                    if(e.AttributeOfType("T:System.ObsoleteAttribute") != null)
+                    var obsoleteAttr = e.AttributeOfType("T:System.ObsoleteAttribute");
+
+                    if(obsoleteAttr != null)
                     {
                         if(!summaryCell.IsEmpty)
                             summaryCell.Add(new XElement("br"));
@@ -1788,6 +1808,17 @@ $("".toggleSection"").keypress(function () {
                                 new XAttribute("class", "tag is-danger"),
                             new XElement("include",
                                 new XAttribute("item", "boilerplate_obsoleteShort"))));
+                    }
+
+                    if(e.AttributeOfType("T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute") != null)
+                    {
+                        if(!summaryCell.IsEmpty && obsoleteAttr == null)
+                            summaryCell.Add(new XElement("br"));
+
+                        summaryCell.Add(new XElement("span",
+                                new XAttribute("class", "tag is-warning"),
+                            new XElement("include",
+                                new XAttribute("item", "boilerplate_experimentalShort"))));
                     }
 
                     if(summaryCell.IsEmpty)
@@ -2038,8 +2069,9 @@ $("".toggleSection"").keypress(function () {
 
                     var obsoleteAttr = e.AttributeOfType("T:System.ObsoleteAttribute");
                     var prelimComment = e.Element("preliminary");
+                    var experimentalAttr = e.AttributeOfType("T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute");
 
-                    if(obsoleteAttr != null || prelimComment != null)
+                    if(obsoleteAttr != null || prelimComment != null || experimentalAttr != null)
                     {
                         if(!summaryCell.IsEmpty)
                             summaryCell.Add(new XElement("br"));
@@ -2050,6 +2082,14 @@ $("".toggleSection"").keypress(function () {
                                     new XAttribute("class", "tag is-danger"),
                                 new XElement("include",
                                     new XAttribute("item", "boilerplate_obsoleteShort"))));
+                        }
+
+                        if(experimentalAttr != null)
+                        {
+                            summaryCell.Add(new XElement("span",
+                                    new XAttribute("class", "tag is-warning"),
+                                new XElement("include",
+                                    new XAttribute("item", "boilerplate_experimentalShort"))));
                         }
 
                         if(prelimComment != null)

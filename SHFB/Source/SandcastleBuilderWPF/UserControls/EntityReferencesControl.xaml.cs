@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/20/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 02/23/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to look up code entity references, code snippets, tokens, images,
 // and table of content entries and allows them to be dragged and dropped into a topic editor window.
@@ -86,8 +86,7 @@ namespace SandcastleBuilder.WPF.UserControls
                     txtFindName.IsReadOnly = true;
                     tvEntities.IsEnabled = btnGo.IsEnabled = false;
 
-                    if(indexTokenSource != null)
-                        indexTokenSource.Cancel();
+                    indexTokenSource?.Cancel();
 
                     this.cboEntityType_SelectionChanged(this, null);
                 }
@@ -105,8 +104,8 @@ namespace SandcastleBuilder.WPF.UserControls
         {
             InitializeComponent();
 
-            spImageFormats.Visibility = spTocFormats.Visibility = spCodeEntityRefFormats.Visibility =
-                spIndexingPanel.Visibility = Visibility.Collapsed;
+            lblInsertAs.Visibility = cboInsertAs.Visibility = sepInsertAs.Visibility =
+                spCodeEntityRefFormats.Visibility = spIndexingPanel.Visibility = Visibility.Collapsed;
             txtFindName.IsReadOnly = true;
             tvEntities.IsEnabled = btnGo.IsEnabled = false;
         }
@@ -128,8 +127,8 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         public event EventHandler<FileContentNeededEventArgs> FileContentNeeded
         {
-            add { AddHandler(FileContentNeededEvent, value); }
-            remove { RemoveHandler(FileContentNeededEvent, value); }
+            add => AddHandler(FileContentNeededEvent, value);
+            remove => RemoveHandler(FileContentNeededEvent, value);
         }
         #endregion
 
@@ -153,6 +152,7 @@ namespace SandcastleBuilder.WPF.UserControls
             this.RaiseEvent(args);
 
             foreach(var tokenFile in currentProject.ContentFiles(BuildAction.Tokens).OrderBy(f => f.LinkPath))
+            {
                 try
                 {
                     if(File.Exists(tokenFile.FullPath))
@@ -175,6 +175,7 @@ namespace SandcastleBuilder.WPF.UserControls
                         }
 
                         foreach(Token t in tokenColl)
+                        {
                             tokenFileEntity.SubEntities.Add(new EntityReference
                             {
                                 EntityType = EntityType.Token,
@@ -183,6 +184,7 @@ namespace SandcastleBuilder.WPF.UserControls
                                 ToolTip = t.TokenName,
                                 Tag = t
                             });
+                        }
                     }
 
                     tokenFileEntity = null;
@@ -190,6 +192,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 catch(Exception ex)
                 {
                     if(tokenFileEntity == null)
+                    {
                         tokens.Add(new EntityReference
                         {
                             EntityType = EntityType.File,
@@ -197,14 +200,18 @@ namespace SandcastleBuilder.WPF.UserControls
                                 "'.  Reason: " + ex.Message,
                             ToolTip = "Error"
                         });
+                    }
                     else
+                    {
                         tokens.Add(new EntityReference
                         {
                             EntityType = EntityType.File,
                             Label = "Unable to load file: " + ex.Message,
                             ToolTip = "Error"
                         });
+                    }
                 }
+            }
 
             if(tokens.Count != 0)
             {
@@ -232,6 +239,7 @@ namespace SandcastleBuilder.WPF.UserControls
             images = new List<EntityReference>();
 
             foreach(var ir in currentProject.ImagesReferences.OrderBy(i => i.DisplayTitle).ThenBy(i => i.Id))
+            {
                 images.Add(new EntityReference
                 {
                     EntityType = EntityType.Image,
@@ -240,6 +248,7 @@ namespace SandcastleBuilder.WPF.UserControls
                     ToolTip = String.Format(CultureInfo.CurrentCulture, "ID: {0}\nFile: {1}", ir.Id, ir.FullPath),
                     Tag = ir
                 });
+            }
 
             if(images.Count != 0)
                 images[0].IsSelected = true;
@@ -342,7 +351,7 @@ namespace SandcastleBuilder.WPF.UserControls
                     tableOfContents.Add(er);
 
                     if(t.Children.Count != 0)
-                        hasSelectedItem = this.AddChildTocEntries(t, er, hasSelectedItem);
+                        hasSelectedItem = AddChildTocEntries(t, er, hasSelectedItem);
                 }
             }
             catch(Exception ex)
@@ -368,7 +377,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="er">The parent entity reference</param>
         /// <param name="hasSelectedItem">The selected item state.  Only first selected item found is
         /// marked as the selected item.</param>
-        private bool AddChildTocEntries(TocEntry t, EntityReference er, bool hasSelectedItem)
+        private static bool AddChildTocEntries(TocEntry t, EntityReference er, bool hasSelectedItem)
         {
             EntityReference subEnt;
 
@@ -392,7 +401,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 er.SubEntities.Add(subEnt);
 
                 if(child.Children.Count != 0)
-                    hasSelectedItem = this.AddChildTocEntries(child, subEnt, hasSelectedItem);
+                    hasSelectedItem = AddChildTocEntries(child, subEnt, hasSelectedItem);
             }
 
             return hasSelectedItem;
@@ -415,6 +424,7 @@ namespace SandcastleBuilder.WPF.UserControls
             codeSnippets = new List<EntityReference>();
 
             foreach(var snippetFile in currentProject.ContentFiles(BuildAction.CodeSnippets).OrderBy(f => f.LinkPath))
+            {
                 try
                 {
                     if(File.Exists(snippetFile.FullPath))
@@ -474,6 +484,7 @@ namespace SandcastleBuilder.WPF.UserControls
                         });
                     }
                 }
+            }
 
             if(codeSnippets.Count != 0)
             {
@@ -523,8 +534,7 @@ namespace SandcastleBuilder.WPF.UserControls
                             else
                                 name = "G:" + ns.Name.Replace(" (Group)", String.Empty);
 
-                            if(!allEntities.Contains(name))
-                                allEntities.Add(name);
+                            allEntities.Add(name);
                         }
 
                         // Add an entry for the root namespace container
@@ -584,9 +594,7 @@ namespace SandcastleBuilder.WPF.UserControls
             // Index the framework comments based on the framework version in the project
             var reflectionDataDictionary = new ReflectionDataSetDictionary(currentProject.ComponentSearchPaths);
             var frameworkReflectionData = reflectionDataDictionary.CoreFrameworkByTitle(
-                currentProject.FrameworkVersion, true);
-
-            if(frameworkReflectionData == null)
+                currentProject.FrameworkVersion, true) ??
                 throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture,
                     "Unable to locate information for a framework version or its redirect: {0}",
                     currentProject.FrameworkVersion));
@@ -609,6 +617,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
             // Also, index the comments files in project documentation sources
             foreach(DocumentationSource ds in currentProject.DocumentationSources)
+            {
                 foreach(var sourceProject in ds.Projects(
                   !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : currentProject.Configuration,
                   !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : currentProject.Platform))
@@ -651,6 +660,7 @@ namespace SandcastleBuilder.WPF.UserControls
                         }
                     }
                 }
+            }
 
             return cache;
         }
@@ -669,9 +679,13 @@ namespace SandcastleBuilder.WPF.UserControls
             var entities = (List<EntityReference>)tvEntities.ItemsSource;
 
             if(entities != null)
+            {
                 foreach(var e in entities)
+                {
                     foreach(var match in e.Find(matchText))
                         yield return match;
+                }
+            }
         }
 
         /// <summary>
@@ -683,6 +697,7 @@ namespace SandcastleBuilder.WPF.UserControls
             string textToCopy = null;
 
             if(tvEntities.SelectedItem is EntityReference r)
+            {
                 switch(r.EntityType)
                 {
                     case EntityType.File:
@@ -697,16 +712,20 @@ namespace SandcastleBuilder.WPF.UserControls
                     case EntityType.Image:
                         ImageReference ir = (ImageReference)r.Tag;
 
-                        if(rbMediaLink.IsChecked.Value)
+                        if(cboInsertAs.SelectedIndex == 0)
                             textToCopy = ir.ToMediaLink();
                         else
-                            if(rbMediaLinkInline.IsChecked.Value)
+                        {
+                            if(cboInsertAs.SelectedIndex == 1)
                                 textToCopy = ir.ToMediaLinkInline();
                             else
-                                if(rbExternalLink.IsChecked.Value)
+                            {
+                                if(cboInsertAs.SelectedIndex == 2)
                                     textToCopy = ir.ToExternalLink();
                                 else
                                     textToCopy = ir.ToImageLink();
+                            }
+                        }
                         break;
 
                     case EntityType.CodeSnippet:
@@ -720,16 +739,24 @@ namespace SandcastleBuilder.WPF.UserControls
                         // MAML topic?
                         if(!String.IsNullOrEmpty(toc.Id))
                         {
-                            if(rbMamlLink.IsChecked.Value)
+                            if(cboInsertAs.SelectedIndex == 0)
+                            {
                                 textToCopy = String.Format(CultureInfo.InvariantCulture,
                                     "<link xlink:href=\"{0}\" />", toc.Id ?? "[Unknown ID]");
+                            }
                             else
-                                if(rbConceptualLink.IsChecked.Value)
+                            {
+                                if(cboInsertAs.SelectedIndex == 1)
+                                {
                                     textToCopy = String.Format(CultureInfo.InvariantCulture,
                                         "<conceptualLink target=\"{0}\" />", toc.Id ?? "[Unknown ID]");
+                                }
                                 else
+                                {
                                     textToCopy = String.Format(CultureInfo.InvariantCulture,
-                                    "<a href=\"html/{0}.htm\">{1}</a>", toc.Id, toc.Title);
+                                        "<a href=\"html/{0}.htm\">{1}</a>", toc.Id, toc.Title);
+                                }
+                            }
                         }
                         else
                             textToCopy = toc.ToAnchor(toc.Title);
@@ -738,12 +765,13 @@ namespace SandcastleBuilder.WPF.UserControls
                     default:    // Code entity reference
                         CodeEntityReference ce = (CodeEntityReference)r.Tag;
 
-                        if(rbCodeEntityRef.IsChecked.Value)
+                        if(cboInsertAs.SelectedIndex == 0)
                             textToCopy = ce.ToCodeEntityReference();
                         else
                             textToCopy = ce.ToSee();
                         break;
                 }
+            }
 
             return textToCopy;
         }
@@ -792,10 +820,7 @@ namespace SandcastleBuilder.WPF.UserControls
                         this.cboEntityType_SelectionChanged(sender, null);
                 }
                 else
-                {
-                    if(indexTokenSource != null)
-                        indexTokenSource.Cancel();
-                }
+                    indexTokenSource?.Cancel();
             }
         }
 
@@ -854,7 +879,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdCopy_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (tvEntities != null && tvEntities.SelectedItem != null);
+            e.CanExecute = tvEntities != null && tvEntities.SelectedItem != null;
         }
 
         /// <summary>
@@ -886,8 +911,9 @@ namespace SandcastleBuilder.WPF.UserControls
 
             if(this.IsLoaded)
             {
-                spImageFormats.Visibility = spTocFormats.Visibility = spCodeEntityRefFormats.Visibility =
-                    spIndexingPanel.Visibility = Visibility.Collapsed;
+                lblInsertAs.Visibility = cboInsertAs.Visibility = sepInsertAs.Visibility =
+                    spCodeEntityRefFormats.Visibility = spIndexingPanel.Visibility = Visibility.Collapsed;
+                cboInsertAs.Items.Clear();
 
                 txtFindName.IsReadOnly = true;
                 tvEntities.IsEnabled = btnGo.IsEnabled = false;
@@ -903,12 +929,23 @@ namespace SandcastleBuilder.WPF.UserControls
                         break;
 
                     case EntityType.Image:
-                        spImageFormats.Visibility = Visibility.Visible;
+                        cboInsertAs.Items.Add("MAML media link");
+                        cboInsertAs.Items.Add("MAML inline media link");
+                        cboInsertAs.Items.Add("MAML external link");
+                        cboInsertAs.Items.Add("HTML image link");
+                        cboInsertAs.SelectedIndex = 0;
+                        lblInsertAs.Visibility = cboInsertAs.Visibility = sepInsertAs.Visibility = Visibility.Visible;
+
                         entities = this.LoadImageInfo();
                         break;
 
                     case EntityType.TocEntry:
-                        spTocFormats.Visibility = Visibility.Visible;
+                        cboInsertAs.Items.Add("MAML link");
+                        cboInsertAs.Items.Add("XML comments conceptualLink");
+                        cboInsertAs.Items.Add("HTML anchor link");
+                        cboInsertAs.SelectedIndex = 0;
+                        lblInsertAs.Visibility = cboInsertAs.Visibility = sepInsertAs.Visibility = Visibility.Visible;
+
                         entities = this.LoadTableOfContentsInfo();
                         break;
 
@@ -917,7 +954,12 @@ namespace SandcastleBuilder.WPF.UserControls
                         break;
 
                     default:    // Code entities
-                        spCodeEntityRefFormats.Visibility = Visibility.Visible;
+                        cboInsertAs.Items.Add("MAML code entity reference");
+                        cboInsertAs.Items.Add("XML comments see link");
+                        cboInsertAs.SelectedIndex = 0;
+                        lblInsertAs.Visibility = cboInsertAs.Visibility = sepInsertAs.Visibility =
+                            spCodeEntityRefFormats.Visibility = Visibility.Visible;
+
                         this.LoadCodeEntities();
                         break;
                 }
@@ -992,6 +1034,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 Regex reSearch = new Regex(txtFindName.Text, RegexOptions.IgnoreCase);
 
                 foreach(string key in codeEntities)
+                {
                     if(reSearch.IsMatch(key))
                     {
                         matches.Add(key);
@@ -1000,15 +1043,14 @@ namespace SandcastleBuilder.WPF.UserControls
                         if(matches.Count == 1000)
                             break;
                     }
+                }
 
                 if(matches.Count != 0)
                 {
-                    matches.Sort((x, y) =>
-                    {
-                        return String.Compare(x, y, StringComparison.Ordinal);
-                    });
+                    matches.Sort((x, y) => String.Compare(x, y, StringComparison.Ordinal));
 
                     foreach(string member in matches)
+                    {
                         entities.Add(new EntityReference
                         {
                             Id = member,
@@ -1017,6 +1059,7 @@ namespace SandcastleBuilder.WPF.UserControls
                             ToolTip = member,
                             Tag = new CodeEntityReference(member)
                         });
+                    }
 
                     tvEntities.IsEnabled = true;
                 }
@@ -1043,13 +1086,18 @@ namespace SandcastleBuilder.WPF.UserControls
             finally
             {
                 if(entities.Count != 0)
+                {
                     entities[0].IsSelected = true;
+                    tvEntities.Focus();
+                }
 
                 Mouse.OverrideCursor = null;
 
                 if(entities.Count == 1000)
+                {
                     MessageBox.Show("Too many matches found.  Only the first 1000 are shown.",
                         Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
         }
 
@@ -1060,11 +1108,8 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void txtFindName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(matchEnumerator != null)
-            {
-                matchEnumerator.Dispose();
-                matchEnumerator = null;
-            }
+            matchEnumerator?.Dispose();
+            matchEnumerator = null;
         }
 
         /// <summary>
@@ -1079,6 +1124,17 @@ namespace SandcastleBuilder.WPF.UserControls
                 e.Handled = true;
                 btnGo_Click(sender, null);
             }
+        }
+
+        /// <summary>
+        /// Copy the selected item when the mouse is double clicked in a tree view item
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void tvItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if(e.ClickCount == 2)
+                this.cmdCopy_Executed(sender, null);
         }
 
         /// <summary>

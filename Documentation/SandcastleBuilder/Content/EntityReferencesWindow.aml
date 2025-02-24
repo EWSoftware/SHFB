@@ -4,7 +4,10 @@
     <introduction>
       <para>The <ui>Entity References</ui> window allows you to insert MAML elements into conceptual
 content topics that represent tokens, images, code entities (API members), code snippets, and links to
-other conceptual topics.</para>
+other conceptual topics.  To open it in the standalone GUI, select the <ui>Entity References</ui> option on the
+<ui>Window</ui> menu, click the related main toolbar button, or hit <ui>F3</ui>.  In the Visual Studio extension,
+it can be opened by selecting the <ui>Entity References Window</ui> option from the <ui>View</ui> | <ui>Other
+Windows</ui> menu or from the <ui>Other Windows</ui> toolbar button dropdown.</para>
     </introduction>
 
 <section>

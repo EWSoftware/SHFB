@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DotNetStandardTestCases
 {
     /// <summary>
     /// Docs go here.
     /// </summary>
-    //[Obsolete("This is obsolete")]
+    [Obsolete("This type is obsolete")]
     public ref struct TestRefStruct
     {
     }
@@ -13,7 +14,7 @@ namespace DotNetStandardTestCases
     /// <summary>
     /// Docs go here.
     /// </summary>
-    //[Obsolete("This is obsolete")]
+    [Obsolete("This type is obsolete")]
     public readonly ref struct TestReadOnlyRefStruct
     {
     }
@@ -21,6 +22,7 @@ namespace DotNetStandardTestCases
     /// <summary>
     /// Test structure for extension method tests
     /// </summary>
+    [Experimental("TEST0001")]
     public struct TestStruct
     {
         /// <summary>
@@ -39,6 +41,7 @@ namespace DotNetStandardTestCases
         /// </summary>
         /// <param name="x">X value</param>
         /// <param name="y">Y value</param>
+        [Experimental("TEST0002")]
         public TestStruct(int x, int y)
         {
             X = x;
@@ -48,6 +51,7 @@ namespace DotNetStandardTestCases
         /// <summary>
         /// Test method
         /// </summary>
+        [Obsolete("This method is obsolete")]
         public void TestMethod()
         {
             this.ExtendStruct();

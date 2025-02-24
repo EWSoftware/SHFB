@@ -14,6 +14,7 @@
 // 10/08/2015 - EFW - Added support for writing out the value of constant fields
 // 03/14/2021 - EFW - Added support for defaultValue element
 // 09/08/2022 - EFW - Added support for init only setters
+// 02/23/2025 - EFW - Added support for the required modifier
 
 using System;
 using System.Globalization;
@@ -671,6 +672,7 @@ namespace Sandcastle.Tools.SyntaxGenerators
             bool isAbstract = (bool)reflection.Evaluate(apiIsAbstractProcedureExpression);
             bool isFinal = (bool)reflection.Evaluate(apiIsFinalExpression);
             bool isOverride = (bool)reflection.Evaluate(apiIsOverrideExpression);
+            bool isRequired = reflection.SelectSingleNode(apiRequiredMemberAttribute) != null;
 
             WriteVisibility(reflection, writer);
             writer.WriteString(" ");
@@ -708,6 +710,12 @@ namespace Sandcastle.Tools.SyntaxGenerators
                         }
                     }
                 }
+
+                if(isRequired)
+                {
+                    writer.WriteKeyword("required");
+                    writer.WriteString(" ");
+                }
             }
         }
 
@@ -725,6 +733,7 @@ namespace Sandcastle.Tools.SyntaxGenerators
             bool isLiteral = (bool)reflection.Evaluate(apiIsLiteralFieldExpression);
             bool isInitOnly = (bool)reflection.Evaluate(apiIsInitOnlyFieldExpression);
             bool isSerialized = (bool)reflection.Evaluate(apiIsSerializedFieldExpression);
+            bool isRequired = reflection.SelectSingleNode(apiRequiredMemberAttribute) != null;
 
             // !EFW - Added support for fixed keyword
             XPathNavigator fixedAttribute = reflection.SelectSingleNode(apiFixedAttribute);
@@ -743,6 +752,12 @@ namespace Sandcastle.Tools.SyntaxGenerators
                 else
                     writer.WriteKeyword("static");
 
+                writer.WriteString(" ");
+            }
+
+            if(isRequired)
+            {
+                writer.WriteKeyword("required");
                 writer.WriteString(" ");
             }
 
@@ -851,12 +866,13 @@ namespace Sandcastle.Tools.SyntaxGenerators
             {
                 XPathNavigator type = attribute.SelectSingleNode(attributeTypeExpression);
 
-                // !EFW - Ignore ExtensionAttribute, FixedBufferAttribute, ParamArrayAttribute, IsByRefLikeAttribute, IsReadOnlyAttribute too
+                // !EFW - Ignore these as they are handled by other means
                 if(type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.ExtensionAttribute" ||
                    type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.FixedBufferAttribute" ||
                    type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.IsByRefLikeAttribute" ||
                    type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.IsReadOnlyAttribute" ||
-                   type.GetAttribute("api", String.Empty) == "T:System.ParamArrayAttribute")
+                   type.GetAttribute("api", String.Empty) == "T:System.ParamArrayAttribute" ||
+                   type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.RequiredMemberAttribute")
                 {
                     continue;
                 }

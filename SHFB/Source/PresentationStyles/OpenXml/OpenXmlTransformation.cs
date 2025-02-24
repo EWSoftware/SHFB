@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : OpenXmlTransformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/02/2024
-// Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
+// Updated : 02/23/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
 // Open XML presentation style.
@@ -661,15 +661,17 @@ namespace Sandcastle.PresentationStyles.OpenXml
         //=====================================================================
 
         /// <summary>
-        /// This is used to render the preliminary and obsolete API notices
+        /// This is used to render the preliminary, obsolete, and experimental API notices
         /// </summary>
         /// <param name="transformation">The topic transformation to use</param>
         private static void RenderNotices(TopicTransformationCore transformation)
         {
             var preliminary = transformation.CommentsNode.Element("preliminary");
             var obsolete = transformation.ReferenceNode.AttributeOfType("T:System.ObsoleteAttribute");
+            var experimental = transformation.ReferenceNode.AttributeOfType(
+                "T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute");
 
-            if(preliminary != null || obsolete != null)
+            if(preliminary != null || obsolete != null || experimental != null)
             {
                 if(preliminary != null)
                     transformation.RenderNode(preliminary);
@@ -682,6 +684,16 @@ namespace Sandcastle.PresentationStyles.OpenXml
                                 new XElement(OpenXmlElement.WordProcessingML + "b")),
                             new XElement(OpenXmlElement.WordProcessingML + "t",
                                 new XElement("include", new XAttribute("item", "boilerplate_obsoleteLong"))))));
+                }
+
+                if(experimental != null)
+                {
+                    transformation.CurrentElement.Add(new XElement(OpenXmlElement.WordProcessingML + "p",
+                        new XElement(OpenXmlElement.WordProcessingML + "r",
+                            new XElement(OpenXmlElement.WordProcessingML + "rPr",
+                                new XElement(OpenXmlElement.WordProcessingML + "b")),
+                            new XElement(OpenXmlElement.WordProcessingML + "t",
+                                new XElement("include", new XAttribute("item", "boilerplate_experimentalLong"))))));
                 }
             }
         }
@@ -1236,8 +1248,9 @@ namespace Sandcastle.PresentationStyles.OpenXml
 
                         var obsoleteAttr = e.AttributeOfType("T:System.ObsoleteAttribute");
                         var prelimComment = e.Element("preliminary");
+                        var experimentalAttr = e.AttributeOfType("T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute");
 
-                        if(obsoleteAttr != null || prelimComment != null)
+                        if(obsoleteAttr != null || prelimComment != null || experimentalAttr != null)
                         {
                             if(!summaryCell.IsEmpty)
                             {
@@ -1254,13 +1267,29 @@ namespace Sandcastle.PresentationStyles.OpenXml
                                         new XElement("include", new XAttribute("item", "boilerplate_obsoleteShort")))));
                             }
 
-                            if(prelimComment != null)
+                            if(experimentalAttr != null)
                             {
                                 if(obsoleteAttr != null)
                                 {
                                     summaryCell.Add(new XElement(OpenXmlElement.WordProcessingML + "r",
                                         new XElement(OpenXmlElement.WordProcessingML + "t",
-                                            new XAttribute(Element.XmlSpace, "preserve"), "    ")));
+                                            new XAttribute(Element.XmlSpace, "preserve"), "  ")));
+                                }
+
+                                summaryCell.Add(new XElement(OpenXmlElement.WordProcessingML + "r",
+                                    new XElement(OpenXmlElement.WordProcessingML + "rPr",
+                                        new XElement(OpenXmlElement.WordProcessingML + "b")),
+                                    new XElement(OpenXmlElement.WordProcessingML + "t",
+                                        new XElement("include", new XAttribute("item", "boilerplate_experimentalShort")))));
+                            }
+
+                            if(prelimComment != null)
+                            {
+                                if(obsoleteAttr != null || experimentalAttr != null)
+                                {
+                                    summaryCell.Add(new XElement(OpenXmlElement.WordProcessingML + "r",
+                                        new XElement(OpenXmlElement.WordProcessingML + "t",
+                                            new XAttribute(Element.XmlSpace, "preserve"), "  ")));
                                 }
 
                                 summaryCell.Add(new XElement(OpenXmlElement.WordProcessingML + "r",
@@ -1434,7 +1463,9 @@ namespace Sandcastle.PresentationStyles.OpenXml
                             thisTransform.RenderChildElements(summaryCell, remarks.Nodes());
                     }
 
-                    if(e.AttributeOfType("T:System.ObsoleteAttribute") != null)
+                    var obsoleteAttr = e.AttributeOfType("T:System.ObsoleteAttribute");
+
+                    if(obsoleteAttr != null)
                     {
                         if(!summaryCell.IsEmpty)
                         {
@@ -1443,8 +1474,34 @@ namespace Sandcastle.PresentationStyles.OpenXml
                         }
 
                         summaryCell.Add(new XElement(OpenXmlElement.WordProcessingML + "r",
+                            new XElement(OpenXmlElement.WordProcessingML + "rPr",
+                                new XElement(OpenXmlElement.WordProcessingML + "b")),
                             new XElement(OpenXmlElement.WordProcessingML + "t",
-                                new XAttribute(OpenXmlElement.XmlSpace, "preserve"), "    ")));
+                                new XElement("include", new XAttribute("item", "boilerplate_obsoleteShort")))));
+                    }
+
+                    if(e.AttributeOfType("T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute") != null)
+                    {
+                        if(!summaryCell.IsEmpty && obsoleteAttr == null)
+                        {
+                            summaryCell.Add(new XElement(OpenXmlElement.WordProcessingML + "r",
+                                new XElement(OpenXmlElement.WordProcessingML + "br")));
+                        }
+                        else
+                        {
+                            if(!summaryCell.IsEmpty)
+                            {
+                                summaryCell.Add(new XElement(OpenXmlElement.WordProcessingML + "r",
+                                    new XElement(OpenXmlElement.WordProcessingML + "t",
+                                        new XAttribute(OpenXmlElement.XmlSpace, "preserve"), "  ")));
+                            }
+                        }
+
+                        summaryCell.Add(new XElement(OpenXmlElement.WordProcessingML + "r",
+                            new XElement(OpenXmlElement.WordProcessingML + "rPr",
+                                new XElement(OpenXmlElement.WordProcessingML + "b")),
+                            new XElement(OpenXmlElement.WordProcessingML + "t",
+                                new XElement("include", new XAttribute("item", "boilerplate_experimentalShort")))));
                     }
                 }
             }
@@ -1715,8 +1772,9 @@ namespace Sandcastle.PresentationStyles.OpenXml
 
                     var obsoleteAttr = e.AttributeOfType("T:System.ObsoleteAttribute");
                     var prelimComment = e.Element("preliminary");
+                    var experimentalAttr = e.AttributeOfType("T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute");
 
-                    if(obsoleteAttr != null || prelimComment != null)
+                    if(obsoleteAttr != null || prelimComment != null || experimentalAttr != null)
                     {
                         if(!summaryCell.IsEmpty)
                         {
@@ -1733,13 +1791,29 @@ namespace Sandcastle.PresentationStyles.OpenXml
                                     new XElement("include", new XAttribute("item", "boilerplate_obsoleteShort")))));
                         }
 
-                        if(prelimComment != null)
+                        if(experimentalAttr != null)
                         {
                             if(obsoleteAttr != null)
                             {
                                 summaryCell.Add(new XElement(OpenXmlElement.WordProcessingML + "r",
                                     new XElement(OpenXmlElement.WordProcessingML + "t",
-                                        new XAttribute(Element.XmlSpace, "preserve"), "    ")));
+                                        new XAttribute(Element.XmlSpace, "preserve"), "  ")));
+                            }
+
+                            summaryCell.Add(new XElement(OpenXmlElement.WordProcessingML + "r",
+                                new XElement(OpenXmlElement.WordProcessingML + "rPr",
+                                    new XElement(OpenXmlElement.WordProcessingML + "b")),
+                                new XElement(OpenXmlElement.WordProcessingML + "t",
+                                    new XElement("include", new XAttribute("item", "boilerplate_experimentalShort")))));
+                        }
+
+                        if(prelimComment != null)
+                        {
+                            if(obsoleteAttr != null || experimentalAttr != null)
+                            {
+                                summaryCell.Add(new XElement(OpenXmlElement.WordProcessingML + "r",
+                                    new XElement(OpenXmlElement.WordProcessingML + "t",
+                                        new XAttribute(Element.XmlSpace, "preserve"), "  ")));
                             }
 
                             summaryCell.Add(new XElement(OpenXmlElement.WordProcessingML + "r",
