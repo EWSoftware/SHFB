@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/13/2024
-// Note    : Copyright 2015-2024, Eric Woodruff, All rights reserved
+// Updated : 02/26/2025
+// Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
 //
@@ -95,7 +95,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // names and are case-insensitive.  Substitution tag methods take no parameters and return a value
             // that is convertible to a string.
             methodCache = this.GetType().GetMethods(BindingFlags.Instance | BindingFlags.NonPublic).Where(
-                m => m.GetCustomAttribute(typeof(SubstitutionTagAttribute)) != null).ToDictionary(
+                m => m.GetCustomAttribute<SubstitutionTagAttribute>() != null).ToDictionary(
                 m => m.Name, m => m, StringComparer.OrdinalIgnoreCase);
         }
         #endregion
@@ -1246,14 +1246,18 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     currentBuild.WorkingFolder);
             }
 
-            // Add project resource item files last so that they override all other files
+            // Add project resource item files last so that they override all other files.  Only add files that
+            // are language neutral or match the project language.
             foreach(var file in sandcastleProject.ContentFiles(BuildAction.ResourceItems).OrderBy(f => f.LinkPath))
             {
-                replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<content file=\"{0}\" />\r\n",
-                    Path.GetFileName(file.FullPath));
+                if(file.Language == null || file.Language.Equals(sandcastleProject.Language))
+                {
+                    replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<content file=\"{0}\" />\r\n",
+                        Path.GetFileName(file.FullPath));
 
-                this.TransformTemplate(Path.GetFileName(file.FullPath),
-                    Path.GetDirectoryName(file.FullPath), currentBuild.WorkingFolder);
+                    this.TransformTemplate(Path.GetFileName(file.FullPath),
+                        Path.GetDirectoryName(file.FullPath), currentBuild.WorkingFolder);
+                }
             }
 
             return replacementValue.ToString();
@@ -1353,8 +1357,5 @@ namespace SandcastleBuilder.Utils.BuildEngine
             return (sandcastleProject.Filename + "_" + userName).GetHashCodeDeterministic().ToString("X", CultureInfo.InvariantCulture);
         }
         #endregion
-
-#pragma warning restore IDE0051
-#pragma warning restore CA1822
     }
 }

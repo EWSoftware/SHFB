@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve">
+	<item id="unsafeNoticeMessage">This API does some unsafe stuff</item>
+	<item id="unsafeTag">Unsafe</item>
+	<item id="topicNoticeMessage">This is a notice for a custom XML comments element</item>
+	<item id="topicNoticeTag">Notice</item>
+
+	<!-- If you want to override the preliminary, obsolete, or experimental notice text,
+		 you can add the following entries to your file with your own message and tag text.
+	<item id="boilerplate_obsoleteShort">Obsolete</item>
+	<item id="boilerplate_obsoleteLong">Note: This API is now obsolete.</item>
+	<item id="boilerplate_experimentalShort">Experimental</item>
+	<item id="boilerplate_experimentalLong">Note: This API is for evaluation purposes only and is subject to change or removal in future updates.</item>
+	<item id="preliminaryApi">This API is preliminary and subject to change.</item>
+	<item id="preliminaryShort">Preliminary</item>
+	-->
+</content>

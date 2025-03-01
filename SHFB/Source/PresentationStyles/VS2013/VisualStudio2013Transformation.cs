@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/23/2025
-// Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
+// Updated : 02/24/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
 // Visual Studio 2013 presentation style.
@@ -520,7 +520,8 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new ImplementsElement(),
                 new NoteElement("note"),
                 new ConvertibleElement("paramref", "name", "span", "parameter"),
-                new PreliminaryElement { PreliminaryContainerElement = "div", PreliminaryTextStyle = "preliminary" },
+                // This is handled as a notice
+                new IgnoredElement("preliminary"),
                 new NamedSectionElement("remarks"),
                 new ReturnsElement(),
                 new SeeElement(),
@@ -572,6 +573,20 @@ namespace Sandcastle.PresentationStyles.VS2013
                 new ApiTopicSectionHandler(ApiTopicSectionType.InheritanceHierarchyFull,
                     t => RenderApiInheritanceHierarchy(t, true))
             });
+        }
+
+        /// <inheritdoc />
+        protected override void CreateNoticeDefinitions()
+        {
+            Notice preliminary = Notice.PreliminaryNotice, obsolete = Notice.ObsoleteNotice,
+                experimental = Notice.ExperimentalNotice;
+
+            preliminary.NoticeStyleClasses = experimental.NoticeStyleClasses = "preliminary";
+            preliminary.TagStyleClasses = experimental.TagStyleClasses = "preliminary tag";
+            obsolete.NoticeStyleClasses = "obsolete";
+            obsolete.TagStyleClasses = "tag";
+                
+            this.AddNoticeDefinitions(new[] { preliminary, obsolete, experimental });
         }
 
         /// <inheritdoc />
@@ -1366,24 +1381,147 @@ namespace Sandcastle.PresentationStyles.VS2013
         //=====================================================================
 
         /// <summary>
-        /// This is used to render the preliminary, obsolete, and experimental API notices
+        /// This is used to render the notices at the top of each topic
         /// </summary>
         /// <param name="transformation">The topic transformation to use</param>
         private static void RenderNotices(TopicTransformationCore transformation)
         {
-            transformation.RenderNode(transformation.CommentsNode.Element("preliminary"));
+            var notices = new List<XElement>();
 
-            if(transformation.ReferenceNode.AttributeOfType("T:System.ObsoleteAttribute") != null)
+            foreach(var n in transformation.NoticeDefinitions)
             {
-                transformation.CurrentElement.Add(new XElement("p", new XElement("strong",
-                    new XElement("include", new XAttribute("item", "boilerplate_obsoleteLong")))));
+                string noticeText = null;
+
+                if(!String.IsNullOrWhiteSpace(n.ElementName))
+                {
+                    var element = transformation.CommentsNode.Element(n.ElementName);
+
+                    if(element != null)
+                    {
+                        if(n.UseValueForText)
+                            noticeText = element.Value?.NormalizeWhiteSpace();
+
+                        if(String.IsNullOrWhiteSpace(noticeText))
+                            noticeText = n.NoticeMessage;
+                    }
+                }
+
+                if(noticeText == null && !String.IsNullOrWhiteSpace(n.AttributeTypeName))
+                {
+                    string attrName = n.AttributeTypeName;
+
+                    // Add the "T:" prefix if not specified
+                    if(attrName.Length > 2 && attrName[1] != ':')
+                        attrName = "T:" + attrName;
+
+                    var attr = transformation.ReferenceNode.AttributeOfType(attrName);
+
+                    if(attr != null)
+                    {
+                        if(n.UseValueForText)
+                            noticeText = attr.Element("argument")?.Element("value")?.Value?.NormalizeWhiteSpace();
+
+                        if(String.IsNullOrWhiteSpace(noticeText))
+                            noticeText = n.NoticeMessage;
+                    }
+                }
+
+                if(!String.IsNullOrWhiteSpace(noticeText))
+                {
+                    string style = n.NoticeStyleClasses;
+
+                    if(String.IsNullOrWhiteSpace(style))
+                        style = "tag";
+
+                    var div = new XElement("div", new XAttribute("class", style));
+                    var para = new XElement("p");
+
+                    div.Add(para);
+
+                    // If the notice text starts with '@', it's a content item
+                    if(noticeText[0] == '@')
+                        para.Add(new XElement("include", new XAttribute("item", noticeText.Substring(1))));
+                    else
+                        para.Add(noticeText);
+
+                    notices.Add(div);
+                }
             }
 
-            if(transformation.ReferenceNode.AttributeOfType(
-              "T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute") != null)
+            if(notices.Count != 0)
             {
-                transformation.CurrentElement.Add(new XElement("p", new XElement("strong",
-                    new XElement("include", new XAttribute("item", "boilerplate_experimentalLong")))));
+                var notes = new XElement("div", new XAttribute("id", "TopicNotices"));
+
+                transformation.CurrentElement.Add(notes);
+
+                foreach(var n in notices)
+                    notes.Add(n);
+            }
+        }
+
+        /// <summary>
+        /// This is used to render the notice tags within a member list entry
+        /// </summary>
+        /// <param name="transformation">The topic transformation to use</param>
+        /// <param name="apiMember">The API member information element</param>
+        /// <param name="parent">The parent element that will contain the notice tags</param>
+        private static void RenderNoticeTags(TopicTransformationCore transformation, XElement apiMember,
+           XElement parent)
+        {
+            var notices = new List<XElement>();
+
+            foreach(var n in transformation.NoticeDefinitions)
+            {
+                string noticeText = null;
+
+                if(!String.IsNullOrWhiteSpace(n.ElementName))
+                {
+                    var element = apiMember.Element(n.ElementName);
+
+                    if(element != null)
+                        noticeText = n.TagText;
+                }
+
+                if(noticeText == null && !String.IsNullOrWhiteSpace(n.AttributeTypeName))
+                {
+                    string attrName = n.AttributeTypeName;
+
+                    // Add the "T:" prefix if not specified
+                    if(attrName.Length > 2 && attrName[1] != ':')
+                        attrName = "T:" + attrName;
+
+                    var attr = apiMember.AttributeOfType(attrName);
+
+                    if(attr != null)
+                        noticeText = n.TagText;
+                }
+
+                if(!String.IsNullOrWhiteSpace(noticeText))
+                {
+                    string style = n.TagStyleClasses;
+
+                    if(String.IsNullOrWhiteSpace(style))
+                        style = "tag";
+
+                    var tag = new XElement("strong", new XAttribute("class", style));
+
+                    // If the notice text starts with '@', it's a content item
+                    if(noticeText[0] == '@')
+                        tag.Add(new XElement("include", new XAttribute("item", noticeText.Substring(1))));
+                    else
+                        tag.Add(noticeText);
+
+                    notices.Add(tag);
+                }
+            }
+
+            if(notices.Count != 0)
+            {
+                if(!parent.IsEmpty)
+                    parent.Add(new XElement("br"));
+
+                foreach(var n in notices)
+                    parent.Add(n, " ");
             }
         }
 
@@ -1828,20 +1966,6 @@ namespace Sandcastle.PresentationStyles.VS2013
 
                         var summaryCell = new XElement("td");
 
-                        if(e.AttributeOfType("T:System.ObsoleteAttribute") != null)
-                        {
-                            summaryCell.Add(new XElement("strong",
-                                new XElement("include", new XAttribute("item", "boilerplate_obsoleteShort"))),
-                                new XElement("br"));
-                        }
-
-                        if(e.AttributeOfType("T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute") != null)
-                        {
-                            summaryCell.Add(new XElement("strong",
-                                new XElement("include", new XAttribute("item", "boilerplate_experimentalShort"))),
-                                new XElement("br"));
-                        }
-
                         table.Add(new XElement("tr",
                             new XElement("td",
                                 new XElement("img",
@@ -1864,11 +1988,11 @@ namespace Sandcastle.PresentationStyles.VS2013
 
                         if(summary != null)
                             transformation.RenderChildElements(summaryCell, summary.Nodes());
-                        else
-                        {
-                            if(summaryCell.IsEmpty)
-                                summaryCell.Add(Element.NonBreakingSpace);
-                        }
+
+                        RenderNoticeTags(transformation, e, summaryCell);
+                        
+                        if(summaryCell.IsEmpty)
+                            summaryCell.Add(Element.NonBreakingSpace);
                     }
                 }
             }
@@ -2004,21 +2128,6 @@ namespace Sandcastle.PresentationStyles.VS2013
                 foreach(var e in elements)
                 {
                     var summaryCell = new XElement("td");
-
-                    if(e.AttributeOfType("T:System.ObsoleteAttribute") != null)
-                    {
-                        summaryCell.Add(new XElement("strong",
-                            new XElement("include", new XAttribute("item", "boilerplate_obsoleteShort"))),
-                            new XElement("br"));
-                    }
-
-                    if(e.AttributeOfType("T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute") != null)
-                    {
-                        summaryCell.Add(new XElement("strong",
-                            new XElement("include", new XAttribute("item", "boilerplate_experimentalShort"))),
-                            new XElement("br"));
-                    }
-
                     XElement valueCell = null;
 
                     if(includeEnumValues)
@@ -2044,11 +2153,11 @@ namespace Sandcastle.PresentationStyles.VS2013
                         if(remarks != null)
                             thisTransform.RenderChildElements(summaryCell, remarks.Nodes());
                     }
-                    else
-                    {
-                        if(summaryCell.IsEmpty)
-                            summaryCell.Add(Element.NonBreakingSpace);
-                    }
+
+                    RenderNoticeTags(transformation, e, summaryCell);
+
+                    if(summaryCell.IsEmpty)
+                        summaryCell.Add(Element.NonBreakingSpace);
                 }
             }
 
@@ -2285,20 +2394,6 @@ namespace Sandcastle.PresentationStyles.VS2013
 
                     var summaryCell = new XElement("td");
 
-                    if(e.AttributeOfType("T:System.ObsoleteAttribute") != null)
-                    {
-                        summaryCell.Add(new XElement("strong",
-                            new XElement("include", new XAttribute("item", "boilerplate_obsoleteShort"))),
-                            new XElement("br"));
-                    }
-
-                    if(e.AttributeOfType("T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute") != null)
-                    {
-                        summaryCell.Add(new XElement("strong",
-                            new XElement("include", new XAttribute("item", "boilerplate_experimentalShort"))),
-                            new XElement("br"));
-                    }
-
                     if(!Enum.TryParse(e.Element("apidata")?.Attribute("subgroup")?.Value, true,
                       out ApiMemberGroup imageMemberType))
                     {
@@ -2421,6 +2516,8 @@ namespace Sandcastle.PresentationStyles.VS2013
                             }
                         }
                     }
+
+                    RenderNoticeTags(transformation, e, summaryCell);
 
                     if(summaryCell.IsEmpty)
                         summaryCell.Add(Element.NonBreakingSpace);

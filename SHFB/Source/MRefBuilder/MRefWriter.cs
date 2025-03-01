@@ -1649,23 +1649,23 @@ namespace Sandcastle.Tools
         {
             var exposed = this.GetExposedAttributes(attributes).ToList();
 
-            // Special case.  For ref structs, remove the obsolete attribute added by the compiler for versions
-            // that don't support them.  However, if the message doesn't match, assume it was added by the
-            // user and keep it.
-            if(exposed.Any(a => a.Type.FullName == "System.Runtime.CompilerServices.IsByRefLikeAttribute"))
+            // Special cases.  For ref structs and types with required fields or properties, remove the obsolete
+            // attribute added by the compiler for versions that don't support them.  However, if the message
+            // doesn't contain the "not supported" text, assume it was added by the user and keep it.
+            var obsoleteAttr = exposed.FirstOrDefault(a => a.Type.FullName == "System.ObsoleteAttribute");
+
+            if(obsoleteAttr != null && obsoleteAttr.Expressions.Count != 0)
             {
-                var obsoleteAttr = exposed.FirstOrDefault(a => a.Type.FullName == "System.ObsoleteAttribute");
+                var exp = obsoleteAttr.Expressions[0];
 
-                if(obsoleteAttr != null && obsoleteAttr.Expressions.Count != 0)
+                if(exp.NodeType == NodeType.Literal)
                 {
-                    var exp = obsoleteAttr.Expressions[0];
+                    var literal = (Literal)exp;
 
-                    if(exp.NodeType == NodeType.Literal)
+                    if(literal.Value?.ToString().IndexOf("are not supported in this version of your compiler",
+                      StringComparison.Ordinal) != -1)
                     {
-                        var literal = (Literal)exp;
-
-                        if(literal.Value?.ToString() == "Types with embedded references are not supported in this version of your compiler.")
-                            exposed.Remove(obsoleteAttr);
+                        exposed.Remove(obsoleteAttr);
                     }
                 }
             }

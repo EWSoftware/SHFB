@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ContentFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/14/2021
-// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
+// Updated : 02/24/2025
+// Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a content file such as a token file, code snippet file, image, etc.
 //
@@ -19,6 +19,7 @@
 
 using System;
 using System.IO;
+using System.Globalization;
 
 namespace SandcastleBuilder.Utils.ConceptualContent
 {
@@ -85,6 +86,14 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         public int SortOrder { get; set; }
 
         /// <summary>
+        /// This read-only property returns the language of the content file
+        /// </summary>
+        /// <value>The language is determined by looking at the suffix on the filename (Filename_LangSuffix.xxx)
+        /// or the filename itself without the extension.  If the suffix or filename is a valid language code,
+        /// this returns it.  If not valid, null is returned and the file is assumed to be language neutral.</value>
+        public CultureInfo Language { get; }
+
+        /// <summary>
         /// This is used to get or set a provider that can be used to obtain content files from a project or some
         /// other source.
         /// </summary>
@@ -105,6 +114,23 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 throw new ArgumentException("A full path to the content file is required", nameof(filePath));
 
             this.filePath = filePath;
+
+            // Set the language based on the filename suffix or the filename itself if possible
+            string name = Path.GetFileNameWithoutExtension(filePath);
+            int pos = name.LastIndexOf('_');
+
+            try
+            {
+                this.Language = new CultureInfo(name.Substring(pos + 1));
+
+                // If it's unknown, ignore it
+                if(this.Language.ThreeLetterWindowsLanguageName == "ZZZ")
+                    this.Language = null;
+            }
+            catch
+            {
+                // Ignore invalid values and assume it's language neutral.
+            }
         }
         #endregion
     }

@@ -248,11 +248,11 @@
 	<item id="copyright">{@HtmlEncCopyrightInfo}</item>
 	
 	<!-- Obsolete API text -->
-  <item id="boilerplate_obsoleteShort">Obsolète.</item>
+  <item id="boilerplate_obsoleteShort">Obsolète</item>
   <item id="boilerplate_obsoleteLong">Note: Cette API est maintenant obsolète.</item>
 
 	<!-- Experimental API text -->
-  <item id="boilerplate_experimentalShort">Experimental.</item>
+  <item id="boilerplate_experimentalShort">Experimental</item>
   <item id="boilerplate_experimentalLong">Note: This API is for evaluation purposes only and is subject to change or removal in future updates.</item>
 	
 	<!-- See Also section text-->

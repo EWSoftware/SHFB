@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/02/2024
-// Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
+// Updated : 02/24/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
 // specific presentation style topic transformation.
@@ -52,6 +52,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         private readonly List<ApiTopicSectionHandler> apiTopicSections;
         private readonly Dictionary<string, int> startupScript, startupScriptItemIds;
         private readonly Dictionary<string, string> codeSnippetLanguageConversions;
+        private readonly List<Notice> noticeDefinitions;
 
         private string bibliographyDataFile;
         private Dictionary<string, XElement> bibliographyData;
@@ -285,6 +286,11 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// code colorizer of choice to a language ID that it does recognize.  The keys are case-insensitive.</remarks>
         public IDictionary<string, string> CodeSnippetLanguageConversion => codeSnippetLanguageConversions;
 
+        /// <summary>
+        /// This read-only property returns an enumerable list of the notice definitions
+        /// </summary>
+        public IEnumerable<Notice> NoticeDefinitions => noticeDefinitions;
+
         #endregion
 
         #region Constructor
@@ -305,6 +311,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
             startupScript = new Dictionary<string, int>();
             startupScriptItemIds = new Dictionary<string, int>();
             codeSnippetLanguageConversions = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            noticeDefinitions = new List<Notice>();
 
             this.SupportedFormats = supportedFormats;
             this.ResolvePath = resolvePath;
@@ -351,6 +358,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
             this.CreateLanguageSpecificText();
             this.CreateElementHandlers();
             this.CreateApiTopicSectionHandlers();
+            this.CreateNoticeDefinitions();
         }
         #endregion
 
@@ -451,6 +459,13 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// <remarks>Unlike MAML topics, API topics are rendered in a fixed order defined by the presentation
         /// style that may vary based on the topic type (namespace, type, member, overloaded member, etc.).</remarks>
         protected abstract void CreateApiTopicSectionHandlers();
+
+        /// <summary>
+        /// This is called to create the API topic notice definitions that will be used by the transformation
+        /// </summary>
+        /// <remarks>By default, notice definitions are created for the <c>preliminary</c> XML comments element,
+        /// the <c>ObsoleteAttribute</c>, and <c>ExperimentalAttribute</c>.</remarks>
+        protected abstract void CreateNoticeDefinitions();
 
         /// <summary>
         /// Add an element that will be transformed when the topic is rendered
@@ -820,6 +835,50 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
 
             foreach(var a in arguments)
                 transformationArguments.Add(a.Key, a);
+        }
+
+        /// <summary>
+        /// Add a notice definitions
+        /// </summary>
+        /// <param name="notice">The notice to add.  If the notice matches an existing entry's element name
+        /// or attribute name, it will replace the existing entry.</param>
+        public void AddNoticeDefinition(Notice notice)
+        {
+            if(notice == null)
+                throw new ArgumentNullException(nameof(notice));
+
+            Notice replaceNotice = null;
+
+            foreach(Notice n in noticeDefinitions)
+            {
+                if((!String.IsNullOrWhiteSpace(n.ElementName) &&
+                  n.ElementName.Equals(notice.ElementName, StringComparison.Ordinal)) ||
+                  (!String.IsNullOrWhiteSpace(n.AttributeTypeName) &&
+                  n.AttributeTypeName.Equals(notice.AttributeTypeName, StringComparison.Ordinal)))
+                {
+                    replaceNotice = n;
+                    break;
+                }
+            }
+
+            if(replaceNotice != null)
+                noticeDefinitions[noticeDefinitions.IndexOf(replaceNotice)] = notice;
+            else
+                noticeDefinitions.Add(notice);
+        }
+
+        /// <summary>
+        /// Add one or more notice definitions
+        /// </summary>
+        /// <param name="notices">An enumerable list of notice definitions to add.  If a notice matches an
+        /// existing entry's element name or attribute name, it will replace the existing entry.</param>
+        public void AddNoticeDefinitions(IEnumerable<Notice> notices)
+        {
+            if(notices == null)
+                throw new ArgumentNullException(nameof(notices));
+
+            foreach(Notice n in notices)
+                this.AddNoticeDefinition(n);
         }
 
         /// <summary>

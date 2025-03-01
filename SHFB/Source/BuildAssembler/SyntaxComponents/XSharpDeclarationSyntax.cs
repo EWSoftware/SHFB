@@ -985,18 +985,24 @@ namespace Sandcastle.Tools.SyntaxGenerators
             {
                 XPathNavigator type = attribute.SelectSingleNode(attributeTypeExpression);
 
-                // !EFW - Ignore ExtensionAttribute, FixedBufferAttribute, ParamArrayAttribute, IsByRefLikeAttribute, IsReadOnlyAttribute too
+                // !EFW - Ignore these as they are handled by other means or not used
                 if(type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.ExtensionAttribute" ||
                    type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.FixedBufferAttribute" ||
                    type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.IsByRefLikeAttribute" ||
                    type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.IsReadOnlyAttribute" ||
-                   type.GetAttribute("api", String.Empty) == "T:System.ParamArrayAttribute")
+                   type.GetAttribute("api", String.Empty) == "T:System.ParamArrayAttribute" ||
+                   type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.RequiredMemberAttribute")
+                {
                     continue;
+                }
+
                 // RvdH do not output Clipper calling convention attribute
                 // we may want to remember this and base the parameters on this later
                 var att = type.GetAttribute("api", String.Empty);
+
                 if (att == "T:Vulcan.Internal.ClipperCallingConventionAttribute")
                     continue;
+
                 if (att == "T:XSharp.Internal.ClipperCallingConventionAttribute")
                     continue;
 

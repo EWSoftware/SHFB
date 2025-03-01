@@ -1,0 +1,114 @@
+﻿<Window x:Class="SandcastleBuilder.PlugIns.UI.AdditionalNoticesConfigDlg"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" Width="800" Height="600" MinWidth="500" MinHeight="450" ShowInTaskbar="False"
+	Title="Configure Additional Notices Plug-In" ResizeMode="CanResizeWithGrip"
+	WindowStartupLocation="CenterScreen" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+	FocusManager.FocusedElement="{Binding ElementName=lbNotices}">
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="2*"/>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<Label Grid.Row="0" Content="Notice _Definitions" Margin="3,0"
+			Target="{Binding ElementName=lbNotices}" />
+		<ListBox Grid.Row="1" Name="lbNotices" Margin="3" SelectionChanged="lbNotices_SelectionChanged">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
+						<TextBlock Grid.Row="0" Text="{Binding Path=NoticeDescription}" />
+						<TextBlock Grid.Row="1" Text="{Binding Path=ErrorMessage}"
+							Background="Firebrick" Foreground="White">
+							<TextBlock.Style>
+								<Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+									<Style.Triggers>
+										<Trigger Property="TextBlock.Text" Value="">
+											<Setter Property="Visibility" Value="Collapsed"/>
+										</Trigger>
+									</Style.Triggers>
+								</Style>
+							</TextBlock.Style>
+						</TextBlock>
+					</Grid>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+		<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+			<Button Name="btnAddNotice" Margin="3" Padding="3" MinWidth="80" Content="_Add"
+							Click="btnAddNotice_Click"  ToolTip="Add a new notice definition"/>
+			<Button Name="btnDeleteNotice" Margin="3" Padding="3" MinWidth="80" Content="_Delete"
+							Click="btnDeleteNotice_Click"  ToolTip="Delete the selected notice definition" />
+		</StackPanel>
+		<GroupBox Grid.Row="3" Name="grpNoticeProps" Header="Notice Definition Settings" Margin="3">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+				<Label Grid.Row="0" Grid.Column="0" Content="_Attribute Type Name" HorizontalAlignment="Right" Margin="3"
+					Target="{Binding ElementName=txtAttributeTypeName}" />
+				<TextBox Grid.Row="0" Grid.Column="1" Name="txtAttributeTypeName" Margin="3"
+					Text="{Binding ElementName=lbNotices, Path=SelectedItem.AttributeTypeName, Mode=TwoWay}" />
+				<Label Grid.Row="1" Grid.Column="0" Content="XML Comments _Element Name" HorizontalAlignment="Right" Margin="3"
+					Target="{Binding ElementName=txtElementName}" />
+				<TextBox Grid.Row="1" Grid.Column="1" Name="txtElementName" Margin="3"
+					Text="{Binding ElementName=lbNotices, Path=SelectedItem.ElementName, Mode=TwoWay}" />
+				<CheckBox Grid.Row="2" Grid.Column="1" Margin="3" Content="_Use attribute/element value for notice message text"
+					IsChecked="{Binding ElementName=lbNotices, Path=SelectedItem.UseValueForText}" />
+				<Label Grid.Row="3" Grid.Column="0" Content="_Notice Message" HorizontalAlignment="Right" Margin="3"
+					Target="{Binding ElementName=txtNoticeMessage}" />
+				<TextBox Grid.Row="3" Grid.Column="1" Name="txtNoticeMessage" Margin="3"
+					Text="{Binding ElementName=lbNotices, Path=SelectedItem.NoticeMessage, Mode=TwoWay}" />
+				<Label Grid.Row="4" Grid.Column="0" Content="Tag Text" HorizontalAlignment="Right" Margin="3"
+					Target="{Binding ElementName=txtTagText}" />
+				<TextBox Grid.Row="4" Grid.Column="1" Name="txtTagText" Margin="3"
+					Text="{Binding ElementName=lbNotices, Path=SelectedItem.TagText, Mode=TwoWay}" />
+				<Label Grid.Row="5" Grid.Column="0" Content="Notice _Styles Classes" HorizontalAlignment="Right" Margin="3"
+					Target="{Binding ElementName=txtNoticeStyleClasses}" />
+				<TextBox Grid.Row="5" Grid.Column="1" Name="txtNoticeStyleClasses" Margin="3"
+					Text="{Binding ElementName=lbNotices, Path=SelectedItem.NoticeStyleClasses, Mode=TwoWay}" />
+				<Label Grid.Row="6" Grid.Column="0" Content="Tag Sty_les Classes" HorizontalAlignment="Right" Margin="3"
+					Target="{Binding ElementName=txtTagStyleClasses}" />
+				<TextBox Grid.Row="6" Grid.Column="1" Name="txtTagStyleClasses" Margin="3"
+					Text="{Binding ElementName=lbNotices, Path=SelectedItem.TagStyleClasses, Mode=TwoWay}" />
+			</Grid>
+		</GroupBox>
+		<Grid Grid.Row="4" Margin="3,3,3,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Button Grid.Column="0" Name="btnOK" Margin="3" Padding="3" MinWidth="80" Content="OK" Click="btnOK_Click"
+				HorizontalAlignment="Left" ToolTip="Save settings"/>
+			<TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Hyperlink Name="lnkProjectSite" NavigateUri="https://GitHub.com/EWSoftware/SHFB"
+          RequestNavigate="lnkProjectSite_RequestNavigate"  ToolTip="https://GitHub.com/EWSoftware/SHFB">Sandcastle
+Help File Builder</Hyperlink>
+			</TextBlock>
+			<Button Grid.Column="2" Name="btnHelp" Margin="0,3,3,3" Padding="3" MinWidth="80" Content="Help"
+				Click="btnHelp_Click"  ToolTip="View help for this component" />
+			<Button Grid.Column="3" Name="btnCancel" Margin="3" Padding="3" MinWidth="80" Content="Cancel"
+        HorizontalAlignment="Right" IsCancel="True" ToolTip="Cancel without saving changes" />
+		</Grid>
+	</Grid>
+</Window>

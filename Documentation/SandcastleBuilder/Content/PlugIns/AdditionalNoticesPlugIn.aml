@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="f238b7a7-24eb-4163-8083-f35b6a60a3d1" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Notices appear at the top of topics and as tags in the member list pages to show additional important
+information about API members.  By default, notices are added for any type or member with a
+<codeInline>preliminary</codeInline> XML comments element and those decorated with the
+<codeInline>System.ObsoleteAttribute</codeInline> or
+<codeInline>System.Diagnostics.CodeAnalysis.ExperimentalAttribute</codeInline> attribute.  This plug-in is used
+to add additional notice definitions to the selected presentation style based on your own custom attributes or
+XML comments elements.</para>
+			
+			<autoOutline lead="none" excludeRelatedTopics="true" />
+		</introduction>
+
+		<section>
+			<title>Configuration Options</title>
+			<content>
+				<para>The configuration options consist of the following properties:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para><legacyBold>Attribute Type Name</legacyBold> - If the notice is related to an attribute on a
+type or member, specify the fully qualified name here including the "T:" prefix.  Example:
+<codeInline>T:System.ObsoleteAttribute</codeInline>.</para>
+					</listItem>
+
+					<listItem>
+						<para><legacyBold>XML Comments Element Name</legacyBold> - If the notice is related to an XML
+comments element on a type or member, specify the element name here.  Example: <codeInline>preliminary</codeInline>.</para>
+					</listItem>
+
+					<listItem>
+						<para><legacyBold>Use attribute/element value for notice message text</legacyBold> - If this option
+is checked, the inner text of the XML comments element or the attribute value will be used as the notice message.
+If not checked, the notice message from the definition will be used.  If the comments element is empty or the
+attribute has no value, the notice text in the definition is used automatically.</para>
+					</listItem>
+
+					<listItem>
+						<para><legacyBold>Notice Message</legacyBold> - This is the message to display at the top of the API
+member topics.  It can be literal text or a localized content item ID prefixed with '@'.  For example,
+<codeInline>@boilerplate_obsoleteLong</codeInline> is used for the obsolete notice message.  If a notice message
+is not specified, a notice message will not appear for the notice in member topics.</para>
+					</listItem>
+
+					<listItem>
+						<para><legacyBold>Tag Text</legacyBold> - This is the tag text to display below the member
+descriptions on member list pages.  It can be literal text or a localized content item ID prefixed with '@'.  For
+example, <codeInline>@boilerplate_obsoleteShort</codeInline> is used for the obsolete notice tag.  Tags are
+typically one or two words.  Reserve the longer description for the notice message shown at the top of the topic.
+If tag text is not specified, a tag will not appear for the notice.</para>
+					</listItem>
+
+					<listItem>
+						<para><legacyBold>Notice Style Classes</legacyBold> - For HTML presentation styles, this allows you
+to set the CSS classes that will be applied to the notice message.  If not specified, default styles will be
+applied.  For example, in the Default 2022 presentation style the default styles are <codeInline>tag is-info
+is-medium</codeInline>.  You can use various combinations of styles on the notice message and tag.  Some examples
+are shown below:</para>
+
+						<para>
+							<markup>
+								<div class="tags">
+									<span class="tag is-black">tag is-black</span>
+									<span class="tag is-dark">tag is-dark</span>
+									<span class="tag is-light">tag is-light</span>
+									<span class="tag is-white">tag is-white</span>
+								</div>
+								<div class="tags">
+									<span class="tag is-primary">tag is-primary</span>
+									<span class="tag is-link">tag is-link</span>
+									<span class="tag is-info">tag is-info</span>
+									<span class="tag is-success">tag is-success</span>
+									<span class="tag is-warning">tag is-warning</span>
+									<span class="tag is-danger">tag is-danger</span>
+								</div>
+								<div class="tags">
+									<span class="tag is-primary is-light">tag is-primary is-light</span>
+									<span class="tag is-link is-light">tag is-link is-light</span>
+									<span class="tag is-info is-light">tag is-info is-light</span>
+									<span class="tag is-success is-light">tag is-success is-light</span>
+									<span class="tag is-warning is-light">tag is-warning is-light</span>
+									<span class="tag is-danger is-light">tag is-danger is-light</span>
+								</div>
+								<div class="tags">
+									<span class="tag is-link is-normal">tag is-link is-normal</span>
+									<span class="tag is-primary is-medium">tag is-primary is-medium</span>
+									<span class="tag is-info is-large">tag is-info is-large</span>
+									<span class="tag is-success is-normal is-rounded">tag is-success is-normal is-rounded</span>
+								</div>
+							</markup>
+						</para>
+					</listItem>
+
+					<listItem>
+						<para><legacyBold>Tag Style Classes</legacyBold> - For HTML presentation styles, this allows you to
+set the CSS classes that will be applied to the tags on member list pages.  If not specified, default styles will
+be applied.  For example, in the Default 2022 presentation style the default styles are <codeInline>tag is-info
+is-rounded</codeInline>.  See above for some example styles.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section>
+			<title>Localizing Notice Message and Tag Text</title>
+			<content>
+				<para>As noted above, if the notice message or tag text specify a content item ID prefix with '@', the
+related text for the item in the resource item file will be used.  You can specify localized text for your own
+notice definitions by adding one or more resource items files to the project.  The filenames must have a suffix
+identifying the language of the items they contain prefixed with an underscore and have a <localUri>.items</localUri>
+filename extension.  Examples: <localUri>ProjectNotices_en-US.items</localUri>, <localUri>ProjectNotices_fr-Fr.items</localUri>.
+The file's <codeInline>Build Action</codeInline> should be set to <codeInline>ResourceItems</codeInline>.</para>
+
+				<para>The content of the notice content items file will look like the following example:</para>
+			
+				<code language="xml" title=" ">
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;content xml:space="preserve"&gt;
+	&lt;item id="unsafeNoticeMessage"&gt;This API does some unsafe stuff&lt;/item&gt;
+	&lt;item id="unsafeTag"&gt;Unsafe&lt;/item&gt;
+	&lt;item id="topicNoticeMessage"&gt;This is a notice for a custom XML comments element&lt;/item&gt;
+	&lt;item id="topicNoticeTag"&gt;Notice&lt;/item&gt;
+
+	&lt;!-- If you want to override the preliminary, obsolete, or experimental notice text,
+		 you can add the following entries to your file with your own message and tag text.
+	&lt;item id="boilerplate_obsoleteShort"&gt;Obsolete&lt;/item&gt;
+	&lt;item id="boilerplate_obsoleteLong"&gt;Note: This API is now obsolete.&lt;/item&gt;
+	&lt;item id="boilerplate_experimentalShort"&gt;Experimental&lt;/item&gt;
+	&lt;item id="boilerplate_experimentalLong"&gt;Note: This API is for evaluation purposes only and is subject to change or removal in future updates.&lt;/item&gt;
+	&lt;item id="preliminaryApi"&gt;This API is preliminary and subject to change.&lt;/item&gt;
+	&lt;item id="preliminaryShort"&gt;Preliminary&lt;/item&gt;
+	--&gt;
+&lt;/content&gt;
+				</code>
+				
+				<alert class="note">
+					<para>Resource item files have a custom editor and are usually used to override default help file
+builder content items.  To add the initial message items for your notices, open the file with a text editor.
+Once the items have been added, you can open it with the custom editor to make changes to the new items if
+wanted.</para>
+				</alert>
+			</content>
+		</section>
+
+		<section>
+			<title>Overriding the Preliminary, Obsolete, and Experimental Notices</title>
+			<content>
+				<para>As noted, the <codeInline>preliminary</codeInline> XML comments element and the obsolete and
+experimental attributes are added by default.  If you want to override the messages or styles used, you can
+add matching notice entries to the plug-in configuration for the element or attribute name.  If you just want
+to change the notice message or tag text, you can also do so through the resource items file as shown in the
+example above without using the plug-in.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

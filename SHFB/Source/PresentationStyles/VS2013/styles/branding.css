@@ -665,3 +665,10 @@ sup.citation a:link a:visited a:active {
 /* Placeholder for the Help 1 user data style class */
 .userDataStyle {
 }
+
+.obsolete {
+    font-weight: bold;
+}
+
+.tag {
+}

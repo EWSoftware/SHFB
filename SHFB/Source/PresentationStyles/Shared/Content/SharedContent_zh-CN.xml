@@ -247,11 +247,11 @@
 	<item id="copyright">{@HtmlEncCopyrightInfo}</item>
 
     <!-- Obsolete API text -->
-    <item id="boilerplate_obsoleteShort">已过时。</item>
+    <item id="boilerplate_obsoleteShort">已过时</item>
     <item id="boilerplate_obsoleteLong">注意：此 API 现在已过时。</item>
 	
 	<!-- Experimental API text -->
-  <item id="boilerplate_experimentalShort">Experimental.</item>
+  <item id="boilerplate_experimentalShort">Experimental</item>
   <item id="boilerplate_experimentalLong">Note: This API is for evaluation purposes only and is subject to change or removal in future updates.</item>
 	
 		<!-- See Also section text-->

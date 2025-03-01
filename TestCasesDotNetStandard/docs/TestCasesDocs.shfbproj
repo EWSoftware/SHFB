@@ -19,7 +19,7 @@
     <FrameworkVersion>.NET Core/.NET Standard/.NET 5.0+</FrameworkVersion>
     <OutputPath>Help\</OutputPath>
     <HtmlHelpName>Documentation</HtmlHelpName>
-    <Language>en-US</Language>
+    <Language>fr-FR</Language>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\DotNetStandardTestCases.csproj" />
     </DocumentationSources>
@@ -53,12 +53,31 @@
       <Argument Key="baseSourceCodeUrl" Value="https://github.com/YourUserID/YourProject/blob/BranchNameOrCommitHash/BaseSourcePath/" xmlns="" />
       <Argument Key="requestExampleUrl" Value="" xmlns="" />
     </TransformComponentArguments>
-    <VisibleItems>ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected, NonBrowsable</VisibleItems>
+    <VisibleItems>Attributes, ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected, NonBrowsable</VisibleItems>
     <HtmlSdkLinkType>Msdn</HtmlSdkLinkType>
     <BinaryTOC>True</BinaryTOC>
     <IncludeFavorites>False</IncludeFavorites>
     <WebsiteSdkLinkType>Msdn</WebsiteSdkLinkType>
     <AppendMarkdownFileExtensionsToUrls>True</AppendMarkdownFileExtensionsToUrls>
+    <PlugInConfigurations>
+      <PlugInConfig id="Additional Notices" enabled="True">
+        <configuration>
+  <Notices>
+    <Notice AttributeTypeName="T:DotNetStandardTestCases.UnsafeAttribute" NoticeMessage="@unsafeNoticeMessage" TagText="@unsafeTag" UseValueForText="true" />
+    <Notice ElementName="topicNotice" NoticeMessage="@topicNoticeMessage" TagText="@topicNoticeTag" NoticeStyleClasses="tag is-success is-medium" TagStyleClasses="tag is-success is-rounded" UseValueForText="true" />
+  </Notices>
+</configuration>
+      </PlugInConfig>
+    </PlugInConfigurations>
+    <HelpTitle>A Sandcastle Documented Class Library</HelpTitle>
+    <HelpFileVersion>1.0.0.0</HelpFileVersion>
+    <NamingMethod>Guid</NamingMethod>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <NamespaceGrouping>False</NamespaceGrouping>
+    <MaximumGroupParts>2</MaximumGroupParts>
+    <Preliminary>False</Preliminary>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->
@@ -98,4 +117,8 @@
     </PostBuildEvent>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+    <ResourceItems Include="ProjectNotices_fr-Fr.items" />
+    <ResourceItems Include="ProjectNotices_en-US.items" />
+  </ItemGroup>
 </Project>

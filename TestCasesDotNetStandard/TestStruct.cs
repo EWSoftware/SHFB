@@ -28,6 +28,7 @@ namespace DotNetStandardTestCases
         /// <summary>
         /// X value
         /// </summary>
+        /// <preliminary/>
         public int X { get; set; }
 
         /// <summary>

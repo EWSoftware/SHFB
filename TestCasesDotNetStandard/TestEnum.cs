@@ -26,7 +26,18 @@ namespace DotNetStandardTestCases
         Experimental,
         /// <summary>Test obsolete and experimental attribute</summary>
         [Obsolete("This experimental enum member is obsolete"), Experimental("TEST0003")]
-        ExperimentalObsolete
+        ExperimentalObsolete,
+        /// <summary>Test preliminary</summary>
+        /// <preliminary>Preliminary enum element</preliminary>
+        Preliminary,
+        /// <summary>Test preliminary and obsolete</summary>
+        /// <preliminary />
+        [Obsolete("Test preliminary with obsolete")]
+        PreliminaryObsolete,
+        /// <summary>Test preliminary, obsolete, and experimental</summary>
+        /// <preliminary />
+        [Obsolete("Test preliminary with obsolete"), Experimental("TEST0006")]
+        PreliminaryObsoleteExperimental
     }
 
     /// <summary>

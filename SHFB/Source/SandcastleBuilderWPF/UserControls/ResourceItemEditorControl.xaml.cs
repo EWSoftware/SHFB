@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ResourceItemEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/24/2022
-// Note    : Copyright 2011-2022, Eric Woodruff, All rights reserved
+// Updated : 02/24/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to edit resource item files
 //
@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -71,8 +72,8 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         public event RoutedEventHandler ContentModified
         {
-            add { AddHandler(ContentModifiedEvent, value); }
-            remove { RemoveHandler(ContentModifiedEvent, value); }
+            add => AddHandler(ContentModifiedEvent, value);
+            remove => RemoveHandler(ContentModifiedEvent, value);
         }
         #endregion
 
@@ -116,15 +117,31 @@ namespace SandcastleBuilder.WPF.UserControls
 
                 resourceItemFilename = resourceItemsFile;
 
+                // Set the language based on the filename suffix or the filename itself if possible
+                string name = Path.GetFileNameWithoutExtension(resourceItemFilename);
+                int pos = name.LastIndexOf('_');
+                CultureInfo language = project.Language;
+
+                try
+                {
+                    language = new CultureInfo(name.Substring(pos + 1));
+
+                    // If it's unknown, ignore it
+                    if(language.ThreeLetterWindowsLanguageName == "ZZZ")
+                        language = project.Language;
+                }
+                catch
+                {
+                    // Ignore invalid values and assume it's language neutral.
+                }
+
                 using(var container = ComponentUtilities.CreateComponentContainer(project.ComponentSearchPaths,
                   null, CancellationToken.None))
                 {
                     var presentationStyles = container.GetExports<PresentationStyleSettings, IPresentationStyleMetadata>();
                     var style = presentationStyles.FirstOrDefault(s => s.Metadata.Id.Equals(
-                        project.PresentationStyle, StringComparison.OrdinalIgnoreCase));
-
-                    if(style == null)
-                        style = presentationStyles.FirstOrDefault(s => s.Metadata.Id.Equals(
+                        project.PresentationStyle, StringComparison.OrdinalIgnoreCase)) ??
+                        presentationStyles.FirstOrDefault(s => s.Metadata.Id.Equals(
                             Constants.DefaultPresentationStyle, StringComparison.OrdinalIgnoreCase));
 
                     if(style != null)
@@ -136,13 +153,13 @@ namespace SandcastleBuilder.WPF.UserControls
                         return;
                     }
 
-                    syntaxGeneratorFiles.AddRange(ComponentUtilities.SyntaxGeneratorResourceItemFiles(container, null));
+                    syntaxGeneratorFiles.AddRange(ComponentUtilities.SyntaxGeneratorResourceItemFiles(container, language));
                 }
 
                 // Load the presentation style content files first followed by the syntax generator files, the
                 // help file builder content items, and then the user's resource item file.  Use the
                 // language-specific files if they are present.
-                foreach(string file in pss.ResourceItemFiles(project.Language.Name))
+                foreach(string file in pss.ResourceItemFiles(language.Name))
                     this.LoadItemFile(file, false);
 
                 foreach(string file in syntaxGeneratorFiles)

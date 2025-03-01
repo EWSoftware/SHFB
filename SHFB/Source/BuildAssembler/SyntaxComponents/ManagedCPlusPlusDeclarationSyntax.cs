@@ -1377,12 +1377,15 @@ namespace Sandcastle.Tools.SyntaxGenerators
             {
                 XPathNavigator type = attribute.SelectSingleNode(typeExpression);
 
-                // !EFW - Ignore FixedBufferAttribute, ParamArrayAttribute, IsByRefLikeAttribute, IsReadOnlyAttribute too
+                // !EFW - Ignore these as they are handled by other means or not used
                 if(type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.FixedBufferAttribute" ||
                    type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.IsByRefLikeAttribute" ||
                    type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.IsReadOnlyAttribute" ||
-                   type.GetAttribute("api", String.Empty) == "T:System.ParamArrayAttribute")
+                   type.GetAttribute("api", String.Empty) == "T:System.ParamArrayAttribute" ||
+                   type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.RequiredMemberAttribute")
+                {
                     continue;
+                }
 
                 writer.WriteString("[");
                 WriteTypeReference(type, false, writer);

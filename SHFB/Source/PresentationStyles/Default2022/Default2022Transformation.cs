@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/23/2025
+// Updated : 02/24/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -583,7 +583,8 @@ namespace Sandcastle.PresentationStyles.Default2022
                 new ImplementsElement(),
                 new NoteElement("note"),
                 new ConvertibleElement("paramref", "name", "span", "parameter"),
-                new PreliminaryElement(),
+                // This is handled as a notice
+                new IgnoredElement("preliminary"),
                 new NamedSectionElement("remarks"),
                 new ReturnsElement(),
                 new SeeElement(),
@@ -632,6 +633,22 @@ namespace Sandcastle.PresentationStyles.Default2022
                     t => RenderApiBibliographySection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.SeeAlso, t => RenderApiSeeAlsoSection(t))
             });
+        }
+
+        /// <inheritdoc />
+        protected override void CreateNoticeDefinitions()
+        {
+            Notice preliminary = Notice.PreliminaryNotice, obsolete = Notice.ObsoleteNotice,
+                experimental = Notice.ExperimentalNotice;
+
+            preliminary.NoticeStyleClasses = "tag is-warning is-medium";
+            preliminary.TagStyleClasses = "tag is-warning is-rounded";
+            obsolete.NoticeStyleClasses = "tag is-danger is-medium";
+            obsolete.TagStyleClasses = "tag is-danger is-rounded";
+            experimental.NoticeStyleClasses = "tag is-warning is-medium";
+            experimental.TagStyleClasses = "tag is-warning is-rounded";
+
+            this.AddNoticeDefinitions(new[] { preliminary, obsolete, experimental });
         }
 
         /// <inheritdoc />
@@ -1137,43 +1154,148 @@ $("".toggleSection"").keypress(function () {
         //=====================================================================
 
         /// <summary>
-        /// This is used to render the preliminary, obsolete, and experimental API notices
+        /// This is used to render the notices at the top of each topic
         /// </summary>
         /// <param name="transformation">The topic transformation to use</param>
         private static void RenderNotices(TopicTransformationCore transformation)
         {
-            var preliminary = transformation.CommentsNode.Element("preliminary");
-            var obsolete = transformation.ReferenceNode.AttributeOfType("T:System.ObsoleteAttribute");
-            var experimental = transformation.ReferenceNode.AttributeOfType(
-                "T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute");
+            var notices = new List<XElement>();
 
-            if(preliminary != null || obsolete != null || experimental != null)
+            foreach(var n in transformation.NoticeDefinitions)
             {
-                var currentElement = transformation.CurrentElement;
+                string noticeText = null;
+
+                if(!String.IsNullOrWhiteSpace(n.ElementName))
+                {
+                    var element = transformation.CommentsNode.Element(n.ElementName);
+
+                    if(element != null)
+                    {
+                        if(n.UseValueForText)
+                            noticeText = element.Value?.NormalizeWhiteSpace();
+
+                        if(String.IsNullOrWhiteSpace(noticeText))
+                            noticeText = n.NoticeMessage;
+                    }
+                }
+
+                if(noticeText == null && !String.IsNullOrWhiteSpace(n.AttributeTypeName))
+                {
+                    string attrName = n.AttributeTypeName;
+
+                    // Add the "T:" prefix if not specified
+                    if(attrName.Length > 2 && attrName[1] != ':')
+                        attrName = "T:" + attrName;
+
+                    var attr = transformation.ReferenceNode.AttributeOfType(attrName);
+
+                    if(attr != null)
+                    {
+                        if(n.UseValueForText)
+                            noticeText = attr.Element("argument")?.Element("value")?.Value?.NormalizeWhiteSpace();
+
+                        if(String.IsNullOrWhiteSpace(noticeText))
+                            noticeText = n.NoticeMessage;
+                    }
+                }
+
+                if(!String.IsNullOrWhiteSpace(noticeText))
+                {
+                    string style = n.NoticeStyleClasses;
+
+                    if(String.IsNullOrWhiteSpace(style))
+                        style = "tag is-info is-medium";
+
+                    var message = new XElement("span", new XAttribute("class", style));
+
+                    // If the notice text starts with '@', it's a content item
+                    if(noticeText[0] == '@')
+                        message.Add(new XElement("include", new XAttribute("item", noticeText.Substring(1))));
+                    else
+                        message.Add(noticeText);
+
+                    notices.Add(message);
+                }
+            }
+
+            if(notices.Count != 0)
+            {
                 var notes = new XElement("span", new XAttribute("class", "tags"));
 
-                currentElement.Add(new XElement("div", new XAttribute("id", "TopicNotices"), notes));
+                transformation.CurrentElement.Add(new XElement("div", new XAttribute("id", "TopicNotices"), notes));
 
-                transformation.CurrentElement = notes;
+                foreach(var n in notices)
+                    notes.Add(n);
+            }
+        }
 
-                if(preliminary != null)
-                    transformation.RenderNode(preliminary);
+        /// <summary>
+        /// This is used to render the notice tags within a member list entry
+        /// </summary>
+        /// <param name="transformation">The topic transformation to use</param>
+        /// <param name="apiMember">The API member information element</param>
+        /// <param name="parent">The parent element that will contain the notice tags</param>
+        private static void RenderNoticeTags(TopicTransformationCore transformation, XElement apiMember,
+           XElement parent)
+        {
+            var notices = new List<XElement>();
 
-                if(obsolete != null)
+            foreach(var n in transformation.NoticeDefinitions)
+            {
+                string noticeText = null;
+
+                if(!String.IsNullOrWhiteSpace(n.ElementName))
                 {
-                    notes.Add(new XElement("span",
-                        new XAttribute("class", "tag is-danger is-medium"),
-                        new XElement("include", new XAttribute("item", "boilerplate_obsoleteLong"))));
+                    var element = apiMember.Element(n.ElementName);
+
+                    if(element != null)
+                        noticeText = n.TagText;
                 }
 
-                if(experimental != null)
+                if(noticeText == null && !String.IsNullOrWhiteSpace(n.AttributeTypeName))
                 {
-                    notes.Add(new XElement("span",
-                        new XAttribute("class", "tag is-warning is-medium"),
-                        new XElement("include", new XAttribute("item", "boilerplate_experimentalLong"))));
+                    string attrName = n.AttributeTypeName;
+
+                    // Add the "T:" prefix if not specified
+                    if(attrName.Length > 2 && attrName[1] != ':')
+                        attrName = "T:" + attrName;
+
+                    var attr = apiMember.AttributeOfType(attrName);
+
+                    if(attr != null)
+                        noticeText = n.TagText;
                 }
 
-                transformation.CurrentElement = currentElement;
+                if(!String.IsNullOrWhiteSpace(noticeText))
+                {
+                    string style = n.TagStyleClasses;
+
+                    if(String.IsNullOrWhiteSpace(style))
+                        style = "tag is-info is-rounded";
+
+                    var tag = new XElement("span", new XAttribute("class", style));
+
+                    // If the notice text starts with '@', it's a content item
+                    if(noticeText[0] == '@')
+                        tag.Add(new XElement("include", new XAttribute("item", noticeText.Substring(1))));
+                    else
+                        tag.Add(noticeText);
+
+                    notices.Add(tag);
+                }
+            }
+
+            if(notices.Count != 0)
+            {
+                if(!parent.IsEmpty)
+                    parent.Add(new XElement("br"));
+
+                var notes = new XElement("span", new XAttribute("class", "tags"));
+
+                foreach(var n in notices)
+                    notes.Add(n);
+
+                parent.Add(notes);
             }
         }
 
@@ -1613,39 +1735,7 @@ $("".toggleSection"").keypress(function () {
                         if(summary != null)
                             transformation.RenderChildElements(summaryCell, summary.Nodes());
 
-                        var obsoleteAttr = e.AttributeOfType("T:System.ObsoleteAttribute");
-                        var prelimComment = e.Element("preliminary");
-                        var experimentalAttr = e.AttributeOfType("T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute");
-
-                        if(obsoleteAttr != null || prelimComment != null || experimentalAttr != null)
-                        {
-                            if(!summaryCell.IsEmpty)
-                                summaryCell.Add(new XElement("br"));
-
-                            if(obsoleteAttr != null)
-                            {
-                                summaryCell.Add(new XElement("span",
-                                        new XAttribute("class", "tag is-danger"),
-                                    new XElement("include",
-                                        new XAttribute("item", "boilerplate_obsoleteShort"))));
-                            }
-
-                            if(experimentalAttr != null)
-                            {
-                                summaryCell.Add(new XElement("span",
-                                        new XAttribute("class", "tag is-warning"),
-                                    new XElement("include",
-                                        new XAttribute("item", "boilerplate_experimentalShort"))));
-                            }
-
-                            if(prelimComment != null)
-                            {
-                                summaryCell.Add(new XElement("span",
-                                        new XAttribute("class", "tag is-warning"),
-                                    new XElement("include",
-                                        new XAttribute("item", "preliminaryShort"))));
-                            }
-                        }
+                        RenderNoticeTags(transformation, e, summaryCell);
 
                         if(summaryCell.IsEmpty)
                             summaryCell.Add(Element.NonBreakingSpace);
@@ -1797,29 +1887,7 @@ $("".toggleSection"").keypress(function () {
                             thisTransform.RenderChildElements(summaryCell, remarks.Nodes());
                     }
 
-                    var obsoleteAttr = e.AttributeOfType("T:System.ObsoleteAttribute");
-
-                    if(obsoleteAttr != null)
-                    {
-                        if(!summaryCell.IsEmpty)
-                            summaryCell.Add(new XElement("br"));
-
-                        summaryCell.Add(new XElement("span",
-                                new XAttribute("class", "tag is-danger"),
-                            new XElement("include",
-                                new XAttribute("item", "boilerplate_obsoleteShort"))));
-                    }
-
-                    if(e.AttributeOfType("T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute") != null)
-                    {
-                        if(!summaryCell.IsEmpty && obsoleteAttr == null)
-                            summaryCell.Add(new XElement("br"));
-
-                        summaryCell.Add(new XElement("span",
-                                new XAttribute("class", "tag is-warning"),
-                            new XElement("include",
-                                new XAttribute("item", "boilerplate_experimentalShort"))));
-                    }
+                    RenderNoticeTags(transformation, e, summaryCell);
 
                     if(summaryCell.IsEmpty)
                         summaryCell.Add(Element.NonBreakingSpace);
@@ -2067,39 +2135,7 @@ $("".toggleSection"").keypress(function () {
                         }
                     }
 
-                    var obsoleteAttr = e.AttributeOfType("T:System.ObsoleteAttribute");
-                    var prelimComment = e.Element("preliminary");
-                    var experimentalAttr = e.AttributeOfType("T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute");
-
-                    if(obsoleteAttr != null || prelimComment != null || experimentalAttr != null)
-                    {
-                        if(!summaryCell.IsEmpty)
-                            summaryCell.Add(new XElement("br"));
-
-                        if(obsoleteAttr != null)
-                        {
-                            summaryCell.Add(new XElement("span",
-                                    new XAttribute("class", "tag is-danger"),
-                                new XElement("include",
-                                    new XAttribute("item", "boilerplate_obsoleteShort"))));
-                        }
-
-                        if(experimentalAttr != null)
-                        {
-                            summaryCell.Add(new XElement("span",
-                                    new XAttribute("class", "tag is-warning"),
-                                new XElement("include",
-                                    new XAttribute("item", "boilerplate_experimentalShort"))));
-                        }
-
-                        if(prelimComment != null)
-                        {
-                            summaryCell.Add(new XElement("span",
-                                    new XAttribute("class", "tag is-warning"),
-                                new XElement("include",
-                                    new XAttribute("item", "preliminaryShort"))));
-                        }
-                    }
+                    RenderNoticeTags(transformation, e, summaryCell);
 
                     if(summaryCell.IsEmpty)
                         summaryCell.Add(Element.NonBreakingSpace);
