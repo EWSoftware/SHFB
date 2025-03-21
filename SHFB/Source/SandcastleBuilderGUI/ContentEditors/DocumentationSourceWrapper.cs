@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : DocumentationSourceWrapper.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/23/2021
-// Note    : Copyright 2021, Eric Woodruff, All rights reserved
+// Updated : 03/19/2025
+// Note    : Copyright 2021-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to wrap a documentation source so that it can be edited in the project
 // explorer tool window's property pane.
@@ -95,11 +95,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
           RefreshProperties(RefreshProperties.All),
           Editor(typeof(FilePathObjectEditor), typeof(UITypeEditor)),
           FileDialog("Select the documentation source",
-            "Documentation Sources (*.sln, *.*proj, *.dll, *.exe, *.winmd, *.xml)|*.sln;*.*proj;*.dll;*.exe;*.winmd;*.xml|" +
+            "Documentation Sources (*.sln, *.slnx, *.*proj, *.dll, *.exe, *.winmd, *.xml)|*.sln;*.slnx;*.*proj;*.dll;*.exe;*.winmd;*.xml|" +
             "Assemblies and Comments Files (*.dll, *.exe, *.winmd, *.xml)|*.dll;*.exe;*.winmd;*.xml|" +
             "Library Files (*.dll, *.winmd)|*.dll;*.winmd|Executable Files (*.exe)|*.exe|" +
             "XML Comments Files (*.xml)|*.xml|" +
-            "Visual Studio Solution Files (*.sln)|*.sln|" +
+            "Visual Studio Solution Files (*.sln, *.slnx)|*.sln;*.slnx|" +
             "Visual Studio Project Files (*.*proj)|*.*proj|" +
             "All Files (*.*)|*.*", FileDialogType.FileOpen)]
         public FilePath SourceFile

@@ -96,7 +96,7 @@ namespace Sandcastle.Tools.BuildComponents
 
             try
             {
-                XmlReaderSettings settings = new XmlReaderSettings { CheckCharacters = false };
+                XmlReaderSettings settings = new XmlReaderSettings { CheckCharacters = false, CloseInput = true };
                 XmlReader reader = XmlReader.Create(file, settings);
 
                 try

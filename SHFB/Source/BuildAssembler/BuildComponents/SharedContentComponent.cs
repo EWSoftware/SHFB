@@ -258,7 +258,7 @@ namespace Sandcastle.Tools.BuildComponents
 
             try
             {
-                using(XmlReader reader = XmlReader.Create(file))
+                using(XmlReader reader = XmlReader.Create(file, new XmlReaderSettings { CloseInput = true }))
                 {
                     reader.MoveToContent();
 

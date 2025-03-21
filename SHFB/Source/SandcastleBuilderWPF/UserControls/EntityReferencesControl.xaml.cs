@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/23/2025
+// Updated : 03/20/2025
 // Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to look up code entity references, code snippets, tokens, images,
@@ -627,7 +627,8 @@ namespace SandcastleBuilder.WPF.UserControls
                     // NOTE: This code should be similar to the code in BuildProcess.ValidateDocumentationSources!
 
                     // Solutions are followed by the projects that they contain
-                    if(sourceProject.ProjectFileName.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
+                    if(sourceProject.ProjectFileName.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
+                      sourceProject.ProjectFileName.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
                     {
                         lastSolution = sourceProject.ProjectFileName;
                         continue;
@@ -644,19 +645,21 @@ namespace SandcastleBuilder.WPF.UserControls
                             // not, use the documentation source values.  If they are not set, use the SHFB
                             // project settings.
                             projRef.SetConfiguration(
-                                !String.IsNullOrEmpty(sourceProject.Configuration) ? sourceProject.Configuration :
-                                    !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : currentProject.Configuration,
-                                !String.IsNullOrEmpty(sourceProject.Platform) ? sourceProject.Platform :
-                                    !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : currentProject.Platform,
+                                !String.IsNullOrWhiteSpace(sourceProject.BuildConfiguration) ? sourceProject.BuildConfiguration :
+                                    !String.IsNullOrWhiteSpace(ds.Configuration) ? ds.Configuration : currentProject.Configuration,
+                                !String.IsNullOrWhiteSpace(sourceProject.BuildPlatform) ? sourceProject.BuildPlatform :
+                                    !String.IsNullOrWhiteSpace(ds.Platform) ? ds.Platform : currentProject.Platform,
                                 currentProject.MSBuildOutDir, false);
 
                             // Add Visual Studio solution macros if necessary
                             if(lastSolution != null)
                                 projRef.SetSolutionMacros(lastSolution);
 
-                            if(!String.IsNullOrEmpty(projRef.XmlCommentsFile))
+                            if(!String.IsNullOrWhiteSpace(projRef.XmlCommentsFile))
+                            {
                                 cache.IndexCommentsFiles(Path.GetDirectoryName(projRef.XmlCommentsFile),
                                     Path.GetFileName(projRef.XmlCommentsFile), false, null);
+                            }
                         }
                     }
                 }

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/28/2023
-// Note    : Copyright 2011-2023, Eric Woodruff, All rights reserved
+// Updated : 03/19/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that represents a project node in a Sandcastle Help File Builder Visual Studio
 // project.
@@ -22,7 +22,7 @@
 //                  environment variable setting.
 //===============================================================================================================
 
-// Ignore Spelling: vpath Projref
+// Ignore Spelling: vpath Projref grf itemid vsopts pdw rgpcsd Cmdexecopt pva
 
 using System;
 using System.Collections.Generic;
@@ -249,8 +249,10 @@ namespace SandcastleBuilder.Package.Nodes
                     Process.Start(gui, "\"" + this.BuildProject.FullPath + "\"");
                 }
                 else
+                {
                     Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO,
                         "Unable to locate the standalone GUI to open the project");
+                }
             }
             catch(Exception ex)
             {
@@ -335,8 +337,10 @@ namespace SandcastleBuilder.Package.Nodes
 
                         // Fall back to the .NET 2.0/3.5 version?
                         if(!File.Exists(webServerPath))
+                        {
                             webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer20.exe",
                                 SearchOption.AllDirectories).FirstOrDefault();
+                        }
                     }
 
                     if(!File.Exists(webServerPath))
@@ -375,8 +379,10 @@ namespace SandcastleBuilder.Package.Nodes
                         System.Threading.Thread.Sleep(500);
                 }
                 else
+                {
                     if(webServerInstance.ProcessName.StartsWith("IISExpress", StringComparison.OrdinalIgnoreCase))
                         vPath = String.Empty;
+                }
 
                 // The project filename hash code is used to keep the URL unique in case multiple copies of SHFB
                 // are running so that each can view website output (WebDevServer only).
@@ -386,8 +392,10 @@ namespace SandcastleBuilder.Package.Nodes
                         "http://localhost:{0}/SHFBOutput_{1}/{2}", serverPort, uniqueId, defaultPage);
                 }
                 else
+                {
                     outputPath = String.Format(CultureInfo.InvariantCulture, "http://localhost:{0}/{1}",
                         serverPort, defaultPage);
+                }
 
                 return outputPath;
             }
@@ -446,8 +454,10 @@ namespace SandcastleBuilder.Package.Nodes
                 dataObject, out dropDataType);
 
             if(filesDropped.Count == 0)
+            {
                 filesDropped = DragDropHelper.GetDroppedFiles(DragDropHelper.CF_VSREFPROJECTITEMS, dataObject,
                     out dropDataType);
+            }
 
             if(filesDropped.Count == 0)
             {
@@ -464,7 +474,8 @@ namespace SandcastleBuilder.Package.Nodes
                             string ext = Path.GetExtension(f);
 
                             return (ext.Equals(".sln", StringComparison.OrdinalIgnoreCase) ||
-                              ext.EndsWith("proj", StringComparison.OrdinalIgnoreCase));
+                                ext.Equals(".slnx", StringComparison.OrdinalIgnoreCase) ||
+                                ext.EndsWith("proj", StringComparison.OrdinalIgnoreCase));
                         }).ToList(),
                     refSources = filesDropped.Where(f =>
                         {
@@ -490,17 +501,23 @@ namespace SandcastleBuilder.Package.Nodes
                 {
                     foreach(string f in allDocSources)
                     {
-                        if(!f.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
+                        if(!f.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) &&
+                          !f.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
+                        {
                             docSourcesNode.AddDocumentationSource(f);
+                        }
                         else
+                        {
                             foreach(string project in SandcastleBuilder.WPF.UI.SelectProjectsDlg.SelectSolutionOrProjects(f))
                                 docSourcesNode.AddDocumentationSource(project);
+                        }
                     }
                 }
                 else
                 {
                     // If dropped on the references node, add all reference files
                     if(targetNode is SandcastleBuilderReferenceContainerNode refsNode)
+                    {
                         foreach(string f in refSources)
                         {
                             var node = refsNode.AddReferenceFromSelectorData(new VSCOMPONENTSELECTORDATA
@@ -524,6 +541,7 @@ namespace SandcastleBuilder.Package.Nodes
                                 node.ItemNode.SetMetadata(ProjectFileConstants.HintPath, hintPath);
                             }
                         }
+                    }
                 }
 
                 // Remove the documentation source and reference files from the list
@@ -549,13 +567,17 @@ namespace SandcastleBuilder.Package.Nodes
                     if(addResult != VSConstants.S_OK && addResult != VSConstants.S_FALSE &&
                       addResult != (int)OleConstants.OLECMDERR_E_CANCELED &&
                       vsaddresults[0] != VSADDRESULT.ADDRESULT_Success)
+                    {
                         ErrorHandler.ThrowOnFailure(addResult);
+                    }
 
                     return dropDataType;
                 }
                 else
+                {
                     if(AddFilesFromProjectReferences(targetNode, filesDroppedAsArray))
                         return dropDataType;
+                }
             }
 
             // If we reached this point then the drop data must be set to None.  Otherwise the OnPaste will be
@@ -803,8 +825,7 @@ namespace SandcastleBuilder.Package.Nodes
                         if(!String.IsNullOrWhiteSpace(path))
                         {
                             if(!Path.IsPathRooted(path))
-                                path = Path.Combine(Path.GetDirectoryName(this.ProjectMgr.BuildProject.FullPath),
-                                    path);
+                                path = Path.Combine(Path.GetDirectoryName(this.ProjectMgr.BuildProject.FullPath), path);
 
                             Environment.SetEnvironmentVariable("SHFBROOT", path);
                         }
@@ -814,11 +835,13 @@ namespace SandcastleBuilder.Package.Nodes
                     // the user take care of it.
 #pragma warning disable VSTHRD010
                     if(String.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("SHFBROOT")))
+                    {
                         Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "The SHFBROOT system environment " +
                             "variable was not found.  This variable is usually created during installation and " +
                             "may require a reboot.  It may also be defined locally within the project.  Since " +
                             "it has not been set, the project properties may not be editable nor may the project " +
                             "be built properly.  Please ensure the variable is defined and reload the project.");
+                    }
 #pragma warning restore VSTHRD010
                 }
             }
@@ -1058,10 +1081,12 @@ namespace SandcastleBuilder.Package.Nodes
                         value = value.Substring(0, value.Length - 1);
 
                     if(!String.IsNullOrWhiteSpace(value))
+                    {
                         if(!Path.IsPathRooted(value))
                             folders.Add(Path.Combine(Path.GetFileName(this.ProjectMgr.BuildProject.FullPath), value));
                         else
                             folders.Add(value);
+                    }
                 }
 
                 prop = this.ProjectMgr.BuildProject.GetProperty("OutputPath");
@@ -1077,8 +1102,10 @@ namespace SandcastleBuilder.Package.Nodes
 
                         // Allow for content in the output folder but ignore subfolders (i.e. from web output)
                         if(Directory.Exists(value))
+                        {
                             foreach(string subfolder in Directory.EnumerateDirectories(value))
                                 folders.Add(subfolder);
+                        }
                     }
                 }
             }

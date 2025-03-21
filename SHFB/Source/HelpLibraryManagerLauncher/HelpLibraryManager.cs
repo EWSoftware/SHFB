@@ -193,7 +193,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             {
                 manifest = new XmlDocument();
 
-                using(var sr = XmlReader.Create(file, new XmlReaderSettings()))
+                using(var sr = XmlReader.Create(file, new XmlReaderSettings { CloseInput = true }))
                 {
                     manifest.Load(sr);
                 }
@@ -260,7 +260,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             {
                 manifest = new XmlDocument();
 
-                using(var sr = XmlReader.Create(file, new XmlReaderSettings()))
+                using(var sr = XmlReader.Create(file, new XmlReaderSettings { CloseInput = true }))
                 {
                     manifest.Load(sr);
                 }
@@ -323,7 +323,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                 {
                     manifest = new XmlDocument();
 
-                    using(var sr = XmlReader.Create(file, new XmlReaderSettings()))
+                    using(var sr = XmlReader.Create(file, new XmlReaderSettings { CloseInput = true }))
                     {
                         manifest.Load(sr);
                     }
@@ -341,7 +341,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                 {
                     manifest = new XmlDocument();
 
-                    using(var sr = XmlReader.Create(file, new XmlReaderSettings()))
+                    using(var sr = XmlReader.Create(file, new XmlReaderSettings { CloseInput = true }))
                     {
                         manifest.Load(sr);
                     }

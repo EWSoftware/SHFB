@@ -378,7 +378,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             string id, type;
 
-            using(var reader = XmlReader.Create(manifest, new XmlReaderSettings()))
+            using(var reader = XmlReader.Create(manifest, new XmlReaderSettings { CloseInput = true }))
             {
                 reader.MoveToContent();
 

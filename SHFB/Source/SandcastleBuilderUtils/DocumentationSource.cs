@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : DocumentationSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/23/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 03/20/2025
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a documentation source such as an assembly, an XML comments file, a
 // solution, or a project.
@@ -32,6 +32,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using SandcastleBuilder.Utils.MSBuild;
 
 namespace SandcastleBuilder.Utils
 {
@@ -51,19 +52,7 @@ namespace SandcastleBuilder.Utils
         private string configuration, platform, targetFramework;
         private bool includeSubFolders;
 
-        // Regular expression used to parse solution files
-        private static readonly Regex reExtractProjectGuids = new Regex(
-            "^Project\\(\"\\{(" +
-            "FAE04EC0-301F-11D3-BF4B-00C04F79EFBC|" +   // C#
-            "F184B08F-C81C-45F6-A57F-5ABD9991F28F|" +   // VB.NET
-            "8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942|" +   // C++
-            "F2A71F9B-5D33-465A-A702-920D77279786|" +   // F#
-            "E6FDF86B-F3D1-11D4-8576-0002A516ECE8|" +   // J#
-            "9A19103F-16F7-4668-BE54-9A1E7A4F7556|" +   // C# - .NET Standard/Core project
-            "778DAE3C-4631-46EA-AA77-85C1314464D9|" +   // VB.NET - .NET Standard/Core project
-            "6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705" +    // F# - .NET Standard/Core project
-            ")\\}\"\\) = \".*?\", \"(?!http)" +
-            "(?<Path>.*?proj)\", \"\\{(?<GUID>.*?)\\}\"", RegexOptions.Multiline);
+        private static readonly char[] wildcardChars = new char[] { '*', '?' };
 
         #endregion
 
@@ -183,7 +172,7 @@ namespace SandcastleBuilder.Utils
 
                 ext = Path.GetExtension(path).ToLowerInvariant();
 
-                if((ext.IndexOfAny(wildcards) != -1 || ext == ".sln" ||
+                if((ext.IndexOfAny(wildcards) != -1 || ext == ".sln" || ext == ".slnx" ||
                   ext.EndsWith("proj", StringComparison.Ordinal)) &&
                   (!String.IsNullOrWhiteSpace(configuration) || !String.IsNullOrWhiteSpace(platform) ||
                   !String.IsNullOrWhiteSpace(targetFramework)))
@@ -302,7 +291,7 @@ namespace SandcastleBuilder.Utils
 
                 if(Directory.Exists(dirName))
                 {
-                    if(wildcard.IndexOfAny(new char[] { '*', '?' }) != -1 && includeSubFolders)
+                    if(wildcard.IndexOfAny(wildcardChars) != -1 && includeSubFolders)
                         searchOpt = SearchOption.AllDirectories;
 
                     foreach(string filename in Directory.EnumerateFiles(dirName, Path.GetFileName(wildcard), searchOpt).Where(
@@ -330,12 +319,14 @@ namespace SandcastleBuilder.Utils
 
                 if(Directory.Exists(dirName))
                 {
-                    if(wildcard.IndexOfAny(new char[] { '*', '?' }) != -1 && includeSubFolders)
+                    if(wildcard.IndexOfAny(wildcardChars) != -1 && includeSubFolders)
                         searchOpt = SearchOption.AllDirectories;
 
                     foreach(string filename in Directory.EnumerateFiles(dirName, Path.GetFileName(wildcard), searchOpt).Where(
                       f => f.EndsWith(".xml", StringComparison.OrdinalIgnoreCase)))
+                    {
                         yield return filename;
+                    }
                 }
             }
         }
@@ -365,16 +356,21 @@ namespace SandcastleBuilder.Utils
 
             if(Directory.Exists(dirName))
             {
-                if(wildcard.IndexOfAny(new char[] { '*', '?' }) != -1 && includeSubFolders)
+                if(wildcard.IndexOfAny(wildcardChars) != -1 && includeSubFolders)
                     searchOpt = SearchOption.AllDirectories;
 
                 foreach(string filename in Directory.EnumerateFiles(dirName, Path.GetFileName(wildcard), searchOpt))
                 {
-                    if(filename.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
+                    if(filename.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
+                      filename.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
+                    {
                         solutions.Add(filename);
+                    }
                     else
+                    {
                         if(filename.EndsWith("proj", StringComparison.OrdinalIgnoreCase))
                             yield return new ProjectFileConfiguration(filename);
+                    }
                 }
 
                 // Add solutions last followed by the projects that they contain.  The caller can then set
@@ -383,80 +379,14 @@ namespace SandcastleBuilder.Utils
                 {
                     yield return new ProjectFileConfiguration(s);
 
-                    foreach(var config in ExtractProjectsFromSolution(s, configurationName, platformName))
-                        yield return config;
-                }
-            }
-        }
+                    var sf = new SolutionFile(s);
 
-        /// <summary>
-        /// This is used to get a list of all projects in a solution file regardless of configuration and
-        /// platform.
-        /// </summary>
-        /// <param name="solutionFile">The solution filename from which to get the project names</param>
-        /// <returns>An enumerable list of the projects within the solution regardless of configuration or
-        /// platform build combinations in which they are enabled.</returns>
-        public static IEnumerable<string> ProjectsIn(string solutionFile)
-        {
-            string solutionContent;
-
-            using(StreamReader sr = new StreamReader(solutionFile))
-            {
-                solutionContent = sr.ReadToEnd();
-            }
-
-            // Only add projects that are likely to contain assemblies
-            MatchCollection projects = reExtractProjectGuids.Matches(solutionContent);
-
-            foreach(Match solutionMatch in projects)
-                yield return solutionMatch.Groups["Path"].Value;
-        }
-
-        /// <summary>
-        /// Extract all project files from the given Visual Studio solution file
-        /// </summary>
-        /// <param name="solutionFile">The Visual Studio solution from which to extract the projects.</param>
-        /// <param name="configuration">The configuration to use</param>
-        /// <param name="platform">The platform to use</param>
-        /// <returns>An enumerable list of project configurations that were extracted from the solution</returns>
-        private static IEnumerable<ProjectFileConfiguration> ExtractProjectsFromSolution(string solutionFile,
-          string configuration, string platform)
-        {
-            string solutionContent, folder = Path.GetDirectoryName(solutionFile);
-
-            using(StreamReader sr = new StreamReader(solutionFile))
-            {
-                solutionContent = sr.ReadToEnd();
-            }
-
-            // Only add projects that are likely to contain assemblies
-            MatchCollection projects = reExtractProjectGuids.Matches(solutionContent);
-
-            foreach(Match solutionMatch in projects)
-            {
-                // See if the project is included in the build and get the configuration and platform
-                var reIsInBuild = new Regex(String.Format(CultureInfo.InvariantCulture,
-                    @"\{{{0}\}}\.{1}\|{2}\.Build\.0\s*=\s*(?<Configuration>.*?)\|(?<Platform>.*)",
-                    solutionMatch.Groups["GUID"].Value, configuration, platform), RegexOptions.IgnoreCase);
-
-                var buildMatch = reIsInBuild.Match(solutionContent);
-
-                // If the platform is "AnyCPU" and it didn't match, try "Any CPU" (with a space)
-                if(!buildMatch.Success && platform.Equals("AnyCPU", StringComparison.OrdinalIgnoreCase))
-                {
-                    reIsInBuild = new Regex(String.Format(CultureInfo.InvariantCulture,
-                        @"\{{{0}\}}\.{1}\|Any CPU\.Build\.0\s*=\s*(?<Configuration>.*?)\|(?<Platform>.*)",
-                        solutionMatch.Groups["GUID"].Value, configuration), RegexOptions.IgnoreCase);
-
-                    buildMatch = reIsInBuild.Match(solutionContent);
-                }
-
-                if(buildMatch.Success)
-                    yield return new ProjectFileConfiguration(Path.Combine(folder, solutionMatch.Groups["Path"].Value))
+                    foreach(var p in sf.EnumerateProjectFiles())
                     {
-                        Configuration = buildMatch.Groups["Configuration"].Value.Trim(),
-                        Platform = buildMatch.Groups["Platform"].Value.Trim()
-                    };
+                        if(sf.WillBuild(p, configurationName, platformName))
+                            yield return p;
+                    }
+                }
             }
         }
         #endregion

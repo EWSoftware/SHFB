@@ -2431,7 +2431,8 @@ namespace Sandcastle.Tools
             writer.Close();
 
             // Make a first pass to find duplicate types and members
-            using(XmlReader reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings { IgnoreWhitespace = true }))
+            using(XmlReader reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings {
+              IgnoreWhitespace = true, CloseInput = true }))
             {
                 reader.ReadToFollowing("api");
 
@@ -2468,7 +2469,8 @@ namespace Sandcastle.Tools
                 Guid.NewGuid().ToString() + ".xml");
 
             // Clone the file and merge the duplicates
-            using(XmlReader reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings { IgnoreWhitespace = true }))
+            using(XmlReader reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings {
+              IgnoreWhitespace = true, CloseInput = true }))
             using(XmlWriter writer = XmlWriter.Create(mergedReflectionDataFile, new XmlWriterSettings {
               Indent = true, CloseOutput = true }))
             {

@@ -370,7 +370,7 @@ namespace ReflectionDataManager
 
                 Dictionary<string, Dictionary<string, object>> dictionary = new Dictionary<string, Dictionary<string, object>>();
                 Dictionary<string, XmlWriter> dictionary2 = new Dictionary<string, XmlWriter>();
-                XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
+                XmlWriterSettings settings = new XmlWriterSettings { Indent = true, CloseOutput = true };
 
                 try
                 {

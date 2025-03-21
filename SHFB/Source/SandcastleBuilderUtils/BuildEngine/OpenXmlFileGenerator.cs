@@ -146,7 +146,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // Bookmark numbering starts at zero, image numbering starts at one
             imageId = 1;
 
-            using(var writer = XmlWriter.Create(documentPart + ".tmp"))
+            using(var writer = XmlWriter.Create(documentPart + ".tmp", new XmlWriterSettings { CloseOutput = true }))
             {
                 // Copy content from the template part.  When the body element is reached, insert the topics.
                 using(var reader = XmlReader.Create(documentPart, new XmlReaderSettings { CloseInput = true }))

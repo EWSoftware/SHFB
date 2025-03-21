@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : SelectProjectsDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/06/2017
-// Note    : Copyright 2014-2017, Eric Woodruff, All rights reserved
+// Updated : 03/20/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a form used to indicate whether to add the solution or just selected projects from within
 // it as documentation sources.
@@ -26,7 +26,7 @@ using System.Windows;
 
 using Sandcastle.Platform.Windows;
 
-using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.MSBuild;
 
 namespace SandcastleBuilder.WPF.UI
 {
@@ -76,11 +76,15 @@ namespace SandcastleBuilder.WPF.UI
                         solutionPath = Path.GetFullPath(solutionPath);
 
                     foreach(ProjectItem project in lbProjects.Items)
+                    {
                         if(project.IsSelected)
+                        {
                             if(!Path.IsPathRooted(project.ProjectFilename))
                                 yield return Path.GetFullPath(Path.Combine(solutionPath, project.ProjectFilename));
                             else
                                 yield return project.ProjectFilename;
+                        }
+                    }
                 }
             }
         }
@@ -109,8 +113,10 @@ namespace SandcastleBuilder.WPF.UI
         {
             lblSolutionName.Text = solutionName;
 
-            foreach(string project in DocumentationSource.ProjectsIn(solutionName).OrderBy(p => p))
-                lbProjects.Items.Add(new ProjectItem { ProjectFilename = project });
+            var sf = new SolutionFile(solutionName);
+
+            foreach(var p in sf.EnumerateProjectFiles().OrderBy(p => p.ProjectFileName))
+                lbProjects.Items.Add(new ProjectItem { ProjectFilename = p.ProjectFileName });
         }
 
         /// <summary>

@@ -392,7 +392,7 @@ namespace Sandcastle.Tools.BuildComponents
                     if(!writers.TryGetValue(comments.AssemblyName, out XmlWriter writer))
                     {
                         fullPath = Path.Combine(outputFolder, comments.AssemblyName + ".xml");
-                        XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
+                        XmlWriterSettings settings = new XmlWriterSettings { Indent = true, CloseOutput = true };
 
                         try
                         {

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Package
 // File    : DocumentationSourcesContainerNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/11/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 03/19/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that represents the documentation sources container node in a Sandcastle Help
 // File Builder project.
@@ -19,7 +19,7 @@
 // 10/22/2012  EFW  Updated to support .winmd documentation sources
 //===============================================================================================================
 
-// Ignore Spelling: dll
+// Ignore Spelling: dll Cmdexecopt pva
 
 using System;
 using System.Collections.Generic;
@@ -174,9 +174,9 @@ namespace SandcastleBuilder.Package.Nodes
             {
                 dlg.Title = "Select the documentation source(s)";
                 dlg.Filter = "Assemblies, Comments Files, and Projects (*.dll, *.exe, *.winmd, *.xml, " +
-                    "*.sln, *.*proj)|*.dll;*.exe;*.winmd;*.xml;*.sln;*.*proj|" +
+                    "*.sln, *.slnx, *.*proj)|*.dll;*.exe;*.winmd;*.xml;*.sln;*.slnx;*.*proj|" +
                     "Library Files (*.dll, *.winmd)|*.dll;*.winmd|Executable Files (*.exe)|*.exe|" +
-                    "XML Comments Files (*.xml)|*.xml|Visual Studio Solution Files (*.sln)|*.sln|" +
+                    "XML Comments Files (*.xml)|*.xml|Visual Studio Solution Files (*.sln, *.slnx)|*.sln;*.slnx|" +
                     "Visual Studio Project Files (*.*proj)|*.*proj|All Files (*.*)|*.*";
                 dlg.InitialDirectory = this.ProjectMgr.ProjectFolder;
                 dlg.DefaultExt = "dll";
@@ -184,6 +184,7 @@ namespace SandcastleBuilder.Package.Nodes
 
                 // If selected, add the new file(s)
                 if(dlg.ShowDialog() == DialogResult.OK)
+                {
                     try
                     {
                         Cursor.Current = Cursors.WaitCursor;
@@ -191,11 +192,18 @@ namespace SandcastleBuilder.Package.Nodes
                         HashSet<string> projectList = new HashSet<string>();
 
                         foreach(string file in dlg.FileNames)
-                            if(!file.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
+                        {
+                            if(!file.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) &&
+                              !file.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
+                            {
                                 projectList.Add(file);
+                            }
                             else
+                            {
                                 foreach(string project in SelectProjectsDlg.SelectSolutionOrProjects(file))
                                     projectList.Add(project);
+                            }
+                        }
 
                         foreach(string file in projectList)
                         {
@@ -225,6 +233,7 @@ namespace SandcastleBuilder.Package.Nodes
                                 }
                             }
                             else
+                            {
                                 if(ext == ".dll" || ext == ".exe" || ext == ".winmd")
                                 {
                                     otherFile = Path.ChangeExtension(file, ".xml");
@@ -232,6 +241,7 @@ namespace SandcastleBuilder.Package.Nodes
                                     if(File.Exists(otherFile))
                                         this.AddDocumentationSource(otherFile);
                                 }
+                            }
                         }
                     }
                     finally
@@ -239,6 +249,7 @@ namespace SandcastleBuilder.Package.Nodes
                         this.StoreDocumentationSources();
                         Cursor.Current = Cursors.Default;
                     }
+                }
             }
         }
 

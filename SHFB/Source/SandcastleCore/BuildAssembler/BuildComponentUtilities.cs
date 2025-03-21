@@ -79,7 +79,8 @@ namespace Sandcastle.Core.BuildAssembler
             XmlWriterSettings settings = new XmlWriterSettings
             {
                 ConformanceLevel = ConformanceLevel.Fragment,
-                OmitXmlDeclaration = true
+                OmitXmlDeclaration = true,
+                CloseOutput = true
             };
 
             StringBuilder builder = new StringBuilder();

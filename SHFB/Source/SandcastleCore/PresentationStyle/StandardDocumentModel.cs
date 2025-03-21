@@ -83,7 +83,8 @@ namespace Sandcastle.Core.PresentationStyle
         public void ApplyDocumentModel(string reflectionDataFile, string docModelReflectionDataFile)
         {
             // Load the information needed to apply the document model
-            using(XmlReader reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings { IgnoreWhitespace = true }))
+            using(XmlReader reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings {
+              IgnoreWhitespace = true, CloseInput = true }))
             {
                 reader.Read();
 
@@ -126,8 +127,10 @@ namespace Sandcastle.Core.PresentationStyle
             }
 
             // Clone the file and add the document model elements
-            using(XmlReader reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings { IgnoreWhitespace = true }))
-            using(XmlWriter writer = XmlWriter.Create(docModelReflectionDataFile, new XmlWriterSettings { Indent = true }))
+            using(XmlReader reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings {
+              IgnoreWhitespace = true, CloseInput = true }))
+            using(XmlWriter writer = XmlWriter.Create(docModelReflectionDataFile, new XmlWriterSettings {
+              Indent = true, CloseOutput = true }))
             {
                 writer.WriteStartDocument();
                 reader.Read();

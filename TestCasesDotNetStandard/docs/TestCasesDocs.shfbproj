@@ -19,9 +19,9 @@
     <FrameworkVersion>.NET Core/.NET Standard/.NET 5.0+</FrameworkVersion>
     <OutputPath>Help\</OutputPath>
     <HtmlHelpName>Documentation</HtmlHelpName>
-    <Language>fr-FR</Language>
+    <Language>en-US</Language>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\DotNetStandardTestCases.csproj" />
+      <DocumentationSource sourceFile="..\DotNetStandardTestCases.sln" configuration="Debug" />
     </DocumentationSources>
     <HelpFileFormat>Website</HelpFileFormat>
     <SyntaxFilters>Standard</SyntaxFilters>
@@ -62,11 +62,11 @@
     <PlugInConfigurations>
       <PlugInConfig id="Additional Notices" enabled="True">
         <configuration>
-  <Notices>
-    <Notice AttributeTypeName="T:DotNetStandardTestCases.UnsafeAttribute" NoticeMessage="@unsafeNoticeMessage" TagText="@unsafeTag" UseValueForText="true" />
-    <Notice ElementName="topicNotice" NoticeMessage="@topicNoticeMessage" TagText="@topicNoticeTag" NoticeStyleClasses="tag is-success is-medium" TagStyleClasses="tag is-success is-rounded" UseValueForText="true" />
-  </Notices>
-</configuration>
+          <Notices>
+            <Notice AttributeTypeName="T:DotNetStandardTestCases.UnsafeAttribute" NoticeMessage="@unsafeNoticeMessage" TagText="@unsafeTag" UseValueForText="true" />
+            <Notice ElementName="topicNotice" NoticeMessage="@topicNoticeMessage" TagText="@topicNoticeTag" NoticeStyleClasses="tag is-success is-medium" TagStyleClasses="tag is-success is-rounded" UseValueForText="true" />
+          </Notices>
+        </configuration>
       </PlugInConfig>
     </PlugInConfigurations>
     <HelpTitle>A Sandcastle Documented Class Library</HelpTitle>

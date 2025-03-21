@@ -1121,7 +1121,7 @@ namespace ColorizerLibrary
         {
             XmlNode needBuildNode, highlightNode;
 
-            using(var reader = XmlReader.Create(this.LanguageSyntaxFileName, new XmlReaderSettings()))
+            using(var reader = XmlReader.Create(this.LanguageSyntaxFileName, new XmlReaderSettings { CloseInput = true }))
             {
                 languageSyntax.Load(reader);
             }

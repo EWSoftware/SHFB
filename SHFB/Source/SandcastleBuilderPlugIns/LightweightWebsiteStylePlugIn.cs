@@ -172,7 +172,7 @@ namespace SandcastleBuilder.PlugIns
                 if(element.HasElements)
                 {
                     using(XmlWriter writer = XmlWriter.Create(Path.Combine(builder.WorkingFolder, "Output",
-                      "Website", "toc", fileId + ".xml")))
+                      "Website", "toc", fileId + ".xml"), new XmlWriterSettings { CloseOutput = true }))
                     {
                         pageChildren.WriteTo(writer);
                     }

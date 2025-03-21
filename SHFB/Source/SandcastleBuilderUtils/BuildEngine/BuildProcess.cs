@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/13/2024
-// Note    : Copyright 2006-2024, Eric Woodruff, All rights reserved
+// Updated : 03/20/2025
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
 //
@@ -2091,7 +2091,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         // NOTE: This code in EntityReferenceWindow.IndexComments should be similar to this!
 
                         // Solutions are followed by the projects that they contain
-                        if(sourceProject.ProjectFileName.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
+                        if(sourceProject.ProjectFileName.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
+                          sourceProject.ProjectFileName.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
                         {
                             lastSolution = sourceProject.ProjectFileName;
                             continue;
@@ -2119,10 +2120,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             // Use the project file configuration and platform properties if they are set.  If not,
                             // use the documentation source values.  If they are not set, use the SHFB project settings.
                             projRef.SetConfiguration(
-                                !String.IsNullOrEmpty(sourceProject.Configuration) ? sourceProject.Configuration :
-                                    !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : project.Configuration,
-                                !String.IsNullOrEmpty(sourceProject.Platform) ? sourceProject.Platform :
-                                    !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : project.Platform,
+                                !String.IsNullOrWhiteSpace(sourceProject.BuildConfiguration) ? sourceProject.BuildConfiguration :
+                                    !String.IsNullOrWhiteSpace(ds.Configuration) ? ds.Configuration : project.Configuration,
+                                !String.IsNullOrWhiteSpace(sourceProject.BuildPlatform) ? sourceProject.BuildPlatform :
+                                    !String.IsNullOrWhiteSpace(ds.Platform) ? ds.Platform : project.Platform,
                                 project.MSBuildOutDir, usesProjectSpecificOutput);
 
                             // Add Visual Studio solution macros if necessary
@@ -2166,10 +2167,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     }
 
                     if(fileCount == 0)
+                    {
                         this.ReportWarning("BE0006", "Unable to locate any documentation sources for '{0}' " +
                             "(Configuration: {1} Platform: {2})", ds.SourceFile,
                             !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : project.Configuration,
                             !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : project.Platform);
+                    }
                 }
 
                 // Parse projects for assembly, comments, and reference info
@@ -2254,6 +2257,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                                 this.ReportProgress("    Ignoring duplicate assembly file '{0}'", workingPath);
                         }
                         else
+                        {
                             throw new BuilderException("BE0067", String.Format(CultureInfo.CurrentCulture,
                                 "Unable to obtain assembly name from project file '{0}' using Configuration " +
                                 "'{1}', Platform '{2}'", msbProject.ProjectFile.FullPath,
@@ -2261,14 +2265,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
                                     p => p.Name == BuildItemMetadata.Configuration).EvaluatedValue,
                                 msbProject.ProjectFile.AllEvaluatedProperties.Last(
                                     p => p.Name == BuildItemMetadata.Platform).EvaluatedValue));
+                        }
 
                         workingPath = msbProject.XmlCommentsFile;
 
                         if(!String.IsNullOrEmpty(workingPath))
                         {
                             if(!File.Exists(workingPath))
-                                throw new BuilderException("BE0041",
-                                    "Project XML comments file does not exist: " + workingPath);
+                                throw new BuilderException("BE0041", "Project XML comments file does not exist: " + workingPath);
 
                             if(!commentsList.Contains(workingPath))
                             {
@@ -2414,8 +2418,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
             }
 
             if(commentsFiles.Count == 0)
+            {
                 this.ReportWarning("BE0062", "No documentation source XML comments files found.  The help " +
                     "file will not contain any member comments.");
+            }
 
             this.ExecutePlugIns(ExecutionBehaviors.After);
         }

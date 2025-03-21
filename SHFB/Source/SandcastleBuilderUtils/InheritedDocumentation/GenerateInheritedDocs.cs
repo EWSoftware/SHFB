@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : GenerateInheritedDocs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/20/2024
-// Note    : Copyright 2008-2024, Eric Woodruff, All rights reserved
+// Updated : 03/20/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the build task that scans XML comments files for <inheritdoc /> tags and produces a new
 // XML comments file containing the inherited documentation for use by Sandcastle.
@@ -69,11 +69,6 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
 
         #region Properties
         //=====================================================================
-
-        /// <summary>
-        /// This read-only property returns the comments cache
-        /// </summary>
-        public IndexedCommentsCache CommentsCache => commentsCache;
 
         /// <summary>
         /// This read-only property returns the reflection file information

@@ -569,8 +569,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 File.Move(reflectionFile, noFilenames);
 
                 // Clone the file and add the filename elements
-                using(XmlReader reader = XmlReader.Create(noFilenames, new XmlReaderSettings { IgnoreWhitespace = true }))
-                using(XmlWriter writer = XmlWriter.Create(reflectionFile, new XmlWriterSettings { Indent = true }))
+                using(XmlReader reader = XmlReader.Create(noFilenames,
+                    new XmlReaderSettings { IgnoreWhitespace = true, CloseInput = true }))
+                using(XmlWriter writer = XmlWriter.Create(reflectionFile,
+                    new XmlWriterSettings { Indent = true, CloseOutput = true }))
                 using(ApiTopicNamer namer = new ApiTopicNamer(this))
                 {
                     writer.WriteStartDocument();

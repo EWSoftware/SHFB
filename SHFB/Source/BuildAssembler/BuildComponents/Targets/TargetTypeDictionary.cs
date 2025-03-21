@@ -264,7 +264,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
         {
             LinkTextResolver resolver = new LinkTextResolver(this);
 
-            XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
+            XmlWriterSettings settings = new XmlWriterSettings { Indent = true, CloseOutput = true };
             
             using(XmlWriter writer = XmlWriter.Create(targetsFile, settings))
             {

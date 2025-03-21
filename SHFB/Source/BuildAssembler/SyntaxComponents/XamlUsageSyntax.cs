@@ -232,7 +232,7 @@ namespace Sandcastle.Tools.SyntaxGenerators
         {
             try
             {
-                using(var xr = XmlReader.Create(file, new XmlReaderSettings()))
+                using(var xr = XmlReader.Create(file, new XmlReaderSettings { CloseInput = true }))
                 {
                     XPathDocument document = new XPathDocument(xr);
 

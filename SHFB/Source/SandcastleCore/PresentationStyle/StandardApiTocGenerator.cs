@@ -84,7 +84,8 @@ namespace Sandcastle.Core.PresentationStyle
             var namespaces = new List<ApiMember>();
 
             // Load the API member information to determine how the TOC should be generated
-            using(XmlReader reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings { IgnoreWhitespace = true }))
+            using(XmlReader reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings {
+              IgnoreWhitespace = true, CloseInput = true }))
             {
                 reader.Read();
 
@@ -150,7 +151,7 @@ namespace Sandcastle.Core.PresentationStyle
             }
 
             // Generate the TOC
-            using(XmlWriter writer = XmlWriter.Create(tocFile, new XmlWriterSettings { Indent = true }))
+            using(XmlWriter writer = XmlWriter.Create(tocFile, new XmlWriterSettings { Indent = true, CloseOutput = true }))
             {
                 writer.WriteStartDocument();
                 writer.WriteStartElement("topics");

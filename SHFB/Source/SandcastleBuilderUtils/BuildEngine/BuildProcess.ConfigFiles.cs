@@ -571,7 +571,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 this.ExecutePlugIns(ExecutionBehaviors.Before);
 
                 using(XmlWriter writer = XmlWriter.Create(this.BuildAssemblerManifestFile,
-                  new XmlWriterSettings { Indent = true }))
+                  new XmlWriterSettings { Indent = true, CloseOutput = true }))
                 {
                     writer.WriteStartDocument();
                     writer.WriteStartElement("topics");

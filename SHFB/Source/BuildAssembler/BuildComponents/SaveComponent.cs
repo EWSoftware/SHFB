@@ -53,7 +53,7 @@ namespace Sandcastle.Tools.BuildComponents
         #region Private data members
         //=====================================================================
 
-        private readonly XmlWriterSettings settings = new XmlWriterSettings();
+        private readonly XmlWriterSettings settings = new XmlWriterSettings { CloseOutput = true };
         private XPathExpression pathExpression, selectExpression;
 
         private string basePath, groupId;

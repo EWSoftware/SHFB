@@ -549,7 +549,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 ConformanceLevel = ConformanceLevel.Fragment,
                 IgnoreWhitespace = true,
-                IgnoreComments = true
+                IgnoreComments = true,
+                CloseInput = true
             };
 
             using(var reader = XmlReader.Create(Path.Combine(currentBuild.WorkingFolder, "toc.xml"), settings))
@@ -774,7 +775,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 ConformanceLevel = ConformanceLevel.Fragment,
                 IgnoreWhitespace = true,
-                IgnoreComments = true
+                IgnoreComments = true,
+                CloseInput = true
             };
 
             using(var reader = XmlReader.Create(Path.Combine(currentBuild.WorkingFolder, "toc.xml"), settings))

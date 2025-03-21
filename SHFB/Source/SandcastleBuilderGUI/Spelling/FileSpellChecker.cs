@@ -535,7 +535,7 @@ namespace SandcastleBuilder.Gui.Spelling
                 return false;
             }
 
-            XmlReaderSettings rs = new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore };
+            XmlReaderSettings rs = new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore, CloseInput = true };
 
             using(var reader = XmlReader.Create(filename, rs))
             {

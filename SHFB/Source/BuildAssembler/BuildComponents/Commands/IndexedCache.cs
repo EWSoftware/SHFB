@@ -179,7 +179,10 @@ namespace Sandcastle.Tools.BuildComponents.Commands
 
             try
             {
-                document = new XPathDocument(XmlReader.Create(filename, new XmlReaderSettings { CloseInput = true }));
+                using(var rdr = XmlReader.Create(filename, new XmlReaderSettings { CloseInput = true }))
+                {
+                    document = new XPathDocument(rdr);
+                }
 
                 // For XML comments files, some versions of the framework redirect the comments files to a
                 // common location.
@@ -206,7 +209,12 @@ namespace Sandcastle.Tools.BuildComponents.Commands
                         document = null;
                     }
                     else
-                        document = new XPathDocument(XmlReader.Create(path, new XmlReaderSettings { CloseInput = true }));
+                    {
+                        using(var rdr = XmlReader.Create(path, new XmlReaderSettings { CloseInput = true }))
+                        {
+                            document = new XPathDocument(rdr);
+                        }
+                    }
                 }
             }
             catch(IOException e)

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder - Generate Inherited Documentation
 // File    : IndexedCommentsCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/12/2024
-// Note    : Copyright 2008-2024, Eric Woodruff, All rights reserved
+// Updated : 03/20/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to cache indexed XML comments files
 //
@@ -203,7 +203,10 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
 
             try
             {
-                document = new XPathDocument(XmlReader.Create(filename, new XmlReaderSettings { CloseInput = true }));
+                using(var rdr = XmlReader.Create(filename, new XmlReaderSettings { CloseInput = true }))
+                {
+                    document = new XPathDocument(rdr);
+                }
 
                 // Some versions of the framework redirect the comments files to a common location
                 var redirect = document.CreateNavigator().SelectSingleNode("doc/@redirect");
@@ -229,7 +232,12 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                         document = null;
                     }
                     else
-                        document = new XPathDocument(XmlReader.Create(path, new XmlReaderSettings { CloseInput = true }));
+                    {
+                        using(var rdr = XmlReader.Create(path, new XmlReaderSettings { CloseInput = true }))
+                        {
+                            document = new XPathDocument(rdr);
+                        }
+                    }
                 }
             }
             catch(IOException e)

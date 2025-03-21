@@ -147,11 +147,11 @@ namespace SandcastleBuilder.Package.Nodes
           MergableProperty(false), Editor(typeof(FilePathObjectEditor), typeof(UITypeEditor)),
           RefreshProperties(RefreshProperties.All), PropertyPageTypeConverter(typeof(FilePathTypeConverter)),
           FileDialog("Select the documentation source",
-            "Documentation Sources (*.sln, *.*proj, *.dll, *.exe, *.xml)|*.sln;*.*proj;*.dll;*.exe;*.xml|" +
+            "Documentation Sources (*.sln, *.slnx, *.*proj, *.dll, *.exe, *.xml)|*.sln;*.slnx;*.*proj;*.dll;*.exe;*.xml|" +
             "Assemblies and Comments Files (*.dll, *.exe, *.xml)|*.dll;*.exe;*.xml|" +
             "Library Files (*.dll)|*.dll|Executable Files (*.exe)|*.exe|" +
             "XML Comments Files (*.xml)|*.xml|" +
-            "Visual Studio Solution Files (*.sln)|*.sln|" +
+            "Visual Studio Solution Files (*.sln, *.slnx)|*.sln;*.slnx|" +
             "Visual Studio Project Files (*.*proj)|*.*proj|" +
             "All Files (*.*)|*.*", FileDialogType.FileOpen), DisplayName("Source File")]
         public FilePath SourceFile

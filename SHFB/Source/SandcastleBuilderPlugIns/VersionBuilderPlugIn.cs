@@ -506,7 +506,7 @@ namespace SandcastleBuilder.PlugIns
             // TODO: This needs a complete overhaul to add better variable names and comments about what it is
             // actually doing.  Also, can this be simplified in anyway to accomplish the same thing?
             using(var r = XmlReader.Create(Path.Combine(builder.WorkingFolder, "VersionBuilder.config"),
-              new XmlReaderSettings()))
+              new XmlReaderSettings { CloseInput = true }))
             {
                 XPathDocument document = new XPathDocument(r);
 
@@ -539,12 +539,14 @@ namespace SandcastleBuilder.PlugIns
 
                 XmlReaderSettings settings = new XmlReaderSettings
                 {
-                    IgnoreWhitespace = true
+                    IgnoreWhitespace = true,
+                    CloseInput = true
                 };
 
                 XmlWriterSettings settings2 = new XmlWriterSettings
                 {
-                    Indent = true
+                    Indent = true,
+                    CloseOutput = true
                 };
 
                 Dictionary<string, List<KeyValuePair<string, string>>> versionIndex = new Dictionary<string, List<KeyValuePair<string, string>>>();

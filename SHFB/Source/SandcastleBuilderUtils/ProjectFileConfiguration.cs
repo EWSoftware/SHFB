@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ProjectFileConfiguration.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/14/2021
-// Note    : Copyright 2010-2021, Eric Woodruff, All rights reserved
+// Updated : 03/20/2025
+// Note    : Copyright 2010-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to hold configuration settings for Visual Studio project file documentation
 // sources.
@@ -18,11 +18,12 @@
 // 01/06/2009  EFW  Created the code
 //===============================================================================================================
 
+using System.Xml.Linq;
+
 namespace SandcastleBuilder.Utils
 {
     /// <summary>
-    /// This holds configuration settings for Visual Studio project file
-    /// documentation sources
+    /// This holds configuration settings for Visual Studio project file documentation sources
     /// </summary>
     public class ProjectFileConfiguration
     {
@@ -30,19 +31,39 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
+        /// The project GUID from a .sln solution file
+        /// </summary>
+        internal string ProjectGuid { get; set; }
+
+        /// <summary>
+        /// The project element from a .slnx solution file
+        /// </summary>
+        internal XElement ProjectElement { get; set; }
+
+        /// <summary>
         /// This is used to get or set the project filename
         /// </summary>
         public string ProjectFileName { get; set; }
 
         /// <summary>
+        /// This is used to get or set the configuration used for the solution
+        /// </summary>
+        public string SolutionConfiguration { get; set; }
+
+        /// <summary>
+        /// This is used to get or set the platform used for the solution
+        /// </summary>
+        public string SolutionPlatform { get; set; }
+
+        /// <summary>
         /// This is used to get or set the configuration used for the build
         /// </summary>
-        public string Configuration { get; set; }
+        public string BuildConfiguration { get; set; }
 
         /// <summary>
         /// This is used to get or set the platform used for the build
         /// </summary>
-        public string Platform { get; set; }
+        public string BuildPlatform { get; set; }
 
         #endregion
 

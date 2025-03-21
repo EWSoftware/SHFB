@@ -21,6 +21,7 @@ root.ToString().Dump();
 	<mimeType extension=".3gp" type="video/3gpp" />
 	<mimeType extension=".3gp2" type="video/3gpp2" />
 	<mimeType extension=".3gpp" type="video/3gpp" />
+	<mimeType extension=".7z" type="application/x-compressed" />
 	<mimeType extension=".aac" type="audio/vnd.dlna.adts" />
 	<mimeType extension=".ac3" type="audio/vnd.dolby.dd-raw" />
 	<mimeType extension=".accda" type="application/msaccess.addin" />
@@ -50,6 +51,7 @@ root.ToString().Dump();
 	<mimeType extension=".asa" type="application/xml" />
 	<mimeType extension=".asax" type="application/xml" />
 	<mimeType extension=".ascx" type="application/xml" />
+	<mimeType extension=".asd" type="application/msword" />
 	<mimeType extension=".asf" type="video/x-ms-asf" />
 	<mimeType extension=".ashx" type="application/xml" />
 	<mimeType extension=".asm" type="text/plain" />
@@ -60,12 +62,15 @@ root.ToString().Dump();
 	<mimeType extension=".avi" type="video/avi" />
 	<mimeType extension=".bay" type="image/BAY" />
 	<mimeType extension=".bmp" type="image/bmp" />
+	<mimeType extension=".bz2" type="application/x-compressed" />
 	<mimeType extension=".c" type="text/plain" />
 	<mimeType extension=".cap" type="image/CAP" />
 	<mimeType extension=".cat" type="application/vnd.ms-pki.seccat" />
 	<mimeType extension=".cc" type="text/plain" />
 	<mimeType extension=".ccproj" type="text/xml" />
+	<mimeType extension=".cd" type="text/plain" />
 	<mimeType extension=".cer" type="application/x-x509-ca-cert" />
+	<mimeType extension=".cjs" type="text/plain" />
 	<mimeType extension=".cod" type="text/plain" />
 	<mimeType extension=".config" type="application/xml" />
 	<mimeType extension=".contact" type="text/x-ms-contact" />
@@ -83,12 +88,14 @@ root.ToString().Dump();
 	<mimeType extension=".csproj" type="application/xml" />
 	<mimeType extension=".css" type="text/css" />
 	<mimeType extension=".csv" type="application/vnd.ms-excel" />
+	<mimeType extension=".cts" type="text/plain" />
 	<mimeType extension=".cxx" type="text/plain" />
 	<mimeType extension=".datasource" type="application/xml" />
 	<mimeType extension=".dcr" type="image/DCR" />
 	<mimeType extension=".dcs" type="image/DCS" />
 	<mimeType extension=".dds" type="image/vnd.ms-dds" />
 	<mimeType extension=".def" type="text/plain" />
+	<mimeType extension=".deployproj" type="text/xml" />
 	<mimeType extension=".der" type="application/x-x509-ca-cert" />
 	<mimeType extension=".dib" type="image/bmp" />
 	<mimeType extension=".dll" type="application/x-msdownload" />
@@ -129,6 +136,7 @@ root.ToString().Dump();
 	<mimeType extension=".gshader" type="text/plain" />
 	<mimeType extension=".gz" type="application/x-gzip" />
 	<mimeType extension=".h" type="text/plain" />
+	<mimeType extension=".hdd" type="application/x-virtualbox-hdd" />
 	<mimeType extension=".hh" type="text/plain" />
 	<mimeType extension=".hlsl" type="text/plain" />
 	<mimeType extension=".hlsli" type="text/plain" />
@@ -165,14 +173,16 @@ root.ToString().Dump();
 	<mimeType extension=".ipp" type="text/plain" />
 	<mimeType extension=".iqy" type="text/x-ms-iqy" />
 	<mimeType extension=".ixx" type="text/plain" />
+	<mimeType extension=".JAR" type="application/java-archive" />
 	<mimeType extension=".jfif" type="image/jpeg" />
 	<mimeType extension=".jpe" type="image/jpeg" />
 	<mimeType extension=".jpeg" type="image/jpeg" />
 	<mimeType extension=".jpg" type="image/jpeg" />
-	<mimeType extension=".js" type="text/plain" />
+	<mimeType extension=".js" type="application/javascript" />
 	<mimeType extension=".json" type="application/json" />
 	<mimeType extension=".jsproj" type="text/plain" />
 	<mimeType extension=".jsx" type="text/plain" />
+	<mimeType extension=".jxl" type="image/JXL" />
 	<mimeType extension=".jxr" type="image/vnd.ms-photo" />
 	<mimeType extension=".k25" type="image/K25" />
 	<mimeType extension=".kdc" type="image/KDC" />
@@ -200,6 +210,7 @@ root.ToString().Dump();
 	<mimeType extension=".mhtml" type="message/rfc822" />
 	<mimeType extension=".mid" type="audio/mid" />
 	<mimeType extension=".midi" type="audio/mid" />
+	<mimeType extension=".mjs" type="text/plain" />
 	<mimeType extension=".mk" type="text/plain" />
 	<mimeType extension=".mka" type="audio/x-matroska" />
 	<mimeType extension=".mkv" type="video/x-matroska" />
@@ -219,7 +230,7 @@ root.ToString().Dump();
 	<mimeType extension=".mpv2" type="video/mpeg" />
 	<mimeType extension=".mrw" type="image/MRW" />
 	<mimeType extension=".msepub" type="application/epub+zip" />
-	<mimeType extension=".mts" type="video/vnd.dlna.mpeg-tts" />
+	<mimeType extension=".mts" type="text/plain" />
 	<mimeType extension=".mtx" type="application/xml" />
 	<mimeType extension=".natvis" type="text/xml" />
 	<mimeType extension=".nef" type="image/NEF" />
@@ -243,6 +254,8 @@ root.ToString().Dump();
 	<mimeType extension=".orf" type="image/ORF" />
 	<mimeType extension=".ori" type="image/CR3" />
 	<mimeType extension=".osdx" type="application/opensearchdescription+xml" />
+	<mimeType extension=".ova" type="application/x-virtualbox-ova" />
+	<mimeType extension=".ovf" type="application/x-virtualbox-ovf" />
 	<mimeType extension=".p10" type="application/pkcs10" />
 	<mimeType extension=".p12" type="application/x-pkcs12" />
 	<mimeType extension=".p7b" type="application/x-pkcs7-certificates" />
@@ -280,7 +293,14 @@ root.ToString().Dump();
 	<mimeType extension=".pub" type="application/vnd.ms-publisher" />
 	<mimeType extension=".pwz" type="application/vnd.ms-powerpoint" />
 	<mimeType extension=".pxn" type="image/PXN" />
+	<mimeType extension=".py" type="text/x-python" />
+	<mimeType extension=".pyproj" type="application/xml" />
+	<mimeType extension=".pyw" type="text/x-python" />
+	<mimeType extension=".pyz" type="application/x-zip-compressed" />
+	<mimeType extension=".pyzw" type="application/x-zip-compressed" />
+	<mimeType extension=".QFX" type="application/vnd.intu.qfx" />
 	<mimeType extension=".raf" type="image/RAF" />
+	<mimeType extension=".rar" type="application/x-compressed" />
 	<mimeType extension=".rat" type="application/rat-file" />
 	<mimeType extension=".raw" type="image/RAW" />
 	<mimeType extension=".rc" type="text/plain" />
@@ -308,6 +328,7 @@ root.ToString().Dump();
 	<mimeType extension=".slk" type="application/vnd.ms-excel" />
 	<mimeType extension=".sln" type="text/plain" />
 	<mimeType extension=".slnf" type="text/plain" />
+	<mimeType extension=".slnx" type="text/plain" />
 	<mimeType extension=".snd" type="audio/basic" />
 	<mimeType extension=".snippet" type="application/xml" />
 	<mimeType extension=".spc" type="application/x-pkcs7-certificates" />
@@ -321,6 +342,7 @@ root.ToString().Dump();
 	<mimeType extension=".svg" type="image/svg+xml" />
 	<mimeType extension=".tar" type="application/x-tar" />
 	<mimeType extension=".targets" type="application/xml" />
+	<mimeType extension=".tbz2" type="application/x-compressed" />
 	<mimeType extension=".testrunconfig" type="application/xml" />
 	<mimeType extension=".testsettings" type="application/xml" />
 	<mimeType extension=".tga" type="image/targa" />
@@ -337,10 +359,14 @@ root.ToString().Dump();
 	<mimeType extension=".tt" type="text/plain" />
 	<mimeType extension=".tts" type="video/vnd.dlna.mpeg-tts" />
 	<mimeType extension=".txt" type="text/plain" />
+	<mimeType extension=".txz" type="application/x-compressed" />
+	<mimeType extension=".tzst" type="application/x-compressed" />
 	<mimeType extension=".uitest" type="application/xml" />
 	<mimeType extension=".user" type="text/plain" />
 	<mimeType extension=".uvu" type="video/vnd.dece.mp4" />
 	<mimeType extension=".vb" type="text/plain" />
+	<mimeType extension=".vbox" type="application/x-virtualbox-vbox" />
+	<mimeType extension=".vbox-extpack" type="application/x-virtualbox-vbox-extpack" />
 	<mimeType extension=".vbproj" type="application/xml" />
 	<mimeType extension=".vcf" type="text/x-vcard" />
 	<mimeType extension=".vcg" type="application/vnd.groove-vcard" />
@@ -349,8 +375,11 @@ root.ToString().Dump();
 	<mimeType extension=".vcw" type="text/plain" />
 	<mimeType extension=".vcxitems" type="Application/xml" />
 	<mimeType extension=".vcxproj" type="Application/xml" />
+	<mimeType extension=".vdi" type="application/x-virtualbox-vdi" />
 	<mimeType extension=".vdw" type="application/vnd.ms-visio.viewer" />
 	<mimeType extension=".vdx" type="application/vnd.ms-visio.viewer" />
+	<mimeType extension=".vhd" type="application/x-virtualbox-vhd" />
+	<mimeType extension=".vmdk" type="application/x-virtualbox-vmdk" />
 	<mimeType extension=".vsct" type="text/xml" />
 	<mimeType extension=".vsd" type="application/vnd.ms-visio.viewer" />
 	<mimeType extension=".vsdm" type="application/vnd.ms-visio.viewer" />
@@ -419,12 +448,15 @@ root.ToString().Dump();
 	<mimeType extension=".xlw" type="application/vnd.ms-excel" />
 	<mimeType extension=".xml" type="text/xml" />
 	<mimeType extension=".xoml" type="text/plain" />
+	<mimeType extension=".xproj" type="text/plain" />
 	<mimeType extension=".xrm-ms" type="text/xml" />
 	<mimeType extension=".xsc" type="application/xml" />
 	<mimeType extension=".xsd" type="application/xml" />
 	<mimeType extension=".xsl" type="text/xml" />
 	<mimeType extension=".xslt" type="application/xml" />
 	<mimeType extension=".xss" type="application/xml" />
+	<mimeType extension=".xz" type="application/x-compressed" />
 	<mimeType extension=".z" type="application/x-compress" />
 	<mimeType extension=".zip" type="application/x-zip-compressed" />
+	<mimeType extension=".zst" type="application/x-compressed" />
 </mimeTypes>

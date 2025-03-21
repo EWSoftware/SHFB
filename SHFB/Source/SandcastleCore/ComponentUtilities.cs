@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/02/2022
-// Note    : Copyright 2007-2022, Eric Woodruff, All rights reserved
+// Updated : 03/20/2025
+// Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class containing properties and methods used to locate and work with build components,
 // plug-ins, syntax generators, and presentation styles.
@@ -677,7 +677,8 @@ namespace Sandcastle.Core
         /// </overloads>
         public static IEnumerable<XElement> XmlStreamAxis(string xmlFile, string elementName)
         {
-            using(XmlReader reader = XmlReader.Create(xmlFile, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore }))
+            using(XmlReader reader = XmlReader.Create(xmlFile,
+              new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore, CloseInput = true }))
             {
                 while(reader.ReadToFollowing(elementName))
                     yield return (XElement)XNode.ReadFrom(reader);
@@ -698,11 +699,13 @@ namespace Sandcastle.Core
         {
             HashSet<string> elements = new HashSet<string>(elementNames);
 
-            using(XmlReader reader = XmlReader.Create(xmlFile, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore }))
+            using(XmlReader reader = XmlReader.Create(xmlFile,
+              new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore, CloseInput = true }))
             {
                 reader.MoveToContent();
 
                 while(reader.Read())
+                {
                     if(reader.NodeType == XmlNodeType.Element && elementNames.Contains(reader.Name))
                     {
                         var root = (XElement)XNode.ReadFrom(reader);
@@ -713,6 +716,7 @@ namespace Sandcastle.Core
                         foreach(var d in root.Descendants().Where(d => elements.Contains(d.Name.ToString())))
                             yield return d;
                     }
+                }
             }
         }
         #endregion

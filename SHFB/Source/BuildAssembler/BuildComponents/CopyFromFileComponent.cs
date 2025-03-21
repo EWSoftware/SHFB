@@ -95,7 +95,7 @@ namespace Sandcastle.Tools.BuildComponents
                 // Load a schema, if one is specified
                 string schemaFile = dataNode.GetAttribute("schema", String.Empty);
 
-                XmlReaderSettings settings = new XmlReaderSettings();
+                XmlReaderSettings settings = new XmlReaderSettings { CloseInput = true };
 
                 if(!String.IsNullOrWhiteSpace(schemaFile))
                     settings.Schemas.Add(null, schemaFile);
