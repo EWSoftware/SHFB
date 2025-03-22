@@ -21,7 +21,7 @@ namespace TestDoc
         public const string NullStringValue = null;
 
         /// <summary>String value</summary>
-        public const string StringValue = "Test string";
+        public const string StringValue = "Test string with some <special> \u201Ccharacters\u201D & some\tcontrol characters\r\n";
 
         /// <summary>Boolean value</summary>
         public const bool BoolValue = true;
@@ -31,6 +31,12 @@ namespace TestDoc
 
         /// <summary>Character value</summary>
         public const char CharValue = 'A';
+
+        /// <summary>Unprintable character</summary>
+        public const char EscapeKey = (char)27;
+
+        /// <summary>Unprintable character</summary>
+        public const char Backspace = '\b';
 
         /// <summary>Short value</summary>
         public const short ShortValue = 1;

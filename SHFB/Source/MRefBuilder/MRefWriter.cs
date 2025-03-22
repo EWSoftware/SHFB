@@ -23,6 +23,8 @@
 // 06/13/2022 - EFW - Added support for writing out hierarchy info for structures
 // 09/08/2022 - EFW - Added support for init only setters
 // 01/04/2024 - EFW - Added support for .NET 7 static interface members
+// 03/21/2025 - EFW - Changed handling of invalid XML characters to write them out as hex values to prevent loss
+// of constant values.  Added support for writing out decimal constants.
 
 using System;
 using System.Collections.Generic;
@@ -38,6 +40,9 @@ using System.Compiler;
 using Sandcastle.Tools.Reflection;
 
 using Sandcastle.Core;
+using System.Text;
+using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace Sandcastle.Tools
 {
@@ -464,19 +469,6 @@ namespace Sandcastle.Tools
 
         #region General helper methods
         //=====================================================================
-
-        /// <summary>
-        /// This is used to check that the given character is a valid XML character
-        /// </summary>
-        /// <param name="c">The character to check</param>
-        /// <returns>True if valid, false if not</returns>
-        private static bool IsValidXmlChar(char c)
-        {
-            if(c < 0x20)
-                return (c == 0x9 || c == 0xa);
-
-            return (c <= 0xd7ff || (0xe000 <= c && c <= 0xfffd));
-        }
 
         /// <summary>
         /// This is used to get an enumerable list of exposed interfaces
@@ -1090,8 +1082,48 @@ namespace Sandcastle.Tools
                             ((EnumNode)field.DeclaringType).UnderlyingType), false);
                     }
                     else
+                    {
                         if(field.IsLiteral)
                             this.WriteLiteral(new Literal(field.DefaultValue.Value, field.Type), false);
+                        else
+                        {
+                            // Constant decimal values are stored in an attribute
+                            if(field.Type.FullName == "System.Decimal")
+                            {
+                                var decAttr = field.Attributes.FirstOrDefault(
+                                    a => a.Type.FullName == "System.Runtime.CompilerServices.DecimalConstantAttribute");
+                                decimal d;
+
+                                try
+                                {
+                                    if((decAttr?.Expressions?.Count ?? 0) == 5)
+                                    {
+                                        // Parameter order: scale, sign, hi, mid, low
+                                        var literals = decAttr.Expressions.Select(e => ((Literal)e).Value).ToArray();
+
+                                        // Call the constructor based on the hi value type which may be int or uint
+                                        if(literals[2].GetType() == typeof(int))
+                                        {
+                                            d = new decimal((int)literals[4], (int)literals[3], (int)literals[2],
+                                                (byte)literals[1] != 0, (byte)literals[0]);
+                                        }
+                                        else
+                                        {
+                                            d = new decimal((int)(uint)literals[4], (int)(uint)literals[3],
+                                                (int)(uint)literals[2], (byte)literals[1] != 0, (byte)literals[0]);
+                                        }
+
+                                        this.WriteLiteral(new Literal(d, field.Type), false);
+                                    }
+                                }
+                                catch(Exception ex)
+                                {
+                                    // Ignore exceptions trying to parse decimal constants
+                                    Debug.WriteLine(ex);
+                                }
+                            }
+                        }
+                    }
                     break;
 
                 case NodeType.Method:
@@ -1219,8 +1251,19 @@ namespace Sandcastle.Tools
         {
             writer.WriteStartElement("fielddata");
 
-            this.WriteBooleanAttribute("literal", field.IsLiteral);
-            this.WriteBooleanAttribute("initonly", field.IsInitOnly);
+            // Init only decimals with a DecimalConstantValue attribute are constants
+            if(field.IsLiteral || !field.IsInitOnly || field.Type.FullName != "System.Decimal" ||
+              !field.Attributes.Any(a => a.Type.FullName == "System.Runtime.CompilerServices.DecimalConstantAttribute"))
+            {
+                this.WriteBooleanAttribute("literal", field.IsLiteral);
+                this.WriteBooleanAttribute("initonly", field.IsInitOnly);
+            }
+            else
+            {
+                this.WriteBooleanAttribute("literal", true);
+                this.WriteBooleanAttribute("initonly", false);
+            }
+
             this.WriteBooleanAttribute("volatile", field.IsVolatile, false);
             this.WriteBooleanAttribute("serialized", (field.Flags & FieldFlags.NotSerialized) == 0);
 
@@ -1230,7 +1273,9 @@ namespace Sandcastle.Tools
             // and can be handled by the syntax components as needed.
             if(this.ApiFilter.IncludeAttributes && (field.Offset != 0 ||
               (field.DeclaringType.Flags & TypeFlags.ExplicitLayout) != 0))
+            {
                 this.WriteStringAttribute("offset", field.Offset.ToString(CultureInfo.InvariantCulture));
+            }
 
             writer.WriteEndElement();
         }
@@ -1878,6 +1923,7 @@ namespace Sandcastle.Tools
             if(value == null)
                 writer.WriteElementString(literal.Type.IsValueType ? "defaultValue" : "nullValue", String.Empty);
             else
+            {
                 if(type.NodeType == NodeType.EnumNode)
                 {
                     EnumNode enumeration = (EnumNode)type;
@@ -1899,6 +1945,7 @@ namespace Sandcastle.Tools
                     writer.WriteEndElement();
                 }
                 else
+                {
                     if(type.FullName == "System.Type")
                     {
                         writer.WriteStartElement("typeValue");
@@ -1909,11 +1956,66 @@ namespace Sandcastle.Tools
                     {
                         string text = value.ToString();
 
-                        if(!text.All(c => IsValidXmlChar(c)))
-                            text = String.Empty;
+                        // If there are invalid XML characters convert them to an escaped equivalent.  This will
+                        // work for literals in most of the syntax generators, VB being the exception.
+                        if(text.Any(c => c < 0x20 || (c > 0xd7ff && (c < 0xe000 || c > 0xfffd))))
+                        {
+                            bool isCharOrString = type.FullName == "System.Char" || type.FullName == "System.String";
+                            var sb = new StringBuilder(text.Length + 100);
+
+                            foreach(char c in text)
+                            {
+                                if(c < 0x20 || (c > 0xd7ff && (c < 0xe000 || c > 0xfffd)))
+                                {
+                                    switch(c)
+                                    {
+                                        case '\a':
+                                            sb.Append("\\a");
+                                            break;
+
+                                        case '\b':
+                                            sb.Append("\\b");
+                                            break;
+
+                                        case '\f':
+                                            sb.Append("\\f");
+                                            break;
+
+                                        case '\n':
+                                            sb.Append("\\n");
+                                            break;
+
+                                        case '\r':
+                                            sb.Append("\\r");
+                                            break;
+
+                                        case '\t':
+                                            sb.Append("\\t");
+                                            break;
+
+                                        case '\v':
+                                            sb.Append("\\v");
+                                            break;
+
+                                        default:
+                                            if(isCharOrString)
+                                                sb.Append("\\x");
+
+                                            sb.AppendFormat("{0:X4}", (int)c);
+                                            break;
+                                    }
+                                }
+                                else
+                                    sb.Append(c);
+                            }
+
+                            text = sb.ToString();
+                        }
 
                         writer.WriteElementString("value", text);
                     }
+                }
+            }
         }
 
         /// <summary>

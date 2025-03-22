@@ -6,4 +6,8 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="..\TestCaseProject\Constants.cs" Link="Constants.cs" />
+  </ItemGroup>
+
 </Project>
