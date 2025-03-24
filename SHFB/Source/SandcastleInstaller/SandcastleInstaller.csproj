@@ -45,10 +45,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-		<PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="1.16.30">
+		<PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="3.13.2069">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.VisualStudio.SDK.EmbedInteropTypes" Version="15.0.21" />
 	</ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">

@@ -432,7 +432,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" visible="True" isExpanded="true" title="Build Process Plug-Ins">
+  <Topic id="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" visible="True" title="Build Process Plug-Ins">
     <HelpKeywords>
       <HelpKeyword index="K" term="plug-ins, configuring" />
       <HelpKeyword index="K" term="plug-ins, overview" />
@@ -443,7 +443,7 @@
         <HelpKeyword index="K" term="AdditionalContentOnlyPlugIn, configuration options" />
       </HelpKeywords>
     </Topic>
-    <Topic id="f238b7a7-24eb-4163-8083-f35b6a60a3d1" visible="True" isSelected="true" title="Additional Notices Plug-In" />
+    <Topic id="f238b7a7-24eb-4163-8083-f35b6a60a3d1" visible="True" title="Additional Notices Plug-In" />
     <Topic id="15b6b7be-3778-4487-b524-d558d02e6460" visible="True" title="Additional Reference Links Plug-In">
       <HelpKeywords>
         <HelpKeyword index="K" term="plug-ins, additional reference links plug-in" />
@@ -1365,11 +1365,16 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isSelected="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
+    <Topic id="4ba0d138-85d4-4bb5-8b65-08a77f6ee0b3" visible="True" title="Version 2025.3.22.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2025.3.22.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="430ecc56-ffcb-4470-aa5c-23b125965164" visible="True" title="Version 2024.12.21.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2024.12.21.0" />

@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="4ba0d138-85d4-4bb5-8b65-08a77f6ee0b3" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!-- Ignore Spelling: unie -->
+		<introduction>
+			<para>Release notes for version 2025.3.22.0.</para>
+
+			<alert class="important">
+				<para><legacyBold>Breaking Change:</legacyBold> Several changes were made to the presentation style API
+to support rendering of user-defined notices.  If you have created custom build components, syntax generators,
+plug-ins, or presentation styles, you will need to rebuild them against the latest release of the help file
+builder NuGet packages.</para>
+			</alert>
+		
+			<alert class="note">
+				<para>This will likely be the last release to support Visual Studio 2017 and 2019.  Future releases will
+only support Visual Studio 2022 and later.  I do not use the older versions anymore, it will allow me to simplify
+the extension projects and keep the package references more up to date without the risk of breaking the build,
+and implement future features without regard to maintaining backward compatibility with the older versions.</para>
+			</alert>
+		</introduction>
+	
+		<section address="BuildTools">
+			<title>Build Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed compiler generated <codeInline>ObsoleteAttribute</codeInline> removal so that it applies
+to constructors on types with required fields/properties as well.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed XML reader creation to consistently close the XML comments files in the working folder so
+that they do not remain open and cause subsequent builds to fail because they cannot be replaced.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed handling of string and character literals with characters not valid in XML.  MRefBuilder
+will now write them out to the reflection data file in their encoded form (\x001B, \t, \r, etc.) rather than
+setting the entire value to an empty string.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support to MRefBuilder for writing out constant decimal values and setting the properties
+on the member to use the <codeInline>const</codeInline> keyword rather than <codeInline>static readonly</codeInline>
+to match the code.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the <codeInline>required</codeInline> modifier on fields and properties in
+the C# syntax generator.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for using the new XML format solution files (<localUri>.slnx</localUri>) as
+documentation sources.</para>
+					</listItem>
+				
+				</list>
+
+			</content>
+		</section>
+
+		<section address="SHFB">
+			<title>Sandcastle Help File Builder</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Updated handling of resource item files so that it includes them in the build based on the
+project language if their filename ends with a language identifier.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the resource item file editor to account for the language of the file being edited if
+the filename ends with a language identifier.</para>
+					</listItem>
+
+					<listItem>
+						<para>Made some usability improvements to the Entity References tool window (focus the list on search, 
+double-click an item to copy it to the clipboard, moved the Insert As options to the toolbar so that they take
+up less space).</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a new Additional Notices Plug-In that can be used to define additional notice items to
+render in topics and on member list pages based on attributes or XML comments elements.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed a couple of instances of incorrect member name formatting in table of contents and page
+titles.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for <codeInline>ExperimentalAttribute</codeInline> to add tags to API members
+similar to <codeInline>ObsoleteAttribute</codeInline> in all presentation styles.</para>
+					</listItem>
+
+					<listItem>
+						<para>Based on a suggestion from Tim Unie, reimplemented how notices are rendered in member topics
+and member list pages in all presentation styles to allow for user-defined notices based on attributes or XML
+comments elements.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed <codeInline>PreliminaryElement</codeInline> and its handler entries as it is now
+handled by the new notice rendering code.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a new <codeEntityReference qualifyHint="false">T:Sandcastle.Core.PresentationStyle.Transformation.Notice</codeEntityReference>
+type to define notices.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a new <codeEntityReference qualifyHint="false" autoUpgrade="true">M:Sandcastle.Core.PresentationStyle.Transformation.TopicTransformationCore.CreateNoticeDefinitions</codeEntityReference>
+abstract method used to create default notice instances for a presentation style.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

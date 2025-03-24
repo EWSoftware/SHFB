@@ -4,7 +4,7 @@
 	<pathOffset location="..\..\..\..\..\Deployment" />
 
 	<!-- This indicates the tools version with which this installer is associated.-->
-	<tools version="2024.12.21.0" />
+	<tools version="2025.3.22.0" />
 
 	<!-- Define the installer pages.  Third-party build tool and component providers can add new pages that
 			 they have created to install their own products as well. -->
@@ -16,7 +16,7 @@
 		<page type="Sandcastle.Installer.InstallerPages.WelcomePage" />
 
 		<page type="Sandcastle.Installer.InstallerPages.WhatsNewPage">
-			<whatsNew url="https://EWSoftware.github.io/SHFB/html/430ecc56-ffcb-4470-aa5c-23b125965164.htm"
+			<whatsNew url="https://EWSoftware.github.io/SHFB/html/4ba0d138-85d4-4bb5-8b65-08a77f6ee0b3.htm"
 				description="Current Version Release Notes" />
 			<whatsNew url="https://EWSoftware.github.io/SHFB/html/bc933f8f-e792-45bf-afec-62aa2c46aa3b.htm"
 				description="Third-Party Component Migration Support" />

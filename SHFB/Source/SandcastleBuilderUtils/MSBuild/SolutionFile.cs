@@ -149,6 +149,9 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// solution configuration and/or platform.</returns>
         public bool WillBuild(ProjectFileConfiguration project, string configuration, string platform)
         {
+            if(project == null || configuration == null || platform == null)
+                return false;
+
             if(slnContent != null)
             {
                 // See if the project is included in the build and get the configuration and platform

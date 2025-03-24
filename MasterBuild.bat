@@ -72,13 +72,13 @@ ECHO *
 ECHO * Documentation
 ECHO *
 
-"%MSBUILD%" /nr:false /nologo /v:m /m "AllDocumentation.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%MSBUILD2022%" /nr:false /nologo /v:m /m "AllDocumentation.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 
 IF ERRORLEVEL 1 GOTO End
 
 CD ..\SHFB\Source
 
-"%MSBUILD%" /nr:false /nologo /v:m /m "SHFBSetup.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%MSBUILD2022%" /nr:false /nologo /v:m /m "SHFBSetup.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 
 IF ERRORLEVEL 1 GOTO End
 
