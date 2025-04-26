@@ -70,16 +70,12 @@
 	<ItemGroup>
 		<Compile Remove="Theme\TeamFoundationColors.cs" />
 		<Compile Remove="binGUI\**" />
-		<Compile Remove="binVSP\**" />
-		<Compile Remove="binVS2022\**" />
+		<Compile Remove="binVSIX\**" />
 		<EmbeddedResource Remove="binGUI\**" />
-		<EmbeddedResource Remove="binVSP\**" />
-		<EmbeddedResource Remove="binVS2022\**" />
+		<EmbeddedResource Remove="binVSIX\**" />
 		<None Remove="binGUI\**" />
-		<None Remove="binVSP\**" />
-		<None Remove="binVS2022\**" />
+		<None Remove="binVSIX\**" />
 		<Page Remove="binGUI\**" />
-		<Page Remove="binVSP\**" />
-		<Page Remove="binVS2022\**" />
+		<Page Remove="binVSIX\**" />
 	</ItemGroup>
 </Project>

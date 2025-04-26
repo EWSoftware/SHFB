@@ -1543,11 +1543,8 @@ namespace Microsoft.VisualStudio.Project
             {
                 Array contextParamsAsArray = contextParams;
 
-#if VS2022
                 int result = ivsExtensibility.RunWizardFile(wizardToRun, dlgOwner, ref contextParamsAsArray, out wizResultAsInt);
-#else
-                int result = ivsExtensibility.RunWizardFile(wizardToRun, (int)dlgOwner, ref contextParamsAsArray, out wizResultAsInt);
-#endif
+
                 if(!ErrorHandler.Succeeded(result) && result != VSConstants.OLE_E_PROMPTSAVECANCELLED)
                 {
                     ErrorHandler.ThrowOnFailure(result);

@@ -97,7 +97,7 @@
     <CopyrightText>[v{%40HelpFileVersion}] Sandcastle XML Comments Guide</CopyrightText>
     <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
-    <HelpFileVersion>2022.4.16.0</HelpFileVersion>
+    <HelpFileVersion>2025.4.26.0</HelpFileVersion>
     <CatalogName>VisualStudio11</CatalogName>
     <TocParentId>-1</TocParentId>
     <TocParentVersion>100</TocParentVersion>
@@ -111,7 +111,7 @@
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <HelpFileFormat>Website</HelpFileFormat>
     <IndentHtml>False</IndentHtml>
-    <FrameworkVersion>.NET Framework 4.7.2</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.8</FrameworkVersion>
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
@@ -121,6 +121,7 @@
       <Argument Key="RobotsMetadata" Value="" />
       <Argument Key="BibliographyDataFile" Value="Bibliography.xml" />
       <Argument Key="RootBreadcrumbTitleText" Value="XML Comments" />
+      <Argument Key="ResizableTocColumn" Value="False" />
       <Argument Key="CollapsibleSections" Value="True" />
       <Argument Key="LogoFile" Value="Sandcastle.jpg" />
       <Argument Key="LogoHeight" Value="50" />
@@ -135,8 +136,11 @@
       <Argument Key="EnumMemberSortOrder" Value="Value" />
       <Argument Key="FlagsEnumValueFormat" Value="HexValue" />
       <Argument Key="FlagsEnumSeparatorSize" Value="0" />
+      <Argument Key="IncludeIntegerEnumSeparators" Value="true" />
       <Argument Key="BaseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/SHFB/Source/" />
       <Argument Key="RequestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" />
+      <Argument Key="ShowParametersOnAllMethods" Value="False" />
+      <Argument Key="AlwaysShowTopLevelAutoOutline" Value="False" />
     </TransformComponentArguments>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>

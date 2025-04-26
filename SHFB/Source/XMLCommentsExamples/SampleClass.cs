@@ -685,10 +685,7 @@ namespace XMLCommentsExamples
         /// <conceptualLink target="16cdb957-a35b-4c17-bf5e-ea511b0218e3" />
         protected virtual void OnSomethingHappened()
         {
-            var handler = SomethingHappened;
-
-            if(handler != null)
-                handler(this, EventArgs.Empty);
+            SomethingHappened?.Invoke(this, EventArgs.Empty);
         }
         #endregion
 
@@ -704,13 +701,13 @@ namespace XMLCommentsExamples
         /// 
         /// <list type="bullet">
         ///   <item>
-        ///     <description><see cref="DoSomething(int)"/></description>
+        ///     <description><see cref="DoSomething(Int32)"/></description>
         ///   </item>
         ///   <item>
-        ///     <description><see cref="DoSomething(string)"/></description>
+        ///     <description><see cref="DoSomething(String)"/></description>
         ///   </item>
         ///   <item>
-        ///     <description><see cref="DoSomething(int, string)"/></description>
+        ///     <description><see cref="DoSomething(Int32, String)"/></description>
         ///   </item>
         /// </list>
         /// 
@@ -731,8 +728,8 @@ namespace XMLCommentsExamples
         /// <param name="number">A number to use</param>
         /// <seealso cref="DoSomething()" autoUpgrade="true" />
         /// <seealso cref="DoSomething()" />
-        /// <seealso cref="DoSomething(string)" />
-        /// <seealso cref="DoSomething(int, string)" />
+        /// <seealso cref="DoSomething(String)" />
+        /// <seealso cref="DoSomething(Int32, String)" />
         /// <conceptualLink target="983fed56-321c-4daf-af16-e3169b28ffcd" />
         /// <conceptualLink target="16cdb957-a35b-4c17-bf5e-ea511b0218e3" />
         public void DoSomething(int number)
@@ -744,8 +741,8 @@ namespace XMLCommentsExamples
         /// </summary>
         /// <param name="text">A text value to use</param>
         /// <seealso cref="DoSomething()"/>
-        /// <seealso cref="DoSomething(int)"/>
-        /// <seealso cref="DoSomething(int, string)"/>
+        /// <seealso cref="DoSomething(Int32)"/>
+        /// <seealso cref="DoSomething(Int32, String)"/>
         /// <conceptualLink target="983fed56-321c-4daf-af16-e3169b28ffcd" />
         /// <conceptualLink target="16cdb957-a35b-4c17-bf5e-ea511b0218e3" />
         public void DoSomething(string text)
@@ -758,8 +755,8 @@ namespace XMLCommentsExamples
         /// <param name="number">A number to use</param>
         /// <param name="text">A text value to use</param>
         /// <seealso cref="DoSomething()"/>
-        /// <seealso cref="DoSomething(int)"/>
-        /// <seealso cref="DoSomething(string)"/>
+        /// <seealso cref="DoSomething(Int32)"/>
+        /// <seealso cref="DoSomething(String)"/>
         /// <conceptualLink target="983fed56-321c-4daf-af16-e3169b28ffcd" />
         /// <conceptualLink target="16cdb957-a35b-4c17-bf5e-ea511b0218e3" />
         public void DoSomething(int number, string text)

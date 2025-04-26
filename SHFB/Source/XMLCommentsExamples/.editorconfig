@@ -1,0 +1,5 @@
+[*.{cs,vb}]
+# These are disabled for the XML comments examples
+
+# IDE0060: Remove unused parameter
+dotnet_diagnostic.IDE0060.severity = none

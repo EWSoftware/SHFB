@@ -166,7 +166,7 @@ namespace XMLCommentsExamples.DocumentationInheritance
         }
 
         #pragma warning disable 1573
-        /// <inheritdoc cref="OverloadedMethod(string)" />
+        /// <inheritdoc cref="OverloadedMethod(String)" />
         /// <param name="p2">The second string parameter</param>
         public void OverloadedMethod(string p1, string p2)
         {
@@ -179,7 +179,7 @@ namespace XMLCommentsExamples.DocumentationInheritance
             // shown.
         }
 
-        /// <inheritdoc cref="OverloadedMethod(string)" path="param|overloads/*" />
+        /// <inheritdoc cref="OverloadedMethod(String)" path="param|overloads/*" />
         /// <param name="x">An integer parameter</param>
         public void OverloadedMethod(string p1, int x)
         {

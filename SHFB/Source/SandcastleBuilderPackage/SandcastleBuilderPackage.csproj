@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -23,6 +23,8 @@
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <TargetFrameworkProfile />
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
   </PropertyGroup>
   <PropertyGroup>
     <!-- Common debugging support -->
@@ -39,7 +41,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\SandcastleBuilder.Package.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -56,168 +57,12 @@
     <DeployExtension>False</DeployExtension>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetProjects.Wpf.Extended.Toolkit, Version=5.0.113.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetProjects.Extended.Wpf.Toolkit.5.0.113\lib\net40\DotNetProjects.Wpf.Extended.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\packages\EnvDTE.8.0.0\lib\net10\EnvDTE.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\packages\EnvDTE80.8.0.0\lib\net10\EnvDTE80.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Build, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Build.15.1.548\lib\net46\Microsoft.Build.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Build.Framework, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Build.Framework.15.1.548\lib\net46\Microsoft.Build.Framework.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Build.Utilities.Core, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Build.Utilities.Core.15.1.548\lib\net46\Microsoft.Build.Utilities.Core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.VisualStudio.CoreUtility, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.CoreUtility.14.3.25407\lib\net45\Microsoft.VisualStudio.CoreUtility.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Editor, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Editor.14.3.25407\lib\net45\Microsoft.VisualStudio.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Imaging, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Imaging.14.3.25407\lib\net45\Microsoft.VisualStudio.Imaging.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\packages\Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime.14.3.26930\lib\net20\Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Language.Intellisense, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Language.Intellisense.14.3.25407\lib\net45\Microsoft.VisualStudio.Language.Intellisense.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.VisualStudio.OLE.Interop.7.10.6071\lib\Microsoft.VisualStudio.OLE.Interop.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Setup.Configuration.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Setup.Configuration.Interop.1.16.30\lib\net35\Microsoft.VisualStudio.Setup.Configuration.Interop.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.14.0, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.14.0.14.3.25407\lib\Microsoft.VisualStudio.Shell.14.0.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Immutable.10.0.10.0.30319\lib\net40\Microsoft.VisualStudio.Shell.Immutable.10.0.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Immutable.11.0.11.0.50727\lib\net45\Microsoft.VisualStudio.Shell.Immutable.11.0.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Immutable.12.0.12.0.21003\lib\net45\Microsoft.VisualStudio.Shell.Immutable.12.0.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.14.0, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Immutable.14.0.14.3.25407\lib\net45\Microsoft.VisualStudio.Shell.Immutable.14.0.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.7.10.6072\lib\net11\Microsoft.VisualStudio.Shell.Interop.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.10.0.10.0.30320\lib\net20\Microsoft.VisualStudio.Shell.Interop.10.0.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.11.0.11.0.61031\lib\net20\Microsoft.VisualStudio.Shell.Interop.11.0.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.12.0.12.0.30111\lib\net20\Microsoft.VisualStudio.Shell.Interop.12.0.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime.14.3.26929\lib\net20\Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.8.0.8.0.50728\lib\net11\Microsoft.VisualStudio.Shell.Interop.8.0.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.9.0, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.9.0.9.0.30729\lib\Microsoft.VisualStudio.Shell.Interop.9.0.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Text.Data, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Text.Data.14.3.25407\lib\net45\Microsoft.VisualStudio.Text.Data.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Text.Logic, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Text.Logic.14.3.25407\lib\net45\Microsoft.VisualStudio.Text.Logic.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Text.UI, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Text.UI.14.3.25407\lib\net45\Microsoft.VisualStudio.Text.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Text.UI.Wpf, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Text.UI.Wpf.14.3.25407\lib\net45\Microsoft.VisualStudio.Text.UI.Wpf.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.VisualStudio.TextManager.Interop.7.10.6071\lib\net11\Microsoft.VisualStudio.TextManager.Interop.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.TextManager.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.VisualStudio.TextManager.Interop.8.0.8.0.50728\lib\net11\Microsoft.VisualStudio.TextManager.Interop.8.0.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Threading, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Threading.14.1.111\lib\net45\Microsoft.VisualStudio.Threading.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Utilities, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Utilities.14.3.25407\lib\net45\Microsoft.VisualStudio.Utilities.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Validation, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Validation.14.1.111\lib\net45\Microsoft.VisualStudio.Validation.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="PresentationFramework.Luna" />
-    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\packages\stdole.7.0.3300\lib\net10\stdole.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Collections.Immutable, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.6.0.0\lib\net461\System.Collections.Immutable.dll</HintPath>
-    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -225,35 +70,11 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Pipelines, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Pipelines.9.0.0\lib\net462\System.IO.Pipelines.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
-    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Text.Encodings.Web, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Encodings.Web.9.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Text.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Json.9.0.0\lib\net462\System.Text.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Dataflow.6.0.0\lib\net461\System.Threading.Tasks.Dataflow.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -278,7 +99,210 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Automation\OADocumentationSourceItem.cs" />
+    <Compile Include="Automation\OADocumentationSourcesFolderItem.cs" />
+    <Compile Include="Automation\OASandcastleBuilderProject.cs" />
+    <Compile Include="BuildCompletedEventListener.cs" />
+    <Compile Include="Editors\CommandTargetArguments.cs" />
+    <Compile Include="Editors\ContentLayoutEditorFactory.cs" />
+    <Compile Include="Editors\ContentLayoutEditorPane.cs" />
+    <Compile Include="Editors\HtmlEncodingCommandTarget.cs" />
+    <Compile Include="Editors\HtmlEncodingTextViewCreationListener.cs" />
+    <Compile Include="Editors\ICommonCommandSupport.cs" />
+    <Compile Include="Editors\ResourceItemEditorFactory.cs" />
+    <Compile Include="Editors\ResourceItemEditorPane.cs" />
+    <Compile Include="Editors\SimpleEditorFactory.cs" />
+    <Compile Include="Editors\SimpleEditorPane.cs" />
+    <Compile Include="Editors\SiteMapEditorFactory.cs" />
+    <Compile Include="Editors\SiteMapEditorPane.cs" />
+    <Compile Include="Editors\TokenEditorFactory.cs" />
+    <Compile Include="Editors\TokenEditorPane.cs" />
+    <Compile Include="GoToDefinition\CodeEntitySearcher.cs" />
+    <Compile Include="GoToDefinition\CSharpGoToDefinitionMouseProcessor.cs" />
+    <Compile Include="GoToDefinition\CSharpGoToDefinitionMouseProcessorProvider.cs" />
+    <Compile Include="GoToDefinition\CtrlKeyState.cs" />
+    <Compile Include="GoToDefinition\GoToDefinitionCommandTarget.cs" />
+    <Compile Include="GoToDefinition\GoToDefinitionKeyProcessor.cs" />
+    <Compile Include="GoToDefinition\GoToDefinitionKeyProcessorProvider.cs" />
+    <Compile Include="GoToDefinition\GoToDefinitionMouseProcessor.cs" />
+    <Compile Include="GoToDefinition\GoToDefinitionTextViewCreationListener.cs" />
+    <Compile Include="GoToDefinition\MamlLinkQuickInfoSource.cs" />
+    <Compile Include="GoToDefinition\MamlLinkQuickInfoSourceProvider.cs" />
+    <Compile Include="GoToDefinition\ProjectFileSearcher.cs" />
+    <Compile Include="GoToDefinition\TopicIdCache.cs" />
+    <Compile Include="GoToDefinition\UnderlineClassifier.cs" />
+    <Compile Include="GoToDefinition\UnderlineClassifierProvider.cs" />
+    <Compile Include="GoToDefinition\UnderlineFormatDefinition.cs" />
+    <Compile Include="GoToDefinition\XmlCommentsLinkQuickInfoSource.cs" />
+    <Compile Include="GoToDefinition\XmlCommentsLinkQuickInfoSourceProvider.cs" />
+    <Compile Include="GoToDefinition\XmlGoToDefinitionMouseProcessor.cs" />
+    <Compile Include="GoToDefinition\XmlGoToDefinitionMouseProcessorProvider.cs" />
+    <Compile Include="Guids.cs" />
+    <Compile Include="IntelliSense\AugmentedCompletionSet.cs" />
+    <Compile Include="IntelliSense\CompletionDisplayTextComparer.cs" />
+    <Compile Include="IntelliSense\CSharpDocumentationCompletionSource.cs" />
+    <Compile Include="IntelliSense\CSharpDocumentationCompletionSourceProvider.cs" />
+    <Compile Include="IntelliSense\CustomCompletion.cs" />
+    <Compile Include="IntelliSense\RoslynHacks\CommandFilter.cs" />
+    <Compile Include="IntelliSense\RoslynHacks\RoslynKeyboardFilter.cs" />
+    <Compile Include="IntelliSense\RoslynHacks\RoslynTextViewCreationListener.cs" />
+    <Compile Include="IntelliSense\RoslynHacks\TextViewCommandFilter.cs" />
+    <Compile Include="IntelliSense\SandcastleCompletion.cs" />
+    <Compile Include="MefProviderOptions.cs" />
+    <Compile Include="Nodes\DocumentationSourceNode.cs" />
+    <Compile Include="Nodes\DocumentationSourceNodeProperties.cs" />
+    <Compile Include="Nodes\DocumentationSourcesContainerNode.cs" />
+    <Compile Include="Nodes\ProjectImageIndex.cs" />
+    <Compile Include="Nodes\ProjectPropertiesContainerNode.cs" />
+    <Compile Include="Nodes\SandcastleBuilderAssemblyReferenceNode.cs" />
+    <Compile Include="Nodes\SandcastleBuilderComponentPackagesContainerNode.cs" />
+    <Compile Include="Nodes\SandcastleBuilderComReferenceNode.cs" />
+    <Compile Include="Nodes\SandcastleBuilderFileNode.cs" />
+    <Compile Include="Nodes\SandcastleBuilderFileNodeProperties.cs" />
+    <Compile Include="Nodes\SandcastleBuilderFolderNode.cs" />
+    <Compile Include="Nodes\SandcastleBuilderPackageReferenceNode.cs" />
+    <Compile Include="Nodes\SandcastleBuilderProjectNode.cs" />
+    <Compile Include="Nodes\SandcastleBuilderProjectNodeProperties.cs" />
+    <Compile Include="Nodes\SandcastleBuilderProjectReferenceNodes.cs" />
+    <Compile Include="Nodes\SandcastleBuilderReferenceContainerNode.cs" />
+    <Compile Include="Nodes\VsProjectCapabilitiesPresenceChecker.cs" />
+    <Compile Include="PkgCmdID.cs" />
+    <Compile Include="PropertyPages\BasePropertyPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\BasePropertyPage.Designer.cs">
+      <DependentUpon>BasePropertyPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\BuildEventPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\BuildEventPropertiesPageControl.Designer.cs">
+      <DependentUpon>BuildEventPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\BuildPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\BuildPropertiesPageControl.Designer.cs">
+      <DependentUpon>BuildPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\ComponentPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\ComponentPropertiesPageControl.Designer.cs">
+      <DependentUpon>ComponentPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\Help1WebsitePropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\Help1WebsitePropertiesPageControl.Designer.cs">
+      <DependentUpon>Help1WebsitePropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\HelpFilePropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\HelpFilePropertiesPageControl.Designer.cs">
+      <DependentUpon>HelpFilePropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\MissingTagPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\MissingTagPropertiesPageControl.Designer.cs">
+      <DependentUpon>MissingTagPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\MSHelpViewerPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\MSHelpViewerPropertiesPageControl.Designer.cs">
+      <DependentUpon>MSHelpViewerPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\PathPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\PathPropertiesPageControl.Designer.cs">
+      <DependentUpon>PathPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\PlugInPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\PlugInPropertiesPageControl.Designer.cs">
+      <DependentUpon>PlugInPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\SandcastleBuilderOptionsPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\SummaryPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\SummaryPropertiesPageControl.Designer.cs">
+      <DependentUpon>SummaryPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\TransformArgumentsPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\TransformArgumentsPageControl.Designer.cs">
+      <DependentUpon>TransformArgumentsPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\UserDefinedPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\UserDefinedPropertiesPageControl.Designer.cs">
+      <DependentUpon>UserDefinedPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\VisibilityPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\VisibilityPropertiesPageControl.Designer.cs">
+      <DependentUpon>VisibilityPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SandcastleBuilderPackage.cs" />
+    <Compile Include="SandcastleBuilderProjectFactory.cs" />
+    <Compile Include="ToolWindows\BuildLogToolWindow.cs" />
+    <Compile Include="ToolWindows\EntityReferencesToolWindow.cs" />
+    <Compile Include="ToolWindows\TopicPreviewerToolWindow.cs" />
+    <Compile Include="Utility.cs" />
     <EmbeddedResource Include="Resources\SandcastleBuilderProjectNode.bmp" />
+    <EmbeddedResource Include="PropertyPages\BasePropertyPage.resx">
+      <DependentUpon>BasePropertyPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\BuildEventPropertiesPageControl.resx">
+      <DependentUpon>BuildEventPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\BuildPropertiesPageControl.resx">
+      <DependentUpon>BuildPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\ComponentPropertiesPageControl.resx">
+      <DependentUpon>ComponentPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\Help1WebsitePropertiesPageControl.resx">
+      <DependentUpon>Help1WebsitePropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\HelpFilePropertiesPageControl.resx">
+      <DependentUpon>HelpFilePropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\MissingTagPropertiesPageControl.resx">
+      <DependentUpon>MissingTagPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\MSHelpViewerPropertiesPageControl.resx">
+      <DependentUpon>MSHelpViewerPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\PathPropertiesPageControl.resx">
+      <DependentUpon>PathPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\PlugInPropertiesPageControl.resx">
+      <DependentUpon>PlugInPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\SummaryPropertiesPageControl.resx">
+      <DependentUpon>SummaryPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\TransformArgumentsPageControl.resx">
+      <DependentUpon>TransformArgumentsPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\UserDefinedPropertiesPageControl.resx">
+      <DependentUpon>UserDefinedPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\VisibilityPropertiesPageControl.resx">
+      <DependentUpon>VisibilityPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
     <Resource Include="Resources\AspNetWebsite.png" />
     <Resource Include="Resources\CodeSnippets.ico" />
     <Resource Include="Resources\Component.ico" />
@@ -331,7 +355,6 @@
       <ManifestResourceName>VSPackage</ManifestResourceName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\Deploy\Schemas\Authoring\SandcastleMAML.xml">
@@ -1046,7 +1069,7 @@
       <Project>{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}</Project>
       <Name>ColorizerLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MPFProj_VS2010\Microsoft.VisualStudio.Project.csproj">
+    <ProjectReference Include="..\MPFProj\Microsoft.VisualStudio.Project.csproj">
       <Project>{cacb60a9-1e76-4f92-8831-b134a658c695}</Project>
       <Name>Microsoft.VisualStudio.Project</Name>
       <Private>True</Private>
@@ -1055,9 +1078,9 @@
       <Project>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</Project>
       <Name>SandcastleBuilderUtils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SandcastleBuilderWPF\SandcastleBuilderWPF.csproj">
-      <Project>{1e9be929-4cba-4668-a141-0bbdb0ac9f0f}</Project>
-      <Name>SandcastleBuilderWPF</Name>
+    <ProjectReference Include="..\SandcastleBuilderWPF\SandcastleBuilderWPF_VSIX.csproj">
+      <Project>{ae0de2ce-2185-4740-b834-4923a375f591}</Project>
+      <Name>SandcastleBuilderWPF_VSIX</Name>
     </ProjectReference>
     <ProjectReference Include="..\SandcastleCore\SandcastleCore.csproj">
       <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
@@ -1069,10 +1092,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\analyzers\cs\Microsoft.VisualStudio.SDK.Analyzers.dll" />
-    <Analyzer Include="..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\analyzers\cs\Microsoft.VisualStudio.Threading.Analyzers.dll" />
+    <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit">
+      <Version>5.0.115</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers">
+      <Version>9.0.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.3.32804.24" ExcludeAssets="runtime">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
-  <Import Project="..\VSIX_Shared\SandcastleBuilderPackage.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
@@ -1087,7 +1118,7 @@
 
 IF NOT EXIST "$(SolutionDir)..\..\Deployment\InstallResources" MD "$(SolutionDir)..\..\Deployment\InstallResources"
 
-Copy "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)..\..\Deployment\InstallResources\SHFBVisualStudioPackage_VS2017And2019.vsix"
+Copy "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)..\..\Deployment\InstallResources\$(TargetName).vsix"
 
 :Exit
 </PostBuildEvent>
@@ -1096,15 +1127,4 @@ Copy "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)..\..\Deployment\InstallRes
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
-  <Import Project="..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\build\Microsoft.VisualStudio.Threading.Analyzers.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\build\Microsoft.VisualStudio.Threading.Analyzers.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\build\Microsoft.VisualStudio.SDK.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\build\Microsoft.VisualStudio.SDK.Analyzers.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.SDK.EmbedInteropTypes.15.0.16\build\Microsoft.VisualStudio.SDK.EmbedInteropTypes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.SDK.EmbedInteropTypes.15.0.16\build\Microsoft.VisualStudio.SDK.EmbedInteropTypes.targets'))" />
-  </Target>
-  <Import Project="..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\build\Microsoft.VisualStudio.SDK.Analyzers.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\build\Microsoft.VisualStudio.SDK.Analyzers.targets')" />
-  <Import Project="..\packages\Microsoft.VisualStudio.SDK.EmbedInteropTypes.15.0.16\build\Microsoft.VisualStudio.SDK.EmbedInteropTypes.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.SDK.EmbedInteropTypes.15.0.16\build\Microsoft.VisualStudio.SDK.EmbedInteropTypes.targets')" />
 </Project>
