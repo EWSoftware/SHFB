@@ -18,14 +18,14 @@ ECHO *
 ECHO * Core tools
 ECHO *
 
-"%MSBUILD%" /nr:false /r /nologo /v:m /m "SandcastleTools.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%MSBUILD%" /nr:false /r /nologo /v:m /m "SandcastleTools.slnx" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 IF ERRORLEVEL 1 GOTO End
 
 ECHO *
 ECHO * VSIX package
 ECHO *
 
-"%MSBUILD%" /nr:false /r /nologo /v:m /m "SandcastleBuilderPackage.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%MSBUILD%" /nr:false /r /nologo /v:m /m "SandcastleBuilderPackage.slnx" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 IF ERRORLEVEL 1 GOTO End
 
 :BuildDocs
@@ -57,13 +57,13 @@ ECHO *
 ECHO * Documentation
 ECHO *
 
-"%MSBUILD%" /nr:false /nologo /v:m /m "AllDocumentation.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%MSBUILD%" /nr:false /nologo /v:m /m "AllDocumentation.slnx" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 
 IF ERRORLEVEL 1 GOTO End
 
 CD ..\SHFB\Source
 
-"%MSBUILD%" /nr:false /nologo /v:m /m "SHFBSetup.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%MSBUILD%" /nr:false /nologo /v:m /m "SHFBSetup.slnx" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 
 IF ERRORLEVEL 1 GOTO End
 

@@ -1,0 +1,25 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="../../.editorconfig" />
+    <File Path="../../IgnoredWords.dic" />
+  </Folder>
+  <Project Path="BuildAssembler/BuildComponents/BuildComponents.csproj" />
+  <Project Path="BuildAssembler/BuildComponentsUI/BuildComponentsUI.csproj" />
+  <Project Path="BuildAssembler/BuildComponentTargets/BuildComponentTargets.csproj" />
+  <Project Path="BuildAssembler/SyntaxComponents/SyntaxComponents.csproj" />
+  <Project Path="CodeColorizer/ColorizerLibrary/ColorizerLibrary.csproj" />
+  <Project Path="HelpLibraryManagerLauncher/HelpLibraryManagerLauncher.csproj" />
+  <Project Path="MRefBuilder/MRefBuilder.csproj" />
+  <Project Path="PresentationStyles/PresentationStyles.csproj" />
+  <Project Path="ReflectionDataManager/ReflectionDataManager.csproj" />
+  <Project Path="SandcastleBuilderGUI/SandcastleBuilderGui.csproj">
+    <BuildDependency Project="CodeColorizer/ColorizerLibrary/ColorizerLibrary.csproj" />
+  </Project>
+  <Project Path="SandcastleBuilderMSBuild/SandcastleBuilderMSBuild.csproj" />
+  <Project Path="SandcastleBuilderPlugIns/SandcastleBuilderPlugIns.csproj" />
+  <Project Path="SandcastleBuilderPlugInsUI/SandcastleBuilderPlugInsUI.csproj" />
+  <Project Path="SandcastleBuilderUtils/SandcastleBuilderUtils.csproj" />
+  <Project Path="SandcastleBuilderWPF/SandcastleBuilderWPF_GUI.csproj" />
+  <Project Path="SandcastleCore/SandcastleCore.csproj" />
+  <Project Path="SandcastlePlatformWindows/SandcastlePlatformWindows.csproj" />
+</Solution>

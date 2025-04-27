@@ -1,0 +1,35 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="../../../.editorconfig" />
+    <File Path="../../../IgnoredWords.dic" />
+  </Folder>
+  <Project Path="ColorizerLibrary/ColorizerLibrary.csproj" />
+  <Project Path="Doc/ColorizerLibraryDocs.shfbproj" Type="7cf6df6d-3b04-46f8-a40b-537d21bca0b4" Id="398ead70-ee9b-401b-b0d8-fbda6cfd5b23">
+    <BuildDependency Project="ColorizerLibrary/ColorizerLibrary.csproj" />
+  </Project>
+  <Project Path="FlowDocumentTest/FlowDocumentTest.csproj" />
+  <Project Path="TextColorizerTest/" Type="Website" DisplayName="TextColorizerTest" Id="d7f11a0c-3e65-42d0-8743-82cea117a003">
+    <BuildDependency Project="ColorizerLibrary/ColorizerLibrary.csproj" />
+    <BuildType Project="Debug" />
+    <Properties Name="WebsiteProperties">
+      <Property Name="Debug.AspNetCompiler.Debug" Value="&quot;True&quot;" />
+      <Property Name="Debug.AspNetCompiler.FixedNames" Value="&quot;false&quot;" />
+      <Property Name="Debug.AspNetCompiler.ForceOverwrite" Value="&quot;true&quot;" />
+      <Property Name="Debug.AspNetCompiler.PhysicalPath" Value="&quot;TextColorizerTest\&quot;" />
+      <Property Name="Debug.AspNetCompiler.TargetPath" Value="&quot;PrecompiledWeb\localhost_1789\&quot;" />
+      <Property Name="Debug.AspNetCompiler.Updateable" Value="&quot;true&quot;" />
+      <Property Name="Debug.AspNetCompiler.VirtualPath" Value="&quot;/localhost_1789&quot;" />
+      <Property Name="ProjectReferences" Value="&quot;&quot;" />
+      <Property Name="Release.AspNetCompiler.Debug" Value="&quot;False&quot;" />
+      <Property Name="Release.AspNetCompiler.FixedNames" Value="&quot;false&quot;" />
+      <Property Name="Release.AspNetCompiler.ForceOverwrite" Value="&quot;true&quot;" />
+      <Property Name="Release.AspNetCompiler.PhysicalPath" Value="&quot;TextColorizerTest\&quot;" />
+      <Property Name="Release.AspNetCompiler.TargetPath" Value="&quot;PrecompiledWeb\localhost_1789\&quot;" />
+      <Property Name="Release.AspNetCompiler.Updateable" Value="&quot;true&quot;" />
+      <Property Name="Release.AspNetCompiler.VirtualPath" Value="&quot;/localhost_1789&quot;" />
+      <Property Name="SlnRelativePath" Value="&quot;TextColorizerTest\&quot;" />
+      <Property Name="TargetFrameworkMoniker" Value="&quot;.NETFramework,Version%3Dv4.7.2&quot;" />
+      <Property Name="VWDPort" Value="&quot;1789&quot;" />
+    </Properties>
+  </Project>
+</Solution>

@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="../.editorconfig" />
+    <File Path="../IgnoredWords.dic" />
+  </Folder>
+  <Project Path="../SHFB/Source/XMLCommentsExamples/XMLCommentsExamples.csproj" />
+  <Project Path="SandcastleBuilder/SandcastleBuilder.shfbproj" Type="7cf6df6d-3b04-46f8-a40b-537d21bca0b4" Id="dea33d54-a820-4458-85eb-8c52ff13508d" />
+  <Project Path="SandcastleMAMLGuide/MAMLGuide.shfbproj" Type="7cf6df6d-3b04-46f8-a40b-537d21bca0b4" Id="979656c9-42e5-4c2e-a7b0-9d355a2bd652" />
+  <Project Path="XMLCommentsGuide/XMLCommentsGuide.shfbproj" Type="7cf6df6d-3b04-46f8-a40b-537d21bca0b4" Id="721bd6ec-48f5-4391-95bd-fefefc528993">
+    <BuildDependency Project="../SHFB/Source/XMLCommentsExamples/XMLCommentsExamples.csproj" />
+  </Project>
+</Solution>
