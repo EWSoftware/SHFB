@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net9.0-windows</TargetFramework>
+		<OutputType>Library</OutputType>
+		<UseWPF>true</UseWPF>
+		<UseWindowsForms>true</UseWindowsForms>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<Company>Eric Woodruff</Company>
+		<Product>Sandcastle Help File Builder test cases</Product>
+		<Title>Test cases</Title>
+		<Copyright>Copyright \xA9 2006-2025, Eric Woodruff, All Rights Reserved</Copyright>
+		<NeutralLanguage>en</NeutralLanguage>
+		<Version>2025.4.27.0</Version>
+		<FileVersion>25.4.27.0</FileVersion>
+		<Description>Various test cases for the Sandcastle Help File Builder</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="ColorizerLibrary">
+			<HintPath>..\..\SHFB\Deploy\Components\ColorizerLibrary.dll</HintPath>
+		</Reference>
+
+		<PackageReference Include="System.ServiceModel.Primitives" Version="8.1.2" />
+		<PackageReference Include="System.ServiceModel.Http" Version="8.1.2" />
+		<PackageReference Include="System.ServiceModel.Duplex" Version="6.0.0" />
+		<PackageReference Include="System.ServiceModel.NetTcp" Version="8.1.2" />
+		<PackageReference Include="System.ServiceModel.Security" Version="6.0.0" />
+		<PackageReference Include="System.ServiceModel.Federation" Version="8.1.2" />
+		<PackageReference Include="System.ServiceModel.Syndication" Version="9.0.4" />
+	</ItemGroup>
+</Project>

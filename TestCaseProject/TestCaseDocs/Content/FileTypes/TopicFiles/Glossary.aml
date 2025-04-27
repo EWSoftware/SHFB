@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="b5d4c819-b4cc-443e-916e-cb8e5a655d0e" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This document type is used to create a glossary.</para>
+    </introduction>
+    <section>
+      <title>Glossary File Format</title>
+      <content>
+        <para>Below is an example of a Glossary topic file.</para>
+        <code language="xml" title="Glossary Topic" source="ConceptualTemplates\Glossary.aml" />
+      </content>
+    </section>
+    <relatedTopics>
+      <link xlink:href="c69a248a-bd94-47b2-90d7-5442e9cb567a" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e5d750b6-6bd9-4263-98f2-a3d5d5c268d8" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This document type is used for whitepapers.</para>
+    </introduction>
+    <section>
+      <title>Whitepaper File Format</title>
+      <content>
+        <para>Below is an example of a Whitepaper topic file.</para>
+        <code language="xml" title="Whitepaper Topic" source="ConceptualTemplates\Whitepaper.aml" />
+      </content>
+    </section>
+    <relatedTopics>
+      <link xlink:href="c69a248a-bd94-47b2-90d7-5442e9cb567a" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

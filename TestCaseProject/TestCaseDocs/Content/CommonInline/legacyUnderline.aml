@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e90091a9-3959-4718-b109-ea8e75837e62" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This element marks underlined text in legacy documents.  The schema
+does not recommend using this element.  Instead, use one of the other common
+inline elements that describe a specific type of item such as
+<codeInline>application</codeInline>, <codeInline>ui</codeInline>, etc.
+However, for general items, it is a simple way to underline text.</para>
+    </introduction>
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>Enter the element in the topic and specify the text to underline as
+the inner text.</para>
+      </content>
+    </section>
+    <section>
+      <title>Example</title>
+      <content>
+        <code language="xml" title=" ">
+This text will be rendered with an &lt;legacyUnderline&gt;underline&lt;/legacyUnderline&gt;.
+</code>
+      </content>
+    </section>
+    <section>
+      <title>Example Output</title>
+      <content>
+        <para>This text will be rendered with an <legacyUnderline>underline</legacyUnderline>.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="b96d95c0-ec3c-4846-998a-4b43548bfa0e" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

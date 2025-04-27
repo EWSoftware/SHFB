@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="34c8823f-8395-4d64-9941-8d156083709c" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This element is used to insert an image within a conceptual topic.  This is a block element and
+the image appears by itself out of line.</para>
+    </introduction>
+
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>To use a media link, insert the element within the topic at the location that the image should
+appear.</para>
+
+        <para>The nested <codeInline>image</codeInline> element is used to define the image link.  The
+<codeInline>xlink:href</codeInline> attribute should refer to the unique ID of an image in the project's
+media content file.  An optional <codeInline>placement</codeInline> attribute can be used to specify the
+placement of the image (<codeInline>near</codeInline> (the default), <codeInline>center</codeInline>, or
+<codeInline>far</codeInline>).</para>
+
+        <para>The nested <codeInline>caption</codeInline> element is optional.  If specified, a caption will
+appear with the image.  An optional <codeInline>placement</codeInline> attribute can be used to specify the
+placement of the caption (<codeInline>before</codeInline> (the default) or <codeInline>after</codeInline>).
+In addition, an optional <codeInline>lead</codeInline> attribute can be specified to define lead-in text
+that will prefix the caption (i.e. "Figure 1").</para>
+
+      </content>
+    </section>
+    <section>
+      <title>Example</title>
+      <content>
+        <code language="xml" title=" "><![CDATA[
+<!-- No caption, default image placement -->
+<mediaLink>
+<image xlink:href="6be7079d-a9d8-4189-9021-0f72d1642beb"/>
+</mediaLink>
+
+<!-- Caption before, centered image -->
+<mediaLink>
+<caption>Caption Before</caption>
+<image placement="center" xlink:href="6be7079d-a9d8-4189-9021-0f72d1642beb"/>
+</mediaLink>
+
+<!-- Caption after with lead-in text, far image alignment -->
+<mediaLink>
+<caption placement="after" lead="Figure 1">Caption after with lead-in</caption>
+<image placement="far" xlink:href="6be7079d-a9d8-4189-9021-0f72d1642beb"/>
+</mediaLink>]]></code>
+      </content>
+    </section>
+    <section>
+      <title>Example Output</title>
+      <content>
+        <!-- No caption, default image placement -->
+        <mediaLink>
+          <image xlink:href="6be7079d-a9d8-4189-9021-0f72d1642beb" />
+        </mediaLink>
+        <!-- Caption before, centered image -->
+        <mediaLink>
+          <caption>Caption Before</caption>
+          <image placement="center" xlink:href="6be7079d-a9d8-4189-9021-0f72d1642beb" />
+        </mediaLink>
+        <!-- Caption after with lead-in text, far image alignment -->
+        <mediaLink>
+          <caption placement="after" lead="Figure 1">Caption after with lead-in</caption>
+          <image placement="far" xlink:href="6be7079d-a9d8-4189-9021-0f72d1642beb" />
+        </mediaLink>
+      </content>
+    </section>
+    <relatedTopics>
+      <link xlink:href="ba6a58eb-3301-4397-8ac5-d174d6dff755" />
+      <link xlink:href="3913b321-c875-4bb9-88de-4c65f6363270" />
+      <link xlink:href="48314339-e0fe-4d1a-96b0-eba5eca70b66" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

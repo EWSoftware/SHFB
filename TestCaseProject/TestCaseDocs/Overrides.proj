@@ -1,0 +1,21 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Example documentation source overrides
+  <PropertyGroup>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="..\..\OtherProject\bin\Release\OtherAssembly.xml" xmlns="" />
+      <DocumentationSource sourceFile="..\..\OtherProject\bin\Release\OtherAssembly.dll" xmlns="" />
+    </DocumentationSources>
+  </PropertyGroup>
+  -->
+
+  <PropertyGroup>
+    <HtmlHelpName>TestDoc</HtmlHelpName>
+    <RootNamespaceTitle>Root Namespace</RootNamespaceTitle>
+    <HelpTitle>Test Help File</HelpTitle>
+  </PropertyGroup>
+
+  <Target Name="BeforeBuildHelp">
+    <Message Text="BeforeBuildHelp override executed" />
+  </Target>
+
+</Project>

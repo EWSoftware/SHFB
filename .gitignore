@@ -36,7 +36,7 @@ bld/
 Documentation/**/Help/
 Documentation/WebHelp/
 **/Doc/Help/
-**/Docs/Help/
+**/TestCaseDocs/Help/
 *.shfbproj_*
 
 # Publish Web Output

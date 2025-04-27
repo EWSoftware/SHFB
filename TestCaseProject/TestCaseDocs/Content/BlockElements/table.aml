@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ec11472a-8a9c-44e7-9d32-45f671526922" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This element is used to arrange data in a table format with rows
+and columns.  An optional title and table header can also be included.</para>
+
+    </introduction>
+
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>A table consists of the following elements:</para>
+
+<definitionTable>
+	<definedTerm><codeInline>table</codeInline></definedTerm>
+	<definition><para>This is the main element.  All other table elements are nested
+within it and it has no attributes.</para></definition>
+
+	<definedTerm><codeInline>title</codeInline></definedTerm>
+	<definition><para>This is an optional element.  If specified, it defines a title
+that will appear above the table.</para></definition>
+
+	<definedTerm><codeInline>tableHeader</codeInline></definedTerm>
+	<definition><para>This is an optional element.  If specified, it should contain
+a single <codeInline>row</codeInline> element that defines the header row.
+This can be used to add titles to each column.  The table header, if specified,
+will be styled differently in the rendered topic.</para></definition>
+
+	<definedTerm><codeInline>row</codeInline></definedTerm>
+	<definition><para>This element is used to define each row in the table.  A table
+must contain at least one row.  Each row must contain one or more
+<codeInline>entry</codeInline> elements that define the columns in the row.</para></definition>
+
+	<definedTerm><codeInline>entry</codeInline></definedTerm>
+	<definition><para>This element is used to define the columns in each row.
+The entry items can themselves contain other MAML elements, nested lists,
+tables, etc.  Text should be contained in a <codeInline>para</codeInline> element.</para>
+
+	<alert class="tip">
+		<para>The <codeInline>entry</codeInline> element supports an <codeInline>address</codeInline> attribute
+that can be used to link to a specific entry from another location.</para>
+	</alert>
+
+<alert class="tip">
+  <para>To render an empty cell, use a non-breaking space entity (<codeInline>&amp;#160;</codeInline>).</para>
+</alert>
+
+	</definition>
+
+</definitionTable>
+
+<alert class="note">
+  <para>There are no provisions for spanning rows or columns as there is in
+HTML tables.  As such, each row must contain the same number of columns.
+However, you can nest tables within an <codeInline>entry</codeInline> element
+which can be used to achieve a similar effect.</para>
+</alert>
+
+      </content>
+    </section>
+
+    <section>
+      <title>Example</title>
+      <content>
+<code language="xml" title=" ">
+&lt;para&gt;This link takes you to &lt;link xlink:href=&quot;#Row3Cell1&quot;&gt;Row 3, Cell 1&lt;/link&gt;
+in the first table.&lt;/para&gt;
+      
+&lt;table&gt;
+  &lt;title&gt;A Simple Table with Title and Headers&lt;/title&gt;
+  &lt;tableHeader&gt;
+  	&lt;row&gt;
+  	  &lt;entry&gt;&lt;para&gt;Header 1&lt;/para&gt;&lt;/entry&gt;
+  	  &lt;entry&gt;&lt;para&gt;Header 2&lt;/para&gt;&lt;/entry&gt;
+  	  &lt;entry&gt;&lt;para&gt;Header 3&lt;/para&gt;&lt;/entry&gt;
+  	&lt;/row&gt;
+  &lt;/tableHeader&gt;
+  &lt;row&gt;
+  	  &lt;entry&gt;&lt;para&gt;Row 1, Cell 1&lt;/para&gt;&lt;/entry&gt;
+  	  &lt;entry&gt;&lt;para&gt;Row 1, Cell 2&lt;/para&gt;&lt;/entry&gt;
+  	  &lt;entry&gt;&lt;para&gt;Row 1, Cell 3&lt;/para&gt;&lt;/entry&gt;
+  &lt;/row&gt;
+  &lt;row&gt;
+  	  &lt;entry&gt;&lt;para&gt;Row 2, Cell 1&lt;/para&gt;&lt;/entry&gt;
+  	  &lt;entry&gt;&lt;para&gt;Row 2, Cell 2&lt;/para&gt;&lt;/entry&gt;
+  	  &lt;entry&gt;&lt;para&gt;Row 2, Cell 3&lt;/para&gt;&lt;/entry&gt;
+  &lt;/row&gt;
+  &lt;row&gt;
+  	  &lt;entry address=&quot;Row3Cell1&quot;&gt;&lt;para&gt;This entry has an &lt;codeInline&gt;address&lt;/codeInline&gt;
+attribute that can be used as a link target.&lt;/para&gt;&lt;/entry&gt;
+  	  &lt;entry&gt;&lt;para&gt;Row 3, Cell 2&lt;/para&gt;&lt;/entry&gt;
+  	  &lt;entry&gt;&lt;para&gt;Row 3, Cell 3&lt;/para&gt;&lt;/entry&gt;
+  &lt;/row&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tableHeader&gt;
+  	&lt;row&gt;
+	  &lt;entry&gt;&lt;para&gt;&amp;#160;&lt;/para&gt;&lt;/entry&gt;
+	  &lt;entry&gt;&lt;para&gt;A Nested Table Example&lt;/para&gt;&lt;/entry&gt;
+  	&lt;/row&gt;
+  &lt;/tableHeader&gt;
+  &lt;row&gt;
+    &lt;entry&gt;&lt;mediaLink&gt;&lt;image
+       xlink:href=&quot;98a8a8b7-c374-40c7-902a-91c947bf107c&quot;/&gt;
+       &lt;/mediaLink&gt;&lt;/entry&gt;
+    &lt;entry&gt;
+		&lt;table&gt;
+		  &lt;row&gt;
+		  	&lt;entry&gt;&lt;para&gt;Cell 1&lt;/para&gt;&lt;/entry&gt;
+		  	&lt;entry&gt;&lt;para&gt;Cell 2&lt;/para&gt;&lt;/entry&gt;
+		  	&lt;entry&gt;&lt;para&gt;Cell 3&lt;/para&gt;&lt;/entry&gt;
+		  	&lt;entry&gt;&lt;para&gt;Cell 4&lt;/para&gt;&lt;/entry&gt;
+		  &lt;/row&gt;
+		  &lt;row&gt;
+		  	&lt;entry&gt;&lt;para&gt;Cell 5&lt;/para&gt;&lt;/entry&gt;
+		  	&lt;entry&gt;&lt;para&gt;Cell 6&lt;/para&gt;&lt;/entry&gt;
+		  	&lt;entry&gt;&lt;para&gt;Cell 7&lt;/para&gt;&lt;/entry&gt;
+		  	&lt;entry&gt;&lt;para&gt;Cell 8&lt;/para&gt;&lt;/entry&gt;
+		  &lt;/row&gt;
+		  &lt;row&gt;
+		  	&lt;entry&gt;&lt;para&gt;Cell 9&lt;/para&gt;&lt;/entry&gt;
+		  	&lt;entry&gt;&lt;para&gt;Cell 10&lt;/para&gt;&lt;/entry&gt;
+		  	&lt;entry&gt;&lt;para&gt;Cell 11&lt;/para&gt;&lt;/entry&gt;
+		  	&lt;entry&gt;&lt;para&gt;Cell 12&lt;/para&gt;&lt;/entry&gt;
+		  &lt;/row&gt;
+		&lt;/table&gt;
+
+		&lt;para&gt;The table above doesn't have a
+&lt;codeInline&gt;tableHeader&lt;/codeInline&gt;.&lt;/para&gt;
+    &lt;/entry&gt;
+  &lt;/row&gt;
+&lt;/table&gt;
+</code>
+      </content>
+    </section>
+
+    <section>
+      <title>Example Output</title>
+      <content>
+<para>This link takes you to <link xlink:href="#Row3Cell1">Row 3, Cell 1</link>
+in the first table.</para>
+      
+<table>
+  <title>A Simple Table with Title and Headers</title>
+  <tableHeader>
+  	<row>
+  	  <entry><para>Header 1</para></entry>
+  	  <entry><para>Header 2</para></entry>
+  	  <entry><para>Header 3</para></entry>
+  	</row>
+  </tableHeader>
+  <row>
+  	  <entry><para>Row 1, Cell 1</para></entry>
+  	  <entry><para>Row 1, Cell 2</para></entry>
+  	  <entry><para>Row 1, Cell 3</para></entry>
+  </row>
+  <row>
+  	  <entry><para>Row 2, Cell 1</para></entry>
+  	  <entry><para>Row 2, Cell 2</para></entry>
+  	  <entry><para>Row 2, Cell 3</para></entry>
+  </row>
+  <row>
+  	  <entry address="Row3Cell1"><para>This entry has an <codeInline>address</codeInline>
+attribute that can be used as a link target.</para></entry>
+  	  <entry><para>Row 3, Cell 2</para></entry>
+  	  <entry><para>Row 3, Cell 3</para></entry>
+  </row>
+</table>
+
+<table>
+  <tableHeader>
+  	<row>
+	  <entry><para>&#160;</para></entry>
+	  <entry><para>A Nested Table Example</para></entry>
+  	</row>
+  </tableHeader>
+  <row>
+    <entry><mediaLink><image
+       xlink:href="98a8a8b7-c374-40c7-902a-91c947bf107c"/>
+       </mediaLink></entry>
+    <entry>
+		<table>
+		  <row>
+		  	<entry><para>Cell 1</para></entry>
+		  	<entry><para>Cell 2</para></entry>
+		  	<entry><para>Cell 3</para></entry>
+		  	<entry><para>Cell 4</para></entry>
+		  </row>
+		  <row>
+		  	<entry><para>Cell 5</para></entry>
+		  	<entry><para>Cell 6</para></entry>
+		  	<entry><para>Cell 7</para></entry>
+		  	<entry><para>Cell 8</para></entry>
+		  </row>
+		  <row>
+		  	<entry><para>Cell 9</para></entry>
+		  	<entry><para>Cell 10</para></entry>
+		  	<entry><para>Cell 11</para></entry>
+		  	<entry><para>Cell 12</para></entry>
+		  </row>
+		</table>
+
+		<para>The table above doesn't have a
+<codeInline>tableHeader</codeInline>.</para>
+    </entry>
+  </row>
+</table>
+      </content>
+    </section>
+
+    <relatedTopics>
+	  <link xlink:href="b32a73b8-fc26-4c98-912c-d595fc1a17c2" />
+      <link xlink:href="cb59e91c-f3cd-4086-a7ea-e2413a626e3d" />
+      <link xlink:href="d6c82cde-f889-4ac9-b3a7-7d45fd6fbffc" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

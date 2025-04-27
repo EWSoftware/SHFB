@@ -1,0 +1,431 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Import the common props to support NuGet restore -->
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <!-- A framework version is required by Visual Studio.  It can be any version with a targeting pack installed. -->
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <!-- The configuration and platform will be used to determine which
+         assemblies to include from solution and project documentation
+         sources -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{538d8a1f-3a67-4e72-af21-6c51458543d5}</ProjectGuid>
+    <SHFBSchemaVersion>2017.9.26.0</SHFBSchemaVersion>
+    <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
+         Studio adds them anyway -->
+    <AssemblyName>Documentation</AssemblyName>
+    <RootNamespace>Documentation</RootNamespace>
+    <Name>Documentation</Name>
+    <!-- SHFB properties -->
+    <OutputPath>Help\</OutputPath>
+    <HtmlHelpName>TestCaseProject</HtmlHelpName>
+    <ProjectSummary>Test project summary! Updated on 04/09/2011 from within Visual Studio.</ProjectSummary>
+    <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter, IncludeTargets, AutoDocumentDispose</MissingTags>
+    <VisibleItems>Attributes, ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected, ProtectedInternalAsProtected, EditorBrowsableNever, NonBrowsable</VisibleItems>
+    <HtmlHelp1xCompilerPath>
+    </HtmlHelp1xCompilerPath>
+    <WorkingPath>
+    </WorkingPath>
+    <CleanIntermediates>False</CleanIntermediates>
+    <BuildLogFile>
+    </BuildLogFile>
+    <FrameworkVersion>.NET Core/.NET Standard/.NET 5.0+</FrameworkVersion>
+    <IndentHtml>False</IndentHtml>
+    <RootNamespaceContainer>True</RootNamespaceContainer>
+    <RootNamespaceTitle>Test Root Namespace Title</RootNamespaceTitle>
+    <CopyrightHref>http://www.EWoodruff.us</CopyrightHref>
+    <CopyrightText>Copyright \xA9 2006-2022, Eric Woodruff, All rights reserved</CopyrightText>
+    <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
+    <FeedbackEMailLinkText>Me. %28{%40CustomProperty}%29</FeedbackEMailLinkText>
+    <HeaderText>Date Only: {%40BuildDate:MMM  d, yyyy} Full Date: {%40BuildDate}</HeaderText>
+    <FooterText>Full Date: {%40BuildDate} Date Only: {%40BuildDate:MMM  d, yyyy}</FooterText>
+    <PresentationStyle>Default2022</PresentationStyle>
+    <HelpFileVersion>{%40Major}.{%40Minor}.{%40Build}.{%40Revision} Beta</HelpFileVersion>
+    <ComponentConfigurations>
+      <ComponentConfig id="Code Block Component" enabled="True">
+        <component id="Code Block Component">
+          <basePath value="{@HtmlEncProjectFolder}" />
+          <outputPaths>{@HelpFormatOutputPaths}</outputPaths>
+          <allowMissingSource value="false" />
+          <removeRegionMarkers value="false" />
+          <colorizer syntaxFile="{@CoreComponentsFolder}Colorizer\highlight.xml" styleFile="{@CoreComponentsFolder}Colorizer\highlight.xsl" stylesheet="{@CoreComponentsFolder}Colorizer\highlight.css" scriptFile="{@CoreComponentsFolder}Colorizer\highlight.js" disabled="{@DisableCodeBlockComponent}" language="cs" tabSize="0" numberLines="false" outlining="true" keepSeeTags="false" defaultTitle="true" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="API Token Resolution" enabled="True">
+        <component id="API Token Resolution">{@TokenFiles}
+<replace elements="/*//token" item="string(.)" /></component>
+      </ComponentConfig>
+      <ComponentConfig id="IntelliSense Component" enabled="True">
+        <component id="IntelliSense Component">
+          <output includeNamespaces="true" namespacesFile="NamespacesTest" folder="{@OutputFolder}" boundedCapacity="0" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="Syntax Component" enabled="False">
+        <component id="Syntax Component">
+          <syntax input="/document/reference" output="/document/syntax" renderReferenceLinks="false" />
+          <generators>
+    {@SyntaxFilters}
+</generators>
+          <containerElement name="codeSnippetGroup" addNoExampleTabs="true" includeOnSingleSnippets="true" groupingEnabled="{@CodeSnippetGrouping}" />
+          <configurations>
+            <generator id="C#" />
+            <generator id="Visual Basic">
+              <includeLineContinuation value="false" />
+            </generator>
+            <generator id="Visual Basic Usage">
+              <includeLineContinuation value="false" />
+            </generator>
+            <generator id="Managed C++" />
+            <generator id="F#" />
+            <generator id="J#" />
+            <generator id="JScript" />
+            <generator id="JavaScript" />
+            <generator id="XAML Usage" />
+            <generator id="ASP.NET" />
+            <generator id="X#" />
+          </configurations>
+        </component>
+      </ComponentConfig>
+    </ComponentConfigurations>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="..\TestCases\TestDoc.csproj" />
+    </DocumentationSources>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="(global)" isDocumented="False">Empty types test.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc" isDocumented="True">Test Namespace.  See &lt;see cref="T:TestDoc.TestClass"/&gt; and &lt;see cref="T:TestDoc.TestDerivedClass"&gt;Test Sealed Derived Class&lt;/see&gt; for some additional information.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.DocumentationInheritance" isDocumented="True">This namespace contains examples of documentation inheritance using the &amp;lt;inheritdoc /&amp;gt; tag.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.Generics" isDocumented="True">&lt;inheritdoc cref="N:TestDoc"/&gt;
+&lt;p/&gt;Test of the &amp;lt;inheritdoc /&amp;gt; tag in namespace comments.  The stuff from the &lt;b&gt;TestDoc&lt;/b&gt; namespace should be above this paragraph.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.IndexTocBugs" isDocumented="True">CHM duplicate index keyword test and &amp;lt;see&amp;gt;/&amp;lt;seealso&amp;gt; inner text tests.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.ExtensionMethods" isDocumented="True">Extension method tests</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.Generics.InheritanceBug" isDocumented="True">Inheritance bug tests</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.Generics.InterfaceFailure" isDocumented="True">Interface failure test</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.Generics.MissingMembersBug" isDocumented="True">Missing members bugs</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.Generics.OverloadBug" isDocumented="True">Overload bug test</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.HierarchicalToc.WoodDreams.Report.Excel" isDocumented="True">Excel namespace</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.HierarchicalToc.WoodDreams.Reporting" isDocumented="True">Reporting namespace</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.HierarchicalToc.WoodDreams.Reporting.Standard" isDocumented="True">Reporting standard namespace</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.HierarchicalToc.WoodDreams.Reporting.WordXML" isDocumented="True">Reporting Word XML namespace</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.InterfaceTests" isDocumented="True">Interface tests</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.InteropAttributesBug" isDocumented="True">Interop attribute bugs</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.InteropBug" isDocumented="True">Interop bug</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.NestedClasses" isDocumented="True">Nested class tests</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.Overloads" isDocumented="True">Overloads tests</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.SealedOverrideBug" isDocumented="True">Sealed override bug test</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.CodeSnippetGrouping" isDocumented="True">Code snippet grouping test cases for the new SyntaxComponent grouping and sorting support.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.BrowsableAttributes" isDocumented="True">Browsable attribute tests</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.LanguageFeatures" isDocumented="True">Language feature tests</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc (Group)" isGroup="True" isDocumented="True">TestDoc group comments</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.Generics (Group)" isGroup="True" isDocumented="True">Generics group comments</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.HierarchicalToc (Group)" isGroup="True" isDocumented="True">Hierarchical TOC tests</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.EmptyTypes" isDocumented="True">Test empty types.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="TestDoc.Generics.HardToMatchSignatures" isDocumented="True">Contains types with generics that cause hard to match signatures when resolving inherited members in MRefBuilder.</NamespaceSummaryItem></NamespaceSummaries>
+    <PlugInConfigurations>
+      <PlugInConfig id="Additional Content Only" enabled="False">
+        <configuration />
+      </PlugInConfig>
+      <PlugInConfig id="Additional Notices" enabled="True">
+        <configuration>
+          <Notices>
+            <Notice AttributeTypeName="T:TestDoc.UnsafeAttribute" NoticeMessage="@unsafeNoticeMessage" TagText="@unsafeTag" UseValueForText="true" />
+            <Notice ElementName="topicNotice" NoticeMessage="@topicNoticeMessage" TagText="@topicNoticeTag" NoticeStyleClasses="tag is-success is-medium" TagStyleClasses="tag is-success is-rounded" UseValueForText="true" />
+          </Notices>
+        </configuration>
+      </PlugInConfig>
+    </PlugInConfigurations>
+    <ApiFilter>
+    </ApiFilter>
+    <HelpFileFormat>Website</HelpFileFormat>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <Major>1</Major>
+    <Minor>20</Minor>
+    <Build>34</Build>
+    <Revision>123</Revision>
+    <CustomProperty Condition="'$(CustomProperty)' == ''">A value from a custom user-defined property</CustomProperty>
+    <HelpTitle>Sandcastle Test Case Library {%40HelpFileVersion}</HelpTitle>
+    <SyntaxFilters>C#, Visual Basic, Visual Basic Usage, Managed C++, F#, XAML Usage</SyntaxFilters>
+    <KeepLogFile>True</KeepLogFile>
+    <Language>en-US</Language>
+    <ProductTitle>Sandcastle Help File Builder Example Project</ProductTitle>
+    <VendorName>EWSoftware</VendorName>
+    <TocParentVersion>100</TocParentVersion>
+    <TopicVersion>100</TopicVersion>
+    <TocOrder>-1</TocOrder>
+    <TocParentId>-1</TocParentId>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <NamingMethod>Guid</NamingMethod>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <Preliminary>True</Preliminary>
+    <CatalogProductId>VS</CatalogProductId>
+    <MSHelpViewerSdkLinkType>Msdn</MSHelpViewerSdkLinkType>
+    <CatalogVersion>100</CatalogVersion>
+    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
+    <TransformComponentArguments>
+      <Argument Key="RobotsMetadata" Value="" />
+      <Argument Key="BibliographyDataFile" Value="Bibliography.xml" />
+      <Argument Key="RootBreadcrumbTitleText" Value="Docs" />
+      <Argument Key="ResizableTocColumn" Value="False" />
+      <Argument Key="CollapsibleSections" Value="True" />
+      <Argument Key="LogoFile" Value="" />
+      <Argument Key="LogoHeight" Value="" />
+      <Argument Key="LogoWidth" Value="" />
+      <Argument Key="LogoAltText" Value="" />
+      <Argument Key="LogoPlacement" Value="Left" />
+      <Argument Key="LogoAlignment" Value="Left" />
+      <Argument Key="LogoUrl" Value="" />
+      <Argument Key="MaxVersionParts" Value="" />
+      <Argument Key="DefaultLanguage" Value="cs" />
+      <Argument Key="IncludeEnumValues" Value="True" />
+      <Argument Key="EnumMemberSortOrder" Value="Value" />
+      <Argument Key="FlagsEnumValueFormat" Value="HexValue" />
+      <Argument Key="FlagsEnumSeparatorSize" Value="4" />
+      <Argument Key="IncludeIntegerEnumSeparators" Value="false" />
+      <Argument Key="BaseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/TestCaseProject/" />
+      <Argument Key="RequestExampleUrl" Value="" />
+      <Argument Key="ShowParametersOnAllMethods" Value="False" />
+      <Argument Key="AlwaysShowTopLevelAutoOutline" Value="False" />
+    </TransformComponentArguments>
+    <MaximumGroupParts>2</MaximumGroupParts>
+    <NamespaceGrouping>True</NamespaceGrouping>
+    <CatalogName>
+    </CatalogName>
+    <ComponentPath>
+    </ComponentPath>
+    <WebsiteSdkLinkType>Msdn</WebsiteSdkLinkType>
+    <HtmlSdkLinkType>Msdn</HtmlSdkLinkType>
+    <IncludeFavorites>False</IncludeFavorites>
+    <BinaryTOC>True</BinaryTOC>
+    <SaveComponentCacheCapacity>0</SaveComponentCacheCapacity>
+    <SourceCodeBasePath>..\</SourceCodeBasePath>
+    <WarnOnMissingSourceContext>False</WarnOnMissingSourceContext>
+    <AppendMarkdownFileExtensionsToUrls>True</AppendMarkdownFileExtensionsToUrls>
+  </PropertyGroup>
+  <!-- There are no properties for these groups.  AnyCPU needs to appear in
+       order for Visual Studio to perform the build.  The others are optional
+       common platform types that may appear. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="icons\" />
+    <Folder Include="ConceptualTemplates\" />
+    <Folder Include="ExampleFiles\" />
+    <Folder Include="Content\VersionHistory\" />
+    <Folder Include="Content\FileTypes\TopicFiles\" />
+    <Folder Include="Content\FileTypes\" />
+    <Folder Include="Content\BlockElements\" />
+    <Folder Include="Content\CommonInline\" />
+    <Folder Include="Content\MediaElements\" />
+    <Folder Include="Content\LinkElements\" />
+    <Folder Include="Content\MiscElements\" />
+    <Folder Include="media\" />
+    <Folder Include="Content\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icons\Sandcastle.jpg">
+      <ImageId>Sandcastle</ImageId>
+      <AlternateText>Sandcastle</AlternateText>
+    </Content>
+    <Image Include="media\SmallInformation.png">
+      <ImageId>4cfacbe8-d100-471c-9d69-1dbcce50e316</ImageId>
+      <AlternateText>Information</AlternateText>
+    </Image>
+    <Image Include="media\SandcastleLogoLarge.jpg">
+      <ImageId>6be7079d-a9d8-4189-9021-0f72d1642beb</ImageId>
+      <AlternateText>Sandcastle</AlternateText>
+      <CopyToMedia>True</CopyToMedia>
+    </Image>
+    <Image Include="media\SandcastleLogoSmall.jpg">
+      <ImageId>98a8a8b7-c374-40c7-902a-91c947bf107c</ImageId>
+      <CopyToMedia>True</CopyToMedia>
+    </Image>
+    <Image Include="media\SecuritySuccess.png">
+      <ImageId>b5d069f7-5daf-45ae-882c-4596ab2b724a</ImageId>
+      <AlternateText>
+      </AlternateText>
+      <CopyToMedia>False</CopyToMedia>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeSnippets Include="ExampleFiles\CodeSnippets.snippets" />
+  </ItemGroup>
+  <ItemGroup>
+    <Tokens Include="TestCaseProject.tokens" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Bibliography.xml" />
+    <None Include="Content\CommonInline\lineBreak.aml" />
+    <None Include="Content\GlossaryWithDivs.aml" />
+    <None Include="Content\MiscElements\markup.aml" />
+    <None Include="ExampleFiles\FSharp.fs" />
+    <None Include="ExampleFiles\Test.xml" />
+    <None Include="ExampleFiles\Test.xaml" />
+    <None Include="ExampleFiles\Test.sql" />
+    <None Include="ExampleFiles\Example.xml" />
+    <None Include="ExampleFiles\CppClass.cpp" />
+    <None Include="ExampleFiles\Class1.vb" />
+    <None Include="Content\VersionHistory\v1.1.0.1.aml" />
+    <None Include="Content\MSHelpViewerRoot.aml" />
+    <None Include="Content\BlockElements\table.aml" />
+    <None Include="Content\BlockElements\definitionTable.aml" />
+    <None Include="Content\BlockElements\list.aml" />
+    <None Include="Content\VersionHistory\v1.1.0.0.aml" />
+    <None Include="ConceptualTemplates\XML Reference.aml" />
+    <None Include="ConceptualTemplates\Whitepaper.aml" />
+    <None Include="ConceptualTemplates\Walkthrough.aml" />
+    <None Include="ConceptualTemplates\User Interface Reference.aml" />
+    <None Include="ConceptualTemplates\Troubleshooting.aml" />
+    <None Include="ConceptualTemplates\SDK Technology Summary.aml" />
+    <None Include="ConceptualTemplates\SDK Technology Scenarios.aml" />
+    <None Include="ConceptualTemplates\SDK Technology Orientation.aml" />
+    <None Include="ConceptualTemplates\SDK Technology Code Directory.aml" />
+    <None Include="ConceptualTemplates\SDK Technology Architecture.aml" />
+    <None Include="ConceptualTemplates\Sample.aml" />
+    <None Include="ConceptualTemplates\Reference.aml" />
+    <None Include="ConceptualTemplates\Reference Without Syntax.aml" />
+    <None Include="ConceptualTemplates\Reference With Syntax.aml" />
+    <None Include="ConceptualTemplates\Orientation.aml" />
+    <None Include="ConceptualTemplates\How To.aml" />
+    <None Include="ConceptualTemplates\Glossary.aml" />
+    <None Include="ConceptualTemplates\Error Message.aml" />
+    <None Include="ConceptualTemplates\Conceptual.aml" />
+    <None Include="ExampleFiles\MediaContent.xml" />
+    <None Include="ExampleFiles\Tokens.xml" />
+    <None Include="Content\VersionHistory\VersionHistory.aml" />
+    <None Include="Content\VersionHistory\v1.0.0.0.aml" />
+    <None Include="Content\MiscElements\Token.aml" />
+    <None Include="Content\MiscElements\autoOutlineExample.aml" />
+    <None Include="Content\MiscElements\autoOutline.aml" />
+    <None Include="Content\MiscElements\MiscElements.aml" />
+    <None Include="Content\LinkElements\Link.aml" />
+    <None Include="Content\LinkElements\externalLink.aml" />
+    <None Include="Content\LinkElements\codeEntityReference.aml" />
+    <None Include="Content\LinkElements\LinkElements.aml" />
+    <None Include="Content\MediaElements\mediaLinkInline.aml" />
+    <None Include="Content\MediaElements\mediaLink.aml" />
+    <None Include="Content\MediaElements\MediaElements.aml" />
+    <None Include="Content\CommonInline\userInput.aml" />
+    <None Include="Content\CommonInline\unmanagedCodeEntityReference.aml" />
+    <None Include="Content\CommonInline\ui.aml" />
+    <None Include="Content\CommonInline\system.aml" />
+    <None Include="Content\CommonInline\superscript.aml" />
+    <None Include="Content\CommonInline\subscript.aml" />
+    <None Include="Content\CommonInline\replaceable.aml" />
+    <None Include="Content\CommonInline\quoteInline.aml" />
+    <None Include="Content\CommonInline\placeholder.aml" />
+    <None Include="Content\CommonInline\phrase.aml" />
+    <None Include="Content\CommonInline\newTerm.aml" />
+    <None Include="Content\CommonInline\math.aml" />
+    <None Include="Content\CommonInline\localUri.aml" />
+    <None Include="Content\CommonInline\literal.aml" />
+    <None Include="Content\CommonInline\legacyUnderline.aml" />
+    <None Include="Content\CommonInline\legacyItalic.aml" />
+    <None Include="Content\CommonInline\legacyBold.aml" />
+    <None Include="Content\CommonInline\hardware.aml" />
+    <None Include="Content\CommonInline\foreignPhrase.aml" />
+    <None Include="Content\CommonInline\fictiousUri.aml" />
+    <None Include="Content\CommonInline\errorInline.aml" />
+    <None Include="Content\CommonInline\environmentVariable.aml" />
+    <None Include="Content\CommonInline\database.aml" />
+    <None Include="Content\CommonInline\computeOutputInline.aml" />
+    <None Include="Content\CommonInline\command.aml" />
+    <None Include="Content\CommonInline\codeInline.aml" />
+    <None Include="Content\CommonInline\application.aml" />
+    <None Include="Content\CommonInline\CommonInline.aml" />
+    <None Include="Content\BlockElements\title.aml" />
+    <None Include="Content\BlockElements\relatedTopics.aml" />
+    <None Include="Content\BlockElements\quote.aml" />
+    <None Include="Content\BlockElements\para.aml" />
+    <None Include="Content\BlockElements\introduction.aml" />
+    <None Include="Content\BlockElements\codeReference.aml" />
+    <None Include="Content\BlockElements\code.aml" />
+    <None Include="Content\BlockElements\alert.aml" />
+    <None Include="Content\BlockElements\BlockElements.aml" />
+    <None Include="Content\FileTypes\CompanionFile.aml" />
+    <None Include="Content\FileTypes\TopicFiles\XML Reference.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Whitepaper.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Walkthrough.aml" />
+    <None Include="Content\FileTypes\TopicFiles\User Interface Reference.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Troubleshooting.aml" />
+    <None Include="Content\FileTypes\TopicFiles\SDK Technology Summary.aml" />
+    <None Include="Content\FileTypes\TopicFiles\SDK Technology Scenarios.aml" />
+    <None Include="Content\FileTypes\TopicFiles\SDK Technology Orientation.aml" />
+    <None Include="Content\FileTypes\TopicFiles\SDK Technology Code Directory.aml" />
+    <None Include="Content\FileTypes\TopicFiles\SDK Technology Architecture.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Sample.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Reference Without Syntax.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Reference With Syntax.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Reference.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Orientation.aml" />
+    <None Include="Content\FileTypes\TopicFiles\How To.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Glossary.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Error Message.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Conceptual.aml" />
+    <None Include="Content\FileTypes\TopicFiles\TopicFile.aml" />
+    <None Include="Content\FileTypes\TokenFile.aml" />
+    <None Include="Content\FileTypes\MediaContentFile.aml" />
+    <None Include="Content\FileTypes\CodeSnippetsFile.aml" />
+    <None Include="Content\FileTypes\FileTypes.aml" />
+    <None Include="Content\Glossary.aml" />
+    <None Include="Content\Links.aml" />
+    <None Include="Content\KnownIssues.aml" />
+    <None Include="Content\Welcome.aml" />
+    <None Include="Content\IntelliSense.aml" />
+    <None Include="Content\SchemaExtensibility.aml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ContentLayout Include="TestCaseProject.content" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ExampleFiles\TestUTF8.txt" />
+    <None Include="ExampleFiles\Test.txt" />
+    <None Include="AboutPageIcon.html">
+      <ImageId>AboutPageIcon</ImageId>
+      <AlternateText>About Page Icon</AlternateText>
+    </None>
+    <None Include="AboutPageInfo.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceItems Include="ProjectNotices_en-US.items" />
+    <ResourceItems Include="ProjectNotices_fr-Fr.items" />
+    <ResourceItems Include="ResourceItems.items" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Site Map.sitemap" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamlConfiguration Include="XAMLSyntax.xamlcfg" />
+  </ItemGroup>
+  <!-- Uncomment this to use the nuget packages when SHFB is not installed locally, e.g. in the CI build pipeline.
+       Update the package versions as required.
+  <ItemGroup>
+    <PackageReference Include="EWSoftware.SHFB" Version="2022.10.15.0" />
+    <PackageReference Include="EWSoftware.SHFB.NETFramework" Version="4.8.0.2" />
+  </ItemGroup> -->
+  <!-- Import the common build targets during NuGet restore because before the packages are installed, $(SHFBROOT) is not set yet -->
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="'$(MSBuildRestoreSessionId)' != ''" />
+  <!-- Import the SHFB build targets -->
+  <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" Condition="'$(MSBuildRestoreSessionId)' == ''" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="a55e614a-dc90-440b-aae1-b3f5b2b0104f" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This document type is used for technology architecture topics.</para>
+    </introduction>
+    <section>
+      <title>SDK Technology Architecture File Format</title>
+      <content>
+        <para>Below is an example of an SDK Technology Architecture topic file.</para>
+        <code language="xml" title="SDK Technology Architecture Topic" source="ConceptualTemplates\SDK Technology Architecture.aml" />
+      </content>
+    </section>
+    <relatedTopics>
+      <link xlink:href="c69a248a-bd94-47b2-90d7-5442e9cb567a" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

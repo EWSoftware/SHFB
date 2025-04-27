@@ -1,0 +1,15 @@
+﻿Test importing code with encoding.
+
+#region IBlockElement.New
+		int iblockId;
+		BXIBlockElement element = new BXIBlockElement();
+
+		element.Name = "Новый элемент";
+		element.IBlockId = iblockId;
+
+		element.Active = true;
+		element.ActiveFromDate = DateTime.Now;
+		element.ActiveToDate = DateTime.Now.AddMonths(1);
+		
+		element.Save();
+#endregion

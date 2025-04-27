@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="80949828-3d04-4572-9340-d6ad3f30f8fa" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Welcome to the Sandcastle MAML Guide</para>
+    </introduction>
+
+    <section>
+      <content>
+        <para>Select a topic from the table of contents.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="303c996a-2911-4c08-b492-6496c82b3edb" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

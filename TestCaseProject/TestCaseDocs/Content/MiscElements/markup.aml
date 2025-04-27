@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="aaaff238-1ab4-4c9e-95d8-60ca4d8d4f8e" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This element can be used to pass a literal piece of HTML markup through to the rendered topic.  In
+general, this element is only used by custom build components to pass format-specific markup through after
+modifying the conceptual topic in some manner (i.e. to colorize code).  Other non-component uses might be to
+include a video or other such items in the topic that is currently not handled by MAML.</para>
+
+      <alert class="note">
+        <para>It is recommended that you avoid using this element unless there is no MAML equivalent for what you
+are trying to do.  Usage should be restricted to the output of custom build components when needed.</para>
+      </alert>
+    </introduction>
+
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>Enter the element in the topic and specify the literal markup as the inner text.  It can be used as
+a block or an inline element.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Example</title>
+      <content>
+        <code language="xml" title=" ">
+&lt;para&gt;Here are some literal markup examples:
+&lt;markup&gt;&lt;br /&gt;&lt;br /&gt;
+This content is compatible with the all presentation style formats.
+&lt;br /&gt;&lt;br /&gt;
+It is NOT recommended that you use the markup element for normal conceptual content
+when an equivalent MAML element already exists.  Its use should be restricted to
+custom build components.
+&lt;/markup&gt;
+
+&lt;markup contentType="Html"&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;This content is only compatible with &lt;strong&gt;HTML&lt;/strong&gt; and &lt;strong&gt;Markdown&lt;/strong&gt;
+presentation style formats.&lt;/p&gt;
+
+&lt;p&gt;It is &lt;strong&gt;NOT&lt;/strong&gt; recommended that you use the &lt;em&gt;markup&lt;/em&gt; element for
+normal conceptual content when an equivalent &lt;u&gt;MAML element&lt;/u&gt; already exists.
+Its use should be restricted to custom build components.&lt;/p&gt;
+&lt;/markup&gt;
+
+&lt;markup contentType="Markdown"&gt;&lt;br /&gt;&lt;br /&gt;
+This content is only compatible with **Markdown** presentation style formats.
+
+It is **NOT** recommended that you use the _markup_ element for normal conceptual
+content when an equivalent &lt;u&gt;MAML element&lt;/u&gt; already exists.  Its use should be
+restricted to custom build components.
+
+&lt;/markup&gt;
+
+&lt;!-- For Open XML, span elements are converted to the appropriate matching style after transformation
+as long as it is a recognized style name used by the transformation.  Line breaks are supported as-is.
+Open XML namespaces could be used if they are added to the namespace list at the top of the topic. --&gt;
+&lt;markup contentType="OpenXml"&gt;&lt;br /&gt;&lt;br /&gt;
+This content is only compatible with &lt;span class="Bold"&gt;Open XML&lt;/span&gt; presentation style formats.
+&lt;br /&gt;&lt;br /&gt;
+It is &lt;span class="Bold"&gt;NOT&lt;/span&gt; recommended that you use the &lt;span class="Emphasis"&gt;markup&lt;/span&gt;
+element for normal conceptual content when an equivalent &lt;span class="Underline"&gt;MAML element&lt;/span&gt; already
+exists.  Its use should be restricted to custom build components.
+&lt;/markup&gt;
+&lt;/para&gt;
+</code>
+      </content>
+    </section>
+
+		<section>
+      <title>Example Output</title>
+      <content>
+				<para>Here are some literal markup examples:
+<markup><br /><br />
+This content is compatible with the all presentation style formats.
+<br /><br />
+It is NOT recommended that you use the markup element for normal conceptual content
+when an equivalent MAML element already exists.  Its use should be restricted to
+custom build components.
+</markup>
+
+<markup contentType="Html"><br /><br />
+<p>This content is only compatible with <strong>HTML</strong> and <strong>Markdown</strong>
+presentation style formats.</p>
+
+<p>It is <strong>NOT</strong> recommended that you use the <code>markup</code> element for
+normal conceptual content when an equivalent <u>MAML element</u> already exists.
+Its use should be restricted to custom build components.</p>
+</markup>
+
+<markup contentType="Markdown">
+This content is only compatible with **Markdown** presentation style formats.
+
+It is **NOT** recommended that you use the `markup` element for normal conceptual
+content when an equivalent <u>MAML element</u> already exists.  Its use should be
+restricted to custom build components.
+
+</markup>
+
+<!-- For Open XML, span elements are converted to the appropriate matching style after transformation
+as long as it is a recognized style name used by the transformation.  Line breaks are supported as-is.
+Open XML namespaces could be used if they are added to the namespace list at the top of the topic. -->
+<markup contentType="OpenXml"><br /><br />
+This content is only compatible with <span class="Bold">Open XML</span> presentation style formats.
+<br /><br />
+It is <span class="Bold">NOT</span> recommended that you use the <span class="CodeInline">markup</span>
+element for normal conceptual content when an equivalent <span class="Underline">MAML element</span> already
+exists.  Its use should be restricted to custom build components.
+</markup>
+</para>
+			</content>
+    </section>
+
+    <relatedTopics>
+			<link xlink:href="9d0dc122-7829-4b22-af2e-6685867116f8" />
+		</relatedTopics>
+  </developerConceptualDocument>
+</topic>
