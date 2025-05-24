@@ -2,6 +2,7 @@
   <Folder Name="/Solution Items/">
     <File Path="../../.editorconfig" />
     <File Path="../../IgnoredWords.dic" />
+    <File Path="../../Directory.Packages.props" />
   </Folder>
   <Project Path="BuildAssembler/BuildComponents/BuildComponents.csproj" />
   <Project Path="BuildAssembler/BuildComponentsUI/BuildComponentsUI.csproj" />

@@ -50,11 +50,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.115" />
-		<PackageReference Include="Microsoft.Build" Version="15.1.548">
+		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" />
+		<PackageReference Include="Microsoft.Build">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
-		<PackageReference Include="System.IO.Compression" Version="4.3.0" />
+		<PackageReference Include="System.IO.Compression" />
 		<Reference Include="PresentationFramework.Aero">
 			<Private>False</Private>
 		</Reference>

@@ -2,6 +2,7 @@
   <Folder Name="/Solution Items/">
     <File Path="../../.editorconfig" />
     <File Path="../../IgnoredWords.dic" />
+    <File Path="../../Directory.Packages.props" />
   </Folder>
   <Project Path="CodeColorizer/ColorizerLibrary/ColorizerLibrary.csproj" />
   <Project Path="MPFProj/Microsoft.VisualStudio.Project.csproj" Id="cacb60a9-1e76-4f92-8831-b134a658c695" />

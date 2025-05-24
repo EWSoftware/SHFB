@@ -4,7 +4,8 @@
     <Platform Name="x86" />
   </Configurations>
   <Folder Name="/Solution Items/">
-    <File Path=".editorconfig" />
+    <File Path="../../.editorconfig" />
+    <File Path="../../Directory.Packages.props" />
   </Folder>
   <Project Path="SandcastleInstaller/SandcastleInstaller.csproj">
     <Platform Solution="*|x86" Project="x86" />

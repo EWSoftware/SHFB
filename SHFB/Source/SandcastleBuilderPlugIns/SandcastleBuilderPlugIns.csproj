@@ -42,7 +42,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Build" Version="15.1.548">
+		<PackageReference Include="Microsoft.Build">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
 	</ItemGroup>

@@ -37,7 +37,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.115" />
+		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" />
 	</ItemGroup>
 
 	<ItemGroup>

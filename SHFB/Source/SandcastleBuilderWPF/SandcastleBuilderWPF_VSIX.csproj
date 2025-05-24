@@ -48,14 +48,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.115" />
-		<PackageReference Include="Microsoft.Build" Version="16.11.0">
+		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" />
+		<PackageReference Include="Microsoft.Build" VersionOverride="17.14.8">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.3.32804.24" ExcludeAssets="runtime">
+		<PackageReference Include="Microsoft.VisualStudio.SDK">
+			<ExcludeAssets>Runtime</ExcludeAssets>
 			<IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="System.IO.Compression" Version="4.3.0" />
+		<PackageReference Include="System.IO.Compression" />
 		<Reference Include="PresentationFramework.Aero">
 			<Private>False</Private>
 		</Reference>

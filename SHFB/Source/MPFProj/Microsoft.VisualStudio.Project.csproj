@@ -174,19 +174,17 @@
     <EmbeddedResource Include="Resources\imagelis.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build">
-      <Version>16.11.0</Version>
+    <PackageReference Include="Microsoft.Build" VersionOverride="17.14.8">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Build.Tasks.Core">
-      <Version>16.11.0</Version>
+    <PackageReference Include="Microsoft.Build.Tasks.Core" VersionOverride="17.14.8">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Build.Utilities.Core">
-      <Version>16.11.0</Version>
+    <PackageReference Include="Microsoft.Build.Utilities.Core" VersionOverride="17.14.8">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.3.32804.24" ExcludeAssets="runtime">
+    <PackageReference Include="Microsoft.VisualStudio.SDK">
+      <ExcludeAssets>runtime</ExcludeAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>

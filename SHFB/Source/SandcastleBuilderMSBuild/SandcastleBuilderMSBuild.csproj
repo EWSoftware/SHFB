@@ -29,17 +29,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Build" Version="15.1.548">
+		<PackageReference Include="Microsoft.Build">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Build.Framework" Version="15.1.548">
+		<PackageReference Include="Microsoft.Build.Framework">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.548">
+		<PackageReference Include="Microsoft.Build.Utilities.Core">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
-		<PackageReference Include="System.ComponentModel.Composition" Version="6.0.0" />
-		<PackageReference Include="System.IO.Compression" Version="4.3.0" />
+		<PackageReference Include="System.ComponentModel.Composition" />
+		<PackageReference Include="System.IO.Compression" />
 	</ItemGroup>
 
 	<ItemGroup>
