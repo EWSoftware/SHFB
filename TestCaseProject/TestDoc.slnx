@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
+    <File Path="Directory.Packages.props" />
   </Folder>
   <Project Path="TestCaseDocs/TestCaseProject.shfbproj" Type="7cf6df6d-3b04-46f8-a40b-537d21bca0b4" Id="538d8a1f-3a67-4e72-af21-6c51458543d5">
     <BuildDependency Project="TestCases/TestDoc.csproj" />

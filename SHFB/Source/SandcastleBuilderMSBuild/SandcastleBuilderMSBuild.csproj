@@ -38,7 +38,6 @@
 		<PackageReference Include="Microsoft.Build.Utilities.Core">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
-		<PackageReference Include="System.ComponentModel.Composition" />
 		<PackageReference Include="System.IO.Compression" />
 	</ItemGroup>
 

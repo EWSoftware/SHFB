@@ -51,9 +51,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" />
-		<PackageReference Include="Microsoft.Build">
-			<ExcludeAssets>Runtime</ExcludeAssets>
-		</PackageReference>
 		<PackageReference Include="System.IO.Compression" />
 		<Reference Include="PresentationFramework.Aero">
 			<Private>False</Private>

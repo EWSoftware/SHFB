@@ -29,10 +29,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.ComponentModel.Composition" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Content Include="SyntaxContent\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>

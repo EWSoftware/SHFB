@@ -2,8 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/30/2022
-// Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to build the reflection data
 //
@@ -34,7 +34,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Build.Evaluation;
+using Microsoft.Build.Locator;
 
 using Sandcastle.Core;
 using Sandcastle.Core.Reflection;
@@ -99,17 +99,8 @@ namespace ReflectionDataManager
             Directory.CreateDirectory(workingFolder);
 
             // Use the latest version of MSBuild available rather than a specific version
-            string latestToolsVersion = ProjectCollection.GlobalProjectCollection.Toolsets.FirstOrDefault(
-                t => t.ToolsVersion.Equals("Current", StringComparison.OrdinalIgnoreCase))?.ToolsVersion;
-
-            if(latestToolsVersion == null)
-            {
-                latestToolsVersion = ProjectCollection.GlobalProjectCollection.Toolsets.Max(
-                    t => Version.TryParse(t.ToolsVersion, out Version ver) ? ver : new Version()).ToString();
-            }
-
-            msBuildExePath = Path.Combine(ProjectCollection.GlobalProjectCollection.Toolsets.First(
-                t => t.ToolsVersion == latestToolsVersion).ToolsPath, "MSBuild.exe");
+            msBuildExePath = Path.Combine(MSBuildLocator.QueryVisualStudioInstances().OrderByDescending(
+                v => v.Version).First().MSBuildPath, "MSBuild.exe");
         }
         #endregion
 

@@ -47,7 +47,6 @@
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
 		<PackageReference Include="SixLabors.ImageSharp"/>
-		<PackageReference Include="System.ComponentModel.Composition" />
 		<PackageReference Include="System.Text.Json" />
 	</ItemGroup>
 

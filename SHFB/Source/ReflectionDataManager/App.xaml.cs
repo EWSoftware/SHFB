@@ -2,8 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : App.xaml.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/27/2021
-// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the startup code for the Reflection Data Manager tool
 //
@@ -19,6 +19,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -70,7 +71,7 @@ namespace ReflectionDataManager
             catch(Exception ex)
             {
                 Console.WriteLine("Unable to register MSBuild defaults: " + ex.Message + "\r\n\r\n" +
-                    "You probably need to install the Microsoft Build Tools for Visual Studio 2017 or later.");
+                    "You probably need to install the Microsoft Build Tools for Visual Studio 2022 or later.");
                 return;
             }
 
@@ -85,7 +86,7 @@ namespace ReflectionDataManager
 
                 object[] copyrightAttributes = application.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true);
 
-                foreach(AssemblyCopyrightAttribute copyrightAttribute in copyrightAttributes)
+                foreach(AssemblyCopyrightAttribute copyrightAttribute in copyrightAttributes.Cast<AssemblyCopyrightAttribute>())
                     Console.WriteLine(copyrightAttribute.Copyright);
 
                 // Specify options
@@ -110,15 +111,17 @@ namespace ReflectionDataManager
                     exitCode = 1;
                 }
                 else
+                {
                     if(!parsedArguments.Success)
                     {
                         parsedArguments.WriteParseErrors(Console.Out);
                         exitCode = 1;
                     }
+                }
 
                 if(exitCode == 0)
                     exitCode = PerformBuild(parsedArguments);
-                
+
                 this.Shutdown(exitCode);
                 return;
             }
@@ -205,7 +208,6 @@ namespace ReflectionDataManager
         {
             Console.WriteLine(value);
         }
-
         #endregion
     }
 }

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : StartUp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/12/2022
-// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This application provides a GUI that is used to edit configuration files that can be used to build HTML
 // documentation help files using Sandcastle.
@@ -19,7 +19,6 @@
 //===============================================================================================================
 
 using System;
-using System.Linq;
 using System.Windows.Forms;
 
 using Microsoft.Build.Locator;
@@ -56,21 +55,13 @@ namespace SandcastleBuilder.Gui
 
             try
             {
-                // The version of MSBuild that comes with Visual Studio 17.3 introduced a binary incompatibility.
-                // A workaround is in place.  If that doesn't work, we may need to add a command line option to
-                // specify what version to use.
-                var vs = MSBuildLocator.QueryVisualStudioInstances().FirstOrDefault();
-
-                if(vs == null)
-                    throw new InvalidOperationException("Build Tools 2017 or later not found");
-
-                MSBuildLocator.RegisterInstance(vs);
+                MSBuildLocator.RegisterDefaults();
             }
             catch(Exception ex)
             {
                 MessageBox.Show("Unable to register MSBuild defaults: " + ex.Message + "\r\n\r\nYou probably " +
-                    "need to install the Microsoft Build Tools for Visual Studio 2017 or later.\r\n\r\n" +
-                    "As an alternative, if you have Visual Studio 2017 or later and have installed the help " +
+                    "need to install the Microsoft Build Tools for Visual Studio 2022 or later.\r\n\r\n" +
+                    "As an alternative, if you have Visual Studio 2022 or later and have installed the help " +
                     "file builder package, use it to manage the project.", Constants.AppName,
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;

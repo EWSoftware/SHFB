@@ -51,8 +51,5 @@
 
 	<ItemGroup>
 		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" />
-		<PackageReference Include="Microsoft.Build">
-			<ExcludeAssets>Runtime</ExcludeAssets>
-		</PackageReference>
 	</ItemGroup>
 </Project>

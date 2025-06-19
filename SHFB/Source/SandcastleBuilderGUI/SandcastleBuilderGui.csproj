@@ -87,13 +87,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" />
-		<PackageReference Include="Microsoft.Build">
-			<ExcludeAssets>Runtime</ExcludeAssets>
-		</PackageReference>
 		<PackageReference Include="Microsoft.Build.Locator" />
-		<PackageReference Include="Microsoft.Build.Utilities.Core">
-			<ExcludeAssets>Runtime</ExcludeAssets>
-		</PackageReference>
 		<PackageReference Include="ICSharpCode.TextEditor" />
 		<PackageReference Include="NHunspell" />
 	</ItemGroup>

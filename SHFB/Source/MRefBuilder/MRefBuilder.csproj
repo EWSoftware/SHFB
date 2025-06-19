@@ -56,7 +56,6 @@
 		<PackageReference Include="Microsoft.Build.Utilities.Core">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.DiaSymReader"/>
 		<PackageReference Include="Microsoft.DiaSymReader.PortablePdb" />
 		<PackageReference Include="System.CodeDom" />
 	</ItemGroup>
