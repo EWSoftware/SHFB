@@ -3,10 +3,8 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<!-- NOTE: This is an interactive utility so we'll only target the .NET Framework. -->
-		<TargetFramework>net472</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 		<UseWPF>True</UseWPF>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
 		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
@@ -14,8 +12,6 @@
 		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
 		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AssemblyName>SHFBProjectLauncher</AssemblyName>
 		<RootNamespace>SandcastleBuilder.ProjectLauncher</RootNamespace>
 		<ApplicationIcon>Resources\SHFBProjectLauncher.ico</ApplicationIcon>
@@ -32,7 +28,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
+		<Compile Include="..\SandcastleBuilderMSBuild\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
 		<Compile Include="..\SandcastleInstaller\VisualStudioInstance.cs" Link="VisualStudioInstance.cs" />
 	</ItemGroup>
 

@@ -106,7 +106,7 @@ namespace Sandcastle.Tools.BuildComponents
             /// <inheritdoc />
             /// <remarks>Indicate a dependency on the missing documentation component as it will produce more
             /// complete documentation with all the proper elements present.</remarks>
-            public override IEnumerable<string> Dependencies => new List<string> { "Show Missing Documentation Component" };
+            public override IEnumerable<string> Dependencies => ["Show Missing Documentation Component"];
         }
         #endregion
 
@@ -239,7 +239,7 @@ namespace Sandcastle.Tools.BuildComponents
         protected IntelliSenseComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
             // No bounded capacity by default
-            commentsList = new BlockingCollection<CommentsInfo>();
+            commentsList = [];
         }
         #endregion
 
@@ -392,7 +392,7 @@ namespace Sandcastle.Tools.BuildComponents
                     if(!writers.TryGetValue(comments.AssemblyName, out XmlWriter writer))
                     {
                         fullPath = Path.Combine(outputFolder, comments.AssemblyName + ".xml");
-                        XmlWriterSettings settings = new XmlWriterSettings { Indent = true, CloseOutput = true };
+                        XmlWriterSettings settings = new() { Indent = true, CloseOutput = true };
 
                         try
                         {

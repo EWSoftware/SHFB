@@ -34,7 +34,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.tcbViewOutput = new System.Windows.Forms.ToolStripComboBox();
             this.tslLogFile = new System.Windows.Forms.ToolStripLabel();
-            this.statusBarTextProvider1 = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
+            this.statusBarTextProvider1 = new SandcastleBuilder.Gui.StatusBarTextProvider(this.components);
             this.txtBuildOutput = new System.Windows.Forms.RichTextBox();
             this.ehLogViewer = new System.Windows.Forms.Integration.ElementHost();
             this.ucBuildLogViewer = new SandcastleBuilder.WPF.UserControls.BuildLogViewerControl();
@@ -133,7 +133,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripComboBox tcbViewOutput;
-        private SandcastleBuilder.Utils.Controls.StatusBarTextProvider statusBarTextProvider1;
+        private SandcastleBuilder.Gui.StatusBarTextProvider statusBarTextProvider1;
         private System.Windows.Forms.RichTextBox txtBuildOutput;
         private System.Windows.Forms.ToolStripLabel tslLogFile;
         private System.Windows.Forms.Integration.ElementHost ehLogViewer;

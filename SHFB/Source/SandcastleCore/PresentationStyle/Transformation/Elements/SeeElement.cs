@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SeeElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/08/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle see/seealso elements
 //
@@ -20,6 +20,8 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
+
+using Sandcastle.Core.Project;
 
 namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 {
@@ -146,9 +148,9 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
         private static void RenderLanguageKeyword(TopicTransformationCore transformation, string keyword)
         {
             // If there is a slash, separate the keywords and render each one individually
-            bool first = true, isHtml = (transformation.SupportedFormats != HelpFileFormats.OpenXml);
+            bool first = true, isHtml = transformation.SupportedFormats != HelpFileFormats.OpenXml;
 
-            foreach(string k in keyword.NormalizeWhiteSpace().Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach(string k in keyword.NormalizeWhiteSpace().Split(['/'], StringSplitOptions.RemoveEmptyEntries))
             {
                 string kw = k.Trim();
 

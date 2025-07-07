@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : BuildLogViewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/22/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 07/03/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to view the build log content.
 //
@@ -107,11 +107,13 @@ namespace SandcastleBuilder.WPF.UserControls
                     wbContent.NavigateToString(content);
                 }
                 else
+                {
                     wbContent.NavigateToString(String.Format(CultureInfo.InvariantCulture, "<div " +
                         "style='font-family: Arial; font-size: 9pt'>Log File: {0}<br /><br />There is no log " +
                         "file to view.  Please build the project first.  You may also need to enable the " +
                         "<b>Keep log file after successful build (KeepLogFile)</b> project property.</div>",
                         String.IsNullOrWhiteSpace(logFilename) ? "(Build cleaned)" : logFilename));
+                }
             }
             catch(Exception ex)
             {
@@ -137,7 +139,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <returns>The HTML representing the transformed log file</returns>
         private static string TransformLogFile(string logFile, bool filtered, bool highlight)
         {
-            StringBuilder sb = new StringBuilder(10240);
+            StringBuilder sb = new(10240);
             string html = null;
 
             try
@@ -146,32 +148,31 @@ namespace SandcastleBuilder.WPF.UserControls
                 html = File.ReadAllText(logFile);
 
                 // Transform the log into something more readable
-                XmlReaderSettings readerSettings = new XmlReaderSettings { CloseInput = true };
-                XslCompiledTransform xslTransform = new XslCompiledTransform();
-                XsltSettings settings = new XsltSettings(true, true);
+                XmlReaderSettings readerSettings = new() { CloseInput = true };
+                XslCompiledTransform xslTransform = new();
+                XsltSettings settings = new(true, true);
 
+                // Don't use a simplified using here.  We want to ensure the writer below gets disposed of so
+                // that the string builder contains all of the content.
                 using(var transformReader = XmlReader.Create(Path.Combine(ComponentUtilities.RootFolder,
                   "Templates", "TransformBuildLog.xsl"), readerSettings))
                 {
                     xslTransform.Load(transformReader, settings, new XmlUrlResolver());
 
-                    XsltArgumentList argList = new XsltArgumentList();
+                    XsltArgumentList argList = new();
                     argList.AddParam("filterOn", String.Empty, filtered ? "true" : "false");
                     argList.AddParam("highlightOn", String.Empty, highlight ? "true" : "false");
 
-                    using(StringReader sr = new StringReader(html))
-                    using(XmlReader reader = XmlReader.Create(sr, readerSettings))
-                    {
-                        XmlWriterSettings writerSettings = xslTransform.OutputSettings.Clone();
-                        writerSettings.CloseOutput = true;
-                        writerSettings.Indent = false;
+                    using StringReader sr = new(html);
+                    using XmlReader reader = XmlReader.Create(sr, readerSettings);
+                    
+                    XmlWriterSettings writerSettings = xslTransform.OutputSettings.Clone();
+                    writerSettings.CloseOutput = true;
+                    writerSettings.Indent = false;
 
-                        using(XmlWriter writer = XmlWriter.Create(sb, writerSettings))
-                        {
-                            xslTransform.Transform(reader, argList, writer);
-                            writer.Flush();
-                        }
-                    }
+                    using XmlWriter writer = XmlWriter.Create(sb, writerSettings);
+                    
+                    xslTransform.Transform(reader, argList, writer);
                 }
 
                 return sb.ToString();

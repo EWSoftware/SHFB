@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ComponentCache.cs
 // Author  : Eric Woodruff
-// Updated : 04/17/2021
-// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
+// Updated : 07/03/2025
+// Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This is used to create shared instances of a composition container used to access help file builder
 // components within the project property pages.
@@ -41,8 +41,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         #region Private data members
         //=====================================================================
 
-        private static readonly ConcurrentDictionary<string, ComponentCache> instances =
-            new ConcurrentDictionary<string, ComponentCache>();
+        private static readonly ConcurrentDictionary<string, ComponentCache> instances = new();
 
         private readonly object syncRoot;
         private readonly HashSet<string> lastSearchFolders;
@@ -136,15 +135,16 @@ namespace SandcastleBuilder.WPF.PropertyPages
         public static void Clear()
         {
             foreach(string key in instances.Keys)
+            {
                 if(instances.TryRemove(key, out ComponentCache cache))
+                {
                     lock(cache.syncRoot)
                     {
-                        if(cache.cancellationTokenSource != null)
-                            cache.cancellationTokenSource.Cancel();
-
-                        if(cache.componentContainer != null)
-                            cache.componentContainer.Dispose();
+                        cache.cancellationTokenSource?.Cancel();
+                        cache.componentContainer?.Dispose();
                     }
+                }
+            }
         }
 
         /// <summary>
@@ -164,7 +164,9 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     {
                         if(searchFolders.Count() == lastSearchFolders.Count &&
                           searchFolders.All(f => lastSearchFolders.Contains(f)))
+                        {
                             return true;
+                        }
                     }
 
                     lastSearchFolders.Clear();

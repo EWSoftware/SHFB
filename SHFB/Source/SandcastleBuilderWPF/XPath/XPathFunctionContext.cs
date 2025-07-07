@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : XPathFunctionContext.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a custom XPath XSLT context used to provide a regular expression search to XPath queries
 //
@@ -16,6 +16,8 @@
 // ==============================================================================================================
 // 07/27/2007  EFW  Created the code
 //===============================================================================================================
+
+// Ignore Spelling: nextbase
 
 using System;
 using System.Text;
@@ -123,7 +125,7 @@ namespace SandcastleBuilder.WPF.XPath
         public static string ReplaceTypeTemplateMarker(XmlNode apiNode, string nodeText)
         {
             XmlNodeList templates;
-            StringBuilder sb = new StringBuilder(100);
+            StringBuilder sb = new(100);
 
             if(apiNode == null)
                 throw new ArgumentNullException(nameof(apiNode));

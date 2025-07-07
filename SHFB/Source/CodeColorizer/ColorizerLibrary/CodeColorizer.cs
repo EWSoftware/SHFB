@@ -2,7 +2,7 @@
 // System  : Code Colorizer Library
 // File    : CodeColorizer.cs
 // Author  : Jonathan de Halleux, (c) 2003
-// Updated : 04/06/2021
+// Updated : 07/05/2025
 //
 // This is used to colorize blocks of code for output as HTML.  The original Code Project article by Jonathan
 // can be found at: http://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con.
@@ -235,12 +235,12 @@ namespace ColorizerLibrary
         //=====================================================================
 
         // This regular expression is used to search for and colorize the code blocks
-        private static readonly Regex reColorize = new Regex("<\\s*(pre|code)\\s+([^>]*?)(lang(?:uage)?\\s*=\\s*(\"|')?" +
+        private static readonly Regex reColorize = new("<\\s*(pre|code)\\s+([^>]*?)(lang(?:uage)?\\s*=\\s*(\"|')?" +
             "([a-z0-9\\-+#]+)(\"|')?)([^>]*?)>((.|\\n)*?)<\\s*/\\s*(pre|code)\\s*>", RegexOptions.IgnoreCase |
             RegexOptions.Singleline);
 
         // This is used to find option overrides
-        private static readonly Regex reOptOverrides = new Regex("((numberLines\\s*=\\s*(\"|')?(true|false)(\"|')?))|" +
+        private static readonly Regex reOptOverrides = new("((numberLines\\s*=\\s*(\"|')?(true|false)(\"|')?))|" +
             "((outlining\\s*=\\s*(\"|')?(true|false)(\"|')?))|" +
             "((tabSize\\s*=\\s*(\"|')?([0-9]+)(\"|')?))|" +
             "((title\\s*=\\s*(\"([^\"]+)\"|\\'([^\\']+)\\')))|" +
@@ -248,15 +248,15 @@ namespace ColorizerLibrary
             "((disabled\\s*=\\s*(\"|')?(true|false)(\"|')?))", RegexOptions.IgnoreCase);
 
         // These are used to preserve <see> tags so that they aren't colorized
-        private static readonly Regex reExtractSeeTags = new Regex("(<\\s*see(?<PreAttrs>\\s+[^>]*)[a-z]ref\\s*=" +
+        private static readonly Regex reExtractSeeTags = new("(<\\s*see(?<PreAttrs>\\s+[^>]*)[a-z]ref\\s*=" +
             "\\s*\"(?<Link>.+?)\"(?<PostAttrs>.*?))(/>|(>(?<Content>.*?)<\\s*/\\s*see\\s*>))",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         // The marker is HTML encoded after colorization
-        private static readonly Regex reReplaceMarker = new Regex("&#255;");
+        private static readonly Regex reReplaceMarker = new("&#255;");
 
         // This is used to find the collapsible region boundaries
-        private static readonly Regex reCollapseMarkers = new Regex(
+        private static readonly Regex reCollapseMarkers = new(
             @"^\s*(#region\s(.*)|#if\s(.*)|#else|#end\s?if|#end\s?region)", RegexOptions.IgnoreCase);
 
         private static int uniqueRegionId;
@@ -561,8 +561,10 @@ namespace ColorizerLibrary
                 // Replace tabs with the specified number of spaces to ensure consistency of layout.  Default
                 // to eight if not specified.
                 if(languageNode.Attributes["tabSize"] != null && !tabSizeOverridden)
+                {
                     tabSize = Convert.ToInt32(languageNode.Attributes["tabSize"].Value,
                         CultureInfo.InvariantCulture);
+                }
 
                 // Tidy up the block by stripping any common leading whitespace and converting tabs to spaces
                 plainText = StripLeadingWhitespace(plainText, tabSize.Value, this.OutliningEnabled, out regions);
@@ -571,7 +573,7 @@ namespace ColorizerLibrary
                 // aren't colorized.
                 if(this.KeepSeeTags && this.OutputFormat == OutputFormat.Html)
                 {
-                    seeTags = new List<string>();
+                    seeTags = [];
 
                     // Typically, this would be done with a match evaluator but we need it to be thread safe so
                     // we'll manage the matches locally.  Process the list in reverse to preserve the text
@@ -588,7 +590,7 @@ namespace ColorizerLibrary
                 XmlDocument xmlResult = this.BuildHighlightTree(languageNode, language, false, plainText);
 
                 // Transform the XML to the output format and return the results
-                using(StringWriter sw = new StringWriter(CultureInfo.CurrentCulture))
+                using(StringWriter sw = new(CultureInfo.CurrentCulture))
                 {
                     languageStyle.Transform(xmlResult, null, sw);
 
@@ -638,16 +640,16 @@ namespace ColorizerLibrary
         {
             Match m;
             string[] lines;
-            string currentLine, tabsToSpaces = new String(' ', tabSize);
+            string currentLine, tabsToSpaces = new(' ', tabSize);
             int minSpaces, spaceCount, line, nestingLevel = 0;
 
-            regions = new List<CollapsibleRegion>();
+            regions = [];
 
             if(String.IsNullOrEmpty(text))
                 return text;
 
             // Replace "\r\n" with "\n" first for consistency
-            lines = text.Replace("\r\n", "\n").Split(new char[] { '\n' });
+            lines = text.Replace("\r\n", "\n").Split(['\n']);
 
             // If only one line, just trim it and convert tabs to spaces
             if(lines.Length == 1)
@@ -701,7 +703,7 @@ namespace ColorizerLibrary
                 minSpaces = 0;
 
             // The second pass joins them back together less the determined amount of leading whitespace.
-            StringBuilder sb = new StringBuilder(text.Length);
+            StringBuilder sb = new(text.Length);
 
             for(line = 0; line < lines.Length; line++)
             {
@@ -710,15 +712,19 @@ namespace ColorizerLibrary
                 if(currentLine.Length != 0)
                     sb.AppendLine(currentLine.Substring(minSpaces));
                 else
+                {
                     if(sb.Length > 0)   // Skip leading blank lines
                         sb.AppendLine();
                     else
+                    {
                         foreach(CollapsibleRegion cr in regions)
                             cr.LineNumber--;
+                    }
+                }
             }
 
             // Trim off trailing blank lines too
-            return sb.ToString().TrimEnd(new char[] { ' ', '\r', '\n' });
+            return sb.ToString().TrimEnd([' ', '\r', '\n']);
         }
 
         /// <summary>
@@ -741,22 +747,28 @@ namespace ColorizerLibrary
                 return text;
 
             // Replace "\r\n" with "\n" first for consistency
-            lines = text.Replace("\r\n", "\n").Split(new char[] { '\n' });
+            lines = text.Replace("\r\n", "\n").Split(['\n']);
 
             // Figure out the starting padding for the line numbers
             if(!addLineNumbers || lines.Length < 10)
                 numPad = String.Empty;
             else
+            {
                 if(lines.Length < 100)
                     numPad = "&nbsp;";
                 else
+                {
                     if(lines.Length < 999)
                         numPad = "&nbsp;&nbsp;";
                     else
+                    {
                         if(lines.Length < 9999)
                             numPad = "&nbsp;&nbsp;&nbsp;";
                         else
                             numPad = "&nbsp;&nbsp;&nbsp;&nbsp;";
+                    }
+                }
+            }
 
             if(addOutlining && regions.Count != 0)
                 spacer = "<span class=\"highlight-spacer\"></span>";
@@ -906,22 +918,28 @@ namespace ColorizerLibrary
                 return text;
 
             // Replace "\r\n" with "\n" first for consistency
-            lines = text.Replace("\r\n", "\n").Split(new char[] { '\n' });
+            lines = text.Replace("\r\n", "\n").Split(['\n']);
 
             // Figure out the starting padding for the line numbers
             if(lines.Length < 10)
                 totalWidth = 1;
             else
+            {
                 if(lines.Length < 100)
                     totalWidth = 2;
                 else
+                {
                     if(lines.Length < 999)
                         totalWidth = 3;
                     else
+                    {
                         if(lines.Length < 9999)
                             totalWidth = 4;
                         else
                             totalWidth = 5;
+                    }
+                }
+            }
 
             for(line = 0; line < lines.Length; line++)
             {
@@ -947,7 +965,7 @@ namespace ColorizerLibrary
         private void BuildKeywordRegExp()
         {
             XmlNodeList keywords;
-            XmlNode preNode, postNode, wordBound;
+            XmlAttribute preNode, postNode, wordBound;
             string[] words = new string[100], expression = new string[7];
             int idx;
 
@@ -1016,8 +1034,9 @@ namespace ColorizerLibrary
         /// regular expression could not be found.</exception>
         private string BuildRuleRegExp(XmlNode languageNode, XmlNode contextNode)
         {
-            StringBuilder sb = new StringBuilder("(", 1024);
-            XmlNode familyNode, kwList, node;
+            StringBuilder sb = new("(", 1024);
+            XmlNode kwList;
+            XmlAttribute familyNode, node;
 
             foreach(XmlNode ruleNode in contextNode.ChildNodes)
             {
@@ -1119,7 +1138,8 @@ namespace ColorizerLibrary
         /// </exception>
         private void BuildSyntax()
         {
-            XmlNode needBuildNode, highlightNode;
+            XmlNode highlightNode;
+            XmlAttribute needBuildNode, saveBuildNode;
 
             using(var reader = XmlReader.Create(this.LanguageSyntaxFileName, new XmlReaderSettings { CloseInput = true }))
             {
@@ -1169,7 +1189,7 @@ namespace ColorizerLibrary
             }
 
             // Save the file if asked
-            XmlNode saveBuildNode = highlightNode.Attributes["save-build"];
+            saveBuildNode = highlightNode.Attributes["save-build"];
 
             if(saveBuildNode != null && saveBuildNode.Value == "yes")
                 languageSyntax.Save(this.LanguageSyntaxFileName);
@@ -1250,7 +1270,7 @@ namespace ColorizerLibrary
         /// matching context node cannot be found.</exception>
         private void ApplyRules(XmlNode languageNode, XmlNode contextNode, string code, XmlNode parsedCodeNode)
         {
-            XmlNode attributeNode;
+            XmlAttribute attributeNode;
             Regex regExp;
             Match m;
 
@@ -1280,9 +1300,7 @@ namespace ColorizerLibrary
                 }
 
                 // Find the rule that caused the match
-                XmlNode ruleNode = this.FindRule(languageNode, contextNode, m.Value);
-
-                if(ruleNode == null)
+                XmlNode ruleNode = this.FindRule(languageNode, contextNode, m.Value) ??
                     throw new InvalidOperationException("Didn't find matching rule, regular expression false? " +
                         "(context: " + contextNode.Attributes["id"].Value + ")");
 
@@ -1475,7 +1493,7 @@ namespace ColorizerLibrary
                 // If keeping see tags, replace them with a marker character so that they aren't colorized
                 if(keepSeeTagsLocal)
                 {
-                    seeTags = new List<string>();
+                    seeTags = [];
 
                     // Typically, this would be done with a match evaluator but we need it to be thread safe so
                     // we'll manage the matches locally.  Process the list in reverse to preserve the text
@@ -1492,7 +1510,7 @@ namespace ColorizerLibrary
                 XmlDocument xmlResult = this.BuildHighlightTree(languageNode, language, inBox, matchText);
 
                 // Transform the XML to HTML and return the results
-                using(StringWriter sw = new StringWriter(CultureInfo.CurrentCulture))
+                using(StringWriter sw = new(CultureInfo.CurrentCulture))
                 {
                     languageStyle.Transform(xmlResult, null, sw);
 

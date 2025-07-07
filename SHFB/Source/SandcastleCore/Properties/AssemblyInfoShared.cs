@@ -1,17 +1,20 @@
 //===============================================================================================================
-// System  : Sandcastle Tools
+// System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AssemblyInfoShared.cs
+// Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 03/22/2025
-// Note    : Copyright 2006-2025, Microsoft Corporation, All rights reserved
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
-// Sandcastle tools common assembly attributes.
+// Sandcastle Tools common assembly attributes.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
-// notice and all copyright notices must remain intact in all applications, documentation, and source files.
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 //    Date     Who  Comments
 // ==============================================================================================================
+// 08/02/2006  EFW  Created the code
 // 12/22/2013  EFW  Updated the version numbering scheme to use a date-based value
 //===============================================================================================================
 
@@ -23,7 +26,7 @@ using System.Runtime.InteropServices;
 
 // General assembly information
 [assembly: AssemblyProduct("Sandcastle Help File Builder and Tools")]
-[assembly: AssemblyCompany("Microsoft Corporation/EWSoftware")]
+[assembly: AssemblyCompany("Microsoft Corporation/Eric Woodruff")]
 [assembly: AssemblyCopyright(AssemblyInfo.Copyright)]
 [assembly: AssemblyCulture("")]
 #if DEBUG
@@ -67,6 +70,8 @@ internal static partial class AssemblyInfo
     // This is used to set the assembly version in the strong name.  This should remain unchanged to maintain
     // binary compatibility with prior releases.  It should only be changed if a breaking change is made that
     // requires assemblies that reference older versions to be recompiled against the newer version.
+    //
+    // If this changes, update the version in SandcastleCore.csproj as well.
     public const string StrongNameVersion = "2025.3.22.0";
 
     // Common assembly file version
@@ -82,6 +87,6 @@ internal static partial class AssemblyInfo
     public const string ProductVersion = "2025.3.22.0";
 
     // Assembly copyright information
-    public const string Copyright = "Copyright \xA9 2006-2025, Microsoft Corporation, All Rights Reserved.\r\n" +
-        "Portions Copyright \xA9 2006-2024, Eric Woodruff, All Rights Reserved.";
+    public const string Copyright = "Portions Copyright \xA9 2006-2025, Microsoft Corporation, All Rights Reserved.\r\n" +
+        "All other code Copyright \xA9 2006-2025, Eric Woodruff, All Rights Reserved.";
 }

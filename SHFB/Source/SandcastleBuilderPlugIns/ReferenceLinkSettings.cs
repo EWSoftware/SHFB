@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ReferenceLinkSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/23/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing reference link settings for the Additional Reference Links plug-in
 //
@@ -27,7 +27,8 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
+using Sandcastle.Core.Project;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -36,16 +37,6 @@ namespace SandcastleBuilder.PlugIns
     /// </summary>
     public class ReferenceLinkSettings : INotifyPropertyChanged
     {
-        #region Private data members
-        //=====================================================================
-
-        private FilePath helpFileProject;
-        private HtmlSdkLinkType htmlSdkLinkType, websiteSdkLinkType;
-        private MSHelpViewerSdkLinkType msHelpViewerSdkLinkType;
-        private string referenceDescription, errorMessage;
-
-        #endregion
-
         #region Properties
         //=====================================================================
 
@@ -59,12 +50,12 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public HtmlSdkLinkType HtmlSdkLinkType
         {
-            get => htmlSdkLinkType;
+            get => field;
             set
             {
-                if(htmlSdkLinkType != value)
+                if(field != value)
                 {
-                    htmlSdkLinkType = value;
+                    field = value;
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -77,12 +68,12 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public MSHelpViewerSdkLinkType MSHelpViewerSdkLinkType
         {
-            get => msHelpViewerSdkLinkType;
+            get => field;
             set
             {
-                if(msHelpViewerSdkLinkType != value)
+                if(field != value)
                 {
-                    msHelpViewerSdkLinkType = value;
+                    field = value;
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -95,12 +86,12 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public HtmlSdkLinkType WebsiteSdkLinkType
         {
-            get => websiteSdkLinkType;
+            get => field;
             set
             {
-                if(websiteSdkLinkType != value)
+                if(field != value)
                 {
-                    websiteSdkLinkType = value;
+                    field = value;
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -116,19 +107,19 @@ namespace SandcastleBuilder.PlugIns
         /// assemblies such as references, API filter settings, etc.</value>
         public FilePath HelpFileProject
         {
-            get => helpFileProject;
+            get => field;
             set
             {
-                if(helpFileProject != value)
+                if(field != value)
                 {
-                    if(helpFileProject != null)
-                        helpFileProject.PersistablePathChanged -= this.helpFileProject_PersistablePathChanged;
+                    if(field != null)
+                        field.PersistablePathChanged -= this.helpFileProject_PersistablePathChanged;
 
                     if(value == null)
-                        value = new FilePath(helpFileProject.BasePathProvider);
+                        value = new FilePath(field.BasePathProvider);
 
-                    helpFileProject = value;
-                    helpFileProject.PersistablePathChanged += this.helpFileProject_PersistablePathChanged;
+                    field = value;
+                    field.PersistablePathChanged += this.helpFileProject_PersistablePathChanged;
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -141,10 +132,10 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string ErrorMessage
         {
-            get => errorMessage;
+            get => field;
             private set
             {
-                errorMessage = value;
+                field = value;
 
                 this.OnPropertyChanged();
             }
@@ -155,10 +146,10 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string ReferenceLinkDescription
         {
-            get => referenceDescription;
+            get => field;
             private set
             {
-                referenceDescription = value;
+                field = value;
 
                 this.OnPropertyChanged();
             }
@@ -215,13 +206,13 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         private void Validate()
         {
-            if(helpFileProject.Path.Length == 0)
+            if(this.HelpFileProject.Path.Length == 0)
                 this.ErrorMessage = "A help file project is required";
             else
                 this.ErrorMessage = null;
 
             this.ReferenceLinkDescription = String.Format(CultureInfo.CurrentCulture, "{0} (HTML: {1}, MSHC: {2}, " +
-                "Website/Markdown/Open XML: {3})", helpFileProject.PersistablePath, this.HtmlSdkLinkType,
+                "Website/Markdown/Open XML: {3})", this.HelpFileProject.PersistablePath, this.HtmlSdkLinkType,
                 this.MSHelpViewerSdkLinkType, this.WebsiteSdkLinkType);
         }
         #endregion
@@ -239,7 +230,7 @@ namespace SandcastleBuilder.PlugIns
         /// <c>helpFileProject</c>).</remarks>
         public static ReferenceLinkSettings FromXml(IBasePathProvider pathProvider, XElement configuration)
         {
-            ReferenceLinkSettings rl = new ReferenceLinkSettings(pathProvider);
+            ReferenceLinkSettings rl = new(pathProvider);
 
             if(configuration != null)
             {
@@ -275,7 +266,7 @@ namespace SandcastleBuilder.PlugIns
                 new XAttribute("htmlSdkLinkType", this.HtmlSdkLinkType.ToString()),
                 new XAttribute("helpViewerSdkLinkType", this.MSHelpViewerSdkLinkType.ToString()),
                 new XAttribute("websiteSdkLinkType", this.WebsiteSdkLinkType.ToString()),
-                new XAttribute("helpFileProject", helpFileProject.PersistablePath));
+                new XAttribute("helpFileProject", this.HelpFileProject.PersistablePath));
         }
         #endregion
     }

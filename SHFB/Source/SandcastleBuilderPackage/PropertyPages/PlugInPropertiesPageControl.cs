@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PlugInPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 08/20/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Plug-Ins category properties
 //
@@ -21,17 +21,21 @@
 //===============================================================================================================
 
 using System;
-using System.IO;
 using System.Runtime.InteropServices;
 
 using Microsoft.Build.Evaluation;
+
+using Sandcastle.Core.PlugIn;
+using Sandcastle.Core.Project;
+
+using SandcastleBuilder.MSBuild.HelpProject;
+
+
 
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
 #endif
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.WPF.PropertyPages;
 
 namespace SandcastleBuilder.Package.PropertyPages
@@ -76,7 +80,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         protected override bool BindControlValue(string propertyName)
         {
-            SandcastleProject currentProject = null;
+            ISandcastleProject currentProject = null;
 
 #if !STANDALONEGUI
             if(this.ProjectMgr != null)
@@ -110,7 +114,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(this.CurrentProject == null)
                 return false;
 
-            this.CurrentProject.MSBuildProject.SetProperty("PlugInConfigurations",
+            ((SandcastleProject)this.CurrentProject).MSBuildProject.SetProperty("PlugInConfigurations",
                 ucPlugInPropertiesPageContent.SelectedPlugIns.ToXml());
 #endif
             return true;
@@ -139,7 +143,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(this.IsDisposed || this.CurrentProject == null)
                 return;
 
-            plugInsProp = this.CurrentProject.MSBuildProject.GetProperty("PlugInConfigurations");
+            plugInsProp = ((SandcastleProject)this.CurrentProject).MSBuildProject.GetProperty("PlugInConfigurations");
 #endif
             var currentConfigs = new PlugInConfigurationDictionary();
 

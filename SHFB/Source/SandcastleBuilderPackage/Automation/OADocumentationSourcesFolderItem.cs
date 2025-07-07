@@ -56,7 +56,7 @@ namespace SandcastleBuilder.Package.Automation
         /// </summary>
         public override EnvDTE.ProjectItems ProjectItems => UIThread.DoOnUIThread(() =>
         {
-            List<EnvDTE.ProjectItem> list = new List<EnvDTE.ProjectItem>();
+            List<EnvDTE.ProjectItem> list = [];
 
             // Get a list of the project items in the node
             for(HierarchyNode child = this.Node.FirstChild; child != null; child = child.NextSibling)

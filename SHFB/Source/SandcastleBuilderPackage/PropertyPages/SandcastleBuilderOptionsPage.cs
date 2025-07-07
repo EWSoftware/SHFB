@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderOptions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/15/2022
-// Note    : Copyright 2011-2022, Eric Woodruff, All rights reserved
+// Updated : 07/06/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that defines the general package options
 //
@@ -76,16 +76,8 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <summary>
         /// This is overridden to return an instance of our custom user interface control to edit the properties
         /// </summary>
-        protected override UIElement Child
-        {
-            get
-            {
-                if(control == null)
-                    control = new GeneralOptionsControl();
+        protected override UIElement Child => control ??= new GeneralOptionsControl();
 
-                return control;
-            }
-        }
         #endregion
 
         #region Constructor
@@ -120,7 +112,6 @@ namespace SandcastleBuilder.Package.PropertyPages
                 // these options.
                 var mefOptions = new MefProviderOptions(this.Site);
 
-                control.EnableExtendedXmlCommentsCompletion = mefOptions.EnableExtendedXmlCommentsCompletion;
                 control.EnableGoToDefinition = mefOptions.EnableGoToDefinition;
                 control.EnableCtrlClickGoToDefinition = mefOptions.EnableCtrlClickGoToDefinition;
             }
@@ -176,7 +167,6 @@ namespace SandcastleBuilder.Package.PropertyPages
                     // access these options.
                     var mefOptions = new MefProviderOptions(this.Site)
                     {
-                        EnableExtendedXmlCommentsCompletion = control.EnableExtendedXmlCommentsCompletion,
                         EnableGoToDefinition = control.EnableGoToDefinition,
                         EnableCtrlClickGoToDefinition = control.EnableCtrlClickGoToDefinition
                     };

@@ -59,9 +59,7 @@ namespace SandcastleBuilder.Package.Editors
         // --------------------------------------------------------------------------------
         public SimpleEditorFactory()
         {
-            Trace.WriteLine(
-              string.Format(CultureInfo.CurrentCulture,
-              "Entering {0} constructor", typeof(TEditorPane)));
+            Trace.WriteLine(String.Format(CultureInfo.CurrentCulture, "Entering {0} constructor", typeof(TEditorPane)));
         }
 
         #endregion
@@ -232,8 +230,7 @@ namespace SandcastleBuilder.Package.Editors
           out Guid pguidCmdUI,
           out int pgrfCDW)
         {
-            Trace.WriteLine(string.Format(CultureInfo.CurrentCulture,
-              "Entering {0} CreateEditorInstance()", ToString()));
+            Trace.WriteLine(String.Format(CultureInfo.CurrentCulture, "Entering {0} CreateEditorInstance()", ToString()));
 
             // --- Initialize to null
             ppunkDocView = IntPtr.Zero;
@@ -253,7 +250,7 @@ namespace SandcastleBuilder.Package.Editors
             }
 
             // --- Create the Document (editor)
-            TEditorPane newEditor = new TEditorPane();
+            TEditorPane newEditor = new();
             ppunkDocView = Marshal.GetIUnknownForObject(newEditor);
             ppunkDocData = Marshal.GetIUnknownForObject(newEditor);
             pbstrEditorCaption = "";

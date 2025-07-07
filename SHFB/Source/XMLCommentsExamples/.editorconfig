@@ -1,5 +1,11 @@
 [*.{cs,vb}]
 # These are disabled for the XML comments examples
 
+# CA1822: Mark members as static
+dotnet_diagnostic.CA1822.severity = none
+
 # IDE0060: Remove unused parameter
 dotnet_diagnostic.IDE0060.severity = none
+
+# IDE0251: Make member 'readonly'
+dotnet_diagnostic.IDE0251.severity = none

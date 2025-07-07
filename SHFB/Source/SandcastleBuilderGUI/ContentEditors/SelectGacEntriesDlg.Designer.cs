@@ -32,7 +32,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SelectGacEntriesDlg));
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.statusBarTextProvider1 = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
+            this.statusBarTextProvider1 = new SandcastleBuilder.Gui.StatusBarTextProvider(this.components);
             this.lbGACEntries = new System.Windows.Forms.ListBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
@@ -105,7 +105,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         #endregion
 
         private System.Windows.Forms.Button btnOK;
-        private SandcastleBuilder.Utils.Controls.StatusBarTextProvider statusBarTextProvider1;
+        private SandcastleBuilder.Gui.StatusBarTextProvider statusBarTextProvider1;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.ListBox lbGACEntries;

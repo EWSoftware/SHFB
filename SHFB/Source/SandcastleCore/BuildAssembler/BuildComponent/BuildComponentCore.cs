@@ -117,8 +117,7 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// arguments class containing information to pass to the event handlers.</param>
         protected void OnComponentEvent(EventArgs e)
         {
-            if(this.BuildAssembler != null)
-                this.BuildAssembler.OnComponentEvent(this, e);
+            this.BuildAssembler?.OnComponentEvent(this, e);
         }
 
         /// <summary>
@@ -129,13 +128,10 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// <param name="args">An optional list of arguments to format into the message</param>
         public void WriteMessage(MessageLevel level, string message, params object[] args)
         {
-            if(this.BuildAssembler != null)
-            {
-                // If the message has no arguments, use it as is rather than formatting it to avoid issues if it
-                // contains braces which will look like format arguments.
-                this.BuildAssembler.WriteMessage(this.GetType().Name, level, null, args.Length == 0 ? message :
-                    String.Format(CultureInfo.CurrentCulture, message, args));
-            }
+            // If the message has no arguments, use it as is rather than formatting it to avoid issues if it
+            // contains braces which will look like format arguments.
+            this.BuildAssembler?.WriteMessage(this.GetType().Name, level, null, args.Length == 0 ? message :
+                String.Format(CultureInfo.CurrentCulture, message, args));
         }
 
         /// <summary>
@@ -150,13 +146,10 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// the "building topic X" messages are suppressed.</remarks>
         public void WriteMessage(string key, MessageLevel level, string message, params object[] args)
         {
-            if(this.BuildAssembler != null)
-            {
-                // If the message has no arguments, use it as is rather than formatting it to avoid issues if it
-                // contains braces which will look like format arguments.
-                this.BuildAssembler.WriteMessage(this.GetType().Name, level, key, args.Length == 0 ? message :
-                    String.Format(CultureInfo.CurrentCulture, message, args));
-            }
+            // If the message has no arguments, use it as is rather than formatting it to avoid issues if it
+            // contains braces which will look like format arguments.
+            this.BuildAssembler?.WriteMessage(this.GetType().Name, level, key, args.Length == 0 ? message :
+                String.Format(CultureInfo.CurrentCulture, message, args));
         }
         #endregion
     }

@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Windows platform specific code
 // File    : FolderPathUserControl.cs
 // Author  : Eric Woodruff
-// Updated : 05/14/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a user control used to select a folder
 //
@@ -25,7 +25,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
 
 namespace Sandcastle.Platform.Windows.UserControls
 {
@@ -235,21 +235,20 @@ namespace Sandcastle.Platform.Windows.UserControls
         /// <param name="e">The event arguments</param>
         private void btnSelectFolder_Click(object sender, RoutedEventArgs e)
         {
-            using(var dlg = new System.Windows.Forms.FolderBrowserDialog())
+            using var dlg = new System.Windows.Forms.FolderBrowserDialog();
+            
+            dlg.Description = this.Title;
+            dlg.ShowNewFolderButton = this.ShowNewFolderButton;
+            dlg.RootFolder = this.RootFolder;
+            dlg.SelectedPath = Environment.GetFolderPath(this.DefaultFolder);
+
+            if(!String.IsNullOrWhiteSpace(this.PersistablePath))
+                dlg.SelectedPath = Path.GetFullPath(this.PersistablePath);
+
+            if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                dlg.Description = this.Title;
-                dlg.ShowNewFolderButton = this.ShowNewFolderButton;
-                dlg.RootFolder = this.RootFolder;
-                dlg.SelectedPath = Environment.GetFolderPath(this.DefaultFolder);
-
-                if(!String.IsNullOrWhiteSpace(this.PersistablePath))
-                    dlg.SelectedPath = Path.GetFullPath(this.PersistablePath);
-
-                if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    if(this.DataContext is FolderPath fp)
-                        fp.PersistablePath = dlg.SelectedPath;
-                }
+                if(this.DataContext is FolderPath fp)
+                    fp.PersistablePath = dlg.SelectedPath;
             }
         }
 

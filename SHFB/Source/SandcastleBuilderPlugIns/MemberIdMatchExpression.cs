@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : MemberIdMatchExpression.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/10/2021
-// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
+// Updated : 07/04/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to contain the member ID match expression settings
 //
@@ -34,8 +34,6 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         private Regex regex;
-        private string matchExpression, replacementValue, errorMessage;
-        private bool matchAsRegEx;
 
         #endregion
 
@@ -47,12 +45,12 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string MatchExpression
         {
-            get => matchExpression;
+            get => field;
             set
             {
-                if(matchExpression != value)
+                if(field != value)
                 {
-                    matchExpression = value;
+                    field = value;
                     regex = null;
 
                     this.Validate();
@@ -66,12 +64,12 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string ReplacementValue
         {
-            get => replacementValue;
+            get => field;
             set
             {
-                if(replacementValue != value)
+                if(field != value)
                 {
-                    replacementValue = value;
+                    field = value;
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -85,12 +83,12 @@ namespace SandcastleBuilder.PlugIns
         /// <value>True to match and replace as a regular expression, false to use literal match and replace</value>
         public bool MatchAsRegEx
         {
-            get => matchAsRegEx;
+            get => field;
             set
             {
-                if(matchAsRegEx != value)
+                if(field != value)
                 {
-                    matchAsRegEx = value;
+                    field = value;
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -103,10 +101,10 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string ErrorMessage
         {
-            get => errorMessage;
+            get => field;
             private set
             {
-                errorMessage = value;
+                field = value;
                 this.OnPropertyChanged();
             }
         }
@@ -136,21 +134,21 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         private void Validate()
         {
-            List<string> problems = new List<string>();
+            List<string> problems = [];
 
-            if(String.IsNullOrWhiteSpace(matchExpression))
+            if(String.IsNullOrWhiteSpace(this.MatchExpression))
                 problems.Add("A match expression is required");
             else
             {
-                if(matchAsRegEx)
+                if(this.MatchAsRegEx)
                 {
                     try
                     {
                         // Make an attempt at validating the expression.  Just its syntax, not necessarily that it
                         // will work in the reflection file.
-                        Regex reTest = new Regex(matchExpression.Trim());
+                        Regex reTest = new(this.MatchExpression.Trim());
 
-                        reTest.Replace("T:System.Object", replacementValue.Trim());
+                        reTest.Replace("T:System.Object", (this.ReplacementValue ?? String.Empty).Trim());
                     }
                     catch(Exception ex)
                     {
@@ -159,7 +157,7 @@ namespace SandcastleBuilder.PlugIns
                 }
             }
 
-            if(String.IsNullOrWhiteSpace(replacementValue))
+            if(String.IsNullOrWhiteSpace(this.ReplacementValue))
                 problems.Add("A replacement value is required");
 
             if(problems.Count != 0)

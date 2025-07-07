@@ -1,5 +1,5 @@
 ﻿//===============================================================================================================
-// System  : Sandcastle Build Components
+// System  : Sandcastle Help File Builder Components
 // File    : ArtTarget.cs
 //
 // This file contains a class that holds art target information used to resolve art links by the

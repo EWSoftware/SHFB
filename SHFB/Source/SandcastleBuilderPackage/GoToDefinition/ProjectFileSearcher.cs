@@ -100,7 +100,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
         {
             this.serviceProvider = serviceProvider;
             this.textView = textView;
-            shfbProjects = new List<MSBuildProject>();
+            shfbProjects = [];
         }
         #endregion
 

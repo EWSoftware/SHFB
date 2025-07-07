@@ -43,7 +43,7 @@ namespace Sandcastle.Tools.Reflection
             if(configuration.Name != "namespace")
                 throw new InvalidOperationException("The configuration element must be named 'namespace'");
 
-            typeFilters = new List<TypeFilter>();
+            typeFilters = [];
             name = configuration.GetAttribute("name");
             exposed = Convert.ToBoolean(configuration.GetAttribute("expose"), CultureInfo.InvariantCulture);
 

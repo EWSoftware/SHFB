@@ -229,7 +229,7 @@ namespace System.Compiler.Metadata
         internal string/*!*/ ReadUTF8()
         {
             byte* pb = this.pb;
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             byte b = 0;
             for (; ; )
             {
@@ -299,7 +299,7 @@ namespace System.Compiler.Metadata
 
         internal string/*!*/ ReadUTF16()
         {
-            string result = new string((char*)this.pb);
+            string result = new((char*)this.pb);
             this.pb += (result.Length + 1) * 2;
             return result;
         }
@@ -399,7 +399,7 @@ namespace System.Compiler.Metadata
         {
             IntPtr hmap;
             int length;
-            using (FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (FileStream stream = new(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 if (stream.Length > Int32.MaxValue)
                     throw new FileLoadException(ExceptionStrings.FileTooBig, filename);

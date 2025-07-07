@@ -1,9 +1,9 @@
 ﻿//===============================================================================================================
-// System  : EWSoftware Design Time Attributes and Editors
+// System  : Sandcastle Help File Builder Plug-Ins
 // File    : MemberIdFixUpPlugInConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/10/2021
-// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the member ID fix-up plug-in configuration
 //
@@ -27,10 +27,10 @@ using System.Windows;
 using System.Xml.Linq;
 
 using Sandcastle.Core;
-using Sandcastle.Platform.Windows;
+using Sandcastle.Core.PlugIn;
+using Sandcastle.Core.Project;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
+using Sandcastle.Platform.Windows;
 
 namespace SandcastleBuilder.PlugIns.UI
 {
@@ -49,7 +49,7 @@ namespace SandcastleBuilder.PlugIns.UI
         public sealed class Factory : IPlugInConfigurationEditor
         {
             /// <inheritdoc />
-            public bool EditConfiguration(SandcastleProject project, XElement configuration)
+            public bool EditConfiguration(ISandcastleProject project, XElement configuration)
             {
                 var dlg = new MemberIDFixUpPlugInConfigDlg(configuration);
 
@@ -215,6 +215,7 @@ namespace SandcastleBuilder.PlugIns.UI
             int idx = -1;
 
             foreach(var fixUp in cppExpressions)
+            {
                 if(!expressions.Any(t => t.MatchExpression == fixUp.Match))
                 {
                     idx = lbExpressions.Items.Add(new MemberIdMatchExpression
@@ -224,6 +225,7 @@ namespace SandcastleBuilder.PlugIns.UI
                         MatchAsRegEx = fixUp.MatchAsRegEx
                     });
                 }
+            }
 
             if(idx != -1)
             {

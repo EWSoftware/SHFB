@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : MarkdownPresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/06/2022
-// Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the markdown content presentation style
 //
@@ -24,6 +24,7 @@ using System.Reflection;
 
 using Sandcastle.Core;
 using Sandcastle.Core.PresentationStyle;
+using Sandcastle.Core.Project;
 
 namespace Sandcastle.PresentationStyles.Markdown
 {
@@ -61,7 +62,7 @@ namespace Sandcastle.PresentationStyles.Markdown
             // system.
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"media\*.*"));
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, null, @"MarkdownContent\*.*",
-                String.Empty, new[] { ".md" }));
+                String.Empty, [".md"]));
         }
 
         /// <inheritdoc />

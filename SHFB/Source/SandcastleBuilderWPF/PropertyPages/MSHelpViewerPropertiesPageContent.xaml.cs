@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MSHelpViewerPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 04/17/2021
-// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
+// Updated : 06/21/2025
+// Note    : Copyright 2017-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the MS Help Viewer category properties
 //
@@ -23,7 +23,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core.Project;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {
@@ -36,7 +36,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         //=====================================================================
 
         // Bad characters for the vendor name property
-        private static readonly Regex reBadVendorNameChars = new Regex(@"[:\\/\.,#&]");
+        private static readonly Regex reBadVendorNameChars = new(@"[:\\/\.,#&]");
 
         #endregion
 

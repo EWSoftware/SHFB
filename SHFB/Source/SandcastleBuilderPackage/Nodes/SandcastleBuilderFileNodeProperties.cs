@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Package
 // File    : SandcastleBuilderFileNodeProperties.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/24/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that exposes the properties for the SandcastleBuilderFileNode object
 //
@@ -27,9 +27,10 @@ using System.Runtime.InteropServices;
 
 using Microsoft.VisualStudio.Project;
 
-using SandcastleBuilder.Utils.Design;
-using SandcastleBuildAction = SandcastleBuilder.Utils.BuildAction;
-using SandcastleBuildItemMetadata = SandcastleBuilder.Utils.BuildItemMetadata;
+using SandcastleBuilder.MSBuild.Design;
+
+using SandcastleBuildAction = Sandcastle.Core.Project.BuildAction;
+using SandcastleBuildItemMetadata = SandcastleBuilder.MSBuild.BuildItemMetadata;
 
 namespace SandcastleBuilder.Package.Nodes
 {
@@ -39,6 +40,20 @@ namespace SandcastleBuilder.Package.Nodes
     [CLSCompliant(false), ComVisible(true), Guid("6F22569B-BAF8-415a-9E9A-C84D808BD9AC")]
     public sealed class SandcastleBuilderFileNodeProperties : FileNodeProperties
     {
+        #region Private data members
+        //=====================================================================
+
+        private static readonly HashSet<string> allButBuildAction =
+            [.. new[] { "ImageId", "AlternateText", "CopyToMedia", "SortOrder" }];
+        private static readonly HashSet<string> allProperties =
+            [.. new[] { "BuildAction", "ImageId", "AlternateText", "CopyToMedia", "SortOrder" }];
+        private static readonly HashSet<string> sortOrderOnly = [.. new[] { "SortOrder" }];
+        private static readonly HashSet<string> mediaProperties =
+            [.. new[] { "ImageId", "AlternateText", "CopyToMedia" }];
+        private static readonly HashSet<string> emptySet = [];
+
+        #endregion
+
         #region Hidden properties
         //=====================================================================
 
@@ -208,45 +223,48 @@ namespace SandcastleBuilder.Package.Nodes
         /// <returns>The filtered property descriptor collection</returns>
         private PropertyDescriptorCollection FilterProperties(PropertyDescriptorCollection pdc)
         {
-            List<string> removeProps = new List<string>();
+            HashSet<string> removeProps;
 
             switch(this.SandcastleBuildAction)
             {
                 case SandcastleBuildAction.None:
                 case SandcastleBuildAction.CodeSnippets:
+                case SandcastleBuildAction.Content:
                 case SandcastleBuildAction.ResourceItems:
                 case SandcastleBuildAction.Tokens:
                 case SandcastleBuildAction.XamlConfiguration:
-                    removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia", "SortOrder" });
+                    removeProps = allButBuildAction;
                     break;
 
-                case SandcastleBuildAction.Content:
-                    removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia",
-                        "SortOrder" });
+                case SandcastleBuildAction.Folder:
+                    removeProps = allProperties;
                     break;
 
                 case SandcastleBuildAction.Image:
-                    removeProps.AddRange(new string[] { "SortOrder" });
+                    removeProps = sortOrderOnly;
                     break;
 
                 case SandcastleBuildAction.ContentLayout:
                 case SandcastleBuildAction.SiteMap:
-                    removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia" });
+                    removeProps = mediaProperties;
                     break;
 
                 default:    // Leave them all in
+                    removeProps = emptySet;
                     break;
             }
 
-            var adjustedProps = new PropertyDescriptorCollection(Array.Empty<PropertyDescriptor>());
+            var adjustedProps = new PropertyDescriptorCollection([]);
 
             // NOTE: Visual Studio requires that the property descriptors be wrapped in a
             // DesignPropertyDescriptor.  In addition, any TypeConverterAttribute must be
             // of the type PropertyPageTypeConverterAttribute.  If either condition is not
             // met they will be ignored.
             foreach(PropertyDescriptor pd in pdc)
-                if(removeProps.IndexOf(pd.Name) == -1)
+            {
+                if(!removeProps.Contains(pd.Name))
                     adjustedProps.Add(base.CreateDesignPropertyDescriptor(pd));
+            }
 
             return adjustedProps;
         }

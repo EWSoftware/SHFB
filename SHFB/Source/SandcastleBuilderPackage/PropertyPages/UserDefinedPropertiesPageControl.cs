@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : UserDefinedPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/20/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the User Defined category properties
 //
@@ -25,6 +25,8 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using Microsoft.Build.Evaluation;
 using Sandcastle.Core;
+
+using SandcastleBuilder.MSBuild.HelpProject;
 
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
@@ -84,11 +86,11 @@ namespace SandcastleBuilder.Package.PropertyPages
                         foreach(var item in ucUserDefinedPropertiesPageContent.UserDefinedProperties)
                             if(item.WasModified)
                             {
-                                p = this.CurrentProject.MSBuildProject.SetProperty(item.Name, item.Value);
+                                p = ((SandcastleProject)this.CurrentProject).MSBuildProject.SetProperty(item.Name, item.Value);
                                 p.Xml.Condition = item.Condition;
                             }
 
-                        this.CurrentProject.MSBuildProject.ReevaluateIfNecessary();
+                        ((SandcastleProject)this.CurrentProject).MSBuildProject.ReevaluateIfNecessary();
                     }
 #endif
                 }

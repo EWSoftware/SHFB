@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : XPathReflectionFileFilterPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Eyal Post
-// Updated : 06/17/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that is used to filter out unwanted information from the reflection information
 // file using XPath queries.
@@ -27,9 +27,8 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.BuildEngine;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -46,8 +45,7 @@ namespace SandcastleBuilder.PlugIns
         #region Private data members
         //=====================================================================
 
-        private List<ExecutionPoint> executionPoints;
-        private BuildProcess builder;
+        private IBuildProcess builder;
         private List<string> expressions;
 
         #endregion
@@ -59,28 +57,19 @@ namespace SandcastleBuilder.PlugIns
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public IEnumerable<ExecutionPoint> ExecutionPoints
-        {
-            get
-            {
-                if(executionPoints == null)
-                    executionPoints = new List<ExecutionPoint>
-                    {
-                        // This one has a slightly higher priority as it removes stuff that the other plug-ins
-                        // don't need to see.
-                        new ExecutionPoint(BuildStep.ApplyDocumentModel, ExecutionBehaviors.Before, 1100)
-                    };
-
-                return executionPoints;
-            }
-        }
+        public IEnumerable<ExecutionPoint> ExecutionPoints { get; } =
+        [
+            // This one has a slightly higher priority as it removes stuff that the other plug-ins
+            // don't need to see.
+            new ExecutionPoint(BuildStep.ApplyDocumentModel, ExecutionBehaviors.Before, 1100)
+        ];
 
         /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XElement configuration)
+        public void Initialize(IBuildProcess buildProcess, XElement configuration)
         {
             if(configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
@@ -92,7 +81,7 @@ namespace SandcastleBuilder.PlugIns
 
             builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
-            expressions = new List<string>();
+            expressions = [];
 
             foreach(var expr in configuration.Descendants("expression"))
                 expressions.Add(expr.Value);
@@ -110,7 +99,7 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="context">The current execution context</param>
         public void Execute(ExecutionContext context)
         {
-            XmlDocument refInfo = new XmlDocument();
+            XmlDocument refInfo = new();
 
             refInfo.Load(builder.ReflectionInfoFilename);
 

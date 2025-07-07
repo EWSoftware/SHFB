@@ -2,7 +2,7 @@
 // System  : Sandcastle MRefBuilder Tool
 // File    : BindingRedirectSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
+// Updated : 07/05/2025
 //
 // This file contains a class representing binding redirection settings for the MRefBuilder assembly resolver
 // class.
@@ -35,7 +35,7 @@ namespace Sandcastle.Tools.Reflection
         #region Private data members
         //=====================================================================
 
-        private static readonly Regex reStrongName = new Regex(@"(?<Name>.*?),\s*" +
+        private static readonly Regex reStrongName = new(@"(?<Name>.*?),\s*" +
             @"Version=(?<Version>.*?),\s*Culture=(?<Culture>.*?),\s*" +
             "PublicKeyToken=(?<PublicKeyToken>[^,]*)", RegexOptions.IgnoreCase);
 
@@ -248,7 +248,7 @@ namespace Sandcastle.Tools.Reflection
         public static BindingRedirectSettings FromXPathNavigator(XPathNavigator navigator,
           IXmlNamespaceResolver resolver, string namespacePrefix)
         {
-            BindingRedirectSettings brs = new BindingRedirectSettings();
+            BindingRedirectSettings brs = new();
             XPathNavigator nav;
             string value;
             string[] versions;
@@ -328,8 +328,7 @@ namespace Sandcastle.Tools.Reflection
             XmlDocument config;
             XPathNavigator navConfig;
 
-            Collection<BindingRedirectSettings> redirects =
-                new Collection<BindingRedirectSettings>();
+            Collection<BindingRedirectSettings> redirects = [];
 
             config = new XmlDocument();
             config.Load(configFile);
@@ -339,8 +338,10 @@ namespace Sandcastle.Tools.Reflection
             navConfig = config.CreateNavigator();
 
             foreach(XPathNavigator nav in navConfig.Select(
-                "configuration/runtime/binding:assemblyBinding/binding:dependentAssembly", nsm))
-                redirects.Add(BindingRedirectSettings.FromXPathNavigator(nav, nsm, "binding"));
+              "configuration/runtime/binding:assemblyBinding/binding:dependentAssembly", nsm))
+            {
+                redirects.Add(FromXPathNavigator(nav, nsm, "binding"));
+            }
 
             return redirects;
         }

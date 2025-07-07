@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/24/2025
+// Updated : 06/19/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
@@ -28,6 +28,7 @@ using System.Xml.Linq;
 
 using Sandcastle.Core.PresentationStyle.Transformation.Elements;
 using Sandcastle.Core.PresentationStyle.Transformation.Elements.Html;
+using Sandcastle.Core.Project;
 using Sandcastle.Core.Reflection;
 
 namespace Sandcastle.Core.PresentationStyle.Transformation
@@ -65,7 +66,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// <summary>
         /// This returns the assembly version number separator characters
         /// </summary>
-        protected static readonly char[] VersionNumberSeparators = new char[] { ' ', '.', '+' };
+        protected static readonly char[] VersionNumberSeparators = [' ', '.', '+'];
 
         /// <summary>
         /// This read-only property returns the topic key
@@ -303,15 +304,15 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// <param name="resolvePath">The function used to resolve content file paths for the presentation style</param>
         protected TopicTransformationCore(HelpFileFormats supportedFormats, Func<string, string> resolvePath)
         {
-            elementHandlers = new Dictionary<string, Element>();
-            languageSpecificText = new Dictionary<string, LanguageSpecificText>();
-            languageFilter = new List<LanguageFilterItem>();
-            apiTopicSections = new List<ApiTopicSectionHandler>();
-            transformationArguments = new Dictionary<string, TransformationArgument>(StringComparer.OrdinalIgnoreCase);
-            startupScript = new Dictionary<string, int>();
-            startupScriptItemIds = new Dictionary<string, int>();
-            codeSnippetLanguageConversions = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            noticeDefinitions = new List<Notice>();
+            elementHandlers = [];
+            languageSpecificText = [];
+            languageFilter = [];
+            apiTopicSections = [];
+            transformationArguments = new(StringComparer.OrdinalIgnoreCase);
+            startupScript = [];
+            startupScriptItemIds = [];
+            codeSnippetLanguageConversions = new(StringComparer.OrdinalIgnoreCase);
+            noticeDefinitions = [];
 
             this.SupportedFormats = supportedFormats;
             this.ResolvePath = resolvePath;
@@ -891,7 +892,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         public static XDocument LoadTemplateFile(string templateFilePath,
           IEnumerable<(string Key, string Value)> replacementTags)
         {
-            StringBuilder sb = new StringBuilder(File.ReadAllText(templateFilePath));
+            StringBuilder sb = new(File.ReadAllText(templateFilePath));
 
             if(replacementTags != null)
             {
@@ -1074,21 +1075,21 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
 
                     if(Int32.TryParse(typeInfo.Attribute("rank")?.Value, out int rank) && rank > 1)
                     {
-                        arrayOfClosing = new LanguageSpecificText(false, new[]
-                        {
+                        arrayOfClosing = new LanguageSpecificText(false,
+                        [
                             (LanguageSpecificText.CPlusPlus, $",{rank}>"),
                             (LanguageSpecificText.VisualBasic, $"({rank})"),
                             (LanguageSpecificText.Neutral, $"[{rank}]")
-                        });
+                        ]);
                     }
                     else
                     {
-                        arrayOfClosing = new LanguageSpecificText(false, new[]
-                        {
+                        arrayOfClosing = new LanguageSpecificText(false,
+                        [
                             (LanguageSpecificText.CPlusPlus, ">"),
                             (LanguageSpecificText.VisualBasic, "()"),
                             (LanguageSpecificText.Neutral, "[]")
-                        });
+                        ]);
                     }
 
                     content.Add(LanguageSpecificText.ArrayOfOpening.Render());
@@ -1352,8 +1353,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                     break;
             }
 
-            XElement titleParam = new XElement("parameter"), memberParams = new XElement("parameter"),
-                includeItem = new XElement("include", new XAttribute("item", "topicTitle_" + titleItem),
+            XElement titleParam = new("parameter"), memberParams = new("parameter"),
+                includeItem = new("include", new XAttribute("item", "topicTitle_" + titleItem),
                     titleParam, memberParams);
 
             if(plainText)
@@ -1490,7 +1491,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         protected virtual IEnumerable<XNode> ApiTopicShortNameDecorated()
         {
             // This isn't returned, just its content
-            XElement nameElement = new XElement("name");
+            XElement nameElement = new("name");
 
             switch(this.ApiMember)
             {
@@ -1692,7 +1693,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
 
             if(plainText)
             {
-                var sb = new StringBuilder(1024);
+                StringBuilder sb = new(1024);
 
                 if((parameters != null && parameters.Count() == 1) || returns.Count() == 1)
                     sb.Append('(');
@@ -1709,7 +1710,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                 if((parameters != null && parameters.Count() == 1) || returns.Count() == 1)
                     sb.Append(')');
 
-                return new[] { new XText(sb.ToString()) };
+                return [new XText(sb.ToString())];
             }
 
             // This isn't returned, just its content
@@ -1750,7 +1751,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
 
             if(plainText)
             {
-                var sb = new StringBuilder("(", 1024);
+                StringBuilder sb = new("(", 1024);
 
                 foreach(var p in parameters.Elements("parameter"))
                 {
@@ -1766,7 +1767,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
 
                 sb.Append(')');
 
-                return new[] { new XText(sb.ToString()) };
+                return [new XText(sb.ToString())];
             }
 
             // This isn't returned, just its content
@@ -2051,21 +2052,21 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
 
                     if(Int32.TryParse(typeInfo.Attribute("rank")?.Value, out int rank) && rank > 1)
                     {
-                        arrayOfClosing = new LanguageSpecificText(false, new[]
-                        {
+                        arrayOfClosing = new LanguageSpecificText(false,
+                        [
                             (LanguageSpecificText.CPlusPlus, $",{rank}>"),
                             (LanguageSpecificText.VisualBasic, $"({rank})"),
                             (LanguageSpecificText.Neutral, $"[{rank}]")
-                        });
+                        ]);
                     }
                     else
                     {
-                        arrayOfClosing = new LanguageSpecificText(false, new[]
-                        {
+                        arrayOfClosing = new LanguageSpecificText(false,
+                        [
                             (LanguageSpecificText.CPlusPlus, ">"),
                             (LanguageSpecificText.VisualBasic, "()"),
                             (LanguageSpecificText.Neutral, "[]")
-                        });
+                        ]);
                     }
 
                     memberName.Add(LanguageSpecificText.ArrayOfOpening.Render());
@@ -2104,11 +2105,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
 
             string typeName = null;
 
-            foreach(var t in typeInfo.Elements("type").Concat(
-              typeInfo.Element("containers")?.Elements("type") ?? Enumerable.Empty<XElement>()))
-            {
+            foreach(var t in typeInfo.Elements("type").Concat(typeInfo.Element("containers")?.Elements("type") ?? []))
                 typeName += ApiTypeNameWithTemplateCount(t) + ".";
-            }
 
             typeName += typeInfo.Element("apidata")?.Attribute("name").Value;
 
@@ -2130,7 +2128,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// another for Visual Basic.</returns>
         public IEnumerable<string> LanguageSpecificApiNames(XElement typeInfo)
         {
-            StringBuilder sb = new StringBuilder(1024);
+            StringBuilder sb = new(1024);
 
             this.ApiTypeNamePlainText(sb, typeInfo);
 

@@ -5,14 +5,8 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Security", "CA3075:Insecure DTD processing in XML", Justification = "<Pending>", Scope = "member", Target = "~M:SandcastleBuilder.PlugIns.AjaxDocPlugIn.Execute(SandcastleBuilder.Utils.BuildComponent.ExecutionContext)")]
-[assembly: SuppressMessage("Usage", "CA2234:Pass system uri objects instead of strings", Justification = "<Pending>", Scope = "member", Target = "~M:SandcastleBuilder.PlugIns.AjaxDocPlugIn.RunBrowser")]
-[assembly: SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>", Scope = "type", Target = "~T:SandcastleBuilder.PlugIns.UI.BibliographySupportConfigDlg.Factory")]
-[assembly: SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>", Scope = "member", Target = "~M:SandcastleBuilder.PlugIns.UI.BibliographySupportConfigDlg.lnkProjectSite_RequestNavigate(System.Object,System.Windows.Navigation.RequestNavigateEventArgs)")]
 [assembly: SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>", Scope = "type", Target = "~T:SandcastleBuilder.PlugIns.UI.DbcsFixConfigDlg.Factory")]
 [assembly: SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>", Scope = "member", Target = "~M:SandcastleBuilder.PlugIns.UI.DbcsFixConfigDlg.lnkProjectSite_RequestNavigate(System.Object,System.Windows.Navigation.RequestNavigateEventArgs)")]
-[assembly: SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>", Scope = "type", Target = "~T:SandcastleBuilder.PlugIns.UI.AjaxDocConfigDlg.Factory")]
-[assembly: SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>", Scope = "member", Target = "~M:SandcastleBuilder.PlugIns.UI.AjaxDocConfigDlg.lnkProjectSite_RequestNavigate(System.Object,System.Windows.Navigation.RequestNavigateEventArgs)")]
 [assembly: SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>", Scope = "type", Target = "~T:SandcastleBuilder.PlugIns.UI.CompletionNotificationConfigDlg.Factory")]
 [assembly: SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>", Scope = "member", Target = "~M:SandcastleBuilder.PlugIns.UI.CompletionNotificationConfigDlg.lnkProjectSite_RequestNavigate(System.Object,System.Windows.Navigation.RequestNavigateEventArgs)")]
 [assembly: SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>", Scope = "type", Target = "~T:SandcastleBuilder.PlugIns.UI.XPathReflectionFileFilterConfigDlg.Factory")]

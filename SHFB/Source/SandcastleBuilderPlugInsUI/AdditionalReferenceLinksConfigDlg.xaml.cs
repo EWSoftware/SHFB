@@ -1,9 +1,9 @@
 ﻿//===============================================================================================================
-// System  : EWSoftware Design Time Attributes and Editors
+// System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/23/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the additional reference links plug-in configuration
 //
@@ -26,14 +26,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Xml.Linq;
 
 using Sandcastle.Core;
+using Sandcastle.Core.PlugIn;
+using Sandcastle.Core.Project;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
 using Sandcastle.Platform.Windows;
-using System.Windows.Controls;
 
 namespace SandcastleBuilder.PlugIns.UI
 {
@@ -52,7 +52,7 @@ namespace SandcastleBuilder.PlugIns.UI
         public sealed class Factory : IPlugInConfigurationEditor
         {
             /// <inheritdoc />
-            public bool EditConfiguration(SandcastleProject project, XElement configuration)
+            public bool EditConfiguration(ISandcastleProject project, XElement configuration)
             {
                 var dlg = new AdditionalReferenceLinksConfigDlg(project, configuration);
 
@@ -65,7 +65,7 @@ namespace SandcastleBuilder.PlugIns.UI
         //=====================================================================
 
         private readonly XElement configuration;
-        private readonly SandcastleProject project;
+        private readonly ISandcastleProject project;
 
         #endregion
 
@@ -77,7 +77,7 @@ namespace SandcastleBuilder.PlugIns.UI
         /// </summary>
         /// <param name="project">The current project</param>
         /// <param name="configuration">The current configuration element</param>
-        public AdditionalReferenceLinksConfigDlg(SandcastleProject project, XElement configuration)
+        public AdditionalReferenceLinksConfigDlg(ISandcastleProject project, XElement configuration)
         {
             InitializeComponent();
 
@@ -155,31 +155,30 @@ namespace SandcastleBuilder.PlugIns.UI
         /// <param name="e">The event arguments</param>
         private void btnAddReferenceProject_Click(object sender, RoutedEventArgs e)
         {
-            using(var dlg = new System.Windows.Forms.OpenFileDialog())
+            using var dlg = new System.Windows.Forms.OpenFileDialog();
+            
+            dlg.Title = "Select the help file builder project(s)";
+            dlg.Filter = "Sandcastle Help File Builder Project Files " +
+                "(*.shfbproj)|*.shfbproj|All Files (*.*)|*.*";
+            dlg.InitialDirectory = Directory.GetCurrentDirectory();
+            dlg.DefaultExt = "shfbproj";
+            dlg.Multiselect = true;
+
+            // If selected, add the file(s)
+            if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                dlg.Title = "Select the help file builder project(s)";
-                dlg.Filter = "Sandcastle Help File Builder Project Files " +
-                    "(*.shfbproj)|*.shfbproj|All Files (*.*)|*.*";
-                dlg.InitialDirectory = Directory.GetCurrentDirectory();
-                dlg.DefaultExt = "shfbproj";
-                dlg.Multiselect = true;
-
-                // If selected, add the file(s)
-                if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                foreach(string file in dlg.FileNames)
                 {
-                    foreach(string file in dlg.FileNames)
+                    var newItem = new ReferenceLinkSettings(project)
                     {
-                        var newItem = new ReferenceLinkSettings(project)
-                        {
-                            HelpFileProject = new FilePath(file, project)
-                        };
+                        HelpFileProject = new FilePath(file, project)
+                    };
 
-                        // It will end up on the last one added
-                        lbReferences.SelectedIndex = lbReferences.Items.Add(newItem);
-                    }
-
-                    btnDeleteReferenceProject.IsEnabled = grpReferenceProps.IsEnabled = true;
+                    // It will end up on the last one added
+                    lbReferences.SelectedIndex = lbReferences.Items.Add(newItem);
                 }
+
+                btnDeleteReferenceProject.IsEnabled = grpReferenceProps.IsEnabled = true;
             }
         }
 
@@ -230,7 +229,7 @@ namespace SandcastleBuilder.PlugIns.UI
             // There can't be duplicate IDs or projects
             var duplicates = references.GroupBy(r => r.HelpFileProject.Path).Where(g => g.Count() != 1).ToList();
 
-            if(duplicates.Any())
+            if(duplicates.Count != 0)
             {
                 MessageBox.Show("The same help file project cannot be specified more than once: " +
                     String.Join(", ", duplicates.Select(g => g.Key)), Constants.AppName, MessageBoxButton.OK,

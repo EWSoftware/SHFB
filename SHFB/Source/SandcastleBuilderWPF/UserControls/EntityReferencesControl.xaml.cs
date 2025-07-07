@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/20/2025
+// Updated : 06/21/2025
 // Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to look up code entity references, code snippets, tokens, images,
@@ -34,14 +34,14 @@ using System.Xml;
 using System.Xml.XPath;
 
 using Sandcastle.Core;
+using Sandcastle.Core.ConceptualContent;
+using Sandcastle.Core.InheritedDocumentation;
+using Sandcastle.Core.Project;
 using Sandcastle.Core.Reflection;
 
 using Sandcastle.Platform.Windows;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.ConceptualContent;
-using SandcastleBuilder.Utils.InheritedDocumentation;
-using SandcastleBuilder.Utils.MSBuild;
+using SandcastleBuilder.MSBuild.HelpProject;
 
 namespace SandcastleBuilder.WPF.UserControls
 {
@@ -54,7 +54,7 @@ namespace SandcastleBuilder.WPF.UserControls
         #region Private data members
         //=====================================================================
 
-        private SandcastleProject currentProject;
+        private ISandcastleProject currentProject;
 
         private List<EntityReference> tokens, images, tableOfContents, codeSnippets;
         private IEnumerator<EntityReference> matchEnumerator;
@@ -70,7 +70,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <summary>
         /// This is used to set or get the current project
         /// </summary>
-        public SandcastleProject CurrentProject
+        public ISandcastleProject CurrentProject
         {
             get => currentProject;
             set
@@ -145,7 +145,7 @@ namespace SandcastleBuilder.WPF.UserControls
             if(tokens != null)
                 return tokens;
 
-            tokens = new List<EntityReference>();
+            tokens = [];
 
             // Get content from open file editors
             var args = new FileContentNeededEventArgs(FileContentNeededEvent, this);
@@ -236,7 +236,7 @@ namespace SandcastleBuilder.WPF.UserControls
             if(images != null)
                 return images;
 
-            images = new List<EntityReference>();
+            images = [];
 
             foreach(var ir in currentProject.ImagesReferences.OrderBy(i => i.DisplayTitle).ThenBy(i => i.Id))
             {
@@ -273,15 +273,15 @@ namespace SandcastleBuilder.WPF.UserControls
             if(tableOfContents != null)
                 return tableOfContents;
 
-            tableOfContents = new List<EntityReference>();
+            tableOfContents = [];
 
             // Get content from open file editors
-            var args = new FileContentNeededEventArgs(FileContentNeededEvent, this);
+            FileContentNeededEventArgs args = new(FileContentNeededEvent, this);
             this.RaiseEvent(args);
 
             try
             {
-                tocFiles = new List<ITableOfContents>();
+                tocFiles = [];
 
                 // Load all content layout files and add them to the list
                 foreach(var contentFile in currentProject.ContentFiles(BuildAction.ContentLayout))
@@ -324,7 +324,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
                 // Create the merged TOC.  For the purpose of adding links, we'll include everything even topics
                 // marked as invisible.
-                mergedToc = new TocEntryCollection();
+                mergedToc = [];
 
                 foreach(ITableOfContents file in tocFiles)
                     file.GenerateTableOfContents(mergedToc, true);
@@ -421,7 +421,7 @@ namespace SandcastleBuilder.WPF.UserControls
             if(codeSnippets != null)
                 return codeSnippets;
 
-            codeSnippets = new List<EntityReference>();
+            codeSnippets = [];
 
             foreach(var snippetFile in currentProject.ContentFiles(BuildAction.CodeSnippets).OrderBy(f => f.LinkPath))
             {
@@ -439,25 +439,23 @@ namespace SandcastleBuilder.WPF.UserControls
 
                         codeSnippets.Add(snippetFileEntity);
 
-                        using(var reader = XmlReader.Create(snippetFile.FullPath,
-                          new XmlReaderSettings { CloseInput = true }))
+                        using var reader = XmlReader.Create(snippetFile.FullPath,
+                          new XmlReaderSettings { CloseInput = true });
+                        var snippets = new XPathDocument(reader);
+                        var navSnippets = snippets.CreateNavigator();
+
+                        foreach(XPathNavigator nav in navSnippets.Select("examples/item/@id"))
                         {
-                            var snippets = new XPathDocument(reader);
-                            var navSnippets = snippets.CreateNavigator();
+                            var cr = new CodeReference(nav.Value);
 
-                            foreach(XPathNavigator nav in navSnippets.Select("examples/item/@id"))
+                            snippetFileEntity.SubEntities.Add(new EntityReference
                             {
-                                var cr = new CodeReference(nav.Value);
-
-                                snippetFileEntity.SubEntities.Add(new EntityReference
-                                {
-                                    EntityType = EntityType.CodeSnippet,
-                                    Id = cr.Id,
-                                    Label = cr.Id,
-                                    ToolTip = cr.Id,
-                                    Tag = cr
-                                });
-                            }
+                                EntityType = EntityType.CodeSnippet,
+                                Id = cr.Id,
+                                Label = cr.Id,
+                                ToolTip = cr.Id,
+                                Tag = cr
+                            });
                         }
                     }
 
@@ -540,7 +538,7 @@ namespace SandcastleBuilder.WPF.UserControls
                         // Add an entry for the root namespace container
                         allEntities.Add("R:Project_" + currentProject.HtmlHelpName.Replace(" ", "_"));
 
-                        codeEntities = new List<string>(allEntities);
+                        codeEntities = [.. allEntities];
 
                         if(cboEntityType.SelectedIndex == (int)EntityType.CodeEntity)
                         {
@@ -586,13 +584,12 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <remarks>Rather than a partial build, we'll just index the comments files.</remarks>
         private IndexedCommentsCache IndexComments()
         {
-            HashSet<string> projectDictionary = new HashSet<string>();
-            IndexedCommentsCache cache = new IndexedCommentsCache(100);
-            MSBuildProject projRef;
+            HashSet<string> projectDictionary = [];
+            IndexedCommentsCache cache = new(100);
             string lastSolution = null;
 
             // Index the framework comments based on the framework version in the project
-            var reflectionDataDictionary = new ReflectionDataSetDictionary(currentProject.ComponentSearchPaths);
+            ReflectionDataSetDictionary reflectionDataDictionary = new(currentProject.ComponentSearchPaths);
             var frameworkReflectionData = reflectionDataDictionary.CoreFrameworkByTitle(
                 currentProject.FrameworkVersion, true) ??
                 throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture,
@@ -616,7 +613,7 @@ namespace SandcastleBuilder.WPF.UserControls
             }
 
             // Also, index the comments files in project documentation sources
-            foreach(DocumentationSource ds in currentProject.DocumentationSources)
+            foreach(IDocumentationSource ds in currentProject.DocumentationSources)
             {
                 foreach(var sourceProject in ds.Projects(
                   !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : currentProject.Configuration,
@@ -637,29 +634,28 @@ namespace SandcastleBuilder.WPF.UserControls
                     // Ignore projects that we've already seen
                     if(projectDictionary.Add(sourceProject.ProjectFileName))
                     {
-                        using(projRef = new MSBuildProject(sourceProject.ProjectFileName))
+                        using var projRef = new MSBuildProject(sourceProject.ProjectFileName);
+
+                        projRef.RequestedTargetFramework = ds.TargetFramework;
+
+                        // Use the project file configuration and platform properties if they are set.  If
+                        // not, use the documentation source values.  If they are not set, use the SHFB
+                        // project settings.
+                        projRef.SetConfiguration(
+                            !String.IsNullOrWhiteSpace(sourceProject.BuildConfiguration) ? sourceProject.BuildConfiguration :
+                                !String.IsNullOrWhiteSpace(ds.Configuration) ? ds.Configuration : currentProject.Configuration,
+                            !String.IsNullOrWhiteSpace(sourceProject.BuildPlatform) ? sourceProject.BuildPlatform :
+                                !String.IsNullOrWhiteSpace(ds.Platform) ? ds.Platform : currentProject.Platform,
+                            currentProject.MSBuildOutDir, false);
+
+                        // Add Visual Studio solution macros if necessary
+                        if(lastSolution != null)
+                            projRef.SetSolutionMacros(lastSolution);
+
+                        if(!String.IsNullOrWhiteSpace(projRef.XmlCommentsFile))
                         {
-                            projRef.RequestedTargetFramework = ds.TargetFramework;
-
-                            // Use the project file configuration and platform properties if they are set.  If
-                            // not, use the documentation source values.  If they are not set, use the SHFB
-                            // project settings.
-                            projRef.SetConfiguration(
-                                !String.IsNullOrWhiteSpace(sourceProject.BuildConfiguration) ? sourceProject.BuildConfiguration :
-                                    !String.IsNullOrWhiteSpace(ds.Configuration) ? ds.Configuration : currentProject.Configuration,
-                                !String.IsNullOrWhiteSpace(sourceProject.BuildPlatform) ? sourceProject.BuildPlatform :
-                                    !String.IsNullOrWhiteSpace(ds.Platform) ? ds.Platform : currentProject.Platform,
-                                currentProject.MSBuildOutDir, false);
-
-                            // Add Visual Studio solution macros if necessary
-                            if(lastSolution != null)
-                                projRef.SetSolutionMacros(lastSolution);
-
-                            if(!String.IsNullOrWhiteSpace(projRef.XmlCommentsFile))
-                            {
-                                cache.IndexCommentsFiles(Path.GetDirectoryName(projRef.XmlCommentsFile),
-                                    Path.GetFileName(projRef.XmlCommentsFile), false, null);
-                            }
+                            cache.IndexCommentsFiles(Path.GetDirectoryName(projRef.XmlCommentsFile),
+                                Path.GetFileName(projRef.XmlCommentsFile), false, null);
                         }
                     }
                 }
@@ -989,12 +985,8 @@ namespace SandcastleBuilder.WPF.UserControls
 
             if(txtFindName.Text.Trim().Length == 0)
             {
-                if(matchEnumerator != null)
-                {
-                    matchEnumerator.Dispose();
-                    matchEnumerator = null;
-                }
-
+                matchEnumerator?.Dispose();
+                matchEnumerator = null;
                 return;
             }
 
@@ -1003,19 +995,15 @@ namespace SandcastleBuilder.WPF.UserControls
             if((EntityType)cboEntityType.SelectedIndex != EntityType.CodeEntity)
             {
                 // If this is the first time, get all matches
-                if(matchEnumerator == null)
-                    matchEnumerator = this.Find(txtFindName.Text).GetEnumerator();
+                matchEnumerator ??= this.Find(txtFindName.Text).GetEnumerator();
 
                 // Move to the next match
                 if(matchEnumerator.MoveNext())
                     matchEnumerator.Current.IsSelected = true;
                 else
                 {
-                    if(matchEnumerator != null)
-                    {
-                        matchEnumerator.Dispose();
-                        matchEnumerator = null;
-                    }
+                    matchEnumerator.Dispose();
+                    matchEnumerator = null;
 
                     MessageBox.Show("No more matches found", Constants.AppName, MessageBoxButton.OK,
                         MessageBoxImage.Information);
@@ -1025,8 +1013,8 @@ namespace SandcastleBuilder.WPF.UserControls
             }
 
             // Search for code entity references
-            List<string> matches = new List<string>();
-            entities = new List<EntityReference>();
+            List<string> matches = [];
+            entities = [];
 
             tvEntities.ItemsSource = null;
 
@@ -1034,7 +1022,7 @@ namespace SandcastleBuilder.WPF.UserControls
             {
                 Mouse.OverrideCursor = Cursors.Wait;
 
-                Regex reSearch = new Regex(txtFindName.Text, RegexOptions.IgnoreCase);
+                Regex reSearch = new(txtFindName.Text, RegexOptions.IgnoreCase);
 
                 foreach(string key in codeEntities)
                 {

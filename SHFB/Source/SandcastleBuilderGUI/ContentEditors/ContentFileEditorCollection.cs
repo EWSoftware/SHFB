@@ -1,9 +1,9 @@
 //===============================================================================================================
-// System  : EWSoftware Design Time Attributes and Editors
+// System  : Sandcastle Help File Builder
 // File    : ContentFileEditorCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a collection class used to hold the content file editor definitions
 //
@@ -34,9 +34,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
         #region Private data members
         //=====================================================================
 
-        // This is used to store the application-wide editors collection
-        private static ContentFileEditorCollection globalEditors;
-
         private Exception lastError;
 
         #endregion
@@ -45,19 +42,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         //=====================================================================
 
         /// <summary>
-        /// This returns the reference to the global content file editor
-        /// collection.
+        /// This returns the reference to the global content file editor collection
         /// </summary>
-        public static ContentFileEditorCollection GlobalEditors
-        {
-            get
-            {
-                if(globalEditors == null)
-                    globalEditors = new ContentFileEditorCollection();
-
-                return globalEditors;
-            }
-        }
+        public static ContentFileEditorCollection GlobalEditors => field ??= [];
 
         /// <summary>
         /// If <see cref="LaunchEditorFor"/> returns false, this can be used to
@@ -85,8 +72,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
         public ContentFileEditorCollection(ContentFileEditorCollection editors)
         {
             if(editors != null)
+            {
                 foreach(ContentFileEditor e in editors)
                     this.Add((ContentFileEditor)e.Clone());
+            }
         }
         #endregion
 
@@ -101,8 +90,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
         public void AddRange(ContentFileEditorCollection range)
         {
             if(range != null)
+            {
                 foreach(ContentFileEditor editor in range)
                     this.Add(editor);
+            }
         }
 
         /// <summary>
@@ -134,11 +125,13 @@ namespace SandcastleBuilder.Gui.ContentEditors
             lastError = null;
 
             foreach(ContentFileEditor editor in this)
+            {
                 if(editor.IsEditorFor(extension))
                 {
                     match = editor;
                     break;
                 }
+            }
 
             try
             {
@@ -173,11 +166,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
             }
             finally
             {
-                if(process != null)
-                    process.Dispose();
+                process?.Dispose();
             }
 
-            return (lastError == null);
+            return lastError == null;
         }
         #endregion
     }

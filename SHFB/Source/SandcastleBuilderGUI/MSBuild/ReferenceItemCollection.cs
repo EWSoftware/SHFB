@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ReferenceItemCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/20/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a collection class used to hold the reference item information
 //
@@ -25,7 +25,9 @@ using System.ComponentModel;
 
 using Microsoft.Build.Evaluation;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
+
+using SandcastleBuilder.MSBuild.HelpProject;
 
 namespace SandcastleBuilder.Gui.MSBuild
 {
@@ -88,7 +90,7 @@ namespace SandcastleBuilder.Gui.MSBuild
         /// items and can associate them with a project element.</remarks>
         public ReferenceItem AddReference(string referenceName, string hintPath)
         {
-            ReferenceItem item = new ReferenceItem(projectFile, ReferenceType, referenceName);
+            ReferenceItem item = new(projectFile, ReferenceType, referenceName);
 
             if(!String.IsNullOrEmpty(hintPath))
                 item.HintPath = new FilePath(hintPath, projectFile);
@@ -111,7 +113,7 @@ namespace SandcastleBuilder.Gui.MSBuild
         /// exists in the collection a reference to the existing item is returned.</returns>
         public ProjectReferenceItem AddProjectReference(string projectPath)
         {
-            ProjectReferenceItem item = new ProjectReferenceItem(projectFile, ProjectReferenceType, projectPath);
+            ProjectReferenceItem item = new(projectFile, ProjectReferenceType, projectPath);
 
             int idx = this.IndexOf(item);
 

@@ -32,7 +32,7 @@
             this.tvTemplates = new System.Windows.Forms.TreeView();
             this.btnAddTopic = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.statusBarTextProvider1 = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
+            this.statusBarTextProvider1 = new SandcastleBuilder.Gui.StatusBarTextProvider(this.components);
             this.txtNewFilename = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.lblExtension = new System.Windows.Forms.Label();
@@ -122,7 +122,7 @@
         #endregion
 
         private System.Windows.Forms.TreeView tvTemplates;
-        private SandcastleBuilder.Utils.Controls.StatusBarTextProvider statusBarTextProvider1;
+        private SandcastleBuilder.Gui.StatusBarTextProvider statusBarTextProvider1;
         private System.Windows.Forms.Button btnAddTopic;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label1;

@@ -122,8 +122,13 @@ namespace Sandcastle.Tools.MSBuild
             {
                 while(!Debugger.IsAttached && !waitCancelled)
                 {
+#if NET9_0_OR_GREATER
+                    this.Log.LogMessage("DEBUG MODE: Waiting for debugger to attach (process ID: {0})",
+                        Environment.ProcessId);
+#else
                     this.Log.LogMessage("DEBUG MODE: Waiting for debugger to attach (process ID: {0})",
                         Process.GetCurrentProcess().Id);
+#endif
                     System.Threading.Thread.Sleep(1000);
                 }
 
@@ -133,7 +138,7 @@ namespace Sandcastle.Tools.MSBuild
                 Debugger.Break();
             }
 #endif
-            Assembly application = Assembly.GetCallingAssembly();
+                    Assembly application = Assembly.GetCallingAssembly();
             System.Reflection.AssemblyName applicationData = application.GetName();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(application.Location);
 
@@ -234,13 +239,17 @@ namespace Sandcastle.Tools.MSBuild
             framework = platformNode.GetAttribute("framework", String.Empty);
 
             // Get component locations used to find additional reflection data definition files
-            List<string> componentFolders = new List<string>();
+            List<string> componentFolders = [];
             var locations = configNav.SelectSingleNode("/configuration/dduetools/componentLocations");
 
             if(locations != null)
+            {
                 foreach(XPathNavigator folder in locations.Select("location/@folder"))
+                {
                     if(!String.IsNullOrWhiteSpace(folder.Value) && Directory.Exists(folder.Value))
                         componentFolders.Add(folder.Value);
+                }
+            }
 
             // Get the dependencies
             var dependencies = new List<string>();
@@ -250,7 +259,7 @@ namespace Sandcastle.Tools.MSBuild
 
             if(!String.IsNullOrEmpty(framework) && !String.IsNullOrEmpty(version))
             {
-                var coreNames = new HashSet<string>(new[] { "netstandard", "mscorlib", "System.Runtime" },
+                var coreNames = new HashSet<string>(["netstandard", "mscorlib", "System.Runtime"],
                     StringComparer.OrdinalIgnoreCase);
 
                 var coreFrameworkAssemblies = this.Assemblies.Select(a => a.ItemSpec).Concat(dependencies).Where(
@@ -354,7 +363,7 @@ namespace Sandcastle.Tools.MSBuild
             }
 
             // Create a resolver
-            AssemblyResolver resolver = new AssemblyResolver();
+            AssemblyResolver resolver = new();
             XPathNavigator resolverNode = configNav.SelectSingleNode("/configuration/dduetools/resolver");
 
             if(resolverNode != null)
@@ -375,7 +384,7 @@ namespace Sandcastle.Tools.MSBuild
                     Assembly assembly = !String.IsNullOrWhiteSpace(assemblyPath) ? Assembly.LoadFrom(assemblyPath) :
                         Assembly.GetExecutingAssembly();
                     resolver = (AssemblyResolver)assembly.CreateInstance(typeName, false, BindingFlags.Public |
-                        BindingFlags.Instance, null, new object[1] { resolverNode }, null, null);
+                        BindingFlags.Instance, null, [resolverNode], null, null);
 
                     if(resolver == null)
                     {
@@ -435,7 +444,7 @@ namespace Sandcastle.Tools.MSBuild
             resolver.UnresolvedAssemblyReference += UnresolvedAssemblyReferenceHandler;
 
             // Get a text writer for output
-            TextWriter output;
+            StreamWriter output;
 
             try
             {
@@ -498,7 +507,7 @@ namespace Sandcastle.Tools.MSBuild
                             Assembly.GetExecutingAssembly();
                         MRefBuilderAddIn addin = (MRefBuilderAddIn)assembly.CreateInstance(typeName, false,
                             BindingFlags.Public | BindingFlags.Instance, null,
-                            new object[2] { apiVisitor, addinNode }, null, null);
+                            [apiVisitor, addinNode], null, null);
 
                         if(addin == null)
                         {

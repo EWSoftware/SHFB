@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentAssemblyResolver.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/09/2021
-// Note    : Copyright 2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2021-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to resolve assembly dependencies when loading component assemblies with MEF
 //
@@ -34,6 +34,8 @@ namespace Sandcastle.Core
         //=====================================================================
 
         private readonly HashSet<string> componentFolders;
+
+        private static readonly char[] commaSeparator = [','];
 
         #endregion
 
@@ -105,7 +107,7 @@ namespace Sandcastle.Core
         /// <returns>The loaded assembly or null if not found</returns>
         private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            string[] nameInfo = args.Name.Split(new char[] { ',' });
+            string[] nameInfo = args.Name.Split(commaSeparator);
             string resolveName = nameInfo[0];
 
             // See if it has already been loaded

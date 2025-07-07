@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : SpellCheckerConfiguration.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/20/2021
-// Note    : Copyright 2013-2021, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2013-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to contain the spell checker's configuration settings
 //
@@ -39,6 +39,7 @@ namespace SandcastleBuilder.Gui.Spelling
         //=====================================================================
 
         private static HashSet<string> ignoredXmlElements, spellCheckedXmlAttributes;
+
         #endregion
 
         #region Properties
@@ -131,13 +132,14 @@ namespace SandcastleBuilder.Gui.Spelling
                 // so look for any affix files with a related dictionary file and see if they are valid cultures.
                 // If so, we'll take them.
                 foreach(string dictionary in Directory.EnumerateFiles(ConfigurationFilePath, "*.aff"))
+                {
                     if(File.Exists(Path.ChangeExtension(dictionary, ".dic")))
                     {
                         try
                         {
                             info = new CultureInfo(Path.GetFileNameWithoutExtension(dictionary).Replace("_", "-"));
                         }
-                        catch(CultureNotFoundException )
+                        catch(CultureNotFoundException)
                         {
                             // Ignore filenames that are not cultures
                             info = null;
@@ -146,22 +148,23 @@ namespace SandcastleBuilder.Gui.Spelling
                         if(info != null)
                             yield return info;
                     }
+                }
             }
         }
 
         /// <summary>
         /// This read-only property returns the default list of ignored XML elements
         /// </summary>
-        public static IEnumerable<string> DefaultIgnoredXmlElements => new string[] {
+        public static IEnumerable<string> DefaultIgnoredXmlElements => [
             "c", "code", "codeEntityReference", "codeReference", "codeInline", "command", "environmentVariable",
             "fictitiousUri", "foreignPhrase", "link", "linkTarget", "linkUri", "localUri", "replaceable", "see",
-            "seeAlso", "unmanagedCodeEntityReference", "token" };
+            "seeAlso", "unmanagedCodeEntityReference", "token" ];
 
         /// <summary>
         /// This read-only property returns the default list of spell checked XML attributes
         /// </summary>
-        public static IEnumerable<string> DefaultSpellCheckedAttributes => new[] {
-            "altText", "Caption", "Content", "Header", "lead", "title", "term", "Text", "ToolTip" };
+        public static IEnumerable<string> DefaultSpellCheckedAttributes => [
+            "altText", "Caption", "Content", "Header", "lead", "title", "term", "Text", "ToolTip" ];
 
         #endregion
 
@@ -178,9 +181,8 @@ namespace SandcastleBuilder.Gui.Spelling
                 IgnoreWordsWithDigits = IgnoreWordsInAllUppercase = IgnoreFilenamesAndEMailAddresses =
                     IgnoreXmlElementsInText = true;
 
-                ignoredXmlElements = new HashSet<string>(DefaultIgnoredXmlElements);
-
-                spellCheckedXmlAttributes = new HashSet<string>(DefaultSpellCheckedAttributes);
+                ignoredXmlElements = [.. DefaultIgnoredXmlElements];
+                spellCheckedXmlAttributes = [.. DefaultSpellCheckedAttributes];
 
                 DefaultLanguage = new CultureInfo("en-US");
             }
@@ -196,7 +198,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// <param name="ignoredElements">The list of XML elements to ignore</param>
         public static void SetIgnoredXmlElements(IEnumerable<string> ignoredElements)
         {
-            ignoredXmlElements = new HashSet<string>(ignoredElements);
+            ignoredXmlElements = [.. ignoredElements];
         }
 
         /// <summary>
@@ -205,7 +207,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// <param name="spellCheckedAttributes">The list of spell checked XML attributes</param>
         public static void SetSpellCheckedXmlAttributes(IEnumerable<string> spellCheckedAttributes)
         {
-            spellCheckedXmlAttributes = new HashSet<string>(spellCheckedAttributes);
+            spellCheckedXmlAttributes = [.. spellCheckedAttributes];
         }
 
         /// <summary>
@@ -240,16 +242,16 @@ namespace SandcastleBuilder.Gui.Spelling
                 node = root.Element("IgnoredXmlElements");
 
                 if(node != null)
-                    ignoredXmlElements = new HashSet<string>(node.Descendants().Select(n => n.Value));
+                    ignoredXmlElements = [.. node.Descendants().Select(n => n.Value)];
                 else
-                    ignoredXmlElements = new HashSet<string>(DefaultIgnoredXmlElements);
+                    ignoredXmlElements = [.. DefaultIgnoredXmlElements];
 
                 node = root.Element("SpellCheckedXmlAttributes");
 
                 if(node != null)
-                    spellCheckedXmlAttributes = new HashSet<string>(node.Descendants().Select(n => n.Value));
+                    spellCheckedXmlAttributes = [.. node.Descendants().Select(n => n.Value)];
                 else
-                    spellCheckedXmlAttributes = new HashSet<string>(DefaultSpellCheckedAttributes);
+                    spellCheckedXmlAttributes = [.. DefaultSpellCheckedAttributes];
             }
             catch(Exception ex)
             {
@@ -272,7 +274,7 @@ namespace SandcastleBuilder.Gui.Spelling
 
             try
             {
-                XElement root = new XElement("SpellCheckerConfiguration",
+                XElement root = new("SpellCheckerConfiguration",
                     new XElement("DefaultLanguage") { Value = DefaultLanguage.Name },
                     IgnoreWordsWithDigits ? new XElement("IgnoreWordsWithDigits") : null,
                     IgnoreWordsInAllUppercase ? new XElement("IgnoreWordsInAllUppercase") : null,
@@ -282,13 +284,17 @@ namespace SandcastleBuilder.Gui.Spelling
 
                 if(ignoredXmlElements.Count != DefaultIgnoredXmlElements.Count() ||
                   DefaultIgnoredXmlElements.Except(ignoredXmlElements).Any())
+                {
                     root.Add(new XElement("IgnoredXmlElements",
                         ignoredXmlElements.Select(i => new XElement("Ignore") { Value = i })));
+                }
 
                 if(spellCheckedXmlAttributes.Count != DefaultSpellCheckedAttributes.Count() ||
                   DefaultSpellCheckedAttributes.Except(spellCheckedXmlAttributes).Any())
+                {
                     root.Add(new XElement("SpellCheckedXmlAttributes",
                         spellCheckedXmlAttributes.Select(i => new XElement("SpellCheck") { Value = i })));
+                }
 
                 root.Save(filename);
             }

@@ -1,9 +1,9 @@
 //===============================================================================================================
-// System  : EWSoftware Status Bar Text Provider
+// System  : Sandcastle Help File Builder
 // File    : StatusBarTextProvider.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/20/2021
-// Note    : Copyright 2005-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2005-2025, Eric Woodruff, All rights reserved
 //
 // https://www.codeproject.com/Articles/12226/A-Status-Bar-Text-Provider-for-Menu-Items-and-Form
 //
@@ -23,17 +23,12 @@
 // 06/26/2006  EFW  Added static methods for progress bar controls
 //===============================================================================================================
 
-// When this line is commented out, the component only supports the StatusBar control.  When uncommented, it
-// will also support the  new .NET 2.0 tool strip controls (ToolStrip, MenuStrip, StatusStrip, etc).
-#define DOTNET_20
-
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-// All classes go in the SandcastleBuilder.Utils.Controls namespace
-namespace SandcastleBuilder.Utils.Controls
+namespace SandcastleBuilder.Gui
 {
     /// <summary>
     /// This is an <see cref="IExtenderProvider"/> component that allows you
@@ -63,8 +58,7 @@ namespace SandcastleBuilder.Utils.Controls
         /// <param name="container">The container for the component</param>
         public StatusBarTextProvider(IContainer container) : this()
         {
-            if(container != null)
-                container.Add(this);
+            container?.Add(this);
         }
 
         /// <summary>
@@ -161,12 +155,10 @@ namespace SandcastleBuilder.Utils.Controls
         private static int appDisplayPanel;
         private static string appDefaultText;
 
-#if DOTNET_20
         // These provide convenient access to a status label and progress bar
         // from anywhere within an application.
         private static ToolStripStatusLabel statusLabel;
         private static ToolStripProgressBar progressBar;
-#endif
 
         // Instance status bar
         private object instanceStatusBar;
@@ -275,11 +267,7 @@ namespace SandcastleBuilder.Utils.Controls
             get => appStatusBar;
             set
             {
-#if !DOTNET_20
-                if(value != null && !(value is StatusBar))
-#else
-                if(value != null && !(value is StatusBar) && !(value is ToolStripItem))
-#endif
+                if(value != null && value is not System.Windows.Forms.StatusBar && value is not ToolStripItem)
                     throw new ArgumentException("The object must be a StatusBar or a ToolStripItem");
 
                 appStatusBar = value;
@@ -292,13 +280,11 @@ namespace SandcastleBuilder.Utils.Controls
                     else
                         appDefaultText = sb.Text;
                 }
-#if DOTNET_20
                 else
                 {
                     if(appStatusBar is ToolStripItem tsi)
                         appDefaultText = tsi.Text;
                 }
-#endif
             }
         }
 
@@ -341,13 +327,11 @@ namespace SandcastleBuilder.Utils.Controls
                     else
                         appDefaultText = sb.Text;
                 }
-#if DOTNET_20
                 else
                 {
                     if(appStatusBar is ToolStripItem tsi)
                         appDefaultText = tsi.Text;
                 }
-#endif
             }
         }
 
@@ -376,17 +360,14 @@ namespace SandcastleBuilder.Utils.Controls
                     else
                         sb.Text = appDefaultText;
                 }
-#if DOTNET_20
                 else
                 {
                     if(appStatusBar is ToolStripItem tsi)
                         tsi.Text = appDefaultText;
                 }
-#endif
             }
         }
 
-#if DOTNET_20
         /// <summary>
         /// This is used to get or set the tool strip status label component
         /// that can be used to display a status message in conjunction with
@@ -416,7 +397,6 @@ namespace SandcastleBuilder.Utils.Controls
             get => progressBar;
             set => progressBar = value;
         }
-#endif
 
         /// <summary>
         /// This is used to get or set the status bar component to use for this
@@ -438,13 +418,8 @@ namespace SandcastleBuilder.Utils.Controls
             get => instanceStatusBar;
             set
             {
-#if !DOTNET_20
-                if(value != null && !(value is StatusBar))
-#else
-                if(value != null && !(value is StatusBar) && !(value is ToolStripItem))
-#endif
-                    throw new ArgumentException("The object must be " +
-                        "a StatusBar or a ToolStripItem");
+                if(value != null && value is not System.Windows.Forms.StatusBar && value is not ToolStripItem)
+                    throw new ArgumentException("The object must be a StatusBar or a ToolStripItem");
 
                 // Restore text on the prior status bar control if necessary
                 this.Form_MenuComplete(this, EventArgs.Empty);
@@ -564,10 +539,8 @@ namespace SandcastleBuilder.Utils.Controls
 
                 if(this.StatusBar is Control p)
                     p = p.Parent;
-#if DOTNET_20
                 else    // It's a control hosted in a tool strip item
                     p = ((ToolStripItem)this.StatusBar).Owner.Parent;
-#endif
 
                 while(p != null && frm == null)
                 {
@@ -609,13 +582,12 @@ namespace SandcastleBuilder.Utils.Controls
 
                     return sb.Text;
                 }
-#if DOTNET_20
                 else
                 {
                     if(this.StatusBar is ToolStripItem tsi)
                         return tsi.Text;
                 }
-#endif
+
                 return null;
             }
             set
@@ -627,13 +599,11 @@ namespace SandcastleBuilder.Utils.Controls
                     else
                         sb.Text = value;
                 }
-#if DOTNET_20
                 else
                 {
                     if(this.StatusBar is ToolStripItem tsi)
                         tsi.Text = value;
                 }
-#endif
             }
         }
 
@@ -658,9 +628,8 @@ namespace SandcastleBuilder.Utils.Controls
                 {
                     this.CurrentStatusBarText = this.ItemText(ctl);
 
-//                    System.Diagnostics.Debug.Write(sender.GetType().FullName + "  ");
-//                    System.Diagnostics.Debug.WriteLine(
-//                        "Form_Activated set text: " + this.CurrentStatusBarText);
+                    //System.Diagnostics.Debug.Write(sender.GetType().FullName + "  ");
+                    //System.Diagnostics.Debug.WriteLine("Form_Activated set text: " + this.CurrentStatusBarText);
                 }
             }
         }
@@ -691,9 +660,8 @@ namespace SandcastleBuilder.Utils.Controls
 
             this.CurrentStatusBarText = this.ItemText(sender);
 
-//            System.Diagnostics.Debug.Write(sender.GetType().FullName + "  ");
-//            System.Diagnostics.Debug.WriteLine(
-//                "Menu_Select set text: " + this.CurrentStatusBarText);
+            //System.Diagnostics.Debug.Write(sender.GetType().FullName + "  ");
+            //System.Diagnostics.Debug.WriteLine("Menu_Select set text: " + this.CurrentStatusBarText);
         }
 
         // <summary>
@@ -709,9 +677,8 @@ namespace SandcastleBuilder.Utils.Controls
 
             this.CurrentStatusBarText = this.StatusBarDefaultText;
 
-//            System.Diagnostics.Debug.Write(sender.GetType().FullName + "  ");
-//            System.Diagnostics.Debug.WriteLine("MenuComplete restored text: " +
-//                this.StatusBarDefaultText);
+            //System.Diagnostics.Debug.Write(sender.GetType().FullName + "  ");
+            //System.Diagnostics.Debug.WriteLine("MenuComplete restored text: " + this.StatusBarDefaultText);
         }
 
         // <summary>
@@ -734,10 +701,8 @@ namespace SandcastleBuilder.Utils.Controls
             {
                 if(sender is Control p)
                     p = p.Parent;
-#if DOTNET_20
                 else    // It's a control hosted in a tool strip item
                     p = ((ToolStripItem)sender).Owner.Parent;
-#endif
 
                 while(p != null)
                 {
@@ -759,9 +724,8 @@ namespace SandcastleBuilder.Utils.Controls
 
             this.CurrentStatusBarText = this.ItemText(sender);
 
-//            System.Diagnostics.Debug.Write(sender.GetType().FullName + "  ");
-//            System.Diagnostics.Debug.WriteLine("Control_Enter set text: " +
-//               this.CurrentStatusBarText);
+            //System.Diagnostics.Debug.Write(sender.GetType().FullName + "  ");
+            //System.Diagnostics.Debug.WriteLine("Control_Enter set text: " + this.CurrentStatusBarText);
         }
 
         // <summary>
@@ -777,9 +741,8 @@ namespace SandcastleBuilder.Utils.Controls
 
             this.CurrentStatusBarText = this.StatusBarDefaultText;
 
-//            System.Diagnostics.Debug.Write(sender.GetType().FullName + "  ");
-//            System.Diagnostics.Debug.WriteLine("Control_Leave restored text: " +
-//                this.StatusBarDefaultText);
+            //System.Diagnostics.Debug.Write(sender.GetType().FullName + "  ");
+            //System.Diagnostics.Debug.WriteLine("Control_Leave restored text: " + this.StatusBarDefaultText);
         }
 
         // <summary>
@@ -835,27 +798,20 @@ namespace SandcastleBuilder.Utils.Controls
             // MenuItem is a Component.  LinkLabel derives from Label but
             // it can gain the focus and thus can be extended.  For .NET 2.0,
             // we also support the ToolStripItem component.
-#if !DOTNET_20
-            if(extendee is MenuItem || extendee is LinkLabel)
-#else
-            if(extendee is MenuItem || extendee is LinkLabel ||
-              extendee is ToolStripItem)
-#endif
+            if(extendee is MenuItem || extendee is LinkLabel || extendee is ToolStripItem)
                 return true;
 
             // Non-Control types, Form, and these specific controls can't be
             // extended as it doesn't make sense for them as they don't gain
             // the focus needed to display the text.
-            if(!(extendee is Control) || extendee is Form ||
+            if(extendee is not Control || extendee is Form ||
               extendee is Label || extendee is PictureBox ||
               extendee is ProgressBar || extendee is ScrollBar ||
               extendee is Splitter || extendee is StatusBar ||
-#if !DOTNET_20
-              extendee is ToolBar)
-#else
               extendee is ToolBar || extendee is ToolStrip)
-#endif
+            {
                 return false;
+            }
 
             // All other Control types can be extended
             return true;
@@ -877,13 +833,8 @@ namespace SandcastleBuilder.Utils.Controls
             if(comp == null)
                 throw new ArgumentException("Component cannot be null");
 
-#if !DOTNET_20
-            if(!(comp is MenuItem) && !(comp is Control))
-#else
-            if(!(comp is MenuItem) && !(comp is Control) && !(comp is ToolStripItem))
-#endif
-                throw new ArgumentException(
-                    "Component must be a MenuItem, ToolStripItem, or a Control");
+            if(comp is not MenuItem && comp is not Control && comp is not ToolStripItem)
+                throw new ArgumentException("Component must be a MenuItem, ToolStripItem, or a Control");
 
             if(htOptions.Contains(comp))
                 return ((PropertyOptions)htOptions[comp]).Message;
@@ -911,17 +862,11 @@ namespace SandcastleBuilder.Utils.Controls
             MenuItem mi = comp as MenuItem;
             Control ctl = comp as Control;
             TabControl tc = comp as TabControl;
-
-#if DOTNET_20
             ToolStripItem ti = comp as ToolStripItem;
             ToolStripControlHost tsch = comp as ToolStripControlHost;
 
             if(mi == null && ti == null && ctl == null)
-#else
-            if(mi == null && ctl == null)
-#endif
-                throw new ArgumentException(
-                    "Component must be a MenuItem, ToolStripItem, or a Control");
+                throw new ArgumentException("Component must be a MenuItem, ToolStripItem, or a Control");
 
             if(message != null && message.Length == 0)
                 message = null;
@@ -934,7 +879,7 @@ namespace SandcastleBuilder.Utils.Controls
                     if(mi != null)
                         mi.Select += new EventHandler(Menu_Select);
                     else
-#if DOTNET_20
+                    {
                         if(ti != null)
                         {
                             ti.MouseEnter += new EventHandler(Control_Enter);
@@ -949,7 +894,6 @@ namespace SandcastleBuilder.Utils.Controls
                             }
                         }
                         else
-#endif
                         {
                             ctl.GotFocus += new EventHandler(Control_Enter);
                             ctl.Enter += new EventHandler(Control_Enter);
@@ -971,6 +915,7 @@ namespace SandcastleBuilder.Utils.Controls
                                 tc.SelectedIndexChanged += new EventHandler(
                                     Control_Enter);
                         }
+                    }
             }
             else
             {
@@ -982,7 +927,7 @@ namespace SandcastleBuilder.Utils.Controls
                     if(mi != null)
                         mi.Select -= new EventHandler(Menu_Select);
                     else
-#if DOTNET_20
+                    {
                         if(ti != null)
                         {
                             ti.MouseEnter -= new EventHandler(Control_Enter);
@@ -997,7 +942,6 @@ namespace SandcastleBuilder.Utils.Controls
                             }
                         }
                         else
-#endif
                         {
                             ctl.GotFocus -= new EventHandler(Control_Enter);
                             ctl.Enter -= new EventHandler(Control_Enter);
@@ -1007,6 +951,7 @@ namespace SandcastleBuilder.Utils.Controls
                                 tc.SelectedIndexChanged -= new EventHandler(
                                     Control_Enter);
                         }
+                    }
             }
 
             // Refresh the text if the control is focused
@@ -1031,13 +976,8 @@ namespace SandcastleBuilder.Utils.Controls
             if(comp == null)
                 throw new ArgumentException("Component cannot be null");
 
-#if !DOTNET_20
-            if(!(comp is MenuItem) && !(comp is Control))
-#else
-            if(!(comp is MenuItem) && !(comp is Control) && !(comp is ToolStripItem))
-#endif
-                throw new ArgumentException(
-                    "Component must be a MenuItem, ToolStripItem, or a Control");
+            if(comp is not MenuItem && comp is not Control && comp is not ToolStripItem)
+                throw new ArgumentException("Component must be a MenuItem, ToolStripItem, or a Control");
 
             if(htOptions.Contains(comp))
                 return ((PropertyOptions)htOptions[comp]).ShowAsBlank;
@@ -1066,17 +1006,11 @@ namespace SandcastleBuilder.Utils.Controls
             MenuItem mi = comp as MenuItem;
             Control ctl = comp as Control;
             TabControl tc = comp as TabControl;
-
-#if DOTNET_20
             ToolStripItem ti = comp as ToolStripItem;
             ToolStripControlHost tsch = comp as ToolStripControlHost;
 
             if(mi == null && ti == null && ctl == null)
-#else
-            if(mi == null && ctl == null)
-#endif
-                throw new ArgumentException(
-                    "Component must be a MenuItem, ToolStripItem, or a Control");
+                throw new ArgumentException("Component must be a MenuItem, ToolStripItem, or a Control");
 
             if(!htOptions.Contains(comp))
             {
@@ -1084,10 +1018,11 @@ namespace SandcastleBuilder.Utils.Controls
 
                 // Hook up the event handlers if necessary
                 if(!this.DesignMode && showBlank)
+                {
                     if(mi != null)
                         mi.Select += new EventHandler(Menu_Select);
                     else
-#if DOTNET_20
+                    {
                         if(ti != null)
                         {
                             ti.MouseEnter += new EventHandler(Control_Enter);
@@ -1102,7 +1037,6 @@ namespace SandcastleBuilder.Utils.Controls
                             }
                         }
                         else
-#endif
                         {
                             ctl.GotFocus += new EventHandler(Control_Enter);
                             ctl.Enter += new EventHandler(Control_Enter);
@@ -1113,6 +1047,8 @@ namespace SandcastleBuilder.Utils.Controls
                                 tc.SelectedIndexChanged += new EventHandler(
                                     Control_Enter);
                         }
+                    }
+                }
             }
             else
             {
@@ -1121,10 +1057,11 @@ namespace SandcastleBuilder.Utils.Controls
 
                 // Disconnect the event handlers if necessary
                 if(!this.DesignMode && po.Message == null && showBlank == false)
+                {
                     if(mi != null)
                         mi.Select -= new EventHandler(Menu_Select);
                     else
-#if DOTNET_20
+                    {
                         if(ti != null)
                         {
                             ti.MouseEnter -= new EventHandler(Control_Enter);
@@ -1139,7 +1076,6 @@ namespace SandcastleBuilder.Utils.Controls
                             }
                         }
                         else
-#endif
                         {
                             ctl.GotFocus -= new EventHandler(Control_Enter);
                             ctl.Enter -= new EventHandler(Control_Enter);
@@ -1149,6 +1085,8 @@ namespace SandcastleBuilder.Utils.Controls
                                 tc.SelectedIndexChanged -= new EventHandler(
                                     Control_Enter);
                         }
+                    }
+                }
             }
 
             // Refresh the text if the control is focused
@@ -1156,7 +1094,6 @@ namespace SandcastleBuilder.Utils.Controls
                 Control_Enter(ctl, EventArgs.Empty);
         }
 
-#if DOTNET_20
         /// <summary>
         /// This can be used to initialize the status strip progress bar
         /// controls.
@@ -1256,8 +1193,7 @@ namespace SandcastleBuilder.Utils.Controls
         /// <overloads>There are four overloads for this method</overloads>
         public static void UpdateProgress()
         {
-            if(progressBar != null)
-                progressBar.PerformStep();
+            progressBar?.PerformStep();
         }
 
         /// <summary>
@@ -1276,8 +1212,7 @@ namespace SandcastleBuilder.Utils.Controls
                 statusLabel.Owner.Update();
             }
 
-            if(progressBar != null)
-                progressBar.PerformStep();
+            progressBar?.PerformStep();
         }
 
         /// <summary>
@@ -1304,8 +1239,7 @@ namespace SandcastleBuilder.Utils.Controls
                 statusLabel.Owner.Update();
             }
 
-            if(progressBar != null)
-                progressBar.Value = current;
+            progressBar?.Value = current;
         }
 
         /// <summary>
@@ -1336,9 +1270,7 @@ namespace SandcastleBuilder.Utils.Controls
                 statusLabel.Owner.Update();
             }
 
-            if(progressBar != null)
-                progressBar.Value = progressBar.Minimum;
+            progressBar?.Value = progressBar.Minimum;
         }
-#endif
     }
 }

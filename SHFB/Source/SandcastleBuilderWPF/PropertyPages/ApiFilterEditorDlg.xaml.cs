@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ApiFilterEditorDlg.xaml.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 06/21/2025
+// Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the API filter items.
 //
@@ -38,10 +38,10 @@ using System.Xml;
 using System.Xml.XPath;
 
 using Sandcastle.Core;
-using Sandcastle.Platform.Windows;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.Project;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildEngine;
+using Sandcastle.Platform.Windows;
 
 using SandcastleBuilder.WPF.XPath;
 
@@ -58,11 +58,9 @@ namespace SandcastleBuilder.WPF.PropertyPages
         private readonly ApiFilterCollection apiFilter;
         private bool wasModified;
 
-        private SandcastleProject tempProject;
         private string reflectionFile;
         private Dictionary<string, ApiFilter> buildFilterEntries;
 
-        private BuildProcess buildProcess;
         private CancellationTokenSource cancellationTokenSource;
         private readonly IProgress<string> loadApiInfoProgress;
 
@@ -114,7 +112,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// This is used to build the project and load the API filter information in the background
         /// </summary>
         /// <returns>A binding list containing the API node information</returns>
-        private BindingList<ApiNodeInfo> BuildProject()
+        private BindingList<ApiNodeInfo> BuildProject(IBuildProcess buildProcess)
         {
             BindingList<ApiNodeInfo> apiNodes = null;
 
@@ -128,7 +126,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 reflectionFile = buildProcess.ReflectionInfoFilename;
 
                 // Convert the build API filter to a dictionary to make it easier to find entries
-                buildFilterEntries = new Dictionary<string, ApiFilter>();
+                buildFilterEntries = [];
 
                 this.ConvertApiFilter(buildProcess.CurrentProject.ApiFilter);
                 apiNodes = this.LoadNamespaces();
@@ -184,13 +182,13 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
             var rootApiNodes = new BindingList<ApiNodeInfo>
             {
-                new ApiNodeInfo("Documented APIs", "Documented", null, null)
+                new("Documented APIs", "Documented", null, null)
                 {
                     IsIncluded = true,
                     IsExpanded = true,
                     ToolTip = "Documented APIs in your assemblies"
                 },
-                new ApiNodeInfo("Inherited APIs", "Inherited", null, null)
+                new("Inherited APIs", "Inherited", null, null)
                 {
                     IsIncluded = true,
                     IsExpanded = true,
@@ -301,7 +299,6 @@ namespace SandcastleBuilder.WPF.PropertyPages
                         IsProjectExclude = true,
                         ToolTip = "Namespace contains inherited types"
                     };
-
 
                     // See if it's in the current filter
                     if(!buildFilterEntries.TryGetValue(nodeInfo.Id, out filter))
@@ -589,7 +586,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         private IEnumerable<ApiNodeInfo> AddBaseMembers(ApiNodeInfo parentInfo)
         {
             ApiNodeInfo nodeInfo;
-            var  nodeList = new List<ApiNodeInfo>();
+            var nodeList = new List<ApiNodeInfo>();
             var existingIds = new HashSet<string>();
             string fullName, memberName;
             int pos;
@@ -656,7 +653,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         /// <param name="currentNode">The node in which the checked state changed</param>
         /// <param name="setChildren">Set the checked state of all child nodes to the parent node's state if true</param>
-        private void OptimizeIncludedState(ApiNodeInfo currentNode, bool setChildren)
+        private static void OptimizeIncludedState(ApiNodeInfo currentNode, bool setChildren)
         {
             bool includedState = currentNode.IsIncluded;
             int includedCount = 0, excludedCount = 0;
@@ -668,6 +665,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 currentNode.BackgroundBrush = null;
 
                 foreach(var child in currentNode.SubMembers)
+                {
                     if(child.ApiNode != null && !child.IsProjectExclude)
                     {
                         child.IsIncluded = includedState;
@@ -675,9 +673,12 @@ namespace SandcastleBuilder.WPF.PropertyPages
                         // And members if it's a type node.  We only go to a maximum of two levels so no need
                         // for recursion.
                         foreach(var memberChild in child.SubMembers)
+                        {
                             if(memberChild.ApiNode != null && !memberChild.IsProjectExclude)
                                 memberChild.IsIncluded = includedState;
+                        }
                     }
+                }
             }
 
             // If it's a member or type node, count the number of checked and unchecked nodes.  Skip nodes that
@@ -685,15 +686,18 @@ namespace SandcastleBuilder.WPF.PropertyPages
             if(currentNode.Parent.Parent != null && !currentNode.Parent.IsProjectExclude)
             {
                 foreach(var child in currentNode.Parent.SubMembers)
+                {
                     if(child.IsIncluded)
                         includedCount++;
                     else
                         excludedCount++;
+                }
 
                 // Optimize the parent node's state based on the number of checked and unchecked items
                 if(includedCount > 0 || currentNode.Parent.EntryType == ApiEntryType.Namespace)
                     currentNode.Parent.IsIncluded = (includedCount > excludedCount);
                 else
+                {
                     if(!currentNode.Parent.IsIncluded && includedCount == 0)
                     {
                         // Note that we must always set this to true here to handle some odd edge cases:
@@ -707,6 +711,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                         // to uncheck it again if you don't want it included.
                         currentNode.Parent.IsIncluded = true;
                     }
+                }
 
                 // Color mixed nodes so that they stand out.  This is a quick way of noting their state without
                 // reworking the code to support tristate values.
@@ -716,7 +721,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     currentNode.Parent.BackgroundBrush = null;
 
                 // Do the same for the parent's parent node
-                this.OptimizeIncludedState(currentNode.Parent, false);
+                OptimizeIncludedState(currentNode.Parent, false);
             }
         }
 
@@ -741,10 +746,12 @@ namespace SandcastleBuilder.WPF.PropertyPages
                         subMembers = this.AddBaseTypes(root);
                 }
                 else
+                {
                     if(root.Parent.Parent.Id == "Documented")
                         subMembers = this.AddMembers(root);
                     else
                         subMembers = this.AddBaseMembers(root);
+                }
 
                 root.SubMembers.Clear();
 
@@ -753,11 +760,13 @@ namespace SandcastleBuilder.WPF.PropertyPages
             }
 
             foreach(var child in root.SubMembers)
+            {
                 if(child.Id == memberName)
                 {
                     root.IsExpanded = true;
                     return child;
                 }
+            }
 
             return null;
         }
@@ -857,7 +866,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
             foreach(var node in root.SubMembers)
             {
-                if(this.AllChildrenMatchParentCheckState(node.SubMembers, node.IsIncluded))
+                if(AllChildrenMatchParentCheckState(node.SubMembers, node.IsIncluded))
                 {
                     // We only need to add a filter in this case if the namespace is being excluded
                     if(!node.IsIncluded)
@@ -869,7 +878,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     apiFilter.Add(filter);
 
                     // Add child filters that match the opposite state
-                    this.AddChildFilter(filter, node.SubMembers, !node.IsIncluded);
+                    AddChildFilter(filter, node.SubMembers, !node.IsIncluded);
                 }
             }
         }
@@ -880,7 +889,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="filter">The filter to which the entries are added</param>
         /// <param name="nodes">The API nodes to scan</param>
         /// <param name="state">The include state to match</param>
-        private void AddChildFilter(ApiFilter filter, IEnumerable<ApiNodeInfo> nodes, bool state)
+        private static void AddChildFilter(ApiFilter filter, IEnumerable<ApiNodeInfo> nodes, bool state)
         {
             ApiFilter childFilter;
             string parentId;
@@ -888,7 +897,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
             foreach(var node in nodes)
             {
-                if(this.AllChildrenMatchParentCheckState(node.SubMembers, node.IsIncluded))
+                if(AllChildrenMatchParentCheckState(node.SubMembers, node.IsIncluded))
                 {
                     // We only need to add a filter in this case if the node state matches the given state or if
                     // it's a nested class with a state different than the parent class.
@@ -922,7 +931,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     filter.Children.Add(childFilter);
 
                     // Add child filters that match the opposite state of the parent node
-                    this.AddChildFilter(childFilter, node.SubMembers, !node.IsIncluded);
+                    AddChildFilter(childFilter, node.SubMembers, !node.IsIncluded);
                 }
             }
         }
@@ -933,7 +942,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="nodes">The nodes to check</param>
         /// <param name="state">The state to match</param>
         /// <returns>True if all children's included states match the parent node's included state, false if not</returns>
-        private bool AllChildrenMatchParentCheckState(IEnumerable<ApiNodeInfo> nodes, bool state)
+        private static bool AllChildrenMatchParentCheckState(IEnumerable<ApiNodeInfo> nodes, bool state)
         {
             foreach(var child in nodes)
             {
@@ -942,8 +951,10 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     return false;
 
                 if(child.SubMembers.Count != 0)
-                    if(!this.AllChildrenMatchParentCheckState(child.SubMembers, state))
+                {
+                    if(!AllChildrenMatchParentCheckState(child.SubMembers, state))
                         return false;
+                }
             }
 
             return true;
@@ -961,6 +972,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private async void ApiFilterEditorDlg_Loaded(object sender, RoutedEventArgs e)
         {
+            ISandcastleProject tempProject = null;
             string tempPath;
 
             tvApiList.IsEnabled = grdSearchOptions.IsEnabled = btnReset.IsEnabled = false;
@@ -978,22 +990,20 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 if(!Directory.Exists(tempPath))
                     Directory.CreateDirectory(tempPath);
 
-                tempProject = new SandcastleProject(apiFilter.Project.MSBuildProject)
-                {
-                    CleanIntermediates = false,
-                    OutputPath = tempPath
-                };
+                tempProject = apiFilter.Project.Clone();
+                tempProject.CleanIntermediates = false;
+                tempProject.OutputPath = tempPath;
 
                 cancellationTokenSource = new CancellationTokenSource();
 
-                buildProcess = new BuildProcess(tempProject, PartialBuildType.GenerateReflectionInfo)
-                {
-                    ProgressReportProvider = new Progress<BuildProgressEventArgs>(buildProcess_ReportProgress),
-                    CancellationToken = cancellationTokenSource.Token,
-                    SuppressApiFilter = true        // We must suppress the current API filter for this build
-                };
+                var buildProcess = tempProject.CreateBuildProcess(PartialBuildType.GenerateReflectionInfo);
 
-                var apiNodes = await Task.Run(() => this.BuildProject(), cancellationTokenSource.Token).ConfigureAwait(true);
+                buildProcess.ProgressReportProvider = new Progress<BuildProgressEventArgs>(buildProcess_ReportProgress);
+                buildProcess.CancellationToken = cancellationTokenSource.Token;
+                buildProcess.SuppressApiFilter = true;      // We must suppress the current API filter for this build
+
+                var apiNodes = await Task.Run(() => this.BuildProject(buildProcess),
+                    cancellationTokenSource.Token).ConfigureAwait(true);
 
                 if(!cancellationTokenSource.IsCancellationRequested)
                 {
@@ -1003,14 +1013,16 @@ namespace SandcastleBuilder.WPF.PropertyPages
                         tvApiList.IsEnabled = grdSearchOptions.IsEnabled = btnReset.IsEnabled = true;
                     }
                     else
+                    {
                         MessageBox.Show("Unable to build project to obtain API information.  Please perform a " +
                             "normal build to identify and correct the problem.", Constants.AppName,
                             MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
                 else
                     this.Close();
             }
-            catch(OperationCanceledException )
+            catch(OperationCanceledException)
             {
                 // Just close if canceled while loading the filter info after the build
                 this.Close();
@@ -1024,8 +1036,6 @@ namespace SandcastleBuilder.WPF.PropertyPages
             }
             finally
             {
-                buildProcess = null;
-
                 try
                 {
                     // Restore the current project's base path
@@ -1035,6 +1045,22 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 {
                     // Ignore any exceptions
                     System.Diagnostics.Debug.WriteLine(ex);
+                }
+
+                if(tempProject != null)
+                {
+                    try
+                    {
+                        // Delete the temporary project's working files
+                        if(!String.IsNullOrWhiteSpace(tempProject.OutputPath) && Directory.Exists(tempProject.OutputPath))
+                            Directory.Delete(tempProject.OutputPath, true);
+                    }
+                    catch
+                    {
+                        // Eat the exception.  We'll ignore it if the temporary files cannot be deleted.
+                    }
+
+                    tempProject.Dispose();
                 }
 
                 if(cancellationTokenSource != null)
@@ -1083,23 +1109,6 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
                 // Add filters for inherited types
                 this.AddNamespaceFilter((ApiNodeInfo)tvApiList.Items[1]);
-            }
-
-            if(tempProject != null)
-            {
-                try
-                {
-                    // Delete the temporary project's working files
-                    if(!String.IsNullOrWhiteSpace(tempProject.OutputPath) && Directory.Exists(tempProject.OutputPath))
-                        Directory.Delete(tempProject.OutputPath, true);
-                }
-                catch
-                {
-                    // Eat the exception.  We'll ignore it if the temporary files cannot be deleted.
-                }
-
-                tempProject.Dispose();
-                tempProject = null;
             }
         }
 
@@ -1189,7 +1198,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         {
             if(e.OriginalSource is CheckBox c)
             {
-                this.OptimizeIncludedState((ApiNodeInfo)c.DataContext, true);
+                OptimizeIncludedState((ApiNodeInfo)c.DataContext, true);
                 wasModified = true;
             }
         }
@@ -1244,7 +1253,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
             try
             {
-                Regex reSearch = new Regex(txtSearchText.Text);
+                Regex reSearch = new(txtSearchText.Text);
             }
             catch(ArgumentException ex)
             {
@@ -1253,7 +1262,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 return;
             }
 
-            nodeList = new List<ApiNodeInfo>();
+            nodeList = [];
 
             try
             {
@@ -1263,7 +1272,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 // Use the custom XPath function matches-regex to perform a regular expression search for
                 // matching nodes.  The custom XPath function resolve-name is used to convert the API names to
                 // their display format for the search.
-                XPathFunctionContext context = new XPathFunctionContext();
+                XPathFunctionContext context = new();
                 XPathExpression expr = navigator.Compile(String.Format(CultureInfo.InvariantCulture,
                     "api[matches-regex(resolve-name(node(), boolean({0})), '{1}', boolean({2}))]",
                     fullyQualified, txtSearchText.Text, ignoreCase));
@@ -1359,6 +1368,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 expr.SetContext(context);
 
                 foreach(XPathNavigator nav in navigator.Select(expr))
+                {
                     if(nav.HasChildren)
                     {
                         id = nav.GetAttribute("api", String.Empty);
@@ -1398,14 +1408,15 @@ namespace SandcastleBuilder.WPF.PropertyPages
                         if(entryTypeOptions[entryType] && visibilityOptions[visibility])
                             nodeList.Add(new ApiNodeInfo(nodeText, id.Substring(2), ((IHasXmlNode)nav).GetNode(), null));
                     }
+                }
 
                 if(nodeList.Count == 0)
                     nodeList.Add(new ApiNodeInfo("Nothing found", "NotFound", null, null));
                 else
                 {
                     // Filter out duplicate inherited members and sort the results
-                    nodeList = nodeList.GroupBy(n => n.Id).Select(g => g.First()).OrderBy(
-                        n => n.EntryType).ThenBy(n => n.Id).ToList();
+                    nodeList = [.. nodeList.GroupBy(n => n.Id).Select(g => g.First()).OrderBy(
+                        n => n.EntryType).ThenBy(n => n.Id)];
                 }
 
                 dgSearchResults.ItemsSource = nodeList;
@@ -1461,7 +1472,9 @@ namespace SandcastleBuilder.WPF.PropertyPages
             bool includedState = (sender == btnInclude);
 
             if(dgSearchResults.SelectedItems.Count != 0)
+            {
                 foreach(ApiNodeInfo selection in dgSearchResults.SelectedItems)
+                {
                     if(selection.ApiNode != null)
                     {
                         var foundNode = this.FindNode(selection.ApiNode);
@@ -1473,11 +1486,13 @@ namespace SandcastleBuilder.WPF.PropertyPages
                             if(foundNode.IsIncluded != includedState)
                             {
                                 foundNode.IsIncluded = includedState;
-                                this.OptimizeIncludedState(foundNode, true);
+                                OptimizeIncludedState(foundNode, true);
                                 wasModified = true;
                             }
                         }
                     }
+                }
+            }
 
             tvApiList.Focus();
         }

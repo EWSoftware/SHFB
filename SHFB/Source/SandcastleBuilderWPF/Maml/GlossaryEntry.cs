@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : GlossaryEntry.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 07/04/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used hold information about a glossary entry
 //
@@ -35,12 +35,12 @@ namespace SandcastleBuilder.WPF.Maml
         /// This read-only property returns the term dictionary
         /// </summary>
         /// <value>The key is the term, the value is an optional term ID used for linking</value>
-        public Dictionary<string, string> Terms { get; } = new Dictionary<string, string>();
+        public Dictionary<string, string> Terms { get; } = [];
 
         /// <summary>
         /// This read-only property returns an optional list of related entries
         /// </summary>
-        public List<string> RelatedEntries { get; } = new List<string>();
+        public List<string> RelatedEntries { get; } = [];
 
         /// <summary>
         /// This is used to get or set the parent division of the entry

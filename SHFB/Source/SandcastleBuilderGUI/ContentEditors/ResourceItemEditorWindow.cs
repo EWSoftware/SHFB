@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ResourceItemEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2021
-// Note    : Copyright 2009-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2009-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the resource item files.
 //
@@ -24,8 +24,8 @@ using System.IO;
 using System.Windows.Forms;
 
 using Sandcastle.Core;
+using Sandcastle.Core.Project;
 
-using SandcastleBuilder.Utils;
 using SandcastleBuilder.WPF;
 
 namespace SandcastleBuilder.Gui.ContentEditors
@@ -38,7 +38,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         #region Private data members
         //=====================================================================
 
-        private readonly FileItem resourceItemsFile;
+        private readonly IFileItem resourceItemsFile;
         private string resourceItemsPath;
 
         #endregion
@@ -50,7 +50,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// Constructor
         /// </summary>
         /// <param name="fileItem">The project file item to edit</param>
-        public ResourceItemEditorWindow(FileItem fileItem)
+        public ResourceItemEditorWindow(IFileItem fileItem)
         {
             if(fileItem == null)
                 throw new ArgumentNullException(nameof(fileItem));
@@ -188,16 +188,15 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <inheritdoc />
         public override bool SaveAs()
         {
-            using(SaveFileDialog dlg = new SaveFileDialog())
-            {
-                dlg.Title = "Save Resource Item File As";
-                dlg.Filter = "Resource item files (*.items)|*.items|All Files (*.*)|*.*";
-                dlg.DefaultExt = Path.GetExtension(this.ToolTipText);
-                dlg.InitialDirectory = Path.GetDirectoryName(this.ToolTipText);
+            using SaveFileDialog dlg = new();
+            
+            dlg.Title = "Save Resource Item File As";
+            dlg.Filter = "Resource item files (*.items)|*.items|All Files (*.*)|*.*";
+            dlg.DefaultExt = Path.GetExtension(this.ToolTipText);
+            dlg.InitialDirectory = Path.GetDirectoryName(this.ToolTipText);
 
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    return this.Save(dlg.FileName);
-            }
+            if(dlg.ShowDialog() == DialogResult.OK)
+                return this.Save(dlg.FileName);
 
             return false;
         }

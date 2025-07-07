@@ -82,7 +82,7 @@ namespace Sandcastle.Tools.BuildComponents
             /// <inheritdoc />
             /// <remarks>Indicate a dependency on the missing documentation component as that's the best
             /// placement if the IntelliSense component is used too.</remarks>
-            public override IEnumerable<string> Dependencies => new List<string> { "Show Missing Documentation Component" };
+            public override IEnumerable<string> Dependencies => ["Show Missing Documentation Component"];
         }
         #endregion
 
@@ -127,7 +127,7 @@ namespace Sandcastle.Tools.BuildComponents
             // Item keys are compared case-insensitively
             content = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-            elements = new List<SharedContentElement>();
+            elements = [];
 
             // Get the elements to be resolved
             XPathNodeIterator resolve_nodes = configuration.Select("replace");
@@ -258,24 +258,25 @@ namespace Sandcastle.Tools.BuildComponents
 
             try
             {
-                using(XmlReader reader = XmlReader.Create(file, new XmlReaderSettings { CloseInput = true }))
+                using XmlReader reader = XmlReader.Create(file, new XmlReaderSettings { CloseInput = true });
+                
+                reader.MoveToContent();
+
+                while(!reader.EOF)
                 {
-                    reader.MoveToContent();
+                    if(reader.NodeType == XmlNodeType.Element && reader.Name == "item")
+                    {
+                        string key = reader.GetAttribute("id");
+                        string value = reader.ReadInnerXml();
 
-                    while(!reader.EOF)
-                        if(reader.NodeType == XmlNodeType.Element && reader.Name == "item")
-                        {
-                            string key = reader.GetAttribute("id");
-                            string value = reader.ReadInnerXml();
+                        if(content.ContainsKey(key))
+                            this.WriteMessage(MessageLevel.Info, "Overriding shared content item '{0}' " +
+                                "with value in file '{1}'.", key, file);
 
-                            if(content.ContainsKey(key))
-                                this.WriteMessage(MessageLevel.Info, "Overriding shared content item '{0}' " +
-                                    "with value in file '{1}'.", key, file);
-
-                            content[key] = value;
-                        }
-                        else
-                            reader.Read();
+                        content[key] = value;
+                    }
+                    else
+                        reader.Read();
                 }
             }
             catch(IOException e)
@@ -305,7 +306,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// <remarks>This method will replace content items within other content items recursively</remarks>
         private void ResolveContent(string key, XmlDocument document, XPathNavigator start)
         {
-            List<string> parameters = new List<string>();
+            List<string> parameters = [];
 
             // For each kind of shared content element...
             foreach(SharedContentElement element in elements)
@@ -336,7 +337,7 @@ namespace Sandcastle.Tools.BuildComponents
                             try
                             {
                                 contentValue = String.Format(CultureInfo.InvariantCulture, contentValue,
-                                    parameters.ToArray());
+                                    [.. parameters]);
                             }
                             catch(FormatException)
                             {

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : SummaryPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 04/17/2021
-// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2017-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Summaries category properties
 //
@@ -24,7 +24,7 @@ using System.Windows.Controls;
 
 using Sandcastle.Platform.Windows;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core.Project;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {

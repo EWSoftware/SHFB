@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : NuGetOrgPackageSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/18/2021
-// Note    : Copyright 2021, Eric Woodruff, All rights reserved
+// Updated : 07/04/2025
+// Note    : Copyright 2021-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that implements the package source for the NuGet.org online package source
 //
@@ -17,7 +17,7 @@
 // 08/06/2021  EFW  Created the code
 //===============================================================================================================
 
-// Ignore Spelling: prerelease
+// Ignore Spelling: prerelease org
 
 using System;
 using System.Collections.Generic;
@@ -54,34 +54,30 @@ namespace SandcastleBuilder.WPF.NuGet
                 {
                     try
                     {
-                        using(var client = new WebClient())
+                        using var client = new WebClient();
+                        string result = client.DownloadString(this.PackageSourceLocation);
+
+                        if(!String.IsNullOrWhiteSpace(result))
                         {
-                            string result = client.DownloadString(this.PackageSourceLocation);
-
-                            if(!String.IsNullOrWhiteSpace(result))
+                            var options = new JsonDocumentOptions
                             {
-                                var options = new JsonDocumentOptions
-                                {
-                                    AllowTrailingCommas = true,
-                                    CommentHandling = JsonCommentHandling.Skip
-                                };
+                                AllowTrailingCommas = true,
+                                CommentHandling = JsonCommentHandling.Skip
+                            };
 
-                                using(JsonDocument document = JsonDocument.Parse(result, options))
-                                {
-                                    var root = document.RootElement;
+                            using JsonDocument document = JsonDocument.Parse(result, options);
+                            var root = document.RootElement;
 
-                                    if(root.ValueKind == JsonValueKind.Object &&
-                                      root.TryGetProperty("resources", out JsonElement resources))
+                            if(root.ValueKind == JsonValueKind.Object &&
+                              root.TryGetProperty("resources", out JsonElement resources))
+                            {
+                                foreach(var element in resources.EnumerateArray())
+                                {
+                                    if(element.TryGetProperty("@type", out JsonElement type) &&
+                                      type.GetString() == "SearchQueryService")
                                     {
-                                        foreach(var element in resources.EnumerateArray())
-                                        {
-                                            if(element.TryGetProperty("@type", out JsonElement type) &&
-                                              type.GetString() == "SearchQueryService")
-                                            {
-                                                searchQueryServiceUrl = element.GetProperty("@id").GetString();
-                                                break;
-                                            }
-                                        }
+                                        searchQueryServiceUrl = element.GetProperty("@id").GetString();
+                                        break;
                                     }
                                 }
                             }
@@ -134,44 +130,40 @@ namespace SandcastleBuilder.WPF.NuGet
             if(newSearch)
                 skipCount = 0;
 
-            using(var client = new WebClient())
+            using var client = new WebClient();
+            int returned = 0;
+            string result = null;
+
+            try
             {
-                int returned = 0;
-                string result = null;
-
-                try
-                {
-                    result = client.DownloadString(
-                        $"{this.SearchQueryServiceUrl}?q={WebUtility.UrlEncode(String.Join(" ", searchTerms))}&skip={skipCount}&prerelease={includePreRelease}");
-                }
-                catch(Exception ex)
-                {
-                    // Ignore exceptions.  If not available, we'll try again later.
-                    System.Diagnostics.Debug.WriteLine(ex);
-                }
-
-                if(!String.IsNullOrWhiteSpace(result))
-                {
-                    var options = new JsonDocumentOptions
-                    {
-                        AllowTrailingCommas = true,
-                        CommentHandling = JsonCommentHandling.Skip
-                    };
-
-                    using(JsonDocument document = JsonDocument.Parse(result, options))
-                    {
-                        var root = document.RootElement;
-
-                        foreach(var element in root.GetProperty("data").EnumerateArray())
-                        {
-                            returned++;
-                            yield return new NuGetPackage(element);
-                        }
-                    }
-                }
-
-                skipCount += returned;
+                result = client.DownloadString(
+                    $"{this.SearchQueryServiceUrl}?q={WebUtility.UrlEncode(String.Join(" ", searchTerms))}&skip={skipCount}&prerelease={includePreRelease}");
             }
+            catch(Exception ex)
+            {
+                // Ignore exceptions.  If not available, we'll try again later.
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+
+            if(!String.IsNullOrWhiteSpace(result))
+            {
+                var options = new JsonDocumentOptions
+                {
+                    AllowTrailingCommas = true,
+                    CommentHandling = JsonCommentHandling.Skip
+                };
+
+                using JsonDocument document = JsonDocument.Parse(result, options);
+                var root = document.RootElement;
+
+                foreach(var element in root.GetProperty("data").EnumerateArray())
+                {
+                    returned++;
+                    yield return new NuGetPackage(element);
+                }
+            }
+
+            skipCount += returned;
         }
 
         /// <inheritdoc />

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BindingRedirectSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing binding redirection settings for the Assembly Binding Redirection
 // Resolver plug-in.
@@ -26,7 +26,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -35,15 +35,6 @@ namespace SandcastleBuilder.PlugIns
     /// </summary>
     public class BindingRedirectSettings : INotifyPropertyChanged
     {
-        #region Private data members
-        //=====================================================================
-
-        private string assemblyName, publicKeyToken, culture, oldVersionFrom, oldVersionTo, newVersion,
-            errorMessage, description;
-        private FilePath configFile;
-
-        #endregion
-
         #region Properties
         //=====================================================================
 
@@ -52,12 +43,12 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string AssemblyName
         {
-            get => assemblyName;
+            get => field;
             set
             {
-                if(assemblyName != value)
+                if(field != value)
                 {
-                    assemblyName = value?.Trim();
+                    field = value?.Trim();
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -71,12 +62,12 @@ namespace SandcastleBuilder.PlugIns
         /// <value>If omitted, "null" is assumed</value>
         public string PublicKeyToken
         {
-            get => publicKeyToken;
+            get => field;
             set
             {
-                if(publicKeyToken != value)
+                if(field != value)
                 {
-                    publicKeyToken = value?.Trim();
+                    field = value?.Trim();
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -90,12 +81,12 @@ namespace SandcastleBuilder.PlugIns
         /// <value>If omitted, "neutral" is assumed</value>
         public string Culture
         {
-            get => culture;
+            get => field;
             set
             {
-                if(culture != value)
+                if(field != value)
                 {
-                    culture = value?.Trim();
+                    field = value?.Trim();
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -108,12 +99,12 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string OldVersion
         {
-            get => oldVersionFrom;
+            get => field;
             set
             {
-                if(oldVersionFrom != value)
+                if(field != value)
                 {
-                    oldVersionFrom = value?.Trim();
+                    field = value?.Trim();
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -129,12 +120,12 @@ namespace SandcastleBuilder.PlugIns
         /// version.</value>
         public string OldVersionTo
         {
-            get => oldVersionTo;
+            get => field;
             set
             {
-                if(oldVersionTo != value)
+                if(field != value)
                 {
-                    oldVersionTo = value?.Trim();
+                    field = value?.Trim();
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -147,12 +138,12 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string NewVersion
         {
-            get => newVersion;
+            get => field;
             set
             {
-                if(newVersion != value)
+                if(field != value)
                 {
-                    newVersion = value?.Trim();
+                    field = value?.Trim();
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -167,19 +158,19 @@ namespace SandcastleBuilder.PlugIns
         /// <value>If specified, the properties in the Binding Redirect category are ignored.</value>
         public FilePath ConfigurationFile
         {
-            get => configFile;
+            get => field;
             set
             {
-                if(configFile != value)
+                if(field != value)
                 {
-                    if(configFile != null)
-                        configFile.PersistablePathChanged -= this.configFile_PersistablePathChanged;
+                    if(field != null)
+                        field.PersistablePathChanged -= this.configFile_PersistablePathChanged;
 
                     if(value == null)
-                        value = new FilePath(configFile.BasePathProvider);
+                        value = new FilePath(field.BasePathProvider);
 
-                    configFile = value;
-                    configFile.PersistablePathChanged += this.configFile_PersistablePathChanged;
+                    field = value;
+                    field.PersistablePathChanged += this.configFile_PersistablePathChanged;
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -192,10 +183,10 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string ErrorMessage
         {
-            get => errorMessage;
+            get => field;
             private set
             {
-                errorMessage = value;
+                field = value;
 
                 this.OnPropertyChanged();
             }
@@ -206,10 +197,10 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string BindingRedirectDescription
         {
-            get => description;
+            get => field;
             private set
             {
-                description = value;
+                field = value;
 
                 this.OnPropertyChanged();
             }
@@ -265,22 +256,22 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         private void Validate()
         {
-            List<string> problems = new List<string>();
+            List<string> problems = [];
 
-            if(String.IsNullOrWhiteSpace(assemblyName) && String.IsNullOrWhiteSpace(configFile))
+            if(String.IsNullOrWhiteSpace(this.AssemblyName) && String.IsNullOrWhiteSpace(this.ConfigurationFile))
                 problems.Add("An assembly name or configuration file is required");
             else
             {
-                if(!String.IsNullOrWhiteSpace(assemblyName) && !String.IsNullOrWhiteSpace(configFile))
+                if(!String.IsNullOrWhiteSpace(this.AssemblyName) && !String.IsNullOrWhiteSpace(this.ConfigurationFile))
                     problems.Add("Specify an assembly name or configuration file but not both");
             }
 
-            if(!String.IsNullOrWhiteSpace(assemblyName))
+            if(!String.IsNullOrWhiteSpace(this.AssemblyName))
             {
-                if(String.IsNullOrWhiteSpace(oldVersionFrom))
+                if(String.IsNullOrWhiteSpace(this.OldVersion))
                     problems.Add("An old version number is required");
 
-                if(String.IsNullOrWhiteSpace(newVersion))
+                if(String.IsNullOrWhiteSpace(this.NewVersion))
                     problems.Add("An new version number is required");
             }
 
@@ -289,21 +280,21 @@ namespace SandcastleBuilder.PlugIns
             else
                 this.ErrorMessage = null;
 
-            if(configFile.Path.Length != 0)
-                this.BindingRedirectDescription = configFile.PersistablePath;
+            if(this.ConfigurationFile.Path.Length != 0)
+                this.BindingRedirectDescription = this.ConfigurationFile.PersistablePath;
             else
             {
                 string range;
 
-                if(oldVersionTo == null)
-                    range = oldVersionFrom;
+                if(this.OldVersionTo == null)
+                    range = this.OldVersion;
                 else
-                    range = String.Format(CultureInfo.InvariantCulture, "{0}-{1}", oldVersionFrom, oldVersionTo);
+                    range = String.Format(CultureInfo.InvariantCulture, "{0}-{1}", this.OldVersion, this.OldVersionTo);
 
                 this.BindingRedirectDescription = String.Format(CultureInfo.InvariantCulture,
                     "{0}, Culture={1}, PublicKeyToken={2}, Version(s) {3} redirect to Version {4}",
-                    assemblyName ?? "(Undefined)", String.IsNullOrWhiteSpace(culture) ? "neutral" : culture,
-                    String.IsNullOrWhiteSpace(publicKeyToken) ? "null" : publicKeyToken, range, newVersion);
+                    this.AssemblyName ?? "(Undefined)", String.IsNullOrWhiteSpace(this.Culture) ? "neutral" : this.Culture,
+                    String.IsNullOrWhiteSpace(this.PublicKeyToken) ? "null" : this.PublicKeyToken, range, this.NewVersion);
             }
         }
         #endregion
@@ -323,7 +314,7 @@ namespace SandcastleBuilder.PlugIns
         /// the settings.</remarks>
         public static BindingRedirectSettings FromXml(IBasePathProvider pathProvider, XElement configuration)
         {
-            BindingRedirectSettings brs = new BindingRedirectSettings(pathProvider);
+            BindingRedirectSettings brs = new(pathProvider);
 
             if(configuration != null)
             {
@@ -369,7 +360,7 @@ namespace SandcastleBuilder.PlugIns
                             {
                                 Version tempVersion = oldVersion;
                                 brs.OldVersion = oldVersionTo.ToString();
-                                brs.oldVersionTo = tempVersion.ToString();
+                                brs.OldVersionTo = tempVersion.ToString();
                             }
                         }
                         else
@@ -390,10 +381,11 @@ namespace SandcastleBuilder.PlugIns
         /// <remarks>The settings are stored in an element called <c>dependentAssembly</c>.</remarks>
         public XElement ToXml(bool relativePath)
         {
-            if(configFile.Path.Length != 0)
+            if(this.ConfigurationFile.Path.Length != 0)
             {
                 return new XElement("dependentAssembly",
-                    new XAttribute("importFrom", relativePath ? configFile.PersistablePath : configFile.ToString()));
+                    new XAttribute("importFrom", relativePath ? this.ConfigurationFile.PersistablePath :
+                        this.ConfigurationFile.ToString()));
             }
 
             var el = new XElement("dependentAssembly",
@@ -423,7 +415,7 @@ namespace SandcastleBuilder.PlugIns
                     this.OldVersionTo);
             }
 
-            br.Add(new XAttribute("newVersion", newVersion.ToString()));
+            br.Add(new XAttribute("newVersion", this.NewVersion.ToString()));
 
             return el;
         }

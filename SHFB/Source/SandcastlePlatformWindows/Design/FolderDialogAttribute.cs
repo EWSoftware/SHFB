@@ -1,5 +1,5 @@
 //===============================================================================================================
-// System  : Sandcastle Help File Builder
+// System  : Sandcastle Tools - Windows platform specific code
 // File    : FolderDialogAttribute.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 05/16/2021

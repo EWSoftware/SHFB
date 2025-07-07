@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectReferenceItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/20/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a project reference item that can be used by MRefBuilder to locate
 // assembly dependencies for the assemblies being documented.
@@ -28,10 +28,11 @@ using System.IO;
 
 using Microsoft.Build.Evaluation;
 
+using Sandcastle.Core;
 using Sandcastle.Platform.Windows.Design;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.MSBuild;
+using SandcastleBuilder.MSBuild;
+using SandcastleBuilder.MSBuild.HelpProject;
 
 namespace SandcastleBuilder.Gui.MSBuild
 {
@@ -64,7 +65,7 @@ namespace SandcastleBuilder.Gui.MSBuild
             get => projectPath;
             set
             {
-                if(value == null || value.Path.Length == 0 || value.Path.IndexOfAny(new char[] { '*', '?' }) != -1)
+                if(value == null || value.Path.Length == 0 || value.Path.IndexOfAny(FilePath.Wildcards) != -1)
                     throw new ArgumentException("A project path must be specified and cannot contain wildcards " +
                         "(* or ?)", nameof(value));
 
@@ -149,24 +150,22 @@ namespace SandcastleBuilder.Gui.MSBuild
         {
             string name;
 
-            if(!refresh && this.HasMetadata(BuildItemMetadata.Name) &&
-              this.HasMetadata(BuildItemMetadata.ProjectGuid))
+            if(!refresh && this.HasMetadata(BuildItemMetadata.Name) && this.HasMetadata(BuildItemMetadata.ProjectGuid))
                 return;
 
-            using(MSBuildProject project = new MSBuildProject(projectPath))
-            {
-                project.SetConfiguration(SandcastleProject.DefaultConfiguration,
-                    SandcastleProject.DefaultPlatform, null, false);
+            using MSBuildProject project = new(projectPath);
+            
+            project.SetConfiguration(BuildItemMetadata.DefaultConfiguration,
+                BuildItemMetadata.DefaultPlatform, null, false);
 
-                name = Path.GetFileNameWithoutExtension(project.AssemblyName);
+            name = Path.GetFileNameWithoutExtension(project.AssemblyName);
 
-                if(!String.IsNullOrEmpty(name))
-                    this.SetMetadata(BuildItemMetadata.Name, name);
-                else
-                    this.SetMetadata(BuildItemMetadata.Name, "(Invalid project type)");
+            if(!String.IsNullOrEmpty(name))
+                this.SetMetadata(BuildItemMetadata.Name, name);
+            else
+                this.SetMetadata(BuildItemMetadata.Name, "(Invalid project type)");
 
-                this.SetMetadata(BuildItemMetadata.ProjectGuid, project.ProjectGuid);
-            }
+            this.SetMetadata(BuildItemMetadata.ProjectGuid, project.ProjectGuid);
         }
         #endregion
 

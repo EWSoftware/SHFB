@@ -2,8 +2,8 @@
 // System  : Sandcastle Guided Installation
 // File    : VisualStudioInstance.cs
 // Author  : Eric Woodruff
-// Updated : 04/21/2021
-// Note    : Copyright 2019-2021, Eric Woodruff, All rights reserved
+// Updated : 07/06/2025
+// Note    : Copyright 2019-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to get a description and installation path for all installed version of
 // Visual Studio.
@@ -17,7 +17,7 @@
 // 03/15/2019  EFW  Created the code
 //===============================================================================================================
 
-// Ignore Spelling: Xml
+// Ignore Spelling: Xml Env
 
 using System;
 using System.Collections.Generic;
@@ -41,7 +41,7 @@ namespace Sandcastle.Installer
 
         private static List<VisualStudioInstance> installedInstances;
 
-        private static readonly object syncRoot = new object();
+        private static readonly object syncRoot = new();
 
         #endregion
 
@@ -60,8 +60,7 @@ namespace Sandcastle.Installer
                 {
                     lock(syncRoot)
                     {
-                        if(installedInstances == null)
-                            installedInstances = DetermineInstalledInstances();
+                        installedInstances ??= DetermineInstalledInstances();
                     }
                 }
 
@@ -235,7 +234,7 @@ namespace Sandcastle.Installer
                 System.Diagnostics.Debug.WriteLine($"Error 0x{ex.HResult:x8}: {ex.Message}");
             }
 
-            return instances.OrderBy(i => i.Version).ThenBy(i => i.DisplayName).ToList();
+            return [.. instances.OrderBy(i => i.Version).ThenBy(i => i.DisplayName)];
         }
         #endregion
     }

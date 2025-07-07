@@ -134,7 +134,7 @@ namespace Sandcastle.Tools.BuildComponents
 
             string attrValue, id;
 
-            targets = new TargetTypeDictionary();
+            targets = [];
             resolver = new LinkTextResolver(targets);
 
             // Get the shared instances dictionary.  Create it if it doesn't exist.
@@ -142,7 +142,7 @@ namespace Sandcastle.Tools.BuildComponents
                 sharedTargets = cacheValue as Dictionary<string, TargetDictionary>;
 
             if(sharedTargets == null)
-                this.BuildAssembler.Data[SharedReferenceTargetsId] = sharedTargets = new Dictionary<string, TargetDictionary>();
+                this.BuildAssembler.Data[SharedReferenceTargetsId] = sharedTargets = [];
 
             // base-url is an xpath expression applied against the current document to pick up the save location of the
             // document. If specified, local links will be made relative to the base-url.
@@ -230,7 +230,7 @@ namespace Sandcastle.Tools.BuildComponents
             foreach(XPathNavigator linkNode in document.CreateNavigator().Select(referenceLinkExpression).ToArray())
             {
                 // Extract link information
-                ReferenceLinkInfo link = new ReferenceLinkInfo(linkNode);
+                ReferenceLinkInfo link = new(linkNode);
 
                 // Determine target, link type, and display options
                 string targetId = link.Target;
@@ -486,28 +486,26 @@ namespace Sandcastle.Tools.BuildComponents
                         string format = link.Contents.OuterXml;
                         string input = null;
 
-                        using(StringWriter textStore = new StringWriter(CultureInfo.InvariantCulture))
+                        using StringWriter textStore = new(CultureInfo.InvariantCulture);
+                        XmlWriterSettings settings = new() { ConformanceLevel = ConformanceLevel.Fragment };
+
+                        // Don't use simplified using statement here.  We need to ensure the writer is disposed
+                        // of before obtaining the string content.
+                        using(XmlWriter xmlStore = XmlWriter.Create(textStore, settings))
                         {
-                            XmlWriterSettings settings = new XmlWriterSettings { ConformanceLevel = ConformanceLevel.Fragment };
-
-                            using(XmlWriter xmlStore = XmlWriter.Create(textStore, settings))
+                            if(target != null)
+                                resolver.WriteTarget(target, options, xmlStore);
+                            else
                             {
-                                if(target != null)
-                                    resolver.WriteTarget(target, options, xmlStore);
-                                else
-                                {
-                                    Reference reference = TextReferenceUtilities.CreateReference(targetId);
-                                    resolver.WriteReference(reference, options, xmlStore);
-                                }
+                                Reference reference = TextReferenceUtilities.CreateReference(targetId);
+                                resolver.WriteReference(reference, options, xmlStore);
                             }
-
-                            input = textStore.ToString();
                         }
 
-                        string output = String.Format(CultureInfo.InvariantCulture, format, input);
+                        input = textStore.ToString();
 
                         XmlDocumentFragment fragment = document.CreateDocumentFragment();
-                        fragment.InnerXml = output;
+                        fragment.InnerXml = String.Format(CultureInfo.InvariantCulture, format, input);
                         fragment.WriteTo(writer);
                     }
                     else if(link.DisplayTarget.Equals("extension", StringComparison.OrdinalIgnoreCase) &&

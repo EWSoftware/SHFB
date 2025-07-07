@@ -14,24 +14,14 @@ namespace System.Compiler
     {
         private static ResourceManager resMgr;
 
-        internal static ResourceManager/*!*/ ResourceManager
-        {
-            get
-            {
-                if(resMgr == null)
-                {
-                    // NOTE: DO NOT NAME THE RESX FILE THE SAME AS THIS CLASS!
-                    //       The compiler has different naming conventions for .NET Framework versus .NET Core.
-                    //       For .NET Framework, it names it using the default namespace.  For .NET Core, it uses
-                    //       the type's namespace.  This causes it to fail to load under .NET core.  By giving it
-                    //       a name different from the class, both name it using the default namespace.
-                    resMgr = new ResourceManager("Sandcastle.Tools.MSBuild.CCI.ExceptionStringResources",
-                        typeof(ExceptionStrings).Assembly);
-                }
-
-                return resMgr;
-            }
-        }
+        internal static ResourceManager/*!*/ ResourceManager =>
+            // NOTE: DO NOT NAME THE RESX FILE THE SAME AS THIS CLASS!
+            //       The compiler has different naming conventions for .NET Framework versus .NET Core.
+            //       For .NET Framework, it names it using the default namespace.  For .NET Core, it uses
+            //       the type's namespace.  This causes it to fail to load under .NET core.  By giving it
+            //       a name different from the class, both name it using the default namespace.
+            resMgr ??= new ResourceManager("Sandcastle.Tools.MSBuild.CCI.ExceptionStringResources",
+                typeof(ExceptionStrings).Assembly);
         
         internal static string/*!*/ AssemblyReferenceNotResolved => ResourceManager.GetString("AssemblyReferenceNotResolved", null);
 

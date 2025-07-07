@@ -32,7 +32,7 @@ namespace SandcastleBuilder.Gui
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserPreferencesDlg));
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
-            this.statusBarTextProvider1 = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
+            this.statusBarTextProvider1 = new SandcastleBuilder.Gui.StatusBarTextProvider(this.components);
             this.chkVerboseLogging = new System.Windows.Forms.CheckBox();
             this.udcASPNetDevServerPort = new System.Windows.Forms.NumericUpDown();
             this.tabPreferences = new System.Windows.Forms.TabControl();
@@ -834,7 +834,7 @@ namespace SandcastleBuilder.Gui
         #endregion
 
         private System.Windows.Forms.Button btnCancel;
-        private SandcastleBuilder.Utils.Controls.StatusBarTextProvider statusBarTextProvider1;
+        private SandcastleBuilder.Gui.StatusBarTextProvider statusBarTextProvider1;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.CheckBox chkVerboseLogging;

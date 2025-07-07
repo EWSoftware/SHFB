@@ -180,7 +180,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
 
             this.DictionaryId = id;
 
-            namespaceFileFilter = new HashSet<string>();
+            namespaceFileFilter = [];
 
             foreach(XPathNavigator filter in configuration.Select("namespace/@file"))
                 namespaceFileFilter.Add(filter.Value);
@@ -247,14 +247,12 @@ namespace Sandcastle.Tools.BuildComponents.Targets
 
                 try
                 {
-                    using(var reader = XmlReader.Create(file, new XmlReaderSettings { CloseInput = true }))
-                    {
-                        XPathDocument document = new XPathDocument(reader);
+                    using var reader = XmlReader.Create(file, new XmlReaderSettings { CloseInput = true });
+                    XPathDocument document = new(reader);
 
-                        // We use the Target.Add() method so that any of its dependencies are added too
-                        foreach(var t in XmlTargetDictionaryUtilities.EnumerateTargets(document.CreateNavigator()))
-                            t.Add(this);
-                    }
+                    // We use the Target.Add() method so that any of its dependencies are added too
+                    foreach(var t in XmlTargetDictionaryUtilities.EnumerateTargets(document.CreateNavigator()))
+                        t.Add(this);
                 }
                 catch(XmlSchemaException e)
                 {

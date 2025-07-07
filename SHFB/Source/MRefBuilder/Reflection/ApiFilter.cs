@@ -34,7 +34,7 @@ using System.Xml.XPath;
 
 using System.Compiler;
 
-using Sandcastle.Core;
+using Sandcastle.Core.Project;
 
 namespace Sandcastle.Tools.Reflection
 {
@@ -378,8 +378,8 @@ namespace Sandcastle.Tools.Reflection
             if(configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
-            namespaceCache = new Dictionary<string, bool>();
-            typeExposedCache = new Dictionary<string, bool>();
+            namespaceCache = [];
+            typeExposedCache = [];
 
             // Visibility settings
             this.IncludeAttributes = (bool)configuration.Evaluate("boolean(visibility/attributes[@expose='true'])");

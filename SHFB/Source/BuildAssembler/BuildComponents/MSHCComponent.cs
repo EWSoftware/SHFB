@@ -1,5 +1,5 @@
 ﻿//===============================================================================================================
-// System  : Sandcastle Build Components
+// System  : Sandcastle Help File Builder Components
 // File    : MSHCComponent.cs
 // Note    : Copyright 2010-2023 Microsoft Corporation
 //
@@ -116,7 +116,7 @@ namespace Sandcastle.Tools.BuildComponents
 
         private string _topicVersion = "100", _tocParent = "-1", _tocParentVersion = "100", iconPath,
             styleSheetPath, scriptPath;
-        private readonly Dictionary<string, TocInfo> _toc = new Dictionary<string, TocInfo>();
+        private readonly Dictionary<string, TocInfo> _toc = [];
 
         #endregion
 
@@ -171,13 +171,13 @@ namespace Sandcastle.Tools.BuildComponents
                     tocFile = value;
             }
 
-            using(var reader = XmlReader.Create(Path.GetFullPath(Environment.ExpandEnvironmentVariables(tocFile)),
-              new XmlReaderSettings { CloseInput = true }))
-            {
-                XPathDocument document = new XPathDocument(reader);
-                XPathNavigator navigator = document.CreateNavigator();
-                LoadToc(navigator.SelectSingleNode("/topics"), _tocParent, _tocParentVersion);
-            }
+            using var reader = XmlReader.Create(Path.GetFullPath(Environment.ExpandEnvironmentVariables(tocFile)),
+              new XmlReaderSettings { CloseInput = true });
+            
+            XPathDocument document = new(reader);
+            XPathNavigator navigator = document.CreateNavigator();
+            
+            LoadToc(navigator.SelectSingleNode("/topics"), _tocParent, _tocParentVersion);
         }
 
         /// <inheritdoc />
@@ -264,7 +264,7 @@ namespace Sandcastle.Tools.BuildComponents
 
                 if(!String.IsNullOrEmpty(id))
                 {
-                    TocInfo info = new TocInfo(parent, parentVersion, sortOrder++);
+                    TocInfo info = new(parent, parentVersion, sortOrder++);
 
                     // EFW - Work around a bug in Sandcastle that can result in duplicate IDs
                     // by using the indexer to add the topic rather than Add() which throws

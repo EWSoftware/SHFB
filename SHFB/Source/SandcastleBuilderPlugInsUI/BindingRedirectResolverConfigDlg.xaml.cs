@@ -1,9 +1,9 @@
 ﻿//===============================================================================================================
-// System  : EWSoftware Design Time Attributes and Editors
+// System  : Sandcastle Help File Builder Plug-Ins
 // File    : BindingRedirectResolverConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/14/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the assembly binding redirection resolver plug-in configuration
 //
@@ -28,10 +28,10 @@ using System.Windows.Controls;
 using System.Xml.Linq;
 
 using Sandcastle.Core;
-using Sandcastle.Platform.Windows;
+using Sandcastle.Core.PlugIn;
+using Sandcastle.Core.Project;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
+using Sandcastle.Platform.Windows;
 
 namespace SandcastleBuilder.PlugIns.UI
 {
@@ -50,7 +50,7 @@ namespace SandcastleBuilder.PlugIns.UI
         public sealed class Factory : IPlugInConfigurationEditor
         {
             /// <inheritdoc />
-            public bool EditConfiguration(SandcastleProject project, XElement configuration)
+            public bool EditConfiguration(ISandcastleProject project, XElement configuration)
             {
                 var dlg = new BindingRedirectResolverConfigDlg(project, configuration);
 
@@ -63,7 +63,7 @@ namespace SandcastleBuilder.PlugIns.UI
         //=====================================================================
 
         private readonly XElement configuration;
-        private readonly SandcastleProject project;
+        private readonly ISandcastleProject project;
 
         #endregion
 
@@ -75,7 +75,7 @@ namespace SandcastleBuilder.PlugIns.UI
         /// </summary>
         /// <param name="project">The current project</param>
         /// <param name="configuration">The current configuration element</param>
-        public BindingRedirectResolverConfigDlg(SandcastleProject project, XElement configuration)
+        public BindingRedirectResolverConfigDlg(ISandcastleProject project, XElement configuration)
         {
             InitializeComponent();
 

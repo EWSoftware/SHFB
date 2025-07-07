@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PathPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 08/20/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Path category properties
 //
@@ -25,10 +25,13 @@ using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 
+using Sandcastle.Core;
+using Sandcastle.Core.Project;
+
+
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
 #endif
-using SandcastleBuilder.Utils;
 using SandcastleBuilder.WPF.PropertyPages;
 
 namespace SandcastleBuilder.Package.PropertyPages
@@ -63,7 +66,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             get
             {
-                SandcastleProject currentProject = null;
+                ISandcastleProject currentProject = null;
 
 #if !STANDALONEGUI
                 if(this.ProjectMgr != null)
@@ -75,8 +78,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 // component path project property.
                 if(currentProject != null)
                 {
-                    FolderPath componentPath = new FolderPath(ucPathPropertiesPageContent.ComponentPath,
-                        currentProject);
+                    FolderPath componentPath = new(ucPathPropertiesPageContent.ComponentPath, currentProject);
 
                     var searchFolders = currentProject.ComponentSearchPaths.ToList();
                     searchFolders.Add(componentPath);
@@ -97,11 +99,11 @@ namespace SandcastleBuilder.Package.PropertyPages
 #if !STANDALONEGUI
             if(this.ProjectMgr != null)
             {
-                SandcastleProject project = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
+                ISandcastleProject project = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
 #else
             if(this.CurrentProject != null)
             {
-                SandcastleProject project = this.CurrentProject;
+                ISandcastleProject project = this.CurrentProject;
 #endif
                 ucPathPropertiesPageContent.SetCurrentProject(project);
             }

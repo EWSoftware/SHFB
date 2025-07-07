@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HelpFilePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/20/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Help File category properties
 //
@@ -24,6 +24,8 @@ using System;
 using System.Runtime.InteropServices;
 
 using Microsoft.Build.Evaluation;
+
+using SandcastleBuilder.MSBuild.HelpProject;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -103,7 +105,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 #if !STANDALONEGUI
                 projProp = this.ProjectMgr.BuildProject.GetProperty("Language");
 #else
-                projProp = this.CurrentProject.MSBuildProject.GetProperty("Language");
+                projProp = ((SandcastleProject)this.CurrentProject).MSBuildProject.GetProperty("Language");
 #endif
                 ucHelpFilePropertiesPageContent.SetLanguage(projProp?.UnevaluatedValue ?? "en-US");
                 return true;

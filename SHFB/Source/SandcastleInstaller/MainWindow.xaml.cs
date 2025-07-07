@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : MainForm.cs
 // Author  : Eric Woodruff
-// Updated : 09/08/2021
+// Updated : 07/06/2025
 //
 // This is the main form for the Sandcastle Guided Installer.
 //
@@ -58,8 +58,8 @@ namespace Sandcastle.Installer
         /// </summary>
         public MainWindow()
         {
-            assemblies = new Dictionary<string, Assembly>();
-            allPages = new List<IInstallerPage>();
+            assemblies = [];
+            allPages = [];
             lastPage = -1;
             currentPage = 0;
 
@@ -123,13 +123,17 @@ namespace Sandcastle.Installer
                 // As such all the content is considered untrusted and we can't do certain things like load
                 // other assemblies.  Unblocking the ZIP file before extraction fixes that issue.
                 if(ex.Message.IndexOf("80131515", StringComparison.Ordinal) != -1)
+                {
                     MessageBox.Show("Unable to load configuration page assembly.  The most likely cause is " +
                         "that the ZIP file containing these files was blocked.  Use the file properties on " +
                         "the ZIP file to unblock it, re-extract the content, and run this installer again.",
                         ApplicationTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                }
                 else
+                {
                     MessageBox.Show("Unable to load configuration settings:\r\n\r\n" + ex.Message, ApplicationTitle,
                         MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -234,11 +238,13 @@ namespace Sandcastle.Installer
                 id = String.Format(CultureInfo.InvariantCulture, "P_{0}", currentPage);
 
                 foreach(var ti in tvPages.Items.OfType<TreeViewItem>().SelectMany(t => Flatten(t)))
+                {
                     if(ti.Name == id)
                     {
                         ti.IsSelected = true;
                         break;
                     }
+                }
             }
 
             lastPage = currentPage;
@@ -293,7 +299,9 @@ namespace Sandcastle.Installer
               "installation yet.  You can run it again later to finish the remaining steps.  Do you want to " +
               "exit now?", ApplicationTitle, MessageBoxButton.YesNo, MessageBoxImage.Question,
               MessageBoxResult.No) == MessageBoxResult.No)
+            {
                 e.Cancel = true;
+            }
         }
 
         /// <summary>

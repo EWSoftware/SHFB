@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2025
+// Updated : 06/24/2025
 // Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that represents a project node in a Sandcastle Help File Builder Visual Studio
@@ -22,7 +22,7 @@
 //                  environment variable setting.
 //===============================================================================================================
 
-// Ignore Spelling: vpath Projref grf itemid vsopts pdw rgpcsd Cmdexecopt pva
+// Ignore Spelling: vpath Projref grf itemid vsopts pdw rgpcsd
 
 using System;
 using System.Collections.Generic;
@@ -52,8 +52,9 @@ using SandcastleBuilder.Package.PropertyPages;
 
 using SandcastleBuilder.WPF.UI;
 
-using SandcastleProject = SandcastleBuilder.Utils.SandcastleProject;
-using SandcastleBuildAction = SandcastleBuilder.Utils.BuildAction;
+using SandcastleProject = SandcastleBuilder.MSBuild.HelpProject.SandcastleProject;
+using SandcastleBuildAction = Sandcastle.Core.Project.BuildAction;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.Package.Nodes
 {
@@ -269,7 +270,7 @@ namespace SandcastleBuilder.Package.Nodes
         public string StartWebServerInstance()
         {
             ProcessStartInfo psi;
-            Utils.FilePath webServerPath = new Utils.FilePath(null);
+            FilePath webServerPath = new(null);
             string path, outputPath, defaultPage = "Index.aspx";
             int serverPort = 12345, uniqueId;
 
@@ -446,8 +447,7 @@ namespace SandcastleBuilder.Package.Nodes
             DropDataType dropDataType = DropDataType.None;
             bool isWindowsFormat = false;
 
-            if(targetNode == null)
-                targetNode = this;
+            targetNode ??= this;
 
             // Try to get it as a directory based project
             List<string> filesDropped = DragDropHelper.GetDroppedFiles(DragDropHelper.CF_VSSTGPROJECTITEMS,
@@ -469,23 +469,23 @@ namespace SandcastleBuilder.Package.Nodes
             // passing on what's left to add as standard project files.
             if(isWindowsFormat && filesDropped.Count != 0)
             {
-                List<string> docSources = filesDropped.Where(f =>
+                List<string> docSources = [.. filesDropped.Where(f =>
                         {
                             string ext = Path.GetExtension(f);
 
                             return (ext.Equals(".sln", StringComparison.OrdinalIgnoreCase) ||
                                 ext.Equals(".slnx", StringComparison.OrdinalIgnoreCase) ||
                                 ext.EndsWith("proj", StringComparison.OrdinalIgnoreCase));
-                        }).ToList(),
-                    refSources = filesDropped.Where(f =>
+                        })],
+                    refSources = [.. filesDropped.Where(f =>
                         {
                             string ext = Path.GetExtension(f);
 
                             return (ext.Equals(".dll", StringComparison.OrdinalIgnoreCase) ||
                               ext.Equals(".exe", StringComparison.OrdinalIgnoreCase) ||
                               ext.Equals(".winmd", StringComparison.OrdinalIgnoreCase));
-                        }).ToList(),
-                    xmlDocSources = filesDropped.Where(f =>
+                        })],
+                    xmlDocSources = [.. filesDropped.Where(f =>
                         {
                             string file = Path.GetFileNameWithoutExtension(f), ext = Path.GetExtension(f);
 
@@ -493,8 +493,8 @@ namespace SandcastleBuilder.Package.Nodes
                             return (ext.Equals(".xml", StringComparison.OrdinalIgnoreCase) &&
                               refSources.Any(r => Path.GetFileNameWithoutExtension(r).Equals(file,
                                   StringComparison.OrdinalIgnoreCase)));
-                        }).ToList(),
-                    allDocSources = docSources.Concat(refSources).Concat(xmlDocSources).ToList();
+                        })],
+                    allDocSources = [.. docSources, .. refSources, .. xmlDocSources];
 
                 // If dropped on the Documentation Sources node, add all documentation sources
                 if(targetNode is DocumentationSourcesContainerNode docSourcesNode)
@@ -533,8 +533,10 @@ namespace SandcastleBuilder.Package.Nodes
                                 string hintPath = f;
 
                                 if(Path.IsPathRooted(hintPath))
+                                {
                                     hintPath = PackageUtilities.GetPathDistance(this.ProjectMgr.BaseURI.Uri,
                                         new Uri(hintPath));
+                                }
 
                                 node.ItemNode.SetMetadata(ProjectFileConstants.Name, null);
                                 node.ItemNode.SetMetadata(ProjectFileConstants.AssemblyName, null);
@@ -545,21 +547,20 @@ namespace SandcastleBuilder.Package.Nodes
                 }
 
                 // Remove the documentation source and reference files from the list
-                filesDropped = filesDropped.Except(allDocSources).ToList();
+                filesDropped = [.. filesDropped.Except(allDocSources)];
             }
 
             // Handle all other file types
             if(dropDataType != DropDataType.None && filesDropped.Count > 0)
             {
-                string[] filesDroppedAsArray = filesDropped.ToArray();
+                string[] filesDroppedAsArray = [.. filesDropped];
 
                 // For directory based projects the content of the clipboard is a double-NULL terminated list of
                 // Projref strings.
                 if(isWindowsFormat)
                 {
                     // This is the code path when source is Windows Explorer
-                    VSADDRESULT[] vsaddresults = new VSADDRESULT[1];
-                    vsaddresults[0] = VSADDRESULT.ADDRESULT_Failure;
+                    VSADDRESULT[] vsaddresults = [VSADDRESULT.ADDRESULT_Failure];
 
                     int addResult = this.AddItem(targetNode.ID, VSADDITEMOPERATION.VSADDITEMOP_OPENFILE, null,
                         (uint)filesDropped.Count, filesDroppedAsArray, IntPtr.Zero, vsaddresults);
@@ -698,8 +699,8 @@ namespace SandcastleBuilder.Package.Nodes
         {
             base.ProcessReferences();
 
-            if(!(this.FindChild(SandcastleBuilderComponentPackagesContainerNode.ComponentPackagesNodeVirtualName) is
-              SandcastleBuilderComponentPackagesContainerNode container))
+            if(this.FindChild(SandcastleBuilderComponentPackagesContainerNode.ComponentPackagesNodeVirtualName) 
+              is not SandcastleBuilderComponentPackagesContainerNode container)
             {
                 container = new SandcastleBuilderComponentPackagesContainerNode(this);
 
@@ -726,8 +727,8 @@ namespace SandcastleBuilder.Package.Nodes
         /// order in which they should be displayed.</returns>
         protected override Guid[] GetConfigurationIndependentPropertyPages()
         {
-            return new Guid[]
-            {
+            return
+            [
                 typeof(BuildPropertiesPageControl).GUID,
                 typeof(HelpFilePropertiesPageControl).GUID,
                 typeof(Help1WebsitePropertiesPageControl).GUID,
@@ -741,7 +742,7 @@ namespace SandcastleBuilder.Package.Nodes
                 typeof(TransformArgumentsPageControl).GUID,
                 typeof(UserDefinedPropertiesPageControl).GUID,
                 typeof(BuildEventPropertiesPageControl).GUID
-            };
+            ];
         }
 
         /// <summary>
@@ -857,11 +858,11 @@ namespace SandcastleBuilder.Package.Nodes
 #pragma warning restore VSTHRD010
             }
 
-            if(!(this.FindChild(ProjectPropertiesContainerNode.PropertiesNodeVirtualName) is ProjectPropertiesContainerNode))
+            if(this.FindChild(ProjectPropertiesContainerNode.PropertiesNodeVirtualName) is not ProjectPropertiesContainerNode)
                 this.AddChild(new ProjectPropertiesContainerNode(this));
 
-            if(!(this.FindChild(DocumentationSourcesContainerNode.DocSourcesNodeVirtualName) is
-              DocumentationSourcesContainerNode docSources))
+            if(this.FindChild(DocumentationSourcesContainerNode.DocSourcesNodeVirtualName) is not
+              DocumentationSourcesContainerNode docSources)
             {
                 docSources = new DocumentationSourcesContainerNode(this);
                 this.AddChild(docSources);
@@ -996,7 +997,7 @@ namespace SandcastleBuilder.Package.Nodes
             for(int cCount = 0; cCount < cComponents; cCount++)
             {
                 IntPtr ptr = rgpcsdComponents[cCount];
-                var selectorData = (VSCOMPONENTSELECTORDATA)Marshal.PtrToStructure(ptr, typeof(VSCOMPONENTSELECTORDATA));
+                var selectorData = Marshal.PtrToStructure<VSCOMPONENTSELECTORDATA>(ptr);
                 var node = references.AddReferenceFromSelectorData(selectorData);
 
                 if(node == null)
@@ -1066,7 +1067,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// </summary>
         protected override IEnumerable<string> FoldersToIgnore()
         {
-            List<string> folders = new List<string>();
+            List<string> folders = [];
             string value;
 
             try

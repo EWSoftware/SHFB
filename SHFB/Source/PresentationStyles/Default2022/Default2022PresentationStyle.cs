@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022PresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/06/2022
-// Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Default 2022 presentation style.
 //
@@ -24,6 +24,7 @@ using System.Reflection;
 
 using Sandcastle.Core;
 using Sandcastle.Core.PresentationStyle;
+using Sandcastle.Core.Project;
 
 namespace Sandcastle.PresentationStyles.Default2022
 {
@@ -65,7 +66,7 @@ namespace Sandcastle.PresentationStyles.Default2022
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"scripts\*.*"));
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"webfonts\*.*"));
             this.ContentFiles.Add(new ContentFiles(HelpFileFormats.Website, null, @"RootWebsiteContent\*.*",
-                String.Empty, new[] { ".aspx", ".htm", ".html", ".php" }));
+                String.Empty, [".aspx", ".htm", ".html", ".php"]));
 
             // Add the plug-in dependencies
             this.PlugInDependencies.Add(new PlugInDependency("Website Table of Contents Generator", null));

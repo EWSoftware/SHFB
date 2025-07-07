@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SectionElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/17/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle general section elements
 //
@@ -22,6 +22,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
+using Sandcastle.Core.Project;
+
 namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 {
     /// <summary>
@@ -32,8 +34,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
         #region Private data members
         //=====================================================================
 
-        private static readonly HashSet<XName> possibleAncestors = new HashSet<XName>
-        {
+        private static readonly HashSet<XName> possibleAncestors =
+        [
             Ddue + "attributesandElements",
             Ddue + "codeExample",
             Ddue + "dotNetFrameworkEquivalent",
@@ -53,7 +55,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
             Ddue + "textValue",
             Ddue + "type",
             Ddue + "section"
-        };
+        ];
         #endregion
 
         #region Constructor

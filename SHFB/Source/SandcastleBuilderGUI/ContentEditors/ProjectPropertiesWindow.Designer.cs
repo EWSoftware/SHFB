@@ -30,7 +30,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectPropertiesWindow));
-            this.statusBarTextProvider1 = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
+            this.statusBarTextProvider1 = new SandcastleBuilder.Gui.StatusBarTextProvider(this.components);
             this.tvPropertyPages = new System.Windows.Forms.TreeView();
             this.SuspendLayout();
             // 
@@ -73,7 +73,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
         #endregion
 
-        private SandcastleBuilder.Utils.Controls.StatusBarTextProvider statusBarTextProvider1;
+        private SandcastleBuilder.Gui.StatusBarTextProvider statusBarTextProvider1;
         private System.Windows.Forms.TreeView tvPropertyPages;
     }
 }

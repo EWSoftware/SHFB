@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : GeneralOptionsControl.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 04/17/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 07/06/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to modify the general help file builder package preferences that are unrelated to
 // individual projects.
@@ -127,16 +127,6 @@ namespace SandcastleBuilder.WPF.PropertyPages
         {
             get => chkOpenLogViewerOnFailure.IsChecked.Value;
             set => chkOpenLogViewerOnFailure.IsChecked = value;
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not the extended XML comments completion source options are
-        /// enabled.
-        /// </summary>
-        public bool EnableExtendedXmlCommentsCompletion
-        {
-            get => chkEnableExtendedXmlComments.IsChecked.Value;
-            set => chkEnableExtendedXmlComments.IsChecked = value;
         }
 
         /// <summary>

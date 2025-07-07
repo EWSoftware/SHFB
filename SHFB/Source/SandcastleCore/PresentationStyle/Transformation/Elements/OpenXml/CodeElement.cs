@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : CodeElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/20/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle code elements in Open XML presentation styles
 //
@@ -54,8 +54,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml
 
             string language = element.Attribute("language")?.Value, title = element.Attribute("title")?.Value;
 
-            XElement row, table = new XElement(WordProcessingML + "tbl"),
-                tableProperties = new XElement(WordProcessingML + "tblPr",
+            XElement row, table = new(WordProcessingML + "tbl"),
+                tableProperties = new(WordProcessingML + "tblPr",
                     new XElement(WordProcessingML + "tblStyle",
                         new XAttribute(WordProcessingML + "val", "CodeTable")),
                     new XElement(WordProcessingML + "tblW",

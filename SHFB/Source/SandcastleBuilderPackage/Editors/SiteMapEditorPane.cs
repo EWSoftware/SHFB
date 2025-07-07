@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SiteMapFileEditorPane.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/24/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to host the site map file editor control
 //
@@ -31,11 +31,12 @@ using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.ConceptualContent;
 using SandcastleBuilder.WPF;
 using SandcastleBuilder.WPF.Commands;
 using SandcastleBuilder.WPF.UserControls;
+using Sandcastle.Core.Project;
+using Sandcastle.Core.ConceptualContent;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.Package.Editors
 {
@@ -47,7 +48,8 @@ namespace SandcastleBuilder.Package.Editors
         #region Private data members
         //=====================================================================
 
-        private FileItem siteMapFile;
+        private IFileItem siteMapFile;
+
         #endregion
 
         #region Properties
@@ -132,10 +134,12 @@ namespace SandcastleBuilder.Package.Editors
                 currentTopic.IsExpanded = true;
             }
             else
+            {
                 if(currentTopic == null)
                     base.UIControl.Topics.Add(newTopic);
                 else
                     currentTopic.Parent.Insert(currentTopic.Parent.IndexOf(currentTopic) + 1, newTopic);
+            }
 
             newTopic.IsSelected = true;
 
@@ -217,35 +221,35 @@ namespace SandcastleBuilder.Package.Editors
                 siteMapFile.Project.Filename);
 
             if(t != null)
-                using(WinFormsOpenFileDialog dlg = new WinFormsOpenFileDialog())
+            {
+                using WinFormsOpenFileDialog dlg = new();
+                
+                dlg.Title = "Select the additional content topic file";
+                dlg.Filter = "Additional Content Topics (*.htm, *.html, *.md)|*.htm;*.html;*.md|" +
+                    "All files (*.*)|*.*";
+                dlg.DefaultExt = "html";
+                dlg.InitialDirectory = projectPath;
+                dlg.CheckFileExists = true;
+
+                if(dlg.ShowDialog() == WinFormsDialogResult.OK)
                 {
-                    dlg.Title = "Select the additional content topic file";
-                    dlg.Filter = "Additional Content Topics (*.htm, *.html, *.md)|*.htm;*.html;*.md|" +
-                        "All files (*.*)|*.*";
-                    dlg.DefaultExt = "html";
-                    dlg.InitialDirectory = projectPath;
-                    dlg.CheckFileExists = true;
+                    // The file must reside under the project path
+                    newPath = dlg.FileName;
 
-                    if(dlg.ShowDialog() == WinFormsDialogResult.OK)
-                    {
-                        // The file must reside under the project path
-                        newPath = dlg.FileName;
+                    if(!Path.GetDirectoryName(newPath).StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
+                        newPath = Path.Combine(projectPath, Path.GetFileName(newPath));
 
-                        if(!Path.GetDirectoryName(newPath).StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
-                            newPath = Path.Combine(projectPath, Path.GetFileName(newPath));
+                    // Add the file to the project if not already there
+                    siteMapFile.Project.AddFileToProject(dlg.FileName, newPath);
 
-                        // Add the file to the project if not already there
-                        siteMapFile.Project.AddFileToProject(dlg.FileName, newPath);
+                    t.SourceFile = new FilePath(newPath, siteMapFile.Project);
 
-                        t.SourceFile = new FilePath(newPath, siteMapFile.Project);
+                    // Let the caller know we associated a file with the topic
+                    e.Handled = true;
 
-                        // Let the caller know we associated a file with the topic
-                        e.Handled = true;
-
-                        if(thisNode != null)
-                            thisNode.ProjectMgr.RefreshProject();
-                    }
+                    thisNode?.ProjectMgr.RefreshProject();
                 }
+            }
         }
         #endregion
 
@@ -273,10 +277,7 @@ namespace SandcastleBuilder.Package.Editors
         {
             // If the sender is a topic, use that instead.  Due to the way the WPF tree view works, the
             // selected topic isn't always the one we just added when it's the first child of a parent topic.
-            TocEntry t = sender as TocEntry;
-
-            if(t == null)
-                t = base.UIControl.CurrentTopic;
+            TocEntry t = sender as TocEntry ?? base.UIControl.CurrentTopic;
 
 #pragma warning disable VSTHRD010
             if(t.SourceFile.Path.Length != 0)
@@ -336,7 +337,9 @@ namespace SandcastleBuilder.Package.Editors
 
                     if(node != null && node.Url.EndsWith(".htm", StringComparison.OrdinalIgnoreCase) ||
                       node.Url.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
+                    {
                         this.AddTopicFile(node.Url, e.Parameter != null);
+                    }
                 }
             }
         }
@@ -352,29 +355,26 @@ namespace SandcastleBuilder.Package.Editors
             TocEntry t = base.UIControl.CurrentTopic;
             string projectPath = Path.GetDirectoryName(siteMapFile.Project.Filename);
 
-            using(WinFormsOpenFileDialog dlg = new WinFormsOpenFileDialog())
+            using WinFormsOpenFileDialog dlg = new();
+            
+            dlg.Title = "Select the conceptual topic file(s)";
+            dlg.Filter = "HTML Files (*.htm, *.html, *.md)|*.htm;*.html;*.md|All files (*.*)|*.*";
+            dlg.DefaultExt = "html";
+            dlg.InitialDirectory = (t != null && t.SourceFile.Path.Length != 0) ?
+                Path.GetDirectoryName(t.SourceFile) : projectPath;
+            dlg.Multiselect = true;
+
+            // If selected, add the new file(s).  Filenames that are already in the collection are ignored.
+            if(dlg.ShowDialog() == WinFormsDialogResult.OK)
             {
-                dlg.Title = "Select the conceptual topic file(s)";
-                dlg.Filter = "HTML Files (*.htm, *.html, *.md)|*.htm;*.html;*.md|All files (*.*)|*.*";
-                dlg.DefaultExt = "html";
-                dlg.InitialDirectory = (t != null && t.SourceFile.Path.Length != 0) ?
-                    Path.GetDirectoryName(t.SourceFile) : projectPath;
-                dlg.Multiselect = true;
-
-                // If selected, add the new file(s).  Filenames that are already in the collection are ignored.
-                if(dlg.ShowDialog() == WinFormsDialogResult.OK)
+                foreach(string filename in dlg.FileNames)
                 {
-                    foreach(string filename in dlg.FileNames)
-                    {
-                        this.AddTopicFile(filename, e.Parameter != null);
+                    this.AddTopicFile(filename, e.Parameter != null);
 
-                        if(t != null)
-                            t.IsSelected = true;
-                    }
-
-                    if(thisNode != null)
-                        thisNode.ProjectMgr.RefreshProject();
+                    t?.IsSelected = true;
                 }
+
+                thisNode?.ProjectMgr.RefreshProject();
             }
         }
 
@@ -388,55 +388,55 @@ namespace SandcastleBuilder.Package.Editors
             ThreadHelper.ThrowIfNotOnUIThread();
 
             FileNode thisNode = this.FileNode;
-            TocEntryCollection parent, newTopics = new TocEntryCollection(null);
+            TocEntryCollection parent, newTopics = new(null);
             TocEntry selectedTopic = base.UIControl.CurrentTopic;
             string projectPath = Path.GetDirectoryName(siteMapFile.Project.Filename);
             int idx;
 
-            using(WinFormsFolderBrowserDialog dlg = new WinFormsFolderBrowserDialog())
+            using WinFormsFolderBrowserDialog dlg = new();
+            
+            dlg.Description = "Select a folder to add all of its content";
+            dlg.SelectedPath = (selectedTopic != null && selectedTopic.SourceFile.Path.Length != 0) ?
+                Path.GetDirectoryName(selectedTopic.SourceFile) : projectPath;
+
+            if(dlg.ShowDialog() == WinFormsDialogResult.OK)
             {
-                dlg.Description = "Select a folder to add all of its content";
-                dlg.SelectedPath = (selectedTopic != null && selectedTopic.SourceFile.Path.Length != 0) ?
-                    Path.GetDirectoryName(selectedTopic.SourceFile) : projectPath;
+                Utility.GetServiceFromPackage<IVsUIShell, SVsUIShell>(true).SetWaitCursor();
 
-                if(dlg.ShowDialog() == WinFormsDialogResult.OK)
+                newTopics.AddTopicsFromFolder(dlg.SelectedPath, dlg.SelectedPath, siteMapFile.Project);
+
+                thisNode?.ProjectMgr.RefreshProject();
+            }
+
+            if(newTopics.Count != 0)
+            {
+                if(e.Parameter == null || selectedTopic == null)
                 {
-                    Utility.GetServiceFromPackage<IVsUIShell, SVsUIShell>(true).SetWaitCursor();
-
-                    newTopics.AddTopicsFromFolder(dlg.SelectedPath, dlg.SelectedPath, siteMapFile.Project);
-
-                    if(thisNode != null)
-                        thisNode.ProjectMgr.RefreshProject();
-                }
-
-                if(newTopics.Count != 0)
-                    if(e.Parameter == null || selectedTopic == null)
+                    // Insert as siblings
+                    if(selectedTopic == null)
                     {
-                        // Insert as siblings
-                        if(selectedTopic == null)
-                        {
-                            parent = base.UIControl.Topics;
-                            idx = 0;
-                        }
-                        else
-                        {
-                            parent = selectedTopic.Parent;
-                            idx = parent.IndexOf(selectedTopic) + 1;
-                        }
-
-                        foreach(TocEntry t in newTopics)
-                            parent.Insert(idx++, t);
+                        parent = base.UIControl.Topics;
+                        idx = 0;
                     }
                     else
                     {
-                        // Insert as children
-                        parent = selectedTopic.Children;
-
-                        foreach(TocEntry t in newTopics)
-                            parent.Add(t);
-
-                        selectedTopic.IsExpanded = true;
+                        parent = selectedTopic.Parent;
+                        idx = parent.IndexOf(selectedTopic) + 1;
                     }
+
+                    foreach(TocEntry t in newTopics)
+                        parent.Insert(idx++, t);
+                }
+                else
+                {
+                    // Insert as children
+                    parent = selectedTopic.Children;
+
+                    foreach(TocEntry t in newTopics)
+                        parent.Add(t);
+
+                    selectedTopic.IsExpanded = true;
+                }
             }
         }
         #endregion

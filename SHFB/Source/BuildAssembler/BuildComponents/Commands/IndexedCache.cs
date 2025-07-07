@@ -210,10 +210,8 @@ namespace Sandcastle.Tools.BuildComponents.Commands
                     }
                     else
                     {
-                        using(var rdr = XmlReader.Create(path, new XmlReaderSettings { CloseInput = true }))
-                        {
-                            document = new XPathDocument(rdr);
-                        }
+                        using var rdr = XmlReader.Create(path, new XmlReaderSettings { CloseInput = true });
+                        document = new XPathDocument(rdr);
                     }
                 }
             }

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : PathPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 04/17/2021
-// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2017-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Path category properties
 //
@@ -20,7 +20,8 @@
 using System;
 using System.Windows.Controls;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
+using Sandcastle.Core.Project;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {
@@ -58,7 +59,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// This is used to set the current project in each of the folder paths
         /// </summary>
         /// <param name="project">The current Sandcastle project</param>
-        public void SetCurrentProject(SandcastleProject project)
+        public void SetCurrentProject(ISandcastleProject project)
         {
             fpHtmlHelp1xCompilerPath.DataContext = new FolderPath(project);
             fpComponentPath.DataContext = new FolderPath(project);

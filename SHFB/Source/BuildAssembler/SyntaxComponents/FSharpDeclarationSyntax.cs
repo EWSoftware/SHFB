@@ -728,7 +728,7 @@ namespace Sandcastle.Tools.SyntaxGenerators
             WriteVisibility(visibility, writer);
         }
 
-        private static readonly Dictionary<string, string> visibilityDictionary = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> visibilityDictionary = new()
         {
             { "public", null }, // Default in F#, so unnecessary.
             { "family", null }, // Not supported in F#, section 8.8 in F# spec.
@@ -740,9 +740,9 @@ namespace Sandcastle.Tools.SyntaxGenerators
 
         private static void WriteVisibility(string visibility, SyntaxWriter writer)
         {
-            if(visibilityDictionary.ContainsKey(visibility) && visibilityDictionary[visibility] != null)
+            if(visibilityDictionary.TryGetValue(visibility, out string keyword) && keyword != null)
             {
-                writer.WriteKeyword(visibilityDictionary[visibility]);
+                writer.WriteKeyword(keyword);
                 writer.WriteString(" ");
             }
         }
@@ -1250,7 +1250,7 @@ namespace Sandcastle.Tools.SyntaxGenerators
 
         private void WriteParameters(XPathNodeIterator parameters, SyntaxWriter writer)
         {
-            List<KeyValuePair<string, XPathNavigator>> optionalParams = new List<KeyValuePair<string, XPathNavigator>>();
+            List<KeyValuePair<string, XPathNavigator>> optionalParams = [];
             writer.WriteLine();
 
             while(parameters.MoveNext())

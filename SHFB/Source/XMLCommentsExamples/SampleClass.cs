@@ -152,7 +152,7 @@ namespace XMLCommentsExamples
         public void ProcessText(string text)
         {
             if(text == null)
-                throw new ArgumentNullException("text cannot be null");
+                throw new ArgumentNullException(nameof(text), "text cannot be null");
 
             if(text.Trim().Length == 0)
                 throw new ArgumentException("text cannot be an empty string");

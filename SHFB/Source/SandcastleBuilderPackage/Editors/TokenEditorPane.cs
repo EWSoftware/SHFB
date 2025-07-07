@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TokenFileEditorPane.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/24/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to host the token file editor control
 //
@@ -22,7 +22,8 @@ using System;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-using SandcastleBuilder.Utils.ConceptualContent;
+using Sandcastle.Core.ConceptualContent;
+
 using SandcastleBuilder.WPF;
 using SandcastleBuilder.WPF.UserControls;
 

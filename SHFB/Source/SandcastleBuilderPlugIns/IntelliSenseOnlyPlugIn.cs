@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : IntelliSenseOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/25/2022
-// Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that can be used to build an IntelliSense XML comments file without a related
 // help file.
@@ -20,15 +20,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.BuildEngine;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -44,8 +42,7 @@ namespace SandcastleBuilder.PlugIns
         #region Private data members
         //=====================================================================
 
-        private List<ExecutionPoint> executionPoints;
-        private BuildProcess builder;
+        private IBuildProcess builder;
 
         #endregion
 
@@ -56,35 +53,26 @@ namespace SandcastleBuilder.PlugIns
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public IEnumerable<ExecutionPoint> ExecutionPoints
-        {
-            get
-            {
-                if(executionPoints == null)
-                    executionPoints = new List<ExecutionPoint>
-                    {
-                        // This one has a lower priority since we want to update the manifest and reference
-                        // build configuration file last.
-                        new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After, 100),
-                        new ExecutionPoint(BuildStep.CombiningIntermediateTocFiles, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.ExtractingHtmlInfo, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.CopyStandardHelpContent, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.GenerateHelpProject, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.CompilingHelpFile, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.GenerateFullTextIndex, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.CopyingWebsiteFiles, ExecutionBehaviors.InsteadOf)
-                    };
-
-                return executionPoints;
-            }
-        }
+        public IEnumerable<ExecutionPoint> ExecutionPoints { get; } =
+        [
+            // This one has a lower priority since we want to update the manifest and reference
+            // build configuration file last.
+            new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After, 100),
+            new ExecutionPoint(BuildStep.CombiningIntermediateTocFiles, ExecutionBehaviors.InsteadOf),
+            new ExecutionPoint(BuildStep.ExtractingHtmlInfo, ExecutionBehaviors.InsteadOf),
+            new ExecutionPoint(BuildStep.CopyStandardHelpContent, ExecutionBehaviors.InsteadOf),
+            new ExecutionPoint(BuildStep.GenerateHelpProject, ExecutionBehaviors.InsteadOf),
+            new ExecutionPoint(BuildStep.CompilingHelpFile, ExecutionBehaviors.InsteadOf),
+            new ExecutionPoint(BuildStep.GenerateFullTextIndex, ExecutionBehaviors.InsteadOf),
+            new ExecutionPoint(BuildStep.CopyingWebsiteFiles, ExecutionBehaviors.InsteadOf)
+        ];
 
         /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XElement configuration)
+        public void Initialize(IBuildProcess buildProcess, XElement configuration)
         {
             builder = buildProcess;
 
@@ -110,7 +98,7 @@ namespace SandcastleBuilder.PlugIns
             {
                 builder.ReportProgress("Removing non-member topics from the build manifest...");
 
-                XmlDocument config = new XmlDocument();
+                XmlDocument config = new();
 
                 config.Load(builder.BuildAssemblerManifestFile);
 
@@ -144,29 +132,19 @@ namespace SandcastleBuilder.PlugIns
                 navConfig = config.CreateNavigator();
 
                 // Delete the MAML configuration component set if present
-                item = navConfig.SelectSingleNode("//component[@id='Switch Component']/case[@value='MAML']");
-
-                if(item != null)
-                    item.DeleteSelf();
+                navConfig.SelectSingleNode("//component[@id='Switch Component']/case[@value='MAML']")?.DeleteSelf();
 
                 // The IntelliSense build component must be there
                 item = navConfig.SelectSingleNode("//component[@id='IntelliSense Component']");
 
                 if(item == null)
+                {
                     throw new BuilderException("ISO0001", "The IntelliSense Only plug-in requires that the " +
                         "IntelliSense Component be added to the project and configured.");
+                }
 
-                // Remove the Syntax Component
-                item = navConfig.SelectSingleNode("//component[@id='Syntax Component']");
-
-                if(item != null)
-                    item.DeleteSelf();
-
-                // Remove the Code Block Component
-                item = navConfig.SelectSingleNode("//component[@id='Code Block Component']");
-
-                if(item != null)
-                    item.DeleteSelf();
+                navConfig.SelectSingleNode("//component[@id='Syntax Component']")?.DeleteSelf();
+                navConfig.SelectSingleNode("//component[@id='Code Block Component']")?.DeleteSelf();
 
                 // Remove the Transform Component and everything after it
                 item = navConfig.SelectSingleNode("//component[@id='Transform Component']");

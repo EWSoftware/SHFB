@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013PresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/03/2023
-// Note    : Copyright 2014-2023, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Visual Studio 2013 presentation style.
 //
@@ -24,6 +24,7 @@ using System.Reflection;
 
 using Sandcastle.Core;
 using Sandcastle.Core.PresentationStyle;
+using Sandcastle.Core.Project;
 
 namespace Sandcastle.PresentationStyles.VS2013
 {
@@ -68,7 +69,7 @@ namespace Sandcastle.PresentationStyles.VS2013
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"scripts\*.*"));
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"styles\*.*"));
             this.ContentFiles.Add(new ContentFiles(HelpFileFormats.Website, null, @"Web\*.*",
-                String.Empty, new[] { ".aspx", ".html", ".htm", ".php" }));
+                String.Empty, [".aspx", ".html", ".htm", ".php"]));
 
             // Add the plug-in dependencies
             this.PlugInDependencies.Add(new PlugInDependency("Lightweight Website Style", null));

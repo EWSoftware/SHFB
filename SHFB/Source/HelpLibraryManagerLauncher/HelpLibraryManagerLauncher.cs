@@ -2,8 +2,8 @@
 // System  : Help Library Manager Launcher
 // File    : HelpLibraryManagerLauncher.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/07/2021
-// Note    : Copyright 2010-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2010-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the main program entry point.
 //
@@ -29,7 +29,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 
-namespace SandcastleBuilder.MicrosoftHelpViewer
+namespace Sandcastle.Platform.Windows.MicrosoftHelpViewer
 {
     /// <summary>
     /// This class contains the main program entry point.  The application is used to perform the necessary
@@ -51,12 +51,12 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         /// <returns>An exit code that indicates the success or failure of the process</returns>
         public static int Main(string[] args)
         {
-            List<CommandLineArgument> allArgs = new List<CommandLineArgument>();
-            List<string> execArgs = new List<string>();
+            List<CommandLineArgument> allArgs = [];
+            List<string> execArgs = [];
             string product = null, version = null, locale = null, catalogName = null, commandLine;
             int result = HelpLibraryManagerException.Success;
             bool isInstall = false, isSilent = false, showHelp = false;
-            Version viewerVersion = new Version(1, 0);
+            Version viewerVersion = new(1, 0);
 
             Assembly asm = Assembly.GetExecutingAssembly();
 
@@ -134,14 +134,18 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                 else
                 {
                     if(!String.IsNullOrEmpty(product))
+                    {
                         throw new HelpLibraryManagerException(viewerVersion,
                             HelpLibraryManagerException.InvalidCmdArgs,
                             "/product is only valid for Help Viewer 1.0");
+                    }
 
                     if(!String.IsNullOrEmpty(version))
+                    {
                         throw new HelpLibraryManagerException(viewerVersion,
                             HelpLibraryManagerException.InvalidCmdArgs,
                             "/version is only valid for Help Viewer 1.0");
+                    }
 
                     // If not specified, default the catalog name based on the viewer version
                     if(String.IsNullOrEmpty(catalogName))
@@ -149,8 +153,10 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                         catalogName = HelpLibraryManager.DefaultCatalogName(viewerVersion);
 
                         if(catalogName == null)
+                        {
                             throw new HelpLibraryManagerException(viewerVersion,
                                 HelpLibraryManagerException.MissingCommandLineArgument, "/catalogName");
+                        }
 
                         Console.WriteLine("Catalog name not specified, the default catalog name '{0}' will " +
                             "be used.", catalogName);
@@ -160,22 +166,28 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                     }
                 }
 
-                HelpLibraryManager hlm = new HelpLibraryManager(viewerVersion);
+                HelpLibraryManager hlm = new(viewerVersion);
 
                 // Can't do anything if the Help Library Manager is not installed
                 if(hlm.HelpLibraryManagerPath == null)
+                {
                     throw new HelpLibraryManagerException(viewerVersion,
                         HelpLibraryManagerException.HelpLibraryManagerNotFound);
+                }
 
                 // Can't do anything if the Help Library Manager is already running
                 if(Process.GetProcessesByName(Path.GetFileNameWithoutExtension(hlm.HelpLibraryManagerPath)).Length > 0)
+                {
                     throw new HelpLibraryManagerException(viewerVersion,
                         HelpLibraryManagerException.HelpLibraryManagerAlreadyRunning);
+                }
 
                 // Can't do anything if the local store is not initialized
                 if(!hlm.LocalStoreInitialized)
+                {
                     throw new HelpLibraryManagerException(viewerVersion,
                         HelpLibraryManagerException.LocalStoreNotInitialized);
+                }
 
                 // If not specified, try to figure out the default locale
                 if(String.IsNullOrEmpty(locale))
@@ -185,18 +197,22 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                         locale = hlm.FindLocaleFor(product, version);
 
                         if(locale == null)
+                        {
                             throw new HelpLibraryManagerException(viewerVersion,
                                 HelpLibraryManagerException.CatalogNotInstalled, String.Format(
                                 CultureInfo.InvariantCulture, "Product: {0}  Version: {1}", product, version));
+                        }
                     }
                     else
                     {
                         locale = hlm.FindLocaleFor(catalogName);
 
                         if(locale == null)
+                        {
                             throw new HelpLibraryManagerException(viewerVersion,
                                 HelpLibraryManagerException.CatalogNotInstalled, String.Format(
                                 CultureInfo.InvariantCulture, "Catalog Name: {0}", catalogName));
+                        }
                     }
 
                     Console.WriteLine("No locale specified, the default locale '{0}' will be used", locale);
@@ -208,7 +224,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                 // Execute the request
                 Console.WriteLine("Running Help Library Manager to perform the requested action.  Please wait...");
 
-                commandLine = String.Join(" ", execArgs.ToArray());
+                commandLine = String.Join(" ", [.. execArgs]);
 
                 try
                 {

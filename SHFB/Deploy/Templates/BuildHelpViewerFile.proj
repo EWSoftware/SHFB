@@ -1,8 +1,8 @@
 ﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<!-- Sandcastle Help File Builder Tasks.  https://GitHub.com/EWSoftware/SHFB -->
 	<PropertyGroup>
-		<SHFBTaskFolder Condition=" '$(MSBuildRuntimeType)' != 'Core' ">net472\</SHFBTaskFolder>
-		<SHFBTaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' ">net8.0\</SHFBTaskFolder>
+		<SHFBTaskFolder Condition=" '$(MSBuildRuntimeType)' != 'Core' ">net48\</SHFBTaskFolder>
+		<SHFBTaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' ">net9.0\</SHFBTaskFolder>
 	</PropertyGroup>
 	<UsingTask TaskName="SandcastleBuilder.MSBuild.BuildHelpViewerFile"
     AssemblyFile="{@SHFBRoot}$(SHFBTaskFolder)SandcastleBuilder.MSBuild.dll" />

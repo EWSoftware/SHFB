@@ -15,6 +15,8 @@
 // 03/21/2021 - EFW - Fixed handling of system assembly location to allow for a mixed set of assemblies using
 // different platform types.
 
+// Ignore Spelling: multicast cloneable debuggable Impl
+
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -26,9 +28,9 @@ namespace System.Compiler
 {
     public static class TargetPlatform
     {
-        public static bool DoNotLockFiles;
-        public static bool GetDebugInfo;
-        public static char GenericTypeNamesMangleChar = '_';
+        public static bool DoNotLockFiles { get; set; }
+        public static bool GetDebugInfo { get; set; }
+        public static char GenericTypeNamesMangleChar { get; set; } = '_';
 
         /// <summary>
         /// This is used to get or set the system assembly location (mscorlib.dll or System.Runtime.dll)
@@ -63,11 +65,11 @@ namespace System.Compiler
             SystemTypes.Clear();
         }
 
-        public static string Platform;
-        public static Version TargetVersion;
-        public static string TargetRuntimeVersion;
+        public static string Platform { get; set; }
+        public static Version TargetVersion { get; set; }
+        public static string TargetRuntimeVersion { get; set; }
 
-        public static string PlatformAssembliesLocation = String.Empty;
+        public static string PlatformAssembliesLocation { get; set; } = String.Empty;
 
         private static TrivialHashtable assemblyReferenceFor;
 
@@ -156,14 +158,13 @@ namespace System.Compiler
                     continue;
                 }
 
-                using(var ca = (AssemblyNode)new Reader(coreFile, null, true, false, true, false).ReadModule())
+                using var ca = (AssemblyNode)new Reader(coreFile, null, true, false, true, false).ReadModule();
+                
+                // Access the reader metadata so that we don't force a load of the type system
+                if(ca.reader.tables.TypeDefTable.Length > 1)
                 {
-                    // Access the reader metadata so that we don't force a load of the type system
-                    if(ca.reader.tables.TypeDefTable.Length > 1)
-                    {
-                        sysAsmLocation = coreFile;
-                        break;
-                    }
+                    sysAsmLocation = coreFile;
+                    break;
                 }
             }
 
@@ -188,14 +189,13 @@ namespace System.Compiler
 
                 foreach(string coreFile in coreSet)
                 {
-                    using(var ca = (AssemblyNode)new Reader(coreFile, null, true, false, true, false).ReadModule())
+                    using var ca = (AssemblyNode)new Reader(coreFile, null, true, false, true, false).ReadModule();
+                    
+                    // Access the reader metadata so that we don't force a load of the type system
+                    if(ca.reader.tables.TypeDefTable.Length > 1)
                     {
-                        // Access the reader metadata so that we don't force a load of the type system
-                        if(ca.reader.tables.TypeDefTable.Length > 1)
-                        {
-                            sysAsmLocation = coreFile;
-                            break;
-                        }
+                        sysAsmLocation = coreFile;
+                        break;
                     }
                 }
             }
@@ -215,7 +215,7 @@ namespace System.Compiler
                   !asm.Name.Equals("System.Runtime", StringComparison.OrdinalIgnoreCase) &&
                   File.Exists(asm.Filename))
                 {
-                    AssemblyReference aref = new AssemblyReference(asm.ToString()) { Location = asm.Filename };
+                    AssemblyReference aref = new(asm.ToString()) { Location = asm.Filename };
                     assemblyReferenceFor[Identifier.For(asm.Name).UniqueIdKey] = aref;
                 }
             }
@@ -287,9 +287,8 @@ namespace System.Compiler
                 if (Reader.StaticAssemblyCache != null)
                 {
                     foreach (AssemblyNode cachedAssembly in new System.Collections.ArrayList(Reader.StaticAssemblyCache.Values))
-                    {
-                        if (cachedAssembly != null) cachedAssembly.Dispose();
-                    }
+                        cachedAssembly?.Dispose();
+
                     Reader.StaticAssemblyCache.Clear();
                 }
                 //Dispose the system assemblies in case they were not in the static cache. It is safe to dispose an assembly more than once.
@@ -305,10 +304,14 @@ namespace System.Compiler
         }
         public static void Initialize(bool doNotLockFile, bool getDebugInfo)
         {
-            if (CoreSystemTypes.Initialized) CoreSystemTypes.Clear();
+            if (CoreSystemTypes.Initialized)
+                CoreSystemTypes.Clear();
+            
+            SystemAssembly ??= CoreSystemTypes.GetSystemAssembly(doNotLockFile, getDebugInfo);
+            
             if (SystemAssembly == null)
-                SystemAssembly = CoreSystemTypes.GetSystemAssembly(doNotLockFile, getDebugInfo);
-            if (SystemAssembly == null) throw new InvalidOperationException(ExceptionStrings.InternalCompilerError);
+                throw new InvalidOperationException(ExceptionStrings.InternalCompilerError);
+            
             if (TargetPlatform.TargetVersion == null)
             {
                 TargetPlatform.TargetVersion = SystemAssembly.Version;

@@ -3,12 +3,10 @@
 	<PropertyGroup>
 		<!-- Classes in this assembly will only be used from the Visual Studio extension and the standalone GUI on
 		     the Windows platform so we will always target the .NET Framework. -->
-		<TargetFramework>net472</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 		<UseWindowsForms>true</UseWindowsForms>
 		<UseWpf>true</UseWpf>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
 		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
@@ -16,8 +14,6 @@
 		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
 		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AssemblyName>Sandcastle.Tools.BuildComponents.UI</AssemblyName>
 		<RootNamespace>Sandcastle.Tools.BuildComponents.UI</RootNamespace>
 	</PropertyGroup>
@@ -42,10 +38,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\SandcastleCore\SandcastleCore.csproj">
-			<Private>False</Private>
-		</ProjectReference>
-		<!-- Reference this explicitly so that it gets excluded from the output folder -->
-		<ProjectReference Include="..\..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
 			<Private>False</Private>
 		</ProjectReference>
 		<ProjectReference Include="..\..\SandcastlePlatformWindows\SandcastlePlatformWindows.csproj">

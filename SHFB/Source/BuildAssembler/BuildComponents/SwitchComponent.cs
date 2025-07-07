@@ -44,7 +44,7 @@ namespace Sandcastle.Tools.BuildComponents
         //=====================================================================
 
         private XPathExpression condition;
-        private readonly Dictionary<string, IEnumerable<BuildComponentCore>> cases = new Dictionary<string, IEnumerable<BuildComponentCore>>();
+        private readonly Dictionary<string, IEnumerable<BuildComponentCore>> cases = [];
 
         #endregion
 
@@ -89,17 +89,17 @@ namespace Sandcastle.Tools.BuildComponents
                 throw new ArgumentNullException(nameof(configuration));
 
             // Get the condition
-            XPathNavigator conditionElement = configuration.SelectSingleNode("switch");
-
-            if(conditionElement == null)
+            XPathNavigator conditionElement = configuration.SelectSingleNode("switch") ??
                 throw new ArgumentException("You must specify a condition using the <switch> statement with " +
                     "a 'value' attribute.", nameof(configuration));
 
             string conditionValue = conditionElement.GetAttribute("value", String.Empty);
 
             if(String.IsNullOrEmpty(conditionValue))
+            {
                 throw new ArgumentException("The switch statement must have a 'value' attribute, which is " +
                     "an xpath expression.", nameof(configuration));
+            }
 
             condition = XPathExpression.Compile(conditionValue);
 
@@ -141,9 +141,13 @@ namespace Sandcastle.Tools.BuildComponents
         protected override void Dispose(bool disposing)
         {
             if(disposing)
+            {
                 foreach(IEnumerable<BuildComponentCore> components in cases.Values)
+                {
                     foreach(BuildComponentCore component in components)
                         component.Dispose();
+                }
+            }
 
             base.Dispose(disposing);
         }

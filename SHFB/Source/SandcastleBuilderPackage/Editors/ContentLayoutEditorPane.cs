@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ContentLayoutFileEditorPane.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/24/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to host the content layout file editor control
 //
@@ -33,11 +33,12 @@ using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.ConceptualContent;
 using SandcastleBuilder.WPF;
 using SandcastleBuilder.WPF.Commands;
 using SandcastleBuilder.WPF.UserControls;
+using Sandcastle.Core.Project;
+using Sandcastle.Core.ConceptualContent;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.Package.Editors
 {
@@ -49,7 +50,7 @@ namespace SandcastleBuilder.Package.Editors
         #region Private data members
         //=====================================================================
 
-        private FileItem contentLayoutFile;
+        private IFileItem contentLayoutFile;
 
         #endregion
 
@@ -68,8 +69,8 @@ namespace SandcastleBuilder.Package.Editors
         {
             get
             {
-                base.UIControl.CommitChanges();
-                return base.UIControl.Topics;
+                this.UIControl.CommitChanges();
+                return this.UIControl.Topics;
             }
         }
         #endregion
@@ -82,7 +83,7 @@ namespace SandcastleBuilder.Package.Editors
         /// </summary>
         public ContentLayoutEditorPane()
         {
-            var editor = base.UIControl;
+            var editor = this.UIControl;
 
             // Hook up the command bindings and event handlers
             editor.CommandBindings.Add(new CommandBinding(EditorCommands.Edit, cmdEdit_Executed,
@@ -110,7 +111,7 @@ namespace SandcastleBuilder.Package.Editors
         /// <returns>The topic that was just added or null if unsuccessful</returns>
         private Topic AddTopicFile(string filename, bool addAsChild)
         {
-            Topic currentTopic = base.UIControl.CurrentTopic;
+            Topic currentTopic = this.UIControl.CurrentTopic;
             string newPath = filename, projectPath = Path.GetDirectoryName(
                 contentLayoutFile.Project.Filename);
 
@@ -119,10 +120,10 @@ namespace SandcastleBuilder.Package.Editors
                 newPath = Path.Combine(projectPath, Path.GetFileName(filename));
 
             // Add the file to the project if not already there
-            FileItem newItem = contentLayoutFile.Project.AddFileToProject(filename, newPath);
+            var newItem = contentLayoutFile.Project.AddFileToProject(filename, newPath);
 
             // Add the topic to the editor's collection
-            Topic newTopic = new Topic
+            Topic newTopic = new()
             {
                 TopicFile = new TopicFile(newItem.ToContentFile())
             };
@@ -133,10 +134,12 @@ namespace SandcastleBuilder.Package.Editors
                 currentTopic.IsExpanded = true;
             }
             else
+            {
                 if(currentTopic == null)
-                    base.UIControl.Topics.Add(newTopic);
+                    this.UIControl.Topics.Add(newTopic);
                 else
                     currentTopic.Parent.Insert(currentTopic.Parent.IndexOf(currentTopic) + 1, newTopic);
+            }
 
             newTopic.IsSelected = true;
 
@@ -172,7 +175,7 @@ namespace SandcastleBuilder.Package.Editors
             if(contentLayoutFile == null)
                 throw new InvalidOperationException("Unable to locate file in project: " + fileName);
 
-            base.UIControl.LoadContentLayoutFile(contentLayoutFile);
+            this.UIControl.LoadContentLayoutFile(contentLayoutFile);
         }
 
         /// <inheritdoc />
@@ -182,12 +185,12 @@ namespace SandcastleBuilder.Package.Editors
 
             Utility.GetServiceFromPackage<IVsUIShell, SVsUIShell>(true).SetWaitCursor();
 
-            base.UIControl.CommitChanges();
+            this.UIControl.CommitChanges();
 
-            if(base.IsDirty || !fileName.Equals(contentLayoutFile.FullPath, StringComparison.OrdinalIgnoreCase))
+            if(this.IsDirty || !fileName.Equals(contentLayoutFile.FullPath, StringComparison.OrdinalIgnoreCase))
             {
                 contentLayoutFile.IncludePath = new FilePath(fileName, contentLayoutFile.Project);
-                base.UIControl.Topics.Save();
+                this.UIControl.Topics.Save();
             }
         }
         #endregion
@@ -202,7 +205,7 @@ namespace SandcastleBuilder.Package.Editors
         /// <param name="e">The event arguments</param>
         private void ucContentLayoutEditor_ContentModified(object sender, System.Windows.RoutedEventArgs e)
         {
-            base.OnContentChanged();
+            this.OnContentChanged();
         }
 
         /// <summary>
@@ -213,39 +216,38 @@ namespace SandcastleBuilder.Package.Editors
         private void ucContentLayoutEditor_AssociateTopic(object sender, RoutedEventArgs e)
         {
             FileNode thisNode = this.FileNode;
-            FileItem newItem;
-            Topic t = base.UIControl.CurrentTopic;
+            Topic t = this.UIControl.CurrentTopic;
             string newPath, projectPath = Path.GetDirectoryName(contentLayoutFile.Project.Filename);
 
             if(t != null)
-                using(WinFormsOpenFileDialog dlg = new WinFormsOpenFileDialog())
+            {
+                using WinFormsOpenFileDialog dlg = new();
+                
+                dlg.Title = "Select the conceptual topic file";
+                dlg.Filter = "Conceptual Topics (*.aml)|*.aml|All files (*.*)|*.*";
+                dlg.DefaultExt = "aml";
+                dlg.InitialDirectory = projectPath;
+                dlg.CheckFileExists = true;
+
+                if(dlg.ShowDialog() == WinFormsDialogResult.OK)
                 {
-                    dlg.Title = "Select the conceptual topic file";
-                    dlg.Filter = "Conceptual Topics (*.aml)|*.aml|All files (*.*)|*.*";
-                    dlg.DefaultExt = "aml";
-                    dlg.InitialDirectory = projectPath;
-                    dlg.CheckFileExists = true;
+                    // The file must reside under the project path
+                    newPath = dlg.FileName;
 
-                    if(dlg.ShowDialog() == WinFormsDialogResult.OK)
-                    {
-                        // The file must reside under the project path
-                        newPath = dlg.FileName;
+                    if(!Path.GetDirectoryName(newPath).StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
+                        newPath = Path.Combine(projectPath, Path.GetFileName(newPath));
 
-                        if(!Path.GetDirectoryName(newPath).StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
-                            newPath = Path.Combine(projectPath, Path.GetFileName(newPath));
+                    // Add the file to the project if not already there
+                    var newItem = contentLayoutFile.Project.AddFileToProject(dlg.FileName, newPath);
 
-                        // Add the file to the project if not already there
-                        newItem = contentLayoutFile.Project.AddFileToProject(dlg.FileName, newPath);
+                    t.TopicFile = new TopicFile(newItem.ToContentFile());
 
-                        t.TopicFile = new TopicFile(newItem.ToContentFile());
+                    // Let the caller know we associated a file with the topic
+                    e.Handled = true;
 
-                        // Let the caller know we associated a file with the topic
-                        e.Handled = true;
-
-                        if(thisNode != null)
-                            thisNode.ProjectMgr.RefreshProject();
-                    }
+                    thisNode?.ProjectMgr.RefreshProject();
                 }
+            }
         }
         #endregion
 
@@ -259,7 +261,7 @@ namespace SandcastleBuilder.Package.Editors
         /// <param name="e">The event arguments</param>
         private void cmdEdit_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            Topic t = base.UIControl.CurrentTopic;
+            Topic t = this.UIControl.CurrentTopic;
 
             e.CanExecute = (t != null && t.TopicFile != null && t.TopicFile.DocumentType > DocumentType.Invalid);
         }
@@ -273,8 +275,8 @@ namespace SandcastleBuilder.Package.Editors
         {
             // If the sender is a topic, use that instead.  Due to the way the WPF tree view works, the
             // selected topic isn't always the one we just added when it's the first child of a parent topic.
-            if(!(sender is Topic t))
-                t = base.UIControl.CurrentTopic;
+            if(sender is not Topic t)
+                t = this.UIControl.CurrentTopic;
 
 #pragma warning disable VSTHRD010
             if(t.TopicFile != null)
@@ -311,8 +313,8 @@ namespace SandcastleBuilder.Package.Editors
             {
                 // If we have a topic, use it's parent as the parent for the new topic.  If not, we'll use the
                 // parent of the content layout file.
-                if(base.UIControl.CurrentTopic != null && base.UIControl.CurrentTopic.TopicFile != null)
-                    topicNode = thisNode.ProjectMgr.FindChild(base.UIControl.CurrentTopic.TopicFile.FullPath) as FileNode;
+                if(this.UIControl.CurrentTopic != null && this.UIControl.CurrentTopic.TopicFile != null)
+                    topicNode = thisNode.ProjectMgr.FindChild(this.UIControl.CurrentTopic.TopicFile.FullPath) as FileNode;
 
                 project = (IVsProject3)thisNode.ProjectMgr;
                 strBrowseLocations = Path.GetDirectoryName(thisNode.ProjectMgr.BaseURI.Uri.LocalPath);
@@ -347,33 +349,30 @@ namespace SandcastleBuilder.Package.Editors
         private void cmdAddExistingFile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             FileNode thisNode = this.FileNode;
-            Topic t = base.UIControl.CurrentTopic;
+            Topic t = this.UIControl.CurrentTopic;
             string projectPath = Path.GetDirectoryName(contentLayoutFile.Project.Filename);
 
-            using(WinFormsOpenFileDialog dlg = new WinFormsOpenFileDialog())
+            using WinFormsOpenFileDialog dlg = new();
+            
+            dlg.Title = "Select the conceptual topic file(s)";
+            dlg.Filter = "Conceptual Topics (*.aml)|*.aml|All files (*.*)|*.*";
+            dlg.DefaultExt = "aml";
+            dlg.InitialDirectory = (t != null && t.TopicFile != null) ?
+                Path.GetDirectoryName(t.TopicFile.FullPath) : projectPath;
+            dlg.Multiselect = true;
+
+            // If selected, add the new file(s).  Filenames that are
+            // already in the collection are ignored.
+            if(dlg.ShowDialog() == WinFormsDialogResult.OK)
             {
-                dlg.Title = "Select the conceptual topic file(s)";
-                dlg.Filter = "Conceptual Topics (*.aml)|*.aml|All files (*.*)|*.*";
-                dlg.DefaultExt = "aml";
-                dlg.InitialDirectory = (t != null && t.TopicFile != null) ?
-                    Path.GetDirectoryName(t.TopicFile.FullPath) : projectPath;
-                dlg.Multiselect = true;
-
-                // If selected, add the new file(s).  Filenames that are
-                // already in the collection are ignored.
-                if(dlg.ShowDialog() == WinFormsDialogResult.OK)
+                foreach(string filename in dlg.FileNames)
                 {
-                    foreach(string filename in dlg.FileNames)
-                    {
-                        this.AddTopicFile(filename, e.Parameter != null);
+                    this.AddTopicFile(filename, e.Parameter != null);
 
-                        if(t != null)
-                            t.IsSelected = true;
-                    }
-
-                    if(thisNode != null)
-                        thisNode.ProjectMgr.RefreshProject();
+                    t?.IsSelected = true;
                 }
+
+                thisNode?.ProjectMgr.RefreshProject();
             }
         }
 
@@ -387,56 +386,56 @@ namespace SandcastleBuilder.Package.Editors
             ThreadHelper.ThrowIfNotOnUIThread();
 
             FileNode thisNode = this.FileNode;
-            TopicCollection parent, newTopics = new TopicCollection(null);
-            Topic selectedTopic = base.UIControl.CurrentTopic;
+            TopicCollection parent, newTopics = new(null);
+            Topic selectedTopic = this.UIControl.CurrentTopic;
             string projectPath = Path.GetDirectoryName(contentLayoutFile.Project.Filename);
             int idx;
 
-            using(WinFormsFolderBrowserDialog dlg = new WinFormsFolderBrowserDialog())
+            using WinFormsFolderBrowserDialog dlg = new();
+            
+            dlg.Description = "Select a folder to add all of its content";
+            dlg.SelectedPath = (selectedTopic != null && selectedTopic.TopicFile != null) ?
+                Path.GetDirectoryName(selectedTopic.TopicFile.FullPath) : projectPath;
+
+            if(dlg.ShowDialog() == WinFormsDialogResult.OK)
             {
-                dlg.Description = "Select a folder to add all of its content";
-                dlg.SelectedPath = (selectedTopic != null && selectedTopic.TopicFile != null) ?
-                    Path.GetDirectoryName(selectedTopic.TopicFile.FullPath) : projectPath;
+                Utility.GetServiceFromPackage<IVsUIShell, SVsUIShell>(true).SetWaitCursor();
 
-                if(dlg.ShowDialog() == WinFormsDialogResult.OK)
+                newTopics.AddTopicsFromFolder(dlg.SelectedPath, dlg.SelectedPath,
+                    contentLayoutFile.Project);
+
+                thisNode?.ProjectMgr.RefreshProject();
+            }
+
+            if(newTopics.Count != 0)
+            {
+                if(e.Parameter == null || selectedTopic == null)
                 {
-                    Utility.GetServiceFromPackage<IVsUIShell, SVsUIShell>(true).SetWaitCursor();
-
-                    newTopics.AddTopicsFromFolder(dlg.SelectedPath, dlg.SelectedPath,
-                        contentLayoutFile.Project);
-
-                    if(thisNode != null)
-                        thisNode.ProjectMgr.RefreshProject();
-                }
-
-                if(newTopics.Count != 0)
-                    if(e.Parameter == null || selectedTopic == null)
+                    // Insert as siblings
+                    if(selectedTopic == null)
                     {
-                        // Insert as siblings
-                        if(selectedTopic == null)
-                        {
-                            parent = base.UIControl.Topics;
-                            idx = 0;
-                        }
-                        else
-                        {
-                            parent = selectedTopic.Parent;
-                            idx = parent.IndexOf(selectedTopic) + 1;
-                        }
-
-                        foreach(Topic t in newTopics)
-                            parent.Insert(idx++, t);
+                        parent = this.UIControl.Topics;
+                        idx = 0;
                     }
                     else
                     {
-                        // Insert as children
-                        parent = selectedTopic.Subtopics;
-
-                        foreach(Topic t in newTopics)
-                            parent.Add(t);
-
-                        selectedTopic.IsExpanded = true;
+                        parent = selectedTopic.Parent;
+                        idx = parent.IndexOf(selectedTopic) + 1;
                     }
+
+                    foreach(Topic t in newTopics)
+                        parent.Insert(idx++, t);
+                }
+                else
+                {
+                    // Insert as children
+                    parent = selectedTopic.Subtopics;
+
+                    foreach(Topic t in newTopics)
+                        parent.Add(t);
+
+                    selectedTopic.IsExpanded = true;
+                }
             }
         }
         #endregion

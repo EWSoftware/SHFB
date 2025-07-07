@@ -42,7 +42,6 @@ using Sandcastle.Tools.Reflection;
 using Sandcastle.Core;
 using System.Text;
 using System.Diagnostics;
-using System.Security.Cryptography;
 
 namespace Sandcastle.Tools
 {
@@ -110,12 +109,12 @@ namespace Sandcastle.Tools
           string sourceCodeBasePath, bool warnOnMissingContext, ApiFilter filter) :
           base(sourceCodeBasePath, warnOnMissingContext, resolver, filter)
         {
-            assemblyNames = new HashSet<string>();
-            descendantIndex = new Dictionary<TypeNode, List<TypeNode>>();
-            implementorIndex = new Dictionary<Interface, List<TypeNode>>();
+            assemblyNames = [];
+            descendantIndex = [];
+            implementorIndex = [];
 
-            startTagCallbacks = new Dictionary<string, List<MRefBuilderCallback>>();
-            endTagCallbacks = new Dictionary<string, List<MRefBuilderCallback>>();
+            startTagCallbacks = [];
+            endTagCallbacks = [];
 
             writer = XmlWriter.Create(output, new XmlWriterSettings { Indent = true, CloseOutput = true });
 
@@ -147,7 +146,9 @@ namespace Sandcastle.Tools
 
             // Catalog type hierarchy and interface implementors
             foreach(var ns in spaces)
+            {
                 foreach(var type in ns.Types)
+                {
                     if(base.ApiFilter.IsExposedType(type))
                     {
                         if(type.NodeType == NodeType.Class)
@@ -155,6 +156,8 @@ namespace Sandcastle.Tools
 
                         this.PopulateImplementorIndex(type);
                     }
+                }
+            }
 
             // Start the document
             writer.WriteStartDocument();
@@ -202,7 +205,7 @@ namespace Sandcastle.Tools
             if(type == null)
                 throw new ArgumentNullException(nameof(type));
 
-            SourceContext typeSourceContext = new SourceContext(new Document(), -1, -1);
+            SourceContext typeSourceContext = new(new Document(), -1, -1);
             bool typeSourceContextSet = false;
 
             typeCount++;
@@ -306,7 +309,7 @@ namespace Sandcastle.Tools
         /// folders named after the namespaces with each file named after the class it represents.</remarks>
         private string FindSourceFileForType(string fullTypeName)
         {
-            Stack<string> typeNameParts = new Stack<string>(fullTypeName.Split('.'));
+            Stack<string> typeNameParts = new(fullTypeName.Split('.'));
             string sourceFile = null, searchPattern = typeNameParts.Pop();
 
             // For nested types, look for the parent type
@@ -330,16 +333,16 @@ namespace Sandcastle.Tools
                     {
                         searchPattern = searchPattern.Substring(0, pos);
 
-                        matches = Directory.EnumerateFiles(this.SourceCodeBasePath, searchPattern + "*",
-                            SearchOption.AllDirectories).ToList();
+                        matches = [.. Directory.EnumerateFiles(this.SourceCodeBasePath, searchPattern + "*",
+                            SearchOption.AllDirectories)];
                     }
                 }
 
                 if(matches.Count > 1)
                 {
                     // Look for an exact match by type name
-                    matches = matches.Where(m => Path.GetFileNameWithoutExtension(m).EndsWith(searchPattern,
-                        StringComparison.OrdinalIgnoreCase)).ToList();
+                    matches = [.. matches.Where(m => Path.GetFileNameWithoutExtension(m).EndsWith(searchPattern,
+                        StringComparison.OrdinalIgnoreCase))];
 
                     if(matches.Count != 1)
                     {
@@ -419,7 +422,7 @@ namespace Sandcastle.Tools
         {
             if(!startTagCallbacks.TryGetValue(name, out List<MRefBuilderCallback> current))
             {
-                current = new List<MRefBuilderCallback>();
+                current = [];
                 startTagCallbacks.Add(name, current);
             }
 
@@ -435,7 +438,7 @@ namespace Sandcastle.Tools
         {
             if(!endTagCallbacks.TryGetValue(name, out List<MRefBuilderCallback> current))
             {
-                current = new List<MRefBuilderCallback>();
+                current = [];
                 endTagCallbacks.Add(name, current);
             }
 
@@ -450,8 +453,10 @@ namespace Sandcastle.Tools
         private void StartElementCallbacks(string name, object info)
         {
             if(startTagCallbacks.TryGetValue(name, out List<MRefBuilderCallback> callbacks))
+            {
                 foreach(MRefBuilderCallback callback in callbacks)
                     callback(writer, info);
+            }
         }
 
         /// <summary>
@@ -462,8 +467,10 @@ namespace Sandcastle.Tools
         private void EndElementCallbacks(string name, object info)
         {
             if(endTagCallbacks.TryGetValue(name, out List<MRefBuilderCallback> callbacks))
+            {
                 foreach(MRefBuilderCallback callback in callbacks)
                     callback(writer, info);
+            }
         }
         #endregion
 
@@ -490,8 +497,10 @@ namespace Sandcastle.Tools
         private IEnumerable<Member> GetExposedImplementedMembers(IEnumerable<Member> members)
         {
             foreach(Member member in members)
+            {
                 if(this.ApiFilter.IsExposedMember(member))
                     yield return member;
+            }
         }
 
         /// <summary>
@@ -520,9 +529,9 @@ namespace Sandcastle.Tools
         /// <param name="enumeration">The enumeration from which to get the fields</param>
         /// <param name="value">The value to use in determining the applied fields</param>
         /// <returns>An enumerable list of fields from the enumeration that appear in the value</returns>
-        private static IEnumerable<Field> GetAppliedFields(EnumNode enumeration, long value)
+        private static FieldList GetAppliedFields(EnumNode enumeration, long value)
         {
-            FieldList list = new FieldList();
+            FieldList list = [];
             MemberList members = enumeration.Members;
 
             foreach(var member in members)
@@ -544,7 +553,7 @@ namespace Sandcastle.Tools
                     // If a single field matches, return it.  Otherwise return all fields that are in the value
                     // except zero.
                     if(fieldValue == value)
-                        return new[] { field };
+                        return [field];
 
                     if(fieldValue != 0 && (fieldValue & value) == fieldValue)
                         list.Add(field);
@@ -598,7 +607,7 @@ namespace Sandcastle.Tools
                 // Get the list of children for that parent (i.e. the sibling list)
                 if(!descendantIndex.TryGetValue(parent, out List<TypeNode> siblings))
                 {
-                    siblings = new List<TypeNode>();
+                    siblings = [];
                     descendantIndex[parent] = siblings;
                 }
 
@@ -624,7 +633,7 @@ namespace Sandcastle.Tools
                 // Get the list of implementors
                 if(!implementorIndex.TryGetValue(contract, out List<TypeNode> implementors))
                 {
-                    implementors = new List<TypeNode>();
+                    implementors = [];
                     implementorIndex[contract] = implementors;
                 }
 
@@ -833,7 +842,7 @@ namespace Sandcastle.Tools
                 // ANSI).  Structures are marked with a sequential layout and those with no members get a size of
                 // one so we'll ignore the attribute in those cases too since the user didn't add them.
                 if(((type.Flags & TypeFlags.LayoutMask) != 0 || type.ClassSize != 0 || type.PackingSize != 0) &&
-                  (!(type is Struct) || type.ClassSize > 1))
+                  (type is not Struct || type.ClassSize > 1))
                 {
                     switch(type.Flags & TypeFlags.LayoutMask)
                     {
@@ -917,7 +926,7 @@ namespace Sandcastle.Tools
         /// <param name="type">The type for which to write out elements</param>
         private void WriteTypeElements(TypeNode type)
         {
-            MemberDictionary members = new MemberDictionary(type, this.ApiFilter);
+            MemberDictionary members = new(type, this.ApiFilter);
 
             if(members.Count != 0)
             {
@@ -2443,7 +2452,7 @@ namespace Sandcastle.Tools
         private static IEnumerable<NullableState> DetermineNullableState(Member parent, AttributeList attributes)
         {
             Literal literal = null;
-            byte[] states = Array.Empty<byte>();
+            byte[] states = [];
             var nullableStates = new List<NullableState>();
 
             if(attributes != null && attributes.Count != 0)
@@ -2479,7 +2488,7 @@ namespace Sandcastle.Tools
                 if(literal != null)
                 {
                     if(literal.Value is byte value)
-                        states = new[] { value };
+                        states = [value];
                     else
                     {
                         if(literal.Value is byte[] values)
@@ -2546,7 +2555,7 @@ namespace Sandcastle.Tools
                     {
                         if(duplicates == null)
                         {
-                            duplicates = new List<XElement>();
+                            duplicates = [];
                             duplicateTypesAndMembers[id] = duplicates;
                         }
 
@@ -2570,7 +2579,9 @@ namespace Sandcastle.Tools
             string mergedReflectionDataFile = Path.Combine(Path.GetDirectoryName(reflectionDataFile),
                 Guid.NewGuid().ToString() + ".xml");
 
-            // Clone the file and merge the duplicates
+            // Clone the file and merge the duplicates.
+            // Don't use a simplified using statement here.  We need to ensure the reader and writer are disposed
+            // of before deleting and moving the files below.
             using(XmlReader reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings {
               IgnoreWhitespace = true, CloseInput = true }))
             using(XmlWriter writer = XmlWriter.Create(mergedReflectionDataFile, new XmlWriterSettings {

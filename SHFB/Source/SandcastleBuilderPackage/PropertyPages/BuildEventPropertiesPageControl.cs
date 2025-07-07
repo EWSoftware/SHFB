@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildEventPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/20/2021
-// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Build Events category properties
 //
@@ -20,6 +20,8 @@
 
 using System;
 using System.Runtime.InteropServices;
+
+using SandcastleBuilder.MSBuild.HelpProject;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -56,7 +58,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 #if !STANDALONEGUI
             ucBuildEventPropertiesContent.Project = this.ProjectMgr.BuildProject;
 #else
-            ucBuildEventPropertiesContent.Project = this.CurrentProject.MSBuildProject;
+            ucBuildEventPropertiesContent.Project = ((SandcastleProject)this.CurrentProject).MSBuildProject;
 #endif
         }
         #endregion

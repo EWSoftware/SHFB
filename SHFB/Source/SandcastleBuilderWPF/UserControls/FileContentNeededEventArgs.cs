@@ -1,9 +1,9 @@
 ﻿//===============================================================================================================
-// System  : Sandcastle Help File Builder Visual Studio Package
+// System  : Sandcastle Help File Builder WPF Controls
 // File    : FileContentNeededEventArgs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used for the EntityReferencesControl FileContentNeeded event
 //
@@ -20,7 +20,7 @@
 using System.Collections.Generic;
 using System.Windows;
 
-using SandcastleBuilder.Utils.ConceptualContent;
+using Sandcastle.Core.ConceptualContent;
 
 namespace SandcastleBuilder.WPF.UserControls
 {
@@ -37,19 +37,19 @@ namespace SandcastleBuilder.WPF.UserControls
         /// This is used to return the topic collections for content layout files
         /// </summary>
         /// <value>The key is the filename, the value is the topic collection</value>
-        public Dictionary<string, TopicCollection> ContentLayoutFiles { get; }
+        public Dictionary<string, TopicCollection> ContentLayoutFiles { get; } = [];
 
         /// <summary>
         /// This is used to return the topic collections for site map files
         /// </summary>
         /// <value>The key is the filename, the value is the topic collection</value>
-        public Dictionary<string, TocEntryCollection> SiteMapFiles { get; }
+        public Dictionary<string, TocEntryCollection> SiteMapFiles { get; } = [];
 
         /// <summary>
         /// This is used to return the token collections for token files
         /// </summary>
         /// <value>The key is the filename, the value is the token collection</value>
-        public Dictionary<string, TokenCollection> TokenFiles { get; }
+        public Dictionary<string, TokenCollection> TokenFiles { get; } = [];
 
         #endregion
 
@@ -63,9 +63,6 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="source">The routed event source</param>
         public FileContentNeededEventArgs(RoutedEvent routedEvent, object source) : base(routedEvent, source)
         {
-            this.ContentLayoutFiles = new Dictionary<string, TopicCollection>();
-            this.SiteMapFiles = new Dictionary<string, TocEntryCollection>();
-            this.TokenFiles = new Dictionary<string, TokenCollection>();
         }
         #endregion
     }

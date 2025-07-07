@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/22/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a form that is used to configure the settings for the Code Block Component.
 //
@@ -89,7 +89,7 @@ namespace Sandcastle.Tools.BuildComponents.UI
 
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-            var languages =(new Dictionary<string, string> {
+            var languages = new Dictionary<string, string> {
                 { "none", "None" },
                 { "cs", "C#" },
                 { "vbnet", "VB.NET" },
@@ -104,7 +104,7 @@ namespace Sandcastle.Tools.BuildComponents.UI
                 { "javascript", "JavaScript" },
                 { "jscriptnet", "JScript.NET" },
                 { "jsharp", "J#" },
-                { "vbscript", "VBScript" } }).ToList();
+                { "vbscript", "VBScript" } }.ToList();
 
             cboLanguage.ItemsSource = languages;
             cboLanguage.SelectedIndex = 1;
@@ -255,15 +255,14 @@ namespace Sandcastle.Tools.BuildComponents.UI
         /// <param name="e">The event arguments</param>
         private void btnSelectFolder_Click(object sender, RoutedEventArgs e)
         {
-            using(System.Windows.Forms.FolderBrowserDialog dlg = new System.Windows.Forms.FolderBrowserDialog())
-            {
-                dlg.Description = "Select the base source code folder";
-                dlg.SelectedPath = Directory.GetCurrentDirectory();
+            using System.Windows.Forms.FolderBrowserDialog dlg = new();
+            
+            dlg.Description = "Select the base source code folder";
+            dlg.SelectedPath = Directory.GetCurrentDirectory();
 
-                // If selected, set the new folder
-                if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    txtBasePath.Text = dlg.SelectedPath;
-            }
+            // If selected, set the new folder
+            if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                txtBasePath.Text = dlg.SelectedPath;
         }
 
         /// <summary>
@@ -286,6 +285,7 @@ namespace Sandcastle.Tools.BuildComponents.UI
                 dlg.DefaultExt = "xml";
             }
             else
+            {
                 if(b == btnSelectXsltStylesheet)
                 {
                     t = txtXsltStylesheetFile;
@@ -294,6 +294,7 @@ namespace Sandcastle.Tools.BuildComponents.UI
                     dlg.DefaultExt = "xsl";
                 }
                 else
+                {
                     if(b == btnSelectCssStylesheet)
                     {
                         t = txtCssStylesheet;
@@ -308,6 +309,8 @@ namespace Sandcastle.Tools.BuildComponents.UI
                         dlg.Filter = "JavaScript files (*.js)|*.js|All Files (*.*)|*.*";
                         dlg.DefaultExt = "js";
                     }
+                }
+            }
 
             dlg.InitialDirectory = Directory.GetCurrentDirectory();
 

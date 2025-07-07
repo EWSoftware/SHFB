@@ -1,9 +1,9 @@
 //===============================================================================================================
-// System  : Sandcastle Help File Builder
+// System  : Sandcastle Tools - Windows platform specific code
 // File    : FolderPathObjectEditor.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a type editor that can display a folder browser dialog to allow selection of a folder path
 // at design time.  This can be used in conjunction with the FolderDialogAttribute to specify the folder browser
@@ -23,7 +23,7 @@
 using System;
 using System.ComponentModel;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
 
 namespace Sandcastle.Platform.Windows.Design
 {

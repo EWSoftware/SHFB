@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : NoteElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/05/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle note and alert elements
 //
@@ -22,6 +22,8 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
+
+using Sandcastle.Core.Project;
 
 namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 {
@@ -212,25 +214,22 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                     break;
             }
 
-            var noteTemplate = TopicTransformationCore.LoadTemplateFile(template, new[]
-            {
+            var noteTemplate = TopicTransformationCore.LoadTemplateFile(template,
+            [
                 ("{@IconPath}", transformation.IconPath),
                 ("{@AlertAltTextItemId}", altTitle),
                 ("{@AlertTitleItemId}", title)
-            }).Root;
+            ]).Root;
 
             if(!String.IsNullOrWhiteSpace(userDefinedTitle))
             {
                 var titleInclude = noteTemplate.Descendants("include").FirstOrDefault(
                     i => i.Attribute("item").Value == title);
 
-                if(titleInclude != null)
-                    titleInclude.ReplaceWith(userDefinedTitle);
+                titleInclude?.ReplaceWith(userDefinedTitle);
             }
 
-            var contentCell = noteTemplate.Descendants().FirstOrDefault(d => d.Attribute("id")?.Value == "content");
-
-            if(contentCell == null)
+            var contentCell = noteTemplate.Descendants().FirstOrDefault(d => d.Attribute("id")?.Value == "content") ??
                 throw new InvalidOperationException("Unable to locate the 'content' element in the note template");
 
             contentCell.Attribute("id").Remove();

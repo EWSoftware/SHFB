@@ -2,7 +2,7 @@
 // System  : Code Colorizer Library
 // File    : CodeColorizer.cs
 // Author  : Jonathan de Halleux, (c) 2003
-// Updated : 04/06/2021
+// Updated : 07/05/2025
 //
 // This is used to cache regular expressions to improve performance.  The original Code Project article by
 // Jonathan can be found at: http://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con
@@ -46,7 +46,7 @@ namespace ColorizerLibrary
         /// </summary>
         internal RegexDictionary()
 		{
-            dictionary = new Dictionary<string, Regex>();
+            dictionary = [];
 		}
         #endregion
 
@@ -61,16 +61,13 @@ namespace ColorizerLibrary
         /// <overloads>There are two overloads for this method</overloads>
         private static string KeyName(XmlNode node1, XmlNode node2)
         {
-            XmlNode attr1, attr2;
-
             if(node1 == null)
                 throw new ArgumentNullException(nameof(node1));
 
             if(node2 == null)
                 throw new ArgumentNullException(nameof(node2));
 
-            attr1 = node1.Attributes["id"];
-            attr2 = node2.Attributes["id"];
+            XmlAttribute attr1 = node1.Attributes["id"], attr2 = node2.Attributes["id"];
 
             if(attr1 == null)
                 throw new ArgumentException("node1 has no 'id' attribute");
@@ -89,8 +86,6 @@ namespace ColorizerLibrary
         /// <param name="node3">The third node</param>
         private static string KeyName(XmlNode node1, XmlNode node2, XmlNode node3)
         {
-            XmlNode attr1, attr2, attr3;
-
             if(node1 == null)
                 throw new ArgumentNullException(nameof(node1));
 
@@ -100,9 +95,8 @@ namespace ColorizerLibrary
             if(node3 == null)
                 throw new ArgumentNullException(nameof(node3));
 
-            attr1 = node1.Attributes["id"];
-            attr2 = node2.Attributes["id"];
-            attr3 = node3.Attributes["id"];
+            XmlAttribute attr1 = node1.Attributes["id"], attr2 = node2.Attributes["id"],
+                attr3 = node3.Attributes["id"];
 
             if(attr1 == null)
                 throw new ArgumentException("node1 has no 'id' attribute");
@@ -126,7 +120,7 @@ namespace ColorizerLibrary
 			RegexOptions regOp = RegexOptions.Multiline;
 
 			// Check if case sensitive...
-			XmlNode caseNode = languageNode.Attributes["not-case-sensitive"];
+			XmlAttribute caseNode = languageNode.Attributes["not-case-sensitive"];
 
 			if(caseNode != null && caseNode.Value == "yes")
 				regOp |= RegexOptions.IgnoreCase;
@@ -151,7 +145,7 @@ namespace ColorizerLibrary
         /// <overloads>There are two overloads for this method</overloads>
 		internal void AddKey(XmlNode languageNode, XmlNode subNode, string sRegExp)
 		{
-			Regex regExp = new Regex(sRegExp, GetRegexOptions(languageNode));
+			Regex regExp = new(sRegExp, GetRegexOptions(languageNode));
 
 			dictionary.Add(KeyName(languageNode, subNode), regExp);
 		}
@@ -169,7 +163,7 @@ namespace ColorizerLibrary
         /// attribute or if the regular expression could not be created.</exception>
 		internal void AddKey(XmlNode languageNode, XmlNode subNode, XmlNode subNode2, string sRegExp)
 		{
-			Regex regExp = new Regex(sRegExp, GetRegexOptions(languageNode));
+            Regex regExp = new(sRegExp, GetRegexOptions(languageNode));
 
 			dictionary.Add(KeyName(languageNode, subNode, subNode2), regExp);
 		}

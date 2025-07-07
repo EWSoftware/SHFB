@@ -1,9 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-		<TargetFrameworks>net472;net8.0</TargetFrameworks>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
+		<TargetFrameworks>net48;net9.0</TargetFrameworks>
 		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
@@ -11,7 +9,9 @@
 		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
 		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<!-- Don't go above C# 13 for now as the code uses variables named field which may conflict with the field
+		     keyword in C# 14.  Those need to be cleaned up first. -->
+		<LangVersion>13.0</LangVersion>
 		<!-- Use Default for now as the code is pretty dirty and there's a lot to clean up -->
 		<AnalysisMode>Default</AnalysisMode>
 		<RootNamespace>Sandcastle.Tools.MSBuild</RootNamespace>

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TopicIdCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
-// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
+// Updated : 07/06/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to cache information about MAML topic IDs and their related files
 //
@@ -70,8 +70,6 @@ namespace SandcastleBuilder.Package.GoToDefinition
         #region Private data members
         //=====================================================================
 
-        private static TopicIdCache instance;
-
         private readonly ConcurrentDictionary<string, TopicInfo> topicInfo;
 
         #endregion
@@ -82,16 +80,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// <summary>
         /// This read-only property is used to get the singleton instance
         /// </summary>
-        public static TopicIdCache Instance
-        {
-            get
-            {
-                if(instance == null)
-                    instance = new TopicIdCache();
-
-                return instance;
-            }
-        }
+        public static TopicIdCache Instance => field ??= new TopicIdCache();
 
         /// <summary>
         /// This read-only property is used to get the current solution name for which the cache has loaded

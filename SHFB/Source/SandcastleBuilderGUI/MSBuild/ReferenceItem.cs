@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ReferenceItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/20/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a reference item that can be used by MRefBuilder to locate assembly
 // dependencies for the assemblies being documented.
@@ -27,9 +27,11 @@ using System.Drawing.Design;
 
 using Microsoft.Build.Evaluation;
 
+using Sandcastle.Core;
 using Sandcastle.Platform.Windows.Design;
 
-using SandcastleBuilder.Utils;
+using SandcastleBuilder.MSBuild;
+using SandcastleBuilder.MSBuild.HelpProject;
 
 namespace SandcastleBuilder.Gui.MSBuild
 {
@@ -63,7 +65,7 @@ namespace SandcastleBuilder.Gui.MSBuild
             get => hintPath;
             set
             {
-                if(value == null || value.Path.Length == 0 || value.Path.IndexOfAny(new char[] { '*', '?' }) != -1)
+                if(value == null || value.Path.Length == 0 || value.Path.IndexOfAny(FilePath.Wildcards) != -1)
                     throw new ArgumentException("A hint path must be specified and cannot contain wildcards (* or ?)",
                         nameof(value));
 
@@ -269,14 +271,18 @@ namespace SandcastleBuilder.Gui.MSBuild
         /// <returns>The filtered property descriptor collection</returns>
         private PropertyDescriptorCollection FilterProperties(PropertyDescriptorCollection pdc)
         {
-            PropertyDescriptorCollection adjustedProps = new PropertyDescriptorCollection(Array.Empty<PropertyDescriptor>());
+            PropertyDescriptorCollection adjustedProps = new([]);
 
             foreach(PropertyDescriptor pd in pdc)
+            {
                 if(pd.Name != "HintPath")
                     adjustedProps.Add(pd);
                 else
+                {
                     if(pd.GetValue(this) != null)
                         adjustedProps.Add(pd);
+                }
+            }
 
             return adjustedProps;
         }

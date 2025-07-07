@@ -2,14 +2,15 @@
   <Folder Name="/Solution Items/">
     <File Path="../../.editorconfig" />
     <File Path="../../IgnoredWords.dic" />
-    <File Path="../../Directory.Packages.props" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
   </Folder>
   <Project Path="CodeColorizer/ColorizerLibrary/ColorizerLibrary.csproj" />
   <Project Path="MPFProj/Microsoft.VisualStudio.Project.csproj" Id="cacb60a9-1e76-4f92-8831-b134a658c695" />
+  <Project Path="SandcastleBuilderMSBuild/SandcastleBuilderMSBuild.csproj" />
   <Project Path="SandcastleBuilderPackage/SandcastleBuilderPackage.csproj" Id="242129cc-9310-450c-aee3-4b849ecfb67e">
     <BuildDependency Project="CodeColorizer/ColorizerLibrary/ColorizerLibrary.csproj" />
   </Project>
-  <Project Path="SandcastleBuilderUtils/SandcastleBuilderUtils.csproj" />
   <Project Path="SandcastleBuilderWPF/SandcastleBuilderWPF_VSIX.csproj" />
   <Project Path="SandcastleCore/SandcastleCore.csproj" />
   <Project Path="SandcastlePlatformWindows/SandcastlePlatformWindows.csproj" />

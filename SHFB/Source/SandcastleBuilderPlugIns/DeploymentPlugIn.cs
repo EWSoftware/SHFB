@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that can be used to deploy the resulting help file output to a location other
 // than the output folder (i.e. a file share, an FTP site, a web server, etc.).
@@ -35,11 +35,9 @@ using System.Net.Cache;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-using Sandcastle.Core;
-
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.BuildEngine;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.PlugIn;
+using Sandcastle.Core.Project;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -55,9 +53,7 @@ namespace SandcastleBuilder.PlugIns
         #region Private data members
         //=====================================================================
 
-        private List<ExecutionPoint> executionPoints;
-
-        private BuildProcess builder;
+        private IBuildProcess builder;
 
         // Plug-in configuration options
         private DeploymentLocation deployHelp1, deployHelpViewer, deployWebsite, deployOpenXml, deployMarkdown;
@@ -72,22 +68,13 @@ namespace SandcastleBuilder.PlugIns
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public IEnumerable<ExecutionPoint> ExecutionPoints
-        {
-            get
-            {
-                if(executionPoints == null)
-                    executionPoints = new List<ExecutionPoint>
-                    {
-                        // This plug-in has a lower priority as it should execute after all other plug-ins in
-                        // case they add other files to the set.
-                        new ExecutionPoint(BuildStep.CompilingHelpFile, ExecutionBehaviors.After, 200),
-                        new ExecutionPoint(BuildStep.CopyingWebsiteFiles, ExecutionBehaviors.After, 200)
-                    };
-
-                return executionPoints;
-            }
-        }
+        public IEnumerable<ExecutionPoint> ExecutionPoints { get; } =
+        [
+            // This plug-in has a lower priority as it should execute after all other plug-ins in
+            // case they add other files to the set.
+            new ExecutionPoint(BuildStep.CompilingHelpFile, ExecutionBehaviors.After, 200),
+            new ExecutionPoint(BuildStep.CopyingWebsiteFiles, ExecutionBehaviors.After, 200)
+        ];
 
         /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
@@ -95,7 +82,7 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
         /// <exception cref="BuilderException">This is thrown if the plug-in configuration is not valid</exception>
-        public void Initialize(BuildProcess buildProcess, XElement configuration)
+        public void Initialize(IBuildProcess buildProcess, XElement configuration)
         {
             if(configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
@@ -127,34 +114,46 @@ namespace SandcastleBuilder.PlugIns
             // At least one deployment location must be defined
             if(deployHelp1.Location == null && deployHelpViewer.Location == null && deployWebsite.Location == null &&
               deployOpenXml.Location == null && deployMarkdown.Location == null)
+            {
                 throw new BuilderException("ODP0002", "The output deployment plug-in must have at least " +
                     "one configured deployment location");
+            }
 
             // Issue a warning if the deployment location is null and the associated help file format is active
             if(deployHelp1.Location == null &&
               (builder.CurrentProject.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
+            {
                 builder.ReportWarning("ODP0003", "HTML Help 1 will be generated but not deployed due to " +
                     "missing deployment location information");
+            }
 
             if(deployHelpViewer.Location == null &&
               (builder.CurrentProject.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
+            {
                 builder.ReportWarning("ODP0003", "MS Help Viewer will be generated but not deployed due " +
                     "to missing deployment location information");
+            }
 
             if(deployWebsite.Location == null &&
               (builder.CurrentProject.HelpFileFormat & HelpFileFormats.Website) != 0)
+            {
                 builder.ReportWarning("ODP0003", "Website will be generated but not deployed due to " +
                     "missing deployment location information");
+            }
 
             if(deployOpenXml.Location == null &&
               (builder.CurrentProject.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
+            {
                 builder.ReportWarning("ODP0003", "Open XML will be generated but not deployed due to " +
                     "missing deployment location information");
+            }
 
             if(deployMarkdown.Location == null &&
               (builder.CurrentProject.HelpFileFormat & HelpFileFormats.Markdown) != 0)
+            {
                 builder.ReportWarning("ODP0003", "Markdown content will be generated but not deployed due to " +
                     "missing deployment location information");
+            }
         }
 
         /// <summary>
@@ -229,6 +228,7 @@ namespace SandcastleBuilder.PlugIns
                 if(!target.IsAbsoluteUri)
                     rootPath = Path.GetFullPath(target.OriginalString);
                 else
+                {
                     if(target.IsFile || target.IsUnc)
                         rootPath = target.LocalPath;
                     else
@@ -239,8 +239,10 @@ namespace SandcastleBuilder.PlugIns
 
                         // Initialize the web client
                         if(!location.UserCredentials.UseDefaultCredentials)
+                        {
                             webClient.Credentials = new NetworkCredential(location.UserCredentials.UserName,
                                 location.UserCredentials.Password);
+                        }
 
                         webClient.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
 
@@ -249,11 +251,14 @@ namespace SandcastleBuilder.PlugIns
                             webClient.Proxy = new WebProxy(location.ProxyCredentials.ProxyServer, true);
 
                             if(!location.ProxyCredentials.Credentials.UseDefaultCredentials)
+                            {
                                 webClient.Proxy.Credentials = new NetworkCredential(
                                     location.ProxyCredentials.Credentials.UserName,
                                     location.ProxyCredentials.Credentials.Password);
+                            }
                         }
                     }
+                }
 
                 foreach(string sourceFile in files)
                 {
@@ -305,8 +310,7 @@ namespace SandcastleBuilder.PlugIns
             }
             finally
             {
-                if(webClient != null)
-                    webClient.Dispose();
+                webClient?.Dispose();
             }
         }
         #endregion

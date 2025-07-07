@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/20/2024
-// Note    : Copyright 2008-2024, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to add additional reference link targets to the Reflection Index Data
 // and Resolve Reference Links build components so that links can be created to other third party help in a
@@ -33,10 +33,9 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 
 using Sandcastle.Core;
-
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.BuildEngine;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.PlugIn;
+using Sandcastle.Core.Project;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -54,9 +53,7 @@ namespace SandcastleBuilder.PlugIns
         #region Private data members
         //=====================================================================
 
-        private List<ExecutionPoint> executionPoints;
-
-        private BuildProcess builder;
+        private IBuildProcess builder;
         private BuildStep lastBuildStep;
 
         private List<ReferenceLinkSettings> otherLinks;
@@ -70,22 +67,13 @@ namespace SandcastleBuilder.PlugIns
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public IEnumerable<ExecutionPoint> ExecutionPoints
-        {
-            get
-            {
-                if(executionPoints == null)
-                    executionPoints = new List<ExecutionPoint>
-                    {
-                        new ExecutionPoint(BuildStep.GenerateNamespaceSummaries, ExecutionBehaviors.Before),
-                        new ExecutionPoint(BuildStep.GenerateInheritedDocumentation, ExecutionBehaviors.Before),
-                        new ExecutionPoint(BuildStep.CreateBuildAssemblerConfigs, ExecutionBehaviors.Before),
-                        new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After)
-                    };
-
-                return executionPoints;
-            }
-        }
+        public IEnumerable<ExecutionPoint> ExecutionPoints { get; } =
+        [
+            new ExecutionPoint(BuildStep.GenerateNamespaceSummaries, ExecutionBehaviors.Before),
+            new ExecutionPoint(BuildStep.GenerateInheritedDocumentation, ExecutionBehaviors.Before),
+            new ExecutionPoint(BuildStep.CreateBuildAssemblerConfigs, ExecutionBehaviors.Before),
+            new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After)
+        ];
 
         /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process.
@@ -94,13 +82,13 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="configuration">The configuration data that the plug-in should use to initialize
         /// itself.</param>
         /// <exception cref="BuilderException">This is thrown if the plug-in configuration is not valid.</exception>
-        public void Initialize(BuildProcess buildProcess, XElement configuration)
+        public void Initialize(IBuildProcess buildProcess, XElement configuration)
         {
             if(configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
             builder = buildProcess ?? throw new ArgumentNullException(nameof(buildProcess));
-            otherLinks = new List<ReferenceLinkSettings>();
+            otherLinks = [];
 
             var metadata = (HelpFileBuilderPlugInExportAttribute)this.GetType().GetCustomAttributes(
                 typeof(HelpFileBuilderPlugInExportAttribute), false).First();
@@ -139,26 +127,25 @@ namespace SandcastleBuilder.PlugIns
                 // Build each of the projects
                 foreach(ReferenceLinkSettings vs in otherLinks)
                 {
-                    using(SandcastleProject project = new SandcastleProject(vs.HelpFileProject, true, true))
+                    using var project = builder.Load(vs.HelpFileProject, true, true);
+                    
+                    // We'll use a working folder below the current project's working folder
+                    string workingPath = Path.Combine(builder.WorkingFolder,
+                        vs.HelpFileProject.GetHashCode().ToString("X", CultureInfo.InvariantCulture));
+
+                    bool success = this.BuildProject(project, workingPath);
+
+                    // Switch back to the original folder for the current project
+                    Directory.SetCurrentDirectory(builder.ProjectFolder);
+
+                    if(!success)
                     {
-                        // We'll use a working folder below the current project's working folder
-                        string workingPath = Path.Combine(builder.WorkingFolder,
-                            vs.HelpFileProject.GetHashCode().ToString("X", CultureInfo.InvariantCulture));
-
-                        bool success = this.BuildProject(project, workingPath);
-
-                        // Switch back to the original folder for the current project
-                        Directory.SetCurrentDirectory(builder.ProjectFolder);
-
-                        if(!success)
-                        {
-                            throw new BuilderException("ARL0003", "Unable to build additional target project: " +
-                                project.Filename);
-                        }
-
-                        // Save the reflection file location as we need it later
-                        vs.ReflectionFilename = Path.Combine(workingPath, "reflection.xml");
+                        throw new BuilderException("ARL0003", "Unable to build additional target project: " +
+                            project.Filename);
                     }
+
+                    // Save the reflection file location as we need it later
+                    vs.ReflectionFilename = Path.Combine(workingPath, "reflection.xml");
                 }
 
                 return;
@@ -171,7 +158,7 @@ namespace SandcastleBuilder.PlugIns
                 foreach(ReferenceLinkSettings vs in otherLinks)
                 {
                     if(!String.IsNullOrEmpty(vs.ReflectionFilename))
-                        builder.GenerateInheritedDocsTool.ReflectionFiles.AddReflectionFile(vs.ReflectionFilename);
+                        builder.InheritedDocsReflectionFiles.AddReflectionFile(vs.ReflectionFilename);
                 }
 
                 return;
@@ -183,15 +170,15 @@ namespace SandcastleBuilder.PlugIns
 
                 var rn = builder.ReferencedNamespaces;
 
-                HashSet<string> validNamespaces = new HashSet<string>(Directory.EnumerateFiles(
+                HashSet<string> validNamespaces = [.. Directory.EnumerateFiles(
                     builder.FrameworkReflectionDataFolder, "*.xml", SearchOption.AllDirectories).Select(
-                        f => Path.GetFileNameWithoutExtension(f)));
+                        f => Path.GetFileNameWithoutExtension(f))];
 
                 foreach(ReferenceLinkSettings vs in otherLinks)
                 {
                     if(!String.IsNullOrEmpty(vs.ReflectionFilename))
                     {
-                        foreach(var n in BuildProcess.GetReferencedNamespaces(vs.ReflectionFilename, validNamespaces))
+                        foreach(var n in ComponentUtilities.GetReferencedNamespaces(vs.ReflectionFilename, validNamespaces))
                             rn.Add(n);
                     }
                 }
@@ -321,10 +308,8 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="project">The project to build</param>
         /// <param name="workingPath">The working path for the project</param>
         /// <returns>Returns true if successful, false if not</returns>
-        private bool BuildProject(SandcastleProject project, string workingPath)
+        private bool BuildProject(ISandcastleProject project, string workingPath)
         {
-            BuildProcess buildProcess;
-
             lastBuildStep = BuildStep.None;
 
             builder.ReportProgress("\r\nBuilding {0}", project.Filename);
@@ -340,18 +325,17 @@ namespace SandcastleBuilder.PlugIns
                 project.OutputPath = new FolderPath(Path.Combine(workingPath, @"..\PartialBuildLog\"), true, project);
 
                 // If the current project has defined OutDir, pass it on to the sub-project.
-                string outDir = builder.CurrentProject.MSBuildProject.GetProperty("OutDir")?.EvaluatedValue;
+                string outDir = builder.CurrentProject.ProjectOutDir;
 
-                if(!String.IsNullOrEmpty(outDir) && outDir != @".\")
+                if(!String.IsNullOrWhiteSpace(outDir) && outDir != @".\")
                     project.MSBuildOutDir = outDir;
 
                 // Run the partial build through the transformation step as we need the document model
                 // applied and filenames added.
-                buildProcess = new BuildProcess(project, PartialBuildType.TransformReflectionInfo)
-                {
-                    ProgressReportProvider = this,
-                    CancellationToken = builder.CancellationToken
-                };
+                var buildProcess = project.CreateBuildProcess(PartialBuildType.TransformReflectionInfo);
+
+                buildProcess.ProgressReportProvider = this;
+                buildProcess.CancellationToken = builder.CancellationToken;
 
                 // Since this is a plug-in, we'll run it synchronously rather than as a background task
                 buildProcess.Build();
@@ -360,8 +344,10 @@ namespace SandcastleBuilder.PlugIns
 
                 // Add the list of the comments files in the other project to this build
                 if(lastBuildStep == BuildStep.Completed)
+                {
                     foreach(XmlCommentsFile comments in buildProcess.CommentsFiles)
                         builder.CommentsFiles.Insert(0, comments);
+                }
             }
             catch(Exception ex)
             {

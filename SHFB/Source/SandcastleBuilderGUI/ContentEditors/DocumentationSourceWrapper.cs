@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : DocumentationSourceWrapper.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2025
+// Updated : 06/22/2025
 // Note    : Copyright 2021-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to wrap a documentation source so that it can be edited in the project
@@ -21,9 +21,10 @@
 using System.ComponentModel;
 using System.Drawing.Design;
 
+using Sandcastle.Core;
 using Sandcastle.Platform.Windows.Design;
 
-using SandcastleBuilder.Utils;
+using SandcastleBuilder.MSBuild.HelpProject;
 
 namespace SandcastleBuilder.Gui.ContentEditors
 {

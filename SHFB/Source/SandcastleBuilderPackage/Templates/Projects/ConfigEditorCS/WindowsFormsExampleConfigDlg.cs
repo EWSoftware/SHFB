@@ -3,10 +3,9 @@ using System.ComponentModel.Composition.Hosting;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-using Sandcastle.Core.BuildAssembler;
-
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
+using Sandcastle.Core;
+using Sandcastle.Core.PlugIn;
+using Sandcastle.Core.Project;
 
 /* TODO: Include the build output in your component or plug-in project.  Add the following element to include
          the assembly from this project in the component or plug-in project's package output.  If there are

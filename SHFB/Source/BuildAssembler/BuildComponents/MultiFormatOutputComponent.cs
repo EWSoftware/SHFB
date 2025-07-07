@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : MultiFormatOutputComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/12/2021
-// Note    : Copyright 2010-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2010-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to execute one or more sets of build components each based
 // on a specific help file output format.
@@ -33,7 +33,7 @@ using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace SandcastleBuilder.Components
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This build component is used to execute one or more sets of build components each based on a specific
@@ -69,6 +69,8 @@ namespace SandcastleBuilder.Components
         //=====================================================================
 
         private Dictionary<string, IEnumerable<BuildComponentCore>> formatComponents;
+
+        private static readonly char[] commaSeparator = [','];
 
         #endregion
 
@@ -111,7 +113,7 @@ namespace SandcastleBuilder.Components
         {
             Assembly asm = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
-            List<string> buildFormats = new List<string>();
+            List<string> buildFormats = [];
             XPathNavigator nav;
             XPathNodeIterator outputSets;
             string format;
@@ -124,7 +126,7 @@ namespace SandcastleBuilder.Components
             if(configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
-            formatComponents = new Dictionary<string, IEnumerable<BuildComponentCore>>();
+            formatComponents = [];
 
             // Get the requested formats
             nav = configuration.SelectSingleNode("build");
@@ -134,7 +136,7 @@ namespace SandcastleBuilder.Components
                 throw new ArgumentException("You must specify a string value for the <build> " +
                     "'formats' attribute.", nameof(configuration));
 
-            foreach(string f in format.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach(string f in format.Split(commaSeparator, StringSplitOptions.RemoveEmptyEntries))
                 buildFormats.Add(f.Trim());
 
             // Get the component configurations for each of the requested formats

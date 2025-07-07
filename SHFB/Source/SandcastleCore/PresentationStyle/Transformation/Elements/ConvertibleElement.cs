@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ConvertibleElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/23/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that handles elements that are converted to a different element name and have an
 // optional style attribute.
@@ -20,6 +20,7 @@
 
 using System;
 using System.Xml.Linq;
+using Sandcastle.Core.Project;
 
 namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 {

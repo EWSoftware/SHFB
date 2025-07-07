@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : BuildEventEditorDlg.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 04/17/2021
-// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
+// Updated : 07/03/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a form used to edit a build event and insert macro placeholders
 //
@@ -69,7 +69,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         {
             InitializeComponent();
 
-            macros = new SortedDictionary<string, string>();
+            macros = [];
         }
         #endregion
 
@@ -88,8 +88,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
             {
                 foreach(string property in new[] { "SolutionDir", "SolutionName", "SolutionFileName", "SolutionPath" })
                 {
-                    if(project != null)
-                        project.GlobalProperties.TryGetValue(property, out propertyValue);
+                    project?.GlobalProperties.TryGetValue(property, out propertyValue);
 
                     macros.Add(property, propertyValue ?? "(Currently undefined)");
                 }

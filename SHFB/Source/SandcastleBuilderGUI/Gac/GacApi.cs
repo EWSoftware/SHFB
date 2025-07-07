@@ -19,6 +19,8 @@
 // 08/04/2006  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: Gac
+
 using System;
 using System.Text;
 using System.Runtime.InteropServices;

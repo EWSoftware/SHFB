@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PlatformType.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/28/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to define platform type constants
 //
@@ -55,8 +55,8 @@ namespace Sandcastle.Core.Reflection
         /// This read-only property returns an enumerable list of the valid platform types
         /// </summary>
         /// <remarks>.NETCoreApp is not returned.  It will be redirected to one of the other types.</remarks>
-        public static IEnumerable<string> PlatformTypes => new[] { DotNet, DotNetFramework, DotNetCore,
-            DotNetStandard, DotNetMicroFramework, DotNetPortable, Silverlight, WindowsPhone, WindowsPhoneApp };
+        public static IEnumerable<string> PlatformTypes => [ DotNet, DotNetFramework, DotNetCore,
+            DotNetStandard, DotNetMicroFramework, DotNetPortable, Silverlight, WindowsPhone, WindowsPhoneApp ];
 
         /// <summary>
         /// This can be used to determine if the given set of platform types are compatible with each other for

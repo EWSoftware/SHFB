@@ -43,7 +43,7 @@ namespace SandcastleBuilder.Gui
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.lnkEWoodruffUrl = new System.Windows.Forms.LinkLabel();
             this.lnkProjectUrl = new System.Windows.Forms.LinkLabel();
-            this.sbMessage = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
+            this.sbMessage = new SandcastleBuilder.Gui.StatusBarTextProvider(this.components);
             this.lblCopyright = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -240,7 +240,7 @@ namespace SandcastleBuilder.Gui
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ToolTip toolTip1;
-        private SandcastleBuilder.Utils.Controls.StatusBarTextProvider sbMessage;
+        private SandcastleBuilder.Gui.StatusBarTextProvider sbMessage;
         private System.Windows.Forms.LinkLabel lnkEWoodruffUrl;
         private System.Windows.Forms.LinkLabel lnkProjectUrl;
         private System.Windows.Forms.Label lblCopyright;

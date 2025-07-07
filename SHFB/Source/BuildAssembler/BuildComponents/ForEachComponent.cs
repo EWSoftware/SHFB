@@ -45,7 +45,7 @@ namespace Sandcastle.Tools.BuildComponents
 
         private XPathExpression xPath;
 
-        private readonly Dictionary<string, string> contextNamespaces = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> contextNamespaces = [];
         private IEnumerable<BuildComponentCore> components;
 
         #endregion
@@ -93,25 +93,23 @@ namespace Sandcastle.Tools.BuildComponents
                     contextNode.GetAttribute("name", String.Empty);
 
             // Load the expression format
-            XPathNavigator variableNode = configuration.SelectSingleNode("variable");
-
-            if(variableNode == null)
+            XPathNavigator variableNode = configuration.SelectSingleNode("variable") ??
                 throw new ArgumentException("When instantiating a ForEach component, you must " +
                     "specify a variable using the <variable> element.", nameof(configuration));
 
             string xpathFormat = variableNode.GetAttribute("expression", String.Empty);
 
             if(String.IsNullOrWhiteSpace(xpathFormat))
+            {
                 throw new ArgumentException("When instantiating a ForEach component, you must " +
                     "specify a variable expression using the expression attribute", nameof(configuration));
+            }
 
             xPath = XPathExpression.Compile(xpathFormat);
 
             // Load the subcomponents
             WriteMessage(MessageLevel.Info, "Loading subcomponents.");
-            XPathNavigator componentsNode = configuration.SelectSingleNode("components");
-
-            if(componentsNode == null)
+            XPathNavigator componentsNode = configuration.SelectSingleNode("components") ??
                 throw new ArgumentException("When instantiating a ForEach component, you must " +
                     "specify subcomponents using the <components> element.", nameof(configuration));
 
@@ -127,7 +125,7 @@ namespace Sandcastle.Tools.BuildComponents
                 throw new ArgumentNullException(nameof(document));
 
             // Set the context
-            CustomContext context = new CustomContext(contextNamespaces);
+            CustomContext context = new(contextNamespaces);
             context["key"] = key;
 
             // Evaluate the condition

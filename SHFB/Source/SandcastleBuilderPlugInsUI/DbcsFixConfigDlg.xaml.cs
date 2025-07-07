@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DbcsFixConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/05/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a form that is used to configure the settings for the DBCS Fix plug-in
 //
@@ -20,7 +20,7 @@
 //                  scaling support on 4K displays.
 //===============================================================================================================
 
-// Ignore Spelling: exe
+// Ignore Spelling: Dbcs exe
 
 using System;
 using System.IO;
@@ -28,10 +28,10 @@ using System.Windows;
 using System.Xml.Linq;
 
 using Sandcastle.Core;
-using Sandcastle.Platform.Windows;
+using Sandcastle.Core.PlugIn;
+using Sandcastle.Core.Project;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
+using Sandcastle.Platform.Windows;
 
 namespace SandcastleBuilder.PlugIns.UI
 {
@@ -50,7 +50,7 @@ namespace SandcastleBuilder.PlugIns.UI
         public sealed class Factory : IPlugInConfigurationEditor
         {
             /// <inheritdoc />
-            public bool EditConfiguration(SandcastleProject project, XElement configuration)
+            public bool EditConfiguration(ISandcastleProject project, XElement configuration)
             {
                 var dlg = new DbcsFixConfigDlg(configuration);
 
@@ -126,17 +126,16 @@ namespace SandcastleBuilder.PlugIns.UI
         /// <param name="e">The event arguments</param>
         private void btnSelectLocation_Click(object sender, RoutedEventArgs e)
         {
-            using(var dlg = new System.Windows.Forms.OpenFileDialog())
-            {
-                dlg.Title = "Select the Steel Bytes AppLocale Executable";
-                dlg.Filter = "Executable files (*.exe)|*.exe|All Files (*.*)|*.*";
-                dlg.InitialDirectory = Directory.GetCurrentDirectory();
-                dlg.DefaultExt = "exe";
+            using var dlg = new System.Windows.Forms.OpenFileDialog();
+            
+            dlg.Title = "Select the Steel Bytes AppLocale Executable";
+            dlg.Filter = "Executable files (*.exe)|*.exe|All Files (*.*)|*.*";
+            dlg.InitialDirectory = Directory.GetCurrentDirectory();
+            dlg.DefaultExt = "exe";
 
-                // If one is selected, use that file
-                if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    txtSBAppLocalePath.Text = dlg.FileName;
-            }
+            // If one is selected, use that file
+            if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                txtSBAppLocalePath.Text = dlg.FileName;
         }
 
         /// <summary>

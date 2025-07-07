@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSet.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/30/2022
-// Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to contain information used to obtain reflection data and comments for a
 // specific set of assemblies.
@@ -189,9 +189,6 @@ namespace Sandcastle.Core.Reflection
         #region Private data members
         //=====================================================================
 
-        private string platform, title, notes;
-        private Version version;
-
         private readonly BindingList<AssemblyLocation> assemblyLocations;
         private readonly BindingList<StringWrapper> ignoredNamespaces, ignoredUnresolved;
         private readonly BindingList<BindingRedirection> bindingRedirections;
@@ -211,12 +208,12 @@ namespace Sandcastle.Core.Reflection
         /// </summary>
         public string Platform
         {
-            get => platform;
+            get;
             set
             {
-                if(platform != value)
+                if(field != value)
                 {
-                    platform = value;
+                    field = value;
                     this.OnPropertyChanged();
                 }
             }
@@ -227,12 +224,12 @@ namespace Sandcastle.Core.Reflection
         /// </summary>
         public Version Version
         {
-            get => version;
+            get;
             set
             {
-                if(version != value)
+                if(field != value)
                 {
-                    version = value;
+                    field = value;
                     this.OnPropertyChanged();
                 }
             }
@@ -243,12 +240,12 @@ namespace Sandcastle.Core.Reflection
         /// </summary>
         public string Title
         {
-            get => title;
+            get;
             set
             {
-                if(title != value)
+                if(field != value)
                 {
-                    title = value;
+                    field = value;
                     this.OnPropertyChanged();
                 }
             }
@@ -259,22 +256,16 @@ namespace Sandcastle.Core.Reflection
         /// </summary>
         public string Notes
         {
-            get => notes;
+            get;
             set
             {
-                if(notes != value)
+                if(field != value)
                 {
-                    notes = value;
+                    field = value;
                     this.OnPropertyChanged();
                 }
             }
         }
-
-        /// <summary>
-        /// This is used to get or set whether or not all <c>System</c> types are redirected to other assemblies
-        /// </summary>
-        [Obsolete("This property is no longer used and will be removed in a future version")]
-        public bool AllSystemTypesRedirected { get; set; }
 
         /// <summary>
         /// This read-only property is used to determine if this entry represents a core framework
@@ -360,24 +351,24 @@ namespace Sandcastle.Core.Reflection
         /// </summary>
         public ReflectionDataSet()
         {
-            platform = PlatformType.DotNetFramework;
-            title = "Custom reflection data";
-            version = new Version();
+            this.Platform = PlatformType.DotNetFramework;
+            this.Title = "Custom reflection data";
+            this.Version = new Version();
 
-            assemblyLocations = new BindingList<AssemblyLocation>();
+            assemblyLocations = [];
             assemblyLocations.ListChanged += (s, e) =>
             {
                 this.OnPropertyChanged(nameof(AssemblyLocations));
                 this.OnPropertyChanged(nameof(IsCoreFramework));
             };
 
-            ignoredNamespaces = new BindingList<StringWrapper>();
+            ignoredNamespaces = [];
             ignoredNamespaces.ListChanged += (s, e) => this.OnPropertyChanged(nameof(IgnoredNamespaces));
 
-            ignoredUnresolved = new BindingList<StringWrapper>();
+            ignoredUnresolved = [];
             ignoredUnresolved.ListChanged += (s, e) => this.OnPropertyChanged(nameof(IgnoredUnresolved));
 
-            bindingRedirections = new BindingList<BindingRedirection>();
+            bindingRedirections = [];
             bindingRedirections.ListChanged += (s, e) => this.OnPropertyChanged(nameof(BindingRedirections));
         }
 
@@ -392,21 +383,23 @@ namespace Sandcastle.Core.Reflection
             XDocument doc = XDocument.Load(filename);
             XElement dataSet = doc.Root;
 
-            platform = dataSet.Attribute("Platform").Value;
+            this.Platform = dataSet.Attribute("Platform").Value;
 
-            if(dataSet.Attribute("Version") == null || !Version.TryParse(dataSet.Attribute("Version").Value, out version))
-                version = new Version();
+            if(dataSet.Attribute("Version") == null || !Version.TryParse(dataSet.Attribute("Version").Value, out Version v))
+                this.Version = new Version();
+            else
+                this.Version = v;
 
             // This is a hack but the old cross-platform file should be going away.  We need it to look like
             // .NETStandard 2.0 so change the version.
-            if(platform == PlatformType.DotNetStandard && version.Major == 1 &&
+            if(this.Platform == PlatformType.DotNetStandard && this.Version.Major == 1 &&
               filename.EndsWith("CrossPlatform.reflection", StringComparison.OrdinalIgnoreCase))
             {
-                version = new Version(2, 0);
+                this.Version = new Version(2, 0);
             }
 
-            title = dataSet.Attribute("Title").Value;
-            notes = (string)dataSet.Element("Notes");
+            this.Title = dataSet.Attribute("Title").Value;
+            this.Notes = (string)dataSet.Element("Notes");
 
             foreach(var location in dataSet.Descendants("Location"))
                 assemblyLocations.Add(AssemblyLocation.FromXml(location));
@@ -451,28 +444,29 @@ namespace Sandcastle.Core.Reflection
             if(String.IsNullOrWhiteSpace(this.Filename))
                 throw new InvalidOperationException("A filename has not been specified");
 
-            XDocument dataSet = new XDocument(
+            XDocument dataSet = new(
                 new XElement("ReflectionDataSet",
-                    new XAttribute("Platform", platform),
-                    (version == null || (version.Major == 0 && version.Minor < 1 && version.Build < 1 &&
-                        version.Revision < 1)) ? null : new XAttribute("Version", version),
-                    new XAttribute("Title", (title ?? "Unknown")),
-                    String.IsNullOrWhiteSpace(notes) ? null : new XElement("Notes", notes)
+                    new XAttribute("Platform", this.Platform),
+                    (this.Version == null || (this.Version.Major == 0 && this.Version.Minor < 1 &&
+                        this.Version.Build < 1 && this.Version.Revision < 1)) ? null :
+                        new XAttribute("Version", this.Version),
+                    new XAttribute("Title", this.Title ?? "Unknown"),
+                    String.IsNullOrWhiteSpace(this.Notes) ? null : new XElement("Notes", this.Notes)
             ));
 
-            XElement locations = new XElement("AssemblyLocations");
+            XElement locations = new("AssemblyLocations");
             locations.Add(assemblyLocations.Select(l => l.ToXml()));
             dataSet.Root.Add(locations);
 
-            XElement ignoredNS = new XElement("IgnoredNamespaces");
+            XElement ignoredNS = new("IgnoredNamespaces");
             ignoredNS.Add(ignoredNamespaces.Select(ns => new XElement("Namespace", ns.Value)));
             dataSet.Root.Add(ignoredNS);
 
-            XElement unresolved = new XElement("IgnoredUnresolved");
+            XElement unresolved = new("IgnoredUnresolved");
             unresolved.Add(ignoredUnresolved.Select(ign => new XElement("Unresolved", ign.Value)));
             dataSet.Root.Add(unresolved);
 
-            XElement br = new XElement("BindingRedirections");
+            XElement br = new("BindingRedirections");
             br.Add(bindingRedirections.Select(b => b.ToXml()));
             dataSet.Root.Add(br);
 
@@ -531,7 +525,7 @@ namespace Sandcastle.Core.Reflection
 
             foreach(var l in assemblyLocations)
             {
-                if(platform != PlatformType.DotNetPortable || version.Major != 4 || version.Minor > 0)
+                if(this.Platform != PlatformType.DotNetPortable || this.Version.Major != 4 || this.Version.Minor > 0)
                 {
                     // If localized, the comments files will be in a sub-folder based on the language
                     path = null;
@@ -555,7 +549,7 @@ namespace Sandcastle.Core.Reflection
 
                     // On some systems, the .NET 4.6.2 XML comments files can appear in a generic v4.X folder
                     // outside of the standard assembly folder.  If they're not in the usual place look there.
-                    if(path == null && platform == PlatformType.DotNetFramework)
+                    if(path == null && this.Platform == PlatformType.DotNetFramework)
                     {
                         string externalPath = String.Format(CultureInfo.InvariantCulture, "{0}\\v{1}.X",
                             Path.GetDirectoryName(l.Path), this.Version.Major);
@@ -601,14 +595,16 @@ namespace Sandcastle.Core.Reflection
                         // files in it for the assemblies.
                         if(commentGroups.Any())
                         {
-                            HashSet<string> commentsFiles = new HashSet<string>(commentGroups.First().Select(
-                                f => Path.GetFileName(f)));
+                            HashSet<string> commentsFiles = [.. commentGroups.First().Select(
+                                f => Path.GetFileName(f))];
 
                             yield return Path.Combine(commentGroups.First().Key, "*.xml");
 
                             foreach(var g in commentGroups)
+                            {
                                 foreach(var f in g.Where(f => !commentsFiles.Contains(Path.GetFileName(f))))
                                     yield return Path.Combine(g.Key, Path.GetFileName(f));
+                            }
                         }
                     }
                 }
@@ -734,22 +730,23 @@ namespace Sandcastle.Core.Reflection
         public IEnumerable<string> GetReferencedNamespaces(CultureInfo language,
           IEnumerable<string> searchNamespaces, IEnumerable<string> validNamespaces)
         {
-            HashSet<string> seenNamespaces = new HashSet<string>();
+            HashSet<string> seenNamespaces = [];
             string ns;
 
             foreach(string path in this.CommentsFileLocations(language))
+            {
                 foreach(string file in Directory.EnumerateFiles(Path.GetDirectoryName(path),
                   Path.GetFileName(path)).Where(f => searchNamespaces.Contains(Path.GetFileNameWithoutExtension(f))))
                 {
                     // Find all comments elements with a reference.  XML comments files may be ill-formed so
                     // ignore any elements without a cref attribute.
-                    var crefs = ComponentUtilities.XmlStreamAxis(file, new[] { "event", "exception",
-                        "inheritdoc", "permission", "see", "seealso" }).Select(
+                    var crefs = ComponentUtilities.XmlStreamAxis(file, [ "event", "exception",
+                        "inheritdoc", "permission", "see", "seealso" ]).Select(
                         el => (string)el.Attribute("cref")).Where(c => c != null);
 
                     foreach(string refId in crefs)
                     {
-                        if(refId.Length > 2 && refId[1] == ':' && refId.IndexOfAny(new[] { '.', '(' }) != -1)
+                        if(refId.Length > 2 && refId[1] == ':' && refId.IndexOfAny(['.', '(']) != -1)
                         {
                             ns = refId.Trim();
 
@@ -779,6 +776,7 @@ namespace Sandcastle.Core.Reflection
                         }
                     }
                 }
+            }
         }
         #endregion
     }

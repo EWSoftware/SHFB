@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/20/2024
-// Note    : Copyright 2006-2024, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to search for <code> XML comment tags and colorize the code
 // within them.  It can also include code from an external file or a region within the file.
@@ -252,13 +252,13 @@ namespace Sandcastle.Tools.BuildComponents
         // Uh, yeah.  Don't ask me to explain this.  Just accept that it works (I hope :)).  It uses balancing
         // groups to extract #region to #endregion accounting for any nested regions within it.  If you want to
         // know all of the mind-bending details, Google for the terms: regex "balancing group".
-        private static readonly Regex reMatchRegion = new Regex(
+        private static readonly Regex reMatchRegion = new(
             @"\#(pragma\s+)?region\s+(.*?(((?<Open>\#(pragma\s+)?region\s+).*?)+" +
             @"((?<Close-Open>\#(pragma\s+)?end\s?region).*?)+)*(?(Open)(?!)))" +
             @"\#(pragma\s+)?end\s?region", RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         // This is used to remove unwanted region markers from imported code
-        private static readonly Regex reRemoveRegionMarkers = new Regex(@"^.*?#(pragma\s+)?(region|end\s?region).*?$",
+        private static readonly Regex reRemoveRegionMarkers = new(@"^.*?#(pragma\s+)?(region|end\s?region).*?$",
             RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
         // XPath queries
@@ -293,8 +293,8 @@ namespace Sandcastle.Tools.BuildComponents
             bool allowMissingSource = false, useDefaultTitle = false;
             int defaultTabSize = 8;
 
-            outputPaths = new List<string>();
-            topicCodeBlocks = new Dictionary<string, Dictionary<string, XmlNode>>();
+            outputPaths = [];
+            topicCodeBlocks = [];
 
             Assembly asm = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
@@ -572,7 +572,8 @@ namespace Sandcastle.Tools.BuildComponents
             XPathNavigator[] codeList;
             XPathExpression nestedCode;
             XmlAttribute attr;
-            XmlNode code, preNode, refLink;
+            XmlNode code, preNode;
+            XmlElement refLink;
 
             string language, codeBlock;
             bool nbrLines, outline, seeTags;
@@ -852,18 +853,17 @@ namespace Sandcastle.Tools.BuildComponents
         /// <returns>The HTML encoded block extracted from the file.</returns>
         private string LoadCodeBlock(string key, XmlNode code, MessageLevel msgLevel)
         {
-            XmlNode srcFile;
             Regex reFindRegion;
             Match find, m;
             bool removeRegions = removeRegionMarkers;
             string sourceFile = null, codeBlock = null;
 
-            srcFile = code.Attributes["source"];
+            XmlAttribute srcFile = code.Attributes["source"];
 
             if(srcFile != null)
                 sourceFile = srcFile.Value;
 
-            if(String.IsNullOrEmpty(sourceFile))
+            if(String.IsNullOrWhiteSpace(sourceFile))
             {
                 this.WriteMessage(key, msgLevel, "A nested <code> tag must contain a \"source\" attribute " +
                     "that specifies the source file to import");
@@ -877,10 +877,8 @@ namespace Sandcastle.Tools.BuildComponents
                 if(!Path.IsPathRooted(sourceFile))
                     sourceFile = Path.GetFullPath(Path.Combine(basePath, sourceFile));
 
-                using(StreamReader sr = new StreamReader(sourceFile))
-                {
-                    codeBlock = sr.ReadToEnd();
-                }
+                using StreamReader sr = new(sourceFile);
+                codeBlock = sr.ReadToEnd();
             }
             catch(ArgumentException argEx)
             {
@@ -994,7 +992,7 @@ namespace Sandcastle.Tools.BuildComponents
             XmlAttribute attr;
 
             // Don't bother if not a transform event, not in our group, or if the topic contained no code blocks
-            if(!(e is AppliedChangesEventArgs ac) || ac.GroupId != this.GroupId ||
+            if(e is not AppliedChangesEventArgs ac || ac.GroupId != this.GroupId ||
               ac.ComponentId != "Transform Component" ||
               !topicCodeBlocks.TryGetValue(ac.Key, out Dictionary<string, XmlNode> colorizedCodeBlocks))
             {

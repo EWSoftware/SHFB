@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : BuildPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 08/09/2022
-// Note    : Copyright 2017-2022, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2017-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Build category properties
 //
@@ -29,11 +29,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using Sandcastle.Core;
+using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 using Sandcastle.Core.PresentationStyle;
+using Sandcastle.Core.Project;
 using Sandcastle.Core.Reflection;
-
-using SandcastleBuilder.Utils;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {
@@ -174,14 +174,14 @@ namespace SandcastleBuilder.WPF.PropertyPages
         {
             InitializeComponent();
 
-            allHelpFileFormats = new List<HelpFileFormatItem>
-            {
+            allHelpFileFormats =
+            [
                 new HelpFileFormatItem { Format = HelpFileFormats.HtmlHelp1, Description = "HTML Help 1 (chm)" },
                 new HelpFileFormatItem { Format = HelpFileFormats.MSHelpViewer, Description = "MS Help Viewer (mshc)" },
                 new HelpFileFormatItem { Format = HelpFileFormats.OpenXml, Description = "Open XML (docx)" },
                 new HelpFileFormatItem { Format = HelpFileFormats.Markdown, Description = "Markdown (md)" },
                 new HelpFileFormatItem { Format = HelpFileFormats.Website, Description = "Website (HTML/ASP.NET)" }
-            };
+            ];
 
             cboBuildAssemblerVerbosity.ItemsSource = (new Dictionary<string, string> {
                 { BuildAssemblerVerbosity.AllMessages.ToString(), "All Messages" },
@@ -212,7 +212,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// This is used to set the current project for the build log file path
         /// </summary>
         /// <param name="project">The current Sandcastle project</param>
-        public void SetCurrentProject(SandcastleProject project)
+        public void SetCurrentProject(ISandcastleProject project)
         {
             fpBuildLogFile.DataContext = new FilePath(project);
         }
@@ -221,7 +221,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// Try to load information about all available framework reflection data sets
         /// </summary>
         /// <param name="currentProject">The current Sandcastle project</param>
-        public void LoadReflectionDataSetInfo(SandcastleProject currentProject)
+        public void LoadReflectionDataSetInfo(ISandcastleProject currentProject)
         {
             if(reflectionDataSets != null && currentProject != null && currentProject.Filename != lastProjectName)
                 return;
@@ -357,7 +357,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
             var styleFormats = allHelpFileFormats.Where(f => (supportedFormats & f.Format) != 0).ToList();
 
-            BuildPropertiesNeededEventArgs projectSettings = new BuildPropertiesNeededEventArgs();
+            BuildPropertiesNeededEventArgs projectSettings = new();
 
             this.BuildPropertiesNeeded?.Invoke(this, projectSettings);
 
@@ -453,7 +453,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 cboPresentationStyle.Items.Clear();
                 cboPresentationStyle.Items.Add("Unable to load presentation styles");
                 cboPresentationStyle.SelectedIndex = 0;
-                imgPresentationStyleInfo.ToolTip =componentCache.LastError.ToString();
+                imgPresentationStyleInfo.ToolTip = componentCache.LastError.ToString();
             }
             catch(Exception ex)
             {
@@ -468,11 +468,11 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private void componentCache_ComponentContainerLoaded(object sender, EventArgs e)
         {
-            BuildPropertiesNeededEventArgs projectSettings = new BuildPropertiesNeededEventArgs();
+            BuildPropertiesNeededEventArgs projectSettings = new();
 
             this.BuildPropertiesNeeded?.Invoke(this, projectSettings);
 
-            HashSet<string> generatorIds = new HashSet<string>(), presentationStyleIds = new HashSet<string>();
+            HashSet<string> generatorIds = [], presentationStyleIds = [];
 
             try
             {
@@ -491,8 +491,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 if(lbSyntaxFilters.Items.Count != 0)
                     lbSyntaxFilters.Items.Clear();
 
-                syntaxGenerators = new List<ISyntaxGeneratorMetadata>();
-                presentationStyles = new List<IPresentationStyleMetadata>();
+                syntaxGenerators = [];
+                presentationStyles = [];
 
                 var generators = componentCache.ComponentContainer.GetExports<ISyntaxGeneratorFactory,
                     ISyntaxGeneratorMetadata>().Select(g => g.Metadata).ToList();
@@ -501,29 +501,33 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 // BuildComponentManger.GetComponentContainer() for the folder search precedence.  Only the
                 // first component for a unique ID will be used.
                 foreach(var generator in generators)
+                {
                     if(!generatorIds.Contains(generator.Id))
                     {
                         syntaxGenerators.Add(generator);
                         generatorIds.Add(generator.Id);
                     }
+                }
 
                 var styles = componentCache.ComponentContainer.GetExports<PresentationStyleSettings,
                     IPresentationStyleMetadata>().Select(g => g.Metadata).ToList();
 
                 // As above for duplicates
                 foreach(var style in styles)
+                {
                     if(!presentationStyleIds.Contains(style.Id))
                     {
                         presentationStyles.Add(style);
                         presentationStyleIds.Add(style.Id);
                     }
+                }
 
-                allSyntaxFilters = new List<SyntaxFilterItem>();
+                allSyntaxFilters = [];
 
                 foreach(var filter in syntaxGenerators.OrderBy(f => f.Id))
                     allSyntaxFilters.Add(new SyntaxFilterItem { Id = filter.Id });
 
-                lbSyntaxFilters.ItemsSource = allSyntaxFilters;    
+                lbSyntaxFilters.ItemsSource = allSyntaxFilters;
 
                 cboPresentationStyle.ItemsSource = presentationStyles.OrderBy(s => s.IsDeprecated ? 1 : 0).ThenBy(
                     s => s.Id).ToList();
@@ -532,12 +536,16 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 if(lbSyntaxFilters.Items.Count != 0)
                     lbSyntaxFilters.SelectedIndex = 0;
                 else
+                {
                     MessageBox.Show("No valid syntax generators found", Constants.AppName, MessageBoxButton.OK,
                         MessageBoxImage.Information);
+                }
 
                 if(cboPresentationStyle.Items.Count == 0)
+                {
                     MessageBox.Show("No valid presentation styles found", Constants.AppName, MessageBoxButton.OK,
                         MessageBoxImage.Information);
+                }
 
                 if(projectSettings.ProjectLoaded)
                 {
@@ -558,10 +566,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                         foreach(string filter in ComponentUtilities.SyntaxFiltersFrom(syntaxGenerators,
                           projectSettings.SyntaxFilters).Select(f => f.Id))
                         {
-                            var match = allSyntaxFilters.FirstOrDefault(f => f.Id == filter);
-
-                            if(match != null)
-                                match.IsSelected = true;
+                            allSyntaxFilters.FirstOrDefault(f => f.Id == filter)?.IsSelected = true;
                         }
                     }
                 }

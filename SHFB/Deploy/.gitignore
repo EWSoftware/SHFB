@@ -1,6 +1,6 @@
 # Ignore these files and folders in this directory
 /Data/**/*.xml
 Components/*
-net472/*
-net8.0/*
+net48/*
+net9.0/*
 Tools/*

@@ -3,11 +3,9 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<!-- NOTE: This is an interactive utility so we'll only target the .NET Framework. -->
-		<TargetFramework>net472</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 		<UseWPF>True</UseWPF>
 		<UseWindowsForms>True</UseWindowsForms>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
 		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
@@ -16,8 +14,6 @@
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
 		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
 		<ApplicationIcon>Resources\ReflectionData.ico</ApplicationIcon>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -31,7 +27,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
+		<Compile Include="..\SandcastleBuilderMSBuild\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

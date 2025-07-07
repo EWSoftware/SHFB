@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : NodeData.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to hold tree view node data for the project explorer
 //
@@ -17,7 +17,7 @@
 // 07/28/2008  EFW  Created the code
 //===============================================================================================================
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core.Project;
 
 namespace SandcastleBuilder.Gui.ContentEditors
 {

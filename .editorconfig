@@ -125,7 +125,9 @@ tab_width = 2
 indent_size = 4
 tab_width = 4
 
+# Using directive options
 dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = true
 
 # Naming rules
 dotnet_naming_rule.interface_should_be_begins_with_i.severity = suggestion
@@ -207,30 +209,54 @@ dotnet_diagnostic.IDE0010.severity = none
 dotnet_diagnostic.IDE1006.severity = none
 
 # These are disabled as we're still targeting .NET Framework as well and I don't want a lot of conditional code
-# to suppress these.
+# to suppress these or I'm not ready to use them just yet.
 # IDE0056: Use index operator
 dotnet_diagnostic.IDE0056.severity = none
 
 # IDE0057: Use range operator
 dotnet_diagnostic.IDE0057.severity = none
 
-# IDE0063: Use simple 'using' statement
-dotnet_diagnostic.IDE0063.severity = none
-
 # IDE0066: Convert switch statement to expression
 dotnet_diagnostic.IDE0066.severity = none
 
-# IDE0074: Use compound assignment
-dotnet_diagnostic.IDE0074.severity = none
+# IDE0330: Use System.Threading.Lock
+dotnet_diagnostic.IDE0330.severity = none
 
-# IDE0090: Use 'new(...)'
-dotnet_diagnostic.IDE0090.severity = none
+# CA1307: Method has an overload with StringComparison
+dotnet_diagnostic.CA1307.severity = none
+
+# CA1510: Use ArgumentNullException throw helper
+dotnet_diagnostic.CA1510.severity = none
 
 # CA1845: Use span-based 'string.Concat'
 dotnet_diagnostic.CA1845.severity = none
 
 # CA1846: Prefer 'AsSpan' over 'Substring'
 dotnet_diagnostic.CA1846.severity = none
+
+# CA1863: Use 'CompositeFormat'
+dotnet_diagnostic.CA1863.severity = none
+
+# CA1864: Use 'TryAdd'
+dotnet_diagnostic.CA1864.severity = none
+
+# CA1865: Use String.Method(char) instead of String.Method(string)
+dotnet_diagnostic.CA1865.severity = none
+
+# CA1870: Use a cached 'SearchValues' instance
+dotnet_diagnostic.CA1870.severity = none
+
+# CA2249: Consider using 'string.Contains' instead of 'string.IndexOf'
+dotnet_diagnostic.CA2249.severity = none
+
+# CA2263: Prefer generic overload when type is known
+dotnet_diagnostic.CA2263.severity = none
+
+# SYSLIB1045: Convert to 'GeneratedRegexAttribute'.
+dotnet_diagnostic.SYSLIB1045.severity = none
+
+# SYSLIB1054: Use 'LibraryImportAttribute' instead of 'DllImportAttribute' to generate P/Invoke marshalling code at compile time
+dotnet_diagnostic.SYSLIB1054.severity = none
 
 [*.cs]
 # CSharp code style settings

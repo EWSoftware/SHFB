@@ -19,6 +19,8 @@
 // 09/08/2022 - EFW - Added support for init only setters
 // 02/23/2025 - EFW - Added support for required modifier
 
+// Ignore Spelling: Conv unmappable udt Constructable
+
 using System;
 using System.Globalization;
 using System.Xml.XPath;

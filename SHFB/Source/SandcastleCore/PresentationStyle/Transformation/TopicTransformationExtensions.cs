@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationExtensions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/02/2024
-// Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains various extension and utility methods for presentation styles
 //
@@ -36,7 +36,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         #region Private data members
         //=====================================================================
 
-        private static readonly char[] UniqueIdChars = new char[32] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6' };
+        private static readonly char[] UniqueIdChars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+            'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6'];
 
         #endregion
 
@@ -208,7 +209,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
             if(node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            StringBuilder id = new StringBuilder("ID", 10);
+            StringBuilder id = new("ID", 10);
 
             while(node.Parent != null)
             {

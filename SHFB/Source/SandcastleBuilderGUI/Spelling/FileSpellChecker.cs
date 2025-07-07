@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : FileSpellChecker.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/20/2021
-// Note    : Copyright 2013-2021, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2013-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to spell check files in the SHFB project
 //
@@ -42,7 +42,7 @@ namespace SandcastleBuilder.Gui.Spelling
         private const string wordBreakChars = ",/<>?;:\"[]\\{}|-=+~!#$%^&*() \t\r\n";
 
         // Regular expressions used to find thinks that look like XML elements
-        private static readonly Regex reXml = new Regex(@"<[A-Za-z/]+?.*?>");
+        private static readonly Regex reXml = new(@"<[A-Za-z/]+?.*?>");
 
         private readonly GlobalDictionary dictionary;
         #endregion
@@ -206,12 +206,12 @@ namespace SandcastleBuilder.Gui.Spelling
         {
             SpellingEventArgs se = null;
             List<Match> xmlTags = null;
-            TextLocation priorWord = new TextLocation();
+            TextLocation priorWord = new();
             string currentWord;
             int textIdx;
 
             // Signal the start and allow it to be canceled
-            CancelEventArgs ce = new CancelEventArgs();
+            CancelEventArgs ce = new();
             this.OnSpellCheckTextStarting(ce);
 
             if(ce.Cancel)
@@ -222,7 +222,7 @@ namespace SandcastleBuilder.Gui.Spelling
 
             // Note the location of all XML elements if needed
             if(SpellCheckerConfiguration.IgnoreXmlElementsInText)
-                xmlTags = reXml.Matches(text).OfType<Match>().ToList();
+                xmlTags = [.. reXml.Matches(text).OfType<Match>()];
 
             // Spell check each word in the given text
             foreach(var word in GetWordsInText(text))
@@ -232,7 +232,9 @@ namespace SandcastleBuilder.Gui.Spelling
 
                 if(!IsProbablyARealWord(currentWord) || (xmlTags != null && xmlTags.Count != 0 &&
                   xmlTags.Any(match => textIdx >= match.Index && textIdx <= match.Index + match.Length - 1)))
+                {
                     continue;
+                }
 
                 if(!dictionary.ShouldIgnoreWord(currentWord) && !dictionary.IsSpelledCorrectly(currentWord))
                 {
@@ -256,6 +258,7 @@ namespace SandcastleBuilder.Gui.Spelling
                         break;
                 }
                 else
+                {
                     if(priorWord.Length != 0 && text.Substring(priorWord.Start, priorWord.Length).Equals(currentWord,
                       StringComparison.OrdinalIgnoreCase) &&
                       IsAllWhitespace(text, priorWord.Start + priorWord.Length, word.Start - 1))
@@ -266,6 +269,7 @@ namespace SandcastleBuilder.Gui.Spelling
                         if(se.Cancel)
                             break;
                     }
+                }
 
                 priorWord = word;
             }
@@ -289,7 +293,6 @@ namespace SandcastleBuilder.Gui.Spelling
         {
             if(String.IsNullOrWhiteSpace(text))
                 yield break;
-
 
             for(int i = 0, end; i < text.Length; i++)
             {
@@ -457,7 +460,7 @@ namespace SandcastleBuilder.Gui.Spelling
             word = word.Trim();
 
             // Check for a period or an at-sign in the word (things that look like filenames and e-mail addresses)
-            if(word.IndexOfAny(new[] { '.', '@' }) >= 0)
+            if(word.IndexOfAny(['.', '@']) >= 0)
                 return false;
 
             // Check for underscores and digits
@@ -501,7 +504,7 @@ namespace SandcastleBuilder.Gui.Spelling
         public bool SpellCheckPlainTextFile(string filename)
         {
             // Signal the start and allow it to be canceled
-            CancelEventArgs ce = new CancelEventArgs();
+            CancelEventArgs ce = new();
             this.OnSpellCheckFileStarting(ce);
 
             if(ce.Cancel)
@@ -526,7 +529,7 @@ namespace SandcastleBuilder.Gui.Spelling
         public bool SpellCheckXmlFile(string filename)
         {
             // Signal the start and allow it to be canceled
-            CancelEventArgs ce = new CancelEventArgs();
+            CancelEventArgs ce = new();
             this.OnSpellCheckFileStarting(ce);
 
             if(ce.Cancel)
@@ -535,7 +538,7 @@ namespace SandcastleBuilder.Gui.Spelling
                 return false;
             }
 
-            XmlReaderSettings rs = new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore, CloseInput = true };
+            XmlReaderSettings rs = new() { DtdProcessing = DtdProcessing.Ignore, CloseInput = true };
 
             using(var reader = XmlReader.Create(filename, rs))
             {
@@ -558,7 +561,7 @@ namespace SandcastleBuilder.Gui.Spelling
         public bool SpellCheckXmlReader(XmlReader reader)
         {
             IXmlLineInfo lineInfo = (IXmlLineInfo)reader;
-            TextLocation location = new TextLocation();
+            TextLocation location = new();
             bool wasCancelled = false;
             int idx;
 

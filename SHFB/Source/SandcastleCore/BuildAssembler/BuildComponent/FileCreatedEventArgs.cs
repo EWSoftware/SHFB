@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : FileCreatedEventArgs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/18/2022
-// Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains an event arguments class used by build components to indicate that it has saved a file of
 // some sort.
@@ -21,7 +21,7 @@
 using System;
 using System.IO;
 
-namespace Sandcastle.Tools.BuildComponents
+namespace Sandcastle.Core.BuildAssembler.BuildComponent
 {
     /// <summary>
     /// This event arguments class is used by build components to indicate that they have saved a file of some

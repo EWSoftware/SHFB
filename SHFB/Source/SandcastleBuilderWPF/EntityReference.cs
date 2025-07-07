@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReference.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the entity reference class used by the Entity References control
 //
@@ -30,13 +30,6 @@ namespace SandcastleBuilder.WPF
     /// </summary>
     internal class EntityReference : INotifyPropertyChanged
     {
-        #region Private data members
-        //=====================================================================
-
-        private bool isExpanded, isSelected;
-
-        #endregion
-
         #region Properties
         //=====================================================================
 
@@ -70,12 +63,12 @@ namespace SandcastleBuilder.WPF
         /// </summary>
         public bool IsSelected
         {
-            get => isSelected;
+            get => field;
             set
             {
-                if(value != isSelected)
+                if(field != value)
                 {
-                    isSelected = value;
+                    field = value;
                     this.OnPropertyChanged();
                 }
             }
@@ -86,12 +79,12 @@ namespace SandcastleBuilder.WPF
         /// </summary>
         public bool IsExpanded
         {
-            get => isExpanded && this.SubEntities.Count != 0;
+            get => field && this.SubEntities.Count != 0;
             set
             {
-                if(value != isExpanded)
+                if(field != value)
                 {
-                    isExpanded = value;
+                    field = value;
                     this.OnPropertyChanged();
                 }
             }
@@ -100,20 +93,8 @@ namespace SandcastleBuilder.WPF
         /// <summary>
         /// A list of sub-entities for this entity (only used for file entities)
         /// </summary>
-        public IList<EntityReference> SubEntities { get; }
+        public IList<EntityReference> SubEntities { get; } = [];
 
-        #endregion
-
-        #region Constructor
-        //=====================================================================
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public EntityReference()
-        {
-            this.SubEntities = new List<EntityReference>();
-        }
         #endregion
 
         #region INotifyPropertyChanged Members
@@ -145,12 +126,14 @@ namespace SandcastleBuilder.WPF
         /// <returns>An enumerable list of all matches</returns>
         public IEnumerable<EntityReference> Find(string findText)
         {
-            bool found = (!String.IsNullOrEmpty(this.Label) && this.Label.IndexOf(findText,
-              StringComparison.CurrentCultureIgnoreCase) != -1);
+            bool found = !String.IsNullOrWhiteSpace(this.Label) && this.Label.IndexOf(findText,
+              StringComparison.CurrentCultureIgnoreCase) != -1;
 
             if(!found)
-                found = (!String.IsNullOrEmpty(this.Id) && this.Id.IndexOf(findText,
-                    StringComparison.CurrentCultureIgnoreCase) != -1);
+            {
+                found = !String.IsNullOrWhiteSpace(this.Id) && this.Id.IndexOf(findText,
+                    StringComparison.CurrentCultureIgnoreCase) != -1;
+            }
 
             if(found)
                 yield return this;

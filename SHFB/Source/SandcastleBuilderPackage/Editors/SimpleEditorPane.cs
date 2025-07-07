@@ -2,9 +2,9 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SimpleEditorPane.cs
 // Author  : Istvan Novak
-// Updated : 05/26/2021
+// Updated : 07/06/2025
 // Source  : http://learnvsxnow.codeplex.com/
-// Note    : Copyright 2008-2021, Istvan Novak, All rights reserved
+// Note    : Copyright 2008-2025, Istvan Novak, All rights reserved
 //
 // This file contains a class that implements the core functionality for an editor pane
 //
@@ -353,9 +353,7 @@ namespace SandcastleBuilder.Package.Editors
         // --------------------------------------------------------------------------------
         protected virtual int OnGetFormatList(out string ppszFormatList)
         {
-            string formatList =
-              string.Format(CultureInfo.CurrentCulture,
-              "Editor Files (*{0}){1}*{0}{1}{1}",
+            string formatList = String.Format(CultureInfo.CurrentCulture, "Editor Files (*{0}){1}*{0}{1}{1}",
               FileExtensionUsed, EndLineChar);
             ppszFormatList = formatList;
             return VSConstants.S_OK;
@@ -453,7 +451,7 @@ namespace SandcastleBuilder.Package.Editors
         {
             get
             {
-                if(!(_UIControl is ICommonCommandSupport commandSupport))
+                if(_UIControl is not ICommonCommandSupport commandSupport)
                     commandSupport = this as ICommonCommandSupport;
 
                 return commandSupport;
@@ -540,7 +538,7 @@ namespace SandcastleBuilder.Package.Editors
                 return VSConstants.E_INVALIDARG;
 
             // --- Wrap parameters into argument type instance
-            QueryStatusArgs statusArgs = new QueryStatusArgs(pguidCmdGroup)
+            QueryStatusArgs statusArgs = new(pguidCmdGroup)
             {
                 CommandCount = cCmds,
                 Commands = prgCmds,
@@ -634,7 +632,7 @@ namespace SandcastleBuilder.Package.Editors
           IntPtr pvaIn, IntPtr pvaOut)
         {
             // --- Wrap parameters into argument type instance
-            ExecArgs execArgs = new ExecArgs(pguidCmdGroup, nCmdID)
+            ExecArgs execArgs = new(pguidCmdGroup, nCmdID)
             {
                 CommandExecOpt = nCmdexecopt,
                 PvaIn = pvaIn,
@@ -649,39 +647,32 @@ namespace SandcastleBuilder.Package.Editors
                 switch(nCmdID)
                 {
                     case (uint)VSConstants.VSStd97CmdID.Copy:
-                        if(commandSupport != null)
-                            commandSupport.DoCopy();
+                        commandSupport?.DoCopy();
                         return VSConstants.S_OK;
 
                     case (uint)VSConstants.VSStd97CmdID.Cut:
-                        if(commandSupport != null)
-                            commandSupport.DoCut();
+                        commandSupport?.DoCut();
                         return VSConstants.S_OK;
 
                     case (uint)VSConstants.VSStd97CmdID.Paste:
-                        if(commandSupport != null)
-                            commandSupport.DoPaste();
+                        commandSupport?.DoPaste();
                         return VSConstants.S_OK;
 
                     case (uint)VSConstants.VSStd97CmdID.Redo:
-                        if(commandSupport != null)
-                            commandSupport.DoRedo();
+                        commandSupport?.DoRedo();
                         return VSConstants.S_OK;
 
                     case (uint)VSConstants.VSStd97CmdID.Undo:
-                        if(commandSupport != null)
-                            commandSupport.DoUndo();
+                        commandSupport?.DoUndo();
                         return VSConstants.S_OK;
 
                     case (uint)VSConstants.VSStd97CmdID.SelectAll:
-                        if(commandSupport != null)
-                            commandSupport.DoSelectAll();
+                        commandSupport?.DoSelectAll();
                         return VSConstants.S_OK;
 
                     default:
-                        return ExecuteVSStd97Command(execArgs)
-                          ? VSConstants.S_OK
-                          : (int)(Constants.OLECMDERR_E_NOTSUPPORTED);
+                        return ExecuteVSStd97Command(execArgs) ? VSConstants.S_OK :
+                            (int)(Constants.OLECMDERR_E_NOTSUPPORTED);
                 }
             }
 
@@ -1245,7 +1236,7 @@ namespace SandcastleBuilder.Package.Editors
                 IVsQueryEditQuerySave2 queryEditQuerySave = (IVsQueryEditQuerySave2)GetService(typeof(SVsQueryEditQuerySave));
 
                 // Now call the QueryEdit method to find the edit status of this file
-                string[] documents = { _FileName };
+                string[] documents = [_FileName];
 
 
                 // This function can pop up a dialog to ask the user to checkout the file.
@@ -1351,7 +1342,7 @@ namespace SandcastleBuilder.Package.Editors
                     {
                         // Get the scope for handling hot keys.  The key used here doesn't matter.
                         // We're just getting the scope to use.
-                        AccessKeyPressedEventArgs e = new AccessKeyPressedEventArgs("X");
+                        AccessKeyPressedEventArgs e = new("X");
 
                         ((UserControl)base.Content).RaiseEvent(e);
                         scope = e.Scope;

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : UserDefinedPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 04/17/2021
-// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
+// Updated : 06/21/2025
+// Note    : Copyright 2017-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the User Defined category properties
 //
@@ -27,7 +27,9 @@ using System.Windows.Controls;
 using Microsoft.Build.Evaluation;
 
 using Sandcastle.Core;
-using SandcastleBuilder.Utils;
+using Sandcastle.Core.Project;
+
+using SandcastleBuilder.MSBuild.HelpProject;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {
@@ -55,7 +57,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <summary>
         /// This returns a reference to the underlying Sandcastle project
         /// </summary>
-        public SandcastleProject Project { get; set; }
+        public ISandcastleProject Project { get; set; }
 
         #endregion
 
@@ -84,7 +86,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         {
             InitializeComponent();
 
-            userDefinedProperties = new BindingList<UserDefinedProperty>();
+            userDefinedProperties = [];
             userDefinedProperties.ListChanged += (s, e) =>
             {
                 if(!isLoading)
@@ -104,7 +106,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// editable, false if not.</returns>
         public bool CheckProjectIsEditable(bool throwOnNotEditable)
         {
-            CancelEventArgs ce = new CancelEventArgs();
+            CancelEventArgs ce = new();
 
             this.ProjectIsEditable?.Invoke(this, ce);
 
@@ -132,7 +134,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
             {
                 isLoading = true;
 
-                foreach(ProjectProperty prop in this.Project.UserDefinedProperties.OrderBy(p => p.Name))
+                foreach(ProjectProperty prop in ((SandcastleProject)this.Project).UserDefinedProjectProperties.OrderBy(p => p.Name))
                 {
                     propItem = new UserDefinedProperty(this, prop);
                     userDefinedProperties.Add(propItem);
@@ -187,7 +189,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         {
             if(this.CheckProjectIsEditable(false))
             {
-                UserDefinedProperty newProp = new UserDefinedProperty(this, null);
+                UserDefinedProperty newProp = new(this, null);
                 this.UserDefinedProperties.Add(newProp);
 
                 lbProperties.SelectedIndex = lbProperties.Items.Count - 1;
@@ -208,7 +210,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 if(lbProperties.SelectedItem is UserDefinedProperty p)
                 {
                     if(p.UnderlyingProperty != null)
-                        this.Project.MSBuildProject.RemoveProperty(p.UnderlyingProperty);
+                        ((SandcastleProject)this.Project).MSBuildProject.RemoveProperty(p.UnderlyingProperty);
 
                     userDefinedProperties.Remove(p);
 

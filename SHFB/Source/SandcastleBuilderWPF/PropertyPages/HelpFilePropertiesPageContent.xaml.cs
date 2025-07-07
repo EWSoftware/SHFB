@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : HelpFileProperitesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 09/14/2024
-// Note    : Copyright 2017-2024, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2017-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Help File category properties
 //
@@ -25,7 +25,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using Sandcastle.Core;
-using SandcastleBuilder.Utils;
+using Sandcastle.Core.ConceptualContent;
+using Sandcastle.Core.Project;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {
@@ -141,8 +142,10 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 languages.Add(ci);
             }
             else
+            {
                 ci = ComponentUtilities.SupportedLanguages.First(c => c.Name.Equals("en-US",
                     StringComparison.OrdinalIgnoreCase));
+            }
 
             return ci;
         }

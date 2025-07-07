@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/09/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/21/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the MSBuild task used to build help file output using the Sandcastle Help File Builder
 //
@@ -43,9 +43,11 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
 using Sandcastle.Core;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.Project;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildEngine;
+using SandcastleBuilder.MSBuild.BuildEngine;
+using SandcastleBuilder.MSBuild.HelpProject;
 
 namespace SandcastleBuilder.MSBuild
 {
@@ -60,13 +62,13 @@ namespace SandcastleBuilder.MSBuild
         #region Private data members
         //=====================================================================
 
-        private static readonly Regex reParseMessage = new Regex(@"^(\w{2,}):\s*(.*?)\s*" +
+        private static readonly Regex reParseMessage = new(@"^(\w{2,}):\s*(.*?)\s*" +
             @"\W(warning|error)\W\s*(\w+?\d*?):\s*(.*)", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
-        private static readonly Regex reWarning = new Regex(@"(Warn|Warning( HXC\d+)?):|" +
+        private static readonly Regex reWarning = new(@"(Warn|Warning( HXC\d+)?):|" +
             @"SHFB\s*:\s*(W|w)arning\s.*?:|.*?(\(\d*,\d*\))?:\s*(W|w)arning\s.*?:");
 
-        private static readonly char[] separator = new[] { ';' };
+        private static readonly char[] separator = [';'];
 
         private SandcastleProject sandcastleProject;
         private BuildProcess buildProcess;
@@ -163,13 +165,15 @@ namespace SandcastleBuilder.MSBuild
         {
             get
             {
-                List<ITaskItem> files = new List<ITaskItem>();
+                List<ITaskItem> files = [];
 
                 if(buildProcess != null && lastBuildStep == BuildStep.Completed)
+                {
                     foreach(string file in buildProcess.Help1Files)
                         files.Add(new TaskItem(file));
+                }
 
-                return files.ToArray();
+                return [.. files];
             }
         }
 
@@ -181,13 +185,15 @@ namespace SandcastleBuilder.MSBuild
         {
             get
             {
-                List<ITaskItem> files = new List<ITaskItem>();
+                List<ITaskItem> files = [];
 
                 if(buildProcess != null && lastBuildStep == BuildStep.Completed)
+                {
                     foreach(string file in buildProcess.HelpViewerFiles)
                         files.Add(new TaskItem(file));
+                }
 
-                return files.ToArray();
+                return [.. files];
             }
         }
 
@@ -199,13 +205,15 @@ namespace SandcastleBuilder.MSBuild
         {
             get
             {
-                List<ITaskItem> files = new List<ITaskItem>();
+                List<ITaskItem> files = [];
 
                 if(buildProcess != null && lastBuildStep == BuildStep.Completed)
+                {
                     foreach(string file in buildProcess.WebsiteFiles)
                         files.Add(new TaskItem(file));
+                }
 
-                return files.ToArray();
+                return [.. files];
             }
         }
 
@@ -217,13 +225,15 @@ namespace SandcastleBuilder.MSBuild
         {
             get
             {
-                List<ITaskItem> files = new List<ITaskItem>();
+                List<ITaskItem> files = [];
 
                 if(buildProcess != null && lastBuildStep == BuildStep.Completed)
+                {
                     foreach(string file in buildProcess.OpenXmlFiles)
                         files.Add(new TaskItem(file));
+                }
 
-                return files.ToArray();
+                return [.. files];
             }
         }
 
@@ -235,13 +245,15 @@ namespace SandcastleBuilder.MSBuild
         {
             get
             {
-                List<ITaskItem> files = new List<ITaskItem>();
+                List<ITaskItem> files = [];
 
                 if(buildProcess != null && lastBuildStep == BuildStep.Completed)
+                {
                     foreach(string file in buildProcess.MarkdownFiles)
                         files.Add(new TaskItem(file));
+                }
 
-                return files.ToArray();
+                return [.. files];
             }
         }
 
@@ -249,8 +261,14 @@ namespace SandcastleBuilder.MSBuild
         /// This is used to return a list of all files that resulted from the build (all help formats)
         /// </summary>
         [Output]
-        public ITaskItem[] AllHelpFiles => this.Help1Files.Concat(this.HelpViewerFiles.Concat(
-            this.WebsiteFiles.Concat(this.OpenXmlFiles.Concat(this.MarkdownFiles)))).ToArray();
+        public ITaskItem[] AllHelpFiles =>
+        [
+            .. this.Help1Files,
+            .. this.HelpViewerFiles,
+            .. this.WebsiteFiles,
+            .. this.OpenXmlFiles,
+            .. this.MarkdownFiles
+        ];
 
         #endregion
 
@@ -427,22 +445,23 @@ namespace SandcastleBuilder.MSBuild
             }
 
             if(this.DumpLogOnFailure && lastBuildStep == BuildStep.Failed)
-                using(StreamReader sr = new StreamReader(buildProcess.LogFilename))
+            {
+                using StreamReader sr = new(buildProcess.LogFilename);
+                
+                Log.LogMessage(MessageImportance.High, "Log Content:");
+
+                do
                 {
-                    Log.LogMessage(MessageImportance.High, "Log Content:");
+                    line = sr.ReadLine();
 
-                    do
-                    {
-                        line = sr.ReadLine();
+                    // Don't output the XML elements, just the text
+                    if(line != null && (line.Trim().Length == 0 || line.Trim()[0] != '<'))
+                        Log.LogMessage(MessageImportance.High, line);
 
-                        // Don't output the XML elements, just the text
-                        if(line != null && (line.Trim().Length == 0 || line.Trim()[0] != '<'))
-                            Log.LogMessage(MessageImportance.High, line);
+                } while(line != null);
+            }
 
-                    } while(line != null);
-                }
-
-            return (lastBuildStep == BuildStep.Completed);
+            return lastBuildStep == BuildStep.Completed;
         }
         #endregion
 

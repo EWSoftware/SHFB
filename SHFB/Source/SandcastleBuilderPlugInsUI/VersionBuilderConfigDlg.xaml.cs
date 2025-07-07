@@ -1,9 +1,9 @@
 ﻿//===============================================================================================================
-// System  : EWSoftware Design Time Attributes and Editors
+// System  : Sandcastle Help File Builder Plug-Ins
 // File    : VersionBuilderConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/16/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the version builder plug-in configuration
 //
@@ -31,10 +31,10 @@ using System.Windows.Controls;
 using System.Xml.Linq;
 
 using Sandcastle.Core;
-using Sandcastle.Platform.Windows;
+using Sandcastle.Core.PlugIn;
+using Sandcastle.Core.Project;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
+using Sandcastle.Platform.Windows;
 
 namespace SandcastleBuilder.PlugIns.UI
 {
@@ -53,7 +53,7 @@ namespace SandcastleBuilder.PlugIns.UI
         public sealed class Factory : IPlugInConfigurationEditor
         {
             /// <inheritdoc />
-            public bool EditConfiguration(SandcastleProject project, XElement configuration)
+            public bool EditConfiguration(ISandcastleProject project, XElement configuration)
             {
                 var dlg = new VersionBuilderConfigDlg(project, configuration);
 
@@ -66,7 +66,7 @@ namespace SandcastleBuilder.PlugIns.UI
         //=====================================================================
 
         private readonly XElement configuration;
-        private readonly SandcastleProject project;
+        private readonly ISandcastleProject project;
 
         #endregion
 
@@ -78,7 +78,7 @@ namespace SandcastleBuilder.PlugIns.UI
         /// </summary>
         /// <param name="project">The current project</param>
         /// <param name="configuration">The current configuration element</param>
-        public VersionBuilderConfigDlg(SandcastleProject project, XElement configuration)
+        public VersionBuilderConfigDlg(ISandcastleProject project, XElement configuration)
         {
             InitializeComponent();
 
@@ -157,33 +157,32 @@ namespace SandcastleBuilder.PlugIns.UI
         /// <param name="e">The event arguments</param>
         private void btnAddProject_Click(object sender, RoutedEventArgs e)
         {
-            using(var dlg = new System.Windows.Forms.OpenFileDialog())
+            using var dlg = new System.Windows.Forms.OpenFileDialog();
+            
+            dlg.Title = "Select the help file builder project(s)";
+            dlg.Filter = "Sandcastle Help File Builder Project Files " +
+                "(*.shfbproj)|*.shfbproj|All Files (*.*)|*.*";
+            dlg.InitialDirectory = Directory.GetCurrentDirectory();
+            dlg.DefaultExt = "shfbproj";
+            dlg.Multiselect = true;
+
+            // If selected, add the file(s)
+            if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                dlg.Title = "Select the help file builder project(s)";
-                dlg.Filter = "Sandcastle Help File Builder Project Files " +
-                    "(*.shfbproj)|*.shfbproj|All Files (*.*)|*.*";
-                dlg.InitialDirectory = Directory.GetCurrentDirectory();
-                dlg.DefaultExt = "shfbproj";
-                dlg.Multiselect = true;
-
-                // If selected, add the file(s)
-                if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                foreach(string file in dlg.FileNames)
                 {
-                    foreach(string file in dlg.FileNames)
+                    var newItem = new VersionSettings(project)
                     {
-                        var newItem = new VersionSettings(project)
-                        {
-                            HelpFileProject = new FilePath(file, project),
-                            FrameworkLabel = txtLabel.Text,
-                            Version = "1.0"
-                        };
+                        HelpFileProject = new FilePath(file, project),
+                        FrameworkLabel = txtLabel.Text,
+                        Version = "1.0"
+                    };
 
-                        // It will end up on the last one added
-                        lbVersionInfo.SelectedIndex = lbVersionInfo.Items.Add(newItem);
-                    }
-
-                    btnDeleteProject.IsEnabled = grpVersionInfoProps.IsEnabled = true;
+                    // It will end up on the last one added
+                    lbVersionInfo.SelectedIndex = lbVersionInfo.Items.Add(newItem);
                 }
+
+                btnDeleteProject.IsEnabled = grpVersionInfoProps.IsEnabled = true;
             }
         }
 
@@ -245,7 +244,7 @@ namespace SandcastleBuilder.PlugIns.UI
                 dups.Insert(0, $"{txtLabel.Text} {txtVersion.Text}");
             }
 
-            if(duplicateProjects.Any())
+            if(duplicateProjects.Count != 0)
             {
                 MessageBox.Show("The same help file project cannot be specified more than once: " +
                     String.Join(", ", duplicateProjects.Select(g => g.Key)), Constants.AppName, MessageBoxButton.OK,
@@ -253,7 +252,7 @@ namespace SandcastleBuilder.PlugIns.UI
                 return;
             }
 
-            if(keys.Any())
+            if(keys.Count != 0)
             {
                 MessageBox.Show("The same framework label and version cannot be specified more than once: " +
                     String.Join(", ", dups), Constants.AppName, MessageBoxButton.OK,

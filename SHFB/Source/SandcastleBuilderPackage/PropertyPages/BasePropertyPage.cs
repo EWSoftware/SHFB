@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BasePropertyPage.cs
 // Author  : Eric Woodruff
-// Updated : 05/10/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/24/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used as the base class for package property pages
 //
@@ -42,10 +42,9 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using Sandcastle.Platform.Windows;
 
-using SandcastleBuilder.Utils.Design;
-
 using SandcastleBuilder.WPF;
 using SandcastleBuilder.WPF.PropertyPages;
+using SandcastleBuilder.MSBuild.Design;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -63,10 +62,10 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         // This is used to define custom controls and their value property
-        private static readonly Dictionary<string, string> customControls = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> customControls = [];
 
         // This is used to track active property pages
-        private static readonly List<BasePropertyPage> propertyPages = new List<BasePropertyPage>();
+        private static readonly List<BasePropertyPage> propertyPages = [];
 
         private bool isDirty;
 
@@ -120,8 +119,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 {
                     isDirty = value;
 
-                    if(this.PropertyPageSite != null)
-                        this.PropertyPageSite.OnStatusChange((uint)(isDirty ? PropPageStatus.Dirty : PropPageStatus.Clean));
+                    this.PropertyPageSite?.OnStatusChange((uint)(isDirty ? PropPageStatus.Dirty : PropPageStatus.Clean));
                 }
             }
         }
@@ -332,11 +330,11 @@ namespace SandcastleBuilder.Package.PropertyPages
                         boundProperty = PropertyPageBinding.GetProjectPropertyName(c);
 
                         // Check for custom types first
-                        if(customControls.ContainsKey(typeName))
+                        if(customControls.TryGetValue(typeName, out string propertyName))
                         {
                             // Find and connect the Changed event for the named property if one exists
                             var changedEvent = t.GetEvents().Where(ev =>
-                                ev.Name == customControls[typeName] + "Changed").FirstOrDefault();
+                                ev.Name == propertyName + "Changed").FirstOrDefault();
 
                             if(changedEvent != null)
                             {
@@ -353,7 +351,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                                 changedEvent.AddEventHandler(c, h);
                             }
 
-                            pi = t.GetProperty(customControls[typeName], BindingFlags.Public | BindingFlags.Instance);
+                            pi = t.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
                         }
                         else if(c is Label)
                         {
@@ -534,8 +532,8 @@ namespace SandcastleBuilder.Package.PropertyPages
                     boundProperty = PropertyPageBinding.GetProjectPropertyName(c);
 
                     // Check for custom types first
-                    if(customControls.ContainsKey(typeName))
-                        pi = t.GetProperty(customControls[typeName], BindingFlags.Public | BindingFlags.Instance);
+                    if(customControls.TryGetValue(typeName, out string propertyName))
+                        pi = t.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
                     else if(c is TextBoxBase)
                         pi = t.GetProperty("Text", BindingFlags.Public | BindingFlags.Instance);
                     else if(c is Selector)
@@ -677,7 +675,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             pPageInfo[0] = new PROPPAGEINFO
             {
-                cb = (uint)Marshal.SizeOf(typeof(PROPPAGEINFO)),
+                cb = (uint)Marshal.SizeOf<PROPPAGEINFO>(),
                 dwHelpContext = 0,
                 pszDocString = null,
                 pszHelpFile = null,
@@ -745,14 +743,13 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             if(ppunk[0] is ProjectConfig)
             {
-                List<ProjectConfig> configs = new List<ProjectConfig>();
+                List<ProjectConfig> configs = [];
 
                 for(int i = 0; i < cObjects; i++)
                 {
                     ProjectConfig config = (ProjectConfig)ppunk[i];
 
-                    if(this.ProjectMgr == null)
-                        this.ProjectMgr = config.ProjectMgr;
+                    this.ProjectMgr ??= config.ProjectMgr;
 
                     configs.Add(config);
                 }
@@ -760,12 +757,12 @@ namespace SandcastleBuilder.Package.PropertyPages
                 this.ProjectConfigs = new ReadOnlyCollection<ProjectConfig>(configs);
             }
             else
+            {
                 if(ppunk[0] is NodeProperties)
                 {
-                    if(this.ProjectMgr == null)
-                        this.ProjectMgr = (ppunk[0] as NodeProperties).Node.ProjectMgr;
+                    this.ProjectMgr ??= (ppunk[0] as NodeProperties).Node.ProjectMgr;
 
-                    Dictionary<string, ProjectConfig> configsMap = new Dictionary<string, ProjectConfig>();
+                    Dictionary<string, ProjectConfig> configsMap = [];
 
                     for(int i = 0; i < cObjects; i++)
                     {
@@ -781,14 +778,17 @@ namespace SandcastleBuilder.Package.PropertyPages
                             provider.GetCfgs(expected[0], configs, actual, null);
 
                             foreach(ProjectConfig config in configs)
+                            {
                                 if(!configsMap.ContainsKey(config.ConfigName))
                                     configsMap.Add(config.ConfigName, config);
+                            }
                         }
                     }
 
                     if(configsMap.Count > 0)
-                        this.ProjectConfigs = new ReadOnlyCollection<ProjectConfig>(configsMap.Values.ToArray());
+                        this.ProjectConfigs = new ReadOnlyCollection<ProjectConfig>([.. configsMap.Values]);
                 }
+            }
 
             if(!this.IsDisposed && this.ProjectMgr != null)
             {

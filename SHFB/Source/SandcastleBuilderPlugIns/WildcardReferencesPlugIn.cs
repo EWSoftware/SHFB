@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : WildcardReferencesPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to modify the MRefBuilder project file by adding in reference
 // assemblies matching wildcard search paths.
@@ -27,11 +27,8 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.BuildEngine;
-
-using Microsoft.Build.Evaluation;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -48,8 +45,7 @@ namespace SandcastleBuilder.PlugIns
         #region Private data members
         //=====================================================================
 
-        private List<ExecutionPoint> executionPoints;
-        private BuildProcess builder;
+        private IBuildProcess builder;
         private List<WildcardReferenceSettings> referencePaths;
 
         #endregion
@@ -61,26 +57,17 @@ namespace SandcastleBuilder.PlugIns
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public IEnumerable<ExecutionPoint> ExecutionPoints
-        {
-            get
-            {
-                if(executionPoints == null)
-                    executionPoints = new List<ExecutionPoint>
-                    {
-                        new ExecutionPoint(BuildStep.GenerateReflectionInfo, ExecutionBehaviors.Before)
-                    };
-
-                return executionPoints;
-            }
-        }
+        public IEnumerable<ExecutionPoint> ExecutionPoints { get; } =
+        [
+            new ExecutionPoint(BuildStep.GenerateReflectionInfo, ExecutionBehaviors.Before)
+        ];
 
         /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XElement configuration)
+        public void Initialize(IBuildProcess buildProcess, XElement configuration)
         {
             if(configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
@@ -96,7 +83,7 @@ namespace SandcastleBuilder.PlugIns
                 throw new BuilderException("WRP0001", "The Wildcard References plug-in has not been configured yet");
 
             // Load the reference path settings
-            referencePaths = new List<WildcardReferenceSettings>();
+            referencePaths = [];
 
             foreach(var r in configuration.Descendants("reference"))
                 referencePaths.Add(WildcardReferenceSettings.FromXml(buildProcess.CurrentProject, r));
@@ -114,9 +101,9 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="context">The current execution context</param>
         public void Execute(ExecutionContext context)
         {
-            Project msBuildProject = null;
-            ProjectItem projectItem;
-            Dictionary<string, string> assemblies = new Dictionary<string, string>();
+            Dictionary<string, string> assemblies = [];
+
+            builder.ReportProgress("Adding wildcard references");
 
             // The project is named uniquely due to a cache used by the assembly resolution task that uses the
             // project name to name the cache.  If not unique, it can cause parallel builds to fail as it can't
@@ -134,8 +121,9 @@ namespace SandcastleBuilder.PlugIns
 
             // Find all unique references
             foreach(var r in referencePaths)
+            {
                 foreach(string fullPath in Directory.EnumerateFiles(r.ReferencePath, r.Wildcard,
-                  (r.Recursive) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
+                  r.Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
                 {
                     string filename = Path.GetFileNameWithoutExtension(fullPath);
 
@@ -145,41 +133,44 @@ namespace SandcastleBuilder.PlugIns
                     if(!assemblies.ContainsKey(filename) && !filename.Equals("mscorlib", StringComparison.OrdinalIgnoreCase))
                         assemblies.Add(filename, fullPath);
                 }
-
-            builder.ReportProgress("Adding wildcard references");
-
-            try
-            {
-                msBuildProject = new Project(projectFile);
-
-                // Remove references that are already there
-                foreach(ProjectItem r in msBuildProject.GetItems("Reference"))
-                    if(assemblies.ContainsKey(r.EvaluatedInclude))
-                    {
-                        builder.ReportProgress("    Skipping {0} ({1}) as it appears to already be present",
-                            r.EvaluatedInclude, assemblies[r.EvaluatedInclude]);
-                        assemblies.Remove(r.EvaluatedInclude);
-                    }
-
-                // Add the remaining references
-                foreach(var r in assemblies)
-                {
-                    projectItem = msBuildProject.AddItem("Reference", r.Key)[0];
-                    projectItem.SetMetadataValue(BuildItemMetadata.HintPath, r.Value);
-                    builder.ReportProgress("    Added reference {0} ({1})", r.Key, r.Value);
-                }
-
-                msBuildProject.Save(projectFile);
             }
-            finally
+
+            XDocument project = XDocument.Load(projectFile);
+            XNamespace msbuild = "http://schemas.microsoft.com/developer/msbuild/2003";
+            XElement itemGroup = null;
+
+            // Remove references that are already there
+            foreach(var r in project.Descendants(msbuild + "Reference"))
             {
-                // If we loaded it, we must unload it.  If not, it is cached and may cause problems later.
-                if(msBuildProject != null)
+                itemGroup ??= r.Parent;
+
+                string include = r.Attribute("Include").Value;
+
+                if(assemblies.TryGetValue(include, out string path))
                 {
-                    ProjectCollection.GlobalProjectCollection.UnloadProject(msBuildProject);
-                    ProjectCollection.GlobalProjectCollection.UnloadProject(msBuildProject.Xml);
+                    builder.ReportProgress("    Skipping {0} ({1}) as it appears to already be present", include, path);
+                    assemblies.Remove(include);
                 }
             }
+
+            // Add an item group if there are no reference assemblies
+            if(itemGroup == null)
+            {
+                itemGroup = new XElement(msbuild + "ItemGroup");
+                project.Root.Add(itemGroup);
+            }
+
+            // Add the remaining references
+            foreach(var r in assemblies)
+            {
+                itemGroup.Add(new XElement(msbuild + "Reference",
+                    new XAttribute("Include", r.Key),
+                    new XElement(msbuild + "HintPath", r.Value)));
+
+                builder.ReportProgress("    Added reference {0} ({1})", r.Key, r.Value);
+            }
+
+            project.Save(projectFile);
         }
         #endregion
 

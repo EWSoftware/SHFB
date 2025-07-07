@@ -46,7 +46,7 @@ namespace Sandcastle.Tools.BuildComponents
         #region Private data members
         //=====================================================================
 
-        private readonly List<CopyFromFilesCommand> copyCommands = new List<CopyFromFilesCommand>();
+        private readonly List<CopyFromFilesCommand> copyCommands = [];
 
         #endregion
 

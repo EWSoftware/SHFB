@@ -29,7 +29,6 @@ using Sandcastle.Core.BuildAssembler.BuildComponent;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
 using Sandcastle.Tools.BuildComponents.Snippets;
-using Sandcastle.Core.PresentationStyle.Transformation;
 
 namespace Sandcastle.Tools.BuildComponents
 {
@@ -93,7 +92,7 @@ namespace Sandcastle.Tools.BuildComponents
         private bool renderReferenceLinks, addNoExampleTabs, includeOnSingleSnippets;
 
         private readonly List<Lazy<ISyntaxGeneratorFactory, ISyntaxGeneratorMetadata>> generatorFactories;
-        private readonly List<SyntaxGeneratorCore> generators = new List<SyntaxGeneratorCore>();
+        private readonly List<SyntaxGeneratorCore> generators = [];
 
         // Code snippet grouping and sorting members
         private XPathExpression referenceRoot, referenceCode, conceptualRoot, conceptualCode;
@@ -119,8 +118,8 @@ namespace Sandcastle.Tools.BuildComponents
             this.generatorFactories = generatorFactories ?? throw new ArgumentNullException(nameof(generatorFactories));
 
             generatorLanguages = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            languageSet = new List<ISyntaxGeneratorMetadata>();
-            languageOrder = new Dictionary<string, int>();
+            languageSet = [];
+            languageOrder = [];
 
             // Generate a list of all possible language IDs for code snippets from the available generators
             codeSnippetLanguages = new Dictionary<string, ISyntaxGeneratorMetadata>(StringComparer.OrdinalIgnoreCase);
@@ -130,7 +129,7 @@ namespace Sandcastle.Tools.BuildComponents
                 codeSnippetLanguages[factory.Metadata.Id] = factory.Metadata;
 
                 foreach(string alternateId in (factory.Metadata.AlternateIds ?? String.Empty).Split(
-                  new[] { ',', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries))
+                  [',', ' ', '\t'], StringSplitOptions.RemoveEmptyEntries))
                 {
                     codeSnippetLanguages[alternateId] = factory.Metadata;
                 }
@@ -203,8 +202,10 @@ namespace Sandcastle.Tools.BuildComponents
                 languageSet.Add(generatorFactory.Metadata);
 
                 foreach(string alternateId in (generatorFactory.Metadata.AlternateIds ?? String.Empty).Split(
-                  new[] { ',', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries))
+                  [',', ' ', '\t'], StringSplitOptions.RemoveEmptyEntries))
+                {
                     generatorLanguages.Add(alternateId);
+                }
 
                 try
                 {
@@ -331,7 +332,7 @@ namespace Sandcastle.Tools.BuildComponents
             int order;
 
             // Don't bother if not a transforming event or not in our group
-            if(!(e is ApplyingChangesEventArgs ac) || ac.GroupId != this.GroupId ||
+            if(e is not ApplyingChangesEventArgs ac || ac.GroupId != this.GroupId ||
               ac.ComponentId != "Transform Component")
             {
                 return;
@@ -339,8 +340,8 @@ namespace Sandcastle.Tools.BuildComponents
 
             XmlDocument document = ac.Document;
             XPathNavigator root, navDoc = document.CreateNavigator();
-            List<CodeSnippetGroup> allGroups = new List<CodeSnippetGroup>();
-            List<List<CodeSnippet>> extraGroups = new List<List<CodeSnippet>>();
+            List<CodeSnippetGroup> allGroups = [];
+            List<List<CodeSnippet>> extraGroups = [];
 
             // Select all code nodes.  The location depends on the build type.
             root = navDoc.SelectSingleNode(referenceRoot);
@@ -528,7 +529,7 @@ namespace Sandcastle.Tools.BuildComponents
 
                             if(moveToGroup == null)
                             {
-                                moveToGroup = new List<CodeSnippet>();
+                                moveToGroup = [];
                                 extraGroups.Add(moveToGroup);
                             }
 

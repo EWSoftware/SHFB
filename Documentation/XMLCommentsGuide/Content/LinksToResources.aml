@@ -53,8 +53,7 @@ request help using them, visit the <token>SHFB</token> project site.</para>
 						<para>If you need a spell checker for Visual Studio, the <legacyBold>Visual Studio Spell Checker</legacyBold>
 extension can be downloaded and installed from the Visual Studio Gallery.  It is an editor extension that checks
 the spelling of comments, strings, and plain text as you type or interactively with a tool window.  Support is
-included for spell checking source code, XML files, and MAML topic files.  Versions are available for Versions
-are available for 
+included for spell checking source code, XML files, and MAML topic files.  Versions are available for 
 <externalLink>
 	<linkText>Visual Studio 2013 and 2015</linkText>
 	<linkAlternateText>Visual Studio Spell Checker (VS2013/2015)</linkAlternateText>

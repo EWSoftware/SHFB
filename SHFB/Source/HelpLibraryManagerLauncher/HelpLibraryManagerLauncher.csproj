@@ -3,10 +3,8 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<!-- NOTE: This executable is only usable on Windows systems so it will always target the .NET Framework. -->
-		<TargetFramework>net472</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
 		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
@@ -14,9 +12,7 @@
 		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
 		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
-		<RootNamespace>SandcastleBuilder.MicrosoftHelpViewer</RootNamespace>
+		<RootNamespace>Sandcastle.Platform.Windows.MicrosoftHelpViewer</RootNamespace>
 	</PropertyGroup>
 
 	<!-- This is part of the Help Viewer deployment but we put it in the tools folder so that it's in a common
@@ -32,7 +28,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
+		<Compile Include="..\SandcastleBuilderMSBuild\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
+		<Compile Include="..\SandcastlePlatformWindows\MicrosoftHelpViewer\HelpLibraryManager.cs" Link="HelpLibraryManager.cs" />
+		<Compile Include="..\SandcastlePlatformWindows\MicrosoftHelpViewer\HelpLibraryManagerException.cs" Link="HelpLibraryManagerException.cs" />
+		<Compile Include="..\SandcastlePlatformWindows\MicrosoftHelpViewer\HelpLibraryManagerUnsafeNativeMethods.cs" Link="HelpLibraryManagerUnsafeNativeMethods.cs" />
 	</ItemGroup>
 
 </Project>

@@ -40,7 +40,7 @@ namespace Sandcastle.Tools.Reflection
             if(type == null)
                 throw new ArgumentNullException(nameof(type));
 
-            StringBuilder sb = new StringBuilder("T:");
+            StringBuilder sb = new("T:");
 
             WriteType(type, sb);
 
@@ -53,7 +53,7 @@ namespace Sandcastle.Tools.Reflection
             if(member == null)
                 throw new ArgumentNullException(nameof(member));
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
 
             switch(member.NodeType)
             {
@@ -111,6 +111,7 @@ namespace Sandcastle.Tools.Reflection
                     sb.Append('[');
 
                     if(array.Rank > 1)
+                    {
                         for(int i = 0; i < array.Rank; i++)
                         {
                             if(i > 0)
@@ -118,6 +119,7 @@ namespace Sandcastle.Tools.Reflection
 
                             sb.Append("0:");
                         }
+                    }
 
                     sb.Append(']');
                     break;
@@ -161,11 +163,13 @@ namespace Sandcastle.Tools.Reflection
 
                         if(gtp.DeclaringMember is TypeNode)
                             sb.Append('`');
-                        else 
+                        else
+                        {
                             if(gtp.DeclaringMember is Method)
                                 sb.Append("``");
                             else
                                 throw new InvalidOperationException("Generic parameter not on type or method");
+                        }
 
                         sb.Append(gtp.ParameterListIndex);
                     }
@@ -259,6 +263,7 @@ namespace Sandcastle.Tools.Reflection
                 TypeNode eiiType = eiiProperty.DeclaringType;
 
                 if(eiiType != null)
+                {
                     if(eiiType.Template != null)
                     {
                         sb.Append('.');
@@ -266,12 +271,13 @@ namespace Sandcastle.Tools.Reflection
                     }
                     else
                     {
-                        StringBuilder eiiName = new StringBuilder();
+                        StringBuilder eiiName = new();
 
                         WriteType(eiiType, eiiName);
                         sb.Append('.');
                         sb.Append(eiiName.ToString().Replace('.', '#'));
                     }
+                }
 
                 sb.Append('#');
                 sb.Append(eiiProperty.Name.Name);
@@ -302,6 +308,7 @@ namespace Sandcastle.Tools.Reflection
                 TypeNode eiiType = eiiTrigger.DeclaringType;
 
                 if(eiiType != null)
+                {
                     if(eiiType.Template != null)
                     {
                         sb.Append('.');
@@ -309,12 +316,13 @@ namespace Sandcastle.Tools.Reflection
                     }
                     else
                     {
-                        StringBuilder eiiName = new StringBuilder();
+                        StringBuilder eiiName = new();
 
                         WriteType(eiiType, eiiName);
                         sb.Append('.');
                         sb.Append(eiiName.ToString().Replace('.', '#'));
                     }
+                }
 
                 sb.Append('#');
                 sb.Append(eiiTrigger.Name.Name);
@@ -369,6 +377,7 @@ namespace Sandcastle.Tools.Reflection
                 TypeNode eiiType = eiiMethod.DeclaringType;
 
                 if(eiiType != null)
+                {
                     if(eiiType.Template != null)
                     {
                         sb.Append('.');
@@ -376,12 +385,13 @@ namespace Sandcastle.Tools.Reflection
                     }
                     else
                     {
-                        StringBuilder eiiName = new StringBuilder();
+                        StringBuilder eiiName = new();
 
                         WriteType(eiiType, eiiName);
                         sb.Append('.');
                         sb.Append(eiiName.ToString().Replace('.', '#'));
                     }
+                }
 
                 sb.Append('#');
                 sb.Append(eiiMethod.Name.Name);

@@ -24,7 +24,7 @@ namespace Sandcastle.Core.CommandLine
         #region Private data members
         //=====================================================================
 
-        private readonly Dictionary<string, BaseOption> map = new Dictionary<string, BaseOption>();
+        private readonly Dictionary<string, BaseOption> map = [];
 
         #endregion
 
@@ -105,7 +105,7 @@ namespace Sandcastle.Core.CommandLine
             if(args == null)
                 throw new ArgumentNullException(nameof(args));
 
-            ParseArgumentsResult results = new ParseArgumentsResult(this);
+            ParseArgumentsResult results = new(this);
 
             this.ParseArguments(args, results);
 
@@ -160,9 +160,8 @@ namespace Sandcastle.Core.CommandLine
                     string value = arg.Substring(index);
 
                     // Invoke the appropriate logic
-                    if(map.ContainsKey(key))
+                    if(map.TryGetValue(key, out BaseOption option))
                     {
-                        BaseOption option = map[key];
                         ParseResult result = option.ParseArgument(value);
 
                         if(result != ParseResult.Success)
@@ -172,10 +171,12 @@ namespace Sandcastle.Core.CommandLine
                         results.AddError(arg, ParseResult.UnrecognizedOption);
                 }
                 else
+                {
                     if(arg[0] == '@')   // Is it a response file?
                         this.ParseArguments(File.ReadAllLines(arg.Substring(1)), results);
                     else
                         results.AddNonOption(arg);      // Non-option
+                }
             }
         }
         #endregion

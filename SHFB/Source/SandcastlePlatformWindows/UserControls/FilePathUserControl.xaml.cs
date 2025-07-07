@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Windows platform specific code
 // File    : FilePathUserControl.cs
 // Author  : Eric Woodruff
-// Updated : 05/14/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a user control used to select a file
 //
@@ -27,7 +27,7 @@ using System.Windows.Controls;
 
 using Microsoft.Win32;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
 
 namespace Sandcastle.Platform.Windows.UserControls
 {

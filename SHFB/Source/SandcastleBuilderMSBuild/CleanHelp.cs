@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : CleanHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/15/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/21/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the MSBuild task used to clean (remove) help file output from the last build
 //
@@ -24,7 +24,7 @@ using System.Linq;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-using SandcastleBuilder.Utils.BuildEngine;
+using SandcastleBuilder.MSBuild.BuildEngine;
 
 namespace SandcastleBuilder.MSBuild
 {

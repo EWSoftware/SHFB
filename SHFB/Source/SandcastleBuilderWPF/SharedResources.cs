@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : SharedResources.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/20/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to load shared resources at runtime
 //
@@ -55,7 +55,7 @@ namespace SandcastleBuilder.WPF
             {
                 if(splitButtonResources == null)
                 {
-                    Uri sharedResources = new Uri("/SandcastleBuilder.WPF;component/Controls/SplitButtonStyle.xaml",
+                    Uri sharedResources = new("/SandcastleBuilder.WPF;component/Controls/SplitButtonStyle.xaml",
                         UriKind.Relative);
                     splitButtonResources = (ResourceDictionary)Application.LoadComponent(sharedResources);
                 }
@@ -73,7 +73,7 @@ namespace SandcastleBuilder.WPF
             {
                 if(cautionIcon == null)
                 {
-                    Uri image = new Uri("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertCaution.png");
+                    Uri image = new("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertCaution.png");
 
                     // Cache on load to prevent it locking the image
                     cautionIcon = new BitmapImage();
@@ -96,7 +96,7 @@ namespace SandcastleBuilder.WPF
             {
                 if(noteIcon == null)
                 {
-                    Uri image = new Uri("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertNote.png");
+                    Uri image = new("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertNote.png");
 
                     // Cache on load to prevent it locking the image
                     noteIcon = new BitmapImage();
@@ -119,7 +119,7 @@ namespace SandcastleBuilder.WPF
             {
                 if(securityIcon == null)
                 {
-                    Uri image = new Uri("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertSecurity.png");
+                    Uri image = new("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertSecurity.png");
 
                     // Cache on load to prevent it locking the image
                     securityIcon = new BitmapImage();
@@ -142,7 +142,7 @@ namespace SandcastleBuilder.WPF
             {
                 if(informationIcon == null)
                 {
-                    Uri image = new Uri("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/Information.png");
+                    Uri image = new("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/Information.png");
 
                     // Cache on load to prevent it locking the image
                     informationIcon = new BitmapImage();
@@ -165,7 +165,7 @@ namespace SandcastleBuilder.WPF
             {
                 if(installPackageIcon == null)
                 {
-                    Uri image = new Uri("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/InstallPackage.png");
+                    Uri image = new("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/InstallPackage.png");
 
                     // Cache on load to prevent it locking the image
                     installPackageIcon = new BitmapImage();
@@ -188,7 +188,7 @@ namespace SandcastleBuilder.WPF
             {
                 if(packageInstalledIcon == null)
                 {
-                    Uri image = new Uri("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/PackageInstalled.png");
+                    Uri image = new("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/PackageInstalled.png");
 
                     // Cache on load to prevent it locking the image
                     packageInstalledIcon = new BitmapImage();
@@ -211,7 +211,7 @@ namespace SandcastleBuilder.WPF
             {
                 if(removePackageIcon == null)
                 {
-                    Uri image = new Uri("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/RemovePackage.png");
+                    Uri image = new("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/RemovePackage.png");
 
                     // Cache on load to prevent it locking the image
                     removePackageIcon = new BitmapImage();
@@ -234,7 +234,7 @@ namespace SandcastleBuilder.WPF
             {
                 if(updatePackageIcon == null)
                 {
-                    Uri image = new Uri("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/UpdatePackage.png");
+                    Uri image = new("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/UpdatePackage.png");
 
                     // Cache on load to prevent it locking the image
                     updatePackageIcon = new BitmapImage();

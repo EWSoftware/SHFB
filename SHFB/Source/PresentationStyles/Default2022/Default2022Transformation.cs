@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/24/2025
+// Updated : 07/05/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -208,8 +208,8 @@ namespace Sandcastle.PresentationStyles.Default2022
         /// <inheritdoc />
         protected override void CreateTransformationArguments()
         {
-            this.AddTransformationArgumentRange(new[]
-            {
+            this.AddTransformationArgumentRange(
+            [
                 new TransformationArgument(nameof(RobotsMetadata), true, true, null,
                     "An optional robots metadata value (e.g. noindex, nofollow).  If left blank, the robots " +
                     "metadata element will be omitted from the topics."),
@@ -294,81 +294,81 @@ namespace Sandcastle.PresentationStyles.Default2022
                     "If false, the default, top-level auto-outlines are hidden unless the display is small " +
                     "enough (typically mobile displays).  If set to true, top-level auto-outlines are always " +
                     "shown regardless of the display size and the In This Article section is hidden.")
-            });
+            ]);
         }
 
         /// <inheritdoc />
         protected override void CreateLanguageSpecificText()
         {
-            this.AddLanguageSpecificTextRange(new[]
-            {
-                new LanguageSpecificText(true, new[]
-                {
+            this.AddLanguageSpecificTextRange(
+            [
+                new LanguageSpecificText(true,
+                [
                     (LanguageSpecificText.CPlusPlus, "nullptr"),
                     (LanguageSpecificText.VisualBasic, "Nothing"),
                     (LanguageSpecificText.Neutral, "null"),
-                }),
-                new LanguageSpecificText(true, new[]
-                {
+                ]),
+                new LanguageSpecificText(true,
+                [
                     (LanguageSpecificText.VisualBasic, "Shared"),
                     (LanguageSpecificText.Neutral, "static"),
-                }),
-                new LanguageSpecificText(true, new[]
-                {
+                ]),
+                new LanguageSpecificText(true,
+                [
                     (LanguageSpecificText.VisualBasic, "Overridable"),
                     (LanguageSpecificText.Neutral, "virtual"),
-                }),
-                new LanguageSpecificText(true, new[]
-                {
+                ]),
+                new LanguageSpecificText(true,
+                [
                     (LanguageSpecificText.VisualBasic, "True"),
                     (LanguageSpecificText.Neutral, "true"),
-                }),
-                new LanguageSpecificText(true, new[]
-                {
+                ]),
+                new LanguageSpecificText(true,
+                [
                     (LanguageSpecificText.VisualBasic, "False"),
                     (LanguageSpecificText.Neutral, "false"),
-                }),
-                new LanguageSpecificText(true, new[]
-                {
+                ]),
+                new LanguageSpecificText(true,
+                [
                     (LanguageSpecificText.VisualBasic, "MustInherit"),
                     (LanguageSpecificText.Neutral, "abstract"),
-                }),
-                new LanguageSpecificText(true, new[]
-                {
+                ]),
+                new LanguageSpecificText(true,
+                [
                     (LanguageSpecificText.VisualBasic, "NotInheritable"),
                     (LanguageSpecificText.Neutral, "sealed"),
-                }),
-                new LanguageSpecificText(true, new[]
-                {
+                ]),
+                new LanguageSpecificText(true,
+                [
                     (LanguageSpecificText.VisualBasic, "In"),
                     (LanguageSpecificText.FSharp, String.Empty),
                     (LanguageSpecificText.Neutral, "in"),
-                }),
-                new LanguageSpecificText(true, new[]
-                {
+                ]),
+                new LanguageSpecificText(true,
+                [
                     (LanguageSpecificText.VisualBasic, "Out"),
                     (LanguageSpecificText.FSharp, String.Empty),
                     (LanguageSpecificText.Neutral, "out"),
-                }),
-                new LanguageSpecificText(true, new[]
-                {
+                ]),
+                new LanguageSpecificText(true,
+                [
                     (LanguageSpecificText.VisualBasic, "Async"),
                     (LanguageSpecificText.Neutral, "async"),
-                }),
-                new LanguageSpecificText(true, new[]
-                {
+                ]),
+                new LanguageSpecificText(true,
+                [
                     (LanguageSpecificText.VisualBasic, "Await"),
                     (LanguageSpecificText.FSharp, "let!"),
                     (LanguageSpecificText.Neutral, "await"),
-                })
-            });
+                ])
+            ]);
         }
 
         /// <inheritdoc />
         protected override void CreateElementHandlers()
         {
-            this.AddElements(new Element[]
-            {
+            this.AddElements(
+            [
                 // MAML document root element types
                 new NonRenderedParentElement("topic"),
                 new NonRenderedParentElement("codeEntityDocument"),
@@ -603,15 +603,15 @@ namespace Sandcastle.PresentationStyles.Default2022
                 new ConvertibleElement("typeparamref", "name", "span", "parameter"),
                 new ValueElement(),
                 new VersionsElement()
-            });
+            ]);
         }
 
         /// <inheritdoc />
         protected override void CreateApiTopicSectionHandlers()
         {
             // API Topic sections will be rendered in this order by default
-            this.AddApiTopicSectionHandlerRange(new[]
-            {
+            this.AddApiTopicSectionHandlerRange(
+            [
                 new ApiTopicSectionHandler(ApiTopicSectionType.Notices, t => RenderNotices(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.Summary, t => RenderApiSummarySection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.SyntaxSection, t => RenderApiSyntaxSection(t)),
@@ -632,7 +632,7 @@ namespace Sandcastle.PresentationStyles.Default2022
                 new ApiTopicSectionHandler(ApiTopicSectionType.Bibliography,
                     t => RenderApiBibliographySection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.SeeAlso, t => RenderApiSeeAlsoSection(t))
-            });
+            ]);
         }
 
         /// <inheritdoc />
@@ -648,7 +648,7 @@ namespace Sandcastle.PresentationStyles.Default2022
             experimental.NoticeStyleClasses = "tag is-warning is-medium";
             experimental.TagStyleClasses = "tag is-warning is-rounded";
 
-            this.AddNoticeDefinitions(new[] { preliminary, obsolete, experimental });
+            this.AddNoticeDefinitions([preliminary, obsolete, experimental]);
         }
 
         /// <inheritdoc />
@@ -679,7 +679,7 @@ namespace Sandcastle.PresentationStyles.Default2022
                     resizableContentStyle = " toc-resizable-content";
                 }
 
-                pageTemplate = LoadTemplateFile(this.TopicTemplatePath, new[] {
+                pageTemplate = LoadTemplateFile(this.TopicTemplatePath, [
                     ("{@Locale}", this.Locale),
                     ("{@LocaleLowercase}", this.Locale.ToLowerInvariant()),
                     ("{@IconPath}", this.IconPath),
@@ -690,7 +690,7 @@ namespace Sandcastle.PresentationStyles.Default2022
                     ("{@ResizableTocStyle}", resizableTocStyle),
                     ("{@ResizerStyle}", resizerStyle),
                     ("{@ResizableContentStyle}", resizableContentStyle),
-                });
+                ]);
             }
 
             // Set the default language and connect the language-specific text, and language filter on startup
@@ -1490,7 +1490,7 @@ $("".toggleSection"").keypress(function () {
                     new XElement("include", new XAttribute("item", "boilerplate_requirementsAssemblyLabel"))));
             }
 
-            string separator = new String(Element.NonBreakingSpace, separatorSize);
+            string separator = new(Element.NonBreakingSpace, separatorSize);
             int maxVersionParts = ((Default2022Transformation)transformation).MaxVersionParts;
 
             foreach(var l in libraries)
@@ -1758,7 +1758,7 @@ $("".toggleSection"").keypress(function () {
             if(allMembers == null)
                 return;
 
-            List<XElement> fieldMembers = new List<XElement>(), extensionsMethods = new List<XElement>();
+            List<XElement> fieldMembers = [], extensionsMethods = [];
 
             // Enumerations can have extension methods which need to be rendered in a separate section
             foreach(var m in allMembers)
@@ -2044,7 +2044,7 @@ $("".toggleSection"").keypress(function () {
                     el.Element("apidata")?.Attribute("name").Value ?? String.Empty).ThenBy(
                     el => el.Element("templates")?.Elements()?.Count() ?? 0))
                 {
-                    XElement referenceLink = new XElement("referenceLink",
+                    XElement referenceLink = new("referenceLink",
                             new XAttribute("target", e.Attribute("api").Value));
                     string showParameters = (!((Default2022Transformation)transformation).ShowParametersOnAllMethods &&
                         transformation.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload &&
@@ -2314,10 +2314,10 @@ $("".toggleSection"").keypress(function () {
                 conceptualLinkHandler = transformation.ElementHandlerFor("conceptualLink");
 
             // Get see also elements from comments excluding those in overloads comments
-            List<XElement> seeAlsoNotInOverloads = transformation.CommentsNode.Descendants("seealso").Where(
-                    s => !s.Ancestors("overloads").Any()).ToList(),
-                seeAlsoHRef = seeAlsoNotInOverloads.Where(s => s.Attribute("href") != null).ToList(),
-                seeAlsoCRef = seeAlsoNotInOverloads.Except(seeAlsoHRef).ToList();
+            List<XElement> seeAlsoNotInOverloads = [.. transformation.CommentsNode.Descendants("seealso").Where(
+                    s => !s.Ancestors("overloads").Any())],
+                seeAlsoHRef = [.. seeAlsoNotInOverloads.Where(s => s.Attribute("href") != null)],
+                seeAlsoCRef = [.. seeAlsoNotInOverloads.Except(seeAlsoHRef)];
 
             // Combine those with see also elements from element overloads comments
             var elements = transformation.ReferenceNode.Element("elements") ?? new XElement("elements");

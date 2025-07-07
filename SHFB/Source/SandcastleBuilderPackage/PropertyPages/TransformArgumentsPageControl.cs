@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TransformArgumentsPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 08/20/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Transform Arguments category properties
 //
@@ -20,7 +20,6 @@
 // ==============================================================================================================
 
 using System;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
@@ -28,11 +27,15 @@ using System.Xml.Linq;
 using Microsoft.Build.Evaluation;
 
 using Sandcastle.Core;
+using Sandcastle.Core.Project;
+
+using SandcastleBuilder.MSBuild.HelpProject;
+
+
 
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
 #endif
-using SandcastleBuilder.Utils;
 using SandcastleBuilder.WPF.PropertyPages;
 
 namespace SandcastleBuilder.Package.PropertyPages
@@ -79,7 +82,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         protected override bool BindControlValue(string propertyName)
         {
-            SandcastleProject currentProject = null;
+            ISandcastleProject currentProject = null;
 
 #if !STANDALONEGUI
             if(this.ProjectMgr != null)
@@ -101,7 +104,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         protected override bool StoreControlValue(string propertyName)
         {
-            XElement root = new XElement("TransformComponentArguments",
+            XElement root = new("TransformComponentArguments",
                 ucTransformArgumentsPageContent.TransformationArguments.Select(t => t.ToXml()));
 
             var reader = root.CreateReader();
@@ -116,7 +119,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(this.CurrentProject == null)
                 return false;
 
-            this.CurrentProject.MSBuildProject.SetProperty("TransformComponentArguments", reader.ReadInnerXml());
+            ((SandcastleProject)this.CurrentProject).MSBuildProject.SetProperty("TransformComponentArguments", reader.ReadInnerXml());
 #endif
             return true;
         }
@@ -145,8 +148,10 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(this.IsDisposed || this.CurrentProject == null)
                 return;
 
-            argsProp = this.CurrentProject.MSBuildProject.GetProperty("TransformComponentArguments");
-            styleProp = this.CurrentProject.MSBuildProject.GetProperty("PresentationStyle");
+            var project = ((SandcastleProject)this.CurrentProject).MSBuildProject;
+
+            argsProp = project.GetProperty("TransformComponentArguments");
+            styleProp = project.GetProperty("PresentationStyle");
 #endif
             e.ProjectLoaded = true;
             e.PresentationStyle = (styleProp != null) ? styleProp.UnevaluatedValue : Constants.DefaultPresentationStyle;

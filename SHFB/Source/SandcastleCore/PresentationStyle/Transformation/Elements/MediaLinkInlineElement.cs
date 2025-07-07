@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : MediaLinkInlineElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/10/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle mediaLinkInline elements
 //
@@ -19,6 +19,8 @@
 
 using System;
 using System.Xml.Linq;
+
+using Sandcastle.Core.Project;
 
 namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 {

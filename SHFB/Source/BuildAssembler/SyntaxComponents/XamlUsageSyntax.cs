@@ -125,12 +125,12 @@ namespace Sandcastle.Tools.SyntaxGenerators
         }
 
         // list of classes whose subclasses do NOT get XAML syntax
-        private readonly List<string> excludedAncestorList = new List<string>();
+        private readonly List<string> excludedAncestorList = [];
 
         // List of assemblies whose members get XAML syntax.  The assembly name key is compared case-insensitively.
         // The nested dictionary is a list of assembly namespaces that have one or more xmlns URIs for xaml.
-        private readonly Dictionary<string, Dictionary<string, List<string>>> xamlAssemblies =
-            new Dictionary<string, Dictionary<string, List<string>>>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, Dictionary<string, List<string>>> xamlAssemblies = 
+            new(StringComparer.OrdinalIgnoreCase);
 
         private void LoadConfigNode(XPathNavigator configuration)
         {
@@ -174,7 +174,7 @@ namespace Sandcastle.Tools.SyntaxGenerators
 
                 if(!xamlAssemblies.TryGetValue(assemblyName, out Dictionary<string, List<string>> clrNamespaces))
                 {
-                    clrNamespaces = new Dictionary<string, List<string>>();
+                    clrNamespaces = [];
                     xamlAssemblies.Add(assemblyName, clrNamespaces);
                 }
 
@@ -194,7 +194,7 @@ namespace Sandcastle.Tools.SyntaxGenerators
 
                         if(!clrNamespaces.TryGetValue(namespaceName, out List<string> xmlnsUriList))
                         {
-                            xmlnsUriList = new List<string>();
+                            xmlnsUriList = [];
                             clrNamespaces.Add(namespaceName, xmlnsUriList);
                         }
 
@@ -232,13 +232,11 @@ namespace Sandcastle.Tools.SyntaxGenerators
         {
             try
             {
-                using(var xr = XmlReader.Create(file, new XmlReaderSettings { CloseInput = true }))
-                {
-                    XPathDocument document = new XPathDocument(xr);
+                using var xr = XmlReader.Create(file, new XmlReaderSettings { CloseInput = true });
+                XPathDocument document = new(xr);
 
-                    XPathNavigator xamlSyntaxNode = document.CreateNavigator().SelectSingleNode("/*");
-                    LoadConfiguration(xamlSyntaxNode);
-                }
+                XPathNavigator xamlSyntaxNode = document.CreateNavigator().SelectSingleNode("/*");
+                LoadConfiguration(xamlSyntaxNode);
             }
             catch(Exception e)
             {

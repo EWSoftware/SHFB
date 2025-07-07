@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DocumentedEntitiesOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2021
-// Note    : Copyright 2016-2021, Eric Woodruff, All rights reserved
+// Updated : 06/21/2025
+// Note    : Copyright 2016-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that can be used to automatically generate an API filter based on the XML
 // comments member IDs to limit the help file content to only the documented entities.
@@ -26,8 +26,8 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.BuildEngine;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -68,13 +68,6 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         private class DocumentationState
         {
-            #region Private data members
-            //=====================================================================
-
-            private List<DocumentationState> members;
-
-            #endregion
-
             #region Properties
             //=====================================================================
 
@@ -135,16 +128,8 @@ namespace SandcastleBuilder.PlugIns
             /// <summary>
             /// This returns the documentation state of the members for namespaces and types
             /// </summary>
-            public List<DocumentationState> Members
-            {
-                get
-                {
-                    if(members == null)
-                        members = new List<DocumentationState>();
+            public List<DocumentationState> Members { get; } = [];
 
-                    return members;
-                }
-            }
             #endregion
 
             #region Methods
@@ -166,7 +151,9 @@ namespace SandcastleBuilder.PlugIns
 
                 if(String.IsNullOrWhiteSpace(docState.MemberId) || docState.MemberId.Length < 2 ||
                   docState.IdType == 'G' || docState.MemberId[1] != ':')
+                {
                     return docState;
+                }
 
                 if(docState.IdType == 'N')
                     docState.NamespaceName = docState.MemberId.Substring(2);
@@ -212,9 +199,7 @@ namespace SandcastleBuilder.PlugIns
         #region Private data members
         //=====================================================================
 
-        private List<ExecutionPoint> executionPoints;
-
-        private BuildProcess builder;
+        private IBuildProcess builder;
 
         #endregion
 
@@ -225,31 +210,22 @@ namespace SandcastleBuilder.PlugIns
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public IEnumerable<ExecutionPoint> ExecutionPoints
-        {
-            get
-            {
-                if(executionPoints == null)
-                    executionPoints = new List<ExecutionPoint>
-                    {
-                        // This plug-in is unique.  It is given the lowest priority to run last before the build
-                        // step in order to remove any project-defined API filter.  It is given the highest
-                        // priority to run first after the default processing in order to determine and apply the
-                        // modified API filter based on what information is defined.
-                        new ExecutionPoint(BuildStep.GenerateReflectionInfo, ExecutionBehaviors.Before, Int32.MinValue),
-                        new ExecutionPoint(BuildStep.GenerateReflectionInfo, ExecutionBehaviors.After, Int32.MaxValue)
-                    };
-
-                return executionPoints;
-            }
-        }
+        public IEnumerable<ExecutionPoint> ExecutionPoints { get; } =
+        [
+            // This plug-in is unique.  It is given the lowest priority to run last before the build
+            // step in order to remove any project-defined API filter.  It is given the highest
+            // priority to run first after the default processing in order to determine and apply the
+            // modified API filter based on what information is defined.
+            new ExecutionPoint(BuildStep.GenerateReflectionInfo, ExecutionBehaviors.Before, Int32.MinValue),
+            new ExecutionPoint(BuildStep.GenerateReflectionInfo, ExecutionBehaviors.After, Int32.MaxValue)
+        ];
 
         /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XElement configuration)
+        public void Initialize(IBuildProcess buildProcess, XElement configuration)
         {
             builder = buildProcess;
 
@@ -283,16 +259,14 @@ namespace SandcastleBuilder.PlugIns
 
                 config = XDocument.Load(configFile);
                 currentFilter = config.Root.Descendants("apiFilter").FirstOrDefault();
-
-                if(currentFilter != null)
-                    currentFilter.RemoveNodes();
+                currentFilter?.RemoveNodes();
 
                 config.Save(configFile);
 
                 return;
             }
 
-            Dictionary<string, DocumentationState> memberDocState = new Dictionary<string, DocumentationState>();
+            Dictionary<string, DocumentationState> memberDocState = [];
             DocumentationState docState;
             string id;
             bool isAutoDocumented, originalTypeDocState, autoDocConstructors = builder.CurrentProject.AutoDocumentConstructors,
@@ -317,6 +291,7 @@ namespace SandcastleBuilder.PlugIns
             }
 
             foreach(var file in builder.CommentsFiles)
+            {
                 foreach(XmlNode member in file.Members)
                 {
                     if(member.LocalName != "member")
@@ -346,6 +321,7 @@ namespace SandcastleBuilder.PlugIns
 
                         // Add or update entries for attached properties and events
                         if(id[0] == 'F')
+                        {
                             if(member.SelectSingleNode("AttachedPropertyComments") != null &&
                                 id.EndsWith("Property", StringComparison.Ordinal))
                             {
@@ -364,6 +340,7 @@ namespace SandcastleBuilder.PlugIns
                                 memberDocState[id] = docState;
                             }
                             else
+                            {
                                 if(member.SelectSingleNode("AttachedEventComments") != null &&
                                     id.EndsWith("Event", StringComparison.Ordinal))
                                 {
@@ -381,14 +358,18 @@ namespace SandcastleBuilder.PlugIns
 
                                     memberDocState[id] = docState;
                                 }
+                            }
+                        }
                     }
                 }
+            }
 
             var allNamespaces = memberDocState.Values.Where(m => m.IdType == 'N').ToList();
             var allTypes = memberDocState.Values.Where(m => m.IdType == 'T');
             var allMembers = memberDocState.Values.Where(m => m.IdType != 'N' && m.IdType != 'T');
 
             foreach(var ns in allNamespaces)
+            {
                 foreach(var t in allTypes.Where(t => t.NamespaceName == ns.NamespaceName))
                 {
                     ns.Members.Add(t);
@@ -396,6 +377,7 @@ namespace SandcastleBuilder.PlugIns
                     foreach(var m in allMembers.Where(am => am.FullTypeName == t.FullTypeName))
                         t.Members.Add(m);
                 }
+            }
 
             builder.ReportProgress("Building API filter based on the XML comments members...");
 
@@ -431,6 +413,7 @@ namespace SandcastleBuilder.PlugIns
                                         isDocumented = !memberGroup.First().IsExplicitlyExcluded;
                                 }
                                 else
+                                {
                                     if(memberGroup.Key == ".ctor")
                                     {
                                         isAutoDocumented = true;
@@ -442,6 +425,7 @@ namespace SandcastleBuilder.PlugIns
                                         }
                                     }
                                     else
+                                    {
                                         if(memberGroup.Key == "Dispose")
                                         {
                                             isAutoDocumented = true;
@@ -453,6 +437,8 @@ namespace SandcastleBuilder.PlugIns
                                                     m.MemberId.EndsWith(".Dispose(System.Boolean)", StringComparison.Ordinal)));
                                             }
                                         }
+                                    }
+                                }
 
                                 foreach(var m in memberGroup)
                                 {
@@ -508,6 +494,7 @@ namespace SandcastleBuilder.PlugIns
 
                 // Only add documented types if the namespace is documented
                 if(namespaceDoc.IsDocumented)
+                {
                     foreach(var typeDoc in namespaceDoc.Members.OrderBy(m => m.TypeName))
                     {
                         // Only add types if not documented or one or more members are not documented
@@ -521,12 +508,19 @@ namespace SandcastleBuilder.PlugIns
                             // member name.  The way the API filter works is by name alone.  If one overload of a
                             // set is excluded, all of them are.
                             if(typeDoc.IsDocumented)
+                            {
                                 foreach(var memberDoc in typeDoc.Members.OrderBy(m => m.MemberName).GroupBy(m => m.MemberName))
+                                {
                                     if(!memberDoc.First().IsDocumented)
+                                    {
                                         t.Add(new XElement("member", new XAttribute("name", memberDoc.Key),
                                             new XAttribute("expose", false)));
+                                    }
+                                }
+                            }
                         }
                     }
+                }
             }
 
             config = XDocument.Load(Path.Combine(builder.WorkingFolder, "MRefBuilder.config"));
@@ -550,9 +544,9 @@ namespace SandcastleBuilder.PlugIns
             // Silverlight build targets are only available for 32-bit builds regardless of the framework
             // version and require the 32-bit version of MSBuild in order to load the target file correctly.
             if(builder.CurrentProject.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
-                builder.TaskRunner.Run32BitProject(generateRefInfoProjectFile, false);
+                builder.Run32BitProject(generateRefInfoProjectFile, false);
             else
-                builder.TaskRunner.RunProject(generateRefInfoProjectFile, false);
+                builder.RunProject(generateRefInfoProjectFile, false);
         }
         #endregion
 

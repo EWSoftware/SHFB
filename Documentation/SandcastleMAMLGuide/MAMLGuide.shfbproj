@@ -241,7 +241,6 @@
     <None Include="Content\VersionHistory\v2017.5.15.0.aml" />
     <None Include="Content\VersionHistory\v2022.4.16.0.aml" />
     <None Include="ExampleFiles\MediaContent.xml" />
-    <None Include="ExampleFiles\Tokens.xml" />
     <None Include="Content\VersionHistory\VersionHistory.aml" />
     <None Include="Content\VersionHistory\v1.0.0.0.aml" />
     <None Include="Content\MiscElements\Token.aml" />

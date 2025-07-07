@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ApiNodeInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/16/2019
-// Note    : Copyright 2017-2019, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2017-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to associate additional information with each tree node to make it easier
 // to look stuff up.
@@ -29,7 +29,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Xml;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core.Project;
 
 using SandcastleBuilder.WPF.XPath;
 
@@ -45,9 +45,6 @@ namespace SandcastleBuilder.WPF.PropertyPages
         //=====================================================================
 
         private readonly BindingList<ApiNodeInfo> subMembers;
-
-        private bool isIncluded, isExpanded, isSelected;
-        private Brush backgroundBrush;
 
         #endregion
 
@@ -119,12 +116,12 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public Brush BackgroundBrush
         {
-            get => backgroundBrush;
+            get => field;
             set
             {
-                if(backgroundBrush != value)
+                if(field != value)
                 {
-                    backgroundBrush = value;
+                    field = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BackgroundBrush)));
                 }
             }
@@ -135,12 +132,12 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public bool IsIncluded
         {
-            get => isIncluded;
+            get => field;
             set
             {
-                if(isIncluded != value)
+                if(field != value)
                 {
-                    isIncluded = value;
+                    field = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsIncluded)));
                 }
             }
@@ -151,12 +148,12 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public bool IsExpanded
         {
-            get => isExpanded;
+            get => field;
             set
             {
-                if(isExpanded != value)
+                if(field != value)
                 {
-                    isExpanded = value;
+                    field = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsExpanded)));
                 }
             }
@@ -167,12 +164,12 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public bool IsSelected
         {
-            get => isSelected;
+            get => field;
             set
             {
-                if(isSelected != value)
+                if(field != value)
                 {
-                    isSelected = value;
+                    field = value;
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSelected)));
                 }
             }
@@ -195,6 +192,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 if(this.ApiNode == null)
                     uri = String.Format(CultureInfo.InvariantCulture, uri, this.Id, String.Empty);
                 else
+                {
                     switch(this.EntryType)
                     {
                         case ApiEntryType.None:
@@ -208,6 +206,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                             uri = String.Format(CultureInfo.InvariantCulture, uri, this.EntryType, this.Visibility);
                             break;
                     }
+                }
 
                 return uri;
             }
@@ -221,7 +220,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <summary>
         /// This read-only property is used to see if the <see cref="IsIncluded"/> state can be changed
         /// </summary>
-        public bool CanChangeIncludeState => (this.ApiNode != null && !this.IsProjectExclude);
+        public bool CanChangeIncludeState => this.ApiNode != null && !this.IsProjectExclude;
 
         #endregion
 
@@ -244,7 +243,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
             if(text == null)
                 throw new ArgumentNullException(nameof(text));
 
-            subMembers = new BindingList<ApiNodeInfo>();
+            subMembers = [];
 
             if(apiNode != null)
             {
@@ -271,8 +270,10 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     }
                 }
                 else
+                {
                     if(fullName.IndexOf('`') != -1)
                         fullName = XPathFunctionContext.ReplaceTypeTemplateMarker(apiNode, fullName);
+                }
 
                 this.FullyQualifiedName = fullName;
             }
@@ -305,9 +306,11 @@ namespace SandcastleBuilder.WPF.PropertyPages
             if(nodeText.Length == 0)
                 nodeText = "(global)";
             else
+            {
                 if(nodeText == "#cctor")
                     nodeText = "Static Constructor";
                 else
+                {
                     if(nodeText == "#ctor")
                         nodeText = "Constructor";
                     else
@@ -326,10 +329,12 @@ namespace SandcastleBuilder.WPF.PropertyPages
                         if(nodeText.StartsWith("op_", StringComparison.Ordinal))
                             nodeText = nodeText.Substring(3) + " Operator";
                     }
+                }
+            }
 
             // If this API node contains template information, add that info to the node's display text
             XmlNodeList templates;
-            StringBuilder sb = new StringBuilder(100);
+            StringBuilder sb = new(100);
             int idx = 1;
 
             if(this.ApiNode.Name == "api")

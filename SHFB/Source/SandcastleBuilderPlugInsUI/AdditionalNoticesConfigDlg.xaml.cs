@@ -1,8 +1,8 @@
 ﻿//===============================================================================================================
-// System  : EWSoftware Design Time Attributes and Editors
+// System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalNoticesConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/26/2025
+// Updated : 06/20/2025
 // Note    : Copyright 2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the additional notices plug-in configuration
@@ -24,11 +24,11 @@ using System.Windows.Controls;
 using System.Xml.Linq;
 
 using Sandcastle.Core;
+using Sandcastle.Core.PlugIn;
 using Sandcastle.Core.PresentationStyle.Transformation;
-using Sandcastle.Platform.Windows;
+using Sandcastle.Core.Project;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
+using Sandcastle.Platform.Windows;
 
 namespace SandcastleBuilder.PlugIns.UI
 {
@@ -47,7 +47,7 @@ namespace SandcastleBuilder.PlugIns.UI
         public sealed class Factory : IPlugInConfigurationEditor
         {
             /// <inheritdoc />
-            public bool EditConfiguration(SandcastleProject project, XElement configuration)
+            public bool EditConfiguration(ISandcastleProject project, XElement configuration)
             {
                 var dlg = new AdditionalNoticesConfigDlg(project, configuration);
 
@@ -60,7 +60,7 @@ namespace SandcastleBuilder.PlugIns.UI
         //=====================================================================
 
         private readonly XElement configuration;
-        private readonly SandcastleProject project;
+        private readonly ISandcastleProject project;
 
         #endregion
 
@@ -72,7 +72,7 @@ namespace SandcastleBuilder.PlugIns.UI
         /// </summary>
         /// <param name="project">The current project</param>
         /// <param name="configuration">The current configuration element</param>
-        public AdditionalNoticesConfigDlg(SandcastleProject project, XElement configuration)
+        public AdditionalNoticesConfigDlg(ISandcastleProject project, XElement configuration)
         {
             InitializeComponent();
 

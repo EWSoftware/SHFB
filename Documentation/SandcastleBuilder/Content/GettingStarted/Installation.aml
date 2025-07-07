@@ -61,8 +61,8 @@ installed.  You will also need to ensure the requirements noted below are also p
 					<listItem>
 						<para>If you are using the standalone GUI to build help file projects, you will need to install the
 <externalLink>
-	<linkText>Microsoft Build Tools for Visual Studio 2017 or 2019</linkText>
-	<linkUri>https://visualstudio.microsoft.com/vs/older-downloads/</linkUri>
+	<linkText>Microsoft Build Tools for Visual Studio 2022</linkText>
+	<linkUri>https://visualstudio.microsoft.com/downloads/</linkUri>
 	<linkTarget>_blank</linkTarget>
 </externalLink>.  If you are using <token>VisualStudioMinVersion</token> or later to build help file projects,
 there is no need to install the build tools separately.  The version of MSBuild deployed with Visual Studio will
@@ -120,8 +120,7 @@ files.  These are installed as part of Visual Studio.</para>
 						<para>If you need a spell checker for Visual Studio, the <legacyBold>Visual Studio Spell Checker</legacyBold>
 extension can be downloaded and installed from the Visual Studio Gallery.  It is an editor extension that checks
 the spelling of comments, strings, and plain text as you type or interactively with a tool window.  Support is
-included for spell checking source code, XML files, and MAML topic files.  Versions are available for Versions
-are available for 
+included for spell checking source code, XML files, and MAML topic files.  Versions are available for 
 <externalLink>
 	<linkText>Visual Studio 2013 and 2015</linkText>
 	<linkAlternateText>Visual Studio Spell Checker (VS2013/2015)</linkAlternateText>

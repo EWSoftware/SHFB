@@ -1,10 +1,9 @@
 ﻿Imports System.ComponentModel.Composition.Hosting
 Imports System.Windows.Forms
 
-Imports Sandcastle.Core.BuildAssembler
-
-Imports SandcastleBuilder.Utils
-Imports SandcastleBuilder.Utils.BuildComponent
+Imports Sandcastle.Core
+Imports Sandcastle.Core.PlugIn
+Imports Sandcastle.Core.Project
 
 ' TODO: Include the build output in your component or plug-in project.  Add the following element to include
 '       the assembly from this project in the component or plug-in project's package output.  If there are

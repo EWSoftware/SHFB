@@ -44,7 +44,7 @@ namespace Sandcastle.Tools.Reflection
         public RootFilter()
         {
             exposed = true;
-            namespaceFilters = new List<NamespaceFilter>();
+            namespaceFilters = [];
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Sandcastle.Tools.Reflection
             while(subtree.Read())
                 if(subtree.NodeType == XmlNodeType.Element && subtree.Name == "namespace")
                 {
-                    NamespaceFilter namespaceFilter = new NamespaceFilter(subtree);
+                    NamespaceFilter namespaceFilter = new(subtree);
                     namespaceFilters.Add(namespaceFilter);
                 }
 

@@ -51,7 +51,7 @@ namespace Sandcastle.Tools
         public ExtensionMethodAddIn(ManagedReflectionWriter writer, XPathNavigator configuration) :
           base(writer, configuration)
         {
-            index = new Dictionary<TypeNode, List<Method>>();
+            index = [];
 
             this.mrw = writer ?? throw new ArgumentNullException(nameof(writer));
 
@@ -92,7 +92,7 @@ namespace Sandcastle.Tools
                     // added so convert to a list first to avoid enumeration issues.
                     foreach(Member member in type.Members.ToList())
                     {
-                        if(!(member is Method method) || !mrw.ApiFilter.IsExposedMember(method) ||
+                        if(member is not Method method || !mrw.ApiFilter.IsExposedMember(method) ||
                           !method.Attributes.Any(a => a.Type.FullName == "System.Runtime.CompilerServices.ExtensionAttribute"))
                             continue;
 
@@ -148,7 +148,7 @@ namespace Sandcastle.Tools
 
                         if(!index.TryGetValue(extendedType, out List<Method> methods))
                         {
-                            methods = new List<Method>();
+                            methods = [];
                             index.Add(extendedType, methods);
                         }
 
@@ -176,7 +176,7 @@ namespace Sandcastle.Tools
         /// <param name="info">For this callback, this is a member dictionary</param>
         private void AddExtensionMethods(XmlWriter writer, object info)
         {
-            if(!(info is MemberDictionary members))
+            if(info is not MemberDictionary members)
                 return;
 
             TypeNode type = members.Type;
@@ -197,10 +197,16 @@ namespace Sandcastle.Tools
                     TypeNode specialization = contract.TemplateArguments[0];
 
                     if(index.TryGetValue(templateContract, out extensionMethods))
+                    {
                         foreach(Method extensionMethod in extensionMethods)
+                        {
                             if(IsValidTemplateArgument(specialization, extensionMethod.TemplateParameters[0]))
+                            {
                                 if(!IsExtensionMethodHidden(extensionMethod, members))
                                     AddExtensionMethod(writer, type, extensionMethod, specialization);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -263,10 +269,7 @@ namespace Sandcastle.Tools
             if(extensionMethodTemplate2.IsGeneric && specialization != null)
             {
                 // The specialization type is the first of the method's template arguments
-                TypeNodeList templateArgs = new TypeNodeList
-                {
-                    specialization
-                };
+                TypeNodeList templateArgs = [specialization];
 
                 // Add any additional template arguments
                 for(int i = 1; i < extensionMethodTemplate.TemplateParameters.Count; i++)
@@ -277,7 +280,7 @@ namespace Sandcastle.Tools
 
             ParameterList extensionMethodTemplateParameters = extensionMethodTemplate2.Parameters;
 
-            ParameterList extensionMethodParameters = new ParameterList();
+            ParameterList extensionMethodParameters = [];
 
             for(int i = 1; i < extensionMethodTemplateParameters.Count; i++)
             {
@@ -285,8 +288,8 @@ namespace Sandcastle.Tools
                 extensionMethodParameters.Add(extensionMethodParameter);
             }
 
-            Method extensionMethod = new Method(extensionMethodTemplate.DeclaringType, new AttributeList(),
-              extensionMethodTemplate.Name, extensionMethodParameters, extensionMethodTemplate2.ReturnType, null)
+            Method extensionMethod = new(extensionMethodTemplate.DeclaringType, [], extensionMethodTemplate.Name,
+              extensionMethodParameters, extensionMethodTemplate2.ReturnType, null)
             {
                 Flags = extensionMethodTemplate.Flags & ~MethodFlags.Static
             };
@@ -336,7 +339,7 @@ namespace Sandcastle.Tools
                 throw new ArgumentNullException(nameof(type));
 
             // Check that the parameter really is a type parameter
-            if(!(parameter is ITypeParameter itp))
+            if(parameter is not ITypeParameter itp)
                 throw new ArgumentException("The 'parameter' argument is null or not an 'ITypeParameter'.");
 
             // Test constraints

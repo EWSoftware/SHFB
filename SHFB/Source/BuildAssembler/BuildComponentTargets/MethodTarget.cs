@@ -53,7 +53,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
         /// <param name="returnType">The method return type</param>
         public MethodTarget(IList<Parameter> parameters, TypeReference returnType)
         {
-            this.Parameters = (parameters ?? new List<Parameter>());
+            this.Parameters = parameters ?? [];
             this.ReturnType = returnType;
         }
         #endregion

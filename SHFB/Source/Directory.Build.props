@@ -1,0 +1,12 @@
+<Project>
+	<PropertyGroup>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)SandcastleTools.snk</AssemblyOriginatorKeyFile>
+
+		<!-- Using preview to gain access to the field keyword -->
+		<LangVersion>preview</LangVersion>
+
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+	</PropertyGroup>
+</Project>

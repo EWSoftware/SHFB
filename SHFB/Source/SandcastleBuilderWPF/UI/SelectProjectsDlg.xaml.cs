@@ -1,8 +1,8 @@
 ﻿//===============================================================================================================
-// System  : Sandcastle Help File Builder MSBuild Tasks
+// System  : Sandcastle Help File Builder WPF Controls
 // File    : SelectProjectsDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/20/2025
+// Updated : 06/21/2025
 // Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a form used to indicate whether to add the solution or just selected projects from within
@@ -26,7 +26,7 @@ using System.Windows;
 
 using Sandcastle.Platform.Windows;
 
-using SandcastleBuilder.Utils.MSBuild;
+using SandcastleBuilder.MSBuild.HelpProject;
 
 namespace SandcastleBuilder.WPF.UI
 {
@@ -127,7 +127,7 @@ namespace SandcastleBuilder.WPF.UI
         /// <returns>An enumerable list containing either the solution name or the selected projects</returns>
         public static IEnumerable<string> SelectSolutionOrProjects(string solutionName)
         {
-            SelectProjectsDlg dlg = new SelectProjectsDlg();
+            SelectProjectsDlg dlg = new();
 
             dlg.LoadSolutionProjectNames(solutionName);
 

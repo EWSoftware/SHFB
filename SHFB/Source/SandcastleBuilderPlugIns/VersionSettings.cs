@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : VersionSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/16/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing version settings for the Version Builder plug-in
 //
@@ -25,7 +25,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -34,14 +34,6 @@ namespace SandcastleBuilder.PlugIns
     /// </summary>
     public class VersionSettings : INotifyPropertyChanged
     {
-        #region Private data members
-        //=====================================================================
-
-        private FilePath helpFileProject;
-        private string frameworkLabel, version, errorMessage, versionInfoDescription;
-
-        #endregion
-
         #region Properties
         //=====================================================================
 
@@ -57,15 +49,15 @@ namespace SandcastleBuilder.PlugIns
         /// <remarks>This is used to group like versions of projects.</remarks>
         public string FrameworkLabel
         {
-            get => frameworkLabel;
+            get => field;
             set
             {
-                if(frameworkLabel != value)
+                if(field != value)
                 {
                     if(!String.IsNullOrEmpty(value))
-                        frameworkLabel = value.Trim();
+                        field = value.Trim();
                     else
-                        frameworkLabel = value;
+                        field = value;
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -78,15 +70,15 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string Version
         {
-            get => version;
+            get => field;
             set
             {
-                if(version != value)
+                if(field != value)
                 {
-                    version = value;
+                    field = value;
 
-                    if(String.IsNullOrWhiteSpace(version))
-                        version = "1.0";
+                    if(String.IsNullOrWhiteSpace(field))
+                        field = "1.0";
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -102,19 +94,19 @@ namespace SandcastleBuilder.PlugIns
         /// assemblies such as references, API filter settings, etc.</value>
         public FilePath HelpFileProject
         {
-            get => helpFileProject;
+            get => field;
             set
             {
-                if(helpFileProject != value)
+                if(field != value)
                 {
-                    if(helpFileProject != null)
-                        helpFileProject.PersistablePathChanged -= this.helpFileProject_PersistablePathChanged;
+                    if(field != null)
+                        field.PersistablePathChanged -= this.helpFileProject_PersistablePathChanged;
 
                     if(value == null)
-                        value = new FilePath(helpFileProject.BasePathProvider);
+                        value = new FilePath(field.BasePathProvider);
 
-                    helpFileProject = value;
-                    helpFileProject.PersistablePathChanged += this.helpFileProject_PersistablePathChanged;
+                    field = value;
+                    field.PersistablePathChanged += this.helpFileProject_PersistablePathChanged;
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -127,10 +119,10 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string ErrorMessage
         {
-            get => errorMessage;
+            get => field;
             private set
             {
-                errorMessage = value;
+                field = value;
 
                 this.OnPropertyChanged();
             }
@@ -141,10 +133,10 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string VersionInfoDescription
         {
-            get => versionInfoDescription;
+            get => field;
             private set
             {
-                versionInfoDescription = value;
+                field = value;
 
                 this.OnPropertyChanged();
             }
@@ -157,7 +149,7 @@ namespace SandcastleBuilder.PlugIns
         /// <see cref="Object.GetHashCode"/> as the WPF list box relies on an immutable hash value to track
         /// elements.  Editing the framework and version values in an existing instance caused it to throw
         /// duplicate key errors.</value>
-        public int UniqueId => (frameworkLabel + version).GetHashCode();
+        public int UniqueId => (this.FrameworkLabel + this.Version).GetHashCode();
 
         #endregion
 
@@ -212,13 +204,13 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         private void Validate()
         {
-            if(helpFileProject.Path.Length == 0)
+            if(this.HelpFileProject.Path.Length == 0)
                 this.ErrorMessage = "A help file project is required";
             else
                 this.ErrorMessage = null;
 
             this.VersionInfoDescription = String.Format(CultureInfo.CurrentCulture, "{0} {1} - {2}",
-                frameworkLabel, version, helpFileProject.PersistablePath);
+                this.FrameworkLabel, this.Version, this.HelpFileProject.PersistablePath);
         }
         #endregion
 
@@ -235,7 +227,7 @@ namespace SandcastleBuilder.PlugIns
         /// <c>version</c> and <c>helpFileProject</c>).</remarks>
         public static VersionSettings FromXml(IBasePathProvider pathProvider, XElement configuration)
         {
-            VersionSettings vs = new VersionSettings(pathProvider);
+            VersionSettings vs = new(pathProvider);
 
             if(configuration != null)
             {

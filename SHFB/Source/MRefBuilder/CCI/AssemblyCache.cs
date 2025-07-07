@@ -6,6 +6,8 @@
 // Change history:
 // 11/23/2013 - EFW - Cleared out the conditional statements and dead code
 
+// Ignore Spelling: Buf
+
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -17,7 +19,7 @@ namespace System.Compiler
     {
         private const uint GAC = 2;
 
-        private static readonly object Lock = new object();
+        private static readonly object Lock = new();
         private static bool FusionLoaded;
 
         /// <param name="codeBaseUri">Uri pointing to the assembly</param>
@@ -49,14 +51,15 @@ namespace System.Compiler
                 while(assemblyEnum.GetNextAssembly(out IApplicationContext applicationContext, out IAssemblyName currentName, 0) == 0)
                 {
                     //^ assume currentName != null;
-                    AssemblyName assemblyName = new AssemblyName(currentName);
+                    AssemblyName assemblyName = new(currentName);
                     string scheme = codeBaseUri.Scheme;
 
                     if(scheme != null && assemblyName.CodeBase.StartsWith(scheme))
                     {
                         try
                         {
-                            Uri foundUri = new Uri(assemblyName.CodeBase);
+                            Uri foundUri = new(assemblyName.CodeBase);
+
                             if(codeBaseUri.Equals(foundUri))
                                 return true;
                         }
@@ -102,7 +105,7 @@ namespace System.Compiler
                 while(assemblyEnum.GetNextAssembly(out IApplicationContext applicationContext, out IAssemblyName currentName, 0) == 0)
                 {
                     //^ assume currentName != null;
-                    AssemblyName aName = new AssemblyName(currentName);
+                    AssemblyName aName = new(currentName);
 
                     if(assemblyReference.Matches(aName.Name, aName.Version, aName.Culture, aName.PublicKeyToken))
                     {
@@ -160,10 +163,14 @@ namespace System.Compiler
             {
                 uint size = 0;
                 this.assemblyName.GetDisplayName(null, ref size, (uint)AssemblyNameDisplayFlags.ALL);
+                
                 if(size == 0)
                     return "";
-                StringBuilder strongName = new StringBuilder((int)size);
+                
+                StringBuilder strongName = new((int)size);
+                
                 this.assemblyName.GetDisplayName(strongName, ref size, (uint)AssemblyNameDisplayFlags.ALL);
+                
                 return strongName.ToString();
             }
         }
@@ -182,7 +189,7 @@ namespace System.Compiler
             if(assemblyCache == null)
                 return null;
 
-            ASSEMBLY_INFO assemblyInfo = new ASSEMBLY_INFO
+            ASSEMBLY_INFO assemblyInfo = new()
             {
                 cbAssemblyInfo = (uint)Marshal.SizeOf(typeof(ASSEMBLY_INFO))
             };

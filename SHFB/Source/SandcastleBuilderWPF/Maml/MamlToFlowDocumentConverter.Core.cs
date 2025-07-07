@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Core.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 07/04/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the core methods of the class used to convert a MAML topic file to a flow document so that
 // it can be previewed in the standalone GUI and Visual Studio.
@@ -195,8 +195,7 @@ namespace SandcastleBuilder.WPF.Maml
             catch(Exception ex)
             {
                 // It should exist, but just in case...
-                if(document == null)
-                    document = new FlowDocument();
+                document ??= new FlowDocument();
 
                 var rootSection = new Section();
 
@@ -205,7 +204,7 @@ namespace SandcastleBuilder.WPF.Maml
                 else
                     document.Blocks.InsertBefore(document.Blocks.FirstBlock, rootSection);
 
-                Style errorStyle = new Style(typeof(Section));
+                Style errorStyle = new(typeof(Section));
                 errorStyle.Setters.Add(new Setter(TextElement.FontFamilyProperty,
                     new FontFamily("Segoe UI, Lucida Grande, Verdana")));
                 errorStyle.Setters.Add(new Setter(TextElement.FontSizeProperty, 12.0));
@@ -310,7 +309,7 @@ namespace SandcastleBuilder.WPF.Maml
         /// <param name="nodes">The nodes in the document</param>
         private void ParseChildren(IEnumerable<XNode> nodes)
         {
-            ElementProperties elementProps = new ElementProperties(this);
+            ElementProperties elementProps = new(this);
             XText text;
             string innerText;
 
@@ -333,7 +332,7 @@ namespace SandcastleBuilder.WPF.Maml
 
                         // Take a guess at the type (block or inline).  For blocks, we'll just
                         // create a new section to act as a parent to any child elements.
-                        if(currentSpan == null && !(currentBlock is Paragraph))
+                        if(currentSpan == null && currentBlock is not Paragraph)
                         {
                             if(elementProps.ParseChildren)
                                 SectionElement(elementProps);
@@ -359,11 +358,10 @@ namespace SandcastleBuilder.WPF.Maml
                     // Store address values in the current document element's name for linking.  The value
                     // is converted to an internal ID to make sure it is valid for use by the element.
                     if(elementProps.Element.Attribute("address") != null)
-                        if(currentSpan != null)
-                            currentSpan.Name = ToElementName(elementProps.Element.Attribute("address").Value);
-                        else
-                            if(currentBlock != null)
-                                currentBlock.Name = ToElementName(elementProps.Element.Attribute("address").Value);
+                    {
+                        currentSpan?.Name = ToElementName(elementProps.Element.Attribute("address").Value);
+                        currentBlock?.Name = ToElementName(elementProps.Element.Attribute("address").Value);
+                    }
 
                     // Parse the child elements
                     if(elementProps.ParseChildren)
@@ -371,6 +369,7 @@ namespace SandcastleBuilder.WPF.Maml
 
                     // Return to the parent element after parsing the child elements?
                     if(elementProps.ReturnToParent)
+                    {
                         if(currentSpan != null)
                         {
                             if(parentSpans.Count != 0)
@@ -379,10 +378,13 @@ namespace SandcastleBuilder.WPF.Maml
                                 currentSpan = null;
                         }
                         else
+                        {
                             if(parentBlocks.Count != 0)
                                 currentBlock = parentBlocks.Pop();
                             else
                                 currentBlock = null;
+                        }
+                    }
                 }
                 else
                 {
@@ -450,24 +452,24 @@ namespace SandcastleBuilder.WPF.Maml
             document.Resources.Add("AlertSecurity", SharedResources.SecurityIcon);
 
             // Create all of the styles.  Currently it will look like the VS2013 style.
-            Style noMargin = new Style(typeof(Paragraph));
+            Style noMargin = new(typeof(Paragraph));
             noMargin.Setters.Add(new Setter(Block.MarginProperty, new Thickness(0)));
 
-            Style noTopMargin = new Style(typeof(Paragraph));
+            Style noTopMargin = new(typeof(Paragraph));
             noTopMargin.Setters.Add(new Setter(Block.MarginProperty, new Thickness(Double.NaN, 0,
                 Double.NaN, Double.NaN)));
 
-            Style section = new Style(typeof(Section));
+            Style section = new(typeof(Section));
             section.Setters.Add(new Setter(TextElement.FontFamilyProperty,
                 new FontFamily("Segoe UI, Lucida Grande, Verdana")));
             section.Setters.Add(new Setter(TextElement.FontSizeProperty, 12.0));
 
-            Style para = new Style(typeof(Paragraph));
+            Style para = new(typeof(Paragraph));
             para.Setters.Add(new Setter(TextElement.FontSizeProperty, 12.0));
             para.Setters.Add(new Setter(Block.PaddingProperty, new Thickness(0, 0, 0, 10)));
             para.Setters.Add(new Setter(Block.MarginProperty, new Thickness(0)));
 
-            Style codeBlock = new Style(typeof(Section));
+            Style codeBlock = new(typeof(Section));
             codeBlock.Setters.Add(new Setter(TextElement.FontFamilyProperty,
                 new FontFamily("Consolas, Courier New, Courier")));
             codeBlock.Setters.Add(new Setter(TextElement.FontSizeProperty, 12.0));
@@ -477,35 +479,35 @@ namespace SandcastleBuilder.WPF.Maml
             codeBlock.Setters.Add(new Setter(Block.PaddingProperty, new Thickness(5)));
             codeBlock.Resources.Add(typeof(Paragraph), noMargin);
 
-            Style codeInline = new Style(typeof(Span));
+            Style codeInline = new(typeof(Span));
             codeInline.Setters.Add(new Setter(TextElement.FontFamilyProperty,
                 new FontFamily("Consolas, Courier New, Courier")));
             codeInline.Setters.Add(new Setter(TextElement.FontSizeProperty, 12.0));
             codeInline.Setters.Add(new Setter(TextElement.ForegroundProperty,
                 new SolidColorBrush(Color.FromRgb(0, 0, 0x66))));
 
-            Style definedTerm = new Style(typeof(Paragraph));
+            Style definedTerm = new(typeof(Paragraph));
             definedTerm.Setters.Add(new Setter(TextElement.FontWeightProperty, FontWeights.Bold));
             definedTerm.Setters.Add(new Setter(Block.MarginProperty, new Thickness(Double.NaN,
                 Double.NaN, Double.NaN, 0)));
 
-            Style definition = new Style(typeof(Section));
+            Style definition = new(typeof(Section));
             definition.Setters.Add(new Setter(Block.MarginProperty, new Thickness(15,
                 Double.NaN, Double.NaN, Double.NaN)));
             definition.Resources.Add(typeof(Paragraph), noTopMargin);
 
-            Style list = new Style(typeof(List));
+            Style list = new(typeof(List));
             list.Setters.Add(new Setter(Block.MarginProperty, new Thickness(0, 0, 0, 20)));
             list.Setters.Add(new Setter(Block.PaddingProperty, new Thickness(30, Double.NaN, Double.NaN, Double.NaN)));
 
-            Style bottomMargin = new Style(typeof(Paragraph));
+            Style bottomMargin = new(typeof(Paragraph));
             bottomMargin.Setters.Add(new Setter(Block.MarginProperty, new Thickness(0, 0, 0, 10)));
 
-            Style listItem = new Style(typeof(ListItem));
+            Style listItem = new(typeof(ListItem));
             listItem.Setters.Add(new Setter(ListItem.MarginProperty, new Thickness(10, 10, Double.NaN, Double.NaN)));
             listItem.Resources.Add(typeof(Paragraph), bottomMargin);
 
-            Style title = new Style(typeof(Paragraph));
+            Style title = new(typeof(Paragraph));
             title.Setters.Add(new Setter(TextElement.FontFamilyProperty,
                 new FontFamily("Segoe UI, Lucida Grande, Verdana")));
             title.Setters.Add(new Setter(TextElement.FontWeightProperty, FontWeights.SemiBold));
@@ -513,7 +515,7 @@ namespace SandcastleBuilder.WPF.Maml
             title.Setters.Add(new Setter(Block.MarginProperty, new Thickness(Double.NaN, 10,
                 Double.NaN, 10)));
 
-            Style alertTitle = new Style(typeof(Paragraph));
+            Style alertTitle = new(typeof(Paragraph));
             alertTitle.Setters.Add(new Setter(TextElement.FontWeightProperty, FontWeights.Bold));
             alertTitle.Setters.Add(new Setter(TextElement.BackgroundProperty,
                 new SolidColorBrush(Color.FromRgb(0xED, 0xED, 0xED))));
@@ -522,7 +524,7 @@ namespace SandcastleBuilder.WPF.Maml
             alertTitle.Setters.Add(new Setter(Block.MarginProperty, new Thickness(0, 10, 0, 0)));
             alertTitle.Setters.Add(new Setter(Block.PaddingProperty, new Thickness(5)));
 
-            Style alertBody = new Style(typeof(Section));
+            Style alertBody = new(typeof(Section));
             alertBody.Setters.Add(new Setter(Block.BorderBrushProperty,
                 new SolidColorBrush(Color.FromRgb(0xDB, 0xDB, 0xDB))));
             alertBody.Setters.Add(new Setter(Block.BorderThicknessProperty, new Thickness(0, 0.5, 0, 0.5)));
@@ -530,20 +532,20 @@ namespace SandcastleBuilder.WPF.Maml
             alertBody.Setters.Add(new Setter(Block.PaddingProperty, new Thickness(4, 8, 4, 0)));
             alertBody.Resources.Add(typeof(Paragraph), noTopMargin);
 
-            Style tableStyle = new Style(typeof(Table));
+            Style tableStyle = new(typeof(Table));
             tableStyle.Setters.Add(new Setter(Block.MarginProperty, new Thickness(0, 5, 0, 5)));
 
-            Style tableCell = new Style(typeof(TableCell));
+            Style tableCell = new(typeof(TableCell));
             tableCell.Setters.Add(new Setter(TableCell.PaddingProperty, new Thickness(5)));
             tableCell.Setters.Add(new Setter(TableCell.BorderThicknessProperty, new Thickness(0, 0, 0, 0.5)));
             tableCell.Setters.Add(new Setter(TableCell.BorderBrushProperty,
                 new SolidColorBrush(Color.FromRgb(0xDB, 0xDB, 0xDB))));
 
-            Style tableHeaderCell = new Style(typeof(TableCell), tableCell);
+            Style tableHeaderCell = new(typeof(TableCell), tableCell);
             tableHeaderCell.Setters.Add(new Setter(TextElement.BackgroundProperty,
                 new SolidColorBrush(Color.FromRgb(0xED, 0xED, 0xED))));
 
-            Style tableHeaderRow = new Style(typeof(TableRowGroup));
+            Style tableHeaderRow = new(typeof(TableRowGroup));
             tableHeaderRow.Setters.Add(new Setter(TextElement.BackgroundProperty,
                 new SolidColorBrush(Color.FromRgb(0xED, 0xED, 0xED))));
             tableHeaderRow.Setters.Add(new Setter(TextElement.ForegroundProperty,
@@ -551,23 +553,23 @@ namespace SandcastleBuilder.WPF.Maml
             tableHeaderRow.Setters.Add(new Setter(TextElement.FontWeightProperty, FontWeights.Bold));
             tableHeaderRow.Resources.Add(typeof(TableCell), tableHeaderCell);
 
-            Style tableTitle = new Style(typeof(Paragraph));
+            Style tableTitle = new(typeof(Paragraph));
             tableTitle.Setters.Add(new Setter(TextElement.FontSizeProperty, 12.0));
             tableTitle.Setters.Add(new Setter(TextElement.FontWeightProperty, FontWeights.Bold));
             tableTitle.Setters.Add(new Setter(TextElement.ForegroundProperty,
                 new SolidColorBrush(Color.FromRgb(0, 0x33, 0x99))));
             tableTitle.Setters.Add(new Setter(Block.PaddingProperty, new Thickness(0)));
 
-            Style math = new Style(typeof(Italic));
+            Style math = new(typeof(Italic));
 
-            Style literal = new Style(typeof(Span));
+            Style literal = new(typeof(Span));
             literal.Setters.Add(new Setter(TextElement.ForegroundProperty,
                 new SolidColorBrush(Color.FromRgb(0xCC, 0, 0))));
 
-            Style quote = new Style(typeof(Paragraph));
+            Style quote = new(typeof(Paragraph));
             quote.Setters.Add(new Setter(Block.MarginProperty, new Thickness(40, 15, 40, 15)));
 
-            Style glossaryDivisionTitle = new Style(typeof(Paragraph), title);
+            Style glossaryDivisionTitle = new(typeof(Paragraph), title);
             glossaryDivisionTitle.Setters.Add(new Setter(TextElement.FontSizeProperty, 12.0));
             glossaryDivisionTitle.Setters.Add(new Setter(Block.MarginProperty, new Thickness(Double.NaN, 10,
                 Double.NaN, 0)));
@@ -576,19 +578,19 @@ namespace SandcastleBuilder.WPF.Maml
             glossaryDivisionTitle.Setters.Add(new Setter(Block.BorderBrushProperty,
                 new SolidColorBrush(Colors.Black)));
 
-            Style glossaryLetterBar = new Style(typeof(Paragraph));
+            Style glossaryLetterBar = new(typeof(Paragraph));
             glossaryLetterBar.Setters.Add(new Setter(TextElement.FontSizeProperty, 12.0));
 
-            Style glossaryLetterTitle = new Style(typeof(Paragraph), title);
+            Style glossaryLetterTitle = new(typeof(Paragraph), title);
             glossaryLetterTitle.Setters.Add(new Setter(TextElement.FontSizeProperty, 14.0));
             glossaryLetterTitle.Setters.Add(new Setter(TextElement.ForegroundProperty,
                 new SolidColorBrush(Colors.Gray)));
 
-            Style glossaryDefinition = new Style(typeof(Section), definition);
+            Style glossaryDefinition = new(typeof(Section), definition);
             glossaryDefinition.Setters.Add(new Setter(Block.MarginProperty, new Thickness(25,
                 Double.NaN, Double.NaN, Double.NaN)));
 
-            Style relatedTopicTitle = new Style(typeof(Paragraph));
+            Style relatedTopicTitle = new(typeof(Paragraph));
             relatedTopicTitle.Setters.Add(new Setter(TextElement.FontFamilyProperty,
                 new FontFamily("Segoe UI Semibold, Segoe UI, Lucida Grande, Verdana")));
             relatedTopicTitle.Setters.Add(new Setter(TextElement.FontSizeProperty, 13.0));
@@ -790,7 +792,7 @@ namespace SandcastleBuilder.WPF.Maml
             // properly but that's a clue that something needs to be fixed.
             if(currentBlock is Section section)
             {
-                Paragraph p = new Paragraph(inlineElement);
+                Paragraph p = new(inlineElement);
                 section.Blocks.Add(p);
 
                 // This one won't go on the stack

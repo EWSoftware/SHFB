@@ -164,7 +164,7 @@ namespace System.Compiler
             if(savedCurrentType != null && savedCurrentType.TemplateArguments != null && savedCurrentType.TemplateArguments.Count > 0 &&
               typeNode.Template != null && (typeNode.Template.TemplateParameters == null || typeNode.Template.TemplateParameters.Count == 0))
             {
-                typeNode.TemplateArguments = new TypeNodeList();
+                typeNode.TemplateArguments = [];
             }
 
             this.CurrentType = typeNode;
@@ -539,7 +539,7 @@ namespace System.Compiler
 
                         if(targs != null)
                         {
-                            targs = new TypeNodeList(targs);
+                            targs = [.. targs];
 
                             for(int i = 0; i < numArgs; i++)
                             {
@@ -593,7 +593,7 @@ namespace System.Compiler
 
                     TypeNodeList tPars = type.TemplateParameters;
                     if (tPars == null || tPars.Count == 0) return type; //Not a parameterized type. No need to get an instance.
-                    TypeNodeList tArgs = new TypeNodeList();
+                    TypeNodeList tArgs = [];
                     for (int i = 0, n = tPars.Count; i < n; i++)
                     {
                         TypeNode tPar = tPars[i];

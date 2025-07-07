@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : LaunchMSHelpViewDlg.xaml.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
-// Note    : Copyright 2010-2021, Eric Woodruff, All rights reserved
+// Updated : 06/21/2025
+// Note    : Copyright 2010-2025, Eric Woodruff, All rights reserved
 //
 // This form is used to determine the state of the current MS Help Viewer content and offer options to install,
 // launch, or remove it.
@@ -35,9 +35,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using SandcastleBuilder.MicrosoftHelpViewer;
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildEngine;
+
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.Project;
+
+using Sandcastle.Platform.Windows.MicrosoftHelpViewer;
 
 namespace SandcastleBuilder.WPF.UI
 {
@@ -69,7 +71,7 @@ namespace SandcastleBuilder.WPF.UI
         #region Private data members
         //=====================================================================
 
-        private readonly SandcastleProject project;
+        private readonly ISandcastleProject project;
         private string helpFilePath, setupFile, msHelpViewer, catalogName;
         private CancellationTokenSource cancellationTokenSource;
         private readonly IProgress<string> helpViewerProgress;
@@ -87,7 +89,7 @@ namespace SandcastleBuilder.WPF.UI
         /// </summary>
         /// <param name="currentProject">The current project</param>
         /// <param name="helpViewerPath">The path to the MS Help Viewer</param>
-        public LaunchMSHelpViewerDlg(SandcastleProject currentProject, string helpViewerPath)
+        public LaunchMSHelpViewerDlg(ISandcastleProject currentProject, string helpViewerPath)
         {
             InitializeComponent();
 
@@ -95,7 +97,7 @@ namespace SandcastleBuilder.WPF.UI
             helpViewerProgress = new Progress<string>(helpViewerProgress_ReportProgress);
 
             project = currentProject;
-            
+
             // Make sure we start out in the project's output folder in case the output folder is relative to it
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(project.Filename)));
 
@@ -140,7 +142,7 @@ namespace SandcastleBuilder.WPF.UI
             string arguments, contentSetupFile;
             int errorCode;
 
-            HelpLibraryManager hlm = new HelpLibraryManager(viewerVersion);
+            HelpLibraryManager hlm = new(viewerVersion);
 
             cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
@@ -164,19 +166,22 @@ namespace SandcastleBuilder.WPF.UI
                         project.HelpTitle);
                 }
                 else
+                {
                     arguments = String.Format(CultureInfo.InvariantCulture,
                         "/catalogName \"{0}\" /locale {1} /wait 0 /operation uninstall /vendor \"{2}\" " +
                         "/productName \"{3}\" /bookList \"{4}\" ", catalogName, project.Language.Name,
                         !String.IsNullOrEmpty(project.VendorName) ? project.VendorName : "Vendor Name",
                         !String.IsNullOrEmpty(project.ProductTitle) ? project.ProductTitle : project.HelpTitle,
                         project.HelpTitle);
+                }
 
                 // If there are substitution tags present, have a go at resolving them
                 if(arguments.IndexOf("{@", StringComparison.Ordinal) != -1)
                 {
                     try
                     {
-                        var bp = new BuildProcess(project);
+                        var bp = project.CreateBuildProcess(PartialBuildType.None);
+
                         arguments = bp.SubstitutionTags.TransformText(arguments);
                     }
                     catch(Exception ex)
@@ -215,9 +220,11 @@ namespace SandcastleBuilder.WPF.UI
                         project.CatalogVersion, project.Language.Name, contentSetupFile);
                 }
                 else
+                {
                     arguments = String.Format(CultureInfo.InvariantCulture, "/catalogName \"{0}\" " +
                         "/locale {1} /wait 0 /operation install /sourceUri \"{2}\"", catalogName,
                         project.Language.Name, contentSetupFile);
+                }
 
                 // Always interactive and must run as administrator.  We can't run silently as we don't have
                 // a signed cabinet file.
@@ -241,8 +248,10 @@ namespace SandcastleBuilder.WPF.UI
                     if(msHelpViewer == null)
                         msHelpViewer = "ms-xhelp:///?method=page&id=-1";
                     else
+                    {
                         if(viewerVersion.Major == 2)
                             arguments = "/catalogname \"" + catalogName + "\"";
+                    }
                 }
 
                 helpViewerProgress.Report("Opening help content...");
@@ -269,8 +278,10 @@ namespace SandcastleBuilder.WPF.UI
                         project.CatalogVersion, project.Language.Name));
                 }
                 else
+                {
                     hlm.LaunchInteractive(String.Format(CultureInfo.InvariantCulture,
                         "/catalogName \"{0}\" /locale {1} /manage", catalogName, project.Language.Name));
+                }
             }
         }
         #endregion
@@ -285,8 +296,7 @@ namespace SandcastleBuilder.WPF.UI
         /// <param name="e">The event arguments</param>
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-            if(cancellationTokenSource != null)
-                cancellationTokenSource.Cancel();
+            cancellationTokenSource?.Cancel();
 
             this.Close();
         }
@@ -309,7 +319,8 @@ namespace SandcastleBuilder.WPF.UI
             {
                 try
                 {
-                    var bp = new BuildProcess(project);
+                    var bp = project.CreateBuildProcess(PartialBuildType.None);
+
                     helpFilePath = bp.SubstitutionTags.TransformText(helpFilePath);
                     setupFile = Path.ChangeExtension(helpFilePath, ".msha");
                 }
@@ -333,7 +344,7 @@ namespace SandcastleBuilder.WPF.UI
             {
                 viewerVersion = new Version((string)cboHelpViewerVersion.SelectedValue);
 
-                HelpLibraryManager hlm = new HelpLibraryManager(viewerVersion);
+                HelpLibraryManager hlm = new(viewerVersion);
 
                 // Can't do anything if the Help Library Manager is not installed
                 if(hlm.HelpLibraryManagerPath == null)
@@ -373,10 +384,12 @@ namespace SandcastleBuilder.WPF.UI
             if(rbOpenCurrent.IsEnabled)
                 rbOpenCurrent.IsChecked = true;
             else
+            {
                 if(rbInstall.IsEnabled)
                     rbInstall.IsChecked = true;
                 else
                     rbLaunchContentManager.IsChecked = true;
+            }
 
             if(!rbOpenCurrent.IsEnabled && !rbInstall.IsEnabled && !rbRemove.IsEnabled)
                 txtInfo.AppendText("\r\nNo action can be taken with the help content.");
@@ -409,7 +422,7 @@ namespace SandcastleBuilder.WPF.UI
 
             try
             {
-                HelpLibraryManager hlm = new HelpLibraryManager(viewerVersion);
+                HelpLibraryManager hlm = new(viewerVersion);
 
                 // Can't do anything if the Help Library Manager is already running
                 if(Process.GetProcessesByName(Path.GetFileNameWithoutExtension(hlm.HelpLibraryManagerPath)).Length > 0)
@@ -435,13 +448,17 @@ namespace SandcastleBuilder.WPF.UI
                 if(rbOpenCurrent.IsChecked ?? false)
                     action = HelpViewerAction.OpenCurrent;
                 else
+                {
                     if(rbInstall.IsChecked ?? false)
                         action = HelpViewerAction.Install;
                     else
+                    {
                         if(rbRemove.IsChecked ?? false)
                             action = HelpViewerAction.Remove;
                         else
                             action = HelpViewerAction.OpenContentManager;
+                    }
+                }
 
                 await Task.Run(() => this.PerformHelpViewerAction(action), cancellationTokenSource.Token).ConfigureAwait(true);
 

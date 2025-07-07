@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ContentLayoutEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to edit content layout files
 //
@@ -27,10 +27,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using Sandcastle.Core;
+using Sandcastle.Core.ConceptualContent;
+using Sandcastle.Core.Project;
+
 using Sandcastle.Platform.Windows;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.ConceptualContent;
 using SandcastleBuilder.WPF.Commands;
 
 namespace SandcastleBuilder.WPF.UserControls
@@ -91,8 +92,8 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         public event RoutedEventHandler ContentModified
         {
-            add { AddHandler(ContentModifiedEvent, value); }
-            remove { RemoveHandler(ContentModifiedEvent, value); }
+            add => AddHandler(ContentModifiedEvent, value);
+            remove => RemoveHandler(ContentModifiedEvent, value);
         }
 
         /// <summary>
@@ -108,8 +109,8 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <remarks>If handled, the event's <c>Handled</c> property should be set to True</remarks>
         public event RoutedEventHandler AssociateTopic
         {
-            add { AddHandler(AssociateTopicEvent, value); }
-            remove { RemoveHandler(AssociateTopicEvent, value); }
+            add => AddHandler(AssociateTopicEvent, value);
+            remove => RemoveHandler(AssociateTopicEvent, value);
         }
         #endregion
 
@@ -142,7 +143,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// Load a content layout file for editing
         /// </summary>
         /// <param name="contentLayoutFile">The content layout file item to load</param>
-        public void LoadContentLayoutFile(FileItem contentLayoutFile)
+        public void LoadContentLayoutFile(IFileItem contentLayoutFile)
         {
             if(contentLayoutFile == null)
                 throw new ArgumentNullException(nameof(contentLayoutFile), "A content layout file item must be specified");
@@ -247,11 +248,8 @@ namespace SandcastleBuilder.WPF.UserControls
             CommandManager.InvalidateRequerySuggested();
 
             // We must clear the enumerator or it may throw an exception due to collection changes
-            if(matchEnumerator != null)
-            {
-                matchEnumerator.Dispose();
-                matchEnumerator = null;
-            }
+            matchEnumerator?.Dispose();
+            matchEnumerator = null;
         }
 
         /// <summary>
@@ -280,20 +278,15 @@ namespace SandcastleBuilder.WPF.UserControls
 
             if(txtFindID.Text.Trim().Length == 0)
             {
-                if(matchEnumerator != null)
-                {
-                    matchEnumerator.Dispose();
-                    matchEnumerator = null;
-                }
-
+                matchEnumerator?.Dispose();
+                matchEnumerator = null;
                 return;
             }
 
             txtFindID.Text = txtFindID.Text.Trim();
 
             // If this is the first time, get all matches
-            if(matchEnumerator == null)
-                matchEnumerator = this.Topics.Find(t =>
+            matchEnumerator ??= this.Topics.Find(t =>
                   (!String.IsNullOrEmpty(t.Id) && t.Id.IndexOf(txtFindID.Text,
                     StringComparison.CurrentCultureIgnoreCase) != -1) ||
                   (!String.IsNullOrEmpty(t.DisplayTitle) && t.DisplayTitle.IndexOf(txtFindID.Text,
@@ -304,11 +297,8 @@ namespace SandcastleBuilder.WPF.UserControls
                 matchEnumerator.Current.IsSelected = true;
             else
             {
-                if(matchEnumerator != null)
-                {
-                    matchEnumerator.Dispose();
-                    matchEnumerator = null;
-                }
+                matchEnumerator.Dispose();
+                matchEnumerator = null;
 
                 MessageBox.Show("No more matches found", Constants.AppName, MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -322,11 +312,8 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void txtFindID_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(matchEnumerator != null)
-            {
-                matchEnumerator.Dispose();
-                matchEnumerator = null;
-            }
+            matchEnumerator?.Dispose();
+            matchEnumerator = null;
         }
 
         /// <summary>
@@ -385,7 +372,7 @@ namespace SandcastleBuilder.WPF.UserControls
         private void cmdAddItem_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Topic currentTopic = this.CurrentTopic,
-                newTopic = new Topic
+                newTopic = new()
                 {
                     Title = "Table of Contents Container",
                     TopicFile = null,   // Assign a default GUID
@@ -430,8 +417,10 @@ namespace SandcastleBuilder.WPF.UserControls
             bool expand = (e.Command == EditorCommands.ExpandAll);
 
             if(this.Topics != null)
+            {
                 foreach(var topic in this.Topics.Find(t => t.Subtopics.Count != 0, false))
                     topic.IsExpanded = expand;
+            }
         }
 
         /// <summary>
@@ -529,6 +518,7 @@ namespace SandcastleBuilder.WPF.UserControls
         private void cmdSort_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if(tvContent.SelectedItem is Topic t)
+            {
                 try
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
@@ -541,6 +531,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 {
                     Mouse.OverrideCursor = null;
                 }
+            }
         }
 
         /// <summary>
@@ -676,7 +667,7 @@ namespace SandcastleBuilder.WPF.UserControls
             if(tvContent.SelectedItem is Topic)
             {
                 // Let the caller prompt for the filename and add it to the project if necessary
-                RoutedEventArgs args = new RoutedEventArgs(AssociateTopicEvent, this);
+                RoutedEventArgs args = new(AssociateTopicEvent, this);
                 this.RaiseEvent(args);
 
                 // If associated, refresh the bindings
@@ -750,7 +741,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void tvContent_MouseMove(object sender, MouseEventArgs e)
         {
-            DataObject data = new DataObject();
+            DataObject data = new();
             Topic currentTopic = this.CurrentTopic;
             Point currentPosition = e.GetPosition(null);
             string textToCopy;
@@ -794,7 +785,7 @@ namespace SandcastleBuilder.WPF.UserControls
         {
             FrameworkElement sourceElement = e.OriginalSource as FrameworkElement;
             Topic dragSource, dropTarget;
-            
+
             e.Effects = DragDropEffects.None;
             e.Handled = true;
 

@@ -1,9 +1,9 @@
 ﻿//===============================================================================================================
-// System  : Visual Studio Spell Checker Package
+// System  : Sandcastle Help File Builder WPF Controls
 // File    : ThemeColors.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
-// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
+// Updated : 06/24/2025
+// Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to provide Visual Studio theme colors in a version independent manner
 //
@@ -17,12 +17,13 @@
 // 08/17/2015  EFW  Created the code
 //===============================================================================================================
 
-using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
 
 #if !STANDALONEGUI
+using System;
+using System.ComponentModel;
+
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 #endif
@@ -51,7 +52,7 @@ namespace SandcastleBuilder.WPF.Theme
         /// <summary>
         /// This read-only property returns the theme color instance
         /// </summary>
-        public static ThemeColors Instance => instance ?? (instance = new ThemeColors());
+        public static ThemeColors Instance => instance ??= new ThemeColors();
 
 #pragma warning disable CA1822
 

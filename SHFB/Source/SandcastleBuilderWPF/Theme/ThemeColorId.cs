@@ -1,5 +1,5 @@
 ﻿//===============================================================================================================
-// System  : Visual Studio Spell Checker Package
+// System  : Sandcastle Help File Builder WPF Controls
 // File    : ThemeColorId.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 05/20/2019

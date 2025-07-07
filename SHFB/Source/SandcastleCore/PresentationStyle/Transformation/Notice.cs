@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : Notice.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/26/2025
+// Updated : 07/02/2025
 // Note    : Copyright 2025, Eric Woodruff, All rights reserved
 //
 // This file contains an class used to represent a notice that appears at the top of a topic or as a tag for the
@@ -31,22 +31,13 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
     /// </summary>
     public class Notice : INotifyPropertyChanged
     {
-        #region Private data members
-        //=====================================================================
-
-        private string attributeTypeName, elementName, noticeMessage, tagText, noticeStyleClasses, tagStyleClasses,
-            errorMessage, description;
-        private bool useValueForText;
-
-        #endregion
-
         #region Common notices created by default
         //=====================================================================
 
         /// <summary>
         /// This returns a default instance of the preliminary notice
         /// </summary>
-        public static Notice PreliminaryNotice => new Notice
+        public static Notice PreliminaryNotice => new()
         {
             ElementName = "preliminary",
             UseValueForText = true,
@@ -57,7 +48,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// <summary>
         /// This returns a default instance of the obsolete notice
         /// </summary>
-        public static Notice ObsoleteNotice => new Notice
+        public static Notice ObsoleteNotice => new()
         {
             AttributeTypeName = "T:System.ObsoleteAttribute",
             UseValueForText = true,
@@ -68,7 +59,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// <summary>
         /// This returns a default instance of the experimental notice
         /// </summary>
-        public static Notice ExperimentalNotice => new Notice
+        public static Notice ExperimentalNotice => new()
         {
             AttributeTypeName = "T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute",
             NoticeMessage = "@boilerplate_experimentalLong",
@@ -85,12 +76,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// <value>This should be the fully qualified attribute name including the "T:" prefix</value>
         public string AttributeTypeName
         {
-            get => attributeTypeName;
+            get;
             set
             {
-                if(attributeTypeName != value)
+                if(field != value)
                 {
-                    attributeTypeName = value;
+                    field = value;
                     this.OnPropertyChanged();
                     this.Validate();
                 }
@@ -102,12 +93,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// </summary>
         public string ElementName
         {
-            get => elementName;
+            get;
             set
             {
-                if(elementName != value)
+                if(field != value)
                 {
-                    elementName = value;
+                    field = value;
                     this.OnPropertyChanged();
                     this.Validate();
                 }
@@ -121,12 +112,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// </summary>
         public bool UseValueForText
         {
-            get => useValueForText;
+            get;
             set
             {
-                if(useValueForText != value)
+                if(field != value)
                 {
-                    useValueForText = value;
+                    field = value;
                     this.OnPropertyChanged();
                 }
             }
@@ -138,12 +129,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// <value>This can be literal text or a resource item name preceded by an '@'</value>
         public string NoticeMessage
         {
-            get => noticeMessage;
+            get;
             set
             {
-                if(noticeMessage != value)
+                if(field != value)
                 {
-                    noticeMessage = value;
+                    field = value;
                     this.OnPropertyChanged();
                     this.Validate();
                 }
@@ -156,12 +147,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// <value>This can be literal text or a resource item name preceded by an '@'</value>
         public string TagText
         {
-            get => tagText;
+            get;
             set
             {
-                if(tagText != value)
+                if(field != value)
                 {
-                    tagText = value;
+                    field = value;
                     this.OnPropertyChanged();
                     this.Validate();
                 }
@@ -174,12 +165,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// </summary>
         public string NoticeStyleClasses
         {
-            get => noticeStyleClasses;
+            get;
             set
             {
-                if(noticeStyleClasses != value)
+                if(field != value)
                 {
-                    noticeStyleClasses = value;
+                    field = value;
                     this.OnPropertyChanged();
                 }
             }
@@ -191,12 +182,12 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// </summary>
         public string TagStyleClasses
         {
-            get => tagStyleClasses;
+            get;
             set
             {
-                if(tagStyleClasses != value)
+                if(field != value)
                 {
-                    tagStyleClasses = value;
+                    field = value;
                     this.OnPropertyChanged();
                 }
             }
@@ -207,11 +198,10 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// </summary>
         public string ErrorMessage
         {
-            get => errorMessage;
+            get;
             private set
             {
-                errorMessage = value;
-
+                field = value;
                 this.OnPropertyChanged();
             }
         }
@@ -221,11 +211,10 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// </summary>
         public string NoticeDescription
         {
-            get => description;
+            get;
             set
             {
-                description = value;
-
+                field = value;
                 this.OnPropertyChanged();
             }
         }
@@ -257,7 +246,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         /// </summary>
         private void Validate()
         {
-            if(String.IsNullOrWhiteSpace(elementName) && String.IsNullOrWhiteSpace(attributeTypeName))
+            if(String.IsNullOrWhiteSpace(this.ElementName) && String.IsNullOrWhiteSpace(this.AttributeTypeName))
                 this.ErrorMessage = "An element name or attribute type name is required";
             else
             {
@@ -265,7 +254,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
                 // omitted to leave off the tag.  However one or the other must be specified.  The "Use value
                 // for text" option can be set but if the element/attribute doesn't have one and the notice
                 // message is blank, the notice won't show on the topic.
-                if(String.IsNullOrWhiteSpace(noticeMessage) && !useValueForText && String.IsNullOrWhiteSpace(tagText))
+                if(String.IsNullOrWhiteSpace(this.NoticeMessage) && !this.UseValueForText &&
+                  String.IsNullOrWhiteSpace(this.TagText))
                 {
                     this.ErrorMessage = "A notice message must be specified or set 'Use value for text' or " +
                         "tag text must be specified";
@@ -276,15 +266,15 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
 
             var sb = new StringBuilder(1024);
 
-            if(!String.IsNullOrWhiteSpace(attributeTypeName))
-                sb.Append(attributeTypeName);
+            if(!String.IsNullOrWhiteSpace(this.AttributeTypeName))
+                sb.Append(this.AttributeTypeName);
 
-            if(!String.IsNullOrWhiteSpace(elementName))
+            if(!String.IsNullOrWhiteSpace(this.ElementName))
             {
                 if(sb.Length != 0)
                     sb.Append('/');
 
-                sb.Append(elementName);
+                sb.Append(this.ElementName);
             }
 
             this.NoticeDescription = sb.ToString();
@@ -323,13 +313,13 @@ namespace Sandcastle.Core.PresentationStyle.Transformation
         public XElement ToXml()
         {
             return new XElement(nameof(Notice),
-                String.IsNullOrWhiteSpace(elementName) ? null : new XAttribute(nameof(ElementName), elementName),
-                String.IsNullOrWhiteSpace(attributeTypeName) ? null : new XAttribute(nameof(AttributeTypeName), attributeTypeName),
-                String.IsNullOrWhiteSpace(noticeMessage) ? null : new XAttribute(nameof(NoticeMessage), noticeMessage),
-                String.IsNullOrWhiteSpace(tagText) ? null : new XAttribute(nameof(TagText), tagText),
-                String.IsNullOrWhiteSpace(noticeStyleClasses) ? null : new XAttribute(nameof(NoticeStyleClasses), noticeStyleClasses),
-                String.IsNullOrWhiteSpace(tagStyleClasses) ? null : new XAttribute(nameof(TagStyleClasses), tagStyleClasses),
-                new XAttribute(nameof(UseValueForText), useValueForText));
+                String.IsNullOrWhiteSpace(this.ElementName) ? null : new XAttribute(nameof(ElementName), this.ElementName),
+                String.IsNullOrWhiteSpace(this.AttributeTypeName) ? null : new XAttribute(nameof(AttributeTypeName), this.AttributeTypeName),
+                String.IsNullOrWhiteSpace(this.NoticeMessage) ? null : new XAttribute(nameof(NoticeMessage), this.NoticeMessage),
+                String.IsNullOrWhiteSpace(this.TagText) ? null : new XAttribute(nameof(TagText), this.TagText),
+                String.IsNullOrWhiteSpace(this.NoticeStyleClasses) ? null : new XAttribute(nameof(NoticeStyleClasses), this.NoticeStyleClasses),
+                String.IsNullOrWhiteSpace(this.TagStyleClasses) ? null : new XAttribute(nameof(TagStyleClasses), this.TagStyleClasses),
+                new XAttribute(nameof(UseValueForText), this.UseValueForText));
         }
         #endregion
     }

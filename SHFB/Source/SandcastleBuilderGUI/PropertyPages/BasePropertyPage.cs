@@ -1,9 +1,9 @@
 ﻿//===============================================================================================================
-// System  : Sandcastle Help File Builder Visual Studio Package
+// System  : Sandcastle Help File Builder
 // File    : BasePropertyPage.cs
 // Author  : Eric Woodruff
-// Updated : 05/10/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used as the base class for standalone GUI property pages
 //
@@ -30,10 +30,11 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms.Integration;
 
+using Sandcastle.Core.Project;
 using Sandcastle.Platform.Windows;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.Design;
+using SandcastleBuilder.MSBuild.Design;
+using SandcastleBuilder.MSBuild.HelpProject;
 using SandcastleBuilder.WPF;
 using SandcastleBuilder.WPF.PropertyPages;
 
@@ -53,7 +54,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         // This is used to define custom controls and their value property
-        private static readonly Dictionary<string, string> customControls = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> customControls = [];
 
         private bool isDirty;
 
@@ -106,7 +107,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <summary>
         /// This read-only property returns the project manager for the property page
         /// </summary>
-        protected SandcastleProject CurrentProject { get; private set; }
+        protected ISandcastleProject CurrentProject { get; private set; }
 
         /// <summary>
         /// This is used to access the custom control property mapping dictionary
@@ -280,11 +281,11 @@ namespace SandcastleBuilder.Package.PropertyPages
                         boundProperty = PropertyPageBinding.GetProjectPropertyName(c);
 
                         // Check for custom types first
-                        if(customControls.ContainsKey(typeName))
+                        if(customControls.TryGetValue(typeName, out string propertyName))
                         {
                             // Find and connect the Changed event for the named property if one exists
                             var changedEvent = t.GetEvents().Where(ev =>
-                                ev.Name == customControls[typeName] + "Changed").FirstOrDefault();
+                                ev.Name == propertyName + "Changed").FirstOrDefault();
 
                             if(changedEvent != null)
                             {
@@ -301,7 +302,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                                 changedEvent.AddEventHandler(c, h);
                             }
 
-                            pi = t.GetProperty(customControls[typeName], BindingFlags.Public | BindingFlags.Instance);
+                            pi = t.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
                         }
                         else if(c is Label)
                         {
@@ -358,7 +359,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             if(this.CurrentProject != null)
             {
-                var projProp = this.CurrentProject.MSBuildProject.GetProperty(boundProperty);
+                var projProp = ((SandcastleProject)this.CurrentProject).MSBuildProject.GetProperty(boundProperty);
 
                 if(projProp != null)
                 {
@@ -482,8 +483,8 @@ namespace SandcastleBuilder.Package.PropertyPages
                     boundProperty = PropertyPageBinding.GetProjectPropertyName(c);
 
                     // Check for custom types first
-                    if(customControls.ContainsKey(typeName))
-                        pi = t.GetProperty(customControls[typeName], BindingFlags.Public | BindingFlags.Instance);
+                    if(customControls.TryGetValue(typeName, out string propertyName))
+                        pi = t.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
                     else if(c is TextBoxBase)
                         pi = t.GetProperty("Text", BindingFlags.Public | BindingFlags.Instance);
                     else if(c is Selector)
@@ -505,12 +506,13 @@ namespace SandcastleBuilder.Package.PropertyPages
                             propValue = controlValue.ToString();
 
                         // If the string is empty and the property doesn't exist, don't create it unnecessarily
-                        if(propValue.Length != 0 || this.CurrentProject.MSBuildProject.GetProperty(boundProperty) != null)
+                        if(propValue.Length != 0 ||
+                          ((SandcastleProject)this.CurrentProject).MSBuildProject.GetProperty(boundProperty) != null)
                         {
                             if(this.IsEscapedProperty(boundProperty))
                                 propValue = EscapeValueAttribute.Escape(propValue);
 
-                            this.CurrentProject.MSBuildProject.SetProperty(boundProperty, propValue);
+                            ((SandcastleProject)this.CurrentProject).MSBuildProject.SetProperty(boundProperty, propValue);
                         }
                     }
                 }
@@ -552,7 +554,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// The environment calls this to set the currently selected project that the property page should show.
         /// </summary>
         /// <param name="currentProject">The current help file builder project</param>
-        public void SetProject(SandcastleProject currentProject)
+        public void SetProject(ISandcastleProject currentProject)
         {
             if(this.CurrentProject != currentProject)
             {
@@ -591,7 +593,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 {
                     this.StoreProperties(this.Controls);
                     this.IsDirty = false;
-                    this.CurrentProject.RefreshProjectProperties();
+                    ((SandcastleProject)this.CurrentProject).RefreshProjectProperties();
                 }
                 else
                     return false;

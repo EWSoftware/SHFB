@@ -2,8 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : ReflectionDataCommands.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/10/2021
-// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the reflection data manager's routed UI commands
 //
@@ -29,24 +29,15 @@ namespace ReflectionDataManager
         #region Build command
         //=====================================================================
 
-        private static RoutedUICommand build;
-
         /// <summary>
         /// Build the reflection data
         /// </summary>
         /// <remarks>The default key binding is Ctrl+Shift+B</remarks>
-        public static RoutedUICommand Build
-        {
-            get
-            {
-                if(build == null)
-                    build = new RoutedUICommand("Build Reflection Data", "Build", typeof(ReflectionDataCommands),
-                        new InputGestureCollection(new[] { new KeyGesture(Key.B,
-                            ModifierKeys.Control | ModifierKeys.Shift, "Ctrl+Shift+B") }));
+        public static RoutedUICommand Build =>
+            field ??= new RoutedUICommand("Build Reflection Data", "Build", typeof(ReflectionDataCommands),
+                    new InputGestureCollection(new[] { new KeyGesture(Key.B,
+                        ModifierKeys.Control | ModifierKeys.Shift, "Ctrl+Shift+B") }));
 
-                return build;
-            }
-        }
         #endregion
     }
 }

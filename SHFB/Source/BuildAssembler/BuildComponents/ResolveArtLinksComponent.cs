@@ -52,11 +52,9 @@ namespace Sandcastle.Tools.BuildComponents
         private static readonly XPathExpression artLinkExpression = XPathExpression.Compile("//artLink");
 
         // IDs are compared case insensitively
-        private readonly Dictionary<string, ArtTarget> targets = new Dictionary<string, ArtTarget>(
-            StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, ArtTarget> targets = new(StringComparer.OrdinalIgnoreCase);
 
-        private readonly Dictionary<string, ArtTarget> filesUsed = new Dictionary<string, ArtTarget>(
-            StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, ArtTarget> filesUsed = new(StringComparer.OrdinalIgnoreCase);
 
         #endregion
 
@@ -142,31 +140,30 @@ namespace Sandcastle.Tools.BuildComponents
                     XPathExpression.Compile(relativeTo);
 
                 // Load the content of the media map file
-                using(var reader = XmlReader.Create(map, new XmlReaderSettings { CloseInput = true }))
+                using var reader = XmlReader.Create(map, new XmlReaderSettings { CloseInput = true });
+                
+                XPathDocument mediaMap = new(reader);
+                XPathNodeIterator items = mediaMap.CreateNavigator().Select("/*/item");
+
+                foreach(XPathNavigator item in items)
                 {
-                    XPathDocument mediaMap = new XPathDocument(reader);
-                    XPathNodeIterator items = mediaMap.CreateNavigator().Select("/*/item");
+                    string id = (string)item.Evaluate(artIdExpression);
+                    string file = (string)item.Evaluate(artFileExpression);
+                    string text = (string)item.Evaluate(artTextExpression);
+                    string name = Path.GetFileName(file);
 
-                    foreach(XPathNavigator item in items)
+                    targets[id] = new ArtTarget
                     {
-                        string id = (string)item.Evaluate(artIdExpression);
-                        string file = (string)item.Evaluate(artFileExpression);
-                        string text = (string)item.Evaluate(artTextExpression);
-                        string name = Path.GetFileName(file);
-
-                        targets[id] = new ArtTarget
-                        {
-                            Id = id,
-                            InputPath = Path.Combine(inputPath, file),
-                            BaseOutputPath = baseOutputPath,
-                            OutputXPath = outputXPath,
-                            LinkPath = String.IsNullOrEmpty(name) ? linkPath : String.Concat(linkPath, "/", name),
-                            Text = text,
-                            Name = name,
-                            FormatXPath = formatXPath,
-                            RelativeToXPath = relativeToXPath
-                        };
-                    }
+                        Id = id,
+                        InputPath = Path.Combine(inputPath, file),
+                        BaseOutputPath = baseOutputPath,
+                        OutputXPath = outputXPath,
+                        LinkPath = String.IsNullOrEmpty(name) ? linkPath : String.Concat(linkPath, "/", name),
+                        Text = text,
+                        Name = name,
+                        FormatXPath = formatXPath,
+                        RelativeToXPath = relativeToXPath
+                    };
                 }
             }
 

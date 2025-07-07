@@ -30,7 +30,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectExplorerWindow));
-            this.sbStatusBarText = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
+            this.sbStatusBarText = new SandcastleBuilder.Gui.StatusBarTextProvider(this.components);
             this.tvProjectFiles = new System.Windows.Forms.TreeView();
             this.ilImages = new System.Windows.Forms.ImageList(this.components);
             this.pgProps = new SandcastleBuilder.Gui.Controls.CustomPropertyGrid();
@@ -472,7 +472,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
         #endregion
 
-        private SandcastleBuilder.Utils.Controls.StatusBarTextProvider sbStatusBarText;
+        private SandcastleBuilder.Gui.StatusBarTextProvider sbStatusBarText;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TreeView tvProjectFiles;
         private SandcastleBuilder.Gui.Controls.CustomPropertyGrid pgProps;

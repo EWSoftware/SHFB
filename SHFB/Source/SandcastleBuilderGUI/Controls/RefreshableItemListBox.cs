@@ -1,5 +1,5 @@
 //===============================================================================================================
-// System  : EWSoftware Design Time Attributes and Editors
+// System  : Sandcastle Help File Builder
 // File    : RefreshableItemListBox.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 04/18/2021

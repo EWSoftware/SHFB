@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/31/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a form that is used to configure the settings for the IntelliSense build component
 //
@@ -141,15 +141,14 @@ namespace Sandcastle.Tools.BuildComponents.UI
         /// <param name="e">The event arguments</param>
         private void btnSelectFolder_Click(object sender, RoutedEventArgs e)
         {
-            using(var dlg = new System.Windows.Forms.FolderBrowserDialog())
-            {
-                dlg.Description = "Select the IntelliSense output folder";
-                dlg.SelectedPath = Directory.GetCurrentDirectory();
+            using var dlg = new System.Windows.Forms.FolderBrowserDialog();
+            
+            dlg.Description = "Select the IntelliSense output folder";
+            dlg.SelectedPath = Directory.GetCurrentDirectory();
 
-                // If selected, set the new folder
-                if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    txtFolder.Text = dlg.SelectedPath;
-            }
+            // If selected, set the new folder
+            if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                txtFolder.Text = dlg.SelectedPath;
         }
 
         /// <summary>

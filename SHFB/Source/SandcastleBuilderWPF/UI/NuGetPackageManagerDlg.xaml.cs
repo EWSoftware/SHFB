@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : NuGetPackageManagerDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/20/2021
-// Note    : Copyright 2021, Eric Woodruff, All rights reserved
+// Updated : 07/03/2025
+// Note    : Copyright 2021-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to manage NuGet packages in a help file builder project
 //
@@ -68,7 +68,7 @@ namespace SandcastleBuilder.WPF.UI
         public NuGetPackageManagerDlg(Project currentProject)
         {
             project = currentProject ?? throw new ArgumentNullException(nameof(currentProject));
-            projectPackages = new Dictionary<string, string>();
+            projectPackages = [];
             startNewSearch = true;
             reportProgress = new Progress<string>(this.ReportProgress);
 
@@ -116,10 +116,12 @@ namespace SandcastleBuilder.WPF.UI
                     {
                         // If any installed packages are not found, add a dummy entry so that it can be removed
                         foreach(var kv in projectPackages)
+                        {
                             if(!packages.Any(p => p.Id == kv.Key))
                                 packages.Add(new NuGetPackage(kv.Key, kv.Value));
+                        }
 
-                        return packages.Where(p => projectPackages.ContainsKey(p.Id)).ToList();
+                        return [.. packages.Where(p => projectPackages.ContainsKey(p.Id))];
                     }
 
                     return packages;
@@ -229,18 +231,16 @@ namespace SandcastleBuilder.WPF.UI
             string objPath = Path.Combine(Path.GetDirectoryName(project.FullPath), "obj");
 
             if(Directory.Exists(objPath))
+            {
                 foreach(string file in Directory.EnumerateFiles(objPath, "*", SearchOption.AllDirectories))
                     File.Delete(file);
+            }
 
             // Use the latest version of MSBuild available rather than a specific version
             string latestToolsVersion = ProjectCollection.GlobalProjectCollection.Toolsets.FirstOrDefault(
-                t => t.ToolsVersion.Equals("Current", StringComparison.OrdinalIgnoreCase))?.ToolsVersion;
-
-            if(latestToolsVersion == null)
-            {
-                latestToolsVersion = ProjectCollection.GlobalProjectCollection.Toolsets.Max(
+                    t => t.ToolsVersion.Equals("Current", StringComparison.OrdinalIgnoreCase))?.ToolsVersion ??
+                ProjectCollection.GlobalProjectCollection.Toolsets.Max(
                     t => Version.TryParse(t.ToolsVersion, out Version ver) ? ver : new Version()).ToString();
-            }
 
             string msbuildExePath = Path.Combine(ProjectCollection.GlobalProjectCollection.Toolsets.First(
                 t => t.ToolsVersion == latestToolsVersion).ToolsPath, "MSBuild.exe");
@@ -267,9 +267,9 @@ namespace SandcastleBuilder.WPF.UI
 
                 // Spawn two separate tasks so that we can capture both STDOUT and STDERR without the risk of a
                 // deadlock.
-                using(var stdOutReader = Task.Run(() => this.ReadOutputStream(currentProcess.StandardOutput)))
-                using(var stdErrReader = Task.Run(() => this.ReadOutputStream(currentProcess.StandardError)))
-                using(var processWaiter = Task.Run(() =>
+                using var stdOutReader = Task.Run(() => this.ReadOutputStream(currentProcess.StandardOutput));
+                using var stdErrReader = Task.Run(() => this.ReadOutputStream(currentProcess.StandardError));
+                using var processWaiter = Task.Run(() =>
                 {
                     bool hasExited;
 
@@ -278,10 +278,9 @@ namespace SandcastleBuilder.WPF.UI
                         hasExited = currentProcess.WaitForExit(1000);
 
                     } while(!hasExited);
-                }))
-                {
-                    Task.WaitAll(processWaiter, stdOutReader, stdErrReader);
-                }
+                });
+
+                Task.WaitAll(processWaiter, stdOutReader, stdErrReader);
             }
             catch(AggregateException ex)
             {
@@ -294,8 +293,7 @@ namespace SandcastleBuilder.WPF.UI
             }
             finally
             {
-                if(currentProcess != null)
-                    currentProcess.Dispose();
+                currentProcess?.Dispose();
             }
         }
 
@@ -331,8 +329,8 @@ namespace SandcastleBuilder.WPF.UI
             lblAction.Text = "Indexing local package sources...";
             svDetails.IsEnabled = false;
 
-            packageSources = NuGetPackageManager.PackageSources.ToList();
-            foundPackages = new ObservableCollection<NuGetPackage>();
+            packageSources = [.. NuGetPackageManager.PackageSources];
+            foundPackages = [];
 
             cboPackageSource.Items.Add("All Sources");
 
@@ -343,7 +341,7 @@ namespace SandcastleBuilder.WPF.UI
 
             await Task.WhenAll(packageSources.Select(ps => Task.Run(() => ps.IndexPackageSource()))).ConfigureAwait(true);
 
-            lbPackages.ItemsSource = foundPackages = new ObservableCollection<NuGetPackage>();
+            lbPackages.ItemsSource = foundPackages = [];
 
             txtKeywords.IsEnabled = btnSearch.IsEnabled = true;
             grdAction.Visibility = Visibility.Hidden;
@@ -383,13 +381,13 @@ namespace SandcastleBuilder.WPF.UI
             searchSources = packageSources;
 
             if(cboPackageSource.SelectedIndex > 0)
-                searchSources = new[] { packageSources[cboPackageSource.SelectedIndex - 1] };
+                searchSources = [packageSources[cboPackageSource.SelectedIndex - 1]];
 
             if(!this.IsVisible || searchSources == null || !searchSources.All(s => s.IsIndexed))
                 return;
 
             startNewSearch = true;
-            searchKeywords = txtKeywords.Text.Trim().Split(new[] { ' ', ',', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            searchKeywords = txtKeywords.Text.Trim().Split([' ', ',', '\t'], StringSplitOptions.RemoveEmptyEntries);
             includePreRelease = chkPrerelease.IsChecked ?? false;
             installedOnly = rbInstalledOnly.IsChecked ?? false;
             foundPackages.Clear();
@@ -452,7 +450,7 @@ namespace SandcastleBuilder.WPF.UI
                 else
                 {
                     project.AddItem("PackageReference", selectedPackage.Id,
-                        new[] { new KeyValuePair<string, string>("Version", version) });
+                        [new KeyValuePair<string, string>("Version", version)]);
                 }
 
                 projectPackages[selectedPackage.Id] = version;

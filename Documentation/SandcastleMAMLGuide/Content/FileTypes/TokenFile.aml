@@ -13,7 +13,7 @@ phrase or external link.</para>
       <content>
         <para>Below is an example of a token file.</para>
 
-        <code language="xml" title="Example Token File" source="ExampleFiles\Tokens.xml" />
+        <code language="xml" title="Example Token File" source="..\SandcastleBuilder\CommonTokens.tokens" />
 
 				<para>The file consists of a root <codeInline>content</codeInline> node that contains one or more
 <codeInline>item</codeInline> nodes.  Be sure to add the <codeInline>xml:space</codeInline> attribute to preserve

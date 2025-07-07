@@ -37,7 +37,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
         /// <param name="parameters">The list of constructor parameters if any</param>
         public ConstructorTarget(IList<Parameter> parameters)
         {
-            this.Parameters = (parameters ?? new List<Parameter>());
+            this.Parameters = parameters ?? [];
         }
         #endregion
     }

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : VisibilityPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 10/05/2021
-// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2017-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Visibility category properties
 //
@@ -21,10 +21,9 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 
-using Sandcastle.Core;
+using Sandcastle.Core.Project;
 
 using Sandcastle.Platform.Windows;
-using SandcastleBuilder.Utils;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {

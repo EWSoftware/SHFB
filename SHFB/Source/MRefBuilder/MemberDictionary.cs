@@ -49,7 +49,7 @@ namespace Sandcastle.Tools
 
             this.type = type ?? throw new ArgumentNullException(nameof(type));
 
-            index = new Dictionary<string, List<Member>>();
+            index = [];
 
             // !EFW - Track excluded overridden members.  These need to be filtered out below or the inherited
             // base member shows up in the member list.
@@ -57,11 +57,15 @@ namespace Sandcastle.Tools
 
             // Add all member of the type except nested types and members that the filter rejects
             foreach(var member in type.Members)
-                if(!(member is TypeNode) && filter.IsExposedMember(member))
+            {
+                if(member is not TypeNode && filter.IsExposedMember(member))
                     this.AddMember(member);
                 else
+                {
                     if(member.OverridesBaseClassMember)
                         excludedOverriddenMembers.Add(member.OverriddenMember);
+                }
+            }
 
             // For enumerations, don't list inherited members
             if(type is EnumNode)
@@ -405,7 +409,7 @@ namespace Sandcastle.Tools
                 return property.Parameters;
 
             // Member is neither a method nor a property
-            return new ParameterList();
+            return [];
         }
 
         /// <summary>
@@ -420,7 +424,7 @@ namespace Sandcastle.Tools
             if(!index.TryGetValue(name, out List<Member> members))
             {
                 // If there isn't one already, make one
-                members = new List<Member>();
+                members = [];
                 index.Add(name, members);
             }
 

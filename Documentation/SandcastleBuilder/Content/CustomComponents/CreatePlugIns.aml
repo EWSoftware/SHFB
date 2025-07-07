@@ -130,7 +130,7 @@ reside within the same assembly.  Add new class files to the project and impleme
 described below and as shown in the template class.</para>
 
 				<para>The plug-in is derived from the
-<codeEntityReference qualifyHint="true">T:SandcastleBuilder.Utils.BuildComponent.IPlugIn</codeEntityReference>
+<codeEntityReference qualifyHint="true">T:Sandcastle.Core.PlugIn.IPlugIn</codeEntityReference>
 interface and consists of a few properties and methods that you must implement.  These are described below.
 Review the code for "<codeInline>TODO:</codeInline>" comments to find sections that need attention such as
 setting the plug-in's ID, defining the execution points, etc.  If you followed the steps in the
@@ -146,7 +146,7 @@ so that it can discover the plug-in.</para>
 			<title>The Export Attribute Metadata</title>
 			<content>
 				<para>The plug-in is a Managed Extensibility Framework (MEF) component.  The
-<codeEntityReference qualifyHint="false">T:SandcastleBuilder.Utils.BuildComponent.HelpFileBuilderPlugInExportAttribute</codeEntityReference>
+<codeEntityReference qualifyHint="false">T:Sandcastle.Core.PlugIn.HelpFileBuilderPlugInExportAttribute</codeEntityReference>
 is used to define the necessary metadata that enables the help file builder to load and use the component.</para>
 			</content>
 
@@ -219,11 +219,11 @@ elements and thus do not need to be manually added to the project to override se
 					<content>
 						<para>The <codeInline>ExecutionPoints</codeInline> property is probably the most important member of
 the interface.  It returns a collection of
-<codeEntityReference qualifyHint="false">T:SandcastleBuilder.Utils.BuildComponent.ExecutionPoint</codeEntityReference>
+<codeEntityReference qualifyHint="false">T:Sandcastle.Core.PlugIn.ExecutionPoint</codeEntityReference>
 objects that define at which steps in the build process the plug-in should be ran.  Execution points can be set
 to run before and/or after a build step to supplement the default processing or they can be set to run instead of
 the build step to completely suppress or replace the default processing.  See the
-<codeEntityReference qualifyHint="false">T:SandcastleBuilder.Utils.BuildEngine.BuildStep</codeEntityReference>
+<codeEntityReference qualifyHint="false">T:Sandcastle.Core.BuildEngine.BuildStep</codeEntityReference>
 enumeration for a list of the defined build steps.</para>
 
 						<para>Each execution point can be assigned a priority.  The execution priority is used to determine
@@ -239,7 +239,7 @@ not specified, a default priority of 1,000 is used.</para>
 					<content>
 						<para>The <codeInline>Initialize</codeInline> method is used to initialize the plug-in at the start
 of the build process.  It is passed a reference to the current
-<codeEntityReference qualifyHint="false">T:SandcastleBuilder.Utils.BuildEngine.BuildProcess</codeEntityReference>
+<codeEntityReference qualifyHint="false">T:Sandcastle.Core.BuildEngine.IBuildProcess</codeEntityReference>
 and an XPath navigator containing the plug-in configuration.  You should cache a copy of the build process
 reference for use during execution as it contains many properties and methods that you will find useful.</para>
 
@@ -251,9 +251,9 @@ reference for use during execution as it contains many properties and methods th
 					<content>
 						<para>The <codeInline>Execute</codeInline> method is called to perform the plug-in processing during
 the relevant build steps.  It is passed an
-<codeEntityReference qualifyHint="true">T:SandcastleBuilder.Utils.BuildComponent.ExecutionContext</codeEntityReference>
+<codeEntityReference qualifyHint="true">T:Sandcastle.Core.PlugIn.ExecutionContext</codeEntityReference>
 object that defines the current execution context.  If your plug-in determines that it does not need to run, it
-should set the <codeEntityReference qualifyHint="true">P:SandcastleBuilder.Utils.BuildComponent.ExecutionContext.Executed</codeEntityReference>
+should set the <codeEntityReference qualifyHint="true">P:Sandcastle.Core.PlugIn.ExecutionContext.Executed</codeEntityReference>
 property to false.  This is especially important for plug-ins with the <codeInline>InsteadOf</codeInline>
 behavior. If none run, the default processing will occur.</para>
 
@@ -301,8 +301,8 @@ the <codeInline>Initializing</codeInline> step.</para>
 will not call any plug-ins with <codeInline>Before</codeInline> or <codeInline>After</codeInline> behavior for
 the step if an <codeInline>InsteadOf</codeInline> plug-in runs.  As such, it is up to the plug-in with the
 <codeInline>InsteadOf</codeInline> behavior to call the
-<codeEntityReference qualifyHint="false" autoUpgrade="true">M:SandcastleBuilder.Utils.BuildEngine.BuildProcess.ExecuteBeforeStepPlugIns</codeEntityReference>
-and <codeEntityReference qualifyHint="false" autoUpgrade="true">M:SandcastleBuilder.Utils.BuildEngine.BuildProcess.ExecuteAfterStepPlugIns</codeEntityReference>
+<codeEntityReference qualifyHint="false" autoUpgrade="true">M:Sandcastle.Core.BuildEngine.IBuildProcess.ExecuteBeforeStepPlugIns</codeEntityReference>
+and <codeEntityReference qualifyHint="false" autoUpgrade="true">M:Sandcastle.Core.BuildEngine.IBuildProcess.ExecuteAfterStepPlugIns</codeEntityReference>
 methods to run them if needed.
 						</para>
 					</listItem>
@@ -328,7 +328,7 @@ file/folder.  All normal processing involving the file/folder including its crea
 <codeInline>GenerateHelpFileIndex</codeInline>, <codeInline>GenerateHelpProject</codeInline>,
 <codeInline>UpdateTableOfContents</codeInline>, and <codeInline>CompilingHelpFile</codeInline> steps will run
 once for each help file format selected.  You can use the
-<codeEntityReference qualifyHint="false">P:SandcastleBuilder.Utils.BuildEngine.BuildProcess.CurrentFormat</codeEntityReference>
+<codeEntityReference qualifyHint="false">P:Sandcastle.Core.BuildEngine.IBuildProcess.CurrentFormat</codeEntityReference>
 property to determine the current help file format being built in order to skip or alter the plug-in's processing
 based on the help file format.</para>
 					</listItem>

@@ -7,6 +7,8 @@
 // 11/22/2013 - EFW - Reworked the classes to derive from List<T> so that they are LINQ-friendly and cleared out
 // the unused classes.
 
+// Ignore Spelling: Typeswitch
+
 using System.Collections.Generic;
 
 namespace System.Compiler
@@ -189,7 +191,7 @@ namespace System.Compiler
     
     public sealed class ParameterList : List<Parameter>
     {
-        public readonly static ParameterList Empty = new ParameterList();
+        public readonly static ParameterList Empty = [];
 
         public ParameterList()
         {

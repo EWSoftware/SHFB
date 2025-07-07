@@ -7,7 +7,7 @@
 	xmlns:c="clr-namespace:System.Collections;assembly=mscorlib"
 	xmlns:shfbBehaviors="clr-namespace:SandcastleBuilder.WPF.Behaviors"
 	xmlns:shfbCommands="clr-namespace:SandcastleBuilder.WPF.Commands"
-	xmlns:shfbConceptual="clr-namespace:SandcastleBuilder.Utils.ConceptualContent;assembly=SandcastleBuilder.Utils"
+	xmlns:shfbConceptual="clr-namespace:Sandcastle.Core.ConceptualContent;assembly=Sandcastle.Core"
 	xmlns:shfbControls="clr-namespace:SandcastleBuilder.WPF.Controls"
 	mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="750" MinWidth="100"
 	Background="{DynamicResource ToolWindowBackgroundBrushKey}">

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TransformArgumentsPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 02/27/2022
-// Note    : Copyright 2017-2022, Eric Woodruff, All rights reserved
+// Updated : 07/03/2025
+// Note    : Copyright 2017-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Transform Arguments category properties
 //
@@ -288,7 +288,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private void componentCache_ComponentContainerLoaded(object sender, EventArgs e)
         {
-            PresentationStyleSettingsNeededEventArgs projectSettings = new PresentationStyleSettingsNeededEventArgs();
+            PresentationStyleSettingsNeededEventArgs projectSettings = new();
             PresentationStyleSettings pss = null;
             TransformationArgument transformArg, clone;
 
@@ -333,18 +333,19 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 if(!String.IsNullOrEmpty(projectSettings.TransformComponentArguments))
                 {
                     // Use a reader to ignore namespaces
-                    using(var xr = new XmlTextReader("<Args>" + projectSettings.TransformComponentArguments + "</Args>",
+                    using var xr = new XmlTextReader("<Args>" + projectSettings.TransformComponentArguments + "</Args>",
                       XmlNodeType.Element, new XmlParserContext(null, null, null, XmlSpace.Preserve))
-                      { Namespaces = false })
                     {
-                        xr.Namespaces = false;
-                        xr.MoveToContent();
+                        Namespaces = false
+                    };
+                    
+                    xr.Namespaces = false;
+                    xr.MoveToContent();
 
-                        foreach(var arg in XElement.Load(xr, LoadOptions.PreserveWhitespace).Descendants("Argument"))
-                        {
-                            transformArg = new TransformationArgument(arg);
-                            transformComponentArgs.Add(transformArg.Key, transformArg);
-                        }
+                    foreach(var arg in XElement.Load(xr, LoadOptions.PreserveWhitespace).Descendants("Argument"))
+                    {
+                        transformArg = new TransformationArgument(arg);
+                        transformComponentArgs.Add(transformArg.Key, transformArg);
                     }
                 }
 

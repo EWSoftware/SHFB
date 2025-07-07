@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : OpenXmlPresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/06/2022
-// Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Open XML presentation style.
 //
@@ -24,6 +24,7 @@ using System.Reflection;
 
 using Sandcastle.Core;
 using Sandcastle.Core.PresentationStyle;
+using Sandcastle.Core.Project;
 
 namespace Sandcastle.PresentationStyles.OpenXml
 {
@@ -68,7 +69,7 @@ namespace Sandcastle.PresentationStyles.OpenXml
             this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";
 
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, null, @"DocumentParts\*.*",
-                String.Empty, new[] { ".xml" } ));
+                String.Empty, [".xml"]));
         }
 
         /// <inheritdoc />

@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ApiMember.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/11/2022
-// Note    : Copyright 2021-2022, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2021-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to contain information about an API member entry in a reflection
 // information file.
@@ -306,10 +306,8 @@ namespace Sandcastle.Core.Reflection
                 this.ParameterCount = parameters.Elements("parameter").Count();
 
                 var firstParameter = parameters.Element("parameter");
-                var parameterType = firstParameter.Descendants("type").FirstOrDefault();
-
-                if(parameterType == null)
-                    parameterType = firstParameter.Descendants("template").FirstOrDefault();
+                var parameterType = firstParameter.Descendants("type").FirstOrDefault() ??
+                    firstParameter.Descendants("template").FirstOrDefault();
 
                 this.FirstParameterTypeName = parameterType.Attribute("api").Value;
 
@@ -325,10 +323,10 @@ namespace Sandcastle.Core.Reflection
 
             // Any child elements are sorted by their member ID in ascending order excluding the prefix
             if(elements == null)
-                this.ChildElements = Enumerable.Empty<string>();
+                this.ChildElements = [];
             else
-                this.ChildElements = elements.Elements("element").Select(e => e.Attribute("api").Value).OrderBy(
-                    id => id.Substring(id.IndexOf(':') + 1)).ToList();
+                this.ChildElements = [.. elements.Elements("element").Select(e => e.Attribute("api").Value).OrderBy(
+                    id => id.Substring(id.IndexOf(':') + 1))];
         }
         #endregion
     }

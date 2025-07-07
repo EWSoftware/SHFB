@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ListElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/29/2023
-// Note    : Copyright 2022-2023, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle list elements based on the topic type
 //
@@ -178,7 +178,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml
 
                     foreach(var item in element.Elements("item"))
                     {
-                        XElement li = new XElement("li"), term = item.Element("term"),
+                        XElement li = new("li"), term = item.Element("term"),
                             description = item.Element("description");
                         list.Add(li);
 

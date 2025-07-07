@@ -84,7 +84,7 @@ namespace Sandcastle.Core.CommandLine
 
             if(values == null)
             {
-                values = new List<string>();
+                values = [];
                 base.Value = values;
             }
 

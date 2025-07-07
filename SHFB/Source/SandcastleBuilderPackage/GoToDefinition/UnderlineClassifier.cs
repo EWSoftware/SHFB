@@ -79,7 +79,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
         {
             if(this.CurrentUnderlineSpan != null && spans.Count != 0)
             {
-                SnapshotSpan request = new SnapshotSpan(spans[0].Start, spans[spans.Count - 1].End);
+                SnapshotSpan request = new(spans[0].Start, spans[spans.Count - 1].End);
                 SnapshotSpan underline = this.CurrentUnderlineSpan.Value.TranslateTo(request.Snapshot, SpanTrackingMode.EdgeInclusive);
 
                 if(underline.IntersectsWith(request))

@@ -38,12 +38,12 @@ namespace Sandcastle.Core.CommandLine
         /// This read-only property is used to see if the options were parsed successfully
         /// </summary>
         /// <value>Returns true if successful, false if not</value>
-        public bool Success => (errors.Count == 0);
+        public bool Success => errors.Count == 0;
 
         /// <summary>
         /// This read-only property returns a collection of the unused arguments
         /// </summary>
-        public ReadOnlyCollection<string> UnusedArguments => new ReadOnlyCollection<string>(nonOptions);
+        public ReadOnlyCollection<string> UnusedArguments => new(nonOptions);
 
         #endregion
 
@@ -58,8 +58,8 @@ namespace Sandcastle.Core.CommandLine
         {
             this.Options = options;
 
-            errors = new Dictionary<string, ParseResult>();
-            nonOptions = new List<string>();
+            errors = [];
+            nonOptions = [];
         }
         #endregion
 

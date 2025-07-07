@@ -118,7 +118,7 @@ namespace Sandcastle.Tools.Reflection
         #region Private data members
         //=====================================================================
 
-        private readonly Dictionary<string, AssemblyNode> cache = new Dictionary<string, AssemblyNode>();
+        private readonly Dictionary<string, AssemblyNode> cache = [];
         private readonly Collection<BindingRedirectSettings> redirects;
         private readonly Collection<string> ignoreIfUnresolved;
 
@@ -185,9 +185,9 @@ namespace Sandcastle.Tools.Reflection
         /// </summary>
         public AssemblyResolver()
         {
-            cache = new Dictionary<string, AssemblyNode>();
-            redirects = new Collection<BindingRedirectSettings>();
-            ignoreIfUnresolved = new Collection<string>();
+            cache = [];
+            redirects = [];
+            ignoreIfUnresolved = [];
 
             this.UseGac = true;
         }
@@ -272,7 +272,6 @@ namespace Sandcastle.Tools.Reflection
         /// <returns>The assembly node if resolved or null if not resolved</returns>
         public virtual AssemblyNode ResolveReference(AssemblyReference reference, Module referrer)
         {
-            AssemblyNode assembly;
 
             if(reference == null)
                 throw new ArgumentNullException(nameof(reference));
@@ -280,8 +279,8 @@ namespace Sandcastle.Tools.Reflection
             // Try to get it from the cache
             string name = reference.StrongName;
 
-            if(cache.ContainsKey(name))
-                return cache[name];
+            if(cache.TryGetValue(name, out AssemblyNode assembly))
+                return assembly;
 
             // Try to get it from the GAC if so indicated
             if(this.UseGac)
@@ -302,16 +301,16 @@ namespace Sandcastle.Tools.Reflection
 
             // Try the redirects if not found
             foreach(BindingRedirectSettings brs in redirects)
-                if(brs.IsRedirectFor(name) && cache.ContainsKey(brs.StrongName))
+            {
+                if(brs.IsRedirectFor(name) && cache.TryGetValue(brs.StrongName, out assembly))
                 {
                     this.MessageLogger(MessageLevel.Info, $"Using redirect '{brs.StrongName}' in place of '{name}'");
-
-                    assembly = cache[brs.StrongName];
 
                     // Add the same assembly under the current name
                     cache.Add(name, assembly);
                     return assembly;
                 }
+            }
 
             // For mscorlib v255.255.255.255, redirect to System.Runtime.  This is typically one like a .NETCore
             // framework which redirects all of the system types there.  For a missing System.Runtime and System
@@ -387,10 +386,14 @@ namespace Sandcastle.Tools.Reflection
             // and .NETStandard assemblies due to variations in how they are distributed.
             if(!ignoreIfUnresolved.Contains(reference.Name) && !reference.Name.StartsWith("System.",
               StringComparison.Ordinal) && !reference.Name.StartsWith("Microsoft.", StringComparison.Ordinal))
+            {
                 OnUnresolvedAssemblyReference(reference, module);
+            }
             else
+            {
                 this.MessageLogger(MessageLevel.Warn,
                     $"Ignoring unresolved assembly reference: {reference.Name} ({reference.StrongName}) required by {module.Name}");
+            }
 
             return null;
         }

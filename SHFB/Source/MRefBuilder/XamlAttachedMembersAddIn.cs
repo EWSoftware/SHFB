@@ -49,7 +49,7 @@ namespace Sandcastle.Tools
             if(configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
-            attachedMembers = new Dictionary<Object, Field>();
+            attachedMembers = [];
 
             // Keep track of the writer
             mrw = writer ?? throw new ArgumentNullException(nameof(writer));
@@ -97,7 +97,7 @@ namespace Sandcastle.Tools
 
                 foreach(TypeNode type in types)
                 {
-                    MemberList members = new MemberList(type.Members);
+                    MemberList members = [.. type.Members];
 
                     // Go through the members looking for fields signaling attached properties
                     foreach(Member member in members)
@@ -143,13 +143,13 @@ namespace Sandcastle.Tools
                             continue;
 
                         // Make sure there isn't already such a property
-                        Property existingProperty = type.GetProperty(new Identifier(name), Array.Empty<TypeNode>());
+                        Property existingProperty = type.GetProperty(new Identifier(name), []);
 
                         if(existingProperty != null && existingProperty.IsVisibleOutsideAssembly)
                             continue;
 
                         // Okay, this really is an indication of an attached property, so create one
-                        Property attachedProperty = new Property(type, null, PropertyFlags.None,
+                        Property attachedProperty = new(type, null, PropertyFlags.None,
                           new Identifier(name), getter, setter)
                         {
                             // Attached properties have no parameters
@@ -212,7 +212,7 @@ namespace Sandcastle.Tools
                         // Okay, this really is an indication of an attached event, so create one
                         TypeNode handler = adder.Parameters[1].Type;
 
-                        Event attachedEvent = new Event(type, null, EventFlags.None, new Identifier(name), adder,
+                        Event attachedEvent = new(type, null, EventFlags.None, new Identifier(name), adder,
                           null, remover, handler)
                         {
                             HandlerFlags = adder.Flags

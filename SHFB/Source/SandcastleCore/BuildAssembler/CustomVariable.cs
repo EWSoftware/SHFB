@@ -14,7 +14,7 @@ namespace Sandcastle.Core.BuildAssembler
     /// <summary>
     /// This represents a custom XSLT variable used by a BuildAssembler <see cref="CustomContext"/>
     /// </summary>
-    internal struct CustomVariable : IXsltContextVariable
+    internal readonly struct CustomVariable : IXsltContextVariable
     {
         #region Private data members
         //=====================================================================

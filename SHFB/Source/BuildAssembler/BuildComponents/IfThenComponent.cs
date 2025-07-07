@@ -43,9 +43,8 @@ namespace Sandcastle.Tools.BuildComponents
 
         private XPathExpression condition;
 
-        private readonly Dictionary<string, string> contextNamespaces = new Dictionary<string, string>();
-        private IEnumerable<BuildComponentCore> trueBranch = new List<BuildComponentCore>();
-        private IEnumerable<BuildComponentCore> falseBranch = new List<BuildComponentCore>();
+        private readonly Dictionary<string, string> contextNamespaces = [];
+        private IEnumerable<BuildComponentCore> trueBranch = [], falseBranch = [];
 
         #endregion
 
@@ -99,10 +98,9 @@ namespace Sandcastle.Tools.BuildComponents
                     contextNode.GetAttribute("name", String.Empty);
 
             // Get the condition
-            XPathNavigator ifNode = configuration.SelectSingleNode("if");
-
-            if(ifNode == null)
-                throw new ArgumentException("You must specify a condition using the <if> element.", nameof(configuration));
+            XPathNavigator ifNode = configuration.SelectSingleNode("if") ??
+                throw new ArgumentException("You must specify a condition using the <if> element.",
+                    nameof(configuration));
 
             string conditionXPath = ifNode.GetAttribute("condition", String.Empty);
 
@@ -134,7 +132,7 @@ namespace Sandcastle.Tools.BuildComponents
                 throw new ArgumentNullException(nameof(document));
 
             // Set up the test
-            CustomContext context = new CustomContext(contextNamespaces);
+            CustomContext context = new(contextNamespaces);
             context["key"] = key;
 
             XPathExpression test = condition.Clone();

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/15/2022
-// Note    : Copyright 2011-2022, Eric Woodruff, All rights reserved
+// Updated : 06/24/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that defines the Sandcastle Help File Builder Visual Studio package
 //
@@ -34,19 +34,18 @@ using System.Runtime.InteropServices;
 using EnvDTE;
 
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-using Sandcastle.Core;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.Project;
 using Sandcastle.Platform.Windows;
 
+using SandcastleBuilder.MSBuild.HelpProject;
 using SandcastleBuilder.Package.Editors;
 using SandcastleBuilder.Package.Nodes;
 using SandcastleBuilder.Package.PropertyPages;
 using SandcastleBuilder.Package.ToolWindows;
-
-using SandcastleBuilder.Utils;
 
 using SandcastleBuilder.WPF.PropertyPages;
 using SandcastleBuilder.WPF.UI;
@@ -187,8 +186,8 @@ namespace SandcastleBuilder.Package
         }
 
         /// <summary>
-        /// This returns a <see cref="SandcastleProject"/> instance for the
-        /// current project if it is one or null if not
+        /// This returns a <see cref="SandcastleProject"/> instance for the current project if it is one or null
+        /// if not.
         /// </summary>
         /// <value>The caller should not dispose of the project</value>
         public static SandcastleProject CurrentSandcastleProject
@@ -218,7 +217,7 @@ namespace SandcastleBuilder.Package
         /// Studio environment. The place to do all the other initialization is the Initialize method.</remarks>
         public SandcastleBuilderPackage()
         {
-            Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for {0}",
+            Trace.WriteLine(String.Format(CultureInfo.CurrentCulture, "Entering constructor for {0}",
                 this.ToString()));
 
             // Ensure that the custom controls are known by the base property page class
@@ -258,7 +257,7 @@ namespace SandcastleBuilder.Package
         protected override async System.Threading.Tasks.Task InitializeAsync(
           System.Threading.CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of {0}",
+            Trace.WriteLine(String.Format(CultureInfo.CurrentCulture, "Entering Initialize() of {0}",
                 this.ToString()));
 
             await base.InitializeAsync(cancellationToken, progress);
@@ -506,20 +505,24 @@ namespace SandcastleBuilder.Package
             if(commandId == PkgCmdIDList.ViewHtmlHelp)
                 outputPath += project.HtmlHelpName + ".chm";
             else
+            {
                 if(commandId == PkgCmdIDList.ViewDocxHelp)
                     outputPath += project.HtmlHelpName + ".docx";
                 else
+                {
                     if(commandId == 0)
                         outputPath += "_Sidebar.md";
                     else
                         outputPath += "Index.html";
+                }
+            }
 
             // If there are substitution tags present, have a go at resolving them
             if(outputPath.IndexOf("{@", StringComparison.Ordinal) != -1)
             {
                 try
                 {
-                    var bp = new SandcastleBuilder.Utils.BuildEngine.BuildProcess(project);
+                    var bp = project.CreateBuildProcess(PartialBuildType.None);
                     outputPath = bp.SubstitutionTags.TransformText(outputPath);
                 }
                 catch
@@ -551,13 +554,8 @@ namespace SandcastleBuilder.Package
                 {
                     if(outputPath.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
                     {
-                        if(Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) is DTE dte)
-                        {
-                            var doc = dte.ItemOperations.OpenFile(outputPath, EnvDTE.Constants.vsViewKindPrimary);
-
-                            if(doc != null)
-                                doc.Activate();
-                        }
+                        if(GetGlobalService(typeof(DTE)) is DTE dte)
+                            dte.ItemOperations.OpenFile(outputPath, EnvDTE.Constants.vsViewKindPrimary)?.Activate();
                     }
                     else
                         System.Diagnostics.Process.Start(outputPath);
@@ -565,7 +563,7 @@ namespace SandcastleBuilder.Package
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
                 Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_CRITICAL, "Unable to open help file '{0}'\r\n" +
                     "Reason: {1}", outputPath, ex.Message);
             }
@@ -593,10 +591,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         private void OpenInStandaloneGUIExecuteHandler(object sender, EventArgs e)
         {
-            var pn = CurrentProjectNode;
-
-            if(pn != null)
-                pn.OpenInStandaloneGui();
+            CurrentProjectNode?.OpenInStandaloneGui();
         }
         #endregion
 
@@ -737,10 +732,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         private void ViewBuildLogExecuteHandler(object sender, EventArgs e)
         {
-            var pn = CurrentProjectNode;
-
-            if(pn != null)
-                pn.OpenBuildLogToolWindow(true);
+            CurrentProjectNode?.OpenBuildLogToolWindow(true);
         }
         #endregion
 #pragma warning restore VSTHRD010

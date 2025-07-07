@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MissingTagPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 10/06/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2017-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Missing Tags category properties
 //
@@ -21,7 +21,7 @@ using System;
 using System.Windows.Controls;
 using System.Windows;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core.Project;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {

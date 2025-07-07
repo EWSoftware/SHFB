@@ -43,7 +43,7 @@ namespace Sandcastle.Tools.Reflection
             if(configuration.NodeType != XmlNodeType.Element || configuration.Name != "type")
                 throw new InvalidOperationException("The configuration element must be named 'type'");
 
-            memberFilters = new List<MemberFilter>();
+            memberFilters = [];
             name = configuration.GetAttribute("name");
             exposed = Convert.ToBoolean(configuration.GetAttribute("expose"), CultureInfo.InvariantCulture);
 
@@ -106,12 +106,13 @@ namespace Sandcastle.Tools.Reflection
                 typeIsRequired = required;
             }
             else
+            {
                 if(name != null && name.IndexOf('.') != -1)
                 {
                     // If we are nested, check if this filter is for a nested class.
 
                     // Get a stack of declaring type names
-                    Stack<string> parentNames = new Stack<string>();
+                    Stack<string> parentNames = new();
                     parentNames.Push(type.Name.Name);
 
                     TypeNode parent = type.DeclaringType;
@@ -126,6 +127,7 @@ namespace Sandcastle.Tools.Reflection
                     if(name == String.Join(".", parentNames))
                         typeIsRequired = required;
                 }
+            }
 
             return typeIsRequired;
         }
@@ -153,12 +155,13 @@ namespace Sandcastle.Tools.Reflection
                 typeIsExposed = exposed;
             }
             else
+            {
                 if(name != null && name.IndexOf('.') != -1)
                 {
                     // If we are nested, check if this filter is for a nested class.
 
                     // Get a stack of declaring type names
-                    Stack<string> parentNames = new Stack<string>();
+                    Stack<string> parentNames = new();
                     parentNames.Push(type.Name.Name);
 
                     TypeNode parent = type.DeclaringType;
@@ -173,6 +176,7 @@ namespace Sandcastle.Tools.Reflection
                     if(name == String.Join(".", parentNames))
                         typeIsExposed = exposed;
                 }
+            }
 
             return typeIsExposed;
         }

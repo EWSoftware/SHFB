@@ -16,15 +16,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SandcastleBuilder.Package</RootNamespace>
     <AssemblyName>SandcastleBuilder.Package</AssemblyName>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <UseCodebase>true</UseCodebase>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <TargetFrameworkProfile />
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
   </PropertyGroup>
   <PropertyGroup>
     <!-- Common debugging support -->
@@ -86,9 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
+    <Compile Include="..\SandcastleBuilderMSBuild\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -138,16 +132,6 @@
     <Compile Include="GoToDefinition\XmlGoToDefinitionMouseProcessor.cs" />
     <Compile Include="GoToDefinition\XmlGoToDefinitionMouseProcessorProvider.cs" />
     <Compile Include="Guids.cs" />
-    <Compile Include="IntelliSense\AugmentedCompletionSet.cs" />
-    <Compile Include="IntelliSense\CompletionDisplayTextComparer.cs" />
-    <Compile Include="IntelliSense\CSharpDocumentationCompletionSource.cs" />
-    <Compile Include="IntelliSense\CSharpDocumentationCompletionSourceProvider.cs" />
-    <Compile Include="IntelliSense\CustomCompletion.cs" />
-    <Compile Include="IntelliSense\RoslynHacks\CommandFilter.cs" />
-    <Compile Include="IntelliSense\RoslynHacks\RoslynKeyboardFilter.cs" />
-    <Compile Include="IntelliSense\RoslynHacks\RoslynTextViewCreationListener.cs" />
-    <Compile Include="IntelliSense\RoslynHacks\TextViewCommandFilter.cs" />
-    <Compile Include="IntelliSense\SandcastleCompletion.cs" />
     <Compile Include="MefProviderOptions.cs" />
     <Compile Include="Nodes\DocumentationSourceNode.cs" />
     <Compile Include="Nodes\DocumentationSourceNodeProperties.cs" />
@@ -1074,9 +1058,9 @@
       <Name>Microsoft.VisualStudio.Project</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
-      <Project>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</Project>
-      <Name>SandcastleBuilderUtils</Name>
+    <ProjectReference Include="..\SandcastleBuilderMSBuild\SandcastleBuilderMSBuild.csproj">
+      <Project>{b3a85272-9587-cf14-88f2-edf0e43f5ff8}</Project>
+      <Name>SandcastleBuilderMSBuild</Name>
     </ProjectReference>
     <ProjectReference Include="..\SandcastleBuilderWPF\SandcastleBuilderWPF_VSIX.csproj">
       <Project>{ae0de2ce-2185-4740-b834-4923a375f591}</Project>

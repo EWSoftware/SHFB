@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : GlobalDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/20/2021
-// Note    : Copyright 2013-2021, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2013-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that implements the global dictionary
 //
@@ -111,7 +111,7 @@ namespace SandcastleBuilder.Gui.Spelling
                 // Eat exceptions, there's not much we can do
             }
 
-            return (suggestions ?? new List<string>());
+            return suggestions ?? [];
         }
 
         /// <inheritdoc />
@@ -120,7 +120,7 @@ namespace SandcastleBuilder.Gui.Spelling
             if(String.IsNullOrWhiteSpace(word))
                 return false;
 
-            using(StreamWriter writer = new StreamWriter(ignoredWordsFile, true))
+            using(StreamWriter writer = new(ignoredWordsFile, true))
             {
                 writer.WriteLine(word);
             }
@@ -166,16 +166,14 @@ namespace SandcastleBuilder.Gui.Spelling
 
             try
             {
-                if(globalDictionaries == null)
-                    globalDictionaries = new Dictionary<string, GlobalDictionary>();
+                globalDictionaries ??= [];
 
                 // If no culture is specified, use the default culture
-                if(culture == null)
-                    culture = SpellCheckerConfiguration.DefaultLanguage;
+                culture ??= SpellCheckerConfiguration.DefaultLanguage;
 
                 // If not already loaded, create the dictionary and the thread-safe spell factory instance for
                 // the given culture.
-                if(!globalDictionaries.ContainsKey(culture.Name))
+                if(!globalDictionaries.TryGetValue(culture.Name, out GlobalDictionary gd))
                 {
                     string dllPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -195,7 +193,7 @@ namespace SandcastleBuilder.Gui.Spelling
                     if(!File.Exists(dictionaryFile))
                         dictionaryFile = Path.Combine(dllPath, "en_US.aff");
 
-                    LanguageConfig lc = new LanguageConfig
+                    LanguageConfig lc = new()
                     {
                         LanguageCode = culture.Name,
                         HunspellAffFile = dictionaryFile,
@@ -204,11 +202,12 @@ namespace SandcastleBuilder.Gui.Spelling
 
                     spellEngine.AddLanguage(lc);
 
-                    globalDictionaries.Add(culture.Name, new GlobalDictionary(culture,
-                        spellEngine[culture.Name]));
+                    gd = new GlobalDictionary(culture, spellEngine[culture.Name]);
+                    
+                    globalDictionaries.Add(culture.Name, gd);
                 }
 
-                globalDictionary = globalDictionaries[culture.Name];
+                globalDictionary = gd;
             }
             catch(Exception ex)
             {
@@ -224,8 +223,8 @@ namespace SandcastleBuilder.Gui.Spelling
         /// </summary>
         public static void LoadIgnoredWordsFile(CultureInfo language)
         {
-            if(globalDictionaries != null && globalDictionaries.ContainsKey(language.Name))
-                globalDictionaries[language.Name].LoadIgnoredWordsFile();
+            if(globalDictionaries != null && globalDictionaries.TryGetValue(language.Name, out GlobalDictionary gd))
+                gd.LoadIgnoredWordsFile();
         }
 
         /// <summary>
@@ -240,8 +239,10 @@ namespace SandcastleBuilder.Gui.Spelling
                 try
                 {
                     foreach(string word in File.ReadLines(ignoredWordsFile))
+                    {
                         if(!String.IsNullOrWhiteSpace(word))
                             ignoredWords.Add(word.Trim());
+                    }
                 }
                 catch(Exception ex)
                 {

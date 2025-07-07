@@ -46,7 +46,7 @@ namespace Sandcastle.Tools.BuildComponents.Commands
             //=====================================================================
 
             // The index that maps keys to XPath navigators containing the data
-            private readonly Dictionary<string, XPathNavigator> index = new Dictionary<string, XPathNavigator>();
+            private readonly Dictionary<string, XPathNavigator> index = [];
 
             #endregion
 
@@ -83,7 +83,7 @@ namespace Sandcastle.Tools.BuildComponents.Commands
         //=====================================================================
 
         // An index mapping keys to the files that contain them
-        private readonly ConcurrentDictionary<string, string> index = new ConcurrentDictionary<string, string>();
+        private readonly ConcurrentDictionary<string, string> index = new();
 
         // A simple caching mechanism.
         // This cache keeps track of the order that files are loaded in and always unloads the oldest one.
@@ -172,9 +172,8 @@ namespace Sandcastle.Tools.BuildComponents.Commands
             if(configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
-            HashSet<string> namespaceFileFilter = new HashSet<string>();
-            string baseDirectory, wildcardPath, recurseValue, dupWarning, fullPath, directoryPart,
-                filePart;
+            HashSet<string> namespaceFileFilter = [];
+            string baseDirectory, wildcardPath, recurseValue, dupWarning, fullPath, directoryPart, filePart;
 
             baseDirectory = configuration.GetAttribute("base", String.Empty);
 
@@ -184,8 +183,10 @@ namespace Sandcastle.Tools.BuildComponents.Commands
             wildcardPath = configuration.GetAttribute("files", String.Empty);
 
             if(String.IsNullOrWhiteSpace(wildcardPath))
+            {
                 this.Component.WriteMessage(MessageLevel.Error, "Each data element must have a files attribute " +
                     "specifying which files to index.");
+            }
 
             wildcardPath = Environment.ExpandEnvironmentVariables(wildcardPath);
 
@@ -235,9 +236,11 @@ namespace Sandcastle.Tools.BuildComponents.Commands
                   foreach(string key in this.GetKeys(file))
                   {
                       // Only report the warning if wanted
-                      if(index.ContainsKey(key) && reportDuplicateIds)
+                      if(index.TryGetValue(key, out string duplicate) && reportDuplicateIds)
+                      {
                           this.Component.WriteMessage(MessageLevel.Warn, "Entries for the key '{0}' occur in " +
-                              "both '{1}' and '{2}'. The last entry will be used.", key, index[key], file);
+                              "both '{1}' and '{2}'. The last entry will be used.", key, duplicate, file);
+                      }
 
                       index[key] = file;
                   }

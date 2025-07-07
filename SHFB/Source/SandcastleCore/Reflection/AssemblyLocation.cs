@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AssemblyLocation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/30/2022
-// Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain information about a location and the assemblies for a
 // specific location.
@@ -122,7 +122,7 @@ namespace Sandcastle.Core.Reflection
         /// </summary>
         public AssemblyLocation()
         {
-            assemblyDetails = new BindingList<AssemblyDetails>();
+            assemblyDetails = [];
             assemblyDetails.ListChanged += (s, e) => this.OnPropertyChanged("Assemblies");
         }
 
@@ -166,7 +166,7 @@ namespace Sandcastle.Core.Reflection
         /// location for assemblies.</remarks>
         internal static AssemblyLocation FromXml(XElement location)
         {
-            AssemblyLocation al = new AssemblyLocation(location.Attribute("Path").Value);
+            AssemblyLocation al = new(location.Attribute("Path").Value);
 
             try
             {
@@ -217,7 +217,7 @@ namespace Sandcastle.Core.Reflection
         /// <returns>The assembly location as an XML element</returns>
         internal XElement ToXml()
         {
-            XElement e = new XElement("Location", new XAttribute("Path", storedPath));
+            XElement e = new("Location", new XAttribute("Path", storedPath));
 
             e.Add(assemblyDetails.OrderBy(a => a.Name).Select(a => a.ToXml(this.Path)));
 
@@ -242,12 +242,14 @@ namespace Sandcastle.Core.Reflection
 
             if(!String.IsNullOrWhiteSpace(this.Path) && Directory.Exists(this.Path))
             {
-                HashSet<string> assemblyDescs = new HashSet<string>(assemblyDetails.Select(a => a.Description));
+                HashSet<string> assemblyDescs = [.. assemblyDetails.Select(a => a.Description)];
 
                 // Remove entries that are not there anymore
                 foreach(var d in assemblyDetails.ToList())
+                {
                     if(!File.Exists(d.Filename))
                         assemblyDetails.Remove(d);
+                }
 
                 // Add missing entries
                 foreach(string assembly in Directory.EnumerateFiles(this.Path, "*.dll").Concat(

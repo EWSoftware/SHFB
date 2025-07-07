@@ -103,10 +103,8 @@ namespace Sandcastle.Tools.BuildComponents
 
                     try
                     {
-                        using(var xmlReader = transformedDoc.CreateReader())
-                        {
-                            document.Load(xmlReader);
-                        }
+                        using var xmlReader = transformedDoc.CreateReader();
+                        document.Load(xmlReader);
                     }
                     catch(Exception xmlEx)
                     {

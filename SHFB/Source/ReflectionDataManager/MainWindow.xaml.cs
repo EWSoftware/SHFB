@@ -2,8 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : MainWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/10/2021
-// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the main window for the application and is used to edit the reflection data set files
 //
@@ -339,22 +339,21 @@ namespace ReflectionDataManager
         /// <param name="e">The event arguments</param>
         private void cmdReplace_Executed(object sender, RoutedEventArgs e)
         {
-            using(System.Windows.Forms.FolderBrowserDialog dlg = new System.Windows.Forms.FolderBrowserDialog())
-            {
-                var location = (AssemblyLocation)locationsView.CurrentItem;
+            using System.Windows.Forms.FolderBrowserDialog dlg = new();
+            
+            var location = (AssemblyLocation)locationsView.CurrentItem;
 
-                dlg.Description = "Select the folder containing the assemblies";
+            dlg.Description = "Select the folder containing the assemblies";
 
-                if(!String.IsNullOrWhiteSpace(location.StoredPath))
-                    dlg.SelectedPath = location.Path;
-                else
-                    dlg.SelectedPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
-                        @"Reference Assemblies\Microsoft\Framework");
+            if(!String.IsNullOrWhiteSpace(location.StoredPath))
+                dlg.SelectedPath = location.Path;
+            else
+                dlg.SelectedPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
+                    @"Reference Assemblies\Microsoft\Framework");
 
-                // If selected, set the new folder
-                if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    location.StoredPath = dlg.SelectedPath;
-            }
+            // If selected, set the new folder
+            if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                location.StoredPath = dlg.SelectedPath;
         }
 
         /// <summary>

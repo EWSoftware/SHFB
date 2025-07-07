@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : BuildComponentFactory.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/26/2022
-// Note    : Copyright 2013-2022, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2013-2025, Eric Woodruff, All rights reserved
 //
 // This file contains an abstract base class that defines the factory method for build components as well as
 // build tool interaction methods.
@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 
 namespace Sandcastle.Core.BuildAssembler.BuildComponent
 {
@@ -51,7 +50,7 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// <value>If the indicated components do not exist in the project settings or in the configuration file
         /// already, the build tool can use this information to add them automatically with a default
         /// configuration.  It returns an empty list by default.</value>
-        public virtual IEnumerable<string> Dependencies => Enumerable.Empty<string>();
+        public virtual IEnumerable<string> Dependencies => [];
 
         /// <summary>
         /// This is used to get or set a placement action for reference content builds

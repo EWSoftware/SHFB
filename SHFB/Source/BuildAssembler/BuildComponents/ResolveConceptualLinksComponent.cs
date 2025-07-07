@@ -1,5 +1,5 @@
 //===============================================================================================================
-// System  : Sandcastle Build Components
+// System  : Sandcastle Help File Builder Components
 // File    : ResolveConceptualLinksComponent.cs
 // Note    : Copyright 2010-2016 Microsoft Corporation
 //
@@ -135,7 +135,7 @@ namespace Sandcastle.Tools.BuildComponents
             XPathExpression urlExp, textExp, linkTextExp;
             string attribute, basePath;
 
-            targetDirectories = new TargetDirectoryCollection();
+            targetDirectories = [];
 
             // This is a simple cache.  If the cache size limit is reached, it clears the cache and starts over
             cache = new Dictionary<string, TargetInfo>(CacheSize);

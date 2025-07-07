@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MissingTagPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/20/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Missing Tags category properties
 //
@@ -22,7 +22,9 @@
 using System;
 using System.Runtime.InteropServices;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core.Project;
+
+using SandcastleBuilder.MSBuild.HelpProject;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -71,7 +73,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(this.CurrentProject == null)
                 return false;
 
-            var projProp = this.CurrentProject.MSBuildProject.GetProperty("MissingTags");
+            var projProp = ((SandcastleProject)this.CurrentProject).MSBuildProject.GetProperty("MissingTags");
 #endif
             // If not found or not valid, we'll ignore it and use the defaults
             if(projProp == null || !Enum.TryParse(projProp.UnevaluatedValue, out MissingTags tags))
@@ -99,7 +101,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(this.CurrentProject == null)
                 return false;
 
-            this.CurrentProject.MSBuildProject.SetProperty("MissingTags",
+            ((SandcastleProject)this.CurrentProject).MSBuildProject.SetProperty("MissingTags",
                 ucMissingTagPropertiesContent.MissingTags.ToString());
 #endif
             return true;

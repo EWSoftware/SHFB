@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelpViewerFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/25/2022
-// Note    : Copyright 2009-2022, Eric Woodruff, All rights reserved
+// Updated : 07/04/2025
+// Note    : Copyright 2009-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the MSBuild task used to compress the help content into a Microsoft Help Container (a ZIP
 // file with a .mshc extension).
@@ -114,29 +114,28 @@ namespace SandcastleBuilder.MSBuild
                 baseFolderLength++;
 
             fileCount = Directory.EnumerateFiles(this.WorkingFolder, "*", SearchOption.AllDirectories).Count();
+
+            using var archive = ZipFile.Open(archiveName, ZipArchiveMode.Create);
             
-            using(var archive = ZipFile.Open(archiveName, ZipArchiveMode.Create))
+            // Compress the entire working folder.  Files are stored relative to the root.  We'll handle
+            // enumerating the files so that we can report progress.
+            foreach(var file in Directory.EnumerateFiles(this.WorkingFolder, "*", SearchOption.AllDirectories))
             {
-                // Compress the entire working folder.  Files are stored relative to the root.  We'll handle
-                // enumerating the files so that we can report progress.
-                foreach(var file in Directory.EnumerateFiles(this.WorkingFolder, "*", SearchOption.AllDirectories))
-                {
-                    string entryName = file.Substring(baseFolderLength);
+                string entryName = file.Substring(baseFolderLength);
 
-                    if(Path.DirectorySeparatorChar == '\\')
-                        entryName = entryName.Replace('\\', '/');
+                if(Path.DirectorySeparatorChar == '\\')
+                    entryName = entryName.Replace('\\', '/');
 
-                    archive.CreateEntryFromFile(file, entryName, CompressionLevel.Optimal);
+                archive.CreateEntryFromFile(file, entryName, CompressionLevel.Optimal);
 
-                    var fi = new FileInfo(file);
+                var fi = new FileInfo(file);
 
-                    folders.Add(fi.DirectoryName);
-                    addCount++;
-                    uncompressedSize += fi.Length;
+                folders.Add(fi.DirectoryName);
+                addCount++;
+                uncompressedSize += fi.Length;
 
-                    if((addCount % 500) == 0)
-                        progressProvider.Report(addCount);
-                }
+                if((addCount % 500) == 0)
+                    progressProvider.Report(addCount);
             }
         }
 

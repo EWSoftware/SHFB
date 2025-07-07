@@ -664,8 +664,8 @@ namespace Sandcastle.Tools.BuildComponents.Targets
 
             if(template is IndexedTemplateTypeReference indexedTemplate)
             {
-                if(dictionary != null && dictionary.ContainsKey(indexedTemplate))
-                    WriteType(dictionary[indexedTemplate], options, writer);
+                if(dictionary != null && dictionary.TryGetValue(indexedTemplate, out TypeReference typeReference))
+                    WriteType(typeReference, options, writer);
                 else
                     writer.WriteString(GetTemplateName(indexedTemplate.TemplateId, indexedTemplate.Index));
 
@@ -678,10 +678,10 @@ namespace Sandcastle.Tools.BuildComponents.Targets
 
                 if(dictionary != null)
                 {
-                    IndexedTemplateTypeReference key = new IndexedTemplateTypeReference(typeTemplate.TemplateType.Id, typeTemplate.Position);
+                    IndexedTemplateTypeReference key = new(typeTemplate.TemplateType.Id, typeTemplate.Position);
 
-                    if(dictionary.ContainsKey(key))
-                        value = dictionary[key];
+                    if(dictionary.TryGetValue(key, out TypeReference typeReference))
+                        value = typeReference;
                 }
 
                 if(value == null)

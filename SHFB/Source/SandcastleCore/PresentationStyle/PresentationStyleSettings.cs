@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PresentationStyleSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/03/2023
-// Note    : Copyright 2012-2023, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain settings information for a specific presentation style
 //
@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+using Sandcastle.Core.Project;
 using Sandcastle.Core.PresentationStyle.Transformation;
 
 namespace Sandcastle.Core.PresentationStyle
@@ -41,15 +42,6 @@ namespace Sandcastle.Core.PresentationStyle
     /// as needed.</remarks>
     public abstract class PresentationStyleSettings
     {
-        #region Private data members
-        //=====================================================================
-
-        private readonly List<ContentFiles> contentFiles;
-        private readonly List<PlugInDependency> plugInDependencies;
-        private readonly List<string> additionalResourceItemsFiles;
-
-        #endregion
-
         #region Properties
         //=====================================================================
 
@@ -97,13 +89,13 @@ namespace Sandcastle.Core.PresentationStyle
         /// <summary>
         /// This read-only property returns the list of help content file locations
         /// </summary>
-        public IList<ContentFiles> ContentFiles => contentFiles;
+        public IList<ContentFiles> ContentFiles { get; } = [];
 
         /// <summary>
         /// This read-only property returns the list of additional resource items files if any
         /// </summary>
         /// <remarks>Plug-ins can add files to this list to support localized text that they add</remarks>
-        public IList<string> AdditionalResourceItemsFiles => additionalResourceItemsFiles;
+        public IList<string> AdditionalResourceItemsFiles { get; } = [];
 
         /// <summary>
         /// This is used to get or set the document model applicator
@@ -131,22 +123,8 @@ namespace Sandcastle.Core.PresentationStyle
         /// <remarks>This is used to ensure that any dependent plug-ins are added to the build.  If any of the
         /// plug-ins are visible to the user and have been added to the project, the project configuration will
         /// override the default configuration supplied here.</remarks>
-        public IList<PlugInDependency> PlugInDependencies => plugInDependencies;
+        public IList<PlugInDependency> PlugInDependencies { get; } = [];
 
-        #endregion
-
-        #region Constructor
-        //=====================================================================
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        protected PresentationStyleSettings()
-        {
-            contentFiles = new List<ContentFiles>();
-            plugInDependencies = new List<PlugInDependency>();
-            additionalResourceItemsFiles = new List<string>();
-        }
         #endregion
 
         #region Helper methods
@@ -168,7 +146,7 @@ namespace Sandcastle.Core.PresentationStyle
         /// <returns>An enumerable list of problems found or an empty list if everything is okay</returns>
         public IEnumerable<string> CheckForErrors()
         {
-            List<string> errors = new List<string>();
+            List<string> errors = [];
 
             if(this.SupportedFormats == 0)
                 errors.Add(nameof(SupportedFormats) + " has not been specified");
@@ -255,7 +233,7 @@ namespace Sandcastle.Core.PresentationStyle
             if(transformTemplate == null)
                 throw new ArgumentNullException(nameof(transformTemplate));
 
-            foreach(var content in contentFiles)
+            foreach(var content in this.ContentFiles)
             {
                 if((content.HelpFileFormats & format) != 0)
                 {
@@ -265,13 +243,17 @@ namespace Sandcastle.Core.PresentationStyle
                         sourcePath = this.ResolvePath(Path.Combine(content.BasePath, content.SourcePathWildcard));
 
                     if(content.DestinationFolder == null)
+                    {
                         destPath = Path.Combine(destinationBasePath,
                             Path.GetFileName(Path.GetDirectoryName(content.SourcePathWildcard)));
+                    }
                     else
+                    {
                         if(content.DestinationFolder.Length == 0)
                             destPath = destinationBasePath;
                         else
                             destPath = Path.Combine(destinationBasePath, content.DestinationFolder);
+                    }
 
                     RecursiveCopy(sourcePath, destPath, progressReporter, content.TemplateFileExtensions,
                         transformTemplate);
@@ -330,7 +312,7 @@ namespace Sandcastle.Core.PresentationStyle
                         File.SetAttributes(filename, FileAttributes.Normal);
                     }
 
-                    progressReporter?.Invoke("{0} -> {1}", new[] { name, filename });
+                    progressReporter?.Invoke("{0} -> {1}", [name, filename]);
                 }
             }
 
@@ -339,9 +321,13 @@ namespace Sandcastle.Core.PresentationStyle
             {
                 // Ignore hidden folders as they may be under source control and are not wanted
                 foreach(string folder in Directory.EnumerateDirectories(dirName))
+                {
                     if((File.GetAttributes(folder) & FileAttributes.Hidden) != FileAttributes.Hidden)
+                    {
                         RecursiveCopy(folder + @"\*.*", destPath + folder.Substring(dirName.Length + 1) + @"\",
                             progressReporter, templateFileExtensions, transformTemplate);
+                    }
+                }
             }
         }
         #endregion

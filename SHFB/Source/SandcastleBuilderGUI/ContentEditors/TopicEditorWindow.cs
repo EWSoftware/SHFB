@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : TopicEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the conceptual topic files.
 //
@@ -27,13 +27,14 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-using Sandcastle.Core;
-
-using SandcastleBuilder.Gui.Properties;
-using SandcastleBuilder.Utils.ConceptualContent;
-
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Actions;
+
+using Sandcastle.Core;
+using Sandcastle.Core.ConceptualContent;
+
+using SandcastleBuilder.Gui.Properties;
+
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace SandcastleBuilder.Gui.ContentEditors
@@ -206,19 +207,18 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <inheritdoc />
         public override bool SaveAs()
         {
-            using(SaveFileDialog dlg = new SaveFileDialog())
-            {
-                dlg.Title = "Save Content File As";
-                dlg.Filter = "Project Files (*.aml, *.htm*, *.md, *.css, *.js, *.content, *.sitemap, " +
-                    "*.snippets, *.tokens, *.items)|*.aml;*.htm*;*.md;*.css;*.js;*.content;*.sitemap;*.tokens;" +
-                    "*.snippets;*.items|Content Files (*.aml, *.htm*, *.md)|*.aml;*.htm*;*.md|Content Layout Files " +
-                    "(*.content, *.sitemap)|*.content;*.sitemap|All Files (*.*)|*.*";
-                dlg.DefaultExt = Path.GetExtension(this.ToolTipText);
-                dlg.InitialDirectory = Directory.GetCurrentDirectory();
+            using SaveFileDialog dlg = new();
+            
+            dlg.Title = "Save Content File As";
+            dlg.Filter = "Project Files (*.aml, *.htm*, *.md, *.css, *.js, *.content, *.sitemap, " +
+                "*.snippets, *.tokens, *.items)|*.aml;*.htm*;*.md;*.css;*.js;*.content;*.sitemap;*.tokens;" +
+                "*.snippets;*.items|Content Files (*.aml, *.htm*, *.md)|*.aml;*.htm*;*.md|Content Layout Files " +
+                "(*.content, *.sitemap)|*.content;*.sitemap|All Files (*.*)|*.*";
+            dlg.DefaultExt = Path.GetExtension(this.ToolTipText);
+            dlg.InitialDirectory = Directory.GetCurrentDirectory();
 
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    return this.Save(dlg.FileName);
-            }
+            if(dlg.ShowDialog() == DialogResult.OK)
+                return this.Save(dlg.FileName);
 
             return false;
         }
@@ -242,8 +242,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="element">The last used element</param>
         private void TrackLastInsertedElement(ToolStripMenuItem element)
         {
-            if(element == null)
-                element = miAlert;
+            element ??= miAlert;
 
             if(element != lastAction)
             {
@@ -269,7 +268,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             if(textArea.SelectionManager.HasSomethingSelected &&
               textArea.SelectionManager.SelectionCollection[0].ContainsOffset(offset))
+            {
                 selectedText = textArea.SelectionManager.SelectionCollection[0].SelectedText;
+            }
             else
                 selectedText = String.Empty;
 
@@ -295,7 +296,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             if(textArea.SelectionManager.HasSomethingSelected &&
               textArea.SelectionManager.SelectionCollection[0].ContainsOffset(offset))
+            {
                 selectedText = textArea.SelectionManager.SelectionCollection[0].SelectedText;
+            }
             else
                 selectedText = String.Empty;
 
@@ -363,7 +366,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         public int ReplaceTextAt(Point p, int length, string text)
         {
             TextArea textArea = editor.ActiveTextAreaControl.TextArea;
-            TextLocation start = new TextLocation(p.X - 1, p.Y - 1);
+            TextLocation start = new(p.X - 1, p.Y - 1);
             int endPos, offset = textArea.Document.PositionToOffset(start);
             string currentText = " ";
 
@@ -453,7 +456,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             TocEntry tocEntry;
             string extension = Path.GetExtension(this.ToolTipText).ToLowerInvariant();
 
-            if(!(e.Data is DataObject data))
+            if(e.Data is not DataObject data)
                 return;
 
             if(data.GetDataPresent(typeof(Topic)))
@@ -465,6 +468,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     this.InsertTopicLink(extension, topic);
             }
             else
+            {
                 if(data.GetDataPresent(typeof(TocEntry)))
                 {
                     tocEntry = data.GetData(typeof(TocEntry)) as TocEntry;
@@ -474,8 +478,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         this.InsertTocLink(extension, tocEntry);
                 }
                 else
+                {
                     if(data.GetDataPresent(DataFormats.Text))
                         ContentEditorControl.InsertString(textArea, data.GetText());
+                }
+            }
         }
         #endregion
 
@@ -552,7 +559,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             if(textArea.SelectionManager.HasSomethingSelected &&
               textArea.SelectionManager.SelectionCollection[0].ContainsOffset(offset))
+            {
                 selectedText = textArea.SelectionManager.SelectionCollection[0].SelectedText;
+            }
             else
                 selectedText = "inner text";
 
@@ -575,7 +584,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             if(textArea.SelectionManager.HasSomethingSelected &&
               textArea.SelectionManager.SelectionCollection[0].ContainsOffset(offset))
+            {
                 selectedText = textArea.SelectionManager.SelectionCollection[0].SelectedText;
+            }
             else
                 selectedText = "link text";
 
@@ -612,7 +623,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             if(textArea.SelectionManager.HasSomethingSelected &&
               textArea.SelectionManager.SelectionCollection[0].ContainsOffset(offset))
+            {
                 selectedText = textArea.SelectionManager.SelectionCollection[0].SelectedText;
+            }
             else
                 selectedText = "Alert text";
 
@@ -781,6 +794,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     findWindow.Activate();
             }
             else
+            {
                 if(findWindow == null)
                 {
                     findWindow = new FindAndReplaceWindow();
@@ -791,6 +805,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     findWindow.Activate();
                     findWindow.ShowReplaceControls(false);
                 }
+            }
         }
 
         /// <summary>
@@ -818,6 +833,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     findWindow.Activate();
             }
             else
+            {
                 if(findWindow == null)
                 {
                     findWindow = new FindAndReplaceWindow();
@@ -829,6 +845,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     findWindow.Activate();
                     findWindow.ShowReplaceControls(true);
                 }
+            }
         }
 
         /// <summary>
@@ -847,8 +864,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             string text = textArea.Document.GetText(0, textArea.Document.TextLength);
             int pos, offset = textArea.Caret.Offset;
 
-            if(textToFind == null)
-                textToFind = String.Empty;
+            textToFind ??= String.Empty;
 
             pos = text.IndexOf(textToFind, offset, comparisonType);
 
@@ -884,11 +900,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
             string text = textArea.Document.GetText(0, textArea.Document.TextLength);
             int offset;
 
-            if(textToFind == null)
-                textToFind = String.Empty;
-
-            if(replaceWith == null)
-                replaceWith = String.Empty;
+            textToFind ??= String.Empty;
+            replaceWith ??= String.Empty;
 
             // If the cursor is sitting at the end of the find text, replace
             // the instance at the cursor.

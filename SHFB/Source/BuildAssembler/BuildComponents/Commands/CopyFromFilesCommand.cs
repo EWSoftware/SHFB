@@ -87,14 +87,12 @@ namespace Sandcastle.Tools.BuildComponents.Commands
                     XPathExpression sourceExpr = this.Source.Clone();
                     sourceExpr.SetContext(context);
 
-                    using(var reader = XmlReader.Create(filePath, new XmlReaderSettings { CloseInput = true }))
-                    {
-                        XPathDocument sourceDocument = new XPathDocument(reader);
-                        XPathNodeIterator sourceNodes = sourceDocument.CreateNavigator().Select(sourceExpr);
+                    using var reader = XmlReader.Create(filePath, new XmlReaderSettings { CloseInput = true });
+                    XPathDocument sourceDocument = new(reader);
+                    XPathNodeIterator sourceNodes = sourceDocument.CreateNavigator().Select(sourceExpr);
 
-                        foreach(XPathNavigator sourceNode in sourceNodes)
-                            targetNode.AppendChild(sourceNode);
-                    }
+                    foreach(XPathNavigator sourceNode in sourceNodes)
+                        targetNode.AppendChild(sourceNode);
 
                     // Don't warn or generate an error if no source nodes are found, that may be the case
                 }

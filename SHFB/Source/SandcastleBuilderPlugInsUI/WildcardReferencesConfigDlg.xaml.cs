@@ -1,9 +1,9 @@
 ﻿//===============================================================================================================
-// System  : EWSoftware Design Time Attributes and Editors
+// System  : Sandcastle Help File Builder Plug-Ins
 // File    : WildcardReferencesConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the wildcard references plug-in configuration
 //
@@ -27,10 +27,10 @@ using System.Windows.Controls;
 using System.Xml.Linq;
 
 using Sandcastle.Core;
-using Sandcastle.Platform.Windows;
+using Sandcastle.Core.PlugIn;
+using Sandcastle.Core.Project;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
+using Sandcastle.Platform.Windows;
 
 namespace SandcastleBuilder.PlugIns.UI
 {
@@ -49,7 +49,7 @@ namespace SandcastleBuilder.PlugIns.UI
         public sealed class Factory : IPlugInConfigurationEditor
         {
             /// <inheritdoc />
-            public bool EditConfiguration(SandcastleProject project, XElement configuration)
+            public bool EditConfiguration(ISandcastleProject project, XElement configuration)
             {
                 var dlg = new WildcardReferencesConfigDlg(project, configuration);
 
@@ -62,7 +62,7 @@ namespace SandcastleBuilder.PlugIns.UI
         //=====================================================================
 
         private readonly XElement configuration;
-        private readonly SandcastleProject project;
+        private readonly ISandcastleProject project;
 
         #endregion
 
@@ -74,7 +74,7 @@ namespace SandcastleBuilder.PlugIns.UI
         /// </summary>
         /// <param name="project">The current project</param>
         /// <param name="configuration">The current configuration element</param>
-        public WildcardReferencesConfigDlg(SandcastleProject project, XElement configuration)
+        public WildcardReferencesConfigDlg(ISandcastleProject project, XElement configuration)
         {
             InitializeComponent();
 
@@ -146,22 +146,21 @@ namespace SandcastleBuilder.PlugIns.UI
         {
             WildcardReferenceSettings newItem;
 
-            using(var dlg = new System.Windows.Forms.FolderBrowserDialog())
+            using var dlg = new System.Windows.Forms.FolderBrowserDialog();
+            
+            dlg.Description = "Select the folder for the new project";
+            dlg.SelectedPath = Directory.GetCurrentDirectory();
+
+            // If selected, add the file(s)
+            if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                dlg.Description = "Select the folder for the new project";
-                dlg.SelectedPath = Directory.GetCurrentDirectory();
-
-                // If selected, add the file(s)
-                if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                newItem = new WildcardReferenceSettings
                 {
-                    newItem = new WildcardReferenceSettings
-                    {
-                        ReferencePath = new FolderPath(dlg.SelectedPath, project)
-                    };
+                    ReferencePath = new FolderPath(dlg.SelectedPath, project)
+                };
 
-                    lbReferences.SelectedIndex = lbReferences.Items.Add(newItem);
-                    btnDeleteReferencePath.IsEnabled = grpReferenceProps.IsEnabled = true;
-                }
+                lbReferences.SelectedIndex = lbReferences.Items.Add(newItem);
+                btnDeleteReferencePath.IsEnabled = grpReferenceProps.IsEnabled = true;
             }
         }
 

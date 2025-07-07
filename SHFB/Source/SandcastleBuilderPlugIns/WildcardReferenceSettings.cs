@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : WildcardReferenceSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing wildcard reference settings for the Wildcard Reference plug-in
 //
@@ -24,7 +24,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -34,15 +34,6 @@ namespace SandcastleBuilder.PlugIns
     /// </summary>
     public class WildcardReferenceSettings : INotifyPropertyChanged
     {
-        #region Private data members
-        //=====================================================================
-
-        private FolderPath referencePath;
-        private string wildcard, errorMessage, description;
-        private bool recursive;
-
-        #endregion
-
         #region Properties
         //=====================================================================
 
@@ -51,19 +42,19 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public FolderPath ReferencePath
         {
-            get => referencePath;
+            get => field;
             set
             {
-                if(referencePath!= value)
+                if(field != value)
                 {
-                    if(referencePath != null)
-                        referencePath.PersistablePathChanged -= this.referencePath_PersistablePathChanged;
+                    if(field != null)
+                        field.PersistablePathChanged -= this.referencePath_PersistablePathChanged;
 
                     if(value == null)
-                        value = new FolderPath(referencePath.BasePathProvider);
+                        value = new FolderPath(field.BasePathProvider);
 
-                    referencePath = value;
-                    referencePath.PersistablePathChanged += this.referencePath_PersistablePathChanged;
+                    field = value;
+                    field.PersistablePathChanged += this.referencePath_PersistablePathChanged;
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -76,15 +67,15 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string Wildcard
         {
-            get => wildcard;
+            get => field;
             set
             {
-                if(wildcard != value)
+                if(field != value)
                 {
                     if(String.IsNullOrEmpty(value))
                         value = "*.dll";
 
-                    wildcard = value;
+                    field = value;
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -97,12 +88,12 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public bool Recursive
         {
-            get => recursive;
+            get => field;
             set
             {
-                if(recursive != value)
+                if(field != value)
                 {
-                    recursive = value;
+                    field = value;
 
                     this.Validate();
                     this.OnPropertyChanged();
@@ -115,10 +106,10 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string ErrorMessage
         {
-            get => errorMessage;
+            get => field;
             private set
             {
-                errorMessage = value;
+                field = value;
 
                 this.OnPropertyChanged();
             }
@@ -129,10 +120,10 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string ReferenceDescription
         {
-            get => description;
+            get => field;
             set
             {
-                description = value;
+                field = value;
 
                 this.OnPropertyChanged();
             }
@@ -189,13 +180,13 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         private void Validate()
         {
-            if(referencePath.Path.Length == 0)
+            if(this.ReferencePath.Path.Length == 0)
                 this.ErrorMessage = "A reference path is required";
             else
                 this.ErrorMessage = null;
 
             this.ReferenceDescription = String.Format(CultureInfo.CurrentCulture, "{0}{1}  ({2})",
-                referencePath.PersistablePath, this.Wildcard, (this.Recursive) ? "Recursive" : "This folder only");
+                this.ReferencePath.PersistablePath, this.Wildcard, (this.Recursive) ? "Recursive" : "This folder only");
         }
         #endregion
 
@@ -213,7 +204,7 @@ namespace SandcastleBuilder.PlugIns
         /// </remarks>
         public static WildcardReferenceSettings FromXml(IBasePathProvider pathProvider, XElement element)
         {
-            WildcardReferenceSettings wr = new WildcardReferenceSettings();
+            WildcardReferenceSettings wr = new();
 
             if(element != null)
             {
@@ -236,8 +227,8 @@ namespace SandcastleBuilder.PlugIns
         public XElement ToXml()
         {
             return new XElement("reference",
-                new XAttribute("path", referencePath.PersistablePath),
-                new XAttribute("wildcard", wildcard),
+                new XAttribute("path", this.ReferencePath.PersistablePath),
+                new XAttribute("wildcard", this.Wildcard),
                 new XAttribute("recurse", this.Recursive));
         }
         #endregion

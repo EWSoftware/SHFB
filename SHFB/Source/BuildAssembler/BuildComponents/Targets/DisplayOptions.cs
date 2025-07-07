@@ -1,5 +1,5 @@
 ﻿//===============================================================================================================
-// System  : Sandcastle Build Components
+// System  : Sandcastle Help File Builder Components
 // File    : DisplayOptions.cs
 // Note    : Copyright 2010-2012 Microsoft Corporation
 //

@@ -2,8 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : BuildReflectionDataDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/30/2022
-// Note    : Copyright 2015-2022, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the window class that is used to manage the build settings and build the reflection data
 //
@@ -109,14 +109,13 @@ namespace ReflectionDataManager
                 btnBuild.IsEnabled = false;
                 pbProgress.Visibility = Visibility.Visible;
 
-                using(var bp = new BuildProcess(dataSet)
-                    {
-                        CancellationToken = cancellationTokenSource.Token,
-                        ProgressProvider = new Progress<string>(this.ReportProgress)
-                    })
+                using var bp = new BuildProcess(dataSet)
                 {
-                    await Task.Run(() => bp.Build(), cancellationTokenSource.Token).ConfigureAwait(true);
-                }
+                    CancellationToken = cancellationTokenSource.Token,
+                    ProgressProvider = new Progress<string>(this.ReportProgress)
+                };
+                
+                await Task.Run(() => bp.Build(), cancellationTokenSource.Token).ConfigureAwait(true);
             }
             catch(Exception ex)
             {

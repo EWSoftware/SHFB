@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ResourceItemFileEditorPane.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
+// Updated : 06/24/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to host the resource item  file editor control
 //
@@ -21,7 +21,9 @@ using System;
 
 using Microsoft.VisualStudio.Shell.Interop;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core.Project;
+
+using SandcastleBuilder.MSBuild.HelpProject;
 using SandcastleBuilder.WPF;
 using SandcastleBuilder.WPF.UserControls;
 
@@ -36,6 +38,7 @@ namespace SandcastleBuilder.Package.Editors
         //=====================================================================
 
         private string resourceItemFilename;
+
         #endregion
 
         #region Constructor

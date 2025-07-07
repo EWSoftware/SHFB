@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ResourceItemEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/24/2025
+// Updated : 06/20/2025
 // Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to edit resource item files
@@ -34,11 +34,9 @@ using System.Xml;
 
 using Sandcastle.Core;
 using Sandcastle.Core.PresentationStyle;
-
+using Sandcastle.Core.PresentationStyle.Transformation;
+using Sandcastle.Core.Project;
 using Sandcastle.Platform.Windows;
-
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.ConceptualContent;
 
 namespace SandcastleBuilder.WPF.UserControls
 {
@@ -87,8 +85,8 @@ namespace SandcastleBuilder.WPF.UserControls
         {
             InitializeComponent();
 
-            allItems = new SortedDictionary<string, ResourceItem>();
-            sandcastleItems = new SortedDictionary<string, ResourceItem>();
+            allItems = [];
+            sandcastleItems = [];
         }
         #endregion
 
@@ -100,10 +98,10 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         /// <param name="resourceItemsFile">The resource items file to load</param>
         /// <param name="project">The current Sandcastle Builder project</param>
-        public void LoadResourceItemsFile(string resourceItemsFile, SandcastleProject project)
+        public void LoadResourceItemsFile(string resourceItemsFile, ISandcastleProject project)
         {
             PresentationStyleSettings pss = null;
-            List<string> syntaxGeneratorFiles = new List<string>();
+            List<string> syntaxGeneratorFiles = [];
 
             if(resourceItemsFile == null)
                 throw new ArgumentNullException(nameof(resourceItemsFile));
@@ -168,7 +166,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 this.LoadItemFile(resourceItemFilename, true);
 
                 // Load everything into the list box
-                resourceItems = new BindingList<ResourceItem>(allItems.Values.ToArray());
+                resourceItems = new BindingList<ResourceItem>([.. allItems.Values]);
                 resourceItems.ListChanged += resourceItems_ListChanged;
 
                 if(resourceItems.Count != 0)
@@ -199,32 +197,30 @@ namespace SandcastleBuilder.WPF.UserControls
         private void LoadItemFile(string filename, bool containsOverrides)
         {
             ResourceItem r;
-            XmlReaderSettings settings = new XmlReaderSettings { CloseInput = true };
+            XmlReaderSettings settings = new() { CloseInput = true };
 
             try
             {
-                using(var xr = XmlReader.Create(filename, settings))
+                using var xr = XmlReader.Create(filename, settings);
+                xr.MoveToContent();
+
+                while(!xr.EOF)
                 {
-                    xr.MoveToContent();
-
-                    while(!xr.EOF)
+                    if(xr.NodeType == XmlNodeType.Element && xr.Name == "item")
                     {
-                        if(xr.NodeType == XmlNodeType.Element && xr.Name == "item")
+                        r = new ResourceItem(filename, xr.GetAttribute("id"), xr.ReadInnerXml(), containsOverrides);
+
+                        allItems[r.Id] = r;
+
+                        // Create a clone of the original for Sandcastle items
+                        if(!containsOverrides)
                         {
-                            r = new ResourceItem(filename, xr.GetAttribute("id"), xr.ReadInnerXml(), containsOverrides);
-
-                            allItems[r.Id] = r;
-
-                            // Create a clone of the original for Sandcastle items
-                            if(!containsOverrides)
-                            {
-                                r = new ResourceItem(filename, r.Id, r.Value, false);
-                                sandcastleItems[r.Id] = r;
-                            }
+                            r = new ResourceItem(filename, r.Id, r.Value, false);
+                            sandcastleItems[r.Id] = r;
                         }
-
-                        xr.Read();
                     }
+
+                    xr.Read();
                 }
             }
             catch(Exception ex)
@@ -244,8 +240,10 @@ namespace SandcastleBuilder.WPF.UserControls
         private IEnumerable<ResourceItem> Find(Predicate<ResourceItem> match)
         {
             foreach(var r in resourceItems)
+            {
                 if(match(r))
                     yield return r;
+            }
         }
 
         /// <summary>
@@ -254,31 +252,32 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="resourceItemsFile">The resource item filename</param>
         public void Save(string resourceItemsFile)
         {
-            XmlWriterSettings settings = new XmlWriterSettings { Indent = true, CloseOutput = true };
+            XmlWriterSettings settings = new() { Indent = true, CloseOutput = true };
 
             this.CommitChanges();
 
-            using(var writer = XmlWriter.Create(resourceItemsFile, settings))
+            using var writer = XmlWriter.Create(resourceItemsFile, settings);
+
+            writer.WriteStartDocument();
+            writer.WriteStartElement("content");
+            writer.WriteAttributeString("xml", "space", null, "preserve");
+
+            foreach(ResourceItem r in allItems.Values)
             {
-                writer.WriteStartDocument();
-                writer.WriteStartElement("content");
-                writer.WriteAttributeString("xml", "space", null, "preserve");
+                if(r.IsOverridden)
+                {
+                    writer.WriteStartElement("item");
+                    writer.WriteAttributeString("id", r.Id);
 
-                foreach(ResourceItem r in allItems.Values)
-                    if(r.IsOverridden)
-                    {
-                        writer.WriteStartElement("item");
-                        writer.WriteAttributeString("id", r.Id);
-
-                        // The value is written as raw text to preserve any XML within it.  The item value is
-                        // also trimmed to remove unnecessary whitespace that might affect the layout.
-                        writer.WriteRaw(r.Value.Trim());
-                        writer.WriteEndElement();
-                    }
-
-                writer.WriteEndElement();   // </content>
-                writer.WriteEndDocument();
+                    // The value is written as raw text to preserve any XML within it.  The item value is
+                    // also trimmed to remove unnecessary whitespace that might affect the layout.
+                    writer.WriteRaw(r.Value.Trim());
+                    writer.WriteEndElement();
+                }
             }
+
+            writer.WriteEndElement();   // </content>
+            writer.WriteEndDocument();
         }
         #endregion
 
@@ -293,6 +292,7 @@ namespace SandcastleBuilder.WPF.UserControls
         private void resourceItems_ListChanged(object sender, ListChangedEventArgs e)
         {
             if(e.PropertyDescriptor != null)
+            {
                 switch(e.PropertyDescriptor.Name)
                 {
                     case "IsOverridden":
@@ -314,6 +314,7 @@ namespace SandcastleBuilder.WPF.UserControls
                     default:
                         break;
                 }
+            }
 
             if(sender != this)
                 this.RaiseEvent(new RoutedEventArgs(ContentModifiedEvent, this));
@@ -324,11 +325,8 @@ namespace SandcastleBuilder.WPF.UserControls
             CommandManager.InvalidateRequerySuggested();
 
             // We must clear the enumerator or it may throw an exception due to collection changes
-            if(matchEnumerator != null)
-            {
-                matchEnumerator.Dispose();
-                matchEnumerator = null;
-            }
+            matchEnumerator?.Dispose();
+            matchEnumerator = null;
         }
 
         /// <summary>
@@ -343,20 +341,15 @@ namespace SandcastleBuilder.WPF.UserControls
 
             if(txtFindID.Text.Trim().Length == 0)
             {
-                if(matchEnumerator != null)
-                {
-                    matchEnumerator.Dispose();
-                    matchEnumerator = null;
-                }
-
+                matchEnumerator?.Dispose();
+                matchEnumerator = null;
                 return;
             }
 
             txtFindID.Text = txtFindID.Text.Trim();
 
             // If this is the first time, get all matches
-            if(matchEnumerator == null)
-                matchEnumerator = this.Find(r =>
+            matchEnumerator ??= this.Find(r =>
                   (!String.IsNullOrEmpty(r.Id) && r.Id.IndexOf(txtFindID.Text,
                     StringComparison.CurrentCultureIgnoreCase) != -1) ||
                   (!String.IsNullOrEmpty(r.Value) && r.Value.IndexOf(txtFindID.Text,
@@ -370,11 +363,8 @@ namespace SandcastleBuilder.WPF.UserControls
             }
             else
             {
-                if(matchEnumerator != null)
-                {
-                    matchEnumerator.Dispose();
-                    matchEnumerator = null;
-                }
+                matchEnumerator.Dispose();
+                matchEnumerator = null;
 
                 MessageBox.Show("No more matches found", Constants.AppName, MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -388,11 +378,8 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void txtFindID_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(matchEnumerator != null)
-            {
-                matchEnumerator.Dispose();
-                matchEnumerator = null;
-            }
+            matchEnumerator?.Dispose();
+            matchEnumerator = null;
         }
 
         /// <summary>
@@ -423,9 +410,9 @@ namespace SandcastleBuilder.WPF.UserControls
             lbResourceItems.ItemsSource = null;
 
             if(chkLimitToOverridden.IsChecked.Value)
-                resourceItems = new BindingList<ResourceItem>(allItems.Values.Where(r => r.IsOverridden).ToArray());
+                resourceItems = new BindingList<ResourceItem>([.. allItems.Values.Where(r => r.IsOverridden)]);
             else
-                resourceItems = new BindingList<ResourceItem>(allItems.Values.ToArray());
+                resourceItems = new BindingList<ResourceItem>([.. allItems.Values]);
 
             if(resourceItems.Count != 0)
                 resourceItems[0].IsSelected = true;

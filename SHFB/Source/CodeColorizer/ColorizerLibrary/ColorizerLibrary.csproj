@@ -2,10 +2,8 @@
 
 	<PropertyGroup>
 		<!-- The .NET Framework is targeted for the web example -->
-		<TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net48</TargetFrameworks>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>ColorizerLibrary.snk</AssemblyOriginatorKeyFile>
 		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
@@ -13,8 +11,6 @@
 		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
 		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 	</PropertyGroup>
 
 </Project>

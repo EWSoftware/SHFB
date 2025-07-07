@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
 	<!-- For testing, a relative path offset for the install resources -->
-	<pathOffset location="..\..\..\..\..\Deployment" />
+	<pathOffset location="..\..\..\..\..\..\Deployment" />
 
 	<!-- This indicates the tools version with which this installer is associated.-->
 	<tools version="2025.3.22.0" />

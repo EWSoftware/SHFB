@@ -6,6 +6,8 @@
 // Change history:
 // 11/23/2013 - EFW - Cleared out the conditional statements
 
+// Ignore Spelling: memberwise cci arglist
+
 namespace System.Compiler
 {
     public static class StandardIds

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DbcsFixPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/07/2022
-// Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to modify the HTML files and alter the build so as to overcome the
 // encoding issues encountered when building HTML Help 1 (.chm) files for various foreign languages.
@@ -22,6 +22,8 @@
 // 07/31/2014  EFW  Made the localize app optional
 //===============================================================================================================
 
+// Ignore Spelling: Dbcs
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,10 +32,9 @@ using System.Xml;
 using System.Xml.Linq;
 
 using Sandcastle.Core;
-
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.BuildEngine;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.PlugIn;
+using Sandcastle.Core.Project;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -54,7 +55,7 @@ namespace SandcastleBuilder.PlugIns
 
         private List<ExecutionPoint> executionPoints;
 
-        private BuildProcess builder;
+        private IBuildProcess builder;
 
         private string sbAppLocalePath;
 
@@ -67,27 +68,18 @@ namespace SandcastleBuilder.PlugIns
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public IEnumerable<ExecutionPoint> ExecutionPoints
-        {
-            get
-            {
-                if(executionPoints == null)
-                    executionPoints = new List<ExecutionPoint>
-                    {
-                        new ExecutionPoint(BuildStep.ExtractingHtmlInfo, ExecutionBehaviors.Before),
-                        new ExecutionPoint(BuildStep.CompilingHelpFile, ExecutionBehaviors.Before)
-                    };
-
-                return executionPoints;
-            }
-        }
+        public IEnumerable<ExecutionPoint> ExecutionPoints => executionPoints ??=
+        [
+            new ExecutionPoint(BuildStep.ExtractingHtmlInfo, ExecutionBehaviors.Before),
+            new ExecutionPoint(BuildStep.CompilingHelpFile, ExecutionBehaviors.Before)
+        ];
 
         /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XElement configuration)
+        public void Initialize(IBuildProcess buildProcess, XElement configuration)
         {
             if(configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
@@ -156,11 +148,11 @@ namespace SandcastleBuilder.PlugIns
                 builder.ReportProgress("Copying Help 1 presentation style content ready for localization");
 
                 builder.PresentationStyle.CopyHelpContent(HelpFileFormats.HtmlHelp1,
-                    builder.HtmlExtractTool.Help1Folder, builder.ReportProgress, (name, source, dest) =>
+                    builder.HtmlExtractHelp1Folder, builder.ReportProgress, (name, source, dest) =>
                         builder.SubstitutionTags.TransformTemplate(name, source, dest));
 
                 builder.ReportProgress("Setting DBCS Fix localization folder");
-                builder.HtmlExtractTool.LocalizedFolder = Path.Combine(builder.WorkingFolder, "Localized");
+                builder.HtmlExtractLocalizedFolder = Path.Combine(builder.WorkingFolder, "Localized");
                 return;
             }
 
@@ -170,11 +162,13 @@ namespace SandcastleBuilder.PlugIns
             builder.ReportProgress("Adding localization options to build task");
 
             // Copy the help compiler project files to the localized folder
-            if(!String.IsNullOrWhiteSpace(builder.HtmlExtractTool.LocalizedFolder))
+            if(!String.IsNullOrWhiteSpace(builder.HtmlExtractLocalizedFolder))
             {
-                foreach(string helpProjectFile in Directory.EnumerateFiles(builder.HtmlExtractTool.Help1Folder, "*.hh?"))
-                    File.Copy(helpProjectFile, Path.Combine(builder.HtmlExtractTool.LocalizedFolder,
+                foreach(string helpProjectFile in Directory.EnumerateFiles(builder.HtmlExtractHelp1Folder, "*.hh?"))
+                {
+                    File.Copy(helpProjectFile, Path.Combine(builder.HtmlExtractLocalizedFolder,
                         Path.GetFileName(helpProjectFile)), true);
+                }
             }
 
             projectFile = builder.WorkingFolder + "Build1xHelpFile.proj";

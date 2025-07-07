@@ -96,9 +96,9 @@ namespace Sandcastle.Tools.Reflection
         protected ApiVisitor(string sourceCodeBasePath, bool warnOnMissingContext, AssemblyResolver resolver,
           ApiFilter filter)
         {
-            accessoryAssemblies = new List<AssemblyNode>();
-            assemblies = new List<AssemblyNode>();
-            catalog = new Dictionary<string, Namespace>();
+            accessoryAssemblies = [];
+            assemblies = [];
+            catalog = [];
 
             if(!String.IsNullOrWhiteSpace(sourceCodeBasePath))
             {
@@ -339,11 +339,13 @@ namespace Sandcastle.Tools.Reflection
 
             if(!this.Canceled)
             {
-                NamespaceList spaces = new NamespaceList();
+                NamespaceList spaces = [];
 
                 foreach(Namespace space in catalog.Values)
+                {
                     if(filter.IsExposedNamespace(space))
                         spaces.Add(space);
+                }
 
                 if(!this.Canceled)
                     this.VisitNamespaces(spaces);
@@ -430,7 +432,7 @@ namespace Sandcastle.Tools.Reflection
             foreach(Member member in members.OrderBy(m => m.FullName))
             {
                 // Don't visit nested types either as they are already visited
-                if(!(member is TypeNode) && filter.IsExposedMember(member))
+                if(member is not TypeNode && filter.IsExposedMember(member))
                     this.VisitMember(member);
             }
         }

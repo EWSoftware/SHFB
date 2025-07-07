@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : Help1WebsitePropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 08/16/2019
-// Note    : Copyright 2017-2019, Eric Woodruff, All rights reserved
+// Updated : 06/21/2025
+// Note    : Copyright 2017-2015, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Help 1, Website, Open XML, and Markdown category properties
 //
@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core.Project;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {

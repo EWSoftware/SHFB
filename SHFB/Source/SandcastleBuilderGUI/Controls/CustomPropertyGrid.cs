@@ -1,9 +1,9 @@
 //===============================================================================================================
-// System  : EWSoftware Custom Property Grid
+// System  : Sandcastle Help File Builder
 // File    : CustomPropertyGrid.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/18/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a custom property grid that allows you to set the initial width of the property name pane
 // and has a context menu that allows you to hide the description pane and reset the selected property value.
@@ -36,7 +36,7 @@ namespace SandcastleBuilder.Gui.Controls
         #region Private data members
         //=====================================================================
 
-        private readonly IContainer components;
+        private readonly Container components;
         private readonly ContextMenuStrip ctxPropGrid;
         private readonly ToolStripMenuItem miReset, miShowDescription, miCopyLabel;
         private readonly ToolStripSeparator separator;
@@ -79,8 +79,10 @@ namespace SandcastleBuilder.Gui.Controls
                     value = this.Width / 2;
                 }
                 else
+                {
                     if(paneWidth > this.Width / 2)
                         value = this.Width / 2;
+                }
 
                 if(!this.DesignMode)
                 {
@@ -90,7 +92,7 @@ namespace SandcastleBuilder.Gui.Controls
                     object grid = type.GetField("gridView", bf).GetValue(this);
 
                     MethodInfo mi = grid.GetType().GetMethod("MoveSplitterTo", bf);
-                    mi.Invoke(grid, new object[] { value });
+                    mi.Invoke(grid, [value]);
                 }
             }
         }
@@ -132,8 +134,8 @@ namespace SandcastleBuilder.Gui.Controls
             miShowDescription = new ToolStripMenuItem("&Description", null,
                 new EventHandler(miShowDescription_OnClick));
 
-            ctxPropGrid.Items.AddRange(new ToolStripItem[] { this.miReset, this.miCopyLabel, this.separator,
-                this.miShowDescription});
+            ctxPropGrid.Items.AddRange([ this.miReset, this.miCopyLabel, this.separator,
+                this.miShowDescription]);
             ctxPropGrid.Opening += new CancelEventHandler(ctxPropGrid_Opening);
 
             this.ContextMenuStrip = ctxPropGrid;
@@ -233,7 +235,7 @@ namespace SandcastleBuilder.Gui.Controls
         {
             GridItem item = this.SelectedGridItem;
 
-            DataObject msg = new DataObject(DataFormats.Text, item.Label);
+            DataObject msg = new(DataFormats.Text, item.Label);
             Clipboard.SetDataObject(msg, false);
         }
     }

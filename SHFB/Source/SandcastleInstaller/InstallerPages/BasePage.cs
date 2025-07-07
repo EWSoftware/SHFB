@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : BasePage.cs
 // Author  : Eric Woodruff
-// Updated : 09/08/2021
+// Updated : 07/06/2025
 //
 // This file contains a simple base page for displaying HTML content with a panel for additional controls
 //
@@ -51,7 +51,7 @@ namespace Sandcastle.Installer.InstallerPages
 
         /// <inheritdoc />
         /// <remarks>The default implementation does nothing</remarks>
-        public virtual IEnumerable<CompletionAction> CompletionActions => Enumerable.Empty<CompletionAction>();
+        public virtual IEnumerable<CompletionAction> CompletionActions => [];
 
         /// <inheritdoc />
         /// <remarks>The default implementation always returns false</remarks>

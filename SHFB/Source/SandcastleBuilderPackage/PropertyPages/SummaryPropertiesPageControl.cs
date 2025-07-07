@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SummaryPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/20/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Summaries category properties
 //
@@ -24,13 +24,18 @@ using System.Runtime.InteropServices;
 
 using Microsoft.Build.Evaluation;
 
+using Sandcastle.Core.Project;
+
+using SandcastleBuilder.MSBuild.HelpProject;
+
+
+
 #if !STANDALONEGUI
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 
 using SandcastleBuilder.Package.Nodes;
 #endif
-using SandcastleBuilder.Utils;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -111,7 +116,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 #else
                 var namespaceSummaries = new NamespaceSummaryItemCollection() { Project = this.CurrentProject };
 
-                projProp = this.CurrentProject.MSBuildProject.GetProperty("NamespaceSummaries");
+                projProp = ((SandcastleProject)this.CurrentProject).MSBuildProject.GetProperty("NamespaceSummaries");
 #endif
                 if(projProp != null && !String.IsNullOrEmpty(projProp.UnevaluatedValue))
                     namespaceSummaries.FromXml(projProp.UnevaluatedValue);
@@ -143,7 +148,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                     this.ProjectMgr.SetProjectProperty("NamespaceSummaries",
                         ucSummaryPropertiesPageContent.NamespaceSummaries.ToXml());
 #else
-                    this.CurrentProject.MSBuildProject.SetProperty("NamespaceSummaries",
+                    ((SandcastleProject)this.CurrentProject).MSBuildProject.SetProperty("NamespaceSummaries",
                         ucSummaryPropertiesPageContent.NamespaceSummaries.ToXml());
 #endif
                     ucSummaryPropertiesPageContent.HasChanges = false;

@@ -1,5 +1,5 @@
 ﻿//===============================================================================================================
-// System  : Sandcastle Help File Builder
+// System  : Sandcastle Tools Standard Presentation Styles
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 04/08/2021

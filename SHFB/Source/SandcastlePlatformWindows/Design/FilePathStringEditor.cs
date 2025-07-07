@@ -1,9 +1,9 @@
 //===============================================================================================================
-// System  : Sandcastle Help File Builder
+// System  : Sandcastle Tools - Windows platform specific code
 // File    : FilePathStringEditor.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a type editor that can display a file dialog to allow selection of a file path at design
 // time.  It is used in conjunction with the FileDialogAttribute to specify the file dialog title, filter, and
@@ -49,7 +49,7 @@ namespace Sandcastle.Platform.Windows.Design
             FileDialog dlg = null;
             string filename, filePath, currentFilename;
 
-            if(context == null || provider == null || context.Instance == null || (value != null && !(value is string)))
+            if(context == null || provider == null || context.Instance == null || (value != null && value is not string))
                 return base.EditValue(context, provider, value);
 
             // Get the filename and path

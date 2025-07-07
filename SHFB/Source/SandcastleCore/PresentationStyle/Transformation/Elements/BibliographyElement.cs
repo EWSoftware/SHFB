@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : BibliographyElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/23/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle bibliography elements based on the topic type
 //
@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 
 using Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml;
+using Sandcastle.Core.Project;
 
 namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 {
@@ -88,7 +89,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                 lastTopicKey = transformation.Key;
 
                 if(citations == null)
-                    citations = new List<string>();
+                    citations = [];
                 else
                     citations.Clear();
 

@@ -79,7 +79,7 @@ namespace Sandcastle.Tools.Reflection
                     return type;
 
                 // Otherwise, construct the template type identifier and use it to fetch the template type
-                Identifier name = new Identifier(String.Format(CultureInfo.InvariantCulture, "{0}`{1}",
+                Identifier name = new(String.Format(CultureInfo.InvariantCulture, "{0}`{1}",
                     type.GetUnmangledNameWithoutTypeParameters(), type.TemplateArguments.Count));
 
                 // !EFW - Added by ComponentOne
@@ -92,7 +92,7 @@ namespace Sandcastle.Tools.Reflection
             // identifiers as we go, then walk back down the chain, fetching template types as we go.
 
             // Create a stack to keep track of identifiers
-            Stack<Identifier> identifiers = new Stack<Identifier>();
+            Stack<Identifier> identifiers = new();
 
             // Populate the stack with the identifiers of all the types up to the outermost type
             TypeNode current = type;
@@ -398,7 +398,7 @@ namespace Sandcastle.Tools.Reflection
             if(member is Property property)
                 return property.Parameters;
 
-            return new ParameterList();
+            return [];
         }
 
         /// <summary>
@@ -662,22 +662,26 @@ namespace Sandcastle.Tools.Reflection
         /// match.</returns>
         private static List<int> GetTemplateParameterPositions(TypeNode declaringType, string name)
         {
-            List<int> positions = new List<int>();
+            List<int> positions = [];
 
             if(declaringType.TemplateArguments != null)
             {
                 // For types like "MyChildClass<T> : MyBaseClass<T, T>", the parameter list index and item is
                 // identical for both arguments so we've got to figure it out the long way positionally.
                 for(int i = 0; i < declaringType.TemplateArguments.Count; i++)
+                {
                     if(declaringType.TemplateArguments[i].Name.Name == name)
                         positions.Add(i);
+                }
             }
 
             if(positions.Count == 0 && declaringType.TemplateParameters != null)
             {
                 for(int i = 0; i < declaringType.TemplateParameters.Count; i++)
+                {
                     if(declaringType.TemplateParameters[i].Name.Name == name)
                         positions.Add(i);
+                }
             }
 
             return positions;
@@ -688,7 +692,7 @@ namespace Sandcastle.Tools.Reflection
         //=====================================================================
 
         // EFW - Submitted by ComponentOne.  These are used to prevent crashes caused by obfuscated member names
-        private static readonly Regex reBadXmlChars = new Regex("[^\u0020-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]");
+        private static readonly Regex reBadXmlChars = new("[^\u0020-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]");
 
         /// <summary>
         /// This is used to check for bad XML characters in a member name

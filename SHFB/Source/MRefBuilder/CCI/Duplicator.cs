@@ -8,6 +8,8 @@
 // when a type contains a nested type that itself implements a nested type from within the containing type.
 // 11/21/2013 - EFW - Cleared out the conditional statements and updated based on changes to ListTemplate.cs.
 
+// Ignore Spelling: nspace evnt Typeswitch dup
+
 using System.Diagnostics;
 
 namespace System.Compiler
@@ -59,7 +61,7 @@ namespace System.Compiler
         {
             base.TransferStateTo(targetVisitor);
 
-            if(!(targetVisitor is Duplicator target))
+            if(targetVisitor is not Duplicator target)
                 return;
 
             target.DuplicateFor = this.DuplicateFor;
@@ -228,7 +230,7 @@ namespace System.Compiler
             if(attributes == null)
                 return null;
 
-            return base.VisitAttributeList(new AttributeList(attributes));
+            return base.VisitAttributeList([.. attributes]);
         }
 
         public override Expression VisitBase(Base Base)
@@ -263,7 +265,7 @@ namespace System.Compiler
             if(blockList == null)
                 return null;
 
-            return base.VisitBlockList(new BlockList(blockList));
+            return base.VisitBlockList([.. blockList]);
         }
 
         public override Statement VisitBranch(Branch branch)
@@ -423,7 +425,7 @@ namespace System.Compiler
                 return null;
 
             int n = handlers.Count;
-            ExceptionHandlerList result = new ExceptionHandlerList();
+            ExceptionHandlerList result = [];
 
             for(int i = 0; i < n; i++)
                 result.Add(this.VisitExceptionHandler(handlers[i]));
@@ -475,7 +477,7 @@ namespace System.Compiler
             if(expressions == null)
                 return null;
 
-            return base.VisitExpressionList(new ExpressionList(expressions));
+            return base.VisitExpressionList([.. expressions]);
         }
 
         public override Expression VisitExpressionSnippet(ExpressionSnippet snippet)
@@ -541,7 +543,7 @@ namespace System.Compiler
             if(fields == null)
                 return null;
 
-            return base.VisitFieldList(new FieldList(fields));
+            return base.VisitFieldList([.. fields]);
         }
 
         public override Statement VisitFilter(Filter filter)
@@ -625,7 +627,7 @@ namespace System.Compiler
             if(interfaceReferences == null)
                 return null;
 
-            return base.VisitInterfaceReferenceList(new InterfaceList(interfaceReferences));
+            return base.VisitInterfaceReferenceList([.. interfaceReferences]);
         }
 
         public override Statement VisitLabeledStatement(LabeledStatement lStatement)
@@ -640,13 +642,16 @@ namespace System.Compiler
             TypeNode t = literal.Value as TypeNode;
             if (t != null)
                 return new Literal(this.VisitTypeReference(t), literal.Type, literal.SourceContext);
+            
             ArrayType at = literal.Type as ArrayType;
-            if (at != null && at.ElementType is TypeNode)
+            
+            if(at?.ElementType is not null)
             {
                 TypeNode cloneType = this.VisitTypeReference(literal.Type);
                 TypeNode[] val = literal.Value as TypeNode[];
                 int len = val == null ? 0 : val.Length;
                 TypeNode[] newVal = val == null ? null : new TypeNode[len];
+                
                 for (int i = 0; i < len; i++)
                 {
                     newVal[i] = this.VisitTypeReference(val[i]);
@@ -675,7 +680,7 @@ namespace System.Compiler
             if(localDeclarations == null)
                 return null;
 
-            return base.VisitLocalDeclarationList(new LocalDeclarationList(localDeclarations));
+            return base.VisitLocalDeclarationList([.. localDeclarations]);
         }
 
         public override Statement VisitLocalDeclarationsStatement(LocalDeclarationsStatement localDeclarations)
@@ -719,7 +724,7 @@ namespace System.Compiler
             if(members == null)
                 return null;
 
-            return base.VisitMemberList(new MemberList(members));
+            return base.VisitMemberList([.. members]);
         }
 
         public virtual Member VisitMemberReference(Member member)
@@ -732,7 +737,7 @@ namespace System.Compiler
             if(dup != null)
                 return dup;
 
-            if(member is ParameterField && !(member.DeclaringType is ClosureClass))
+            if(member is ParameterField && member.DeclaringType is not ClosureClass)
                 return member; // Can happen when duplicating expressions within a method
 
             TypeNode t = member as TypeNode;
@@ -743,11 +748,12 @@ namespace System.Compiler
             if(member == null)
                 return null;
 
-            if(member is Method method && method.Template != null && method.TemplateArguments != null && method.TemplateArguments.Count > 0)
+            if(member is Method method && method.Template != null && method.TemplateArguments != null &&
+              method.TemplateArguments.Count > 0)
             {
                 Method template = this.VisitMemberReference(method.Template) as Method;
                 bool needNewInstance = template != null && template != method.Template;
-                TypeNodeList args = new TypeNodeList(method.TemplateArguments);
+                TypeNodeList args = [.. method.TemplateArguments];
 
                 for(int i = 0, n = args.Count; i < n; i++)
                 {
@@ -810,7 +816,7 @@ namespace System.Compiler
                 return null;
 
             int n = members.Count;
-            MemberList dup = new MemberList();
+            MemberList dup = [];
 
             for(int i = 0; i < n; i++)
                 dup.Add(this.VisitMemberReference(members[i]));
@@ -818,7 +824,7 @@ namespace System.Compiler
             return dup;
         }
 
-        public readonly Block DummyBody = new Block();
+        public readonly Block DummyBody = new();
 
         public override Method VisitMethod(Method method)
         {
@@ -881,7 +887,7 @@ namespace System.Compiler
             }
 
             if(this.SkipBodies)
-                dup.Instructions = new InstructionList();
+                dup.Instructions = [];
 
             this.TargetMethod = savedTarget;
             return dup;
@@ -898,7 +904,7 @@ namespace System.Compiler
                 return null;
 
             int n = methods.Count;
-            MethodList dup = new MethodList();
+            MethodList dup = [];
 
             for(int i = 0; i < n; i++)
                 dup.Add(this.VisitMethod(methods[i]));
@@ -912,7 +918,7 @@ namespace System.Compiler
                 return null;
 
             int n = methods.Count;
-            MethodList dup = new MethodList();
+            MethodList dup = [];
 
             for(int i = 0; i < n; i++)
                 dup.Add((Method)this.VisitMemberReference(methods[i]));
@@ -922,18 +928,27 @@ namespace System.Compiler
 
         public override Module VisitModule(Module module)
         {
-            if (module == null) return null;
+            if (module == null)
+                return null;
+            
             Module dup = (Module)module.Clone();
-            if (this.TargetModule == null) this.TargetModule = dup;
+
+            this.TargetModule ??= dup;
             this.FindTypesToBeDuplicated(module.Types);
+
             return base.VisitModule(dup);
         }
         public virtual Module VisitModuleReference(Module module)
         {
-            if (module == null) return null;
+            if(module == null)
+                return null;
+            
             Module dup = (Module)this.DuplicateFor[module.UniqueKey];
-            if (dup != null) return dup;
-            for (int i = 0, n = this.TargetModule.ModuleReferences == null ? 0 : this.TargetModule.ModuleReferences.Count; i < n; i++)
+            
+            if(dup != null)
+                return dup;
+            
+            for(int i = 0, n = this.TargetModule.ModuleReferences == null ? 0 : this.TargetModule.ModuleReferences.Count; i < n; i++)
             {
                 //^ assert this.TargetModule.ModuleReferences != null;
                 ModuleReference modRef = this.TargetModule.ModuleReferences[i];
@@ -941,8 +956,8 @@ namespace System.Compiler
                 if (String.Compare(module.Name, modRef.Name, true, System.Globalization.CultureInfo.InvariantCulture) != 0) continue;
                 this.DuplicateFor[module.UniqueKey] = modRef.Module; return modRef.Module;
             }
-            if (this.TargetModule.ModuleReferences == null)
-                this.TargetModule.ModuleReferences = new ModuleReferenceList();
+            
+            this.TargetModule.ModuleReferences ??= [];
             this.TargetModule.ModuleReferences.Add(new ModuleReference(module.Name, module));
             this.DuplicateFor[module.UniqueKey] = module;
             return module;
@@ -979,7 +994,7 @@ namespace System.Compiler
             if(namespaces == null)
                 return null;
 
-            return base.VisitNamespaceList(new NamespaceList(namespaces));
+            return base.VisitNamespaceList([.. namespaces]);
         }
 
         public override NodeList VisitNodeList(NodeList nodes)
@@ -987,22 +1002,29 @@ namespace System.Compiler
             if(nodes == null)
                 return null;
 
-            return base.VisitNodeList(new NodeList(nodes));
+            return base.VisitNodeList([.. nodes]);
         }
 
         public override Expression VisitParameter(Parameter parameter)
         {
-            if (parameter == null) return null;
+            if(parameter == null)
+                return null;
+            
             Parameter dup = (Parameter)this.DuplicateFor[parameter.UniqueKey];
-            if (dup != null)
+            
+            if(dup != null)
             {
-                if (dup.DeclaringMethod == null) dup.DeclaringMethod = this.TargetMethod;
+                dup.DeclaringMethod ??= this.TargetMethod;
                 return dup;
             }
+            
             this.DuplicateFor[parameter.UniqueKey] = dup = (Parameter)parameter.Clone();
-            if (dup.MarshallingInformation != null)
+            
+            if(dup.MarshallingInformation != null)
                 dup.MarshallingInformation = dup.MarshallingInformation.Clone();
+            
             dup.DeclaringMethod = this.TargetMethod;
+            
             return base.VisitParameter(dup);
         }
 
@@ -1011,7 +1033,7 @@ namespace System.Compiler
             if(parameterList == null)
                 return null;
 
-            return base.VisitParameterList(new ParameterList(parameterList));
+            return base.VisitParameterList([.. parameterList]);
         }
 
         public override Expression VisitPrefixExpression(PrefixExpression pExpr)
@@ -1087,7 +1109,7 @@ namespace System.Compiler
             if(statements == null)
                 return null;
 
-            return base.VisitStatementList(new StatementList(statements));
+            return base.VisitStatementList([.. statements]);
         }
 
         public override StatementSnippet VisitStatementSnippet(StatementSnippet snippet)
@@ -1330,7 +1352,7 @@ namespace System.Compiler
             if (asInstructionList)
             {
                 // We don't really have a way to provide instructions, but we set it to an empty list
-                dup.Instructions = new InstructionList();
+                dup.Instructions = [];
                 return;
             }
 
@@ -1369,7 +1391,7 @@ namespace System.Compiler
             if(types == null)
                 return null;
 
-            TypeNodeList dupTypes = new TypeNodeList(types);
+            TypeNodeList dupTypes = [.. types];
 
             for(int i = 0, n = types.Count; i < n; i++)
             {
@@ -1426,7 +1448,7 @@ namespace System.Compiler
             if(types == null)
                 return null;
 
-            types = base.VisitTypeNodeList(new TypeNodeList(types));
+            types = base.VisitTypeNodeList([.. types]);
 
             if(this.TargetModule == null)
                 return types;
@@ -1434,8 +1456,7 @@ namespace System.Compiler
             if(types == null)
                 return null;
 
-            if(this.TargetModule.Types == null)
-                this.TargetModule.Types = new TypeNodeList();
+            this.TargetModule.Types ??= [];
 
             for(int i = 0, n = types.Count; i < n; i++)
                 this.TargetModule.Types.Add(types[i]);
@@ -1470,7 +1491,7 @@ namespace System.Compiler
             if(typeParameters == null)
                 return null;
 
-            return base.VisitTypeParameterList(new TypeNodeList(typeParameters));
+            return base.VisitTypeParameterList([.. typeParameters]);
         }
 
         // !EFW - Yes, static.  See related code below.
@@ -1699,12 +1720,10 @@ namespace System.Compiler
 
                         bool duplicateReference = templ != type.Template;
 
-                        TypeNodeList targs = type.TemplateArguments == null ? new TypeNodeList() :
-                            new TypeNodeList(type.TemplateArguments);
+                        TypeNodeList targs = type.TemplateArguments == null ? [] : [.. type.TemplateArguments];
 
                         if(!this.RecordOriginalAsTemplate)
-                            targs = type.ConsolidatedTemplateArguments == null ? new TypeNodeList() :
-                                new TypeNodeList(type.ConsolidatedTemplateArguments);
+                            targs = type.ConsolidatedTemplateArguments == null ? [] : [.. type.ConsolidatedTemplateArguments];
 
                         for(int i = 0, n = targs == null ? 0 : targs.Count; i < n; i++)
                         {
@@ -1795,7 +1814,7 @@ namespace System.Compiler
             if(typeReferences == null)
                 return null;
 
-            return base.VisitTypeReferenceList(new TypeNodeList(typeReferences));
+            return base.VisitTypeReferenceList([.. typeReferences]);
         }
 
         public override Expression VisitUnaryExpression(UnaryExpression unaryExpression)

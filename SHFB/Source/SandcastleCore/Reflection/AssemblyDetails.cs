@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AssemblyDetails.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/06/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain settings for an assembly.
 //
@@ -136,7 +136,7 @@ namespace Sandcastle.Core.Reflection
         /// <returns>The new assembly details item</returns>
         internal static AssemblyDetails FromAssemblyName(AssemblyName name)
         {
-            Uri codeBase = new Uri(name.CodeBase);
+            Uri codeBase = new(name.CodeBase);
             string location;
 
             if(codeBase.IsFile)

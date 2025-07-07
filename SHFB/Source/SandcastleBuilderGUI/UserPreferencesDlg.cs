@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : UserPreferencesDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/20/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This form is used to allow the user to modify help file builder preferences unrelated to projects
 //
@@ -59,7 +59,7 @@ namespace SandcastleBuilder.Gui
             InitializeComponent();
 
             cboDefaultLanguage.Items.AddRange(
-                SpellCheckerConfiguration.AvailableDictionaryLanguages.OrderBy(c => c.Name).ToArray());
+                [.. SpellCheckerConfiguration.AvailableDictionaryLanguages.OrderBy(c => c.Name)]);
 
             txtMSHelpViewerPath.Text = Settings.Default.MSHelpViewerPath;
             udcASPNetDevServerPort.Value = Settings.Default.ASPNETDevServerPort;
@@ -83,8 +83,8 @@ namespace SandcastleBuilder.Gui
             chkIgnoreXmlInText.Checked = SpellCheckerConfiguration.IgnoreXmlElementsInText;
             chkTreatUnderscoresAsSeparators.Checked = SpellCheckerConfiguration.TreatUnderscoreAsSeparator;
 
-            lbIgnoredXmlElements.Items.AddRange(SpellCheckerConfiguration.IgnoredXmlElements.ToArray());
-            lbSpellCheckedAttributes.Items.AddRange(SpellCheckerConfiguration.SpellCheckedXmlAttributes.ToArray());
+            lbIgnoredXmlElements.Items.AddRange([.. SpellCheckerConfiguration.IgnoredXmlElements]);
+            lbSpellCheckedAttributes.Items.AddRange([.. SpellCheckerConfiguration.SpellCheckedXmlAttributes]);
 
             lbContentEditors.DisplayMember = lbContentEditors.ValueMember = "EditorDescription";
 
@@ -195,17 +195,16 @@ namespace SandcastleBuilder.Gui
         /// <param name="e">The event arguments</param>
         private void btnSelectViewer_Click(object sender, EventArgs e)
         {
-            using(OpenFileDialog dlg = new OpenFileDialog())
-            {
-                dlg.Title = "Select the MS Help Viewer (.mshc) viewer application";
-                dlg.Filter = "Executable files (*.exe)|*.exe|All Files (*.*)|*.*";
-                dlg.InitialDirectory = Directory.GetCurrentDirectory();
-                dlg.DefaultExt = "exe";
+            using OpenFileDialog dlg = new();
+            
+            dlg.Title = "Select the MS Help Viewer (.mshc) viewer application";
+            dlg.Filter = "Executable files (*.exe)|*.exe|All Files (*.*)|*.*";
+            dlg.InitialDirectory = Directory.GetCurrentDirectory();
+            dlg.DefaultExt = "exe";
 
-                // If one is selected, use that file
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    txtMSHelpViewerPath.Text = dlg.FileName;
-            }
+            // If one is selected, use that file
+            if(dlg.ShowDialog() == DialogResult.OK)
+                txtMSHelpViewerPath.Text = dlg.FileName;
         }
 
         /// <summary>
@@ -216,21 +215,21 @@ namespace SandcastleBuilder.Gui
         private void btnColor_Click(object sender, EventArgs e)
         {
             string name = ((Control)sender).Name;
+            using ColorDialog dlg = new();
+            
+            dlg.AnyColor = dlg.FullOpen = true;
 
-            using(ColorDialog dlg = new ColorDialog())
+            if(name == "btnBuildBackground")
+                dlg.Color = lblBuildExample.BackColor;
+            else
+                dlg.Color = lblBuildExample.ForeColor;
+
+            if(dlg.ShowDialog() == DialogResult.OK)
             {
-                dlg.AnyColor = dlg.FullOpen = true;
-
                 if(name == "btnBuildBackground")
-                    dlg.Color = lblBuildExample.BackColor;
+                    lblBuildExample.BackColor = dlg.Color;
                 else
-                    dlg.Color = lblBuildExample.ForeColor;
-
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    if(name == "btnBuildBackground")
-                        lblBuildExample.BackColor = dlg.Color;
-                    else
-                        lblBuildExample.ForeColor = dlg.Color;
+                    lblBuildExample.ForeColor = dlg.Color;
             }
         }
 
@@ -243,20 +242,21 @@ namespace SandcastleBuilder.Gui
         {
             string name = ((Control)sender).Name;
 
-            using(FontDialog dlg = new FontDialog())
+            using FontDialog dlg = new();
+            
+            dlg.ShowEffects = false;
+
+            if(name == "btnBuildFont")
+                dlg.Font = lblBuildExample.Font;
+            else
+                dlg.Font = lblEditorExample.Font;
+
+            if(dlg.ShowDialog() == DialogResult.OK)
             {
-                dlg.ShowEffects = false;
-
                 if(name == "btnBuildFont")
-                    dlg.Font = lblBuildExample.Font;
+                    lblBuildExample.Font = dlg.Font;
                 else
-                    dlg.Font = lblEditorExample.Font;
-
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    if(name == "btnBuildFont")
-                        lblBuildExample.Font = dlg.Font;
-                    else
-                        lblEditorExample.Font = dlg.Font;
+                    lblEditorExample.Font = dlg.Font;
             }
         }
         #endregion
@@ -277,6 +277,7 @@ namespace SandcastleBuilder.Gui
             lbUserDictionary.Items.Clear();
 
             if(File.Exists(filename))
+            {
                 try
                 {
                     lbUserDictionary.Items.AddRange(File.ReadAllLines(filename));
@@ -286,6 +287,7 @@ namespace SandcastleBuilder.Gui
                     MessageBox.Show("Unable to load user dictionary.  Reason: " + ex.Message, Constants.AppName,
                         MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
+            }
         }
 
         /// <summary>
@@ -384,7 +386,7 @@ namespace SandcastleBuilder.Gui
         private void btnDefaultIgnored_Click(object sender, EventArgs e)
         {
             lbIgnoredXmlElements.Items.Clear();
-            lbIgnoredXmlElements.Items.AddRange(SpellCheckerConfiguration.DefaultIgnoredXmlElements.ToArray());
+            lbIgnoredXmlElements.Items.AddRange([.. SpellCheckerConfiguration.DefaultIgnoredXmlElements]);
         }
 
         /// <summary>
@@ -444,7 +446,7 @@ namespace SandcastleBuilder.Gui
         private void btnDefaultAttributes_Click(object sender, EventArgs e)
         {
             lbSpellCheckedAttributes.Items.Clear();
-            lbSpellCheckedAttributes.Items.AddRange(SpellCheckerConfiguration.DefaultSpellCheckedAttributes.ToArray());
+            lbSpellCheckedAttributes.Items.AddRange([.. SpellCheckerConfiguration.DefaultSpellCheckedAttributes]);
         }
         #endregion
 
@@ -458,7 +460,7 @@ namespace SandcastleBuilder.Gui
         /// <param name="e">The event arguments</param>
         private void btnAddFile_Click(object sender, EventArgs e)
         {
-            ContentFileEditor newItem = new ContentFileEditor();
+            ContentFileEditor newItem = new();
 
             lbContentEditors.Items.Add(newItem);
             pgProps.Enabled = btnDelete.Enabled = true;
@@ -484,11 +486,12 @@ namespace SandcastleBuilder.Gui
                 if(lbContentEditors.Items.Count == 0)
                     pgProps.Enabled = btnDelete.Enabled = false;
                 else
+                {
                     if(idx < lbContentEditors.Items.Count)
                         lbContentEditors.SelectedIndex = idx;
                     else
-                        lbContentEditors.SelectedIndex =
-                            lbContentEditors.Items.Count - 1;
+                        lbContentEditors.SelectedIndex = lbContentEditors.Items.Count - 1;
+                }
 
                 wasModified = true;
             }

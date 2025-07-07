@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ControlExtensions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class with WPF control extension methods.
 //
@@ -45,7 +45,7 @@ namespace SandcastleBuilder.WPF
         /// <returns>The parent element of the given type if found or null if not found</returns>
         public static T ParentElementOfType<T>(this FrameworkElement element) where T : FrameworkElement
         {
-            while(element != null && !(element is T))
+            while(element != null && element is not T)
                 element = VisualTreeHelper.GetParent(element) as FrameworkElement;
 
             return element as T;
@@ -89,12 +89,7 @@ namespace SandcastleBuilder.WPF
                 var entry = localValues.Current;
 
                 if(BindingOperations.IsDataBound(parent, entry.Property))
-                {
-                    var binding = BindingOperations.GetBindingExpression(parent, entry.Property);
-
-                    if(binding != null)
-                        binding.UpdateSource();
-                }
+                    BindingOperations.GetBindingExpression(parent, entry.Property)?.UpdateSource();
             }
 
             for(int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
@@ -168,7 +163,7 @@ namespace SandcastleBuilder.WPF
             if(element is Span span)
                 return (new[] { span }).Concat(span.Inlines.SelectMany(i => i.Flatten()));
 
-            return new[] { element };
+            return [element];
         }
         #endregion
 
@@ -189,12 +184,14 @@ namespace SandcastleBuilder.WPF
             if(table == null)
                 throw new ArgumentNullException(nameof(table));
 
-            var maxWidths = table.ColumnWidths().ToArray();
+            int[] maxWidths = table.ColumnWidths();
 
             // Add column definitions to the table if not there already
             if(table.Columns.Count == 0)
+            {
                 for(column = 0; column < maxWidths.Length; column++)
                     table.Columns.Add(new TableColumn());
+            }
 
             // Get the minimum width
             minWidth = maxWidths.Min(w => w);
@@ -222,12 +219,13 @@ namespace SandcastleBuilder.WPF
         /// <param name="table">The table for which to get the column widths</param>
         /// <returns>An enumerable list of column width</returns>
         /// <remarks>Nested images and tables within cells are also taken into account</remarks>
-        private static IEnumerable<int> ColumnWidths(this Table table)
+        private static int[] ColumnWidths(this Table table)
         {
-            int width, column, columnCount = table.RowGroups.Max(g => g.Rows.Max(r => r.Cells.Count));
+            // To suppress CS9236 and help the compiler out, we specify the lambda return types explicitly here
+            int width, column, columnCount = table.RowGroups.Max(g => g.Rows.Max(int (r) => r.Cells.Count));
 
             // Make sure all rows have the same number of columns.  If not, that's an error worth noting.
-            if(columnCount != table.RowGroups.Min(g => g.Rows.Min(r => r.Cells.Count)))
+            if(columnCount != table.RowGroups.Min(g => g.Rows.Min(int (r) => r.Cells.Count)))
                 throw new InvalidOperationException("The column count is not consistent across all rows in a table");
 
             int[] maxWidths = new int[columnCount];
@@ -245,12 +243,14 @@ namespace SandcastleBuilder.WPF
                     // check below will determine if the nested tables as a whole are longer than any
                     // one paragraph.
                     foreach(var para in cell.Blocks.SelectMany(b => b.Flatten().OfType<Paragraph>()))
+                    {
                         foreach(var r in para.Inlines.Select(b => b.Flatten().OfType<Run>().Aggregate("",
                           (s, r) => s + r.Text)))
                         {
                             if(r.Length > maxWidths[column])
                                 maxWidths[column] = r.Length;
                         }
+                    }
 
                     // Check for nested images.  Figure out a rough cell width in characters based on the
                     // image width and font size.
@@ -279,8 +279,10 @@ namespace SandcastleBuilder.WPF
 
             // Enforce a minimum width so that we don't lose columns
             for(column = 0; column < columnCount; column++)
+            {
                 if(maxWidths[column] < 10)
                     maxWidths[column] = 10;
+            }
 
             return maxWidths;
         }
@@ -309,21 +311,25 @@ namespace SandcastleBuilder.WPF
             if(scrollViewer != null)
             {
                 // If within range of the top or bottom border, scroll it
-                if(scrollViewer.ViewportHeight - mousePosition.Y < 10) 
-                    scrollOffset = 5; 
+                if(scrollViewer.ViewportHeight - mousePosition.Y < 10)
+                    scrollOffset = 5;
                 else
-                    if(mousePosition.Y < 10) 
+                {
+                    if(mousePosition.Y < 10)
                         scrollOffset = -5;
+                }
 
                 if(scrollOffset != 0.0) 
                 { 
-                    scrollOffset += scrollViewer.VerticalOffset; 
+                    scrollOffset += scrollViewer.VerticalOffset;
 
-                    if(scrollOffset < 0.0) 
-                        scrollOffset = 0.0; 
+                    if(scrollOffset < 0.0)
+                        scrollOffset = 0.0;
                     else
-                        if(scrollOffset > scrollViewer.ScrollableHeight) 
-                            scrollOffset = scrollViewer.ScrollableHeight; 
+                    {
+                        if(scrollOffset > scrollViewer.ScrollableHeight)
+                            scrollOffset = scrollViewer.ScrollableHeight;
+                    }
 
                     scrollViewer.ScrollToVerticalOffset(scrollOffset); 
                 }

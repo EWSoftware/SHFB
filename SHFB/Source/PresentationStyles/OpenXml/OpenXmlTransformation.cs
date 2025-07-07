@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : OpenXmlTransformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/24/2025
+// Updated : 06/20/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -26,10 +26,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
 
-using Sandcastle.Core;
 using Sandcastle.Core.PresentationStyle.Transformation;
 using Sandcastle.Core.PresentationStyle.Transformation.Elements;
 using Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml;
+using Sandcastle.Core.Project;
 using Sandcastle.Core.Reflection;
 
 namespace Sandcastle.PresentationStyles.OpenXml
@@ -45,8 +45,8 @@ namespace Sandcastle.PresentationStyles.OpenXml
 
         private XDocument pageTemplate;
 
-        private static readonly HashSet<string> spacePreservedElements = new HashSet<string>(
-            new[] { "code", "pre", "snippet" }, StringComparer.OrdinalIgnoreCase);
+        private static readonly HashSet<string> spacePreservedElements = new(
+            ["code", "pre", "snippet"], StringComparer.OrdinalIgnoreCase);
 
         #endregion
 
@@ -133,8 +133,8 @@ namespace Sandcastle.PresentationStyles.OpenXml
         /// <inheritdoc />
         protected override void CreateTransformationArguments()
         {
-            this.AddTransformationArgumentRange(new[]
-            {
+            this.AddTransformationArgumentRange(
+            [
                 new TransformationArgument(nameof(BibliographyDataFile), true, true, null,
                     "An optional bibliography data XML file.  Specify the filename with a fully qualified or " +
                     "relative path.  If the path is relative or omitted, it is assumed to be relative to the " +
@@ -173,7 +173,7 @@ namespace Sandcastle.PresentationStyles.OpenXml
                 new TransformationArgument(nameof(ShowParametersOnAllMethods), false, true, "False",
                     "If false, the default, parameters are hidden on all but overloaded methods on the member " +
                     "list pages.  If set to true, parameters are shown on all methods.")
-            });
+            ]);
         }
 
         /// <inheritdoc />
@@ -185,8 +185,8 @@ namespace Sandcastle.PresentationStyles.OpenXml
         /// <inheritdoc />
         protected override void CreateElementHandlers()
         {
-            this.AddElements(new Element[]
-            {
+            this.AddElements(
+            [
                 // MAML document root element types
                 new NonRenderedParentElement("topic"),
                 new NonRenderedParentElement("codeEntityDocument"),
@@ -441,15 +441,15 @@ namespace Sandcastle.PresentationStyles.OpenXml
                 new ConvertibleElement("typeparamref", "name", "span", "Parameter"),
                 new ValueElement(),
                 new VersionsElement()
-            });
+            ]);
         }
 
         /// <inheritdoc />
         protected override void CreateApiTopicSectionHandlers()
         {
             // API Topic sections will be rendered in this order by default
-            this.AddApiTopicSectionHandlerRange(new[]
-            {
+            this.AddApiTopicSectionHandlerRange(
+            [
                 new ApiTopicSectionHandler(ApiTopicSectionType.Notices, t => RenderNotices(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.Summary, t => RenderApiSummarySection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.SyntaxSection, t => RenderApiSyntaxSection(t)),
@@ -470,20 +470,19 @@ namespace Sandcastle.PresentationStyles.OpenXml
                 new ApiTopicSectionHandler(ApiTopicSectionType.Bibliography,
                     t => RenderApiBibliographySection(t)),
                 new ApiTopicSectionHandler(ApiTopicSectionType.SeeAlso, t => RenderApiSeeAlsoSection(t))
-            });
+            ]);
         }
 
         /// <inheritdoc />
         protected override void CreateNoticeDefinitions()
         {
-            this.AddNoticeDefinitions(new[] { Notice.PreliminaryNotice, Notice.ObsoleteNotice, Notice.ExperimentalNotice });
+            this.AddNoticeDefinitions([Notice.PreliminaryNotice, Notice.ObsoleteNotice, Notice.ExperimentalNotice]);
         }
 
         /// <inheritdoc />
         protected override XDocument RenderTopic()
         {
-            if(pageTemplate == null)
-                pageTemplate = LoadTemplateFile(this.TopicTemplatePath, null);
+            pageTemplate ??= LoadTemplateFile(this.TopicTemplatePath, null);
 
             var document = new XDocument(pageTemplate);
 
@@ -551,9 +550,8 @@ namespace Sandcastle.PresentationStyles.OpenXml
         {
             if(content != null && textNode != null)
             {
-                XElement t = new XElement(OpenXmlElement.WordProcessingML + "t",
-                    new XAttribute(Element.XmlSpace, "preserve")),
-                    run = new XElement(OpenXmlElement.WordProcessingML + "r", t);
+                XElement t = new(OpenXmlElement.WordProcessingML + "t", new XAttribute(Element.XmlSpace, "preserve")),
+                    run = new(OpenXmlElement.WordProcessingML + "r", t);
 
                 string text = textNode.Value;
 
@@ -572,7 +570,7 @@ namespace Sandcastle.PresentationStyles.OpenXml
                     // If there is a preceding non-text sibling that isn't a line break and the text started with
                     // a whitespace, add a leading space.
                     if(Char.IsWhiteSpace(text[0]) && textNode.PreviousNode != null &&
-                      !(textNode.PreviousNode is XText) && (!(textNode.PreviousNode is XElement pn) ||
+                      textNode.PreviousNode is not XText && (textNode.PreviousNode is not XElement pn ||
                       pn.Name.LocalName != "lineBreak"))
                     {
                         t.Value = " ";
@@ -583,7 +581,7 @@ namespace Sandcastle.PresentationStyles.OpenXml
                     // If there is a following non-text sibling and the text ended with a whitespace, add a
                     // trailing space.
                     if(Char.IsWhiteSpace(text[text.Length - 1]) && textNode.NextNode != null &&
-                      !(textNode.NextNode is XText))
+                      textNode.NextNode is not XText)
                     {
                         t.Value += " ";
                     }
@@ -1055,7 +1053,7 @@ namespace Sandcastle.PresentationStyles.OpenXml
                         new XElement("include", new XAttribute("item", "boilerplate_requirementsAssemblyLabel")))));
             }
 
-            string separator = new String(Element.NonBreakingSpace, separatorSize);
+            string separator = new(Element.NonBreakingSpace, separatorSize);
             int maxVersionParts = ((OpenXmlTransformation)transformation).MaxVersionParts;
 
             foreach(var l in libraries)
@@ -1204,7 +1202,7 @@ namespace Sandcastle.PresentationStyles.OpenXml
 
             transformation.CurrentElement.Add(title);
 
-            XElement table = new XElement(OpenXmlElement.WordProcessingML + "tbl",
+            XElement table = new(OpenXmlElement.WordProcessingML + "tbl",
                 new XElement(OpenXmlElement.WordProcessingML + "tblPr",
                     new XElement(OpenXmlElement.WordProcessingML + "tblStyle",
                         new XAttribute(OpenXmlElement.WordProcessingML + "val", "GeneralTable")),
@@ -1265,7 +1263,7 @@ namespace Sandcastle.PresentationStyles.OpenXml
 
             transformation.CurrentElement.Add(title);
 
-            XElement table = new XElement(OpenXmlElement.WordProcessingML + "tbl",
+            XElement table = new(OpenXmlElement.WordProcessingML + "tbl",
                 new XElement(OpenXmlElement.WordProcessingML + "tblPr",
                     new XElement(OpenXmlElement.WordProcessingML + "tblStyle",
                         new XAttribute(OpenXmlElement.WordProcessingML + "val", "GeneralTable")),
@@ -1320,7 +1318,7 @@ namespace Sandcastle.PresentationStyles.OpenXml
 
                     transformation.CurrentElement.Add(title);
 
-                    XElement table = new XElement(OpenXmlElement.WordProcessingML + "tbl",
+                    XElement table = new(OpenXmlElement.WordProcessingML + "tbl",
                         new XElement(OpenXmlElement.WordProcessingML + "tblPr",
                             new XElement(OpenXmlElement.WordProcessingML + "tblStyle",
                                 new XAttribute(OpenXmlElement.WordProcessingML + "val", "GeneralTable")),
@@ -1375,7 +1373,7 @@ namespace Sandcastle.PresentationStyles.OpenXml
             if(allMembers == null)
                 return;
 
-            List<XElement> fieldMembers = new List<XElement>(), extensionsMethods = new List<XElement>();
+            List<XElement> fieldMembers = [], extensionsMethods = [];
 
             // Enumerations can have extension methods which need to be rendered in a separate section
             foreach(var m in allMembers)
@@ -1466,7 +1464,7 @@ namespace Sandcastle.PresentationStyles.OpenXml
 
                 thisTransform.CurrentElement.Add(title);
 
-                XElement table = new XElement(OpenXmlElement.WordProcessingML + "tbl",
+                XElement table = new(OpenXmlElement.WordProcessingML + "tbl",
                     new XElement(OpenXmlElement.WordProcessingML + "tblPr",
                         new XElement(OpenXmlElement.WordProcessingML + "tblStyle",
                             new XAttribute(OpenXmlElement.WordProcessingML + "val", "GeneralTable")),
@@ -1662,7 +1660,7 @@ namespace Sandcastle.PresentationStyles.OpenXml
 
                 transformation.CurrentElement.Add(title);
 
-                XElement table = new XElement(OpenXmlElement.WordProcessingML + "tbl",
+                XElement table = new(OpenXmlElement.WordProcessingML + "tbl",
                     new XElement(OpenXmlElement.WordProcessingML + "tblPr",
                         new XElement(OpenXmlElement.WordProcessingML + "tblStyle",
                             new XAttribute(OpenXmlElement.WordProcessingML + "val", "GeneralTable")),
@@ -1685,7 +1683,7 @@ namespace Sandcastle.PresentationStyles.OpenXml
                     el.Element("apidata")?.Attribute("name").Value ?? String.Empty).ThenBy(
                     el => el.Element("templates")?.Elements()?.Count() ?? 0))
                 {
-                    XElement referenceLink = new XElement("referenceLink",
+                    XElement referenceLink = new("referenceLink",
                             new XAttribute("target", e.Attribute("api").Value));
                     string showParameters = (!((OpenXmlTransformation)transformation).ShowParametersOnAllMethods &&
                         transformation.ApiMember.ApiTopicSubgroup != ApiMemberGroup.Overload &&
@@ -2010,10 +2008,10 @@ namespace Sandcastle.PresentationStyles.OpenXml
                 conceptualLinkHandler = transformation.ElementHandlerFor("conceptualLink");
 
             // Get see also elements from comments excluding those in overloads comments
-            List<XElement> seeAlsoNotInOverloads = transformation.CommentsNode.Descendants("seealso").Where(
-                    s => !s.Ancestors("overloads").Any()).ToList(),
-                seeAlsoHRef = seeAlsoNotInOverloads.Where(s => s.Attribute("href") != null).ToList(),
-                seeAlsoCRef = seeAlsoNotInOverloads.Except(seeAlsoHRef).ToList();
+            List<XElement> seeAlsoNotInOverloads = [.. transformation.CommentsNode.Descendants("seealso").Where(
+                    s => !s.Ancestors("overloads").Any())],
+                seeAlsoHRef = [.. seeAlsoNotInOverloads.Where(s => s.Attribute("href") != null)],
+                seeAlsoCRef = [.. seeAlsoNotInOverloads.Except(seeAlsoHRef)];
 
             // Combine those with see also elements from element overloads comments
             var elements = transformation.ReferenceNode.Element("elements") ?? new XElement("elements");

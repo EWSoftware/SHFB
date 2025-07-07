@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2025
+// Updated : 06/22/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to manage the project items and files
@@ -42,12 +42,13 @@ using Microsoft.Build.Evaluation;
 using WeifenLuo.WinFormsUI.Docking;
 
 using Sandcastle.Core;
+using Sandcastle.Platform.Windows;
 
 using SandcastleBuilder.Gui.MSBuild;
-
-using SandcastleBuilder.Utils;
 using SandcastleBuilder.WPF.UI;
-using Sandcastle.Platform.Windows;
+using SandcastleBuilder.MSBuild.HelpProject;
+using Sandcastle.Core.Project;
+using SandcastleBuilder.MSBuild;
 
 namespace SandcastleBuilder.Gui.ContentEditors
 {
@@ -80,11 +81,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private FileTree fileTree;
         private DocumentationSourceCollection docSources;
         private ReferenceItemCollection projectReferences;
-        private BindingList<FileItem> fileItems;
+        private BindingList<IFileItem> fileItems;
 
         // This is used to search for a few common binary characters in the range \x00 to \x1F which should be
         // sufficient.  Note that \x1A (Ctrl+Z) is excluded as that's a common End of File marker.
-        private static readonly Regex reBinary = new Regex(@"[\x00-\x08\x0C\x0E-\x19\x1B-\x1F]");
+        private static readonly Regex reBinary = new(@"[\x00-\x08\x0C\x0E-\x19\x1B-\x1F]");
 
         #endregion
 
@@ -160,7 +161,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             if(!MainForm.Host.ProjectProperties.Apply())
                 return false;
 
-            using(SaveFileDialog dlg = new SaveFileDialog())
+            using(SaveFileDialog dlg = new())
             {
                 dlg.Title = "Save Help Project As";
                 dlg.Filter = "Sandcastle Help File Builder Project Files (*.shfbproj)|*.shfbproj|" +
@@ -265,7 +266,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             if(fileItem == null)
             {
                 if(this.CurrentProject != null)
-                    fileItem = this.CurrentProject.FindFile(fullName);
+                    fileItem = (FileItem)this.CurrentProject.FindFile(fullName);
 
                 if(fileItem == null)
                     return null;
@@ -409,7 +410,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// </summary>
         private void AddItemTemplates()
         {
-            EventHandler onClick = new EventHandler(templateFile_OnClick);
+            EventHandler onClick = new(templateFile_OnClick);
             ToolStripMenuItem miTemplate;
             string name;
             int idx = 0;
@@ -430,7 +431,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// </summary>
         private void AddConceptualTemplates()
         {
-            EventHandler onClick = new EventHandler(templateFile_OnClick);
+            EventHandler onClick = new(templateFile_OnClick);
             ToolStripMenuItem miTemplate;
             string name;
 
@@ -450,7 +451,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// </summary>
         private void AddCustomTemplates()
         {
-            EventHandler onClick = new EventHandler(templateFile_OnClick);
+            EventHandler onClick = new(templateFile_OnClick);
             ToolStripMenuItem miTemplate;
             string name;
 
@@ -525,7 +526,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 this.LoadReferences(true);
 
                 // Load the folders and files
-                fileItems = new BindingList<FileItem>(currentProject.FileItems.ToList());
+                fileItems = new BindingList<IFileItem>([.. currentProject.FileItems]);
                 fileItems.ListChanged += referencesAndFiles_ListChanged;
 
                 fileTree.LoadTree(fileItems);
@@ -821,7 +822,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     selectedNode.Text = ((FileItem)nodeData.Item).Name;
 
                     if(nodeData.BuildAction == BuildAction.Folder)
-                        fileTree.RefreshPathsInChildren(selectedNode);
+                        FileTree.RefreshPathsInChildren(selectedNode);
                     break;
             }
         }
@@ -1044,7 +1045,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             finally
             {
                 if(nodeData.BuildAction == BuildAction.Folder)
-                    fileTree.RefreshPathsInChildren(e.Node);
+                    FileTree.RefreshPathsInChildren(e.Node);
 
                 currentProject.MSBuildProject.ReevaluateIfNecessary();
 
@@ -1084,91 +1085,90 @@ namespace SandcastleBuilder.Gui.ContentEditors
             if(docSources == null)
                 return;
 
-            using(OpenFileDialog dlg = new OpenFileDialog())
+            using OpenFileDialog dlg = new();
+            
+            dlg.Title = "Select the documentation source(s)";
+            dlg.Filter = "Assemblies, Comments Files, and Projects (*.dll, *.exe, *.winmd, *.xml, " +
+                "*.sln, *.slnx, *.*proj)|*.dll;*.exe;*.winmd;*.xml;*.sln;*.slnx;*.*proj|" +
+                "Library Files (*.dll, *.winmd)|*.dll;*.winmd|" +
+                "Executable Files (*.exe)|*.exe|" +
+                "XML Comments Files (*.xml)|*.xml|" +
+                "Visual Studio Solution Files (*.sln, *.slnx)|*.sln;*.slnx|" +
+                "Visual Studio Project Files (*.*proj)|*.*proj|" +
+                "All Files (*.*)|*.*";
+            dlg.InitialDirectory = Directory.GetCurrentDirectory();
+            dlg.DefaultExt = "dll";
+            dlg.Multiselect = true;
+
+            // If selected, add the new file(s)
+            if(dlg.ShowDialog() == DialogResult.OK)
             {
-                dlg.Title = "Select the documentation source(s)";
-                dlg.Filter = "Assemblies, Comments Files, and Projects (*.dll, *.exe, *.winmd, *.xml, " +
-                    "*.sln, *.slnx, *.*proj)|*.dll;*.exe;*.winmd;*.xml;*.sln;*.slnx;*.*proj|" +
-                    "Library Files (*.dll, *.winmd)|*.dll;*.winmd|" +
-                    "Executable Files (*.exe)|*.exe|" +
-                    "XML Comments Files (*.xml)|*.xml|" +
-                    "Visual Studio Solution Files (*.sln, *.slnx)|*.sln;*.slnx|" +
-                    "Visual Studio Project Files (*.*proj)|*.*proj|" +
-                    "All Files (*.*)|*.*";
-                dlg.InitialDirectory = Directory.GetCurrentDirectory();
-                dlg.DefaultExt = "dll";
-                dlg.Multiselect = true;
-
-                // If selected, add the new file(s)
-                if(dlg.ShowDialog() == DialogResult.OK)
+                try
                 {
-                    try
+                    Cursor.Current = Cursors.WaitCursor;
+
+                    HashSet<string> projectList = [];
+
+                    foreach(string file in dlg.FileNames)
                     {
-                        Cursor.Current = Cursors.WaitCursor;
-
-                        HashSet<string> projectList = new HashSet<string>();
-
-                        foreach(string file in dlg.FileNames)
+                        if(!file.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) &&
+                          !file.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
                         {
-                            if(!file.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) &&
-                              !file.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
-                            {
-                                projectList.Add(file);
-                            }
+                            projectList.Add(file);
+                        }
+                        else
+                        {
+                            foreach(string project in SelectProjectsDlg.SelectSolutionOrProjects(file))
+                                projectList.Add(project);
+                        }
+                    }
+
+                    foreach(string file in projectList)
+                    {
+                        docSources.Add(file, null, null, null, false);
+
+                        ext = Path.GetExtension(file).ToLowerInvariant();
+
+                        // If there's a match for a comments file or an assembly, add it too
+                        if(ext == ".xml")
+                        {
+                            otherFile = Path.ChangeExtension(file, ".dll");
+
+                            if(File.Exists(otherFile))
+                                docSources.Add(otherFile, null, null, null, false);
                             else
                             {
-                                foreach(string project in SelectProjectsDlg.SelectSolutionOrProjects(file))
-                                    projectList.Add(project);
-                            }
-                        }
-
-                        foreach(string file in projectList)
-                        {
-                            docSources.Add(file, null, null, null, false);
-
-                            ext = Path.GetExtension(file).ToLowerInvariant();
-
-                            // If there's a match for a comments file or an assembly, add it too
-                            if(ext == ".xml")
-                            {
-                                otherFile = Path.ChangeExtension(file, ".dll");
+                                otherFile = Path.ChangeExtension(file, ".exe");
 
                                 if(File.Exists(otherFile))
                                     docSources.Add(otherFile, null, null, null, false);
                                 else
                                 {
-                                    otherFile = Path.ChangeExtension(file, ".exe");
-
-                                    if(File.Exists(otherFile))
-                                        docSources.Add(otherFile, null, null, null, false);
-                                    else
-                                    {
-                                        otherFile = Path.ChangeExtension(file, ".winmd");
-
-                                        if(File.Exists(otherFile))
-                                            docSources.Add(otherFile, null, null, null, false);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if(ext == ".dll" || ext == ".exe" || ext == ".winmd")
-                                {
-                                    otherFile = Path.ChangeExtension(file, ".xml");
+                                    otherFile = Path.ChangeExtension(file, ".winmd");
 
                                     if(File.Exists(otherFile))
                                         docSources.Add(otherFile, null, null, null, false);
                                 }
                             }
                         }
+                        else
+                        {
+                            if(ext == ".dll" || ext == ".exe" || ext == ".winmd")
+                            {
+                                otherFile = Path.ChangeExtension(file, ".xml");
 
-                        tvProjectFiles.SelectedNode = this.LoadDocSources(false);
-                        tvProjectFiles.SelectedNode.Expand();
+                                if(File.Exists(otherFile))
+                                    docSources.Add(otherFile, null, null, null, false);
+                            }
+                        }
                     }
-                    finally
-                    {
-                        Cursor.Current = Cursors.Default;
-                    }
+
+                    tvProjectFiles.SelectedNode = this.LoadDocSources(false);
+                    tvProjectFiles.SelectedNode.Expand();
+                }
+                finally
+                {
+                    Cursor.Current = Cursors.Default;
                 }
             }
         }
@@ -1227,43 +1227,44 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             try
             {
-                using(OpenFileDialog dlg = new OpenFileDialog())
+                using OpenFileDialog dlg = new();
+                
+                dlg.Title = "Select the reference file(s)";
+                dlg.Filter = "Library, Executable, and Project Files (*.dll, *.exe, *.winmd, *.*proj)|" +
+                    "*.dll;*.exe;*.winmd;*.*proj|" +
+                    "Library Files (*.dll, *.winmd)|*.dll;*.winmd|" +
+                    "Executable Files (*.exe)|*.exe|" +
+                    "Visual Studio Project Files (*.*proj)|*.*proj|" +
+                    "All Files (*.*)|*.*";
+                dlg.InitialDirectory = Directory.GetCurrentDirectory();
+                dlg.DefaultExt = "dll";
+                dlg.Multiselect = true;
+
+                // If selected, add the file(s)
+                if(dlg.ShowDialog() == DialogResult.OK)
                 {
-                    dlg.Title = "Select the reference file(s)";
-                    dlg.Filter = "Library, Executable, and Project Files (*.dll, *.exe, *.winmd, *.*proj)|" +
-                        "*.dll;*.exe;*.winmd;*.*proj|" +
-                        "Library Files (*.dll, *.winmd)|*.dll;*.winmd|" +
-                        "Executable Files (*.exe)|*.exe|" +
-                        "Visual Studio Project Files (*.*proj)|*.*proj|" +
-                        "All Files (*.*)|*.*";
-                    dlg.InitialDirectory = Directory.GetCurrentDirectory();
-                    dlg.DefaultExt = "dll";
-                    dlg.Multiselect = true;
+                    try
+                    {
+                        Cursor.Current = Cursors.WaitCursor;
 
-                    // If selected, add the file(s)
-                    if(dlg.ShowDialog() == DialogResult.OK)
-                        try
+                        foreach(string file in dlg.FileNames)
                         {
-                            Cursor.Current = Cursors.WaitCursor;
+                            extension = Path.GetExtension(file).ToLowerInvariant();
 
-                            foreach(string file in dlg.FileNames)
-                            {
-                                extension = Path.GetExtension(file).ToLowerInvariant();
-
-                                if(extension == ".exe" || extension == ".dll" || extension == ".winmd")
-                                    projectReferences.AddReference(Path.GetFileNameWithoutExtension(file), file);
-                                else
-                                    if(extension.EndsWith("proj", StringComparison.Ordinal))
-                                        projectReferences.AddProjectReference(file);
-                            }
-
-                            tvProjectFiles.SelectedNode = this.LoadReferences(false);
-                            tvProjectFiles.SelectedNode.Expand();
+                            if(extension == ".exe" || extension == ".dll" || extension == ".winmd")
+                                projectReferences.AddReference(Path.GetFileNameWithoutExtension(file), file);
+                            else
+                                if(extension.EndsWith("proj", StringComparison.Ordinal))
+                                projectReferences.AddProjectReference(file);
                         }
-                        finally
-                        {
-                            Cursor.Current = Cursors.Default;
-                        }
+
+                        tvProjectFiles.SelectedNode = this.LoadReferences(false);
+                        tvProjectFiles.SelectedNode.Expand();
+                    }
+                    finally
+                    {
+                        Cursor.Current = Cursors.Default;
+                    }
                 }
             }
             catch(Exception ex)
@@ -1285,23 +1286,24 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             try
             {
-                using(SelectGacEntriesDlg dlg = new SelectGacEntriesDlg())
+                using SelectGacEntriesDlg dlg = new();
+
+                if(dlg.ShowDialog() == DialogResult.OK)
                 {
-                    if(dlg.ShowDialog() == DialogResult.OK)
-                        try
-                        {
-                            Cursor.Current = Cursors.WaitCursor;
+                    try
+                    {
+                        Cursor.Current = Cursors.WaitCursor;
 
-                            foreach(string gacEntry in dlg.SelectedEntries)
-                                projectReferences.AddReference(gacEntry, null);
+                        foreach(string gacEntry in dlg.SelectedEntries)
+                            projectReferences.AddReference(gacEntry, null);
 
-                            tvProjectFiles.SelectedNode = this.LoadReferences(false);
-                            tvProjectFiles.SelectedNode.Expand();
-                        }
-                        finally
-                        {
-                            Cursor.Current = Cursors.Default;
-                        }
+                        tvProjectFiles.SelectedNode = this.LoadReferences(false);
+                        tvProjectFiles.SelectedNode.Expand();
+                    }
+                    finally
+                    {
+                        Cursor.Current = Cursors.Default;
+                    }
                 }
             }
             catch(Exception ex)
@@ -1540,7 +1542,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             TreeNode parent = tvProjectFiles.SelectedNode;
             TreeNode[] matches;
-            FileItem folderItem;
             NodeData nodeData;
             string path, newFolder;
             int uniqueId = 0;
@@ -1580,10 +1581,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             } while(Directory.Exists(newFolder));
 
-            folderItem = currentProject.AddFolderToProject(newFolder);
+            FileItem folderItem = (FileItem)currentProject.AddFolderToProject(newFolder);
 
             fileItems.Add(folderItem);
-            fileTree.LoadTree(new[] { folderItem });
+            fileTree.LoadTree([folderItem]);
 
             if(parent == null)
                 matches = tvProjectFiles.Nodes[0].Nodes.Find(folderItem.IncludePath.PersistablePath, false);
@@ -1604,11 +1605,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         private void miAddExistingFolder_Click(object sender, EventArgs e)
         {
-            List<FileItem> toAdd = new List<FileItem>();
+            List<IFileItem> toAdd = [];
             TreeNode parent = tvProjectFiles.SelectedNode;
             TreeNode[] matches;
-            FileItem folderItem;
             NodeData nodeData;
+            IFileItem folderItem;
             string path, newFolder;
 
             if(parent != null)
@@ -1633,13 +1634,15 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     path = Path.GetDirectoryName(currentProject.Filename);
                 }
                 else
+                {
                     if(nodeData.BuildAction == BuildAction.Folder)
                         path = ((FileItem)nodeData.Item).IncludePath;
                     else
                         path = Path.GetDirectoryName(((FileItem)nodeData.Item).IncludePath);
+                }
             }
 
-            using(FolderBrowserDialog dlg = new FolderBrowserDialog())
+            using(FolderBrowserDialog dlg = new())
             {
                 dlg.Description = "Select the folder to add";
                 dlg.SelectedPath = path;
@@ -1679,11 +1682,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             }
 
             if(parent == null)
-                matches = tvProjectFiles.Nodes[0].Nodes.Find(
-                    folderItem.IncludePath.PersistablePath, false);
+                matches = tvProjectFiles.Nodes[0].Nodes.Find(folderItem.IncludePath.PersistablePath, false);
             else
-                matches = parent.Nodes.Find(folderItem.IncludePath.PersistablePath,
-                    false);
+                matches = parent.Nodes.Find(folderItem.IncludePath.PersistablePath, false);
 
             if(matches.Length > 0)
                 tvProjectFiles.SelectedNode = matches[0];
@@ -1694,7 +1695,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// </summary>
         /// <param name="rootFolder">The root folder</param>
         /// <param name="items">The file items added</param>
-        private void AddSubFolders(string rootFolder, List<FileItem> items)
+        private void AddSubFolders(string rootFolder, List<IFileItem> items)
         {
             foreach(string file in Directory.EnumerateFiles(rootFolder, "*.*"))
                 items.Add(currentProject.AddFileToProject(file, file));
@@ -1713,10 +1714,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         private void miAddExistingItem_Click(object sender, EventArgs e)
         {
-            List<FileItem> toAdd = new List<FileItem>();
+            List<IFileItem> toAdd = [];
             NodeData nodeData;
             TreeNode parent = tvProjectFiles.SelectedNode;
-            FileItem fileItem;
             string path, newPath;
 
             if(parent == null || parent == tvProjectFiles.Nodes[0])
@@ -1727,52 +1727,57 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                 if(nodeData.BuildAction == BuildAction.DocumentationSource ||
                   nodeData.BuildAction == BuildAction.ReferenceItem)
+                {
                     path = Path.GetDirectoryName(currentProject.Filename);
+                }
                 else
+                {
                     if(nodeData.BuildAction == BuildAction.Folder)
                         path = ((FileItem)nodeData.Item).IncludePath;
                     else
                         path = Path.GetDirectoryName(((FileItem)nodeData.Item).IncludePath);
+                }
             }
 
             try
             {
-                using(OpenFileDialog dlg = new OpenFileDialog())
+                using OpenFileDialog dlg = new();
+                
+                dlg.Title = "Select the file(s) to add";
+                dlg.Filter = "Project Files (*.aml, *.htm*, *.css, *.js, " +
+                    "*.content, *.sitemap, *.snippets, *.tokens, *.items)|*.aml;" +
+                    "*.htm*;*.css;*.js;*.content;*.sitemap;*.tokens;" +
+                    "*.snippets;*.items|Content Files (*.aml, *.htm*)|*.aml;*.htm*|" +
+                    "Content Layout Files (*.content, *.sitemap)|" +
+                    "*.content;*.sitemap|Image Files (*.bmp, *.gif, " +
+                    "*.jpg, *.jpe*, *.png)|*.bmp;*.gif;*.jpg;*.jpe*;" +
+                    "*.png|All Files (*.*)|*.*";
+                dlg.InitialDirectory = path;
+                dlg.DefaultExt = "aml";
+                dlg.Multiselect = true;
+
+                // If selected, add the file(s)
+                if(dlg.ShowDialog() == DialogResult.OK)
                 {
-                    dlg.Title = "Select the file(s) to add";
-                    dlg.Filter = "Project Files (*.aml, *.htm*, *.css, *.js, " +
-                        "*.content, *.sitemap, *.snippets, *.tokens, *.items)|*.aml;" +
-                        "*.htm*;*.css;*.js;*.content;*.sitemap;*.tokens;" +
-                        "*.snippets;*.items|Content Files (*.aml, *.htm*)|*.aml;*.htm*|" +
-                        "Content Layout Files (*.content, *.sitemap)|" +
-                        "*.content;*.sitemap|Image Files (*.bmp, *.gif, " +
-                        "*.jpg, *.jpe*, *.png)|*.bmp;*.gif;*.jpg;*.jpe*;" +
-                        "*.png|All Files (*.*)|*.*";
-                    dlg.InitialDirectory = path;
-                    dlg.DefaultExt = "aml";
-                    dlg.Multiselect = true;
+                    try
+                    {
+                        Cursor.Current = Cursors.WaitCursor;
 
-                    // If selected, add the file(s)
-                    if(dlg.ShowDialog() == DialogResult.OK)
-                        try
+                        foreach(string file in dlg.FileNames)
                         {
-                            Cursor.Current = Cursors.WaitCursor;
+                            newPath = Path.Combine(path, Path.GetFileName(file));
+                            var fileItem = currentProject.AddFileToProject(file, newPath);
 
-                            foreach(string file in dlg.FileNames)
-                            {
-                                newPath = Path.Combine(path, Path.GetFileName(file));
-                                fileItem = currentProject.AddFileToProject(file, newPath);
-
-                                fileItems.Add(fileItem);
-                                toAdd.Add(fileItem);
-                            }
-
-                            fileTree.LoadTree(toAdd);
+                            fileItems.Add(fileItem);
+                            toAdd.Add(fileItem);
                         }
-                        finally
-                        {
-                            Cursor.Current = Cursors.Default;
-                        }
+
+                        fileTree.LoadTree(toAdd);
+                    }
+                    finally
+                    {
+                        Cursor.Current = Cursors.Default;
+                    }
                 }
             }
             catch(Exception ex)
@@ -1790,110 +1795,111 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         private void miImportMediaFile_Click(object sender, EventArgs e)
         {
-            List<string> filesSeen = new List<string>();
+            List<string> filesSeen = [];
             XPathDocument media;
             XPathNavigator navMedia, file, altText;
-            FileItem fileItem;
             TreeNode parent = tvProjectFiles.SelectedNode;
             NodeData nodeData;
             string guid, id, path, destPath, newName;
             int uniqueId;
 
-            using(OpenFileDialog dlg = new OpenFileDialog())
-            {
-                dlg.Title = "Select the MAML media content file";
-                dlg.Filter = "MAML media content files (*.xml)|*.xml|All Files (*.*)|*.*";
-                dlg.InitialDirectory = Directory.GetCurrentDirectory();
-                dlg.DefaultExt = "xml";
+            using OpenFileDialog dlg = new();
+            
+            dlg.Title = "Select the MAML media content file";
+            dlg.Filter = "MAML media content files (*.xml)|*.xml|All Files (*.*)|*.*";
+            dlg.InitialDirectory = Directory.GetCurrentDirectory();
+            dlg.DefaultExt = "xml";
 
-                // If selected, add the new images from the media file.  Images with an ID that is already in
-                // the collection are ignored.
-                if(dlg.ShowDialog() == DialogResult.OK)
+            // If selected, add the new images from the media file.  Images with an ID that is already in
+            // the collection are ignored.
+            if(dlg.ShowDialog() == DialogResult.OK)
+            {
+                if(parent == null || parent == tvProjectFiles.Nodes[0])
+                    destPath = Path.GetDirectoryName(currentProject.Filename);
+                else
                 {
-                    if(parent == null || parent == tvProjectFiles.Nodes[0])
+                    nodeData = (NodeData)parent.Tag;
+
+                    if(nodeData.BuildAction == BuildAction.DocumentationSource ||
+                      nodeData.BuildAction == BuildAction.ReferenceItem)
+                    {
                         destPath = Path.GetDirectoryName(currentProject.Filename);
+                    }
                     else
                     {
-                        nodeData = (NodeData)parent.Tag;
-
-                        if(nodeData.BuildAction == BuildAction.DocumentationSource ||
-                          nodeData.BuildAction == BuildAction.ReferenceItem)
-                            destPath = Path.GetDirectoryName(currentProject.Filename);
+                        if(nodeData.BuildAction == BuildAction.Folder)
+                            destPath = ((FileItem)nodeData.Item).IncludePath;
                         else
-                            if(nodeData.BuildAction == BuildAction.Folder)
-                                destPath = ((FileItem)nodeData.Item).IncludePath;
-                            else
-                                destPath = Path.GetDirectoryName(
-                                    ((FileItem)nodeData.Item).IncludePath);
+                            destPath = Path.GetDirectoryName(((FileItem)nodeData.Item).IncludePath);
                     }
+                }
 
-                    try
+                try
+                {
+                    Cursor.Current = Cursors.WaitCursor;
+
+                    var images = currentProject.ImagesReferences;
+
+                    using(var reader = XmlReader.Create(dlg.FileName, new XmlReaderSettings { CloseInput = true }))
                     {
-                        Cursor.Current = Cursors.WaitCursor;
+                        media = new XPathDocument(reader);
+                        navMedia = media.CreateNavigator();
 
-                        var images = currentProject.ImagesReferences;
-
-                        using(var reader = XmlReader.Create(dlg.FileName, new XmlReaderSettings { CloseInput = true }))
+                        foreach(XPathNavigator item in navMedia.Select("//item"))
                         {
-                            media = new XPathDocument(reader);
-                            navMedia = media.CreateNavigator();
+                            guid = null;
+                            file = altText = null;
+                            id = item.GetAttribute("id", String.Empty);
+                            file = item.SelectSingleNode("image/@file");
+                            altText = item.SelectSingleNode("image/altText");
 
-                            foreach(XPathNavigator item in navMedia.Select("//item"))
+                            if(!String.IsNullOrEmpty(id))
+                                guid = id.Trim();
+
+                            if(!String.IsNullOrEmpty(guid) && !images.Any(img => img.Id.Equals(guid,
+                              StringComparison.OrdinalIgnoreCase)) && file != null &&
+                              !String.IsNullOrEmpty(file.Value))
                             {
-                                guid = null;
-                                file = altText = null;
-                                id = item.GetAttribute("id", String.Empty);
-                                file = item.SelectSingleNode("image/@file");
-                                altText = item.SelectSingleNode("image/altText");
+                                path = newName = file.Value;
 
-                                if(!String.IsNullOrEmpty(id))
-                                    guid = id.Trim();
+                                // If relative, get the full path
+                                if(!Path.IsPathRooted(path))
+                                    path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(dlg.FileName), path));
 
-                                if(!String.IsNullOrEmpty(guid) && !images.Any(img => img.Id.Equals(guid,
-                                  StringComparison.OrdinalIgnoreCase)) && file != null &&
-                                  !String.IsNullOrEmpty(file.Value))
+                                // It's possible that two entries share the same file so we'll need to create a
+                                // new copy as in SHFB, the settings are managed via the project explorer and
+                                // each file is unique.
+                                uniqueId = 1;
+
+                                while(filesSeen.Contains(newName))
                                 {
-                                    path = newName = file.Value;
-
-                                    // If relative, get the full path
-                                    if(!Path.IsPathRooted(path))
-                                        path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(dlg.FileName), path));
-
-                                    // It's possible that two entries share the same file so we'll need to create a
-                                    // new copy as in SHFB, the settings are managed via the project explorer and
-                                    // each file is unique.
-                                    uniqueId = 1;
-
-                                    while(filesSeen.Contains(newName))
-                                    {
-                                        newName = Path.Combine(Path.GetDirectoryName(newName),
-                                            Path.GetFileNameWithoutExtension(newName) +
-                                            uniqueId.ToString(CultureInfo.InvariantCulture) +
-                                            Path.GetExtension(newName));
-                                        uniqueId++;
-                                    }
-
-                                    filesSeen.Add(newName);
-
-                                    fileItem = currentProject.AddFileToProject(path,
-                                        Path.Combine(destPath, Path.GetFileName(newName)));
-                                    fileItem.BuildAction = BuildAction.Image;
-                                    fileItem.ImageId = guid;
-
-                                    if(altText != null)
-                                        fileItem.AlternateText = altText.Value;
+                                    newName = Path.Combine(Path.GetDirectoryName(newName),
+                                        Path.GetFileNameWithoutExtension(newName) +
+                                        uniqueId.ToString(CultureInfo.InvariantCulture) +
+                                        Path.GetExtension(newName));
+                                    uniqueId++;
                                 }
+
+                                filesSeen.Add(newName);
+
+                                var fileItem = currentProject.AddFileToProject(path,
+                                    Path.Combine(destPath, Path.GetFileName(newName)));
+                                fileItem.BuildAction = BuildAction.Image;
+                                fileItem.ImageId = guid;
+
+                                if(altText != null)
+                                    fileItem.AlternateText = altText.Value;
                             }
                         }
+                    }
 
-                        // If existing items were found, we will have changed their build action to Image so
-                        // reload the tree to ensure that the change is reflected there.
-                        this.LoadProject();
-                    }
-                    finally
-                    {
-                        Cursor.Current = Cursors.Default;
-                    }
+                    // If existing items were found, we will have changed their build action to Image so
+                    // reload the tree to ensure that the change is reflected there.
+                    this.LoadProject();
+                }
+                finally
+                {
+                    Cursor.Current = Cursors.Default;
                 }
             }
         }
@@ -1908,7 +1914,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
             ToolStripItem miSelection = (ToolStripItem)sender;
             TreeNode parent = tvProjectFiles.SelectedNode;
             NodeData nodeData;
-            FileItem fileItem;
             Guid guid = Guid.NewGuid();
             string path, newName, file = (string)miSelection.Tag;
             bool isConceptual;
@@ -1933,78 +1938,77 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 }
             }
 
-            using(SaveFileDialog dlg = new SaveFileDialog())
+            using SaveFileDialog dlg = new();
+            
+            if(file.EndsWith(".aml", StringComparison.OrdinalIgnoreCase))
             {
-                if(file.EndsWith(".aml", StringComparison.OrdinalIgnoreCase))
-                {
-                    newName = guid.ToString() + ".aml";
-                    isConceptual = true;
-                }
-                else
-                {
-                    newName = Path.GetFileName(file);
-                    isConceptual = false;
-                }
+                newName = guid.ToString() + ".aml";
+                isConceptual = true;
+            }
+            else
+            {
+                newName = Path.GetFileName(file);
+                isConceptual = false;
+            }
 
-                dlg.Title = "Save New File As";
-                dlg.Filter = "All files (*.*)|*.*";
-                dlg.FileName = newName;
-                dlg.InitialDirectory = path;
-                dlg.DefaultExt = Path.GetExtension(file);
+            dlg.Title = "Save New File As";
+            dlg.Filter = "All files (*.*)|*.*";
+            dlg.FileName = newName;
+            dlg.InitialDirectory = path;
+            dlg.DefaultExt = Path.GetExtension(file);
 
-                string ext = Path.GetExtension(file);
+            string ext = Path.GetExtension(file);
 
-                if(!String.IsNullOrWhiteSpace(ext))
+            if(!String.IsNullOrWhiteSpace(ext))
+            {
+                dlg.Filter = String.Format(CultureInfo.InvariantCulture, "{0} files|*{1}|{2}",
+                    miSelection.Text, ext, dlg.Filter);
+            }
+
+            if(dlg.ShowDialog() == DialogResult.OK)
+            {
+                try
                 {
-                    dlg.Filter = String.Format(CultureInfo.InvariantCulture, "{0} files|*{1}|{2}",
-                        miSelection.Text, ext, dlg.Filter);
-                }
+                    Cursor.Current = Cursors.WaitCursor;
 
-                if(dlg.ShowDialog() == DialogResult.OK)
-                {
-                    try
+                    var fileItem = currentProject.AddFileToProject(file, dlg.FileName);
+
+                    fileItems.Add(fileItem);
+                    fileTree.LoadTree([fileItem]);
+
+                    // If it's a conceptual content topic file, set the unique ID in it
+                    if(isConceptual)
                     {
-                        Cursor.Current = Cursors.WaitCursor;
-
-                        fileItem = currentProject.AddFileToProject(file, dlg.FileName);
-
-                        fileItems.Add(fileItem);
-                        fileTree.LoadTree(new[] { fileItem });
-
-                        // If it's a conceptual content topic file, set the unique ID in it
-                        if(isConceptual)
+                        try
                         {
-                            try
+                            XmlDocument doc = new();
+
+                            using(var reader = XmlReader.Create(fileItem.FullPath,
+                              new XmlReaderSettings { CloseInput = true }))
                             {
-                                XmlDocument doc = new XmlDocument();
-
-                                using(var reader = XmlReader.Create(fileItem.FullPath,
-                                  new XmlReaderSettings { CloseInput = true }))
-                                {
-                                    doc.Load(reader);
-                                }
-
-                                XmlNode node = doc.SelectSingleNode("topic") ?? throw new InvalidOperationException(
-                                    "Unable to locate root topic node");
-
-                                if(node.Attributes["id"] == null)
-                                    throw new InvalidOperationException("Unable to locate 'id' attribute on root topic node");
-
-                                node.Attributes["id"].Value = guid.ToString();
-                                doc.Save(fileItem.FullPath);
+                                doc.Load(reader);
                             }
-                            catch(Exception ex)
-                            {
-                                System.Diagnostics.Debug.WriteLine(ex);
-                                MessageBox.Show("Unable to set topic ID.  Reason:" + ex.Message, Constants.AppName,
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
+
+                            XmlNode node = doc.SelectSingleNode("topic") ?? throw new InvalidOperationException(
+                                "Unable to locate root topic node");
+
+                            if(node.Attributes["id"] == null)
+                                throw new InvalidOperationException("Unable to locate 'id' attribute on root topic node");
+
+                            node.Attributes["id"].Value = guid.ToString();
+                            doc.Save(fileItem.FullPath);
+                        }
+                        catch(Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine(ex);
+                            MessageBox.Show("Unable to set topic ID.  Reason:" + ex.Message, Constants.AppName,
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
-                    finally
-                    {
-                        Cursor.Current = Cursors.Default;
-                    }
+                }
+                finally
+                {
+                    Cursor.Current = Cursors.Default;
                 }
             }
         }
@@ -2020,7 +2024,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         private void tvProjectFiles_ItemDrag(object sender, ItemDragEventArgs e)
         {
-            DataObject data = new DataObject();
+            DataObject data = new();
 
             if(e.Item is TreeNode node && node.Tag != null && e.Button == MouseButtons.Left)
             {
@@ -2064,10 +2068,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             if(targetNode != null && tvProjectFiles.SelectedNode != targetNode)
                 tvProjectFiles.SelectedNode = targetNode;
             else
-            {
-                if(targetNode == null)
-                    targetNode = tvProjectFiles.Nodes[0];
-            }
+                targetNode ??= tvProjectFiles.Nodes[0];
 
             // Check that the selected node is not the dropNode, that it is
             // not a child of the dropNode, or that the parent nodes match
@@ -2206,7 +2207,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     newPath += "\\";
                     fileItem.IncludePath = new FilePath(newPath, fileItem.Project);
 
-                    foreach(ProjectItem item in fileItem.Project.MSBuildProject.AllEvaluatedItems)
+                    foreach(ProjectItem item in ((SandcastleProject)fileItem.Project).MSBuildProject.AllEvaluatedItems)
                     {
                         if(item.EvaluatedInclude.StartsWith(path, StringComparison.OrdinalIgnoreCase))
                             item.UnevaluatedInclude = newPath + item.EvaluatedInclude.Substring(path.Length);
@@ -2385,7 +2386,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         private void miCutCopy_Click(object sender, EventArgs e)
         {
-            List<string> files = new List<string>();
+            List<string> files = [];
             TreeNode node = tvProjectFiles.SelectedNode;
 
             if(node != null)
@@ -2396,8 +2397,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 string[] fileArray = new string[files.Count];
                 files.CopyTo(fileArray, 0);
 
-                DataObject data = new DataObject(DataFormats.FileDrop, fileArray);
-                MemoryStream dropEffect = new MemoryStream(new byte[] { (byte)(sender == miCut ? 2 : 5), 0, 0, 0 });
+                DataObject data = new(DataFormats.FileDrop, fileArray);
+                MemoryStream dropEffect = new([(byte)(sender == miCut ? 2 : 5), 0, 0, 0]);
 
                 data.SetData("Preferred DropEffect", dropEffect);
                 Clipboard.SetDataObject(data);
@@ -2438,7 +2439,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             TreeNode pasteNode = tvProjectFiles.SelectedNode;
             TreeNode[] matches;
             NodeData nodeData;
-            FileItem fileItem;
+            IFileItem fileItem;
             string newPath, basePath, newSelection = null, rootFolder = null;
             int uniqueId = 0;
 
@@ -2576,8 +2577,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                 if(fileItem != null)
                 {
-                    matches = tvProjectFiles.Nodes[0].Nodes.Find(
-                        fileItem.IncludePath.PersistablePath, true);
+                    matches = tvProjectFiles.Nodes[0].Nodes.Find(fileItem.IncludePath.PersistablePath, true);
 
                     if(matches.Length == 1)
                         tvProjectFiles.SelectedNode = matches[0];

@@ -7,6 +7,8 @@
 // 11/22/2013 - EFW - Cleared out the conditional statements and unused code and updated based on changes to
 // ListTemplate.cs.
 
+// Ignore Spelling: evnt Arglist argexp nspace nspaces refvalexp reftypexp typeswitch
+
 using System.CodeDom.Compiler;
 using System.Diagnostics;
 
@@ -61,16 +63,23 @@ namespace System.Compiler
         public virtual Node VisitUnknownNodeType(Node node)
         {
             Visitor visitor = this.GetVisitorFor(node);
-            if (visitor == null) return node;
-            if (this.callingVisitor != null)
-                //Allow specialized state (unknown to this visitor) to propagate all the way down to the new visitor
-                this.callingVisitor.TransferStateTo(visitor);
+
+            if(visitor == null)
+                return node;
+
+            //Allow specialized state (unknown to this visitor) to propagate all the way down to the new visitor
+            this.callingVisitor?.TransferStateTo(visitor);
+
             this.TransferStateTo(visitor);
+            
             node = visitor.Visit(node);
             visitor.TransferStateTo(this);
-            if (this.callingVisitor != null)
+
+            if(this.callingVisitor != null)
+            {
                 //Propagate specialized state (unknown to this visitor) all the way up the chain
                 visitor.TransferStateTo(this.callingVisitor);
+            }
 
             return node;
         }

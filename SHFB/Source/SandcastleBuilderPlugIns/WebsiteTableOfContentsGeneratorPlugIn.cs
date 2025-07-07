@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : WebsiteTableOfContentsGeneratorPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Sam Harwell
-// Updated : 01/04/2024
-// Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved.
+// Updated : 06/20/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved.
 //
 // This file contains a plug-in that is used to generate table of contents information for website-based
 // presentation styles.
@@ -25,10 +25,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+
 using Sandcastle.Core;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.PlugIn;
 using Sandcastle.Core.PresentationStyle.Transformation;
-using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.BuildEngine;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -47,8 +48,7 @@ namespace SandcastleBuilder.PlugIns
         #region Private data members
         //=====================================================================
 
-        private List<ExecutionPoint> executionPoints;
-        private BuildProcess builder;
+        private IBuildProcess builder;
 
         private Dictionary<string, XElement> tocEntries;
         private List<XElement> parentTopics;
@@ -60,22 +60,13 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <inheritdoc/>
-        public IEnumerable<ExecutionPoint> ExecutionPoints
-        {
-            get
-            {
-                if(executionPoints == null)
-                    executionPoints = new List<ExecutionPoint>
-                    {
-                        new ExecutionPoint(BuildStep.BuildTopics, ExecutionBehaviors.BeforeAndAfter)
-                    };
-
-                return executionPoints;
-            }
-        }
+        public IEnumerable<ExecutionPoint> ExecutionPoints { get; } =
+        [
+            new ExecutionPoint(BuildStep.BuildTopics, ExecutionBehaviors.BeforeAndAfter)
+        ];
 
         /// <inheritdoc />
-        public void Initialize(BuildProcess buildProcess, XElement configuration)
+        public void Initialize(IBuildProcess buildProcess, XElement configuration)
         {
             builder = buildProcess;
 
@@ -99,7 +90,7 @@ namespace SandcastleBuilder.PlugIns
 
                 // Add a unique ID to each topic that has children.  These will have a TOC fragment file
                 // generated for them containing the child elements.
-                tocEntries= new Dictionary<string, XElement>();
+                tocEntries = [];
 
                 foreach(var te in helpToc.Descendants("topic"))
                 {
@@ -119,10 +110,7 @@ namespace SandcastleBuilder.PlugIns
                     }
                 }
 
-                parentTopics = new List<XElement>
-                {
-                    helpToc.Root
-                };
+                parentTopics = [ helpToc.Root ];
 
                 helpToc.Root.Add(new XAttribute("parentId", "Root"));
 
@@ -188,8 +176,8 @@ namespace SandcastleBuilder.PlugIns
             // After all of the topics have been generated, create the TOC fragment files
             foreach(var parentNode in parentTopics)
             {
-                XElement tocItems = new XElement("tocItems"), breadcrumbs = new XElement("breadcrumbs");
-                XDocument tocFragment = new XDocument(new XDeclaration("1.0", "utf-8", null),
+                XElement tocItems = new("tocItems"), breadcrumbs = new("breadcrumbs");
+                XDocument tocFragment = new(new XDeclaration("1.0", "utf-8", null),
                     new XElement("toc", breadcrumbs, tocItems));
                 string id = parentNode.Attribute("parentId").Value;
 

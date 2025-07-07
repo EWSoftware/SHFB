@@ -28,6 +28,7 @@ cctor
 cdata
 cdecl
 charset
+Cmdexecopt
 codepage
 colspan
 comimport
@@ -90,6 +91,7 @@ img
 inheritdoc
 init
 initonly
+Intelli
 javascript
 jc
 js
@@ -112,6 +114,7 @@ localhost
 mailto
 Maml
 mb
+Mef
 memberdata
 microsoft
 mscorlib
@@ -136,11 +139,13 @@ Orcas
 param
 paramref
 params
+pguid
 pict
 plaintext
 powershell
 pragma
 preservesig
+prg
 priv
 proceduredata
 proj
@@ -149,6 +154,7 @@ propertydata
 prot
 pshell
 psx
+pva
 px
 py
 readonly

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : EntityReferencesToolWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/24/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to implement the Entity References tool window
 //
@@ -26,9 +26,9 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
+using SandcastleBuilder.MSBuild.HelpProject;
 using SandcastleBuilder.Package.Editors;
 using SandcastleBuilder.Package.Nodes;
-using SandcastleBuilder.Utils;
 using SandcastleBuilder.WPF.UserControls;
 
 namespace SandcastleBuilder.Package.ToolWindows
@@ -124,8 +124,7 @@ namespace SandcastleBuilder.Package.ToolWindows
             IVsMonitorSelection ms = Utility.GetServiceFromPackage<IVsMonitorSelection,
                 SVsShellMonitorSelection>(true);
 
-            if(ms != null)
-                ms.UnadviseSelectionEvents(selectionMonitorCookie);
+            ms?.UnadviseSelectionEvents(selectionMonitorCookie);
 
             base.Dispose(disposing);
         }
@@ -161,7 +160,7 @@ namespace SandcastleBuilder.Package.ToolWindows
                     {
                         // Get the scope for handling hot keys.  The key used here doesn't matter.
                         // We're just getting the scope to use.
-                        AccessKeyPressedEventArgs e = new AccessKeyPressedEventArgs("X");
+                        AccessKeyPressedEventArgs e = new("X");
 
                         ((UserControl)base.Content).RaiseEvent(e);
                         scope = e.Scope;
@@ -252,7 +251,9 @@ namespace SandcastleBuilder.Package.ToolWindows
                     if((shfbProject == null && pHierNew == null) ||
                       (shfbProject != null && (ucEntityReferences.CurrentProject == null ||
                       ucEntityReferences.CurrentProject.Filename != shfbProject.Filename)))
+                    {
                         ucEntityReferences.CurrentProject = shfbProject;
+                    }
                 }
             }
 

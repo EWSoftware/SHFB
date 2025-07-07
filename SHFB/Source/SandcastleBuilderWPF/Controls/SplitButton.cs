@@ -2,9 +2,9 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : SplitButton.cs
 // Author  : Huy Pham
-// Updated : 04/17/2021
+// Updated : 07/04/2025
 // Source  : http://huydinhpham.blogspot.com/2008/09/wpf-drop-down-and-split-button.html
-// Note    : Copyright 2008-2021, Huy Pham, All rights reserved
+// Note    : Copyright 2008-2025, Huy Pham, All rights reserved
 //
 // This file contains a class that implements a split button
 //
@@ -222,16 +222,15 @@ namespace SandcastleBuilder.WPF.Controls
         /// <inheritdoc />
         protected override void OnClick()
         {
-            if(DropDownContextMenu == null)
-                return;
+            if(DropDownContextMenu != null)
+            {
+                DropDownButtonCommand?.Execute(null);
 
-            if(DropDownButtonCommand != null)
-                DropDownButtonCommand.Execute(null);
-
-            // If there is a drop-down assigned to this button, then position and display it 
-            DropDownContextMenu.PlacementTarget = this;
-            DropDownContextMenu.Placement = PlacementMode.Bottom;
-            DropDownContextMenu.IsOpen = !DropDownContextMenu.IsOpen;
+                // If there is a drop-down assigned to this button, then position and display it 
+                DropDownContextMenu.PlacementTarget = this;
+                DropDownContextMenu.Placement = PlacementMode.Bottom;
+                DropDownContextMenu.IsOpen = !DropDownContextMenu.IsOpen;
+            }
         }
         #endregion
 

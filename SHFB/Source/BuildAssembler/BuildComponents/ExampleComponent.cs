@@ -56,15 +56,15 @@ namespace Sandcastle.Tools.BuildComponents
         //=====================================================================
 
         // The snippet store
-        private readonly Dictionary<SnippetIdentifier, List<StoredSnippet>> snippets =
-            new Dictionary<SnippetIdentifier, List<StoredSnippet>>();
+        private readonly Dictionary<SnippetIdentifier, List<StoredSnippet>> snippets = [];
 
         private XPathExpression selector;
 
-        private static readonly Regex validSnippetReference = new Regex(@"^[^#\a\b\f\n\r\t\v]+#(\w+,)*\w+$");
+        private static readonly Regex validSnippetReference = new(@"^[^#\a\b\f\n\r\t\v]+#(\w+,)*\w+$");
 
-        private readonly Dictionary<string, List<ColorizationRule>> colorization =
-            new Dictionary<string, List<ColorizationRule>>();
+        private readonly Dictionary<string, List<ColorizationRule>> colorization = [];
+
+        private static readonly char[] carriageReturnLineFeed = ['\r', '\n'];
 
         #endregion
 
@@ -89,14 +89,14 @@ namespace Sandcastle.Tools.BuildComponents
         /// <param name="file">The file from which to load the snippets</param>
         private void LoadContent(string file)
         {
-            SnippetIdentifier key = new SnippetIdentifier();
+            SnippetIdentifier key = new();
             string language;
 
             WriteMessage(MessageLevel.Info, "Loading code snippet file '{0}'.", file);
 
             try
             {
-                XmlReaderSettings settings = new XmlReaderSettings { CheckCharacters = false, CloseInput = true };
+                XmlReaderSettings settings = new() { CheckCharacters = false, CloseInput = true };
                 XmlReader reader = XmlReader.Create(file, settings);
 
                 try
@@ -121,16 +121,18 @@ namespace Sandcastle.Tools.BuildComponents
                                 reader.Read();
 
                             if(!content.IsLegalXmlText())
+                            {
                                 throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture,
                                     "Snippet '{0}' language '{1}' contains illegal characters.", key, language));
+                            }
 
                             content = StripLeadingSpaces(content);
 
-                            StoredSnippet snippet = new StoredSnippet(content, language);
+                            StoredSnippet snippet = new(content, language);
 
                             if(!snippets.TryGetValue(key, out List<StoredSnippet> values))
                             {
-                                values = new List<StoredSnippet>();
+                                values = [];
                                 snippets.Add(key, values);
                             }
 
@@ -163,10 +165,10 @@ namespace Sandcastle.Tools.BuildComponents
         /// <param name="text">The text to colorize</param>
         /// <param name="rules">The colorization rules</param>
         /// <returns>A collection of colorized code regions</returns>
-        private static ICollection<Region> ColorizeSnippet(string text, List<ColorizationRule> rules)
+        private static LinkedList<Region> ColorizeSnippet(string text, List<ColorizationRule> rules)
         {
             // create a linked list consisting entirely of one uncolored region
-            LinkedList<Region> regions = new LinkedList<Region>();
+            LinkedList<Region> regions = new();
             regions.AddFirst(new Region(text));
 
             // loop over colorization rules
@@ -207,12 +209,12 @@ namespace Sandcastle.Tools.BuildComponents
                         // create a leading uncolored region 
                         if(match.Index > index)
                         {
-                            Region uncoloredRegion = new Region(regionText.Substring(index, match.Index - index));
+                            Region uncoloredRegion = new(regionText.Substring(index, match.Index - index));
                             referenceNode = regions.AddAfter(referenceNode, uncoloredRegion);
                         }
 
                         // create a colored region
-                        Region coloredRegion = new Region(rule.ClassName, regionText.Substring(match.Index, match.Length));
+                        Region coloredRegion = new(rule.ClassName, regionText.Substring(match.Index, match.Length));
                         referenceNode = regions.AddAfter(referenceNode, coloredRegion);
 
                         index = match.Index + match.Length;
@@ -221,7 +223,7 @@ namespace Sandcastle.Tools.BuildComponents
                     // create a trailing uncolored region
                     if(index < regionText.Length)
                     {
-                        Region uncoloredRegion = new Region(regionText.Substring(index));
+                        Region uncoloredRegion = new(regionText.Substring(index));
                         referenceNode = regions.AddAfter(referenceNode, uncoloredRegion);
                     }
 
@@ -243,6 +245,7 @@ namespace Sandcastle.Tools.BuildComponents
         private static void WriteColorizedSnippet(ICollection<Region> regions, XmlWriter writer)
         {
             foreach(Region region in regions)
+            {
                 if(region.ClassName == null)
                     writer.WriteString(region.Text);
                 else
@@ -252,6 +255,7 @@ namespace Sandcastle.Tools.BuildComponents
                     writer.WriteString(region.Text);
                     writer.WriteEndElement();
                 }
+            }
         }
 
         /// <summary>
@@ -265,7 +269,7 @@ namespace Sandcastle.Tools.BuildComponents
                 throw new ArgumentNullException(nameof(text));
 
             // Remove trailing whitespace and split the text into lines
-            string[] lines = text.TrimEnd(new[] { ' ', '\t', '\r', '\n' }).Split('\n');
+            string[] lines = text.TrimEnd([' ', '\t', '\r', '\n']).Split('\n');
 
             // No need to do this if there is only one line
             if(lines.Length == 1)
@@ -313,15 +317,17 @@ namespace Sandcastle.Tools.BuildComponents
             }
 
             // Re-form the string with leading spaces deleted
-            StringBuilder result = new StringBuilder();
+            StringBuilder result = new();
 
             foreach(string line in lines.Skip(start))
+            {
                 if(line.Length == 0)
                     result.AppendLine();
                 else
                     result.AppendLine(line.Substring(spaces));
+            }
 
-            return result.ToString().TrimEnd(new[] { '\r', '\n' });
+            return result.ToString().TrimEnd(carriageReturnLineFeed);
         }
         #endregion
 
@@ -354,7 +360,7 @@ namespace Sandcastle.Tools.BuildComponents
             foreach(XPathNavigator colorsNode in colorsNodes)
             {
                 string language = colorsNode.GetAttribute("language", String.Empty);
-                List<ColorizationRule> rules = new List<ColorizationRule>();
+                List<ColorizationRule> rules = [];
 
                 XPathNodeIterator colorNodes = colorsNode.Select("color");
 
@@ -371,10 +377,11 @@ namespace Sandcastle.Tools.BuildComponents
                 }
 
                 colorization[language] = rules;
-                WriteMessage(MessageLevel.Info, "Loaded {0} colorization rules for the language '{1}'.", rules.Count, language);
+                WriteMessage(MessageLevel.Info, "Loaded {0} colorization rules for the language '{1}'.",
+                    rules.Count, language);
             }
 
-            CustomContext context = new CustomContext();
+            CustomContext context = new();
             context.AddNamespace("ddue", "http://ddue.schemas.microsoft.com/authoring/2003/5");
 
             selector = XPathExpression.Compile("//ddue:codeReference");
@@ -414,8 +421,8 @@ namespace Sandcastle.Tools.BuildComponents
                                 writer.WriteStartElement("snippet");
                                 writer.WriteAttributeString("language", value.Language);
 
-                                if(colorization.ContainsKey(value.Language))
-                                    WriteColorizedSnippet(ColorizeSnippet(value.Text, colorization[value.Language]), writer);
+                                if(colorization.TryGetValue(value.Language, out List<ColorizationRule> rules))
+                                    WriteColorizedSnippet(ColorizeSnippet(value.Text, rules), writer);
                                 else
                                     writer.WriteString(value.Text);
 
@@ -426,14 +433,14 @@ namespace Sandcastle.Tools.BuildComponents
                             writer.Close();
                         }
                         else
-                            base.WriteMessage(key, MessageLevel.Warn, "No snippet with identifier '{0}' was found.", identifier);
+                            this.WriteMessage(key, MessageLevel.Warn, "No snippet with identifier '{0}' was found.", identifier);
                     }
                     else
                     {
                         // multiple snippets referenced
 
                         // create structure that maps language -> snippets
-                        Dictionary<string, List<StoredSnippet>> map = new Dictionary<string, List<StoredSnippet>>();
+                        Dictionary<string, List<StoredSnippet>> map = [];
 
                         foreach(SnippetIdentifier identifier in identifiers)
                         {
@@ -443,9 +450,10 @@ namespace Sandcastle.Tools.BuildComponents
                                 {
                                     if(!map.TryGetValue(value.Language, out List<StoredSnippet> pieces))
                                     {
-                                        pieces = new List<StoredSnippet>();
+                                        pieces = [];
                                         map.Add(value.Language, pieces);
                                     }
+
                                     pieces.Add(value);
                                 }
                             }
@@ -484,7 +492,7 @@ namespace Sandcastle.Tools.BuildComponents
                     }
                 }
                 else
-                    base.WriteMessage(key, MessageLevel.Warn, "The code reference '{0}' is not well-formed", reference);
+                    this.WriteMessage(key, MessageLevel.Warn, "The code reference '{0}' is not well-formed", reference);
 
                 node.DeleteSelf();
             }

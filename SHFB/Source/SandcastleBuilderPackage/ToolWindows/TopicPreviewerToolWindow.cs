@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TopicPreviewerToolWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 06/24/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to implement the Topic Previewer tool window
 //
@@ -27,10 +27,12 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 
+using Sandcastle.Core.ConceptualContent;
+using Sandcastle.Core.Project;
+
+using SandcastleBuilder.MSBuild.HelpProject;
 using SandcastleBuilder.Package.Editors;
 using SandcastleBuilder.Package.Nodes;
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.ConceptualContent;
 using SandcastleBuilder.WPF.Commands;
 using SandcastleBuilder.WPF.UserControls;
 
@@ -85,11 +87,13 @@ namespace SandcastleBuilder.Package.ToolWindows
         /// <param name="project">The current project</param>
         /// <param name="previewTopicFilename">The filename of the topic to show as the starting topic or null
         /// for the first topic.</param>
-        public void PreviewTopic(SandcastleProject project, string previewTopicFilename)
+        public void PreviewTopic(ISandcastleProject project, string previewTopicFilename)
         {
             if(project == null || ucTopicPreviewer.CurrentProject == null ||
               ucTopicPreviewer.CurrentProject.Filename != project.Filename)
+            {
                 ucTopicPreviewer.CurrentProject = project;
+            }
 
             ucTopicPreviewer.Refresh(false);
             ucTopicPreviewer.FindAndDisplay(previewTopicFilename);
@@ -152,8 +156,7 @@ namespace SandcastleBuilder.Package.ToolWindows
             IVsMonitorSelection ms = Utility.GetServiceFromPackage<IVsMonitorSelection,
                 SVsShellMonitorSelection>(true);
 
-            if(ms != null)
-                ms.UnadviseSelectionEvents(selectionMonitorCookie);
+            ms?.UnadviseSelectionEvents(selectionMonitorCookie);
 
             base.Dispose(disposing);
         }
@@ -189,7 +192,7 @@ namespace SandcastleBuilder.Package.ToolWindows
                     {
                         // Get the scope for handling hot keys.  The key used here doesn't matter.
                         // We're just getting the scope to use.
-                        AccessKeyPressedEventArgs e = new AccessKeyPressedEventArgs("X");
+                        AccessKeyPressedEventArgs e = new("X");
 
                         ucTopicPreviewer.RaiseEvent(e);
                         scope = e.Scope;
@@ -277,7 +280,9 @@ namespace SandcastleBuilder.Package.ToolWindows
                     if((shfbProject == null && pHierNew == null && ucTopicPreviewer.CurrentProject != null) ||
                       (shfbProject != null && (ucTopicPreviewer.CurrentProject == null ||
                       ucTopicPreviewer.CurrentProject.Filename != shfbProject.Filename)))
+                    {
                         ucTopicPreviewer.CurrentProject = shfbProject;
+                    }
                 }
             }
 

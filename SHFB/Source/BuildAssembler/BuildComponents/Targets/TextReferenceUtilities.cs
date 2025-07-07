@@ -150,7 +150,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
 
         private static SpecializedTypeReference CreateSpecializedTypeReference(string api)
         {
-            List<Specialization> specializations = new List<Specialization>();
+            List<Specialization> specializations = [];
 
             string text = String.Copy(api);
 
@@ -168,7 +168,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
             for(int i = 0; i < types.Count; i++)
                 argumentReferences[i] = CreateTypeReference(types[i]);
 
-            Specialization specialization = new Specialization(templateReference, argumentReferences);
+            Specialization specialization = new(templateReference, argumentReferences);
 
             specializations.Add(specialization);
 
@@ -242,7 +242,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
                     string typeId = type.Specializations[type.Specializations.Count - 1].TemplateType.Id;
                     string memberId = String.Format(CultureInfo.InvariantCulture, "{0}:{1}.{2}", prefix,
                         typeId.Substring(2), name);
-                    SimpleMemberReference member = new SimpleMemberReference(memberId);
+                    SimpleMemberReference member = new(memberId);
                     return new SpecializedMemberReference(member, type);
                 }
 
@@ -415,7 +415,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
 
         internal static IList<string> SeparateTypes(string typelist)
         {
-            List<string> types = new List<string>();
+            List<string> types = [];
 
             int start = 0;
             int specializationCount = 0;
@@ -581,7 +581,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
             {
                 if(String.IsNullOrEmpty(arguments))
                 {
-                    Parameter[] parameters = Array.Empty<Parameter>();
+                    Parameter[] parameters = [];
                     resolver.WriteMethodParameters(parameters, writer);
                 }
                 else
@@ -591,10 +591,8 @@ namespace Sandcastle.Tools.BuildComponents.Targets
 
                     for(int i = 0; i < parameterTypeCers.Count; i++)
                     {
-                        TypeReference parameterType = CreateTypeReference(parameterTypeCers[i]);
-
-                        if(parameterType == null)
-                            parameterType = new NamedTemplateTypeReference("UAT");
+                        TypeReference parameterType = CreateTypeReference(parameterTypeCers[i]) ??
+                            new NamedTemplateTypeReference("UAT");
 
                         parameters[i] = new Parameter(String.Empty, parameterType);
                     }

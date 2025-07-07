@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : LanguageSpecificText.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/20/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to define language specific text used by a presentation style
 //
@@ -77,52 +77,52 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         /// <summary>
         /// This represents the common name separators
         /// </summary>
-        public static readonly LanguageSpecificText NameSeparator = new LanguageSpecificText(false, new[]
-        {
+        public static readonly LanguageSpecificText NameSeparator = new(false,
+        [
             (CPlusPlus, "::"),
             (Neutral, "."),
-        });
+        ]);
 
         /// <summary>
         /// This represents the common generic type specialization opening characters (&lt;T&gt;)
         /// </summary>
-        public static readonly LanguageSpecificText TypeSpecializationOpening = new LanguageSpecificText(false, new[]
-        {
+        public static readonly LanguageSpecificText TypeSpecializationOpening = new(false,
+        [
             (CPlusPlus, "<"),
             (CSharp, "<"),
             (FSharp, "<"),
             (VisualBasic, "(Of "),
             (Neutral, "("),
-        });
+        ]);
 
         /// <summary>
         /// This represents the common generic type specialization closing characters (&lt;T&gt;)
         /// </summary>
-        public static readonly LanguageSpecificText TypeSpecializationClosing = new LanguageSpecificText(false, new[]
-        {
+        public static readonly LanguageSpecificText TypeSpecializationClosing = new(false,
+        [
             (CPlusPlus, ">"),
             (CSharp, ">"),
             (FSharp, ">"),
             (VisualBasic, ")"),
             (Neutral, ")"),
-        });
+        ]);
 
         /// <summary>
         /// This represents the "array of" opening text.  Closing text is rendered dynamically due to the need
         /// to show rank if defined.
         /// </summary>
-        public static readonly LanguageSpecificText ArrayOfOpening = new LanguageSpecificText(false, new[]
-        {
+        public static readonly LanguageSpecificText ArrayOfOpening = new(false,
+        [
             (CPlusPlus, "array<")
-        });
+        ]);
 
         /// <summary>
         /// This represents the closing text for "reference to" characters
         /// </summary>
-        public static readonly LanguageSpecificText ReferenceTo = new LanguageSpecificText(false, new[]
-        {
+        public static readonly LanguageSpecificText ReferenceTo = new(false,
+        [
             (CPlusPlus, "%")
-        });
+        ]);
         #endregion
 
         #region Properties
@@ -161,7 +161,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         {
             this.ApplyKeywordStyle = applyKeywordStyle;
 
-            languageText = new List<(string LanguageId, string Keyword)>(text);
+            languageText = [.. text];
         }
         #endregion
 

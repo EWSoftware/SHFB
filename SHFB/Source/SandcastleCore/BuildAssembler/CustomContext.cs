@@ -21,7 +21,7 @@ namespace Sandcastle.Core.BuildAssembler
         #region Private data members
         //=====================================================================
 
-        private readonly Dictionary<string, IXsltContextVariable> variables = new Dictionary<string, IXsltContextVariable>();
+        private readonly Dictionary<string, IXsltContextVariable> variables = [];
 
         #endregion
 
@@ -44,8 +44,10 @@ namespace Sandcastle.Core.BuildAssembler
         public CustomContext(IDictionary<string, string> namespaces) : this()
         {
             if(namespaces != null)
+            {
                 foreach(var kv in namespaces)
                     this.AddNamespace(kv.Key, kv.Value);
+            }
         }
         #endregion
 

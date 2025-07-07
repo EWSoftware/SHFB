@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : PlugInPropertiesPageContent.cs
 // Author  : Eric Woodruff
-// Updated : 05/26/2021
-// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2017-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Plug-Ins category properties
 //
@@ -27,9 +27,8 @@ using System.Windows.Input;
 using System.Xml.Linq;
 
 using Sandcastle.Core;
-
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
+using Sandcastle.Core.PlugIn;
+using Sandcastle.Core.Project;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {
@@ -73,7 +72,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <summary>
         /// This returns a reference to the underlying Sandcastle project
         /// </summary>
-        public SandcastleProject Project { get; set; }
+        public ISandcastleProject Project { get; set; }
 
         /// <summary>
         /// This read-only property returns the selected plug-in configurations
@@ -393,11 +392,11 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private void componentCache_ComponentContainerLoaded(object sender, EventArgs e)
         {
-            ComponentSettingsNeededEventArgs projectSettings = new ComponentSettingsNeededEventArgs();
+            ComponentSettingsNeededEventArgs projectSettings = new();
 
             this.ComponentSettingsNeeded?.Invoke(this, projectSettings);
 
-            HashSet<string> plugInIds = new HashSet<string>();
+            HashSet<string> plugInIds = [];
 
             try
             {
@@ -406,19 +405,21 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 lbAvailablePlugIns.Items.Clear();
                 lbProjectPlugIns.Items.Clear();
 
-                availablePlugIns = componentCache.ComponentContainer.GetExports<IPlugIn, IPlugInMetadata>().ToList();
-                availableConfigEditors = componentCache.ComponentContainer.GetExports<IPlugInConfigurationEditor,
-                    IPlugInConfigurationEditorMetadata>().ToList();
+                availablePlugIns = [.. componentCache.ComponentContainer.GetExports<IPlugIn, IPlugInMetadata>()];
+                availableConfigEditors = [.. componentCache.ComponentContainer.GetExports<IPlugInConfigurationEditor,
+                    IPlugInConfigurationEditorMetadata>()];
 
                 // There may be duplicate component IDs across the assemblies found.  See
                 // BuildComponentManger.GetComponentContainer() for the folder search precedence.  Only the first
                 // component for a unique ID will be used.  We also ignore hidden plug-ins.
                 foreach(var plugIn in availablePlugIns)
+                {
                     if(!plugIn.Metadata.IsHidden && !plugInIds.Contains(plugIn.Metadata.Id))
                     {
                         lbAvailablePlugIns.Items.Add(plugIn.Metadata.Id);
                         plugInIds.Add(plugIn.Metadata.Id);
                     }
+                }
             }
             catch(Exception ex)
             {

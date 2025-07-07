@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ComponentSettingsNeededEventArgs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/07/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2017-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to obtain the current build component settings from the project
 //
@@ -19,7 +19,8 @@
 
 using System;
 
-using SandcastleBuilder.Utils.BuildComponent;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+using Sandcastle.Core.PlugIn;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {

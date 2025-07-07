@@ -40,7 +40,7 @@ namespace SandcastleBuilder.Package.Nodes
     {
         // These are the project capabilities required in order to support NuGet packages.  SHFB supports these
         // so we can support NuGet packages.
-        private static readonly HashSet<string> ActualProjectCapabilities = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        private static readonly HashSet<string> ActualProjectCapabilities = new(StringComparer.OrdinalIgnoreCase)
         {
             "AssemblyReferences",
             "DeclaredSourceItems",

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MefProviderOptions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
-// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
+// Updated : 07/06/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to contain the MEF provider configuration settings
 //
@@ -47,13 +47,6 @@ namespace SandcastleBuilder.Package
         //=====================================================================
 
         /// <summary>
-        /// This is used to get or set whether or not the extended XML comments completion source options are
-        /// enabled.
-        /// </summary>
-        /// <value>This is true by default</value>
-        public bool EnableExtendedXmlCommentsCompletion{ get; set; }
-
-        /// <summary>
         /// This is used to get or set whether or not the MAML and XML comments element Go To Definition and tool
         /// tip option is enabled.
         /// </summary>
@@ -80,7 +73,7 @@ namespace SandcastleBuilder.Package
             this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
             if(!LoadConfiguration())
-                EnableExtendedXmlCommentsCompletion = EnableGoToDefinition = EnableCtrlClickGoToDefinition = true;
+                EnableGoToDefinition = EnableCtrlClickGoToDefinition = true;
         }
         #endregion
 
@@ -103,8 +96,6 @@ namespace SandcastleBuilder.Package
 
                 if(settingsStore.CollectionExists(CollectionPath))
                 {
-                    EnableExtendedXmlCommentsCompletion = settingsStore.GetBoolean(CollectionPath,
-                        nameof(EnableExtendedXmlCommentsCompletion), true);
                     EnableGoToDefinition = settingsStore.GetBoolean(CollectionPath,
                         nameof(EnableGoToDefinition), true);
                     EnableCtrlClickGoToDefinition = settingsStore.GetBoolean(CollectionPath,
@@ -137,8 +128,6 @@ namespace SandcastleBuilder.Package
                 if(!settingsStore.CollectionExists(CollectionPath))
                     settingsStore.CreateCollection(CollectionPath);
 
-                settingsStore.SetBoolean(CollectionPath, nameof(EnableExtendedXmlCommentsCompletion),
-                    EnableExtendedXmlCommentsCompletion);
                 settingsStore.SetBoolean(CollectionPath, nameof(EnableGoToDefinition), EnableGoToDefinition);
                 settingsStore.SetBoolean(CollectionPath, nameof(EnableCtrlClickGoToDefinition),
                     EnableCtrlClickGoToDefinition);

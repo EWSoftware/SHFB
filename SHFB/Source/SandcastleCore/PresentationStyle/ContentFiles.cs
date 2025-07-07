@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ContentFiles.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/06/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain content files for a presentation style that are to be
 // embedded in the compiled help file.
@@ -24,6 +24,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
+using Sandcastle.Core.Project;
 
 namespace Sandcastle.Core.PresentationStyle
 {
@@ -75,7 +77,7 @@ namespace Sandcastle.Core.PresentationStyle
         /// <overloads>There are two overloads for the constructor</overloads>
         /// <remarks>The files from the source path will be copied to a like named folder in the build output</remarks>
         public ContentFiles(HelpFileFormats helpFileFormats, string sourcePath) : this(helpFileFormats, null,
-          sourcePath, null, Enumerable.Empty<string>())
+          sourcePath, null, [])
         {
         }
 
@@ -87,7 +89,7 @@ namespace Sandcastle.Core.PresentationStyle
         /// <param name="sourcePath">The source path</param>
         /// <param name="destination">The destination path to use in the build output</param>
         public ContentFiles(HelpFileFormats helpFileFormats, string sourcePath, string destination) :
-          this(helpFileFormats, null, sourcePath, destination, Enumerable.Empty<string>())
+          this(helpFileFormats, null, sourcePath, destination, [])
         {
         }
 
@@ -109,8 +111,8 @@ namespace Sandcastle.Core.PresentationStyle
             {
                 if(Path.IsPathRooted(destination))
                     throw new InvalidOperationException("Content destination path must be relative");
-
-                if(destination.IndexOfAny(new[] { '*', '?' }) != -1)
+                
+                if(destination.IndexOfAny(FilePath.Wildcards) != -1)
                     throw new InvalidOperationException("Content destination must be a path only");
             }
 
@@ -118,7 +120,7 @@ namespace Sandcastle.Core.PresentationStyle
             this.BasePath = basePath;
             this.SourcePathWildcard = sourcePath;
             this.DestinationFolder = destination;
-            this.TemplateFileExtensions = templateFileExtensions.ToList();
+            this.TemplateFileExtensions = [.. templateFileExtensions];
         }
         #endregion
     }

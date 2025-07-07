@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderComponentPackagesContainerNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/22/2021
-// Note    : Copyright 2021, Eric Woodruff, All rights reserved
+// Updated : 06/24/2025
+// Note    : Copyright 2021-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that represents the component packages container node.
 //
@@ -21,6 +21,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
+using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -29,7 +30,6 @@ using Sandcastle.Platform.Windows;
 
 using SandcastleBuilder.WPF.UI;
 
-using MSBuild = Microsoft.Build.Evaluation;
 using OleConstants = Microsoft.VisualStudio.OLE.Interop.Constants;
 
 namespace SandcastleBuilder.Package.Nodes
@@ -174,9 +174,9 @@ namespace SandcastleBuilder.Package.Nodes
         /// </summary>
         public void LoadComponentPackagesFromBuildProject()
         {
-            foreach(MSBuild.ProjectItem item in this.ProjectMgr.BuildProject.GetItems("PackageReference"))
+            foreach(ProjectItem item in this.ProjectMgr.BuildProject.GetItems("PackageReference"))
             {
-                ProjectElement element = new ProjectElement(this.ProjectMgr, item, false);
+                ProjectElement element = new(this.ProjectMgr, item, false);
 
                 var node = new SandcastleBuilderPackageReferenceNode(this.ProjectMgr, element);
 

@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : StandardApiTocGenerator.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2022
-// Note    : Copyright 2021-2022, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2021-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a standard table of contents for API content
 //
@@ -51,31 +51,17 @@ namespace Sandcastle.Core.PresentationStyle
         #region Private data members
         //=====================================================================
 
-        private readonly Dictionary<string, ApiMember> apiMembers;
+        private readonly Dictionary<string, ApiMember> apiMembers = [];
 
-        #endregion
-
-        #region Constructor
-        //=====================================================================
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public StandardApiTocGenerator()
-        {
-            apiMembers = new Dictionary<string, ApiMember>();
-
-            this.ListTopicOrder = new ApiMemberGroup[] { ApiMemberGroup.Properties, ApiMemberGroup.Methods,
-                ApiMemberGroup.Events, ApiMemberGroup.Operators, ApiMemberGroup.Fields,
-                ApiMemberGroup.AttachedProperties, ApiMemberGroup.AttachedEvents };
-        }
         #endregion
 
         #region IApiTocGenerator implementation
         //=====================================================================
 
         /// <inheritdoc />
-        public IEnumerable<ApiMemberGroup> ListTopicOrder { get; set; }
+        public IEnumerable<ApiMemberGroup> ListTopicOrder { get; set; } = [ ApiMemberGroup.Properties,
+            ApiMemberGroup.Methods, ApiMemberGroup.Events, ApiMemberGroup.Operators, ApiMemberGroup.Fields,
+                ApiMemberGroup.AttachedProperties, ApiMemberGroup.AttachedEvents ];
 
         /// <inheritdoc />
         public void GenerateApiTocFile(string reflectionDataFile, string tocFile)
@@ -151,41 +137,40 @@ namespace Sandcastle.Core.PresentationStyle
             }
 
             // Generate the TOC
-            using(XmlWriter writer = XmlWriter.Create(tocFile, new XmlWriterSettings { Indent = true, CloseOutput = true }))
+            using XmlWriter writer = XmlWriter.Create(tocFile, new XmlWriterSettings { Indent = true, CloseOutput = true });
+            
+            writer.WriteStartDocument();
+            writer.WriteStartElement("topics");
+
+            if(root != null)
             {
-                writer.WriteStartDocument();
-                writer.WriteStartElement("topics");
+                // "R:" root namespace container.  Create a root entry and an entry for each namespace and
+                // namespace group and their children.
+                writer.WriteStartElement("topic");
+                writer.WriteAttributeString("id", root.MemberId);
+                writer.WriteAttributeString("file", root.TopicFilename);
 
-                if(root != null)
-                {
-                    // "R:" root namespace container.  Create a root entry and an entry for each namespace and
-                    // namespace group and their children.
-                    writer.WriteStartElement("topic");
-                    writer.WriteAttributeString("id", root.MemberId);
-                    writer.WriteAttributeString("file", root.TopicFilename);
+                foreach(string child in root.ChildElements)
+                    AddNamespaceOrTypeTopic(writer, child);
 
-                    foreach(string child in root.ChildElements)
-                        AddNamespaceOrTypeTopic(writer, child);
-
-                    writer.WriteEndElement();
-                }
-                else if(rootGroup != null)
-                {
-                    // No root namespace container but has a "G:" root group.  There is no topic generated for
-                    // the root group node, just its children.
-                    foreach(string child in rootGroup.ChildElements)
-                        AddNamespaceOrTypeTopic(writer, child);
-                }
-                else
-                {
-                    // No root namespace container and no grouped namespaces.  List the namespaces at the root
-                    // level, each containing their children.
-                    foreach(var ns in namespaces.OrderBy(n => n.MemberIdWithoutPrefix))
-                        AddNamespaceOrTypeTopic(writer, ns.MemberId);
-                }
-
-                writer.WriteEndDocument();
+                writer.WriteEndElement();
             }
+            else if(rootGroup != null)
+            {
+                // No root namespace container but has a "G:" root group.  There is no topic generated for
+                // the root group node, just its children.
+                foreach(string child in rootGroup.ChildElements)
+                    AddNamespaceOrTypeTopic(writer, child);
+            }
+            else
+            {
+                // No root namespace container and no grouped namespaces.  List the namespaces at the root
+                // level, each containing their children.
+                foreach(var ns in namespaces.OrderBy(n => n.MemberIdWithoutPrefix))
+                    AddNamespaceOrTypeTopic(writer, ns.MemberId);
+            }
+
+            writer.WriteEndDocument();
         }
 
         /// <summary>
@@ -242,7 +227,8 @@ namespace Sandcastle.Core.PresentationStyle
             string declaringTypePrefix = apiType.MemberIdWithoutPrefix + ".";
 
             // Only include direct members of the given type.  Ignore inherited members.
-            var constructors = apiType.ChildElements.Select(id => apiMembers.ContainsKey(id) ? apiMembers[id] : null).Where(
+            var constructors = apiType.ChildElements.Select(
+                id => apiMembers.TryGetValue(id, out ApiMember member) ? member : null).Where(
                 m => m != null && m.MemberIdWithoutPrefix.StartsWith(declaringTypePrefix, StringComparison.Ordinal) &&
                      m.ApiSubgroup == ApiMemberGroup.Constructor);
 
@@ -252,8 +238,10 @@ namespace Sandcastle.Core.PresentationStyle
 
             // Add lists for properties, methods, events, etc.  Some categories may not appear for a type.
             foreach(ApiMemberGroup listType in this.ListTopicOrder)
+            {
                 if(apiMembers.TryGetValue(listType.ToString() + "." + apiType.MemberId, out ApiMember list))
                     AddMemberListTree(writer, list, declaringTypePrefix);
+            }
         }
 
         /// <summary>
@@ -271,7 +259,8 @@ namespace Sandcastle.Core.PresentationStyle
             // Add the child elements of the list.  Only include direct members of the given type.  Ignore
             // inherited members.  Sort by name (explicit interface implementation name if present or
             // the member name if not.
-            var childMembers = list.ChildElements.Select(id => apiMembers.ContainsKey(id) ? apiMembers[id] : null).Where(
+            var childMembers = list.ChildElements.Select(
+                id => apiMembers.TryGetValue(id, out ApiMember member) ? member : null).Where(
                 m => m != null && m.MemberIdWithoutPrefix.StartsWith(declaringTypePrefix, StringComparison.Ordinal)).OrderBy(
                 m => m.TopicEiiName ?? m.Name);
 
@@ -296,7 +285,8 @@ namespace Sandcastle.Core.PresentationStyle
             // Add child elements if any (members for an overload for example).  Only include direct members of
             // the given type.  Ignore inherited members.  Sort by parameter count and then by the type name
             // of the first parameter.
-            var childMembers = member.ChildElements.Select(id => apiMembers.ContainsKey(id) ? apiMembers[id] : null).Where(
+            var childMembers = member.ChildElements.Select(
+                id => apiMembers.TryGetValue(id, out ApiMember member) ? member : null).Where(
                 m => m != null && m.MemberIdWithoutPrefix.StartsWith(declaringTypePrefix, StringComparison.Ordinal)).OrderBy(
                 m => m.ParameterCount).ThenBy(m => m.FirstParameterTypeName);
 

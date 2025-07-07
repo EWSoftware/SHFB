@@ -53,7 +53,7 @@ namespace Sandcastle.Tools.BuildComponents
         #region Private data members
         //=====================================================================
 
-        private readonly XmlWriterSettings settings = new XmlWriterSettings { CloseOutput = true };
+        private readonly XmlWriterSettings settings = new() { CloseOutput = true };
         private XPathExpression pathExpression, selectExpression;
 
         private string basePath, groupId;
@@ -74,7 +74,7 @@ namespace Sandcastle.Tools.BuildComponents
         protected SaveComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
             // No bounded capacity by default
-            documentList = new BlockingCollection<KeyValuePair<string, XmlDocument>>();
+            documentList = [];
         }
         #endregion
 
@@ -91,9 +91,7 @@ namespace Sandcastle.Tools.BuildComponents
             settings.CloseOutput = true;
 
             // Load the target path format
-            XPathNavigator saveNode = configuration.SelectSingleNode("save");
-
-            if(saveNode == null)
+            XPathNavigator saveNode = configuration.SelectSingleNode("save") ??
                 throw new ArgumentException("When instantiating a save component, you must specify " +
                     "a the target file using the <save> element.", nameof(configuration));
 
@@ -105,8 +103,10 @@ namespace Sandcastle.Tools.BuildComponents
             string pathValue = saveNode.GetAttribute("path", String.Empty);
 
             if(String.IsNullOrWhiteSpace(pathValue))
+            {
                 this.WriteMessage(MessageLevel.Error, "Each save element must have a path attribute specifying " +
                     "an XPath expression that evaluates to the location to save the file.");
+            }
 
             pathExpression = XPathExpression.Compile(pathValue);
 
@@ -232,7 +232,7 @@ namespace Sandcastle.Tools.BuildComponents
                     lastKey = kv.Key;
 
                     // Set the evaluation context
-                    CustomContext context = new CustomContext { ["key"] = lastKey };
+                    CustomContext context = new() { ["key"] = lastKey };
 
                     XPathExpression xpath = pathExpression.Clone();
                     xpath.SetContext(context);
@@ -260,36 +260,32 @@ namespace Sandcastle.Tools.BuildComponents
                     // instruction, which outputs its content as unescaped text.
                     if(selectExpression == null)
                     {
-                        using(XmlWriter writer = XmlWriter.Create(path, settings))
-                        {
-                            document.Save(writer);
-                        }
+                        using XmlWriter writer = XmlWriter.Create(path, settings);
+
+                        document.Save(writer);
                     }
                     else
                     {
                         // IMPLEMENTATION NOTE: The separate StreamWriter is used to maintain XML indenting.  Without it
                         // the XmlWriter won't honor our indent settings after plain text nodes have been written.
-                        using(StreamWriter output = File.CreateText(path))
+                        using StreamWriter output = File.CreateText(path);
+                        using XmlWriter writer = XmlWriter.Create(output, settings);
+
+                        XPathExpression selectXPath = selectExpression.Clone();
+                        selectXPath.SetContext(context);
+
+                        XPathNodeIterator ni = document.CreateNavigator().Select(selectExpression);
+
+                        while(ni.MoveNext())
                         {
-                            using(XmlWriter writer = XmlWriter.Create(output, settings))
+                            if(ni.Current.NodeType == XPathNodeType.ProcessingInstruction &&
+                                ni.Current.Name.Equals("literal-text", StringComparison.Ordinal))
                             {
-                                XPathExpression selectXPath = selectExpression.Clone();
-                                selectXPath.SetContext(context);
-
-                                XPathNodeIterator ni = document.CreateNavigator().Select(selectExpression);
-
-                                while(ni.MoveNext())
-                                {
-                                    if(ni.Current.NodeType == XPathNodeType.ProcessingInstruction &&
-                                        ni.Current.Name.Equals("literal-text", StringComparison.Ordinal))
-                                    {
-                                        writer.Flush();
-                                        output.Write(ni.Current.Value);
-                                    }
-                                    else
-                                        ni.Current.WriteSubtree(writer);
-                                }
+                                writer.Flush();
+                                output.Write(ni.Current.Value);
                             }
+                            else
+                                ni.Current.WriteSubtree(writer);
                         }
                     }
 

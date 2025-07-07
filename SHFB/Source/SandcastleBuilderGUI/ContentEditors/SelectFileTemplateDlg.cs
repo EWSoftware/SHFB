@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : SelectFileTemplateDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to select a template file to use as a new topic
 //
@@ -116,12 +116,14 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 ProjectExplorerWindow.ConceptualTemplates);
 
             if(Directory.Exists(name))
+            {
                 foreach(string file in Directory.EnumerateFiles(name, "*.aml"))
                 {
                     name = Path.GetFileNameWithoutExtension(file);
                     child = root.Nodes.Add(name);
                     child.Tag = file;
                 }
+            }
 
             if(root.Nodes.Count == 0)
                 root.Nodes.Add("No custom templates found");
@@ -165,12 +167,14 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 ProjectExplorerWindow.ItemTemplates);
 
             if(Directory.Exists(name))
+            {
                 foreach(string file in Directory.EnumerateFiles(name, "*.htm?"))
                 {
                     name = Path.GetFileNameWithoutExtension(file);
                     child = root.Nodes.Add(name);
                     child.Tag = file;
                 }
+            }
 
             if(root.Nodes.Count == 0)
                 root.Nodes.Add("No custom templates found");
@@ -227,7 +231,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
               "The file '{0}' already exists.  Do you want to overwrite it?", newFilename),
               Constants.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question,
               MessageBoxDefaultButton.Button2) == DialogResult.No)
+            {
                 return;
+            }
 
             try
             {
@@ -236,21 +242,21 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 if(lblExtension.Text == ".aml")
                 {
                     // Set a unique ID in new MAML topics
-                    XmlDocument doc = new XmlDocument();
+                    XmlDocument doc = new();
 
                     using(var reader = XmlReader.Create(newFilename, new XmlReaderSettings { CloseInput = true }))
                     {
                         doc.Load(reader);
                     }
 
-                    XmlNode node = doc.SelectSingleNode("topic");
-
-                    if(node == null)
+                    XmlNode node = doc.SelectSingleNode("topic") ??
                         throw new InvalidOperationException("Unable to locate root topic node to set new ID");
 
                     if(node.Attributes["id"] == null)
+                    {
                         throw new InvalidOperationException("Unable to locate 'id' attribute on root topic " +
                             "node to set new ID");
+                    }
 
                     node.Attributes["id"].Value = Guid.NewGuid().ToString();
                     doc.Save(newFilename);

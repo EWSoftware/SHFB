@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : LocalPackageSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/24/2021
-// Note    : Copyright 2021, Eric Woodruff, All rights reserved
+// Updated : 07/03/2025
+// Note    : Copyright 2021-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that implements the package source for local file-based package sources
 //
@@ -81,7 +81,7 @@ namespace SandcastleBuilder.WPF.NuGet
             this.PackageSourceName = packageSourceName;
             this.PackageSourceLocation = packageSourceLocation;
 
-            packages = new List<NuGetPackage>();
+            packages = [];
         }
         #endregion
 
@@ -115,9 +115,9 @@ namespace SandcastleBuilder.WPF.NuGet
             if(searchTerms == null)
                 throw new ArgumentNullException(nameof(searchTerms));
 
-            HashSet<string> packageIdTerms = new HashSet<string>(StringComparer.OrdinalIgnoreCase),
-                idTerms = idTerms = new HashSet<string>(StringComparer.OrdinalIgnoreCase),
-                generalTerms = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            HashSet<string> packageIdTerms = new(StringComparer.OrdinalIgnoreCase),
+                idTerms = idTerms = new(StringComparer.OrdinalIgnoreCase),
+                generalTerms = new(StringComparer.OrdinalIgnoreCase);
 
             foreach(string term in searchTerms)
             {
@@ -134,7 +134,7 @@ namespace SandcastleBuilder.WPF.NuGet
                         string t = term.Substring(3).Replace("\"", String.Empty).Trim();
 
                         packageIdTerms.Add(t);
-                        packageIdTerms.UnionWith(t.Split(new[] { ' ', '\t', ',', ';', '.' },
+                        packageIdTerms.UnionWith(t.Split([' ', '\t', ',', ';', '.'],
                             StringSplitOptions.RemoveEmptyEntries));
                     }
                     else
@@ -155,11 +155,11 @@ namespace SandcastleBuilder.WPF.NuGet
                 if(idTerms.Count != 0 && !idTerms.Any(t => p.Id.IndexOf(t, StringComparison.OrdinalIgnoreCase) != -1))
                     continue;
 
-                var searchTags = new HashSet<string>(p.Tags.Concat(new[] { p.Id }).Concat(
-                    p.Id.Split(new[] { ' ', '\t', ',', ';', '.' }, StringSplitOptions.RemoveEmptyEntries)).Concat(
-                    (p.Title ?? String.Empty).Split(new[] { ' ', '\t', ',', ';', '\r', '\n' },
+                var searchTags = new HashSet<string>(p.Tags.Concat([p.Id]).Concat(
+                    p.Id.Split([' ', '\t', ',', ';', '.'], StringSplitOptions.RemoveEmptyEntries)).Concat(
+                    (p.Title ?? String.Empty).Split([' ', '\t', ',', ';', '\r', '\n'],
                         StringSplitOptions.RemoveEmptyEntries)).Concat(p.Description.Split(
-                            new[] { ' ', '\t', ',', ';', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)),
+                            [' ', '\t', ',', ';', '\r', '\n'], StringSplitOptions.RemoveEmptyEntries)),
                                 StringComparer.OrdinalIgnoreCase);
 
                 // Return a clone, not the cached instance as the caller may update the properties to indicate
@@ -201,28 +201,24 @@ namespace SandcastleBuilder.WPF.NuGet
                     foreach(string filename in Directory.EnumerateFiles(this.PackageSourceLocation, "*.nupkg",
                       SearchOption.AllDirectories))
                     {
-                        using(var nupkg = ZipFile.OpenRead(filename))
+                        using var nupkg = ZipFile.OpenRead(filename);
+                        var nuspecFile = nupkg.Entries.FirstOrDefault(e => e.Name.EndsWith(".nuspec",
+                            StringComparison.OrdinalIgnoreCase));
+
+                        if(nuspecFile != null)
                         {
-                            var nuspecFile = nupkg.Entries.FirstOrDefault(e => e.Name.EndsWith(".nuspec",
-                                StringComparison.OrdinalIgnoreCase));
+                            using var sr = new StreamReader(nuspecFile.Open());
+                            var nuspec = XDocument.Parse(sr.ReadToEnd());
+                            var nugetNS = nuspec.Root.GetDefaultNamespace();
+                            var metadata = nuspec.Root.Element(nugetNS + "metadata");
 
-                            if(nuspecFile != null)
+                            index.Add(new IndexEntry
                             {
-                                using(var sr = new StreamReader(nuspecFile.Open()))
-                                {
-                                    var nuspec = XDocument.Parse(sr.ReadToEnd());
-                                    var nugetNS = nuspec.Root.GetDefaultNamespace();
-                                    var metadata = nuspec.Root.Element(nugetNS + "metadata");
-
-                                    index.Add(new IndexEntry
-                                    {
-                                        Id = metadata.Element(nugetNS + "id").Value,
-                                        Version = metadata.Element(nugetNS + "version").Value,
-                                        PackageFile = filename,
-                                        NuSpecContent = nuspec
-                                    });
-                                }
-                            }
+                                Id = metadata.Element(nugetNS + "id").Value,
+                                Version = metadata.Element(nugetNS + "version").Value,
+                                PackageFile = filename,
+                                NuSpecContent = nuspec
+                            });
                         }
                     }
                 }

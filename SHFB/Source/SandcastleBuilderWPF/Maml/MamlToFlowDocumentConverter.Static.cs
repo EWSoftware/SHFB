@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Static.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/15/2022
-// Note    : Copyright 2012-2022, Eric Woodruff, All rights reserved
+// Updated : 07/04/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the static data definitions used by the MAML to flow document converter class
 //
@@ -44,50 +44,51 @@ namespace SandcastleBuilder.WPF.Maml
         // These are used to categorize links in the relatedTopics element
 
         // Tasks
-        private static Guid HowToId = new Guid("DAC3A6A0-C863-4E5B-8F65-79EFC6A4BA09");
-        private static Guid WalkthroughId = new Guid("4779DD54-5D0C-4CC3-9DB3-BF1C90B721B3");
-        private static Guid SampleId = new Guid("069EFD88-412D-4E2F-8848-2D5C3AD56BDE");
-        private static Guid TroubleshootingId = new Guid("38C8E0D1-D601-4DBA-AE1B-5BEC16CD9B01");
+        private static Guid HowToId = new("DAC3A6A0-C863-4E5B-8F65-79EFC6A4BA09");
+        private static Guid WalkthroughId = new("4779DD54-5D0C-4CC3-9DB3-BF1C90B721B3");
+        private static Guid SampleId = new("069EFD88-412D-4E2F-8848-2D5C3AD56BDE");
+        private static Guid TroubleshootingId = new("38C8E0D1-D601-4DBA-AE1B-5BEC16CD9B01");
 
         // Reference
-        private static Guid ReferenceWithoutSyntaxId = new Guid("F9205737-4DEC-4A58-AA69-0E621B1236BD");
-        private static Guid ReferenceWithSyntaxId = new Guid("95DADC4C-A2A6-447A-AA36-B6BE3A4F8DEC");
-        private static Guid XmlReferenceId = new Guid("3272D745-2FFC-48C4-9E9D-CF2B2B784D5F");
-        private static Guid ErrorMessageId = new Guid("A635375F-98C2-4241-94E7-E427B47C20B6");
-        private static Guid UIReferenceId = new Guid("B8ED9F21-39A4-4967-928D-160CD2ED9DCE");
+        private static Guid ReferenceWithoutSyntaxId = new("F9205737-4DEC-4A58-AA69-0E621B1236BD");
+        private static Guid ReferenceWithSyntaxId = new("95DADC4C-A2A6-447A-AA36-B6BE3A4F8DEC");
+        private static Guid XmlReferenceId = new("3272D745-2FFC-48C4-9E9D-CF2B2B784D5F");
+        private static Guid ErrorMessageId = new("A635375F-98C2-4241-94E7-E427B47C20B6");
+        private static Guid UIReferenceId = new("B8ED9F21-39A4-4967-928D-160CD2ED9DCE");
         
         // Concepts
-        private static Guid ConceptualId = new Guid("1FE70836-AA7D-4515-B54B-E10C4B516E50");
-        private static Guid SdkTechnologyOverviewArchitectureId = new Guid("68F07632-C4C5-4645-8DFA-AC87DCB4BD54");
-        private static Guid SdkTechnologyOverviewCodeDirectoryId = new Guid("4BBAAF90-0E5F-4C86-9D31-A5CAEE35A416");
-        private static Guid SdkTechnologyOverviewScenariosId = new Guid("356C57C4-384D-4AF2-A637-FDD6F088A033");
-        private static Guid SdkTechnologyOverviewTechnologySummaryId = new Guid("19F1BB0E-F32A-4D5F-80A9-211D92A8A715");
+        private static Guid ConceptualId = new("1FE70836-AA7D-4515-B54B-E10C4B516E50");
+        private static Guid SdkTechnologyOverviewArchitectureId = new("68F07632-C4C5-4645-8DFA-AC87DCB4BD54");
+        private static Guid SdkTechnologyOverviewCodeDirectoryId = new("4BBAAF90-0E5F-4C86-9D31-A5CAEE35A416");
+        private static Guid SdkTechnologyOverviewScenariosId = new("356C57C4-384D-4AF2-A637-FDD6F088A033");
+        private static Guid SdkTechnologyOverviewTechnologySummaryId = new("19F1BB0E-F32A-4D5F-80A9-211D92A8A715");
         
         // Other resources
-        private static Guid OrientationId = new Guid("B137C930-7BF7-48A2-A329-3ADCAEF8868E");
-        private static Guid WhitePaperId = new Guid("56DB00EC-28BA-4C0D-8694-28E8B244E236");
-        private static Guid CodeEntityId = new Guid("4A273212-0AC8-4D72-8349-EC11CD2FF8CD");
-        private static Guid GlossaryId = new Guid("A689E19C-2687-4881-8CE1-652FF60CF46C");
-        private static Guid SDKTechnologyOverviewOrientationId = new Guid("CDB8C120-888F-447B-8AF8-F9540562E7CA");
+        private static Guid OrientationId = new("B137C930-7BF7-48A2-A329-3ADCAEF8868E");
+        private static Guid WhitePaperId = new("56DB00EC-28BA-4C0D-8694-28E8B244E236");
+        private static Guid CodeEntityId = new("4A273212-0AC8-4D72-8349-EC11CD2FF8CD");
+        private static Guid GlossaryId = new("A689E19C-2687-4881-8CE1-652FF60CF46C");
+        private static Guid SDKTechnologyOverviewOrientationId = new("CDB8C120-888F-447B-8AF8-F9540562E7CA");
+
         #endregion
 
         #region Regular expressions
         //=====================================================================
 
         // Regular expressions used by the parser
-        private static readonly Regex reCondenseWhitespace = new Regex(@"\s+");
-        private static readonly Regex reRemoveNamespace = new Regex(" xmlns=\".+?\"");
+        private static readonly Regex reCondenseWhitespace = new(@"\s+");
+        private static readonly Regex reRemoveNamespace = new(" xmlns=\".+?\"");
 
         // Uh, yeah.  Don't ask me to explain this.  Just accept that it works (I hope :)).  It uses balancing
         // groups to extract #region to #endregion accounting for any nested regions within it.  If you want to
         // know all of the mind-bending details, Google for the terms: regex "balancing group".
-        private static readonly Regex reMatchRegion = new Regex(
+        private static readonly Regex reMatchRegion = new(
             @"\#(pragma\s+)?region\s+(.*?(((?<Open>\#(pragma\s+)?region\s+).*?)+" +
             @"((?<Close-Open>\#(pragma\s+)?end\s?region).*?)+)*(?(Open)(?!)))" +
             @"\#(pragma\s+)?end\s?region", RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         // This is used to remove unwanted region markers from imported code
-        private static readonly Regex reRemoveRegionMarkers = new Regex(@"^.*?#(pragma\s+)?(region|end\s?region).*?$",
+        private static readonly Regex reRemoveRegionMarkers = new(@"^.*?#(pragma\s+)?(region|end\s?region).*?$",
             RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
         #endregion
@@ -100,7 +101,7 @@ namespace SandcastleBuilder.WPF.Maml
         /// </summary>
         /// <remarks>This is used to map alert class names to titles.  The key is the alert class and the value
         /// is the display title.</remarks>
-        private static readonly Dictionary<string, string> alertTitles = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> alertTitles = new()
         {
             // We could use a case-insensitive comparer here but the XML is case-sensitive so we'll stay case
             // sensitive too so that errors in the title value show up.  These could be localized but we're not
@@ -145,7 +146,7 @@ namespace SandcastleBuilder.WPF.Maml
         /// </summary>
         /// <remarks>This is used to map alert class names to icons.  The key is the alert class and the value is
         /// the icon name.</remarks>
-        private static readonly Dictionary<string, string> alertIcons = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> alertIcons = new()
         {
             { "c#", "AlertNote" },
             { "C#", "AlertNote" },
@@ -187,7 +188,7 @@ namespace SandcastleBuilder.WPF.Maml
         /// </summary>
         /// <remarks>This is used to map named section elements to display titles.  The key is the element name
         /// and the value is the display title.</remarks>
-        private static readonly Dictionary<string, string> namedSectionTitles = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> namedSectionTitles = new()
         {
             // These could be localized but we're not doing that for now
             { "appliesTo", "Applies To" },
@@ -224,8 +225,7 @@ namespace SandcastleBuilder.WPF.Maml
         //=====================================================================
 
         // This maps known element types to their respective handler methods
-        private static readonly Dictionary<string, Action<ElementProperties>> elementHandlers =
-          new Dictionary<string, Action<ElementProperties>>
+        private static readonly Dictionary<string, Action<ElementProperties>> elementHandlers = new()
         {
             #region Unsupported elements
             //=================================================================

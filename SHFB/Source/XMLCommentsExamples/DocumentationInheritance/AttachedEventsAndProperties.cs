@@ -82,7 +82,7 @@ namespace XMLCommentsExamples.DocumentationInheritance
         static void OnIsBroughtIntoViewWhenSelectedChanged(
           DependencyObject depObj, DependencyPropertyChangedEventArgs e)
         {
-            if(!(depObj is TreeViewItem item))
+            if(depObj is not TreeViewItem item)
                 return;
 
             if(e.NewValue is bool == false)

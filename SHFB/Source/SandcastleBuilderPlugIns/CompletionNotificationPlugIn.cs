@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : CompletionNotificationPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to run after the build completes to send notification of the completion
 // status via e-mail.  The log file can be sent as an attachment.
@@ -32,9 +32,9 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.BuildEngine;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -50,9 +50,7 @@ namespace SandcastleBuilder.PlugIns
         #region Private data members
         //=====================================================================
 
-        private List<ExecutionPoint> executionPoints;
-
-        private BuildProcess builder;
+        private IBuildProcess builder;
         private bool attachLogOnSuccess, attachLogOnFailure;
         private string smtpServer, fromEMailAddress, successEMailAddress, failureEMailAddress, xslTransformFile;
         private UserCredentials credentials;
@@ -67,21 +65,12 @@ namespace SandcastleBuilder.PlugIns
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public IEnumerable<ExecutionPoint> ExecutionPoints
-        {
-            get
-            {
-                if(executionPoints == null)
-                    executionPoints = new List<ExecutionPoint>
-                    {
-                        new ExecutionPoint(BuildStep.Completed, ExecutionBehaviors.After),
-                        new ExecutionPoint(BuildStep.Canceled, ExecutionBehaviors.After),
-                        new ExecutionPoint(BuildStep.Failed, ExecutionBehaviors.After)
-                    };
-
-                return executionPoints;
-            }
-        }
+        public IEnumerable<ExecutionPoint> ExecutionPoints { get; } =
+        [
+            new ExecutionPoint(BuildStep.Completed, ExecutionBehaviors.After),
+            new ExecutionPoint(BuildStep.Canceled, ExecutionBehaviors.After),
+            new ExecutionPoint(BuildStep.Failed, ExecutionBehaviors.After)
+        ];
 
         /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
@@ -89,7 +78,7 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
         /// <exception cref="BuilderException">This is thrown if the plug-in configuration is not valid</exception>
-        public void Initialize(BuildProcess buildProcess, XElement configuration)
+        public void Initialize(IBuildProcess buildProcess, XElement configuration)
         {
             if(configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
@@ -183,59 +172,57 @@ namespace SandcastleBuilder.PlugIns
                 if(!String.IsNullOrEmpty(xslTransformFile) && File.Exists(logFilename))
                     logFilename = this.TransformLogFile();
 
-                using(var msg = new MailMessage
+                using var msg = new MailMessage
                 {
                     IsBodyHtml = false,
                     Subject = String.Format(CultureInfo.InvariantCulture, "Build {0}: {1}", context.BuildStep,
                     builder.ProjectFilename)
-                })
+                };
+                
+                if(fromEMailAddress.Length != 0)
+                    msg.From = new MailAddress(fromEMailAddress);
+                else
+                    msg.From = new MailAddress("noreply@noreply.com");
+
+                if(context.BuildStep == BuildStep.Completed)
                 {
-                    if(fromEMailAddress.Length != 0)
-                        msg.From = new MailAddress(fromEMailAddress);
-                    else
-                        msg.From = new MailAddress("noreply@noreply.com");
+                    msg.To.Add(successEMailAddress);
 
-                    if(context.BuildStep == BuildStep.Completed)
-                    {
-                        msg.To.Add(successEMailAddress);
-
-                        if(attachLogOnSuccess && File.Exists(logFilename))
-                            msg.Attachments.Add(new Attachment(logFilename));
-                    }
-                    else
-                    {
-                        msg.To.Add(failureEMailAddress);
-
-                        if(attachLogOnFailure && File.Exists(logFilename))
-                            msg.Attachments.Add(new Attachment(logFilename));
-                    }
-
-                    messageTo = msg.To[0].Address;
-
-                    msg.Body = String.Format(CultureInfo.InvariantCulture,
-                        "Build {0}: {1}{2}\r\nBuild output is located at {3}\r\n", context.BuildStep,
-                        builder.ProjectFolder, builder.ProjectFilename, builder.OutputFolder);
-
-                    if(context.BuildStep != BuildStep.Completed || builder.CurrentProject.KeepLogFile)
-                        msg.Body += "Build details can be found in the log file " + builder.LogFilename + "\r\n";
-
-                    using(SmtpClient smtp = new SmtpClient())
-                    {
-                        if(smtpServer.Length != 0)
-                        {
-                            smtp.Host = smtpServer;
-                            smtp.Port = smtpPort;
-                        }
-
-                        if(!credentials.UseDefaultCredentials)
-                            smtp.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
-
-                        smtp.Send(msg);
-                    }
-
-                    builder.ReportProgress("The build notification e-mail was sent successfully to {0}",
-                        msg.To[0].Address);
+                    if(attachLogOnSuccess && File.Exists(logFilename))
+                        msg.Attachments.Add(new Attachment(logFilename));
                 }
+                else
+                {
+                    msg.To.Add(failureEMailAddress);
+
+                    if(attachLogOnFailure && File.Exists(logFilename))
+                        msg.Attachments.Add(new Attachment(logFilename));
+                }
+
+                messageTo = msg.To[0].Address;
+
+                msg.Body = String.Format(CultureInfo.InvariantCulture,
+                    "Build {0}: {1}{2}\r\nBuild output is located at {3}\r\n", context.BuildStep,
+                    builder.ProjectFolder, builder.ProjectFilename, builder.OutputFolder);
+
+                if(context.BuildStep != BuildStep.Completed || builder.CurrentProject.KeepLogFile)
+                    msg.Body += "Build details can be found in the log file " + builder.LogFilename + "\r\n";
+
+                using SmtpClient smtp = new();
+
+                if(smtpServer.Length != 0)
+                {
+                    smtp.Host = smtpServer;
+                    smtp.Port = smtpPort;
+                }
+
+                if(!credentials.UseDefaultCredentials)
+                    smtp.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
+
+                smtp.Send(msg);
+
+                builder.ReportProgress("The build notification e-mail was sent successfully to {0}",
+                    msg.To[0].Address);
             }
             catch(FormatException)
             {
@@ -289,16 +276,13 @@ namespace SandcastleBuilder.PlugIns
             XsltSettings settings;
             XmlReaderSettings readerSettings;
             XmlWriterSettings writerSettings;
-            StringBuilder sb = null;
+            StringBuilder sb = new(10240);
             string html = null, logFile = Path.ChangeExtension(builder.LogFilename, ".html");
 
             try
             {
-                // Read in the log text we'll prefix it with the error message if the transform fails
-                using(StreamReader srdr = new StreamReader(builder.LogFilename))
-                {
-                    html = srdr.ReadToEnd();
-                }
+                // Read in the log text.  We'll prefix it with the error message if the transform fails
+                html = File.ReadAllText(builder.LogFilename);
 
                 // Transform the log into something more readable
                 readerSettings = new XmlReaderSettings { CloseInput = true };
@@ -306,25 +290,23 @@ namespace SandcastleBuilder.PlugIns
                 xslTransform = new XslCompiledTransform();
                 settings = new XsltSettings(true, true);
 
+                // Don't use a simplified using here.  We want to ensure the writer below gets disposed of so
+                // that the string builder contains all of the content.
                 using(var transformReader = XmlReader.Create(xslTransformFile, readerSettings))
                 {
                     xslTransform.Load(transformReader, settings, new XmlUrlResolver());
 
-                    using(var sr = new StringReader(html))
-                    using(var reader = XmlReader.Create(sr, readerSettings))
-                    {
-                        writerSettings = xslTransform.OutputSettings.Clone();
-                        writerSettings.CloseOutput = true;
-                        writerSettings.Indent = false;
+                    using var sr = new StringReader(html);
+                    using var reader = XmlReader.Create(sr, readerSettings);
+                    
+                    writerSettings = xslTransform.OutputSettings.Clone();
+                    writerSettings.CloseOutput = true;
+                    writerSettings.Indent = false;
 
-                        sb = new StringBuilder(10240);
+                    sb = new StringBuilder(10240);
 
-                        using(var writer = XmlWriter.Create(sb, writerSettings))
-                        {
-                            xslTransform.Transform(reader, writer);
-                            writer.Flush();
-                        }
-                    }
+                    using var writer = XmlWriter.Create(sb, writerSettings);
+                    xslTransform.Transform(reader, writer);
                 }
 
                 html = sb.ToString();
@@ -339,10 +321,8 @@ namespace SandcastleBuilder.PlugIns
                     builder.LogFilename, ex.Message, WebUtility.HtmlEncode(html));
             }
 
-            using(StreamWriter sw = new StreamWriter(logFile, false, Encoding.UTF8))
-            {
-                sw.Write(html);
-            }
+            using StreamWriter sw = new(logFile, false, Encoding.UTF8);
+            sw.Write(html);
 
             return logFile;
         }

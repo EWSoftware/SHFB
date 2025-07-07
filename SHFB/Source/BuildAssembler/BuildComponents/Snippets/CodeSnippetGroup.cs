@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeSnippetGroup.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/10/2021
-// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to track a group of related code snippets in the SyntaxComponent
 //
@@ -64,7 +64,7 @@ namespace Sandcastle.Tools.BuildComponents.Snippets
         public CodeSnippetGroup(XmlElement snippetGroupElement)
         {
             this.SnippetGroupElement = snippetGroupElement;
-            this.CodeSnippets = new List<CodeSnippet>();
+            this.CodeSnippets = [];
         }
         #endregion
     }

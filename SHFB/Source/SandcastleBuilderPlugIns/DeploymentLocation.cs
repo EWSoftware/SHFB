@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentLocation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to specify a deployment location.
 //
@@ -21,7 +21,7 @@ using System;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-using SandcastleBuilder.Utils.BuildComponent;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -88,7 +88,7 @@ namespace SandcastleBuilder.PlugIns
         /// <b>proxyCredentials</b> elements.</remarks>
         public static DeploymentLocation FromXml(XElement configuration, string id)
         {
-            DeploymentLocation depLoc = new DeploymentLocation();
+            DeploymentLocation depLoc = new();
 
             configuration = configuration?.XPathSelectElement("deploymentLocation[@id='" + id + "']");
 

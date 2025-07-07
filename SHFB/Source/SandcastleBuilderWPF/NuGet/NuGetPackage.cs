@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : NuGetPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/20/2021
-// Note    : Copyright 2021, Eric Woodruff, All rights reserved
+// Updated : 07/04/2025
+// Note    : Copyright 2021-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain the details about a NuGet package
 //
@@ -32,14 +32,6 @@ namespace SandcastleBuilder.WPF.NuGet
     /// </summary>
     public class NuGetPackage : INotifyPropertyChanged
     {
-        #region Private data members
-        //=====================================================================
-
-        private bool isInstalled;
-        private string installedVersion;
-
-        #endregion
-
         #region Properties
         //=====================================================================
 
@@ -115,10 +107,10 @@ namespace SandcastleBuilder.WPF.NuGet
         /// </summary>
         public bool IsInstalled
         {
-            get => isInstalled;
+            get => field;
             set
             {
-                isInstalled = value;
+                field = value;
                 this.OnPropertyChanged();
                 this.OnPropertyChanged(nameof(IsLatestVersion));
             }
@@ -129,10 +121,10 @@ namespace SandcastleBuilder.WPF.NuGet
         /// </summary>
         public string InstalledVersion
         {
-            get => installedVersion;
+            get => field;
             set
             {
-                installedVersion = value;
+                field = value;
                 this.OnPropertyChanged();
                 this.OnPropertyChanged(nameof(IsLatestVersion));
             }
@@ -221,7 +213,7 @@ namespace SandcastleBuilder.WPF.NuGet
             this.IconUrl = (string)metadata.Element(nugetNS + "iconUrl");
             this.LicenseUrl = (string)metadata.Element(nugetNS + "licenseUrl");
             this.Tags = new HashSet<string>(((string)metadata.Element(nugetNS + "tags") ?? String.Empty).Split(
-                new[] { ' ', '\t', ',', ';', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries),
+                [' ', '\t', ',', ';', '\r', '\n'], StringSplitOptions.RemoveEmptyEntries),
                 StringComparer.OrdinalIgnoreCase);
         }
 
@@ -265,7 +257,7 @@ namespace SandcastleBuilder.WPF.NuGet
             this.Id = this.Description = id;
             this.LatestVersion = version;
             this.Title = this.Authors = "(Package not found)";
-            this.Versions = new List<string> { version };
+            this.Versions = [version];
         }
         #endregion
 
@@ -324,14 +316,14 @@ namespace SandcastleBuilder.WPF.NuGet
             while(pos < first.Length && ((first[pos] >= '0' && first[pos] <= '9') || first[pos] == '.'))
                 pos++;
 
-            Version v1 = new Version(first.Substring(0, pos));
+            Version v1 = new(first.Substring(0, pos));
 
             pos = 0;
 
             while(pos < second.Length && ((second[pos] >= '0' && second[pos] <= '9') || second[pos] == '.'))
                 pos++;
 
-            Version v2 = new Version(second.Substring(0, pos));
+            Version v2 = new(second.Substring(0, pos));
 
             if(v1 == v2)
                 return String.Compare(first, second, StringComparison.OrdinalIgnoreCase);

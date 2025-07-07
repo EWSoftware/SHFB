@@ -1,5 +1,5 @@
 ﻿//===============================================================================================================
-// System  : Sandcastle Help File Builder Visual Studio Package
+// System  : Sandcastle Help File Builder WPF Controls
 // File    : TopicContentNeededEventArgs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 04/17/2021

@@ -46,7 +46,7 @@ namespace Sandcastle.Tools.BuildComponents
         #region Private data members
         //=====================================================================
 
-        private readonly List<CopyFromFileCommand> copyCommands = new List<CopyFromFileCommand>();
+        private readonly List<CopyFromFileCommand> copyCommands = [];
 
         #endregion
 
@@ -68,7 +68,7 @@ namespace Sandcastle.Tools.BuildComponents
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
-            Dictionary<string, XPathDocument> dataFiles = new Dictionary<string, XPathDocument>();
+            Dictionary<string, XPathDocument> dataFiles = [];
 
             if(configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
@@ -95,7 +95,8 @@ namespace Sandcastle.Tools.BuildComponents
                 // Load a schema, if one is specified
                 string schemaFile = dataNode.GetAttribute("schema", String.Empty);
 
-                XmlReaderSettings settings = new XmlReaderSettings { CloseInput = true };
+                XmlReaderSettings settings = new()
+                { CloseInput = true };
 
                 if(!String.IsNullOrWhiteSpace(schemaFile))
                     settings.Schemas.Add(null, schemaFile);
@@ -103,10 +104,8 @@ namespace Sandcastle.Tools.BuildComponents
                 // Load the document
                 this.WriteMessage(MessageLevel.Info, "Loading data file '{0}'.", dataFile);
 
-                using(XmlReader reader = XmlReader.Create(dataFile, settings))
-                {
-                    dataFiles.Add(dataName, new XPathDocument(reader));
-                }
+                using XmlReader reader = XmlReader.Create(dataFile, settings);
+                dataFiles.Add(dataName, new XPathDocument(reader));
             }
 
             if(dataFiles.Count == 0)

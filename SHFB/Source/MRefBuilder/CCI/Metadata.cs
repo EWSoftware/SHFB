@@ -7,7 +7,6 @@
 // 11/23/2013 - EFW - Cleared out the conditional statements
 
 using System.Globalization;
-using System.Runtime.Serialization;
 
 /* These classes help with parsing and producing PE files. They are best understood in conjunction with the ECMA 335 Specification
  * (Common Language Infrastructure), particularly Partition II. Also see "Inside Microsoft .NET IL Assembler" by Serge Lidin. */
@@ -888,7 +887,7 @@ namespace System.Compiler.Metadata
 
         internal MemoryCursor/*!*/ GetNewCursor(int RVA, out PESection targetSection)
         {
-            MemoryCursor c = new MemoryCursor(this.cursor)
+            MemoryCursor c = new(this.cursor)
             {
                 Position = this.RvaToOffset(RVA, out targetSection)
             };
@@ -1280,7 +1279,7 @@ namespace System.Compiler.Metadata
         }
         internal Win32ResourceList ReadWin32Resources()
         {
-            Win32ResourceList rs = new Win32ResourceList();
+            Win32ResourceList rs = [];
             int startPos = this.win32ResourcesOffset;
             if (startPos < 0) return rs;
             MemoryCursor c = this.cursor;
@@ -1292,7 +1291,7 @@ namespace System.Compiler.Metadata
                 int TypeID = c.ReadInt32();
                 if (TypeID < 0)
                 {
-                    MemoryCursor nac = new MemoryCursor(c)
+                    MemoryCursor nac = new(c)
                     {
                         Position = startPos + (TypeID & 0x7FFFFFFF)
                     };
@@ -1307,7 +1306,7 @@ namespace System.Compiler.Metadata
                     rs.Add(this.ReadWin32ResourceDataEntry(c, startPos + offset, TypeName, TypeID, null, 0, 0));
                 else
                 {
-                    MemoryCursor nc = new MemoryCursor(c)
+                    MemoryCursor nc = new(c)
                     {
                         Position = startPos + (offset & 0x7FFFFFFF)
                     };
@@ -1321,7 +1320,7 @@ namespace System.Compiler.Metadata
 
                         if (ID < 0)
                         {
-                            MemoryCursor nac = new MemoryCursor(c);
+                            MemoryCursor nac = new(c);
                             int strLength = nac.ReadUInt16();
                             Name = nac.ReadUTF16(strLength);
                         }
@@ -1332,7 +1331,7 @@ namespace System.Compiler.Metadata
                             rs.Add(this.ReadWin32ResourceDataEntry(c, startPos + offset, TypeName, TypeID, Name, ID, 0));
                         else
                         {
-                            MemoryCursor lc = new MemoryCursor(c)
+                            MemoryCursor lc = new(c)
                             {
                                 Position = startPos + (offset & 0x7FFFFFFF)
                             };
@@ -1367,7 +1366,7 @@ namespace System.Compiler.Metadata
         private Win32Resource ReadWin32ResourceDataEntry(MemoryCursor/*!*/ c, int position,
           string TypeName, int TypeID, string Name, int ID, int LanguageID)
         {
-            Win32Resource rsrc = new Win32Resource
+            Win32Resource rsrc = new()
             {
                 TypeName = TypeName,
                 TypeId = TypeID,
@@ -2164,21 +2163,28 @@ namespace System.Compiler.Metadata
         
         private int RvaToOffset(int virtualAddress, out PESection targetSection)
         {
-            foreach (SectionHeader section in this.sectionHeaders)
-                if (virtualAddress >= section.virtualAddress && virtualAddress < section.virtualAddress + section.sizeOfRawData)
+            foreach(SectionHeader section in this.sectionHeaders)
+            {
+                if(virtualAddress >= section.virtualAddress && virtualAddress < section.virtualAddress + section.sizeOfRawData)
                 {
-                    if (section.name == ".tls") targetSection = PESection.TLS;
-                    else if (section.name == ".sdata") targetSection = PESection.SData;
-                    else targetSection = PESection.Text;
+                    if(section.name == ".tls")
+                        targetSection = PESection.TLS;
+                    else if(section.name == ".sdata")
+                        targetSection = PESection.SData;
+                    else
+                        targetSection = PESection.Text;
+
                     return (virtualAddress - section.virtualAddress + section.pointerToRawData);
                 }
+            }
+
             throw new InvalidMetadataException(String.Format(
               CultureInfo.CurrentCulture, ExceptionStrings.UnknownVirtualAddress, +virtualAddress));
         }
         
         private static CLIHeader/*!*/ ReadCLIHeader(MemoryCursor/*!*/ c)
         {
-            CLIHeader header = new CLIHeader
+            CLIHeader header = new()
             {
                 cb = c.Int32(0)
             };
@@ -2204,7 +2210,7 @@ namespace System.Compiler.Metadata
         
         private static DirectoryEntry ReadDirectoryEntry(MemoryCursor/*!*/ c)
         {
-            DirectoryEntry entry = new DirectoryEntry
+            DirectoryEntry entry = new()
             {
                 virtualAddress = c.Int32(0),
                 size = c.Int32(1)
@@ -2231,7 +2237,7 @@ namespace System.Compiler.Metadata
         
         private static MetadataHeader/*!*/ ReadMetadataHeader(MemoryCursor/*!*/ c)
         {
-            MetadataHeader header = new MetadataHeader
+            MetadataHeader header = new()
             {
                 signature = c.ReadInt32()
             };
@@ -2264,7 +2270,7 @@ namespace System.Compiler.Metadata
         
         internal static NTHeader/*!*/ ReadNTHeader(MemoryCursor/*!*/ c)
         {
-            NTHeader header = new NTHeader
+            NTHeader header = new()
             {
                 signature = c.ReadInt32(),
                 machine = c.ReadUInt16(),
@@ -2358,7 +2364,7 @@ namespace System.Compiler.Metadata
 
         internal static SectionHeader ReadSectionHeader(MemoryCursor/*!*/ c)
         {
-            SectionHeader header = new SectionHeader
+            SectionHeader header = new()
             {
                 name = c.ReadASCII(8),
                 virtualSize = c.Int32(0),
@@ -2380,7 +2386,7 @@ namespace System.Compiler.Metadata
         
         private static StreamHeader ReadStreamHeader(MemoryCursor/*!*/ c)
         {
-            StreamHeader header = new StreamHeader
+            StreamHeader header = new()
             {
                 offset = c.ReadInt32(),
                 size = c.ReadInt32(),
@@ -2396,7 +2402,7 @@ namespace System.Compiler.Metadata
         
         private static TablesHeader/*!*/ ReadTablesHeader(MemoryCursor/*!*/ c)
         {
-            TablesHeader header = new TablesHeader
+            TablesHeader header = new()
             {
                 reserved = c.ReadInt32(), // Must be zero
                 majorVersion = c.ReadByte(),  // Must be one

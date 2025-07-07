@@ -2,7 +2,7 @@
 // System  : Code Colorizer Library
 // File    : XmlHelper.cs
 // Author  : Jonathan de Halleux, (c) 2003
-// Updated : 04/06/2021
+// Updated : 07/05/2025
 //
 // This file contains some XML node extension methods.
 //
@@ -33,7 +33,7 @@ namespace ColorizerLibrary
     {
         // This is used to move trailing CR/LF's into their own code tag.  This keeps all tags within a single
         // line and we can more easily add line numbering and region folding to the end result.
-        private static readonly Regex reTrailingCrLfs = new Regex("[^\r\n]([\r\n]+$)");
+        private static readonly Regex reTrailingCrLfs = new("[^\r\n]([\r\n]+$)");
 
         /// <summary>
         /// Adds a CDATA child element
@@ -45,7 +45,7 @@ namespace ColorizerLibrary
         /// <exception>If could not create CDATA node</exception>
         internal static void XmlAddChildCDATAElement(this XmlNode node, string nodeName, string cdata)
         {
-            XmlNode newNode = node.OwnerDocument.CreateElement(nodeName);
+            XmlElement newNode = node.OwnerDocument.CreateElement(nodeName);
 
             if(newNode == null)
                 return;

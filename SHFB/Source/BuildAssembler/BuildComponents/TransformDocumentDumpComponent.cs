@@ -158,7 +158,7 @@ namespace Sandcastle.Tools.BuildComponents
         private void TransformComponent_TopicTransforming(object sender, EventArgs e)
         {
             // Don't bother if not a transforming event or not in our group
-            if(!(e is ApplyingChangesEventArgs ac) || ac.GroupId != this.GroupId ||
+            if(e is not ApplyingChangesEventArgs ac || ac.GroupId != this.GroupId ||
               ac.ComponentId != "Transform Component")
             {
                 return;
@@ -166,11 +166,13 @@ namespace Sandcastle.Tools.BuildComponents
 
             if(ac.Document != null)
             {
-                StringBuilder filename = new StringBuilder(ac.Key);
+                StringBuilder filename = new(ac.Key);
 
                 foreach(char c in Path.GetInvalidFileNameChars())
+                {
                     if(ac.Key.IndexOf(c) != -1)
                         filename.Replace(c, '_');
+                }
 
                 string xmlFile = Path.Combine(rawDocsPath, filename.ToString());
 
@@ -179,10 +181,9 @@ namespace Sandcastle.Tools.BuildComponents
 
                 xmlFile += ".xml";
 
-                using(XmlWriter writer = XmlWriter.Create(xmlFile, settings))
-                {
-                    ac.Document.Save(writer);
-                }
+                using XmlWriter writer = XmlWriter.Create(xmlFile, settings);
+                
+                ac.Document.Save(writer);
             }
         }
 
@@ -195,7 +196,7 @@ namespace Sandcastle.Tools.BuildComponents
         private void TransformComponent_TopicTransformed(object sender, EventArgs e)
         {
             // Don't bother if not a transformed event or not in our group
-            if(!(e is AppliedChangesEventArgs ac) || ac.GroupId != this.GroupId ||
+            if(e is not AppliedChangesEventArgs ac || ac.GroupId != this.GroupId ||
               ac.ComponentId != "Transform Component")
             {
                 return;
@@ -203,11 +204,13 @@ namespace Sandcastle.Tools.BuildComponents
 
             if(ac.Document != null)
             {
-                StringBuilder filename = new StringBuilder(ac.Key);
+                StringBuilder filename = new(ac.Key);
 
                 foreach(char c in Path.GetInvalidFileNameChars())
+                {
                     if(ac.Key.IndexOf(c) != -1)
                         filename.Replace(c, '_');
+                }
 
                 string xmlFile = Path.Combine(transformedDocsPath, filename.ToString());
 
@@ -216,10 +219,9 @@ namespace Sandcastle.Tools.BuildComponents
 
                 xmlFile += ".xml";
 
-                using(XmlWriter writer = XmlWriter.Create(xmlFile, settings))
-                {
-                    ac.Document.Save(writer);
-                }
+                using XmlWriter writer = XmlWriter.Create(xmlFile, settings);
+                
+                ac.Document.Save(writer);
             }
         }
         #endregion

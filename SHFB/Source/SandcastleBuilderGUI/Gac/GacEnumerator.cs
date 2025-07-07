@@ -18,6 +18,8 @@
 // 07/20/2008  EFW  Removed all unused code and renamed the class
 //===============================================================================================================
 
+// Ignore Spelling: Gac
+
 using System;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -54,7 +56,7 @@ namespace SandcastleBuilder.Gui.Gac
 
                 if(gacList == null)
                 {
-                    gacList = new Collection<string>();
+                    gacList = [];
 
                     try
                     {

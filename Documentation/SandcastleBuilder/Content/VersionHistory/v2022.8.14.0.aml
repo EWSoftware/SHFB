@@ -333,8 +333,8 @@ statement for it if they log messages.</para>
 					</listItem>
 
 					<listItem>
-						<para>Added <codeEntityReference qualifyHint="false">P:SandcastleBuilder.Utils.BuildEngine.BuildProcess.BuildAssemblerConfigurationFile</codeEntityReference>
-and <codeEntityReference qualifyHint="false">P:SandcastleBuilder.Utils.BuildEngine.BuildProcess.BuildAssemblerManifestFile</codeEntityReference>
+						<para>Added <codeEntityReference qualifyHint="false">P:Sandcastle.Core.BuildEngine.IBuildProcess.BuildAssemblerConfigurationFile</codeEntityReference>
+and <codeEntityReference qualifyHint="false">P:Sandcastle.Core.BuildEngine.IBuildProcess.BuildAssemblerManifestFile</codeEntityReference>
 properties to <codeInline>BuildProcess</codeInline>.  These should be used in place of the hard-coded
 <localUri>sandcastle.config</localUri> and <localUri>manifest.xml</localUri> filenames.</para>
 					</listItem>
@@ -345,8 +345,8 @@ related <localUri>ExtractHtmlInfo.proj</localUri> template was removed.</para>
 					</listItem>
 
 					<listItem>
-						<para>A new <codeEntityReference qualifyHint="false">P:SandcastleBuilder.Utils.BuildEngine.BuildProcess.HtmlExtractTool</codeEntityReference>
-property was added to the build engine to allow plug-ins to adjust how the tool runs.</para>
+						<para>A new <codeInline>BuildProcess.HtmlExtractTool</codeInline> property was added to the build
+engine to allow plug-ins to adjust how the tool runs.</para>
 					</listItem>
 
 					<listItem>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalNoticesPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/26/2025
+// Updated : 06/20/2025
 // Note    : Copyright 2025, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to add additional notice message definitions to the selected
@@ -23,11 +23,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.BuildEngine;
-
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.PlugIn;
 using Sandcastle.Core.PresentationStyle.Transformation;
 
 namespace SandcastleBuilder.PlugIns
@@ -47,7 +44,7 @@ namespace SandcastleBuilder.PlugIns
         #region Private data members
         //=====================================================================
 
-        private BuildProcess builder;
+        private IBuildProcess builder;
         private HashSet<string> attributeNames, elementNames;
 
         #endregion
@@ -59,18 +56,18 @@ namespace SandcastleBuilder.PlugIns
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public IEnumerable<ExecutionPoint> ExecutionPoints { get; } = new List<ExecutionPoint>
-        {
+        public IEnumerable<ExecutionPoint> ExecutionPoints { get; } =
+        [
             new ExecutionPoint(BuildStep.GenerateReflectionInfo, ExecutionBehaviors.Before),
             new ExecutionPoint(BuildStep.CreateBuildAssemblerConfigs, ExecutionBehaviors.After)
-        };
+        ];
 
         /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XElement configuration)
+        public void Initialize(IBuildProcess buildProcess, XElement configuration)
         {
             if(configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
@@ -86,8 +83,8 @@ namespace SandcastleBuilder.PlugIns
                 throw new BuilderException("AN0001", "The Additional Notices plug-in has not been configured yet");
 
             // Load the notice settings
-            attributeNames = new HashSet<string>();
-            elementNames = new HashSet<string>();
+            attributeNames = [];
+            elementNames = [];
 
             int noticeCount = 0;
 

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectFactory.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/10/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/24/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that defines the Sandcastle Help File Builder project factory
 //
@@ -16,6 +16,8 @@
 // ==============================================================================================================
 // 03/22/2011  EFW  Created the code
 //===============================================================================================================
+
+// Ignore Spelling: scc bstr pguid
 
 using System;
 using System.IO;
@@ -30,7 +32,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
 using SandcastleBuilder.Package.Nodes;
-using SandcastleBuilder.Utils;
+using SandcastleBuilder.MSBuild.HelpProject;
 
 namespace SandcastleBuilder.Package
 {
@@ -72,7 +74,7 @@ namespace SandcastleBuilder.Package
 
             ProjectPackage package = (ProjectPackage)this.Package;
 
-            SandcastleBuilderProjectNode project = new SandcastleBuilderProjectNode(package);
+            SandcastleBuilderProjectNode project = new(package);
 
             project.SetSite((IOleServiceProvider)((IServiceProvider)package).GetService(typeof(IOleServiceProvider)));
 
@@ -126,12 +128,11 @@ namespace SandcastleBuilder.Package
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            string[] files = new string[1] { bstrFileName };
+            string[] files = [bstrFileName];
             string projectName = Path.GetFileNameWithoutExtension(bstrFileName);
             bool continueUpgrade = false;
 
             pbstrUpgradedFullyQualifiedFileName = bstrFileName;
-
 
             // Be sure we need an upgrade
             this.UpgradeProject_CheckOnly(bstrFileName, pLogger, out pUpgradeRequired, out pguidNewProjectFactory, out _);
@@ -185,9 +186,8 @@ namespace SandcastleBuilder.Package
 
                 if(pUpgradeRequired == 0)
                 {
-                    if(pLogger != null)
-                        pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_INFORMATIONAL, projectName, bstrFileName,
-                            "The project file was checked out and is already up to date.  No upgrade needed.");
+                    pLogger?.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_INFORMATIONAL, projectName, bstrFileName,
+                        "The project file was checked out and is already up to date.  No upgrade needed.");
 
                     return VSConstants.S_OK;
                 }
@@ -201,7 +201,7 @@ namespace SandcastleBuilder.Package
 
                 // The SancastleProject class contains all the code needed to update the project so all we need
                 // to do is load a copy and force it to save a new copy.
-                using(SandcastleProject p = new SandcastleProject(bstrFileName, true, false))
+                using(SandcastleProject p = new(bstrFileName, true, false))
                 {
                     p.SaveProject(bstrFileName);
                 }

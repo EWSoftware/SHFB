@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : WhatsNewPage.cs
 // Author  : Eric Woodruff
-// Updated : 04/21/2021
+// Updated : 07/06/2025
 //
 // This file contains a What's New page for the installer.
 //
@@ -62,7 +62,7 @@ namespace Sandcastle.Installer.InstallerPages
             // Load the What's New link information
             foreach(var wn in configuration.Elements("whatsNew"))
             {
-                Hyperlink hyperLink = new Hyperlink(new Run(wn.Attribute("description").Value))
+                Hyperlink hyperLink = new(new Run(wn.Attribute("description").Value))
                 {
                     Tag = wn.Attribute("url").Value
                 };

@@ -90,8 +90,8 @@ namespace ReflectionDataManager
                     Console.WriteLine(copyrightAttribute.Copyright);
 
                 // Specify options
-                OptionCollection options = new OptionCollection
-                {
+                OptionCollection options =
+                [
                     new SwitchOption("?", "Show this help page."),
                     new StringOption("platform", "Specify the platform to use for the build", "platformName")
                         { RequiredMessage = "A platform parameter value is required" },
@@ -99,7 +99,7 @@ namespace ReflectionDataManager
                         "specified, the most recent version for the specified platform is used.", "version"),
                     new ListOption("path", "Specify additional paths to search for reflection data set " +
                         "files if necessary.", "dataSetPath")
-                };
+                ];
 
                 // Process options
                 ParseArgumentsResult parsedArguments = options.ParseArguments(e.Args);
@@ -150,7 +150,7 @@ namespace ReflectionDataManager
         {
             ReflectionDataSetDictionary rdsd;
             ReflectionDataSet dataSet;
-            Version version = new Version();
+            Version version = new();
             string platform;
             int exitCode = 0;
 
@@ -184,10 +184,8 @@ namespace ReflectionDataManager
                 Console.WriteLine("Building reflection data for {0} found in {1}", dataSet.Title,
                     dataSet.Filename);
 
-                using(var bp = new BuildProcess(dataSet) { ProgressProvider = this })
-                {
-                    bp.Build();
-                }
+                using var bp = new BuildProcess(dataSet) { ProgressProvider = this };
+                bp.Build();
             }
             catch(Exception ex)
             {

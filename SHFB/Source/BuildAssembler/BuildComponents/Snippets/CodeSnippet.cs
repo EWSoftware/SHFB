@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeSnippet.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/10/2021
-// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to track a single code snippet in the SyntaxComponent
 //
@@ -84,20 +84,9 @@ namespace Sandcastle.Tools.BuildComponents.Snippets
             if(attr != null)
                 this.Title = attr.Value;
 
-            attr = code.Attributes["language"];
+            attr = code.Attributes["language"] ?? code.Attributes["lang"] ?? code.Attributes["codeLanguage"];
 
-            if(attr == null)
-            {
-                attr = code.Attributes["lang"];
-
-                if(attr == null)
-                    attr = code.Attributes["codeLanguage"];
-            }
-
-            if(attr != null)
-                this.Language = attr.Value;
-            else
-                this.Language = "Other";
+            this.Language = attr?.Value ?? "Other";
         }
         #endregion
     }

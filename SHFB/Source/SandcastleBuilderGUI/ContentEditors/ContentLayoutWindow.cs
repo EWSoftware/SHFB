@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ContentLayoutWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the conceptual content items.
 //
@@ -33,11 +33,13 @@ using WinFormsMessageBox = System.Windows.Forms.MessageBox;
 
 using Sandcastle.Core;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.ConceptualContent;
 using SandcastleBuilder.WPF;
 using SandcastleBuilder.WPF.Commands;
 using SandcastleBuilder.WPF.UserControls;
+
+using SandcastleBuilder.MSBuild.HelpProject;
+
+using Sandcastle.Core.ConceptualContent;
 
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -168,7 +170,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 newPath = Path.Combine(projectPath, Path.GetFileName(filename));
 
             // Add the file to the project if not already there
-            FileItem newItem = contentLayoutFile.Project.AddFileToProject(filename, newPath);
+            var newItem = contentLayoutFile.Project.AddFileToProject(filename, newPath);
 
             // Add the topic to the editor's collection
             newTopic = new Topic
@@ -182,10 +184,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 currentTopic.IsExpanded = true;
             }
             else
+            {
                 if(currentTopic == null)
                     ucContentLayoutEditor.Topics.Add(newTopic);
                 else
                     currentTopic.Parent.Insert(currentTopic.Parent.IndexOf(currentTopic) + 1, newTopic);
+            }
 
             newTopic.IsSelected = true;
 
@@ -280,16 +284,15 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <inheritdoc />
         public override bool SaveAs()
         {
-            using(SaveFileDialog dlg = new SaveFileDialog())
-            {
-                dlg.Title = "Save Content Layout File As";
-                dlg.Filter = "Content layout files (*.content)|*.content|All Files (*.*)|*.*";
-                dlg.DefaultExt = Path.GetExtension(this.ToolTipText);
-                dlg.InitialDirectory = Path.GetDirectoryName(this.ToolTipText);
+            using SaveFileDialog dlg = new();
+            
+            dlg.Title = "Save Content Layout File As";
+            dlg.Filter = "Content layout files (*.content)|*.content|All Files (*.*)|*.*";
+            dlg.DefaultExt = Path.GetExtension(this.ToolTipText);
+            dlg.InitialDirectory = Path.GetDirectoryName(this.ToolTipText);
 
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    return this.Save(dlg.FileName);
-            }
+            if(dlg.ShowDialog() == DialogResult.OK)
+                return this.Save(dlg.FileName);
 
             return false;
         }
@@ -329,38 +332,38 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         private void ucContentLayoutEditor_AssociateTopic(object sender, RoutedEventArgs e)
         {
-            FileItem newItem;
             Topic t = ucContentLayoutEditor.CurrentTopic;
             string newPath, projectPath = Path.GetDirectoryName(contentLayoutFile.Project.Filename);
 
             if(t != null)
-                using(OpenFileDialog dlg = new OpenFileDialog())
+            {
+                using OpenFileDialog dlg = new();
+                
+                dlg.Title = "Select the conceptual topic file";
+                dlg.Filter = "Conceptual Topics (*.aml)|*.aml|All files (*.*)|*.*";
+                dlg.DefaultExt = "aml";
+                dlg.InitialDirectory = projectPath;
+                dlg.CheckFileExists = true;
+
+                if(dlg.ShowDialog() == DialogResult.OK)
                 {
-                    dlg.Title = "Select the conceptual topic file";
-                    dlg.Filter = "Conceptual Topics (*.aml)|*.aml|All files (*.*)|*.*";
-                    dlg.DefaultExt = "aml";
-                    dlg.InitialDirectory = projectPath;
-                    dlg.CheckFileExists = true;
+                    // The file must reside under the project path
+                    newPath = dlg.FileName;
 
-                    if(dlg.ShowDialog() == DialogResult.OK)
-                    {
-                        // The file must reside under the project path
-                        newPath = dlg.FileName;
+                    if(!Path.GetDirectoryName(newPath).StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
+                        newPath = Path.Combine(projectPath, Path.GetFileName(newPath));
 
-                        if(!Path.GetDirectoryName(newPath).StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
-                            newPath = Path.Combine(projectPath, Path.GetFileName(newPath));
+                    // Add the file to the project if not already there
+                    var newItem = contentLayoutFile.Project.AddFileToProject(dlg.FileName, newPath);
 
-                        // Add the file to the project if not already there
-                        newItem = contentLayoutFile.Project.AddFileToProject(dlg.FileName, newPath);
+                    t.TopicFile = new TopicFile(newItem.ToContentFile());
 
-                        t.TopicFile = new TopicFile(newItem.ToContentFile());
+                    // Let the caller know we associated a file with the topic
+                    e.Handled = true;
 
-                        // Let the caller know we associated a file with the topic
-                        e.Handled = true;
-
-                        MainForm.Host.ProjectExplorer.RefreshProject();
-                    }
+                    MainForm.Host.ProjectExplorer.RefreshProject();
                 }
+            }
         }
         #endregion
 
@@ -388,7 +391,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             // If the sender is a topic, use that instead.  Due to the way the WPF tree view works, the
             // selected topic isn't always the one we just added when it's the first child of a parent topic.
-            if(!(sender is Topic t))
+            if(sender is not Topic t)
                 t = ucContentLayoutEditor.CurrentTopic;
 
             if(t.TopicFile != null)
@@ -397,24 +400,30 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                 // If the document is already open, just activate it
                 foreach(IDockContent content in this.DockPanel.Documents)
+                {
                     if(String.Equals(content.DockHandler.ToolTipText, fullName, StringComparison.OrdinalIgnoreCase))
                     {
                         content.DockHandler.Activate();
                         return;
                     }
+                }
 
                 if(File.Exists(fullName))
                 {
-                    TopicEditorWindow editor = new TopicEditorWindow(fullName);
+                    TopicEditorWindow editor = new(fullName);
                     editor.Show(this.DockPanel);
                 }
                 else
+                {
                     WinFormsMessageBox.Show("File does not exist: " + fullName, Constants.AppName,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
+            {
                 WinFormsMessageBox.Show("No file is associated with this topic", Constants.AppName,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -429,17 +438,16 @@ namespace SandcastleBuilder.Gui.ContentEditors
             if(ucContentLayoutEditor.CurrentTopic != null && ucContentLayoutEditor.CurrentTopic.TopicFile != null)
                 newFilePath = Path.GetDirectoryName(ucContentLayoutEditor.CurrentTopic.TopicFile.FullPath);
 
-            using(SelectFileTemplateDlg dlg = new SelectFileTemplateDlg(true, newFilePath))
+            using SelectFileTemplateDlg dlg = new(true, newFilePath);
+            
+            // If created, add it to the project, refresh the Project Explorer, and open the file for editing
+            if(dlg.ShowDialog() == DialogResult.OK)
             {
-                // If created, add it to the project, refresh the Project Explorer, and open the file for editing
-                if(dlg.ShowDialog() == DialogResult.OK)
-                {
-                    Topic t = this.AddTopicFile(dlg.NewFilename, e.Parameter != null);
-                    MainForm.Host.ProjectExplorer.RefreshProject();
+                Topic t = this.AddTopicFile(dlg.NewFilename, e.Parameter != null);
+                MainForm.Host.ProjectExplorer.RefreshProject();
 
-                    // Ensure that the topic we just added is opened by passing it as the sender
-                    cmdEdit_Executed(t, e);
-                }
+                // Ensure that the topic we just added is opened by passing it as the sender
+                cmdEdit_Executed(t, e);
             }
         }
 
@@ -453,29 +461,25 @@ namespace SandcastleBuilder.Gui.ContentEditors
             Topic t = ucContentLayoutEditor.CurrentTopic;
             string projectPath = Path.GetDirectoryName(contentLayoutFile.Project.Filename);
 
-            using(OpenFileDialog dlg = new OpenFileDialog())
+            using OpenFileDialog dlg = new();
+            
+            dlg.Title = "Select the conceptual topic file(s)";
+            dlg.Filter = "Conceptual Topics (*.aml)|*.aml|All files (*.*)|*.*";
+            dlg.DefaultExt = "aml";
+            dlg.InitialDirectory = (t != null && t.TopicFile != null) ?
+                Path.GetDirectoryName(t.TopicFile.FullPath) : projectPath;
+            dlg.Multiselect = true;
+
+            // If selected, add the new file(s).  Filenames that are already in the collection are ignored.
+            if(dlg.ShowDialog() == DialogResult.OK)
             {
-                dlg.Title = "Select the conceptual topic file(s)";
-                dlg.Filter = "Conceptual Topics (*.aml)|*.aml|All files (*.*)|*.*";
-                dlg.DefaultExt = "aml";
-                dlg.InitialDirectory = (t != null && t.TopicFile != null) ?
-                    Path.GetDirectoryName(t.TopicFile.FullPath) : projectPath;
-                dlg.Multiselect = true;
-
-                // If selected, add the new file(s).  Filenames that are
-                // already in the collection are ignored.
-                if(dlg.ShowDialog() == DialogResult.OK)
+                foreach(string filename in dlg.FileNames)
                 {
-                    foreach(string filename in dlg.FileNames)
-                    {
-                        this.AddTopicFile(filename, e.Parameter != null);
-
-                        if(t != null)
-                            t.IsSelected = true;
-                    }
-
-                    MainForm.Host.ProjectExplorer.RefreshProject();
+                    this.AddTopicFile(filename, e.Parameter != null);
+                    t?.IsSelected = true;
                 }
+
+                MainForm.Host.ProjectExplorer.RefreshProject();
             }
         }
 
@@ -486,62 +490,63 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         private void cmdAddAllFromFolder_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            TopicCollection parent, newTopics = new TopicCollection(null);
+            TopicCollection parent, newTopics = new(null);
             Topic selectedTopic = ucContentLayoutEditor.CurrentTopic;
             string projectPath = Path.GetDirectoryName(contentLayoutFile.Project.Filename);
             int idx;
 
-            using(FolderBrowserDialog dlg = new FolderBrowserDialog())
+            using FolderBrowserDialog dlg = new();
+            
+            dlg.Description = "Select a folder to add all of its content";
+            dlg.SelectedPath = (selectedTopic != null && selectedTopic.TopicFile != null) ?
+                Path.GetDirectoryName(selectedTopic.TopicFile.FullPath) : projectPath;
+
+            if(dlg.ShowDialog() == DialogResult.OK)
             {
-                dlg.Description = "Select a folder to add all of its content";
-                dlg.SelectedPath = (selectedTopic != null && selectedTopic.TopicFile != null) ?
-                    Path.GetDirectoryName(selectedTopic.TopicFile.FullPath) : projectPath;
-
-                if(dlg.ShowDialog() == DialogResult.OK)
+                try
                 {
-                    try
-                    {
-                        MouseCursor.Current = MouseCursors.WaitCursor;
+                    MouseCursor.Current = MouseCursors.WaitCursor;
 
-                        newTopics.AddTopicsFromFolder(dlg.SelectedPath, dlg.SelectedPath,
-                            contentLayoutFile.Project);
+                    newTopics.AddTopicsFromFolder(dlg.SelectedPath, dlg.SelectedPath,
+                        contentLayoutFile.Project);
 
-                        MainForm.Host.ProjectExplorer.RefreshProject();
-                    }
-                    finally
-                    {
-                        MouseCursor.Current = MouseCursors.Default;
-                    }
+                    MainForm.Host.ProjectExplorer.RefreshProject();
                 }
+                finally
+                {
+                    MouseCursor.Current = MouseCursors.Default;
+                }
+            }
 
-                if(newTopics.Count != 0)
-                    if(e.Parameter == null || selectedTopic == null)
+            if(newTopics.Count != 0)
+            {
+                if(e.Parameter == null || selectedTopic == null)
+                {
+                    // Insert as siblings
+                    if(selectedTopic == null)
                     {
-                        // Insert as siblings
-                        if(selectedTopic == null)
-                        {
-                            parent = ucContentLayoutEditor.Topics;
-                            idx = 0;
-                        }
-                        else
-                        {
-                            parent = selectedTopic.Parent;
-                            idx = parent.IndexOf(selectedTopic) + 1;
-                        }
-
-                        foreach(Topic t in newTopics)
-                            parent.Insert(idx++, t);
+                        parent = ucContentLayoutEditor.Topics;
+                        idx = 0;
                     }
                     else
                     {
-                        // Insert as children
-                        parent = selectedTopic.Subtopics;
-
-                        foreach(Topic t in newTopics)
-                            parent.Add(t);
-
-                        selectedTopic.IsExpanded = true;
+                        parent = selectedTopic.Parent;
+                        idx = parent.IndexOf(selectedTopic) + 1;
                     }
+
+                    foreach(Topic t in newTopics)
+                        parent.Insert(idx++, t);
+                }
+                else
+                {
+                    // Insert as children
+                    parent = selectedTopic.Subtopics;
+
+                    foreach(Topic t in newTopics)
+                        parent.Add(t);
+
+                    selectedTopic.IsExpanded = true;
+                }
             }
         }
         #endregion

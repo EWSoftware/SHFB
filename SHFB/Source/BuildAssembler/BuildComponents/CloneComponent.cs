@@ -44,7 +44,7 @@ namespace Sandcastle.Tools.BuildComponents
         #region Private data members
         //=====================================================================
 
-        private readonly List<IEnumerable<BuildComponentCore>> branches = new List<IEnumerable<BuildComponentCore>>();
+        private readonly List<IEnumerable<BuildComponentCore>> branches = [];
 
         #endregion
 

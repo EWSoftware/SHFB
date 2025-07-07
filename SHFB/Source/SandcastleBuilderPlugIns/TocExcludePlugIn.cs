@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : TocExcludePlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that can be used to exclude API members from the table of contents via the
 // <tocexclude /> XML comment tag.  The excluded items are still accessible in the help file via other topic
@@ -30,8 +30,8 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.BuildEngine;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -49,8 +49,7 @@ namespace SandcastleBuilder.PlugIns
         #region Private data members
         //=====================================================================
 
-        private List<ExecutionPoint> executionPoints;
-        private BuildProcess builder;
+        private IBuildProcess builder;
         private List<string> exclusionList;
 
         #endregion
@@ -62,29 +61,18 @@ namespace SandcastleBuilder.PlugIns
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public IEnumerable<ExecutionPoint> ExecutionPoints
-        {
-            get
-            {
-                if(executionPoints == null)
-                    executionPoints = new List<ExecutionPoint>
-                    {
-                        // This one has a slightly higher priority as it removes stuff that the other plug-ins
-                        // don't need to see.
-                        new ExecutionPoint(BuildStep.GenerateIntermediateTableOfContents,
-                            ExecutionBehaviors.After, 1500)
-                    };
-
-                return executionPoints;
-            }
-        }
+        public IEnumerable<ExecutionPoint> ExecutionPoints { get; } =
+        [
+            // This one has a slightly higher priority as it removes stuff that the other plug-ins don't need to see
+            new ExecutionPoint(BuildStep.GenerateIntermediateTableOfContents, ExecutionBehaviors.After, 1500)
+        ];
 
         /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XElement configuration)
+        public void Initialize(IBuildProcess buildProcess, XElement configuration)
         {
             builder = buildProcess;
 
@@ -93,7 +81,7 @@ namespace SandcastleBuilder.PlugIns
 
             builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
-            exclusionList = new List<string>();
+            exclusionList = [];
         }
 
         /// <summary>
@@ -111,8 +99,10 @@ namespace SandcastleBuilder.PlugIns
             builder.ReportProgress("Searching for comment members containing <tocexclude />...");
 
             foreach(XmlCommentsFile f in builder.CommentsFiles)
+            {
                 foreach(XmlNode member in f.Members.SelectNodes("member[count(.//tocexclude) > 0]/@name"))
                     exclusionList.Add(member.Value);
+            }
 
             builder.ReportProgress("Found {0} members to exclude from the TOC", exclusionList.Count);
 
@@ -127,10 +117,7 @@ namespace SandcastleBuilder.PlugIns
 
             // If a root namespace container node is present, we need to look in it rather than the document root
             // node.
-            root = navToc.SelectSingleNode("topics/topic[starts-with(@id, 'R:')]");
-
-            if(root == null)
-                root = navToc.SelectSingleNode("topics");
+            root = navToc.SelectSingleNode("topics/topic[starts-with(@id, 'R:')]") ?? navToc.SelectSingleNode("topics");
 
             foreach(string id in exclusionList)
             {

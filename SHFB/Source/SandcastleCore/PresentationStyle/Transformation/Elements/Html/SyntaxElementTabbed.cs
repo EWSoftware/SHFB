@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SyntaxElementTabbed.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/02/2022
-// Note    : Copyright 2022-2024, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle syntax section elements in legacy presentation styles such as
 // the VS2013 presentation style.
@@ -36,9 +36,9 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         #region Private data members
         //=====================================================================
 
-        private static readonly HashSet<string> includedXamlSyntax = new HashSet<string>(new[] {
+        private static readonly HashSet<string> includedXamlSyntax = [.. new[] {
             "xamlAttributeUsageHeading", "xamlObjectElementUsageHeading", "xamlContentElementUsageHeading",
-            "xamlPropertyElementUsageHeading" });
+            "xamlPropertyElementUsageHeading" }];
 
         #endregion
 
@@ -177,14 +177,14 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
             this.RenderSourceContextElement(transformation, sourceContext, content);
 
-            transformation.RenderChildElements(content, new[] { parameters, templates, value, returns });
+            transformation.RenderChildElements(content, [parameters, templates, value, returns]);
 
             // If there were no value or returns comments and there is a return value, add a default return
             // value section.
             if(value == null && returns == null && (returnValue != null || eventHandlerType != null))
                 RenderDefaultReturnSection(transformation, content);
 
-            transformation.RenderChildElements(content, new[] { implements });
+            transformation.RenderChildElements(content, [implements]);
 
             // Add a usage note for extension methods
             if(transformation.ApiMember.ApiSubgroup == ApiMemberGroup.Method &&

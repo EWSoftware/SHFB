@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : MamlSnippetsPage.cs
 // Author  : Eric Woodruff
-// Updated : 04/21/2021
+// Updated : 07/06/2025
 //
 // This file contains a page used to help the user install the Sandcastle MAML snippet files for use with Visual
 // Studio.
@@ -79,7 +79,7 @@ namespace Sandcastle.Installer.InstallerPages
         /// version of Visual Studio.</returns>
         private bool CheckForSafeInstallation(string vsVersionName, string vsPath)
         {
-            Paragraph para = new Paragraph();
+            Paragraph para = new();
             secResults.Blocks.Add(para);
 
             para.Inlines.AddRange(new Inline[] { new Bold(new Run(vsVersionName)), new Run(" - ") });
@@ -148,8 +148,8 @@ namespace Sandcastle.Installer.InstallerPages
             if(configuration.Attribute("supportedVersions") == null)
                 throw new InvalidOperationException("A supportedVersions attribute value is required");
 
-            supportedVersions = configuration.Attribute("supportedVersions").Value.Split(new[] { ',', ' ' },
-                StringSplitOptions.RemoveEmptyEntries).ToList();
+            supportedVersions = [.. configuration.Attribute("supportedVersions").Value.Split([',', ' '],
+                StringSplitOptions.RemoveEmptyEntries)];
 
             base.Initialize(configuration);
         }
@@ -167,7 +167,7 @@ namespace Sandcastle.Installer.InstallerPages
                 {
                     string location = Path.Combine(baseSnippetsFolder, vs.UserTemplatesBaseFolder);
 
-                    CheckBox cb = new CheckBox
+                    CheckBox cb = new()
                     {
                         Margin = new Thickness(20, 5, 0, 0),
                         Content = vs.DisplayName,
@@ -257,17 +257,16 @@ namespace Sandcastle.Installer.InstallerPages
         /// <param name="e">The event arguments</param>
         private void btnChangeFolder_Click(object sender, RoutedEventArgs e)
         {
-            using(System.Windows.Forms.FolderBrowserDialog dlg = new System.Windows.Forms.FolderBrowserDialog())
-            {
-                dlg.Description = "Select your My Documents folder";
-                dlg.SelectedPath = baseSnippetsFolder;
+            using System.Windows.Forms.FolderBrowserDialog dlg = new();
+            
+            dlg.Description = "Select your My Documents folder";
+            dlg.SelectedPath = baseSnippetsFolder;
 
-                // If selected, set the new folder
-                if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    baseSnippetsFolder = dlg.SelectedPath;
-                    this.ShowPage();
-                }
+            // If selected, set the new folder
+            if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                baseSnippetsFolder = dlg.SelectedPath;
+                this.ShowPage();
             }
         }
         #endregion

@@ -18,6 +18,8 @@
 // 10/06/2012  EFW  Merged SHFB installer pages into the main project
 //===============================================================================================================
 
+// Ignore Spelling: Vsix
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -58,7 +60,7 @@ namespace Sandcastle.Installer.InstallerPages
             /// <summary>
             /// A list of the installed version descriptions
             /// </summary>
-            public IList<string> InstalledVersionDescriptions { get; } = new List<string>();
+            public IList<string> InstalledVersionDescriptions { get; } = [];
 
             /// <summary>
             /// This is used to define the path to the VSIX installer executable
@@ -82,7 +84,7 @@ namespace Sandcastle.Installer.InstallerPages
 
         private bool searchPerformed, installerExecuted;
 
-        private static readonly char[] separator = new[] { ',', ' ' };
+        private static readonly char[] separator = [',', ' '];
 
         #endregion
 
@@ -126,7 +128,7 @@ namespace Sandcastle.Installer.InstallerPages
 
             imgSpinner.Visibility = lblPleaseWait.Visibility = Visibility.Collapsed;
 
-            vsixPackages = new List<VisualStudioInstallerPackage>();
+            vsixPackages = [];
         }
         #endregion
 

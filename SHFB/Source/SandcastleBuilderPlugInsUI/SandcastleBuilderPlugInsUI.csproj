@@ -3,12 +3,10 @@
 	<PropertyGroup>
 		<!-- Classes in this assembly will only be used from the standalone GUI and Visual Studio extension
 				 on the Windows platform so we will always target the .NET Framework. -->
-		<TargetFramework>net472</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 		<UseWindowsForms>true</UseWindowsForms>
 		<UseWpf>true</UseWpf>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
 		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
@@ -16,8 +14,6 @@
 		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
 		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AssemblyName>SandcastleBuilder.PlugIns.UI</AssemblyName>
 		<RootNamespace>SandcastleBuilder.PlugIns.UI</RootNamespace>
 	</PropertyGroup>
@@ -33,14 +29,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="..\SandcastleCore\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
+		<Compile Include="..\SandcastleBuilderMSBuild\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\SandcastleBuilderPlugIns\SandcastleBuilderPlugIns.csproj" />
-		<ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
-			<Private>False</Private>
-		</ProjectReference>
 		<ProjectReference Include="..\SandcastleCore\SandcastleCore.csproj">
 			<Private>False</Private>
 		</ProjectReference>

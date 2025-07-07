@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Package
 // File    : DocumentationSourceNodeProperties.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/29/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/24/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that exposes the properties for the DocumentationSourceNode object
 //
@@ -28,11 +28,11 @@ using System.Xml.Linq;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Project;
 
+using Sandcastle.Core;
+using Sandcastle.Core.Design;
 using Sandcastle.Platform.Windows.Design;
 
 using SandcastleBuilder.Package.Properties;
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Package.Nodes
 {
@@ -51,7 +51,7 @@ namespace SandcastleBuilder.Package.Nodes
         private bool includeSubFolders;
 
         // These are used to convert MSBuild variable references to normal environment variable references
-        private static readonly Regex reMSBuildVar = new Regex(@"\$\((.*?)\)");
+        private static readonly Regex reMSBuildVar = new(@"\$\((.*?)\)");
 
         private readonly MatchEvaluator buildVarMatchEval;
 

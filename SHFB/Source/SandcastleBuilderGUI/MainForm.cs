@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/28/2023
-// Note    : Copyright 2006-2023, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the main form for the application.
 //
@@ -38,8 +38,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -55,16 +55,14 @@ using System.Windows.Forms;
 using Microsoft.Build.Exceptions;
 
 using Sandcastle.Core;
-
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.Project;
 using Sandcastle.Platform.Windows;
-
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildEngine;
-using SandcastleBuilder.Utils.Controls;
 
 using SandcastleBuilder.Gui.ContentEditors;
 using SandcastleBuilder.Gui.Properties;
-
+using SandcastleBuilder.MSBuild.BuildEngine;
+using SandcastleBuilder.MSBuild.HelpProject;
 using SandcastleBuilder.WPF.PropertyPages;
 using SandcastleBuilder.WPF.UI;
 
@@ -96,8 +94,11 @@ namespace SandcastleBuilder.Gui
 
         private static MainForm mainForm;
 
-        private static readonly Regex reWarning = new Regex(@"(Warn|Warning( HXC\d+)?):|" +
+        private static readonly Regex reWarning = new(@"(Warn|Warning( HXC\d+)?):|" +
             @"SHFB\s*:\s*(W|w)arning\s.*?:|.*?(\(\d*,\d*\))?:\s*(W|w)arning\s.*?:");
+
+        private static readonly char[] commaSeparator = [','];
+
         #endregion
 
         #region Properties
@@ -168,26 +169,26 @@ namespace SandcastleBuilder.Gui
                 return;
 
             // We are only going to monitor for file changes.  We won't handle moves, deletes, or renames.
-            changedFiles = new HashSet<string>();
+            changedFiles = [];
             fsw = new FileSystemWatcher { NotifyFilter = NotifyFilters.LastWrite, IncludeSubdirectories = true };
             fsw.Changed += fsw_OnChanged;
 
-            if(Settings.Default.ContentFileEditors == null)
-                Settings.Default.ContentFileEditors = new ContentFileEditorCollection();
+            Settings.Default.ContentFileEditors ??= [];
 
             // Add the editors to the global list
             ContentFileEditorCollection.GlobalEditors.AddRange(Settings.Default.ContentFileEditors);
 
             if(projectToLoad != null)
             {
-                if(Settings.Default.MruList == null)
-                    Settings.Default.MruList = new StringCollection();
+                Settings.Default.MruList ??= [];
 
                 if(File.Exists(projectToLoad))
                     UpdateMruList(projectToLoad);
                 else
+                {
                     MessageBox.Show("Unable to find project: " + projectToLoad, Constants.AppName,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
 
             // Set the status label to use for status bar text
@@ -218,17 +219,13 @@ namespace SandcastleBuilder.Gui
 
             if(persistString == typeof(OutputWindow).FullName)
             {
-                if(outputWindow == null)
-                    outputWindow = new OutputWindow();
-
+                outputWindow ??= new OutputWindow();
                 return outputWindow;
             }
 
             if(persistString == typeof(EntityReferenceWindow).FullName)
             {
-                if(entityReferencesWindow == null)
-                    entityReferencesWindow = new EntityReferenceWindow { CurrentProject = project };
-
+                entityReferencesWindow ??= new EntityReferenceWindow { CurrentProject = project };
                 return entityReferencesWindow;
             }
 
@@ -236,7 +233,7 @@ namespace SandcastleBuilder.Gui
             if(persistString == typeof(PreviewTopicWindow).FullName)
                 return null;
 
-            string[] parsedStrings = persistString.Split(new char[] { ',' });
+            string[] parsedStrings = persistString.Split(commaSeparator);
 
             if(projectExplorer == null || parsedStrings.Length != 2 || parsedStrings[1].Length == 0)
                 return null;
@@ -254,10 +251,9 @@ namespace SandcastleBuilder.Gui
         {
             project = new SandcastleProject(projectName, mustExist, false);
 
-            projectExplorer.CurrentProject = projectProperties.CurrentProject = project;
-
-            if(entityReferencesWindow != null)
-                entityReferencesWindow.CurrentProject = project;
+            projectExplorer.CurrentProject = project;
+            projectProperties.CurrentProject = project;
+            entityReferencesWindow?.CurrentProject = project;
 
             this.UpdateFilenameInfo();
 
@@ -312,18 +308,10 @@ namespace SandcastleBuilder.Gui
 
                     projectExplorer.DockPanel = null;
                     projectProperties.DockPanel = null;
-
-                    if(outputWindow != null)
-                        outputWindow.DockPanel = null;
-
-                    if(entityReferencesWindow != null)
-                        entityReferencesWindow.DockPanel = null;
-
-                    if(previewWindow != null)
-                    {
-                        previewWindow.Dispose();
-                        previewWindow = null;
-                    }
+                    outputWindow?.DockPanel = null;
+                    entityReferencesWindow?.DockPanel = null;
+                    previewWindow?.Dispose();
+                    previewWindow = null;
 
                     dockPanel.LoadFromXml(project.Filename + WindowStateSuffix, DeserializeState);
                 }
@@ -352,7 +340,7 @@ namespace SandcastleBuilder.Gui
         /// <returns>True if successful, false if it fails or is cancelled.</returns>
         private bool SaveBeforeBuild()
         {
-            Collection<BaseContentEditor> filesToSave = new Collection<BaseContentEditor>();
+            Collection<BaseContentEditor> filesToSave = [];
             BaseContentEditor editor;
             DialogResult result;
             bool success = true;
@@ -393,30 +381,31 @@ namespace SandcastleBuilder.Gui
             }
 
             if(success && filesToSave.Count != 0)
-                using(PromptToSaveDlg dlg = new PromptToSaveDlg(filesToSave))
+            {
+                using PromptToSaveDlg dlg = new(filesToSave);
+
+                result = dlg.ShowDialog();
+
+                switch(result)
                 {
-                    result = dlg.ShowDialog();
+                    case DialogResult.Yes:  // Save all
+                        foreach(BaseContentEditor file in filesToSave)
+                        {
+                            success = file.Save();
 
-                    switch(result)
-                    {
-                        case DialogResult.Yes:  // Save all
-                            foreach(BaseContentEditor file in filesToSave)
-                            {
-                                success = file.Save();
+                            if(!success)
+                                break;
+                        }
+                        break;
 
-                                if(!success)
-                                    break;
-                            }
-                            break;
+                    case DialogResult.No:   // Don't save
+                        break;
 
-                        case DialogResult.No:   // Don't save
-                            break;
-
-                        default:
-                            success = false;
-                            break;
-                    }
+                    default:
+                        success = false;
+                        break;
                 }
+            }
 
             return success;
         }
@@ -436,20 +425,13 @@ namespace SandcastleBuilder.Gui
                 this.KillWebServer();
 
                 // Dispose of the preview window as it doesn't make much sense to save its state
-                if(previewWindow != null)
-                {
-                    previewWindow.Dispose();
-                    previewWindow = null;
-                }
+                previewWindow?.Dispose();
+                previewWindow = null;
 
-                if(outputWindow != null)
-                {
-                    outputWindow.ResetLogViewer();
-                    outputWindow.LogFile = null;
-                }
+                outputWindow?.ResetLogViewer();
+                outputWindow?.LogFile = null;
 
-                if(entityReferencesWindow != null)
-                    entityReferencesWindow.CurrentProject = null;
+                entityReferencesWindow?.CurrentProject = null;
 
                 if(projectExplorer.CurrentProject != null && Settings.Default.PerUserProjectState)
                 {
@@ -463,14 +445,18 @@ namespace SandcastleBuilder.Gui
                         Cursor.Current = Cursors.WaitCursor;
 
                         if(isHidden)
+                        {
                             File.SetAttributes(projectExplorer.CurrentProject.Filename + WindowStateSuffix,
                                 FileAttributes.Normal);
+                        }
 
                         dockPanel.SaveAsXml(projectExplorer.CurrentProject.Filename + WindowStateSuffix);
 
                         if(isHidden)
+                        {
                             File.SetAttributes(projectExplorer.CurrentProject.Filename + WindowStateSuffix,
                                 FileAttributes.Hidden);
+                        }
                     }
                     finally
                     {
@@ -505,7 +491,9 @@ namespace SandcastleBuilder.Gui
                     project.Dispose();
                 }
 
-                project = projectExplorer.CurrentProject = projectProperties.CurrentProject = null;
+                project = projectExplorer.CurrentProject = null;
+                projectProperties.CurrentProject = null;
+
                 this.UpdateFilenameInfo();
 
                 miDocumentation.Visible = miCloseProject.Enabled = miClose.Enabled = miCloseAll.Enabled =
@@ -541,19 +529,25 @@ namespace SandcastleBuilder.Gui
         private void SetUIEnabledState(bool enabled)
         {
             // These are always enabled even when building
-            HashSet<string> alwaysEnabledIds = new HashSet<string>(new[] { miExit.Name,
+            HashSet<string> alwaysEnabledIds = new([ miExit.Name,
                 miViewProjectExplorer.Name, miViewProjectProperties.Name, miViewOutput.Name, miHelp.Name,
                 miFaq.Name, miAbout.Name, tsbProjectExplorer.Name, tsbProjectProperties.Name, tsbViewOutput.Name,
-                tsbFaq.Name });
+                tsbFaq.Name ]);
 
             foreach(ToolStripMenuItem item in mnuMain.Items)
+            {
                 foreach(ToolStripItem subItem in item.DropDownItems)
+                {
                     if(!alwaysEnabledIds.Contains(subItem.Name))
                         subItem.Enabled = enabled;
+                }
+            }
 
             foreach(ToolStripItem item in tsbMain.Items)
+            {
                 if(!alwaysEnabledIds.Contains(item.Name))
                     item.Enabled = enabled;
+            }
 
             projectExplorer.Enabled = enabled;
             projectProperties.SetEnabledState(enabled);
@@ -649,7 +643,7 @@ namespace SandcastleBuilder.Gui
             {
                 WINDOWPLACEMENT wp = Settings.Default.WindowPlacement;
 
-                if(wp.length == Marshal.SizeOf(typeof(WINDOWPLACEMENT)))
+                if(wp.length == Marshal.SizeOf<WINDOWPLACEMENT>())
                 {
                     wp.flags = 0;
 
@@ -663,14 +657,13 @@ namespace SandcastleBuilder.Gui
             // Restore default content state if present and shift isn't held down
             state = Settings.Default.ContentEditorDockState;
 
-            if(!String.IsNullOrEmpty(state) && (ModifierKeys & Keys.Shift) == 0)
+            if(!String.IsNullOrWhiteSpace(state) && (ModifierKeys & Keys.Shift) == 0)
             {
                 byte[] stateBytes = Encoding.UTF8.GetBytes(state.ToCharArray());
 
-                using(MemoryStream ms = new MemoryStream(stateBytes))
-                {
-                    dockPanel.LoadFromXml(ms, DeserializeState);
-                }
+                using MemoryStream ms = new(stateBytes);
+                
+                dockPanel.LoadFromXml(ms, DeserializeState);
             }
 
             // If not restored or something when wrong and the project explorer doesn't have a dock panel, show
@@ -706,21 +699,24 @@ namespace SandcastleBuilder.Gui
             // Create the MRU on first use
             if(mruList == null)
             {
-                Settings.Default.MruList = new StringCollection();
+                Settings.Default.MruList = [];
                 this.CloseProject();
             }
             else
             {
                 // Get rid of projects that no longer exist or that are not compatible
                 while(idx < mruList.Count)
+                {
                     if(!File.Exists(mruList[idx]) || mruList[idx].EndsWith(".shfb", StringComparison.OrdinalIgnoreCase))
                         mruList.RemoveAt(idx);
                     else
                         idx++;
+                }
 
                 if(mruList.Count == 0)
                     this.CloseProject();
                 else
+                {
                     try
                     {
                         this.CreateProject(mruList[0], true);
@@ -737,6 +733,7 @@ namespace SandcastleBuilder.Gui
                         Debug.Write(ex);
                         MessageBox.Show(ex.Message, Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                }
             }
         }
 
@@ -769,6 +766,7 @@ namespace SandcastleBuilder.Gui
             if(!projectExplorer.AskToSaveProject())
                 e.Cancel = true;
             else
+            {
                 foreach(IDockContent dockContent in dockPanel.Contents)
                 {
                     content = dockContent as BaseContentEditor;
@@ -779,11 +777,12 @@ namespace SandcastleBuilder.Gui
                         break;
                     }
                 }
+            }
 
             if(!e.Cancel)
             {
                 // Save the current window size and position if possible
-                WINDOWPLACEMENT wp = new WINDOWPLACEMENT { length = Marshal.SizeOf(typeof(WINDOWPLACEMENT)) };
+                WINDOWPLACEMENT wp = new() { length = Marshal.SizeOf<WINDOWPLACEMENT>() };
                 UnsafeNativeMethods.GetWindowPlacement(this.Handle, ref wp);
                 Settings.Default.WindowPlacement = wp;
 
@@ -796,14 +795,11 @@ namespace SandcastleBuilder.Gui
                     entityReferencesWindow.Hide();
 
                 // Dispose of the preview window to get rid of its temporary project and build files
-                if(previewWindow != null)
-                {
-                    previewWindow.Dispose();
-                    previewWindow = null;
-                }
+                previewWindow?.Dispose();
+                previewWindow = null;
 
                 // Save the default window state
-                using(MemoryStream ms = new MemoryStream())
+                using(MemoryStream ms = new())
                 {
                     dockPanel.SaveAsXml(ms, Encoding.UTF8);
                     state = Encoding.UTF8.GetString(ms.ToArray());
@@ -826,14 +822,18 @@ namespace SandcastleBuilder.Gui
                         Cursor.Current = Cursors.WaitCursor;
 
                         if(isHidden)
+                        {
                             File.SetAttributes(projectExplorer.CurrentProject.Filename + WindowStateSuffix,
                                 FileAttributes.Normal);
+                        }
 
                         dockPanel.SaveAsXml(projectExplorer.CurrentProject.Filename + WindowStateSuffix);
 
                         if(isHidden)
+                        {
                             File.SetAttributes(projectExplorer.CurrentProject.Filename + WindowStateSuffix,
                                 FileAttributes.Hidden);
+                        }
                     }
                     finally
                     {
@@ -860,10 +860,8 @@ namespace SandcastleBuilder.Gui
         /// <param name="e">The event arguments</param>
         private void miAbout_Click(object sender, EventArgs e)
         {
-            using(AboutDlg dlg = new AboutDlg())
-            {
-                dlg.ShowDialog();
-            }
+            using AboutDlg dlg = new();
+            dlg.ShowDialog();
         }
 
         /// <summary>
@@ -921,38 +919,39 @@ namespace SandcastleBuilder.Gui
         private void miNewProject_Click(object sender, EventArgs e)
         {
             if(this.CloseProject())
-                using(SaveFileDialog dlg = new SaveFileDialog())
+            {
+                using SaveFileDialog dlg = new();
+                
+                try
                 {
-                    try
+                    dlg.Title = "Save New Help Project As";
+                    dlg.Filter = "Sandcastle Help File Builder Project " +
+                        "Files (*.shfbproj)|*.shfbproj|All files (*.*)|*.*";
+                    dlg.DefaultExt = "shfbproj";
+                    dlg.InitialDirectory = Directory.GetCurrentDirectory();
+
+                    if(dlg.ShowDialog() == DialogResult.OK)
                     {
-                        dlg.Title = "Save New Help Project As";
-                        dlg.Filter = "Sandcastle Help File Builder Project " +
-                            "Files (*.shfbproj)|*.shfbproj|All files (*.*)|*.*";
-                        dlg.DefaultExt = "shfbproj";
-                        dlg.InitialDirectory = Directory.GetCurrentDirectory();
+                        this.Cursor = Cursors.WaitCursor;
 
-                        if(dlg.ShowDialog() == DialogResult.OK)
-                        {
-                            this.Cursor = Cursors.WaitCursor;
+                        if(File.Exists(dlg.FileName))
+                            File.Delete(dlg.FileName);
 
-                            if(File.Exists(dlg.FileName))
-                                File.Delete(dlg.FileName);
+                        this.CreateProject(dlg.FileName, false);
 
-                            this.CreateProject(dlg.FileName, false);
-
-                            projectExplorer.Save(dlg.FileName);
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        Debug.Write(ex);
-                        MessageBox.Show(ex.Message, Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    finally
-                    {
-                        this.Cursor = Cursors.Default;
+                        projectExplorer.Save(dlg.FileName);
                     }
                 }
+                catch(Exception ex)
+                {
+                    Debug.Write(ex);
+                    MessageBox.Show(ex.Message, Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    this.Cursor = Cursors.Default;
+                }
+            }
         }
 
         /// <summary>
@@ -963,42 +962,43 @@ namespace SandcastleBuilder.Gui
         private void miOpenProject_Click(object sender, EventArgs e)
         {
             if(this.CloseProject())
-                using(OpenFileDialog dlg = new OpenFileDialog())
+            {
+                using OpenFileDialog dlg = new();
+                
+                dlg.Title = "Load Help Project";
+                dlg.Filter = "Sandcastle Help File Builder Project " +
+                    "Files (*.shfbproj)|*.shfbproj|All files (*.*)|*.*";
+                dlg.DefaultExt = "shfbproj";
+                dlg.InitialDirectory = Directory.GetCurrentDirectory();
+
+                if(dlg.ShowDialog() == DialogResult.OK)
                 {
-                    dlg.Title = "Load Help Project";
-                    dlg.Filter = "Sandcastle Help File Builder Project " +
-                        "Files (*.shfbproj)|*.shfbproj|All files (*.*)|*.*";
-                    dlg.DefaultExt = "shfbproj";
-                    dlg.InitialDirectory = Directory.GetCurrentDirectory();
-
-                    if(dlg.ShowDialog() == DialogResult.OK)
+                    try
                     {
-                        try
-                        {
-                            this.Cursor = Cursors.WaitCursor;
-                            this.CreateProject(dlg.FileName, true);
-                            UpdateMruList(project.Filename);
-                        }
-                        catch(InvalidProjectFileException pex)
-                        {
-                            Debug.Write(pex);
+                        this.Cursor = Cursors.WaitCursor;
+                        this.CreateProject(dlg.FileName, true);
+                        UpdateMruList(project.Filename);
+                    }
+                    catch(InvalidProjectFileException pex)
+                    {
+                        Debug.Write(pex);
 
-                            MessageBox.Show("The project file format is invalid: " + pex.Message,
-                                Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        catch(Exception ex)
-                        {
-                            Debug.Write(ex);
-                            MessageBox.Show(ex.Message, Constants.AppName,
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        finally
-                        {
-                            this.Cursor = Cursors.Default;
-                            projectProperties.RefreshProperties();
-                        }
+                        MessageBox.Show("The project file format is invalid: " + pex.Message,
+                            Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    catch(Exception ex)
+                    {
+                        Debug.Write(ex);
+                        MessageBox.Show(ex.Message, Constants.AppName,
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    finally
+                    {
+                        this.Cursor = Cursors.Default;
+                        projectProperties.RefreshProperties();
                     }
                 }
+            }
         }
 
         /// <summary>
@@ -1030,12 +1030,14 @@ namespace SandcastleBuilder.Gui
                 miRecentProjects.DropDownItems.Add(miMruProject);
             }
             else
+            {
                 foreach(string mru in mruList)
                 {
                     miMruProject = new ToolStripMenuItem { Text = $"&{idx++} {mru}" };
                     miMruProject.Click += new EventHandler(miProject_Click);
                     miRecentProjects.DropDownItems.Add(miMruProject);
                 }
+            }
         }
 
         /// <summary>
@@ -1067,8 +1069,7 @@ namespace SandcastleBuilder.Gui
                 catch(Exception ex)
                 {
                     Debug.Write(ex);
-                    MessageBox.Show(ex.Message, Constants.AppName,
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(ex.Message, Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 finally
                 {
@@ -1180,11 +1181,13 @@ namespace SandcastleBuilder.Gui
                 outputWindow.ResetLogViewer();
             }
             else
+            {
                 if(sender == miClearOutput || sender == miBuildProject)
                 {
                     outputWindow = new OutputWindow();
                     outputWindow.Show(dockPanel);
                 }
+            }
         }
 
         /// <summary>
@@ -1194,7 +1197,7 @@ namespace SandcastleBuilder.Gui
         /// <param name="e">The event arguments</param>
         private void miCleanOutput_Click(object sender, EventArgs e)
         {
-            StringBuilder sb = new StringBuilder(1024);
+            StringBuilder sb = new(1024);
             string projectFolder, outputFolder = project.OutputPath;
 
             // Make sure we start out in the project's output folder in case the output folder is relative to it
@@ -1303,15 +1306,20 @@ namespace SandcastleBuilder.Gui
         /// <param name="e">The event arguments</param>
         private void miUserPreferences_Click(object sender, EventArgs e)
         {
-            using(UserPreferencesDlg dlg = new UserPreferencesDlg())
+            using UserPreferencesDlg dlg = new();
+            
+            if(dlg.ShowDialog() == DialogResult.OK)
             {
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    foreach(IDockContent content in dockPanel.Contents)
-                        if(content is OutputWindow outputWindow)
-                            outputWindow.UpdateSettings();
-                        else
-                            if(content is TopicEditorWindow topicEditor)
-                                topicEditor.UpdateFont();
+                foreach(IDockContent content in dockPanel.Contents)
+                {
+                    if(content is OutputWindow outputWindow)
+                        outputWindow.UpdateSettings();
+                    else
+                    {
+                        if(content is TopicEditorWindow topicEditor)
+                            topicEditor.UpdateFont();
+                    }
+                }
             }
         }
 
@@ -1341,16 +1349,22 @@ namespace SandcastleBuilder.Gui
             if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
                 miViewBuiltHelpFile_Click(miViewHtmlHelp1, e);
             else
+            {
                 if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
                     miViewMSHelpViewer_Click(sender, e);
                 else
+                {
                     if((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
                         miViewBuiltHelpFile_Click(miViewOpenXml, e);
                     else
+                    {
                         if((project.HelpFileFormat & HelpFileFormats.Markdown) != 0)
                             miViewBuiltHelpFile_Click(miViewHelpFile, e);
                         else
                             miViewAspNetWebsite_Click(sender, e);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -1369,7 +1383,7 @@ namespace SandcastleBuilder.Gui
             if(outputPath.IndexOf("$(", StringComparison.Ordinal) != -1)
                 outputPath = project.MSBuildProject.GetProperty("OutputPath").EvaluatedValue;
 
-            if(String.IsNullOrEmpty(outputPath))
+            if(String.IsNullOrWhiteSpace(outputPath))
                 outputPath = Directory.GetCurrentDirectory();
             else
                 outputPath = Path.GetFullPath(outputPath);
@@ -1377,13 +1391,17 @@ namespace SandcastleBuilder.Gui
             if(sender == miViewHtmlHelp1)
                 outputPath += project.HtmlHelpName + ".chm";
             else
+            {
                 if(sender == miViewOpenXml)
                     outputPath += project.HtmlHelpName + ".docx";
                 else
+                {
                     if(sender == miViewHelpFile)
                         outputPath += "_Sidebar.md";
                     else
                         outputPath += "Index.html";
+                }
+            }
 
             // If there are substitution tags present, have a go at resolving them
             if(outputPath.IndexOf("{@", StringComparison.Ordinal) != -1)
@@ -1443,7 +1461,7 @@ namespace SandcastleBuilder.Gui
         private void miViewAspNetWebsite_Click(object sender, EventArgs e)
         {
             ProcessStartInfo psi;
-            FilePath webServerPath = new FilePath(null);
+            FilePath webServerPath = new(null);
             string outputPath, path, vPath, defaultPage = "Index.aspx";
 
             // Make sure we start out in the project's output folder in case the output folder is relative to it
@@ -1452,7 +1470,7 @@ namespace SandcastleBuilder.Gui
             outputPath = project.OutputPath;
             vPath = $" /vpath:\"/SHFBOutput_{this.Handle}\"";
 
-            if(String.IsNullOrEmpty(outputPath))
+            if(String.IsNullOrWhiteSpace(outputPath))
                 outputPath = Directory.GetCurrentDirectory();
             else
                 outputPath = Path.GetFullPath(outputPath);
@@ -1533,8 +1551,10 @@ namespace SandcastleBuilder.Gui
                         Thread.Sleep(500);
                 }
                 else
+                {
                     if(webServer.ProcessName.StartsWith("IISExpress", StringComparison.OrdinalIgnoreCase))
                         vPath = String.Empty;
+                }
 
                 // This form's handle is used to keep the URL unique in case multiple copies of SHFB are running
                 // so that each can view website output (WebDevServer only).
@@ -1545,8 +1565,10 @@ namespace SandcastleBuilder.Gui
                         this.Handle, defaultPage);
                 }
                 else
+                {
                     outputPath = String.Format(CultureInfo.InvariantCulture, "http://localhost:{0}/{1}",
                         Settings.Default.ASPNETDevServerPort, defaultPage);
+                }
 
                 Process.Start(outputPath);
             }
@@ -1602,14 +1624,16 @@ namespace SandcastleBuilder.Gui
         {
             dockPanel.CheckFocusedContent();    // HACK
 
-            if(!(dockPanel.ActiveContent is BaseContentEditor content))
+            if(dockPanel.ActiveContent is not BaseContentEditor content)
                 content = projectExplorer;
 
             if(content != null && content.CanClose)
+            {
                 if(content.DockHandler.HideOnClose)
                     content.DockHandler.Hide();
                 else
                     content.DockHandler.Close();
+            }
         }
 
         /// <summary>
@@ -1629,8 +1653,7 @@ namespace SandcastleBuilder.Gui
                 if(sender == miCloseAllButCurrent && dockContent.DockHandler.IsActivated)
                     continue;
 
-                if(dockContent is ProjectExplorerWindow ||
-                  dockContent is ProjectPropertiesWindow)
+                if(dockContent is ProjectExplorerWindow || dockContent is ProjectPropertiesWindow)
                     continue;
 
                 content = dockContent as BaseContentEditor;
@@ -1655,7 +1678,7 @@ namespace SandcastleBuilder.Gui
             dockPanel.CheckFocusedContent();    // HACK
 
             // Save the project by default
-            if(!(dockPanel.ActiveContent is BaseContentEditor content) || !content.CanSaveContent)
+            if(dockPanel.ActiveContent is not BaseContentEditor content || !content.CanSaveContent)
                 content = projectExplorer;
 
             content?.Save();
@@ -1670,7 +1693,7 @@ namespace SandcastleBuilder.Gui
         {
             dockPanel.CheckFocusedContent();    // HACK
 
-            if(!(dockPanel.ActiveContent is BaseContentEditor content))
+            if(dockPanel.ActiveContent is not BaseContentEditor content)
                 content = projectExplorer;
 
             if(content != null && content.CanSaveContent)
@@ -1687,16 +1710,20 @@ namespace SandcastleBuilder.Gui
             BaseContentEditor content;
 
             if(project.IsDirty)
+            {
                 if(!projectExplorer.Save())
                     return;
+            }
 
             foreach(IDockContent dockContent in dockPanel.Contents)
             {
                 content = dockContent as BaseContentEditor;
 
-                if(content == null || content.CanSaveContent)
+                if(content?.CanSaveContent ?? false)
+                {
                     if(!content.Save())
                         break;
+                }
             }
         }
 
@@ -1787,7 +1814,7 @@ namespace SandcastleBuilder.Gui
         private void miPreviewTopic_Click(object sender, EventArgs e)
         {
             TopicEditorWindow editor;
-            FileItem fileItem = null;
+            IFileItem fileItem = null;
 
             dockPanel.CheckFocusedContent();    // HACK
             editor = dockPanel.ActiveDocument as TopicEditorWindow;
@@ -1864,7 +1891,7 @@ namespace SandcastleBuilder.Gui
                 {
                     excludedOutputFolder = project.OutputPath;
 
-                    if(String.IsNullOrEmpty(excludedOutputFolder))
+                    if(String.IsNullOrWhiteSpace(excludedOutputFolder))
                         excludedOutputFolder = Path.Combine(Path.GetDirectoryName(project.Filename), "Help");
                     else
                         excludedOutputFolder = Path.GetFullPath(excludedOutputFolder);
@@ -1930,7 +1957,9 @@ namespace SandcastleBuilder.Gui
                     }
 
                     foreach(string filename in changedFiles)
+                    {
                         foreach(IDockContent content in dockPanel.Contents.ToArray())
+                        {
                             if(content.DockHandler.ToolTipText != null &&
                                 content.DockHandler.ToolTipText.Equals(filename, StringComparison.OrdinalIgnoreCase))
                             {
@@ -1947,6 +1976,8 @@ namespace SandcastleBuilder.Gui
                                     editor?.Show(dockPanel);
                                 }
                             }
+                        }
+                    }
                 }
                 catch(Exception ex)
                 {
@@ -1971,7 +2002,9 @@ namespace SandcastleBuilder.Gui
         {
             if(!e.FullPath.StartsWith(excludedOutputFolder, StringComparison.OrdinalIgnoreCase) &&
               !e.FullPath.StartsWith(excludedWorkingFolder, StringComparison.OrdinalIgnoreCase))
+            {
                 changedFiles.Add(e.FullPath);
+            }
         }
         #endregion
     }

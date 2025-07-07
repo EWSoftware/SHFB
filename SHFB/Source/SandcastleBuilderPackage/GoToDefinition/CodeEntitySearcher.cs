@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : CodeEntitySearcher.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
-// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
+// Updated : 07/06/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to search for and go to code entity declarations by member ID
 //
@@ -121,10 +121,10 @@ namespace SandcastleBuilder.Package.GoToDefinition
         public CodeEntitySearcher(SVsServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
-            this.typeParameters = new List<string>();
-            this.methodParameters = new List<string>();
-            this.searchClassCandidates = new List<string>();
-            this.searchMemberCandidates = new List<string>();
+            this.typeParameters = [];
+            this.methodParameters = [];
+            this.searchClassCandidates = [];
+            this.searchMemberCandidates = [];
         }
         #endregion
 
@@ -161,8 +161,10 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
                 // As noted, we only support the C# library
                 if(library == null)
+                {
                     if(objectManager.FindLibrary(new Guid(BrowseLibraryGuids80.CSharp), out library) != VSConstants.S_OK)
                         return false;
+                }
 
                 var criteria = new VSOBSEARCHCRITERIA2
                 {
@@ -172,6 +174,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
                 // Give precedence to classes by searching for them first if wanted
                 if((searchFlags & _LIB_LISTTYPE.LLT_CLASSES) != 0)
+                {
                     foreach(string searchText in searchClassCandidates)
                     {
                         criteria.szName = searchText;
@@ -180,9 +183,11 @@ namespace SandcastleBuilder.Package.GoToDefinition
                             if(this.IsMatch(searchText, r, false))
                                 return r.GoToSource();
                     }
+                }
 
                 // Search for members if wanted
                 if((searchFlags & _LIB_LISTTYPE.LLT_MEMBERS) != 0)
+                {
                     foreach(string searchText in searchMemberCandidates)
                     {
                         criteria.szName = searchText;
@@ -199,6 +204,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                             if(this.IsMatch(searchText, r, false))
                                 return r.GoToSource();
                     }
+                }
             }
             catch(Exception ex)
             {
@@ -269,7 +275,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                 if(pos != -1)
                     paramText = paramText.Substring(0, pos);
 
-                methodParameters.AddRange(this.ParseParameters(paramText));
+                methodParameters.AddRange(ParseParameters(paramText));
             }
 
             // If type parameters are present, strip them off too but keep them for the match method where we'll
@@ -290,7 +296,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     paramText = paramText.Substring(0, paramText.Length - 1);
 
                 searchText = searchText.Substring(0, pos);
-                typeParameters.AddRange(this.ParseParameters(paramText));
+                typeParameters.AddRange(ParseParameters(paramText));
             }
 
             if((searchFlags & _LIB_LISTTYPE.LLT_MEMBERS) != 0)
@@ -402,10 +408,9 @@ namespace SandcastleBuilder.Package.GoToDefinition
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            List<string> usingNamespaces = new List<string>(), containingNamespaces = new List<string>();
-            List<CodeClass> classes = new List<CodeClass>();
+            List<string> usingNamespaces = [], containingNamespaces = [];
+            List<CodeClass> classes = [];
             int searchLine = 0, firstCodeLine = -1;
-
 
             if(this.serviceProvider.GetService(typeof(SDTE)) is DTE2 dte2 && dte2.ActiveDocument != null &&
               dte2.ActiveDocument.ProjectItem != null && dte2.ActiveDocument.ProjectItem.FileCodeModel != null)
@@ -417,34 +422,42 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
                 // Get all using namespaces, containing namespaces, and classes in the current file
                 foreach(CodeElement ce in fileCodeModel.CodeElements)
+                {
                     if(ce.Kind == vsCMElement.vsCMElementImportStmt)
                     {
                         usingNamespaces.Add(((CodeImport)ce).Namespace);
                         firstCodeLine = ce.EndPoint.Line + 1;
                     }
                     else
+                    {
                         if(ce.Kind == vsCMElement.vsCMElementClass)
-                    {
-                        // A class in the global namespace
-                        classes.Add((CodeClass)ce);
+                        {
+                            // A class in the global namespace
+                            classes.Add((CodeClass)ce);
 
-                        if(firstCodeLine == -1)
-                            firstCodeLine = 1;
-                    }
-                    else
+                            if(firstCodeLine == -1)
+                                firstCodeLine = 1;
+                        }
+                        else
+                        {
                             if(ce.Kind == vsCMElement.vsCMElementNamespace)
-                    {
-                        // A class within a namespace.  Typically there will only be one per file but
-                        // we'll account for multiples.
-                        containingNamespaces.Add(((CodeNamespace)ce).Name);
+                            {
+                                // A class within a namespace.  Typically there will only be one per file but
+                                // we'll account for multiples.
+                                containingNamespaces.Add(((CodeNamespace)ce).Name);
 
-                        if(firstCodeLine == -1)
-                            firstCodeLine = ce.EndPoint.Line + 1;
+                                if(firstCodeLine == -1)
+                                    firstCodeLine = ce.EndPoint.Line + 1;
 
-                        foreach(CodeElement nce in ce.Children)
-                            if(nce.Kind == vsCMElement.vsCMElementClass)
-                                classes.Add((CodeClass)nce);
+                                foreach(CodeElement nce in ce.Children)
+                                {
+                                    if(nce.Kind == vsCMElement.vsCMElementClass)
+                                        classes.Add((CodeClass)nce);
+                                }
+                            }
+                        }
                     }
+                }
 
                 // Remove stuff that looks like core framework namespaces unless any containing namespaces
                 // include similar names.
@@ -453,10 +466,10 @@ namespace SandcastleBuilder.Package.GoToDefinition
                   cn.StartsWith("Microsoft.", StringComparison.Ordinal) ||
                   cn.StartsWith("EnvDTE", StringComparison.Ordinal)))
                 {
-                    usingNamespaces = usingNamespaces.Where(un => un != "System" &&
+                    usingNamespaces = [.. usingNamespaces.Where(un => un != "System" &&
                         !un.StartsWith("System.", StringComparison.Ordinal) &&
                         !un.StartsWith("Microsoft.", StringComparison.Ordinal) &&
-                        !un.StartsWith("EnvDTE", StringComparison.Ordinal)).ToList();
+                        !un.StartsWith("EnvDTE", StringComparison.Ordinal))];
                 }
 
                 // If searching for classes, qualify the search text based on the containing and imported
@@ -472,10 +485,9 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     {
                         string searchNS = searchText.Substring(0, pos);
 
-                        string match = containingNamespaces.FirstOrDefault(cn => cn.EndsWith(searchNS, StringComparison.Ordinal));
-
-                        if(match == null)
-                            match = usingNamespaces.FirstOrDefault(un => un.EndsWith(searchNS, StringComparison.Ordinal));
+                        string match = containingNamespaces.FirstOrDefault(cn => cn.EndsWith(searchNS,
+                            StringComparison.Ordinal)) ?? usingNamespaces.FirstOrDefault(
+                                un => un.EndsWith(searchNS, StringComparison.Ordinal));
 
                         if(match != null)
                             searchClassCandidates.Add(match + searchText.Substring(pos));
@@ -510,10 +522,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     // highest probability for a match.
 #pragma warning disable VSTHRD010
                     var containingClass = classes.FirstOrDefault(c => searchLine >= c.StartPoint.Line &&
-                        searchLine <= c.EndPoint.Line);
-
-                    if(containingClass == null)
-                        containingClass = classes.FirstOrDefault(c => c.EndPoint.Line > searchLine);
+                        searchLine <= c.EndPoint.Line) ?? classes.FirstOrDefault(c => c.EndPoint.Line > searchLine);
 #pragma warning restore VSTHRD010
 
                     if(containingClass != null)
@@ -536,13 +545,15 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
                     // Add candidates in containing or imported namespaces if it looks like a class
                     if(searchText.IndexOf('.') != -1)
+                    {
                         foreach(string ns in containingNamespaces.Concat(usingNamespaces))
                             searchMemberCandidates.Add(ns + "." + searchText);
+                    }
                 }
 
                 // Get rid of duplicates
-                searchClassCandidates = searchClassCandidates.Distinct().ToList();
-                searchMemberCandidates = searchMemberCandidates.Distinct().ToList();
+                searchClassCandidates = [.. searchClassCandidates.Distinct()];
+                searchMemberCandidates = [.. searchMemberCandidates.Distinct()];
             }
         }
 
@@ -555,7 +566,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// entity reference string will use the type parameter names which may not match the member declaration
         /// and the found member names may contain concrete types which may not match the search text.  Using
         /// the count is a compromise to get as close as we can to the desired member.</returns>
-        private IEnumerable<string> ParseParameters(string parameters)
+        private static IEnumerable<string> ParseParameters(string parameters)
         {
             if(!String.IsNullOrWhiteSpace(parameters))
             {
@@ -584,6 +595,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                         }
                     }
                     else
+                    {
                         if(parameters[idx] == '<')
                         {
                             if(!inGeneric)
@@ -597,6 +609,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                                 nestedGeneric++;
                         }
                         else
+                        {
                             if(parameters[idx] == '>')
                             {
                                 nestedGeneric--;
@@ -612,11 +625,13 @@ namespace SandcastleBuilder.Package.GoToDefinition
                                     start = idx + 1;
                                 }
                             }
+                        }
+                    }
                 }
 
                 if(start < parameters.Length)
                 {
-                    paramName = parameters.Substring(start, parameters.Length - start).Trim();
+                    paramName = parameters.Substring(start).Trim();
 
                     if(paramName.Length != 0 && paramName != "ref" && paramName != "out")
                         yield return paramName;
@@ -636,7 +651,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
             ThreadHelper.ThrowIfNotOnUIThread();
 
             int result = library.GetList2((uint)listType, (uint)_LIB_LISTFLAGS.LLF_USESEARCHFILTER,
-                new[] { criteria }, out IVsObjectList2 list);
+                [criteria], out IVsObjectList2 list);
 
             if(result == VSConstants.S_OK && list != null)
             {
@@ -664,7 +679,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// <returns>True if it is a match, false if not</returns>
         private bool IsMatch(string searchText, SearchResult result, bool matchParameters)
         {
-            List<string> methodParams = new List<string>(), typeParams = new List<string>();
+            List<string> methodParams = [], typeParams = [];
 #pragma warning disable VSTHRD010
             string name = result.FullName, compareText = (alternateCompareText ?? searchText), paramText, match;
 #pragma warning restore VSTHRD010
@@ -679,7 +694,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                 if(paramText.Length != 0 && paramText[paramText.Length - 1] == ')')
                     paramText = paramText.Substring(0, paramText.Length - 1);
 
-                methodParams = this.ParseParameters(paramText).ToList();
+                methodParams = [.. ParseParameters(paramText)];
 
                 name = name.Substring(0, pos).Trim();
                 pos = name.LastIndexOf(' ');
@@ -707,7 +722,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                 if(paramText.Length != 0 && paramText[paramText.Length - 1] == '>')
                     paramText = paramText.Substring(0, paramText.Length - 1);
 
-                typeParams = this.ParseParameters(paramText).ToList();
+                typeParams = [.. ParseParameters(paramText)];
                 name = name.Substring(0, pos);
             }
 

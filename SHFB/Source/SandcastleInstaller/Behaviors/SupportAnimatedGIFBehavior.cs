@@ -2,9 +2,9 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : SupportAnimatedGIFBehavior.cs
 // Author  : Elad Malki
-// Updated : 04/21/2021
+// Updated : 07/06/2025
 // Source  : http://eladm.wordpress.com/2009/04/02/animated-gif-support-behavior/
-// Note    : Copyright 2009-2021, Elad Malki, All rights reserved
+// Note    : Copyright 2009-2025, Elad Malki, All rights reserved
 //
 // This file contains a class that exposes an attached behavior that can be used to animate GIF images in image
 // controls.
@@ -19,7 +19,7 @@
 // 03/06/2012  EFW  Added the code to the project
 //===============================================================================================================
 
-// Ignore Spelling: Elad Malki
+// Ignore Spelling: Elad Malki Gif
 
 using System;
 using System.ComponentModel;
@@ -197,7 +197,7 @@ namespace Sandcastle.Installer.Behaviors
                 if(framesCount > 1)
                 {
                     Int32Animation gifAnimation =
-                        new Int32Animation(
+                        new(
                             0, // "From" value
                             framesCount - 1, // "To" value
                             new Duration(TimeSpan.FromMilliseconds(MILLISCONDS_PER_FRAME * framesCount))
@@ -221,13 +221,9 @@ namespace Sandcastle.Installer.Behaviors
             Image image = (Image)sender;
 
             if(image.Visibility != Visibility.Visible)
-            {
                 image.StopFramesAnimation();
-            }
             else
-            {
                 image.StartFramesAnimation();
-            }
         }
 
         private static void OnDummyImagePropertyChanged(DependencyObject dpo, DependencyPropertyChangedEventArgs e)
@@ -237,17 +233,17 @@ namespace Sandcastle.Installer.Behaviors
             if(!animatedImage.GetIsAnimationChangingFrame())
             {
                 BindingBase originalBinding = BindingOperations.GetBindingBase(dpo, DummyImageProperty);
+                
                 if(originalBinding != null)
                 {
                     BindingOperations.SetBinding(dpo, Image.SourceProperty, originalBinding);
                     BindingOperations.ClearBinding(animatedImage, DummyImageProperty);
                 }
+
                 animatedImage.SetIsAnimationChangingFrame(false);
             }
             else
-            {
                 animatedImage.SetIsAnimationChangingFrame(false);
-            }
 
             animatedImage.SetIsAnimationChangingFrame(false);
         }
@@ -266,17 +262,17 @@ namespace Sandcastle.Installer.Behaviors
                 animatedImage.SetIsAnimationChangingFrame(true);
 
                 bool hasBinding = BindingOperations.IsDataBound(animatedImage, Image.SourceProperty);
+
                 if(hasBinding)
                 {
                     BindingBase originalBinding = BindingOperations.GetBindingBase(animatedImage, Image.SourceProperty);
                     BindingOperations.SetBinding(animatedImage, DummyImageProperty, originalBinding);
                 }
+
                 animatedImage.Source = ((BitmapFrame)animatedImage.Source).Decoder.Frames[(int)e.NewValue];
 
                 if(!hasBinding)
-                {
                     animatedImage.SetIsAnimationChangingFrame(false);
-                }
             }
         }
     }

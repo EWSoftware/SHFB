@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ShowMissingComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2022
-// Note    : Copyright 2007-2022, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to add "missing" notes for missing summary, parameter,
 // returns, value, and remarks tags.  It can also add default summary documentation for constructors.
@@ -113,7 +113,7 @@ namespace Sandcastle.Tools.BuildComponents
         #region Private data members
         //=====================================================================
 
-        private static readonly Regex reStripWhitespace = new Regex(@"\s");
+        private static readonly Regex reStripWhitespace = new(@"\s");
 
         private bool autoDocConstructors, autoDocDispose, showMissingParams, showMissingTypeParams,
             showMissingRemarks, showMissingReturns, showMissingSummaries, showMissingValues,

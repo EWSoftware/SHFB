@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : TargetTypeDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/16/2024
-// Note    : Copyright 2012-2024, Eric Woodruff, All rights reserved
+// Updated : 07/03/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a target type dictionary used to contain common target dictionaries with their associated
 // link type.
@@ -50,7 +50,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
         /// </summary>
         public TargetTypeDictionary()
         {
-            targetDictionaries = new List<KeyValuePair<ReferenceLinkType, TargetDictionary>>();
+            targetDictionaries = [];
         }
         #endregion
 
@@ -63,11 +63,13 @@ namespace Sandcastle.Tools.BuildComponents.Targets
         public void Dispose()
         {
             foreach(var td in targetDictionaries)
+            {
                 if(!td.Value.IsDisposed)
                 {
                     td.Value.ReportCacheStatistics();
                     td.Value.Dispose();
                 }
+            }
 
             GC.SuppressFinalize(this);
         }
@@ -88,14 +90,16 @@ namespace Sandcastle.Tools.BuildComponents.Targets
         public bool ContainsKey(string key)
         {
             foreach(var kp in targetDictionaries)
+            {
                 if(kp.Value.ContainsKey(key))
                     return true;
+            }
 
             return false;
         }
 
         /// <inheritdoc />
-        public ICollection<string> Keys => targetDictionaries.Select(kv => kv.Value.Keys).SelectMany(k => k).ToList();
+        public ICollection<string> Keys => [.. targetDictionaries.Select(kv => kv.Value.Keys).SelectMany(k => k)];
 
         /// <inheritdoc />
         /// <remarks>This method is not implemented as targets are never removed</remarks>
@@ -110,8 +114,10 @@ namespace Sandcastle.Tools.BuildComponents.Targets
             value = null;
 
             foreach(var kp in targetDictionaries)
+            {
                 if(kp.Value.TryGetValue(key, out value))
                     return true;
+            }
 
             return false;
         }
@@ -130,17 +136,19 @@ namespace Sandcastle.Tools.BuildComponents.Targets
             linkType = ReferenceLinkType.None;
 
             foreach(var kp in targetDictionaries)
+            {
                 if(kp.Value.TryGetValue(key, out value))
                 {
                     linkType = kp.Key;
                     return true;
                 }
+            }
 
             return false;
         }
 
         /// <inheritdoc />
-        public ICollection<Target> Values => targetDictionaries.Select(kv => kv.Value.Values).SelectMany(v => v).ToList();
+        public ICollection<Target> Values => [.. targetDictionaries.Select(kv => kv.Value.Values).SelectMany(v => v)];
 
         /// <inheritdoc />
         /// <returns>If not found, this implementation returns null.</returns>
@@ -179,8 +187,10 @@ namespace Sandcastle.Tools.BuildComponents.Targets
         public bool Contains(KeyValuePair<string, Target> item)
         {
             foreach(var kv in targetDictionaries)
+            {
                 if(((ICollection<KeyValuePair<string, Target>>)kv.Value).Contains(item))
                     return true;
+            }
 
             return false;
         }
@@ -262,30 +272,31 @@ namespace Sandcastle.Tools.BuildComponents.Targets
         /// ensure that they match.</remarks>
         public void DumpTargetDictionary(string targetsFile)
         {
-            LinkTextResolver resolver = new LinkTextResolver(this);
+            LinkTextResolver resolver = new(this);
 
-            XmlWriterSettings settings = new XmlWriterSettings { Indent = true, CloseOutput = true };
-            
-            using(XmlWriter writer = XmlWriter.Create(targetsFile, settings))
+            XmlWriterSettings settings = new() { Indent = true, CloseOutput = true };
+
+            using XmlWriter writer = XmlWriter.Create(targetsFile, settings);
+
+            writer.WriteStartDocument();
+            writer.WriteStartElement("References");
+            writer.WriteAttributeString("Count", this.Count.ToString(CultureInfo.InvariantCulture));
+
+            foreach(var td in targetDictionaries.Reverse<KeyValuePair<ReferenceLinkType, TargetDictionary>>())
             {
-                writer.WriteStartDocument();
-                writer.WriteStartElement("References");
-                writer.WriteAttributeString("Count", this.Count.ToString(CultureInfo.InvariantCulture));
+                foreach(var target in td.Value)
+                {
+                    writer.WriteStartElement("Reference");
+                    writer.WriteAttributeString("Id", target.Key);
 
-                foreach(var td in targetDictionaries.Reverse<KeyValuePair<ReferenceLinkType, TargetDictionary>>())
-                    foreach(var target in td.Value)
-                    {
-                        writer.WriteStartElement("Reference");
-                        writer.WriteAttributeString("Id", target.Key);
+                    resolver.WriteTarget(target.Value, DisplayOptions.All, writer);
 
-                        resolver.WriteTarget(target.Value, DisplayOptions.All, writer);
-
-                        writer.WriteEndElement();
-                    }
-
-                writer.WriteEndElement();
-                writer.WriteEndDocument();
+                    writer.WriteEndElement();
+                }
             }
+
+            writer.WriteEndElement();
+            writer.WriteEndDocument();
         }
 #endif
         #endregion

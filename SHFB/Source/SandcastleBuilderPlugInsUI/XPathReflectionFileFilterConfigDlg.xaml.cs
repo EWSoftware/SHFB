@@ -1,9 +1,9 @@
 ﻿//===============================================================================================================
-// System  : EWSoftware Design Time Attributes and Editors
+// System  : Sandcastle Help File Builder Plug-Ins
 // File    : XPathReflectionFileFilterConfigDlgOld.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Eyal Post
-// Updated : 05/08/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the XPath reflection file filter plug-in configuration
 //
@@ -30,10 +30,10 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 
 using Sandcastle.Core;
-using Sandcastle.Platform.Windows;
+using Sandcastle.Core.PlugIn;
+using Sandcastle.Core.Project;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
+using Sandcastle.Platform.Windows;
 
 namespace SandcastleBuilder.PlugIns.UI
 {
@@ -52,7 +52,7 @@ namespace SandcastleBuilder.PlugIns.UI
         public sealed class Factory : IPlugInConfigurationEditor
         {
             /// <inheritdoc />
-            public bool EditConfiguration(SandcastleProject project, XElement configuration)
+            public bool EditConfiguration(ISandcastleProject project, XElement configuration)
             {
                 var dlg = new XPathReflectionFileFilterConfigDlg(configuration);
 
@@ -69,26 +69,24 @@ namespace SandcastleBuilder.PlugIns.UI
         /// </summary>
         private class ExpressionItem : INotifyPropertyChanged
         {
-            private string expression, errorMessage;
-
             /// <summary>
             /// The XPath query expression
             /// </summary>
             public string Expression
             {
-                get => expression;
+                get => field;
                 set
                 {
-                    if(expression != value)
+                    if(field != value)
                     {
-                        expression = value;
+                        field = value;
 
                         try
                         {
                             // Make an attempt at validating the expression.  Just its syntax, not necessarily that
                             // it will work in the reflection file.
-                            XDocument doc = new XDocument();
-                            doc.XPathSelectElements(expression);
+                            XDocument doc = new();
+                            doc.XPathSelectElements(field);
 
                             this.ErrorMessage = null;
                         }
@@ -107,10 +105,10 @@ namespace SandcastleBuilder.PlugIns.UI
             /// </summary>
             public string ErrorMessage
             {
-                get => errorMessage;
+                get => field;
                 set
                 {
-                    errorMessage = value;
+                    field = value;
                     this.OnPropertyChanged();
                 }
             }

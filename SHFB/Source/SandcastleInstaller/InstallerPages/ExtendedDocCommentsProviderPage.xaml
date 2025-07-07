@@ -11,7 +11,7 @@
 			<Paragraph><Bold FontSize="16">Extended XML Documentation Comments Completion Provider</Bold></Paragraph>
 
 			<Paragraph>The
-<Hyperlink NavigateUri="https://marketplace.visualstudio.com/items?itemName=EWoodruff.ExtendedDocCommentsProvider">
+				<Hyperlink NavigateUri="https://marketplace.visualstudio.com/items?itemName=EWoodruff.ExtendedDocCommentsProvider2022">
 Extended XML Documentation Comments Completion Provider</Hyperlink> can be downloaded and installed from the
 <Bold>Visual Studio Gallery</Bold>.  It is an editor extension that augments the standard XML documentation
 comments elements with custom elements, attributes, and attribute values supported by the Sandcastle Help File

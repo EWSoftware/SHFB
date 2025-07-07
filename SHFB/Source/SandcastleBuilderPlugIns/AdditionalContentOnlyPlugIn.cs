@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalContentOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/25/2022
-// Note    : Copyright 2007-2022, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that can be used to build a help file consisting of nothing but additional
 // content items.  It is also useful for proofreading your additional content without having to build all the
@@ -33,9 +33,9 @@ using System.Text;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.BuildEngine;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.PlugIn;
+using Sandcastle.Core.Project;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -52,8 +52,7 @@ namespace SandcastleBuilder.PlugIns
         #region Private data members
         //=====================================================================
 
-        private List<ExecutionPoint> executionPoints;
-        private BuildProcess builder;
+        private IBuildProcess builder;
 
         #endregion
 
@@ -64,35 +63,26 @@ namespace SandcastleBuilder.PlugIns
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public IEnumerable<ExecutionPoint> ExecutionPoints
-        {
-            get
-            {
-                if(executionPoints == null)
-                    executionPoints = new List<ExecutionPoint>
-                    {
-                        new ExecutionPoint(BuildStep.ValidatingDocumentationSources, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.GenerateApiFilter, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.GenerateReflectionInfo, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.ApplyDocumentModel, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.AddNamespaceGroups, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.AddApiTopicFilenames, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.GenerateApiTopicManifest, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.GenerateNamespaceSummaries, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.GenerateInheritedDocumentation, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After)
-                    };
-
-                return executionPoints;
-            }
-        }
+        public IEnumerable<ExecutionPoint> ExecutionPoints { get; } =
+        [
+            new ExecutionPoint(BuildStep.ValidatingDocumentationSources, ExecutionBehaviors.InsteadOf),
+            new ExecutionPoint(BuildStep.GenerateApiFilter, ExecutionBehaviors.InsteadOf),
+            new ExecutionPoint(BuildStep.GenerateReflectionInfo, ExecutionBehaviors.InsteadOf),
+            new ExecutionPoint(BuildStep.ApplyDocumentModel, ExecutionBehaviors.InsteadOf),
+            new ExecutionPoint(BuildStep.AddNamespaceGroups, ExecutionBehaviors.InsteadOf),
+            new ExecutionPoint(BuildStep.AddApiTopicFilenames, ExecutionBehaviors.InsteadOf),
+            new ExecutionPoint(BuildStep.GenerateApiTopicManifest, ExecutionBehaviors.InsteadOf),
+            new ExecutionPoint(BuildStep.GenerateNamespaceSummaries, ExecutionBehaviors.InsteadOf),
+            new ExecutionPoint(BuildStep.GenerateInheritedDocumentation, ExecutionBehaviors.InsteadOf),
+            new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After)
+        ];
 
         /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XElement configuration)
+        public void Initialize(IBuildProcess buildProcess, XElement configuration)
         {
             builder = buildProcess;
 
@@ -126,7 +116,8 @@ namespace SandcastleBuilder.PlugIns
                 // Allow Before step plug-ins to run
                 builder.ExecuteBeforeStepPlugIns();
 
-                using(StreamWriter sw = new StreamWriter(builder.ReflectionInfoFilename, false, Encoding.UTF8))
+                // Don't use a simplified using here as we want the stream closed before copying the file
+                using(StreamWriter sw = new(builder.ReflectionInfoFilename, false, Encoding.UTF8))
                 {
                     sw.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                     sw.WriteLine("<reflection>");
@@ -151,10 +142,7 @@ namespace SandcastleBuilder.PlugIns
                     var config = XDocument.Load(builder.BuildAssemblerConfigurationFile);
 
                     // Delete the reference configuration component set if present
-                    var item = config.XPathSelectElement("//component[@id='Switch Component']/case[@value='API']");
-
-                    if(item != null)
-                        item.Remove();
+                    config.XPathSelectElement("//component[@id='Switch Component']/case[@value='API']")?.Remove();
 
                     // Remove the reflection.xml file from the configuration since it isn't valid
                     var allTargets = config.XPathSelectElements("//targets[@files='reflection.xml']").ToList();

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : LightweightWebsiteStylePlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Sam Harwell
-// Updated : 03/23/2022
-// Note    : Copyright 2014-2022, Eric Woodruff, All rights reserved.
+// Updated : 06/20/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved.
 //           Portions Copyright 2014-2022, Sam Harwell, All rights reserved.
 //
 // This file contains a plug-in that is used to add elements for the lightweight website style such as a search
@@ -32,8 +32,8 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.BuildEngine;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -52,8 +52,7 @@ namespace SandcastleBuilder.PlugIns
         #region Private data members
         //=====================================================================
 
-        private List<ExecutionPoint> executionPoints;
-        private BuildProcess builder;
+        private IBuildProcess builder;
         private string resizeToolTip;
 
         #endregion
@@ -62,23 +61,14 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <inheritdoc/>
-        public IEnumerable<ExecutionPoint> ExecutionPoints
-        {
-            get
-            {
-                if(executionPoints == null)
-                    executionPoints = new List<ExecutionPoint>
-                    {
-                        new ExecutionPoint(BuildStep.GenerateSharedContent, ExecutionBehaviors.After),
-                        new ExecutionPoint(BuildStep.GenerateFullTextIndex, ExecutionBehaviors.After)
-                    };
-
-                return executionPoints;
-            }
-        }
+        public IEnumerable<ExecutionPoint> ExecutionPoints { get; } =
+        [
+            new ExecutionPoint(BuildStep.GenerateSharedContent, ExecutionBehaviors.After),
+            new ExecutionPoint(BuildStep.GenerateFullTextIndex, ExecutionBehaviors.After)
+        ];
 
         /// <inheritdoc />
-        public void Initialize(BuildProcess buildProcess, XElement configuration)
+        public void Initialize(IBuildProcess buildProcess, XElement configuration)
         {
             builder = buildProcess;
 
@@ -129,7 +119,7 @@ namespace SandcastleBuilder.PlugIns
 
             // Generate the TOC fragments
             Directory.CreateDirectory(Path.Combine(builder.WorkingFolder, "Output", "Website", "toc"));
-            List<XElement> elements = new List<XElement>(webtoc.XPathSelectElements("//node()"));
+            List<XElement> elements = [.. webtoc.XPathSelectElements("//node()")];
 
             // Work around the problem of the root node only showing one type if there are no conceptual topics
             // or they are listed after the namespaces.  In such cases, expand the root node so that all
@@ -140,8 +130,8 @@ namespace SandcastleBuilder.PlugIns
             Parallel.ForEach(elements,
               new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount * 20 }, element =>
             {
-                XDocument pageChildren = new XDocument(new XDeclaration("1.0", "utf-8", null));
-                XElement copy = new XElement(element);
+                XDocument pageChildren = new(new XDeclaration("1.0", "utf-8", null));
+                XElement copy = new(element);
 
                 pageChildren.Add(copy);
 
@@ -159,23 +149,26 @@ namespace SandcastleBuilder.PlugIns
                 if(copy.Attribute("Url") != null)
                     uri = copy.Attribute("Url").Value;
                 else
+                {
                     if(copy.Attribute("Id") != null)
                         uri = copy.Attribute("Id").Value;
                     else
+                    {
                         if(copy.Name.LocalName == "HelpTOC")
                             uri = "roottoc.html";
                         else
                             throw new NotImplementedException();
+                    }
+                }
 
                 string fileId = Path.GetFileNameWithoutExtension(uri.Substring(uri.LastIndexOf('/') + 1));
 
                 if(element.HasElements)
                 {
-                    using(XmlWriter writer = XmlWriter.Create(Path.Combine(builder.WorkingFolder, "Output",
-                      "Website", "toc", fileId + ".xml"), new XmlWriterSettings { CloseOutput = true }))
-                    {
-                        pageChildren.WriteTo(writer);
-                    }
+                    using XmlWriter writer = XmlWriter.Create(Path.Combine(builder.WorkingFolder, "Output",
+                      "Website", "toc", fileId + ".xml"), new XmlWriterSettings { CloseOutput = true });
+                    
+                    pageChildren.WriteTo(writer);
                 }
 
                 if(String.IsNullOrEmpty((string)copy.Attribute("Url")))
@@ -188,7 +181,7 @@ namespace SandcastleBuilder.PlugIns
                 IEnumerable<XElement> siblings = current.Parent.Elements("HelpTOCNode");
                 IEnumerable<XElement> children = current.Elements("HelpTOCNode");
 
-                XElement tocNav = new XElement("div", new XAttribute("id", "tocNav"));
+                XElement tocNav = new("div", new XAttribute("id", "tocNav"));
 
                 // The documentation root
                 tocNav.Add(GenerateTocRoot(parent == null && !children.Any()));
@@ -230,39 +223,36 @@ namespace SandcastleBuilder.PlugIns
                 foreach(XElement child in children)
                     tocNav.Add(GenerateTocChild(child));
 
-                XElement resizableBar =
-                    new XElement("div",
-                        new XAttribute("id", "tocResizableEW"),
-                        new XAttribute("onmousedown", "OnMouseDown(event);"),
+                XElement resizableBar = new("div",
+                    new XAttribute("id", "tocResizableEW"),
+                    new XAttribute("onmousedown", "OnMouseDown(event);"),
                     // Add empty text to force full start/end element.  This allows for proper display in the
                     // browser while still allowing XHTML output that's valid for post-processing.
-                        new XText(String.Empty));
+                    new XText(String.Empty));
 
-                XElement resizeUi =
-                    new XElement("div",
-                        new XAttribute("id", "TocResize"),
-                        new XAttribute("class", "tocResize"),
-                        new XElement("img",
-                            new XAttribute("id", "ResizeImageIncrease"),
-                            new XAttribute("src", "../icons/TocOpen.gif"),
-                            new XAttribute("onclick", "OnIncreaseToc()"),
-                            new XAttribute("alt", resizeToolTip),
-                            new XAttribute("title", resizeToolTip)),
-                        new XElement("img",
-                            new XAttribute("id", "ResizeImageReset"),
-                            new XAttribute("src", "../icons/TocClose.gif"),
-                            new XAttribute("style", "display:none"),
-                            new XAttribute("onclick", "OnResetToc()"),
-                            new XAttribute("alt", resizeToolTip),
-                            new XAttribute("title", resizeToolTip)));
+                XElement resizeUi = new("div",
+                    new XAttribute("id", "TocResize"),
+                    new XAttribute("class", "tocResize"),
+                    new XElement("img",
+                        new XAttribute("id", "ResizeImageIncrease"),
+                        new XAttribute("src", "../icons/TocOpen.gif"),
+                        new XAttribute("onclick", "OnIncreaseToc()"),
+                        new XAttribute("alt", resizeToolTip),
+                        new XAttribute("title", resizeToolTip)),
+                    new XElement("img",
+                        new XAttribute("id", "ResizeImageReset"),
+                        new XAttribute("src", "../icons/TocClose.gif"),
+                        new XAttribute("style", "display:none"),
+                        new XAttribute("onclick", "OnResetToc()"),
+                        new XAttribute("alt", resizeToolTip),
+                        new XAttribute("title", resizeToolTip)));
 
-                XElement leftNav =
-                    new XElement("div",
-                        new XAttribute("class", "leftNav"),
-                        new XAttribute("id", "leftNav"),
-                        tocNav,
-                        resizableBar,
-                        resizeUi);
+                XElement leftNav = new("div",
+                    new XAttribute("class", "leftNav"),
+                    new XAttribute("id", "leftNav"),
+                    tocNav,
+                    resizableBar,
+                    resizeUi);
 
                 string path = Path.Combine(builder.WorkingFolder, @"Output\Website", current.Attribute("Url").Value);
                 string outputFile = File.ReadAllText(path, Encoding.UTF8);
@@ -327,20 +317,19 @@ namespace SandcastleBuilder.PlugIns
         /// <returns>The root TOC node</returns>
         private XElement GenerateTocRoot(bool expanded)
         {
-            XElement result =
-                new XElement("div",
-                    new XAttribute("class", "toclevel0"),
-                    new XAttribute("data-toclevel", "0"),
-                    new XElement("a",
-                        new XAttribute("class", expanded ? "tocExpanded" : "tocCollapsed"),
-                        new XAttribute("onclick", "Toggle(this);"),
-                        new XAttribute("href", "#!")),
-                    new XElement("a",
-                        new XAttribute("data-tochassubtree", "true"),
-                        new XAttribute("href", "../" + builder.DefaultTopicFile.Replace("\\", "/")),
-                        new XAttribute("title", builder.ResolvedHelpTitle),
-                        new XAttribute("tocid", "roottoc"),
-                        new XText(builder.SubstitutionTags.TransformText(builder.CurrentProject.HelpTitle))));
+            XElement result = new("div",
+                new XAttribute("class", "toclevel0"),
+                new XAttribute("data-toclevel", "0"),
+                new XElement("a",
+                    new XAttribute("class", expanded ? "tocExpanded" : "tocCollapsed"),
+                    new XAttribute("onclick", "Toggle(this);"),
+                    new XAttribute("href", "#!")),
+                new XElement("a",
+                    new XAttribute("data-tochassubtree", "true"),
+                    new XAttribute("href", "../" + builder.DefaultTopicFile.Replace("\\", "/")),
+                    new XAttribute("title", builder.ResolvedHelpTitle),
+                    new XAttribute("tocid", "roottoc"),
+                    new XText(builder.SubstitutionTags.TransformText(builder.CurrentProject.HelpTitle))));
 
             if(expanded)
                 result.SetAttributeValue("data-childrenloaded", "true");
@@ -382,20 +371,19 @@ namespace SandcastleBuilder.PlugIns
 
             tocTitle = ancestor.Attribute("Title").Value;
 
-            XElement result =
-                new XElement("div",
-                    new XAttribute("class", "toclevel" + level),
-                    new XAttribute("data-toclevel", level),
-                    new XElement("a",
-                        new XAttribute("class", expanded ? "tocExpanded" : "tocCollapsed"),
-                        new XAttribute("onclick", "Toggle(this);"),
-                        new XAttribute("href", "#!")),
-                    new XElement("a",
-                        new XAttribute("data-tochassubtree", "true"),
-                        new XAttribute("href", file),
-                        new XAttribute("title", tocTitle),
-                        new XAttribute("tocid", tocid),
-                        new XText(tocTitle)));
+            XElement result = new("div",
+                new XAttribute("class", "toclevel" + level),
+                new XAttribute("data-toclevel", level),
+                new XElement("a",
+                    new XAttribute("class", expanded ? "tocExpanded" : "tocCollapsed"),
+                    new XAttribute("onclick", "Toggle(this);"),
+                    new XAttribute("href", "#!")),
+                new XElement("a",
+                    new XAttribute("data-tochassubtree", "true"),
+                    new XAttribute("href", file),
+                    new XAttribute("title", tocTitle),
+                    new XAttribute("tocid", tocid),
+                    new XText(tocTitle)));
 
             if(expanded)
                 result.SetAttributeValue("data-childrenloaded", true);
@@ -466,17 +454,16 @@ namespace SandcastleBuilder.PlugIns
             else
                 glyphElement = null;
 
-            XElement result =
-                new XElement("div",
-                    new XAttribute("class", "toclevel" + level + styleClassSuffix),
-                    new XAttribute("data-toclevel", level),
-                    glyphElement,
-                    new XElement("a",
-                        new XAttribute("data-tochassubtree", sibling.HasElements),
-                        new XAttribute("href", file),
-                        new XAttribute("title", tocTitle),
-                        new XAttribute("tocid", targetTocId),
-                        new XText(tocTitle)));
+            XElement result = new("div",
+                new XAttribute("class", "toclevel" + level + styleClassSuffix),
+                new XAttribute("data-toclevel", level),
+                glyphElement,
+                new XElement("a",
+                    new XAttribute("data-tochassubtree", sibling.HasElements),
+                    new XAttribute("href", file),
+                    new XAttribute("title", tocTitle),
+                    new XAttribute("tocid", targetTocId),
+                    new XText(tocTitle)));
 
             if(sibling.HasElements && targetId == currentId)
                 result.SetAttributeValue("data-childrenloaded", true);
@@ -530,17 +517,16 @@ namespace SandcastleBuilder.PlugIns
             else
                 glyphElement = null;
 
-            XElement result =
-                new XElement("div",
-                    new XAttribute("class", "toclevel" + level),
-                    new XAttribute("data-toclevel", level),
-                    glyphElement,
-                    new XElement("a",
-                        new XAttribute("data-tochassubtree", child.HasElements),
-                        new XAttribute("href", file),
-                        new XAttribute("title", tocTitle),
-                        new XAttribute("tocid", tocid),
-                        new XText(tocTitle)));
+            XElement result = new("div",
+                new XAttribute("class", "toclevel" + level),
+                new XAttribute("data-toclevel", level),
+                glyphElement,
+                new XElement("a",
+                    new XAttribute("data-tochassubtree", child.HasElements),
+                    new XAttribute("href", file),
+                    new XAttribute("title", tocTitle),
+                    new XAttribute("tocid", tocid),
+                    new XText(tocTitle)));
 
             return result;
         }

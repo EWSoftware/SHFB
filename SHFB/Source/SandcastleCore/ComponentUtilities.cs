@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/20/2025
+// Updated : 06/22/2025
 // Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class containing properties and methods used to locate and work with build components,
@@ -58,8 +58,11 @@ namespace Sandcastle.Core
         private static string rootFolder, toolsFolder, coreComponentsFolder,
             thirdPartyComponentsFolder, coreReflectionDataFolder;
 
-        private static readonly Regex reSyntaxSplitter = new Regex(",\\s*");
+        private static readonly Regex reSyntaxSplitter = new(",\\s*");
         private static List<CultureInfo> supportedLanguages;
+
+        // Regular expressions used for encoding detection and parsing
+        private static readonly Regex reXmlEncoding = new("^<\\?xml.*?encoding\\s*=\\s*\"(?<Encoding>.*?)\".*?\\?>");
 
         #endregion
 
@@ -154,13 +157,13 @@ namespace Sandcastle.Core
 
                     try
                     {
-                        supportedLanguages = Directory.EnumerateFiles(stopWordListFolder, "*.txt").Select(
-                            f => new CultureInfo(Path.GetFileNameWithoutExtension(f))).OrderBy(c => c.DisplayName).ToList();
+                        supportedLanguages = [.. Directory.EnumerateFiles(stopWordListFolder, "*.txt").Select(
+                            f => new CultureInfo(Path.GetFileNameWithoutExtension(f))).OrderBy(c => c.DisplayName)];
                     }
                     catch
                     {
                         // Ignore any errors, just return a default list with the en-US language
-                        supportedLanguages = new List<CultureInfo> { new CultureInfo("en-US") };
+                        supportedLanguages = [new CultureInfo("en-US")];
                     }
                 }
 
@@ -189,7 +192,7 @@ namespace Sandcastle.Core
                 if(assembly == null)
                     assembly = Assembly.GetCallingAssembly();
 
-                Uri codeBase = new Uri(assembly.CodeBase);
+                Uri codeBase = new(assembly.CodeBase);
 
                 if(codeBase.IsFile)
                     location = codeBase.LocalPath;
@@ -227,7 +230,7 @@ namespace Sandcastle.Core
                   Environment.SpecialFolder.LocalApplicationData), StringComparison.OrdinalIgnoreCase) != -1 ||
                   assemblyLocation.IndexOf(@"\IDE\Extensions\", StringComparison.OrdinalIgnoreCase) != -1)
                 {
-                    rootFolder = Path.Combine(Environment.GetEnvironmentVariable("SHFBROOT"), "net472");
+                    rootFolder = Path.Combine(Environment.GetEnvironmentVariable("SHFBROOT"), "net48");
                 }
 
                 // If not found, use the executing assembly's folder.  Builds and other stuff that relies on the
@@ -283,7 +286,7 @@ namespace Sandcastle.Core
                 throw new ArgumentNullException(nameof(folders));
 
             var catalog = new AggregateCatalog();
-            HashSet<string> searchedFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            HashSet<string> searchedFolders = new(StringComparer.OrdinalIgnoreCase);
             bool disposeResolver = false;
 
             try
@@ -373,7 +376,7 @@ namespace Sandcastle.Core
                         // These can occur if it tries to load a foreign framework assembly (i.e. .NETStandard)
                         // In this case, the inner exception will be the bad image format exception.  If not,
                         // report the issue.
-                        if(!(ex.InnerException is BadImageFormatException))
+                        if(ex.InnerException is not BadImageFormatException)
                             throw;
 
                         System.Diagnostics.Debug.WriteLine(ex);
@@ -442,6 +445,80 @@ namespace Sandcastle.Core
                 }
             }
         }
+
+        /// <summary>
+        /// This is used to read in a file using an appropriate encoding method
+        /// </summary>
+        /// <param name="filename">The file to load</param>
+        /// <param name="encoding">Pass the default encoding to use.  On return, it contains the actual encoding
+        /// for the file.</param>
+        /// <returns>The contents of the file</returns>
+        /// <remarks>When reading the file, it uses the default encoding specified but detects the encoding if
+        /// byte order marks are present.  In addition, if the template is an XML file and it contains an
+        /// encoding identifier in the XML tag, the file is read using that encoding.</remarks>
+        public static string ReadWithEncoding(string filename, ref Encoding encoding)
+        {
+            Encoding fileEnc;
+            string content;
+
+            using(StreamReader sr = new(filename, encoding, true))
+            {
+                content = sr.ReadToEnd();
+                encoding = sr.CurrentEncoding;
+            }
+
+            Match m = reXmlEncoding.Match(content);
+
+            // Re-read an XML file using the correct encoding?
+            if(m.Success)
+            {
+                fileEnc = Encoding.GetEncoding(m.Groups["Encoding"].Value);
+
+                if(fileEnc != encoding)
+                {
+                    encoding = fileEnc;
+
+                    using StreamReader sr = new(filename, encoding, true);
+                    content = sr.ReadToEnd();
+                }
+            }
+
+            return content;
+        }
+
+        /// <summary>
+        /// This is used to get an enumerable list of unique namespaces from the given reflection data file
+        /// </summary>
+        /// <param name="reflectionInfoFile">The reflection data file to search for namespaces</param>
+        /// <param name="validNamespaces">An enumerable list of valid namespaces</param>
+        /// <returns>An enumerable list of unique namespaces</returns>
+        public static IEnumerable<string> GetReferencedNamespaces(string reflectionInfoFile,
+          IEnumerable<string> validNamespaces)
+        {
+            HashSet<string> seenNamespaces = [];
+            string ns;
+
+            // Find all type references and extract the namespace from them.  This is a rather brute force way
+            // of doing it but the type element can appear in various places.  This way we find them all.
+            // Examples: ancestors/type/@api, returns/type/@api, parameter/type/@api,
+            // parameter/referenceTo/type/@api, attributes/attribute/argument/type/@api,
+            // returns/type/specialization/type/@api, containers/type/@api, overrides/member/type/@api
+            var typeRefs = XmlStreamAxis(reflectionInfoFile, "type").Select(el => el.Attribute("api").Value);
+
+            foreach(string typeName in typeRefs)
+            {
+                if(typeName.Length > 2 && typeName.IndexOf('.') != -1)
+                {
+                    ns = typeName.Substring(2, typeName.LastIndexOf('.') - 2);
+
+                    if(validNamespaces.Contains(ns) && !seenNamespaces.Contains(ns))
+                    {
+                        seenNamespaces.Add(ns);
+                        yield return ns;
+                    }
+                }
+            }
+        }
         #endregion
 
         #region Syntax filter methods
@@ -467,18 +544,28 @@ namespace Sandcastle.Core
             if(definedCount == 0)
                 filterIds = "None";
             else
+            {
                 if(definedCount == allFilters.Count())
                     filterIds = "All";
                 else
+                {
                     if(definedCount == allFilters.Count(af => af.Id.IndexOf("usage",
                       StringComparison.OrdinalIgnoreCase) == -1))
+                    {
                         filterIds = "AllButUsage";
+                    }
                     else
-                        if(definedCount == 4 && (definedFilters.All(df => df.Id == "C#" ||
-                          df.Id == "Visual Basic" || df.Id == "Managed C++" || df.Id == "F#")))
+                    {
+                        if(definedCount == 4 && definedFilters.All(df => df.Id == "C#" ||
+                          df.Id == "Visual Basic" || df.Id == "Managed C++" || df.Id == "F#"))
+                        {
                             filterIds = "Standard";
+                        }
                         else
-                            filterIds = String.Join(", ", definedFilters.Select(f => f.Id).ToArray());
+                            filterIds = String.Join(", ", definedFilters.Select(f => f.Id));
+                    }
+                }
+            }
 
             return filterIds;
         }
@@ -503,8 +590,7 @@ namespace Sandcastle.Core
             if(allFilters == null)
                 throw new ArgumentNullException(nameof(allFilters));
 
-            if(filterIds == null)
-                filterIds = String.Empty;
+            filterIds ??= String.Empty;
 
             foreach(string id in reSyntaxSplitter.Split(filterIds).Where(f => f.Length != 0))
             {
@@ -571,9 +657,10 @@ namespace Sandcastle.Core
         public static string SyntaxFilterGeneratorsFrom(IEnumerable<ISyntaxGeneratorMetadata> allFilters,
           string filterIds)
         {
-            StringBuilder sb = new StringBuilder(1024);
+            StringBuilder sb = new(1024);
 
             foreach(var generator in SyntaxFiltersFrom(allFilters, filterIds))
+            {
                 if(!String.IsNullOrWhiteSpace(generator.DefaultConfiguration))
                 {
                     sb.AppendFormat(CultureInfo.InvariantCulture, "<generator id=\"{0}\">{1}</generator>\r\n",
@@ -581,6 +668,7 @@ namespace Sandcastle.Core
                 }
                 else
                     sb.AppendFormat(CultureInfo.InvariantCulture, "<generator id=\"{0}\" />\r\n", generator.Id);
+            }
 
             return sb.ToString();
         }
@@ -677,12 +765,11 @@ namespace Sandcastle.Core
         /// </overloads>
         public static IEnumerable<XElement> XmlStreamAxis(string xmlFile, string elementName)
         {
-            using(XmlReader reader = XmlReader.Create(xmlFile,
-              new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore, CloseInput = true }))
-            {
-                while(reader.ReadToFollowing(elementName))
-                    yield return (XElement)XNode.ReadFrom(reader);
-            }
+            using XmlReader reader = XmlReader.Create(xmlFile,
+              new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore, CloseInput = true });
+            
+            while(reader.ReadToFollowing(elementName))
+                yield return (XElement)XNode.ReadFrom(reader);
         }
 
         /// <summary>
@@ -697,25 +784,24 @@ namespace Sandcastle.Core
         /// followed by the nested elements (one level deep only).</remarks>
         public static IEnumerable<XElement> XmlStreamAxis(string xmlFile, IEnumerable<string> elementNames)
         {
-            HashSet<string> elements = new HashSet<string>(elementNames);
+            HashSet<string> elements = [.. elementNames];
 
-            using(XmlReader reader = XmlReader.Create(xmlFile,
-              new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore, CloseInput = true }))
+            using XmlReader reader = XmlReader.Create(xmlFile,
+              new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore, CloseInput = true });
+            
+            reader.MoveToContent();
+
+            while(reader.Read())
             {
-                reader.MoveToContent();
-
-                while(reader.Read())
+                if(reader.NodeType == XmlNodeType.Element && elementNames.Contains(reader.Name))
                 {
-                    if(reader.NodeType == XmlNodeType.Element && elementNames.Contains(reader.Name))
-                    {
-                        var root = (XElement)XNode.ReadFrom(reader);
+                    var root = (XElement)XNode.ReadFrom(reader);
 
-                        yield return root;
+                    yield return root;
 
-                        // We'll only look one level deep and no further
-                        foreach(var d in root.Descendants().Where(d => elements.Contains(d.Name.ToString())))
-                            yield return d;
-                    }
+                    // We'll only look one level deep and no further
+                    foreach(var d in root.Descendants().Where(d => elements.Contains(d.Name.ToString())))
+                        yield return d;
                 }
             }
         }

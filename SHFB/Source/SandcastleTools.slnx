@@ -2,7 +2,8 @@
   <Folder Name="/Solution Items/">
     <File Path="../../.editorconfig" />
     <File Path="../../IgnoredWords.dic" />
-    <File Path="../../Directory.Packages.props" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
   </Folder>
   <Project Path="BuildAssembler/BuildComponents/BuildComponents.csproj" />
   <Project Path="BuildAssembler/BuildComponentsUI/BuildComponentsUI.csproj" />
@@ -19,7 +20,6 @@
   <Project Path="SandcastleBuilderMSBuild/SandcastleBuilderMSBuild.csproj" />
   <Project Path="SandcastleBuilderPlugIns/SandcastleBuilderPlugIns.csproj" />
   <Project Path="SandcastleBuilderPlugInsUI/SandcastleBuilderPlugInsUI.csproj" />
-  <Project Path="SandcastleBuilderUtils/SandcastleBuilderUtils.csproj" />
   <Project Path="SandcastleBuilderWPF/SandcastleBuilderWPF_GUI.csproj" />
   <Project Path="SandcastleCore/SandcastleCore.csproj" />
   <Project Path="SandcastlePlatformWindows/SandcastlePlatformWindows.csproj" />

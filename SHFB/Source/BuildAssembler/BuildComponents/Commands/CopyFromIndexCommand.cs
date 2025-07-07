@@ -28,8 +28,8 @@ namespace Sandcastle.Tools.BuildComponents.Commands
         //=====================================================================
 
         // These are used to match and try broken EII member IDs
-        private static readonly Regex reDictionaryEII = new Regex(@"#I(\w*Dictionary){.*?}#");
-        private static readonly Regex reGenericEII = new Regex(@"#I(\w*){.*?}#");
+        private static readonly Regex reDictionaryEII = new(@"#I(\w*Dictionary){.*?}#");
+        private static readonly Regex reGenericEII = new(@"#I(\w*){.*?}#");
 
         #endregion
 

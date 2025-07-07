@@ -57,7 +57,7 @@ namespace ReflectionDataManager
         private readonly string workingFolder, msBuildExePath;
         private bool errorDetected;
 
-        private static readonly Regex reErrorCheck = new Regex(@"^\s*((Error|UnrecognizedOption|Unhandled Exception|" +
+        private static readonly Regex reErrorCheck = new(@"^\s*((Error|UnrecognizedOption|Unhandled Exception|" +
             @"Fatal Error|Unexpected error.*):|Process is terminated|Build FAILED|\w+\s*:\s*Error\s.*?:|" +
             @"\w.*?\(\d*,\d*\):\s*error\s.*?:)", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
@@ -220,8 +220,7 @@ namespace ReflectionDataManager
             this.ProgressProvider?.Report(String.Format(CultureInfo.InvariantCulture, "[{0}{1}]", processFilename,
                 !String.IsNullOrWhiteSpace(targetFile) ? " - " + targetFile : String.Empty));
 
-            if(arguments == null)
-                arguments = String.Empty;
+            arguments ??= String.Empty;
 
             if(!String.IsNullOrWhiteSpace(targetFile))
                 arguments += " " + targetFile;
@@ -350,120 +349,118 @@ namespace ReflectionDataManager
             string reflectionDataFile = Path.Combine(workingFolder, "reflection.xml"),
                 outputPath = Path.Combine(workingFolder, "Segregated");
 
-            using(var reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings { CloseInput = true }))
+            using var reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings { CloseInput = true });
+            XPathDocument document = new(reader);
+
+            Dictionary<string, object> dictionary3;
+            XmlWriter writer;
+            string current;
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+
+            Dictionary<string, Dictionary<string, object>> dictionary = [];
+            Dictionary<string, XmlWriter> dictionary2 = [];
+            XmlWriterSettings settings = new() { Indent = true, CloseOutput = true };
+
+            try
             {
-                XPathDocument document = new XPathDocument(reader);
+                Directory.CreateDirectory(outputPath);
 
-                Dictionary<string, object> dictionary3;
-                XmlWriter writer;
-                string current;
-                char[] invalidChars = Path.GetInvalidFileNameChars();
+                XPathNodeIterator iterator = document.CreateNavigator().Select(apiExpression);
 
-                Dictionary<string, Dictionary<string, object>> dictionary = new Dictionary<string, Dictionary<string, object>>();
-                Dictionary<string, XmlWriter> dictionary2 = new Dictionary<string, XmlWriter>();
-                XmlWriterSettings settings = new XmlWriterSettings { Indent = true, CloseOutput = true };
-
-                try
+                foreach(XPathNavigator navigator in iterator)
                 {
-                    Directory.CreateDirectory(outputPath);
+                    this.CancellationToken.ThrowIfCancellationRequested();
 
-                    XPathNodeIterator iterator = document.CreateNavigator().Select(apiExpression);
+                    current = (string)navigator.Evaluate(apiNamespaceExpression);
 
-                    foreach(XPathNavigator navigator in iterator)
+                    if(!String.IsNullOrEmpty(current))
                     {
-                        this.CancellationToken.ThrowIfCancellationRequested();
+                        String key = (string)navigator.Evaluate(assemblyNameExpression);
 
-                        current = (string)navigator.Evaluate(apiNamespaceExpression);
-
-                        if(!String.IsNullOrEmpty(current))
+                        if(!dictionary.TryGetValue(current, out dictionary3))
                         {
-                            String key = (string)navigator.Evaluate(assemblyNameExpression);
-
-                            if(!dictionary.TryGetValue(current, out dictionary3))
-                            {
-                                dictionary3 = new Dictionary<string, object>();
-                                dictionary.Add(current, dictionary3);
-                            }
-
-                            if(!dictionary3.ContainsKey(key))
-                                dictionary3.Add(key, null);
+                            dictionary3 = [];
+                            dictionary.Add(current, dictionary3);
                         }
+
+                        if(!dictionary3.ContainsKey(key))
+                            dictionary3.Add(key, null);
+                    }
+                }
+
+                foreach(string currentKey in dictionary.Keys)
+                {
+                    this.CancellationToken.ThrowIfCancellationRequested();
+
+                    string filename = currentKey.Substring(2) + ".xml";
+
+                    if(filename == ".xml")
+                        filename = "default_namespace.xml";
+                    else
+                    {
+                        if(filename.IndexOfAny(invalidChars) != -1)
+                            foreach(char c in invalidChars)
+                                filename = filename.Replace(c, '_');
                     }
 
-                    foreach(string currentKey in dictionary.Keys)
+                    filename = Path.Combine(outputPath, filename);
+
+                    writer = XmlWriter.Create(filename, settings);
+
+                    dictionary2.Add(currentKey, writer);
+
+                    writer.WriteStartElement("reflection");
+                    writer.WriteStartElement("assemblies");
+
+                    dictionary3 = dictionary[currentKey];
+
+                    foreach(string assemblyName in dictionary3.Keys)
                     {
                         this.CancellationToken.ThrowIfCancellationRequested();
 
-                        string filename = currentKey.Substring(2) + ".xml";
+                        XPathNavigator navigator2 = document.CreateNavigator().SelectSingleNode(
+                            "/*/assemblies/assembly[@name='" + assemblyName + "']");
 
-                        if(filename == ".xml")
-                            filename = "default_namespace.xml";
+                        if(navigator2 != null)
+                            navigator2.WriteSubtree(writer);
                         else
-                        {
-                            if(filename.IndexOfAny(invalidChars) != -1)
-                                foreach(char c in invalidChars)
-                                    filename = filename.Replace(c, '_');
-                        }
-
-                        filename = Path.Combine(outputPath, filename);
-
-                        writer = XmlWriter.Create(filename, settings);
-
-                        dictionary2.Add(currentKey, writer);
-
-                        writer.WriteStartElement("reflection");
-                        writer.WriteStartElement("assemblies");
-
-                        dictionary3 = dictionary[currentKey];
-
-                        foreach(string assemblyName in dictionary3.Keys)
-                        {
-                            this.CancellationToken.ThrowIfCancellationRequested();
-
-                            XPathNavigator navigator2 = document.CreateNavigator().SelectSingleNode(
-                                "/*/assemblies/assembly[@name='" + assemblyName + "']");
-
-                            if(navigator2 != null)
-                                navigator2.WriteSubtree(writer);
-                            else
-                                this.ProgressProvider.Report(String.Format(CultureInfo.InvariantCulture,
-                                    "Error: Input file does not contain node for '{0}' assembly", assemblyName));
-                        }
-
-                        writer.WriteEndElement();
-                        writer.WriteStartElement("apis");
+                            this.ProgressProvider.Report(String.Format(CultureInfo.InvariantCulture,
+                                "Error: Input file does not contain node for '{0}' assembly", assemblyName));
                     }
 
-                    foreach(XPathNavigator navigator in iterator)
-                    {
-                        this.CancellationToken.ThrowIfCancellationRequested();
-
-                        current = (string)navigator.Evaluate(apiNamespaceExpression);
-
-                        if(String.IsNullOrEmpty(current))
-                            current = (string)navigator.Evaluate(namespaceIdExpression);
-
-                        writer = dictionary2[current];
-                        navigator.WriteSubtree(writer);
-                    }
-
-                    foreach(XmlWriter w in dictionary2.Values)
-                    {
-                        this.CancellationToken.ThrowIfCancellationRequested();
-
-                        w.WriteEndElement();
-                        w.WriteEndElement();
-                        w.WriteEndDocument();
-                    }
-
-                    this.ProgressProvider.Report(String.Format(CultureInfo.InvariantCulture,
-                        "Info: Wrote information on {0} APIs to {1} files.", iterator.Count, dictionary2.Count));
+                    writer.WriteEndElement();
+                    writer.WriteStartElement("apis");
                 }
-                finally
+
+                foreach(XPathNavigator navigator in iterator)
                 {
-                    foreach(XmlWriter w in dictionary2.Values)
-                        w.Close();
+                    this.CancellationToken.ThrowIfCancellationRequested();
+
+                    current = (string)navigator.Evaluate(apiNamespaceExpression);
+
+                    if(String.IsNullOrEmpty(current))
+                        current = (string)navigator.Evaluate(namespaceIdExpression);
+
+                    writer = dictionary2[current];
+                    navigator.WriteSubtree(writer);
                 }
+
+                foreach(XmlWriter w in dictionary2.Values)
+                {
+                    this.CancellationToken.ThrowIfCancellationRequested();
+
+                    w.WriteEndElement();
+                    w.WriteEndElement();
+                    w.WriteEndDocument();
+                }
+
+                this.ProgressProvider.Report(String.Format(CultureInfo.InvariantCulture,
+                    "Info: Wrote information on {0} APIs to {1} files.", iterator.Count, dictionary2.Count));
+            }
+            finally
+            {
+                foreach(XmlWriter w in dictionary2.Values)
+                    w.Close();
             }
         }
         #endregion

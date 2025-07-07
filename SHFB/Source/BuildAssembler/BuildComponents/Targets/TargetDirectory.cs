@@ -1,5 +1,5 @@
 //===============================================================================================================
-// System  : Sandcastle Build Components
+// System  : Sandcastle Help File Builder Components
 // File    : TargetDirectory.cs
 // Note    : Copyright 2010-2021 Microsoft Corporation
 //
@@ -86,20 +86,18 @@ namespace Sandcastle.Tools.BuildComponents.Targets
             if(!File.Exists(path))
                 return null;
 
-            using(var reader = XmlReader.Create(path, new XmlReaderSettings { CloseInput = true }))
-            {
-                XPathDocument document = new XPathDocument(reader);
-                XPathNavigator navigator = document.CreateNavigator();
-                string url = navigator.Evaluate(urlExpression).ToString(),
-                       text = navigator.Evaluate(textExpression).ToString(),
-                       linkText = navigator.Evaluate(linkTextExpression).ToString();
+            using var reader = XmlReader.Create(path, new XmlReaderSettings { CloseInput = true });
+            XPathDocument document = new(reader);
+            XPathNavigator navigator = document.CreateNavigator();
+            string url = navigator.Evaluate(urlExpression).ToString(),
+                   text = navigator.Evaluate(textExpression).ToString(),
+                   linkText = navigator.Evaluate(linkTextExpression).ToString();
 
-                // EFW - Use the alternate link text if specified
-                if(!String.IsNullOrEmpty(linkText))
-                    text = linkText;
+            // EFW - Use the alternate link text if specified
+            if(!String.IsNullOrEmpty(linkText))
+                text = linkText;
 
-                return new TargetInfo(url, text, linkType);
-            }
+            return new TargetInfo(url, text, linkType);
         }
         #endregion
     }

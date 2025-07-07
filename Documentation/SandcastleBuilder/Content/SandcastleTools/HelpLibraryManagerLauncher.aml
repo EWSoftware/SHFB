@@ -10,7 +10,6 @@ in the MS Help Viewer Category Properties section for usage notes.</para>
 		<relatedTopics>
 			<link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4" />
 			<link xlink:href="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" />
-			<codeEntityReference qualifyHint="false">T:SandcastleBuilder.MicrosoftHelpViewer.HelpLibraryManager</codeEntityReference>
 		</relatedTopics>
 	</developerConceptualDocument>
 </topic>

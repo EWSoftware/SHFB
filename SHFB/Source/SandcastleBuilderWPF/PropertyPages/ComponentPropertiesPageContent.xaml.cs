@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ComponentPropertiesPageContent.cs
 // Author  : Eric Woodruff
-// Updated : 05/31/2021
-// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2017-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Components category properties
 //
@@ -30,8 +30,6 @@ using System.Xml.Linq;
 using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
-
-using SandcastleBuilder.Utils.BuildComponent;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {
@@ -352,10 +350,12 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 if(lbProjectComponents.Items.Count == 0)
                     btnConfigure.IsEnabled = btnDelete.IsEnabled = false;
                 else
+                {
                     if(idx < lbProjectComponents.Items.Count)
                         lbProjectComponents.SelectedIndex = idx;
                     else
                         lbProjectComponents.SelectedIndex = idx - 1;
+                }
             }
         }
 
@@ -393,11 +393,11 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private void componentCache_ComponentContainerLoaded(object sender, EventArgs e)
         {
-            ComponentSettingsNeededEventArgs projectSettings = new ComponentSettingsNeededEventArgs();
+            ComponentSettingsNeededEventArgs projectSettings = new();
 
             this.ComponentSettingsNeeded?.Invoke(this, projectSettings);
 
-            HashSet<string> componentIds = new HashSet<string>();
+            HashSet<string> componentIds = [];
 
             try
             {
@@ -406,21 +406,23 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 lbAvailableComponents.Items.Clear();
                 lbProjectComponents.Items.Clear();
 
-                availableComponents = componentCache.ComponentContainer.GetExports<BuildComponentFactory,
-                    IBuildComponentMetadata>().ToList();
-                availableConfigEditors = componentCache.ComponentContainer.GetExports<IConfigurationEditor,
-                    IConfigurationEditorMetadata>().ToList();
+                availableComponents = [.. componentCache.ComponentContainer.GetExports<BuildComponentFactory,
+                    IBuildComponentMetadata>()];
+                availableConfigEditors = [.. componentCache.ComponentContainer.GetExports<IConfigurationEditor,
+                    IConfigurationEditorMetadata>()];
 
                 // Only load those that indicate that they are visible to the property page.  There may be
                 // duplicate component IDs across the assemblies found.  See
                 // BuildComponentManger.GetComponentContainer() for the folder search precedence.  Only the first
                 // component for a unique ID will be used.
                 foreach(var component in availableComponents)
+                {
                     if(!componentIds.Contains(component.Metadata.Id) && component.Metadata.IsVisible)
                     {
                         lbAvailableComponents.Items.Add(component.Metadata.Id);
                         componentIds.Add(component.Metadata.Id);
                     }
+                }
             }
             catch(Exception ex)
             {

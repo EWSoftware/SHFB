@@ -1,5 +1,5 @@
 ﻿//===============================================================================================================
-// System  : Sandcastle Build Components
+// System  : Sandcastle Help File Builder Components
 // File    : ReferenceLinkInfo.cs
 // Note    : Copyright 2010-2021 Microsoft Corporation
 //

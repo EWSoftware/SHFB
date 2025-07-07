@@ -55,7 +55,7 @@ namespace SandcastleBuilder.Gui
             WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient6 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
             WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient7 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.sbStatusBarText = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
+            this.sbStatusBarText = new SandcastleBuilder.Gui.StatusBarTextProvider(this.components);
             this.miProject = new System.Windows.Forms.ToolStripMenuItem();
             this.miNewProject = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -1029,7 +1029,7 @@ namespace SandcastleBuilder.Gui
 
         #endregion
 
-        private SandcastleBuilder.Utils.Controls.StatusBarTextProvider sbStatusBarText;
+        private SandcastleBuilder.Gui.StatusBarTextProvider sbStatusBarText;
         private System.Windows.Forms.MenuStrip mnuMain;
         private System.Windows.Forms.ToolStripMenuItem miProject;
         private System.Windows.Forms.ToolStripMenuItem miExit;

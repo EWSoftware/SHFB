@@ -2,8 +2,8 @@
 // System  : Help Library Manager Launcher
 // File    : CommandLineArgument.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/07/2021
-// Note    : Copyright 2010-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2010-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a command line argument
 //
@@ -19,7 +19,7 @@
 
 using System;
 
-namespace SandcastleBuilder.MicrosoftHelpViewer
+namespace Sandcastle.Platform.Windows.MicrosoftHelpViewer
 {
     /// <summary>
     /// This class represents a command line argument

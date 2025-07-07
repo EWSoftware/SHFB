@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : FileTree.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to manage the project's files in the Project Explorer tree view control
 //
@@ -25,7 +25,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
+using Sandcastle.Core.Project;
+
+using SandcastleBuilder.MSBuild.HelpProject;
 
 namespace SandcastleBuilder.Gui.ContentEditors
 {
@@ -153,12 +156,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// Load the tree with the folder and file items
         /// </summary>
         /// <param name="files">The folder and file build items from the project</param>
-        public void LoadTree(IList<FileItem> files)
+        public void LoadTree(IList<IFileItem> files)
         {
-            SortedDictionary<string, FileItem> fileItems = new SortedDictionary<string,FileItem>();
-            List<string> folderNames = new List<string>(), additionalFolders = new List<string>();
-            SandcastleProject project = null;
-            FileItem fileItem;
+            SortedDictionary<string, IFileItem> fileItems = [];
+            List<string> folderNames = [], additionalFolders = [];
+            ISandcastleProject project = null;
+            IFileItem fileItem;
             TreeNode root, itemNode;
             TreeNode[] matches;
             string name;
@@ -175,7 +178,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 treeView.SuspendLayout();
 
                 // First, get a list of all folders and files in sorted order
-                foreach(FileItem item in files)
+                foreach(IFileItem item in files)
                 {
                     name = item.LinkPath.PersistablePath;
 
@@ -252,8 +255,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     fileItems.TryGetValue(folder, out fileItem);
 
                     // Add a folder node if one doesn't exist
-                    if(fileItem == null)
-                        fileItem = project.AddFolderToProject(folder);
+                    fileItem ??= project.AddFolderToProject(folder);
 
                     itemNode = new TreeNode(name)
                     {
@@ -310,7 +312,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// Refresh the path info in each child node due to a renamed parent folder node
         /// </summary>
         /// <param name="node">The node in which to refresh the children</param>
-        public void RefreshPathsInChildren(TreeNode node)
+        public static void RefreshPathsInChildren(TreeNode node)
         {
             if(node == null)
                 throw new ArgumentNullException(nameof(node));
@@ -321,7 +323,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 ((FileItem)nodeData.Item).RefreshPaths();
 
                 if(n.Nodes.Count != 0)
-                    this.RefreshPathsInChildren(n);
+                    RefreshPathsInChildren(n);
             }
         }
 

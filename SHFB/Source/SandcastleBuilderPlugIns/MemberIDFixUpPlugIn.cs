@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : MemberIdFixUpPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2021
-// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that is used to fix up member IDs in the XML comments files due to quirks in
 // the various compilers that cause a mismatch between the member IDs in the XML comments and the reflection
@@ -25,9 +25,8 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.BuildEngine;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -45,8 +44,7 @@ namespace SandcastleBuilder.PlugIns
         #region Private data members
         //=====================================================================
 
-        private List<ExecutionPoint> executionPoints;
-        private BuildProcess builder;
+        private IBuildProcess builder;
         private List<MemberIdMatchExpression> expressions;
 
         #endregion
@@ -58,27 +56,18 @@ namespace SandcastleBuilder.PlugIns
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public IEnumerable<ExecutionPoint> ExecutionPoints
-        {
-            get
-            {
-                if(executionPoints == null)
-                    executionPoints = new List<ExecutionPoint>
-                    {
-                        // This one has a lower priority as it fixes stuff that the other plug-ins might add
-                        new ExecutionPoint(BuildStep.ValidatingDocumentationSources, ExecutionBehaviors.After, 100)
-                    };
-
-                return executionPoints;
-            }
-        }
+        public IEnumerable<ExecutionPoint> ExecutionPoints { get; } =
+        [
+            // This one has a lower priority as it fixes stuff that the other plug-ins might add
+            new ExecutionPoint(BuildStep.ValidatingDocumentationSources, ExecutionBehaviors.After, 100)
+        ];
 
         /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XElement configuration)
+        public void Initialize(IBuildProcess buildProcess, XElement configuration)
         {
             if(configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
@@ -90,15 +79,17 @@ namespace SandcastleBuilder.PlugIns
 
             builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
-            expressions = new List<MemberIdMatchExpression>();
+            expressions = [];
 
             foreach(var expr in configuration.Descendants("expression"))
+            {
                 expressions.Add(new MemberIdMatchExpression
                 {
                     MatchExpression = expr.Attribute("matchExpression").Value,
                     ReplacementValue = expr.Attribute("replacementValue").Value,
                     MatchAsRegEx = (bool)expr.Attribute("matchAsRegEx")
                 });
+            }
 
             if(expressions.Count == 0)
             {
@@ -121,12 +112,15 @@ namespace SandcastleBuilder.PlugIns
                 string content = commentsFile.Comments.OuterXml;
 
                 foreach(var matchExpr in expressions)
+                {
                     if(matchExpr.MatchAsRegEx)
                         content = matchExpr.RegularExpression.Replace(content, matchExpr.ReplacementValue);
                     else
                         content = content.Replace(matchExpr.MatchExpression, matchExpr.ReplacementValue);
+                }
 
-                using(StreamWriter sw = new StreamWriter(commentsFile.SourcePath, false, commentsFile.Encoding))
+                // Don't use a simplified using here.  We want to ensure the file is closed before reloading it.
+                using(StreamWriter sw = new(commentsFile.SourcePath, false, commentsFile.Encoding))
                 {
                     sw.Write(content);
                 }

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 08/24/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Build category properties
 //
@@ -30,8 +30,9 @@ using System.Runtime.InteropServices;
 using Microsoft.Build.Evaluation;
 
 using Sandcastle.Core;
+using Sandcastle.Core.Project;
 
-using SandcastleBuilder.Utils;
+using SandcastleBuilder.MSBuild.HelpProject;
 using SandcastleBuilder.WPF.PropertyPages;
 
 #if !STANDALONEGUI
@@ -83,7 +84,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             // Set the project as the base path provider so that the folder is correct
             if(this.CurrentProject != null)
             {
-                SandcastleProject project = this.CurrentProject;
+                SandcastleProject project = (SandcastleProject)this.CurrentProject;
 #endif
                 ucBuildPropertiesPageContent.SetCurrentProject(project);
             }
@@ -109,7 +110,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 return false;
             }
 
-            currentProject = this.CurrentProject;
+            currentProject = (SandcastleProject)this.CurrentProject;
 #endif
             if(propertyName == "FrameworkVersion")
             {
@@ -161,7 +162,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 this.ProjectMgr.SetProjectProperty("HelpFileFormat",
                     ucBuildPropertiesPageContent.SelectedHelpFileFormats.ToString());
 #else
-                this.CurrentProject.MSBuildProject.SetProperty("HelpFileFormat",
+                ((SandcastleProject)this.CurrentProject).MSBuildProject.SetProperty("HelpFileFormat",
                     ucBuildPropertiesPageContent.SelectedHelpFileFormats.ToString());
 #endif
                 return true;
@@ -173,7 +174,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 this.ProjectMgr.SetProjectProperty("SyntaxFilters",
                     ucBuildPropertiesPageContent.SelectedSyntaxFilters);
 #else
-                this.CurrentProject.MSBuildProject.SetProperty("SyntaxFilters",
+                ((SandcastleProject)this.CurrentProject).MSBuildProject.SetProperty("SyntaxFilters",
                     ucBuildPropertiesPageContent.SelectedSyntaxFilters);
 #endif
                 return true;
@@ -186,7 +187,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 this.ProjectMgr.SetProjectProperty("PresentationStyle",
                     ucBuildPropertiesPageContent.SelectedPresentationStyle);
 #else
-                this.CurrentProject.MSBuildProject.SetProperty("PresentationStyle",
+                ((SandcastleProject)this.CurrentProject).MSBuildProject.SetProperty("PresentationStyle",
                     ucBuildPropertiesPageContent.SelectedPresentationStyle);
 #endif
             }
@@ -219,11 +220,12 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(this.IsDisposed || this.CurrentProject == null)
                 return;
 
-            helpFileFormatsProp = this.CurrentProject.MSBuildProject.GetProperty("HelpFileFormat");
-            presentationStyleProp = this.CurrentProject.MSBuildProject.GetProperty("PresentationStyle");
-            syntaxFiltersProp = this.CurrentProject.MSBuildProject.GetProperty("SyntaxFilters");
-#endif
+            var project = ((SandcastleProject)this.CurrentProject).MSBuildProject;
 
+            helpFileFormatsProp = project.GetProperty("HelpFileFormat");
+            presentationStyleProp = project.GetProperty("PresentationStyle");
+            syntaxFiltersProp = project.GetProperty("SyntaxFilters");
+#endif
             e.ProjectLoaded = true;
             e.PresentationStyle = presentationStyleProp?.UnevaluatedValue;
             e.SyntaxFilters = (syntaxFiltersProp?.UnevaluatedValue ?? ComponentUtilities.DefaultSyntaxFilter);

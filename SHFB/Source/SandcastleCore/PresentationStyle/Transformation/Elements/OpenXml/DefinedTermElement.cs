@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : DefinedTermElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/09/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle defined term elements based on the topic type
 //
@@ -41,8 +41,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml
             if(element == null)
                 throw new ArgumentNullException(nameof(element));
 
-            XElement span = new XElement("span", new XAttribute("class", "Bold")),
-                para = new XElement(WordProcessingML + "p",
+            XElement span = new("span", new XAttribute("class", "Bold")),
+                para = new(WordProcessingML + "p",
                 new XElement(WordProcessingML + "pPr",
                     new XElement(WordProcessingML + "spacing",
                         new XAttribute(WordProcessingML + "after", "0"))), span);

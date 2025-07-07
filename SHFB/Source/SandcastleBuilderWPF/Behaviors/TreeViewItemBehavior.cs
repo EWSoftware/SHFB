@@ -2,9 +2,9 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TreeViewItemBehavior.cs
 // Author  : Josh Smith
-// Updated : 04/17/2021
+// Updated : 07/04/2025
 // Source  : https://www.codeproject.com/Articles/28959/Introduction-to-Attached-Behaviors-in-WPF
-// Note    : Copyright 2008-2021, Josh Smith, All rights reserved
+// Note    : Copyright 2008-2025, Josh Smith, All rights reserved
 //
 // This file contains a class that exposes attached behaviors that can be applied to TreeViewItem objects
 //
@@ -77,10 +77,7 @@ namespace SandcastleBuilder.WPF.Behaviors
         private static void OnIsBroughtIntoViewWhenSelectedChanged(
           DependencyObject depObj, DependencyPropertyChangedEventArgs e)
         {
-            if(!(depObj is TreeViewItem item))
-                return;
-
-            if(!(e.NewValue is bool))
+            if(depObj is not TreeViewItem item || e.NewValue is not bool)
                 return;
 
             if((bool)e.NewValue)

@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicType.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/31/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to contain topic type information
 //
@@ -31,47 +31,47 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
         #region Private data members
         //=====================================================================
 
-        private static readonly List<TopicType> topicTypes = new List<TopicType>
-        {
-            new TopicType("1FE70836-AA7D-4515-B54B-E10C4B516E50", "developerConceptualDocument",
+        private static readonly List<TopicType> topicTypes =
+        [
+            new("1FE70836-AA7D-4515-B54B-E10C4B516E50", "developerConceptualDocument",
                 TopicTypeGroup.Concepts, TopicTypeGroup.Concepts),
-            new TopicType("B137C930-7BF7-48A2-A329-3ADCAEF8868E", "developerOrientationDocument",
+            new("B137C930-7BF7-48A2-A329-3ADCAEF8868E", "developerOrientationDocument",
                 TopicTypeGroup.Concepts, TopicTypeGroup.OtherResources),
-            new TopicType("68F07632-C4C5-4645-8DFA-AC87DCB4BD54", "developerSDKTechnologyOverviewArchitectureDocument",
+            new("68F07632-C4C5-4645-8DFA-AC87DCB4BD54", "developerSDKTechnologyOverviewArchitectureDocument",
                 TopicTypeGroup.Concepts, TopicTypeGroup.Concepts),
-            new TopicType("CDB8C120-888F-447B-8AF8-F9540562E7CA", "developerSDKTechnologyOverviewOrientationDocument",
+            new("CDB8C120-888F-447B-8AF8-F9540562E7CA", "developerSDKTechnologyOverviewOrientationDocument",
                 TopicTypeGroup.Concepts, TopicTypeGroup.OtherResources),
-            new TopicType("356C57C4-384D-4AF2-A637-FDD6F088A033", "developerSDKTechnologyOverviewScenariosDocument",
+            new("356C57C4-384D-4AF2-A637-FDD6F088A033", "developerSDKTechnologyOverviewScenariosDocument",
                 TopicTypeGroup.Concepts, TopicTypeGroup.Concepts),
-            new TopicType("19F1BB0E-F32A-4D5F-80A9-211D92A8A715", "developerSDKTechnologyOverviewTechnologySummaryDocument",
+            new("19F1BB0E-F32A-4D5F-80A9-211D92A8A715", "developerSDKTechnologyOverviewTechnologySummaryDocument",
                 TopicTypeGroup.Concepts, TopicTypeGroup.Concepts),
-            new TopicType("56DB00EC-28BA-4C0D-8694-28E8B244E236", "developerWhitePaperDocument",
+            new("56DB00EC-28BA-4C0D-8694-28E8B244E236", "developerWhitePaperDocument",
                 TopicTypeGroup.Concepts, TopicTypeGroup.OtherResources),
-            new TopicType("DAC3A6A0-C863-4E5B-8F65-79EFC6A4BA09", "developerHowToDocument",
+            new("DAC3A6A0-C863-4E5B-8F65-79EFC6A4BA09", "developerHowToDocument",
                 TopicTypeGroup.HowTo, TopicTypeGroup.Tasks),
-            new TopicType("4779DD54-5D0C-4CC3-9DB3-BF1C90B721B3", "developerWalkthroughDocument",
+            new("4779DD54-5D0C-4CC3-9DB3-BF1C90B721B3", "developerWalkthroughDocument",
                 TopicTypeGroup.HowTo, TopicTypeGroup.Tasks),
-            new TopicType("A635375F-98C2-4241-94E7-E427B47C20B6", "developerErrorMessageDocument",
+            new("A635375F-98C2-4241-94E7-E427B47C20B6", "developerErrorMessageDocument",
                 TopicTypeGroup.Reference, TopicTypeGroup.Reference),
-            new TopicType("95DADC4C-A2A6-447A-AA36-B6BE3A4F8DEC", "developerReferenceWithSyntaxDocument",
+            new("95DADC4C-A2A6-447A-AA36-B6BE3A4F8DEC", "developerReferenceWithSyntaxDocument",
                 TopicTypeGroup.Reference, TopicTypeGroup.Reference),
-            new TopicType("F9205737-4DEC-4A58-AA69-0E621B1236BD", "developerReferenceWithoutSyntaxDocument",
+            new("F9205737-4DEC-4A58-AA69-0E621B1236BD", "developerReferenceWithoutSyntaxDocument",
                 TopicTypeGroup.Reference, TopicTypeGroup.Reference),
-            new TopicType("38C8E0D1-D601-4DBA-AE1B-5BEC16CD9B01", "developerTroubleshootingDocument",
+            new("38C8E0D1-D601-4DBA-AE1B-5BEC16CD9B01", "developerTroubleshootingDocument",
                 TopicTypeGroup.Reference, TopicTypeGroup.Tasks),
-            new TopicType("B8ED9F21-39A4-4967-928D-160CD2ED9DCE", "developerUIReferenceDocument",
+            new("B8ED9F21-39A4-4967-928D-160CD2ED9DCE", "developerUIReferenceDocument",
                 TopicTypeGroup.Reference, TopicTypeGroup.Reference),
-            new TopicType("3272D745-2FFC-48C4-9E9D-CF2B2B784D5F", "developerXmlReference",
+            new("3272D745-2FFC-48C4-9E9D-CF2B2B784D5F", "developerXmlReference",
                 TopicTypeGroup.Reference, TopicTypeGroup.Reference),
-            new TopicType("A689E19C-2687-4881-8CE1-652FF60CF46C", "developerGlossaryDocument",
+            new("A689E19C-2687-4881-8CE1-652FF60CF46C", "developerGlossaryDocument",
                 TopicTypeGroup.Reference, TopicTypeGroup.OtherResources),
-            new TopicType("069EFD88-412D-4E2F-8848-2D5C3AD56BDE", "developerSampleDocument",
+            new("069EFD88-412D-4E2F-8848-2D5C3AD56BDE", "developerSampleDocument",
                 TopicTypeGroup.Samples, TopicTypeGroup.Tasks),
-            new TopicType("4BBAAF90-0E5F-4C86-9D31-A5CAEE35A416", "developerSDKTechnologyOverviewCodeDirectoryDocument",
+            new("4BBAAF90-0E5F-4C86-9D31-A5CAEE35A416", "developerSDKTechnologyOverviewCodeDirectoryDocument",
                 TopicTypeGroup.Samples, TopicTypeGroup.Concepts),
-            new TopicType("4A273212-0AC8-4D72-8349-EC11CD2FF8CD", "codeEntityDocument", TopicTypeGroup.Samples,
+            new("4A273212-0AC8-4D72-8349-EC11CD2FF8CD", "codeEntityDocument", TopicTypeGroup.Samples,
                 TopicTypeGroup.OtherResources)
-        };
+        ];
 
         private static readonly Dictionary<string, TopicType>
             uniqueIds = topicTypes.ToDictionary(t => t.UniqueId, t => t, StringComparer.OrdinalIgnoreCase),

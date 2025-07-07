@@ -21,7 +21,10 @@
 // 03/15/2021 - EFW - Added support for reading portable PDB files for source context information
 // 03/16/2021 - EFW - Added support for determining the nullable context for nullable reference types
 
-// Ignore Spelling: str Guid ptr Zonnon Comega nop mrefs al
+// Ignore Spelling: str Guid ptr Zonnon Comega nop mrefs al sctx Impl Incrementer typeswitch ldecl mvid xwriter
+// Ignore Spelling: Utc pdb unmangled meth arity Arglist typedreference Deffering Modelfield
+
+// TODO: This really needs cleaning up but there's a lot here so, maybe later
 
 using System.Collections;
 using System.Collections.Generic;
@@ -370,9 +373,7 @@ namespace System.Compiler
         /// </summary>
         public virtual int GetLine(int position)
         {
-            int line = 0;
-            int column = 0;
-            this.GetPosition(position, out line, out column);
+            this.GetPosition(position, out int line, out _);
             return line + this.LineNumber;
         }
         /// <summary>
@@ -381,9 +382,7 @@ namespace System.Compiler
         /// </summary>
         public virtual int GetColumn(int position)
         {
-            int line = 0;
-            int column = 0;
-            this.GetPosition(position, out line, out column);
+            this.GetPosition(position, out _, out int column);
             return column + 1;
         }
 
@@ -460,7 +459,7 @@ tryAgain:
             int lines = this.lines;
             if(lineOffsets == null) { Debug.Assert(false); return -1; }
             if(offset < 0) { Debug.Assert(false); return -1; }
-            int mid = 0;
+            int mid;
             int low = 0;
             int high = lines - 1;
             while(low < high)
@@ -688,8 +687,8 @@ TryAgain:
             this.Text = null;
         }
 
-        private List<int> lineList = new List<int>();
-        private List<int> columnList = new List<int>();
+        private readonly List<int> lineList = [];
+        private readonly List<int> columnList = [];
 
         public override int GetLine(int offset)
         {

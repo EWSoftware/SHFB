@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Package
 // File    : DocumentationSourcesContainerNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2025
+// Updated : 06/24/2025
 // Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that represents the documentation sources container node in a Sandcastle Help
@@ -18,8 +18,6 @@
 // 03/30/2011  EFW  Created the code
 // 10/22/2012  EFW  Updated to support .winmd documentation sources
 //===============================================================================================================
-
-// Ignore Spelling: dll Cmdexecopt pva
 
 using System;
 using System.Collections.Generic;
@@ -42,8 +40,9 @@ using Sandcastle.Platform.Windows;
 
 using SandcastleBuilder.Package.Automation;
 using SandcastleBuilder.Package.Properties;
-using SandcastleBuilder.Utils;
 using SandcastleBuilder.WPF.UI;
+
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.Package.Nodes
 {
@@ -170,85 +169,84 @@ namespace SandcastleBuilder.Package.Nodes
             if(!this.ProjectMgr.QueryEditProjectFile(false))
                 throw Marshal.GetExceptionForHR(VSConstants.OLE_E_PROMPTSAVECANCELLED);
 
-            using(OpenFileDialog dlg = new OpenFileDialog())
+            using OpenFileDialog dlg = new();
+            
+            dlg.Title = "Select the documentation source(s)";
+            dlg.Filter = "Assemblies, Comments Files, and Projects (*.dll, *.exe, *.winmd, *.xml, " +
+                "*.sln, *.slnx, *.*proj)|*.dll;*.exe;*.winmd;*.xml;*.sln;*.slnx;*.*proj|" +
+                "Library Files (*.dll, *.winmd)|*.dll;*.winmd|Executable Files (*.exe)|*.exe|" +
+                "XML Comments Files (*.xml)|*.xml|Visual Studio Solution Files (*.sln, *.slnx)|*.sln;*.slnx|" +
+                "Visual Studio Project Files (*.*proj)|*.*proj|All Files (*.*)|*.*";
+            dlg.InitialDirectory = this.ProjectMgr.ProjectFolder;
+            dlg.DefaultExt = "dll";
+            dlg.Multiselect = true;
+
+            // If selected, add the new file(s)
+            if(dlg.ShowDialog() == DialogResult.OK)
             {
-                dlg.Title = "Select the documentation source(s)";
-                dlg.Filter = "Assemblies, Comments Files, and Projects (*.dll, *.exe, *.winmd, *.xml, " +
-                    "*.sln, *.slnx, *.*proj)|*.dll;*.exe;*.winmd;*.xml;*.sln;*.slnx;*.*proj|" +
-                    "Library Files (*.dll, *.winmd)|*.dll;*.winmd|Executable Files (*.exe)|*.exe|" +
-                    "XML Comments Files (*.xml)|*.xml|Visual Studio Solution Files (*.sln, *.slnx)|*.sln;*.slnx|" +
-                    "Visual Studio Project Files (*.*proj)|*.*proj|All Files (*.*)|*.*";
-                dlg.InitialDirectory = this.ProjectMgr.ProjectFolder;
-                dlg.DefaultExt = "dll";
-                dlg.Multiselect = true;
-
-                // If selected, add the new file(s)
-                if(dlg.ShowDialog() == DialogResult.OK)
+                try
                 {
-                    try
+                    Cursor.Current = Cursors.WaitCursor;
+
+                    HashSet<string> projectList = [];
+
+                    foreach(string file in dlg.FileNames)
                     {
-                        Cursor.Current = Cursors.WaitCursor;
-
-                        HashSet<string> projectList = new HashSet<string>();
-
-                        foreach(string file in dlg.FileNames)
+                        if(!file.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) &&
+                          !file.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
                         {
-                            if(!file.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) &&
-                              !file.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
-                            {
-                                projectList.Add(file);
-                            }
+                            projectList.Add(file);
+                        }
+                        else
+                        {
+                            foreach(string project in SelectProjectsDlg.SelectSolutionOrProjects(file))
+                                projectList.Add(project);
+                        }
+                    }
+
+                    foreach(string file in projectList)
+                    {
+                        this.AddDocumentationSource(file);
+                        ext = Path.GetExtension(file).ToLowerInvariant();
+
+                        // If there's a match for a comments file or an assembly, add it too
+                        if(ext == ".xml")
+                        {
+                            otherFile = Path.ChangeExtension(file, ".dll");
+
+                            if(File.Exists(otherFile))
+                                this.AddDocumentationSource(otherFile);
                             else
                             {
-                                foreach(string project in SelectProjectsDlg.SelectSolutionOrProjects(file))
-                                    projectList.Add(project);
-                            }
-                        }
-
-                        foreach(string file in projectList)
-                        {
-                            this.AddDocumentationSource(file);
-                            ext = Path.GetExtension(file).ToLowerInvariant();
-
-                            // If there's a match for a comments file or an assembly, add it too
-                            if(ext == ".xml")
-                            {
-                                otherFile = Path.ChangeExtension(file, ".dll");
+                                otherFile = Path.ChangeExtension(file, ".exe");
 
                                 if(File.Exists(otherFile))
                                     this.AddDocumentationSource(otherFile);
                                 else
                                 {
-                                    otherFile = Path.ChangeExtension(file, ".exe");
-
-                                    if(File.Exists(otherFile))
-                                        this.AddDocumentationSource(otherFile);
-                                    else
-                                    {
-                                        otherFile = Path.ChangeExtension(file, ".winmd");
-
-                                        if(File.Exists(otherFile))
-                                            this.AddDocumentationSource(otherFile);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if(ext == ".dll" || ext == ".exe" || ext == ".winmd")
-                                {
-                                    otherFile = Path.ChangeExtension(file, ".xml");
+                                    otherFile = Path.ChangeExtension(file, ".winmd");
 
                                     if(File.Exists(otherFile))
                                         this.AddDocumentationSource(otherFile);
                                 }
                             }
                         }
+                        else
+                        {
+                            if(ext == ".dll" || ext == ".exe" || ext == ".winmd")
+                            {
+                                otherFile = Path.ChangeExtension(file, ".xml");
+
+                                if(File.Exists(otherFile))
+                                    this.AddDocumentationSource(otherFile);
+                            }
+                        }
                     }
-                    finally
-                    {
-                        this.StoreDocumentationSources();
-                        Cursor.Current = Cursors.Default;
-                    }
+                }
+                finally
+                {
+                    this.StoreDocumentationSources();
+                    Cursor.Current = Cursors.Default;
                 }
             }
         }
@@ -263,7 +261,7 @@ namespace SandcastleBuilder.Package.Nodes
             filename = FolderPath.AbsoluteToRelativePath(
                 Path.GetDirectoryName(this.ProjectMgr.BuildProject.FullPath), filename);
 
-            XElement docSource = new XElement("DocumentationSource", new XAttribute("sourceFile", filename));
+            XElement docSource = new("DocumentationSource", new XAttribute("sourceFile", filename));
 
             if(!documentationSources.Descendants("DocumentationSource").Any(
               d => d.Attribute("sourceFile").Value.Equals(filename, StringComparison.OrdinalIgnoreCase)))

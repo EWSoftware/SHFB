@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentConfigUserControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/10/2021
-// Note    : Copyright 2009-2021, Eric Woodruff, All rights reserved
+// Updated : 06/20/2025
+// Note    : Copyright 2009-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a user control used to edit deployment configuration settings
 //
@@ -22,9 +22,9 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 
-using Sandcastle.Platform.Windows;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-using SandcastleBuilder.Utils.BuildComponent;
+using Sandcastle.Platform.Windows;
 
 namespace SandcastleBuilder.PlugIns.UI
 {

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : PreviewTopicWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/21/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to preview a topic.
 //
@@ -28,10 +28,12 @@ using WinFormsMessageBox = System.Windows.Forms.MessageBox;
 
 using Sandcastle.Core;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.ConceptualContent;
 using SandcastleBuilder.WPF.Commands;
 using SandcastleBuilder.WPF.UserControls;
+
+using SandcastleBuilder.MSBuild.HelpProject;
+
+using Sandcastle.Core.ConceptualContent;
 
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -192,24 +194,30 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                 // If the document is already open, just activate it
                 foreach(IDockContent content in this.DockPanel.Documents)
+                {
                     if(String.Equals(content.DockHandler.ToolTipText, fullName, StringComparison.OrdinalIgnoreCase))
                     {
                         content.DockHandler.Activate();
                         return;
                     }
+                }
 
                 if(File.Exists(fullName))
                 {
-                    TopicEditorWindow editor = new TopicEditorWindow(fullName);
+                    TopicEditorWindow editor = new(fullName);
                     editor.Show(this.DockPanel);
                 }
                 else
+                {
                     WinFormsMessageBox.Show("File does not exist: " + fullName, Constants.AppName,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
+            {
                 WinFormsMessageBox.Show("No file is associated with this topic", Constants.AppName,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
     }

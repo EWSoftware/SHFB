@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : StandardDocumentModel.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/20/2023
-// Note    : Copyright 2021-2023, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2021-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to modify the reflection information file by adding elements needed for the
 // standard documentation model.
@@ -55,22 +55,9 @@ namespace Sandcastle.Core.PresentationStyle
         #region Private data members
         //=====================================================================
 
-        private readonly Dictionary<string, ApiMember> apiMembers;
-        private readonly Dictionary<string, ApiAssemblyProperties> assemblies;
+        private readonly Dictionary<string, ApiMember> apiMembers = [];
+        private readonly Dictionary<string, ApiAssemblyProperties> assemblies = [];
 
-        #endregion
-
-        #region Constructor
-        //=====================================================================
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public StandardDocumentModel()
-        {
-            apiMembers = new Dictionary<string, ApiMember>();
-            assemblies = new Dictionary<string, ApiAssemblyProperties>();
-        }
         #endregion
 
         #region IApplyDocumentModel implementation
@@ -82,6 +69,8 @@ namespace Sandcastle.Core.PresentationStyle
         /// <inheritdoc />
         public void ApplyDocumentModel(string reflectionDataFile, string docModelReflectionDataFile)
         {
+            // Don't use simplified using statements here as we're reading the reflection data file twice.
+
             // Load the information needed to apply the document model
             using(XmlReader reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings {
               IgnoreWhitespace = true, CloseInput = true }))
@@ -423,7 +412,7 @@ namespace Sandcastle.Core.PresentationStyle
                 return;
 
             XElement apidata = typeNode.Node.Element("apidata"), typedata = typeNode.Node.Element("typedata"),
-                templates = typeNode.Node.Element("templates"), containers = new XElement(typeNode.Node.Element("containers"));
+                templates = typeNode.Node.Element("templates"), containers = new(typeNode.Node.Element("containers"));
 
             // Add or update the type element.  A type element will already exist for nested types.  In such
             // cases, we just replace it for the list topic.
@@ -534,8 +523,7 @@ namespace Sandcastle.Core.PresentationStyle
             string declaredPrefix = typeNode.MemberIdWithoutPrefix + ".";
 
             // Group EII members separately from non-EII members.  Extension methods are also separated.
-            List<ApiMember> eiiMembers = new List<ApiMember>(), nonEiiMembers = new List<ApiMember>(),
-                extensionMethods = new List<ApiMember>();
+            List<ApiMember> eiiMembers = [], nonEiiMembers = [], extensionMethods = [];
 
             foreach(var m in memberList)
             {

@@ -3,8 +3,6 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
 		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
@@ -12,8 +10,6 @@
 		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
 		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AssemblyName>Sandcastle.PresentationStyles</AssemblyName>
 		<RootNamespace>Sandcastle.PresentationStyles</RootNamespace>
 	</PropertyGroup>
@@ -36,7 +32,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Include="..\SandcastleCore\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
+		<Compile Include="..\SandcastleBuilderMSBuild\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

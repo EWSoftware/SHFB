@@ -2,8 +2,8 @@
 // System  : Sandcastle Build Components
 // File    : SyntaxComponentConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/31/2021
-// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a form that is used to configure the settings for the syntax build component and the
 // syntax generators.
@@ -120,7 +120,7 @@ namespace Sandcastle.Tools.BuildComponents.UI
         /// <param name="container">The composition container user to locate the syntax generators</param>
         public SyntaxComponentConfigDlg(XElement configuration, CompositionContainer container)
         {
-            HashSet<string> generatorIds = new HashSet<string>();
+            HashSet<string> generatorIds = [];
             XElement node;
             XAttribute attr;
             bool value;
@@ -129,7 +129,7 @@ namespace Sandcastle.Tools.BuildComponents.UI
 
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-            syntaxGenerators = new BindingList<SyntaxGeneratorSettings>();
+            syntaxGenerators = [];
 
             // Get a list of all configurable syntax generators
             try
@@ -160,7 +160,7 @@ namespace Sandcastle.Tools.BuildComponents.UI
             }
             catch(Exception ex)
             {
-                syntaxGenerators = new BindingList<SyntaxGeneratorSettings>();
+                syntaxGenerators = [];
                 btnOK.IsEnabled = false;
 
                 MessageBox.Show("Unable to obtain a list of syntax generators: " + ex.Message, Constants.AppName,
@@ -228,7 +228,7 @@ namespace Sandcastle.Tools.BuildComponents.UI
                 }
             }
 
-            syntaxGenerators = new BindingList<SyntaxGeneratorSettings>(syntaxGenerators.OrderBy(g => g.SortOrder).ToList());
+            syntaxGenerators = new BindingList<SyntaxGeneratorSettings>([.. syntaxGenerators.OrderBy(g => g.SortOrder)]);
             lbGenerators.ItemsSource = syntaxGenerators;
 
             if(lbGenerators.Items.Count != 0)

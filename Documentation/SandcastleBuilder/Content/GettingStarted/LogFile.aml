@@ -102,7 +102,7 @@ started.</para>
     <entry>
 			<para>This element contains the output for an individual build step.  The build step is identified in the
 <codeInline>step</codeInline> attribute and corresponds to an enumeration value from
-<codeEntityReference qualifyHint="true">T:SandcastleBuilder.Utils.BuildEngine.BuildStep</codeEntityReference>.</para>
+<codeEntityReference qualifyHint="true">T:Sandcastle.Core.BuildEngine.BuildStep</codeEntityReference>.</para>
 		</entry>
   </row>
   <row>

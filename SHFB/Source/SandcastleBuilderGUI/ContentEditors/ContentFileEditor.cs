@@ -1,9 +1,9 @@
 //===============================================================================================================
-// System  : EWSoftware Design Time Attributes and Editors
+// System  : Sandcastle Help File Builder
 // File    : ContentFileEditor.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing an external application used to edit an additional content file
 //
@@ -27,9 +27,8 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
+using Sandcastle.Core;
 using Sandcastle.Platform.Windows.Design;
-
-using SandcastleBuilder.Utils;
 
 namespace SandcastleBuilder.Gui.ContentEditors
 {
@@ -43,12 +42,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
         //=====================================================================
 
         // These are used to parse the extension list and replace the macro placeholders
-        private static readonly Regex reSplit = new Regex("[.,; ]");
+        private static readonly Regex reSplit = new("[.,; ]");
 
         // There are only three so we won't bother with a match evaluator
-        private static readonly Regex reContentItem = new Regex("\\$ContentItem", RegexOptions.IgnoreCase);
-        private static readonly Regex reProjectFile = new Regex("\\$ProjectFile", RegexOptions.IgnoreCase);
-        private static readonly Regex reProjectFolder = new Regex("\\$ProjectFolder", RegexOptions.IgnoreCase);
+        private static readonly Regex reContentItem = new("\\$ContentItem", RegexOptions.IgnoreCase);
+        private static readonly Regex reProjectFile = new("\\$ProjectFile", RegexOptions.IgnoreCase);
+        private static readonly Regex reProjectFolder = new("\\$ProjectFolder", RegexOptions.IgnoreCase);
 
         // Member fields
         private string description, arguments, extensions;

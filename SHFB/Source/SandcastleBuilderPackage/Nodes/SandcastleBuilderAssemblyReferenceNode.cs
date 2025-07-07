@@ -62,7 +62,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// <summary>
         /// This is overridden to return a GUID for the node
         /// </summary>
-        public override Guid ItemTypeGuid => new Guid("F33579D8-E01E-4e6f-9C70-9A8027B329F0");
+        public override Guid ItemTypeGuid => new("F33579D8-E01E-4e6f-9C70-9A8027B329F0");
 
         /// <inheritdoc />
         protected override int QueryStatusOnNode(Guid cmdGroup, uint cmd, IntPtr pCmdText,

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TopicPreviewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/22/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to preview MAML topic files.
 //
@@ -36,12 +36,12 @@ using System.Xml.Linq;
 using ColorizerLibrary;
 
 using Sandcastle.Core;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+using Sandcastle.Core.ConceptualContent;
+using Sandcastle.Core.Project;
 
 using Sandcastle.Platform.Windows;
 
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.ConceptualContent;
 using SandcastleBuilder.WPF.Commands;
 using SandcastleBuilder.WPF.Maml;
 
@@ -55,14 +55,14 @@ namespace SandcastleBuilder.WPF.UserControls
         #region Private data members
         //=====================================================================
 
-        private SandcastleProject currentProject;
+        private ISandcastleProject currentProject;
         private TocEntryCollection tableOfContents;
         private readonly MamlToFlowDocumentConverter converter;
         private readonly List<Uri> browserHistory;
         private int historyLocation;
         private bool isNavigating;
 
-        private static readonly Regex reRemoveLineNumbers = new Regex(@"^\s*\d+\| ", RegexOptions.Multiline);
+        private static readonly Regex reRemoveLineNumbers = new(@"^\s*\d+\| ", RegexOptions.Multiline);
 
         #endregion
 
@@ -72,7 +72,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <summary>
         /// This is used to set or get the current project
         /// </summary>
-        public SandcastleProject CurrentProject
+        public ISandcastleProject CurrentProject
         {
             get => currentProject;
             set
@@ -109,8 +109,8 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         public event EventHandler<FileContentNeededEventArgs> FileContentNeeded
         {
-            add { AddHandler(FileContentNeededEvent, value); }
-            remove { RemoveHandler(FileContentNeededEvent, value); }
+            add => AddHandler(FileContentNeededEvent, value);
+            remove => RemoveHandler(FileContentNeededEvent, value);
         }
 
         /// <summary>
@@ -126,8 +126,8 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         public event EventHandler<TopicContentNeededEventArgs> TopicContentNeeded
         {
-            add { AddHandler(TopicContentNeededEvent, value); }
-            remove { RemoveHandler(TopicContentNeededEvent, value); }
+            add => AddHandler(TopicContentNeededEvent, value);
+            remove => RemoveHandler(TopicContentNeededEvent, value);
         }
         #endregion
 
@@ -161,7 +161,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
             converter = new MamlToFlowDocumentConverter();
 
-            browserHistory = new List<Uri>();
+            browserHistory = [];
             historyLocation = -1;
 
             InitializeComponent();
@@ -243,7 +243,7 @@ namespace SandcastleBuilder.WPF.UserControls
             lblCurrentProject.Text = currentProject.Filename;
             browserHistory.Clear();
             historyLocation = -1;
-            tableOfContents = new TocEntryCollection();
+            tableOfContents = [];
 
             try
             {
@@ -276,10 +276,11 @@ namespace SandcastleBuilder.WPF.UserControls
                         tokens.Load();
                     }
 
-                    // Store the tokens as XElements so that they can be parsed inline with the topic
+                    // Store the tokens as XElements so that they can be parsed inline with the topic.
+                    // Duplicate tokens are allowed as tokens with the same name from a later file can
+                    // override one from an earlier file.
                     foreach(var t in tokens)
-                        converter.Tokens.Add(t.TokenName, XElement.Parse("<token>" + t.TokenValue +
-                            "</token>"));
+                        converter.Tokens[t.TokenName] = XElement.Parse($"<token>{t.TokenValue}</token>");
                 }
             }
             catch(Exception ex)
@@ -295,7 +296,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 converter.TopicTitles.Clear();
 
                 // Load the content layout files.  Site maps are ignored as we don't support rendering them.
-                tocFiles = new List<ITableOfContents>();
+                tocFiles = [];
 
                 foreach(var contentFile in currentProject.ContentFiles(BuildAction.ContentLayout))
                 {
@@ -462,8 +463,10 @@ namespace SandcastleBuilder.WPF.UserControls
                         // updated before we get to the fragment check below.  Haven't found a better way to do
                         // this but it works.
                         if(Application.Current != null && Application.Current.Dispatcher != null)
+                        {
                             Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
                                 new ThreadStart(delegate { }));
+                        }
                     }
 
                     wasFound = true;
@@ -484,7 +487,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
                     if(VisualTreeHelper.GetChildrenCount(child) != 0)
                     {
-                        while(!(child is ScrollViewer))
+                        while(child is not ScrollViewer)
                             child = VisualTreeHelper.GetChild(child as Visual, 0);
 
                         ((ScrollViewer)child).ScrollToVerticalOffset(element.ContentStart.GetCharacterRect(
@@ -519,7 +522,7 @@ namespace SandcastleBuilder.WPF.UserControls
                     {
                         if(sec.Blocks.FirstBlock is Paragraph para)
                         {
-                            TextRange r = new TextRange(para.ContentStart, para.ContentEnd);
+                            TextRange r = new(para.ContentStart, para.ContentEnd);
 
                             // Remove line numbers from the front of each line if present and copy the text
                             // to the clipboard.
@@ -611,7 +614,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
                     if(VisualTreeHelper.GetChildrenCount(child) != 0)
                     {
-                        while(!(child is ScrollViewer))
+                        while(child is not ScrollViewer)
                             child = VisualTreeHelper.GetChild(child as Visual, 0);
 
                         ((ScrollViewer)child).ScrollToHome();
@@ -658,7 +661,7 @@ namespace SandcastleBuilder.WPF.UserControls
         {
             string path;
 
-            if(!(e.OriginalSource is Hyperlink link))
+            if(e.OriginalSource is not Hyperlink link)
                 return;
 
             // Convert relative URIs to absolute URIs

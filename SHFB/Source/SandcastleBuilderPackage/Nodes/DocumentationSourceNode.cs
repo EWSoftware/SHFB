@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Package
 // File    : DocumentationSourceNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/11/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 07/06/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that represents a documentation source in a Sandcastle Help File Builder project
 //
@@ -69,7 +69,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// <summary>
         /// Get the item type GUID for the item
         /// </summary>
-        public override Guid ItemTypeGuid => new Guid("9873897F-9B4E-433b-BEB9-C2678A729FFC");
+        public override Guid ItemTypeGuid => new("9873897F-9B4E-433b-BEB9-C2678A729FFC");
 
         #endregion
 

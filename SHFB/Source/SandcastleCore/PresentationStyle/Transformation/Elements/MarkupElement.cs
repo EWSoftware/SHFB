@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : MarkupElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/05/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the markup element, a parent element that does not itself have any
 // rendered representation.  It just passes through clones of its child elements without any namespaces.
@@ -20,6 +20,8 @@
 
 using System;
 using System.Xml.Linq;
+
+using Sandcastle.Core.Project;
 
 namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 {
@@ -84,7 +86,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                 }
             }
 
-            XElement clone = new XElement(element);
+            XElement clone = new(element);
 
             clone.RemoveNamespaces();
 

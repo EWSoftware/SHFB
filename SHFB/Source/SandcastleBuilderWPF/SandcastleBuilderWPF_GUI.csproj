@@ -3,12 +3,10 @@
 	<PropertyGroup>
 		<!-- Classes in this assembly will only be used from the standalone GUI on the Windows platform so we will
 				 always target the .NET Framework. -->
-		<TargetFramework>net472</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 		<UseWindowsForms>true</UseWindowsForms>
 		<UseWpf>true</UseWpf>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
 		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
@@ -16,8 +14,6 @@
 		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
 		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AssemblyName>SandcastleBuilder.WPF</AssemblyName>
 		<RootNamespace>SandcastleBuilder.WPF</RootNamespace>
 	</PropertyGroup>
@@ -33,20 +29,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
+		<Compile Include="..\SandcastleBuilderMSBuild\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj" />
-		<ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
-			<Private>False</Private>
-		</ProjectReference>
-		<ProjectReference Include="..\SandcastleCore\SandcastleCore.csproj">
-			<Private>False</Private>
-		</ProjectReference>
-		<ProjectReference Include="..\SandcastlePlatformWindows\SandcastlePlatformWindows.csproj">
-			<Private>False</Private>
-		</ProjectReference>
+		<ProjectReference Include="..\SandcastleBuilderMSBuild\SandcastleBuilderMSBuild.csproj" />
+		<ProjectReference Include="..\SandcastlePlatformWindows\SandcastlePlatformWindows.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -58,6 +47,10 @@
 		<Reference Include="PresentationFramework.Luna">
 			<Private>False</Private>
 		</Reference>
+		<PackageReference Include="System.Text.Json" />
+		<PackageReference Include="Microsoft.Build">
+			<ExcludeAssets>Runtime</ExcludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>

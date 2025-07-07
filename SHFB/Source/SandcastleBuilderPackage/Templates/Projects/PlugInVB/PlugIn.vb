@@ -3,8 +3,8 @@ Imports System.Collections.Generic
 Imports System.Linq
 Imports System.Xml.Linq
 
-Imports SandcastleBuilder.Utils.BuildComponent
-Imports SandcastleBuilder.Utils.BuildEngine
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.PlugIn;
 
 ' Search for "TODO" to find changes that you need to make to this plug-in template.
 

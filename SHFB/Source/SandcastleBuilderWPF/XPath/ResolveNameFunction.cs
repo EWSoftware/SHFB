@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ResolveNameFunction.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a custom XPath function used to convert an API name into its more readable form which is
 // used for searching.
@@ -18,7 +18,7 @@
 // 07/27/2007  EFW  Created the code
 //===============================================================================================================
 
-// Ignore Spelling: utils Filt Excep
+// Ignore Spelling: Filt Excep Minargs Maxargs xslt
 
 using System;
 using System.Globalization;
@@ -58,8 +58,7 @@ namespace SandcastleBuilder.WPF.XPath
         /// functions.
         /// </summary>
         /// <value>Always returns an array with a <c>Navigator</c> type and a <c>Boolean</c> type entry</value>
-        public XPathResultType[] ArgTypes => new XPathResultType[] { XPathResultType.Navigator,
-            XPathResultType.Boolean };
+        public XPathResultType[] ArgTypes => [ XPathResultType.Navigator, XPathResultType.Boolean ];
 
         /// <summary>
         /// Gets the minimum number of arguments for the function. This enables the user to differentiate between
@@ -95,15 +94,17 @@ namespace SandcastleBuilder.WPF.XPath
             XPathNavigator nav;
             XmlNode apiNode;
             XmlNodeList templates;
-            StringBuilder sb = new StringBuilder(100);
+            StringBuilder sb = new(100);
             string nodeText;
             bool fullyQualified;
             int pos, idx = 1;
             char nodeType;
 
             if(args.Length != 2)
+            {
                 throw new ArgumentException("There must be two parameters passed to the 'resolve-name' function",
                     nameof(args));
+            }
 
             nav = ((XPathNodeIterator)args[0]).Current;
             apiNode = ((IHasXmlNode)nav).GetNode();
@@ -156,6 +157,7 @@ namespace SandcastleBuilder.WPF.XPath
                     if(nodeText.IndexOf("#cctor", StringComparison.Ordinal) != -1)
                         nodeText = nodeText.Replace("#cctor", "Static Constructor");
                     else
+                    {
                         if(nodeText.IndexOf("#ctor", StringComparison.Ordinal) != -1)
                             nodeText = nodeText.Replace("#ctor", "Constructor");
                         else
@@ -169,9 +171,12 @@ namespace SandcastleBuilder.WPF.XPath
                                     nodeText = nodeText.Substring(3) + " Operator";
                             }
                             else
+                            {
                                 if(nodeText.IndexOf("op_", pos, StringComparison.Ordinal) != -1)
                                     nodeText = nodeText.Substring(0, pos + 1) + nodeText.Substring(pos + 4) + " Operator";
+                            }
                         }
+                    }
                 }
 
                 // Replace generic template markers with the names

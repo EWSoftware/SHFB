@@ -27,6 +27,16 @@ namespace Sandcastle.Core.BuildAssembler
     /// </summary>
     public static class BuildComponentUtilities
     {
+        #region Private data members
+        //=====================================================================
+
+        private static readonly Regex reAllXmlChars = new("[\x09\x0A\x0D\u0020-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]");
+
+        #endregion
+
+        #region Methods
+        //=====================================================================
+
         /// <summary>
         /// This is used to get the message strings from an exception and any of its inner exceptions
         /// </summary>
@@ -47,16 +57,22 @@ namespace Sandcastle.Core.BuildAssembler
             string message = exception.Message;
 
             if(exception is XmlException xmlE)
+            {
                 message = String.Format(CultureInfo.CurrentCulture, "{0} (Line Number: {1}; Line Position: " +
                     "{2}; Source URI: '{3}')", message, xmlE.LineNumber, xmlE.LinePosition, xmlE.SourceUri);
+            }
 
             if(exception is XsltException xslE)
+            {
                 message = String.Format(CultureInfo.CurrentCulture, "{0} (Line Number: {1}; Line Position: " +
                     "{2}; Source URI: '{3}')", message, xslE.LineNumber, xslE.LinePosition, xslE.SourceUri);
+            }
 
             if(exception.InnerException != null)
+            {
                 message = String.Format(CultureInfo.CurrentCulture, "{0}\r\nInner Exception: {1}", message,
                     exception.InnerException.GetExceptionMessage());
+            }
 
             return message;
         }
@@ -76,15 +92,18 @@ namespace Sandcastle.Core.BuildAssembler
             // Clone the node so that we don't change the input
             XPathNavigator current = node.Clone();
 
-            XmlWriterSettings settings = new XmlWriterSettings
+            XmlWriterSettings settings = new()
             {
                 ConformanceLevel = ConformanceLevel.Fragment,
                 OmitXmlDeclaration = true,
                 CloseOutput = true
             };
 
-            StringBuilder builder = new StringBuilder();
+            StringBuilder builder = new();
 
+            // Don't use a simplified using statement here.  The XML writer needs to be disposed of so that
+            // it flushes the content to the string builder.  We could use one but then we have to manually
+            // flush the stream before returning.
             using(XmlWriter writer = XmlWriter.Create(builder, settings))
             {
                 // write the output
@@ -165,7 +184,7 @@ namespace Sandcastle.Core.BuildAssembler
         public static string EvalXPathExpr(this IXPathNavigable document, XPathExpression expression,
           params string[] keyValuePairs)
         {
-            CustomContext cc = new CustomContext();
+            CustomContext cc = new();
 
             if(keyValuePairs.Length % 2 != 0)
                 throw new ArgumentException("There must be a value for every key name specified", nameof(keyValuePairs));
@@ -196,8 +215,8 @@ namespace Sandcastle.Core.BuildAssembler
             // Ignore absolute path names and an empty basePath
             if(!String.IsNullOrEmpty(path) && path[0] != '/' && !String.IsNullOrEmpty(basePath))
             {
-                List<string> pathParts = new List<string>(path.Split('/'));
-                List<string> basePathParts = new List<string>(basePath.Split('/'));
+                List<string> pathParts = [.. path.Split('/')];
+                List<string> basePathParts = [.. basePath.Split('/')];
 
                 // Remove the base path file name
                 if(basePathParts.Count > 0)
@@ -221,8 +240,6 @@ namespace Sandcastle.Core.BuildAssembler
             return path;
         }
 
-        private static readonly Regex reAllXmlChars = new Regex("[\x09\x0A\x0D\u0020-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]");
-
         /// <summary>
         /// This is used to confirm that the specified text only contains legal XML characters
         /// </summary>
@@ -235,5 +252,6 @@ namespace Sandcastle.Core.BuildAssembler
 
             return reAllXmlChars.IsMatch(text);
         }
+        #endregion
     }
 }

@@ -16,10 +16,9 @@
 
 Imports System.ComponentModel.Composition.Hosting
 
-Imports Sandcastle.Core.BuildAssembler
-
-Imports SandcastleBuilder.Utils
-Imports SandcastleBuilder.Utils.BuildComponent
+Imports Sandcastle.Core
+Imports Sandcastle.Core.PlugIn
+Imports Sandcastle.Core.Project
 
 ''' <summary>
 ''' This is an example configuration form for a build component or plug-in created with XAML

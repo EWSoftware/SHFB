@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : VisibilityPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/20/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Visibility category properties
 //
@@ -33,8 +33,9 @@ using Microsoft.VisualStudio.OLE.Interop;
 
 using SandcastleBuilder.Package.Nodes;
 #endif
-using Sandcastle.Core;
-using SandcastleBuilder.Utils;
+using Sandcastle.Core.Project;
+
+using SandcastleBuilder.MSBuild.HelpProject;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -108,7 +109,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 #else
                 var filter = new ApiFilterCollection { Project = this.CurrentProject };
 
-                projProp = this.CurrentProject.MSBuildProject.GetProperty("ApiFilter");
+                projProp = ((SandcastleProject)this.CurrentProject).MSBuildProject.GetProperty("ApiFilter");
 #endif
                 if(projProp != null && !String.IsNullOrEmpty(projProp.UnevaluatedValue))
                     filter.FromXml(projProp.UnevaluatedValue);
@@ -122,7 +123,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 #if !STANDALONEGUI
             projProp = this.ProjectMgr.BuildProject.GetProperty("VisibleItems");
 #else
-            projProp = this.CurrentProject.MSBuildProject.GetProperty("VisibleItems");
+            projProp = ((SandcastleProject)this.CurrentProject).MSBuildProject.GetProperty("VisibleItems");
 #endif
             // If not found or not valid, we'll ignore it and use the defaults
             if(projProp == null || !Enum.TryParse(projProp.UnevaluatedValue, out VisibleItems items))
@@ -153,7 +154,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                     this.ProjectMgr.SetProjectProperty("ApiFilter",
                         ucVisibilityPropertiesPageContent.ApiFilter.ToXml());
 #else
-                    this.CurrentProject.MSBuildProject.SetProperty("ApiFilter",
+                    ((SandcastleProject)this.CurrentProject).MSBuildProject.SetProperty("ApiFilter",
                         ucVisibilityPropertiesPageContent.ApiFilter.ToXml());
 #endif
                     ucVisibilityPropertiesPageContent.ApiFilterHasChanges = false;
@@ -167,7 +168,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 #if !STANDALONEGUI
             this.ProjectMgr.SetProjectProperty("VisibleItems", items.ToString());
 #else
-            this.CurrentProject.MSBuildProject.SetProperty("VisibleItems", items.ToString());
+            ((SandcastleProject)this.CurrentProject).MSBuildProject.SetProperty("VisibleItems", items.ToString());
 #endif
             return true;
         }

@@ -1,9 +1,9 @@
 //===============================================================================================================
-// System  : Sandcastle Help File Builder
+// System  : Sandcastle Tools - Windows platform specific code
 // File    : FolderPathStringEditor.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a type editor that can display a folder browser dialog to allow selection of a folder path
 // at design time.  This can be used in conjunction with the FolderDialogAttribute to specify the folder browser
@@ -48,7 +48,7 @@ namespace Sandcastle.Platform.Windows.Design
         {
             string currentFolder;
 
-            if(context == null || provider == null || context.Instance == null || (value != null && !(value is string)))
+            if(context == null || provider == null || context.Instance == null || (value != null && value is not string))
                 return base.EditValue(context, provider, value);
 
             currentFolder = (string)value;
@@ -56,27 +56,26 @@ namespace Sandcastle.Platform.Windows.Design
             if(String.IsNullOrEmpty(currentFolder))
                 currentFolder = String.Empty;
 
-            using(FolderBrowserDialog dlg = new FolderBrowserDialog())
+            using FolderBrowserDialog dlg = new();
+
+            // See if we have been supplied a title
+            if(context.PropertyDescriptor.Attributes[typeof(FolderDialogAttribute)] is FolderDialogAttribute fda)
             {
-                // See if we have been supplied a title
-                if(context.PropertyDescriptor.Attributes[typeof(FolderDialogAttribute)] is FolderDialogAttribute fda)
-                {
-                    dlg.Description = fda.Description;
-                    dlg.ShowNewFolderButton = fda.ShowNewFolderButton;
-                    dlg.RootFolder = fda.RootFolder;
-                    dlg.SelectedPath = Environment.GetFolderPath(
-                        fda.DefaultFolder);
-                }
-                else
-                    dlg.Description = "Select " + context.PropertyDescriptor.DisplayName;
-
-                if(currentFolder.Length != 0)
-                    dlg.SelectedPath = Path.GetFullPath(currentFolder);
-
-                // If selected, set the new filename
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    value = dlg.SelectedPath;
+                dlg.Description = fda.Description;
+                dlg.ShowNewFolderButton = fda.ShowNewFolderButton;
+                dlg.RootFolder = fda.RootFolder;
+                dlg.SelectedPath = Environment.GetFolderPath(
+                    fda.DefaultFolder);
             }
+            else
+                dlg.Description = "Select " + context.PropertyDescriptor.DisplayName;
+
+            if(currentFolder.Length != 0)
+                dlg.SelectedPath = Path.GetFullPath(currentFolder);
+
+            // If selected, set the new filename
+            if(dlg.ShowDialog() == DialogResult.OK)
+                value = dlg.SelectedPath;
 
             return value;
         }

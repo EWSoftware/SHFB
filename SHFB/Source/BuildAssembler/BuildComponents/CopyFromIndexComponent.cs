@@ -58,14 +58,14 @@ namespace Sandcastle.Tools.BuildComponents
         #region Private data members
         //=====================================================================
 
-        private readonly Dictionary<string, string> contextNamespaces = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> contextNamespaces = [];
 
         // List of copy components
         private readonly List<Lazy<ICopyComponentFactory, ICopyComponentMetadata>> copyComponentFactories;
-        private readonly List<CopyComponentCore> components = new List<CopyComponentCore>();
+        private readonly List<CopyComponentCore> components = [];
 
         // What to copy
-        private readonly List<CopyFromIndexCommand> copyCommands = new List<CopyFromIndexCommand>();
+        private readonly List<CopyFromIndexCommand> copyCommands = [];
 
         #endregion
 
@@ -125,8 +125,10 @@ namespace Sandcastle.Tools.BuildComponents
             XPathNodeIterator contextNodes = configuration.Select("context");
 
             foreach(XPathNavigator contextNode in contextNodes)
+            {
                 contextNamespaces[contextNode.GetAttribute("prefix", String.Empty)] =
                     contextNode.GetAttribute("name", String.Empty);
+            }
 
             // This is only used by the indices and won't change
             this.Context = new CustomContext(contextNamespaces);
@@ -200,32 +202,38 @@ namespace Sandcastle.Tools.BuildComponents
 
                 IndexedCache index = (IndexedCache)this.BuildAssembler.Data[sourceName];
 
-                CopyFromIndexCommand copyCommand = new CopyFromIndexCommand(this, index, keyXPath, sourceXPath,
+                CopyFromIndexCommand copyCommand = new(this, index, keyXPath, sourceXPath,
                     targetXPath, isAttribute, ignoreCase);
 
                 string messageLevel = copyNode.GetAttribute("missing-entry", String.Empty);
 
                 if(!String.IsNullOrWhiteSpace(messageLevel))
-                    if(Enum.TryParse<MessageLevel>(messageLevel, true, out level))
+                {
+                    if(Enum.TryParse(messageLevel, true, out level))
                         copyCommand.MissingEntry = level;
                     else
                         this.WriteMessage(MessageLevel.Error, "'{0}' is not a message level.", messageLevel);
+                }
 
                 messageLevel = copyNode.GetAttribute("missing-source", String.Empty);
 
                 if(!String.IsNullOrWhiteSpace(messageLevel))
-                    if(Enum.TryParse<MessageLevel>(messageLevel, true, out level))
+                {
+                    if(Enum.TryParse(messageLevel, true, out level))
                         copyCommand.MissingSource = level;
                     else
                         this.WriteMessage(MessageLevel.Error, "'{0}' is not a message level.", messageLevel);
+                }
 
                 messageLevel = copyNode.GetAttribute("missing-target", String.Empty);
 
                 if(!String.IsNullOrWhiteSpace(messageLevel))
-                    if(Enum.TryParse<MessageLevel>(messageLevel, true, out level))
+                {
+                    if(Enum.TryParse(messageLevel, true, out level))
                         copyCommand.MissingTarget = level;
                     else
                         this.WriteMessage(MessageLevel.Error, "'{0}' is not a message level.", messageLevel);
+                }
 
                 copyCommands.Add(copyCommand);
             }

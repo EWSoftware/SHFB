@@ -1,5 +1,5 @@
 //===============================================================================================================
-// System  : Sandcastle Tools - BuildAssembler Build Components Library
+// System  : Sandcastle Help File Builder Components
 // File    : AssemblyInfo.cs
 // Updated : 04/10/2021
 // Note    : Copyright 2006-2021, Microsoft Corporation, All rights reserved

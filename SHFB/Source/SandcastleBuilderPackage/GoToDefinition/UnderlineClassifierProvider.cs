@@ -67,8 +67,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
             if(textView.TextBuffer != buffer || !options.EnableGoToDefinition || !options.EnableCtrlClickGoToDefinition)
                 return null;
 
-            if(UnderlineClassification == null)
-                UnderlineClassification = ClassificationRegistry.GetClassificationType(UnderlineClassifier.UnderlineClassifierType);
+            UnderlineClassification ??= ClassificationRegistry.GetClassificationType(UnderlineClassifier.UnderlineClassifierType);
 
             return GetClassifierForView(textView) as ITagger<T>;
         }

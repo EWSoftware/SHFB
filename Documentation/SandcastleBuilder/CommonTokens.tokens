@@ -7,5 +7,5 @@
     <ddue:linkTarget>_blank</ddue:linkTarget>
 </ddue:externalLink></item>
   <item id="SandcastleVersion">v2025.3.22.0</item>
-  <item id="VisualStudioMinVersion">Visual Studio 2017</item>
+  <item id="VisualStudioMinVersion">Visual Studio 2022</item>
 </content>

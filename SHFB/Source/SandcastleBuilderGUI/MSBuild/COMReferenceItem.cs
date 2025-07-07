@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : COMReferenceItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/20/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a COM reference item that can be used by MRefBuilder to locate
 // assembly dependencies for the assemblies being documented.
@@ -26,7 +26,9 @@ using System.ComponentModel;
 
 using Microsoft.Build.Evaluation;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
+
+using SandcastleBuilder.MSBuild.HelpProject;
 
 namespace SandcastleBuilder.Gui.MSBuild
 {

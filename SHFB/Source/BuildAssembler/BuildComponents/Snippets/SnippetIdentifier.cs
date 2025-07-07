@@ -15,7 +15,7 @@ namespace Sandcastle.Tools.BuildComponents.Snippets
     /// <summary>
     /// This represents a snippet identifier
     /// </summary>
-    public struct SnippetIdentifier
+    public readonly struct SnippetIdentifier
     {
         #region Properties
         //=====================================================================
@@ -103,9 +103,11 @@ namespace Sandcastle.Tools.BuildComponents.Snippets
             {
                 string example = reference.Substring(0, index);
 
-                foreach(string id in reference.Substring(index + 1).Split(new[] { ',' },
+                foreach(string id in reference.Substring(index + 1).Split([','],
                   StringSplitOptions.RemoveEmptyEntries))
+                {
                     yield return new SnippetIdentifier(example, id.Trim());
+                }
             }
         }
         #endregion

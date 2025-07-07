@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TokenEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 07/06/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to edit token files
 //
@@ -27,9 +27,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using Sandcastle.Core;
+using Sandcastle.Core.ConceptualContent;
 using Sandcastle.Platform.Windows;
-
-using SandcastleBuilder.Utils.ConceptualContent;
 
 namespace SandcastleBuilder.WPF.UserControls
 {
@@ -71,8 +70,8 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         public event RoutedEventHandler ContentModified
         {
-            add { AddHandler(ContentModifiedEvent, value); }
-            remove { RemoveHandler(ContentModifiedEvent, value); }
+            add => AddHandler(ContentModifiedEvent, value);
+            remove => RemoveHandler(ContentModifiedEvent, value);
         }
         #endregion
 
@@ -154,32 +153,47 @@ namespace SandcastleBuilder.WPF.UserControls
         private void tokens_ListChanged(object sender, ListChangedEventArgs e)
         {
             if(e.PropertyDescriptor != null)
+            {
                 switch(e.PropertyDescriptor.Name)
                 {
-                    case "IsSelected":
+                    case nameof(Token.IsSelected):
                         // We don't care about changes to these properties as they are for the
                         // editor and don't affect the state of the token collection.
                         return;
 
+                    case nameof(Token.TokenName):
+                        if(e.ListChangedType == ListChangedType.ItemChanged)
+                        {
+                            // Token names can be duplicates of ones in other files to override them but probably
+                            // shouldn't be duplicated within the same file.
+                            string newName = this.Tokens[e.NewIndex].TokenName;
+
+                            if(this.Tokens.Count(t => t.TokenName.Equals(newName, StringComparison.OrdinalIgnoreCase)) > 1)
+                            {
+                                MessageBox.Show("The new token name matches another token in this file.  If " +
+                                    "this was not intended, please make it unique.", Constants.AppName,
+                                    MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                        }
+                        break;
+
                     default:
                         break;
                 }
+            }
 
             if(sender != this)
                 this.RaiseEvent(new RoutedEventArgs(ContentModifiedEvent, this));
 
             // Update control state based on the collection content
             lbTokens.IsEnabled = txtTokenName.IsEnabled = txtTokenValue.IsEnabled =
-                (this.Tokens != null && this.Tokens.Count != 0);
+                this.Tokens != null && this.Tokens.Count != 0;
 
             CommandManager.InvalidateRequerySuggested();
 
             // We must clear the enumerator or it may throw an exception due to collection changes
-            if(matchEnumerator != null)
-            {
-                matchEnumerator.Dispose();
-                matchEnumerator = null;
-            }
+            matchEnumerator?.Dispose();
+            matchEnumerator = null;
         }
 
         /// <summary>
@@ -194,20 +208,15 @@ namespace SandcastleBuilder.WPF.UserControls
 
             if(txtFindID.Text.Trim().Length == 0)
             {
-                if(matchEnumerator != null)
-                {
-                    matchEnumerator.Dispose();
-                    matchEnumerator = null;
-                }
-
+                matchEnumerator?.Dispose();
+                matchEnumerator = null;
                 return;
             }
 
             txtFindID.Text = txtFindID.Text.Trim();
 
             // If this is the first time, get all matches
-            if(matchEnumerator == null)
-                matchEnumerator = this.Tokens.Find(t =>
+            matchEnumerator ??= this.Tokens.Find(t =>
                   (!String.IsNullOrEmpty(t.TokenName) && t.TokenName.IndexOf(txtFindID.Text,
                     StringComparison.CurrentCultureIgnoreCase) != -1) ||
                   (!String.IsNullOrEmpty(t.TokenValue) && t.TokenValue.IndexOf(txtFindID.Text,
@@ -221,11 +230,8 @@ namespace SandcastleBuilder.WPF.UserControls
             }
             else
             {
-                if(matchEnumerator != null)
-                {
-                    matchEnumerator.Dispose();
-                    matchEnumerator = null;
-                }
+                matchEnumerator.Dispose();
+                matchEnumerator = null;
 
                 MessageBox.Show("No more matches found", Constants.AppName, MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -239,11 +245,8 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void txtFindID_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(matchEnumerator != null)
-            {
-                matchEnumerator.Dispose();
-                matchEnumerator = null;
-            }
+            matchEnumerator?.Dispose();
+            matchEnumerator = null;
         }
 
         /// <summary>
@@ -273,7 +276,7 @@ namespace SandcastleBuilder.WPF.UserControls
         {
             if(this.Tokens != null)
             {
-                Token t = new Token { TokenValue = "Add token content here" };
+                Token t = new() { TokenValue = "Add token content here" };
                 this.Tokens.Add(t);
 
                 t.IsSelected = true;

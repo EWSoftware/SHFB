@@ -15,7 +15,7 @@ originally contained these changes.</para>
 						<para>Potential breaking changes:</para>
 						<list class="bullet">
 							<listItem>
-								<para><codeEntityReference qualifyHint="false">T:Sandcastle.Tools.BuildComponents.FileCreatedEventArgs</codeEntityReference>
+								<para><codeEntityReference qualifyHint="false">T:Sandcastle.Core.BuildAssembler.BuildComponent.FileCreatedEventArgs</codeEntityReference>
 was moved to the <localUri>Sandcastle.Core</localUri> assembly so that it is available to other build components.</para>
 							</listItem>
 							<listItem>

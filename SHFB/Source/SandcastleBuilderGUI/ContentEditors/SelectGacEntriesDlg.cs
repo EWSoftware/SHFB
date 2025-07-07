@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : SelectGacEntriesDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/07/2017
-// Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to select GAC entries that should be project references
 //
@@ -17,6 +17,8 @@
 // 09/02/2006  EFW  Created the code
 // 07/28/2008  EFW  Moved the form into the Sandcastle Builder GUI
 //===============================================================================================================
+
+// Ignore Spelling: Gac
 
 using System;
 using System.Collections.ObjectModel;
@@ -48,7 +50,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             {
                 ListBox.SelectedObjectCollection selectedItems = lbGACEntries.SelectedItems;
 
-                Collection<string> items = new Collection<string>();
+                Collection<string> items = [];
 
                 for(int idx = 0; idx < selectedItems.Count; idx++)
                     items.Add((string)selectedItems[idx]);

@@ -192,9 +192,9 @@ namespace Sandcastle.Tools.BuildComponents.Targets
             return target;
         }
 
-        private static IList<string> GetTemplateNames(XPathNavigator api)
+        private static List<string> GetTemplateNames(XPathNavigator api)
         {
-            List<string> templates = new List<string>();
+            List<string> templates = [];
 
             XPathNodeIterator templateNodes = api.Select(apiTemplatesExpression);
 
@@ -210,7 +210,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
             string file = (string)api.Evaluate(topicFileExpression);
 
             // Create target
-            List<MemberTarget> members = new List<MemberTarget>();
+            List<MemberTarget> members = [];
             XPathNodeIterator elementNodes = api.Select("elements/element");
 
             foreach(XPathNavigator elementNode in elementNodes)
@@ -236,7 +236,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
                     }
                 }
 
-                MemberTarget member = new MemberTarget
+                MemberTarget member = new()
                 {
                     Id = memberId,       // Get Id from element
                     File = file,         // Get file from type file
@@ -287,7 +287,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
 
         private static MethodTarget CreateMethodTarget(XPathNavigator api)
         {
-            MethodTarget target = new MethodTarget(CreateParameterList(api), CreateReturnType(api))
+            MethodTarget target = new(CreateParameterList(api), CreateReturnType(api))
             {
                 IsConversionOperator = (bool)api.Evaluate(apiIsConversionOperatorExpression)
             };
@@ -322,7 +322,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
 
         private static PropertyTarget CreatePropertyTarget(XPathNavigator api)
         {
-            PropertyTarget target = new PropertyTarget(CreateParameterList(api), CreateReturnType(api));
+            PropertyTarget target = new(CreateParameterList(api), CreateReturnType(api));
 
             if((bool)api.Evaluate(apiIsExplicitImplementationExpression))
                 target.ExplicitlyImplements = CreateMemberReference(api.SelectSingleNode(apiImplementedMembersExpression));
@@ -332,7 +332,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
 
         private static EventTarget CreateEventTarget(XPathNavigator api)
         {
-            EventTarget target = new EventTarget();
+            EventTarget target = new();
 
             if((bool)api.Evaluate(apiIsExplicitImplementationExpression))
                 target.ExplicitlyImplements = CreateMemberReference(api.SelectSingleNode(apiImplementedMembersExpression));
@@ -340,16 +340,16 @@ namespace Sandcastle.Tools.BuildComponents.Targets
             return target;
         }
 
-        private static IList<Parameter> CreateParameterList(XPathNavigator api)
+        private static List<Parameter> CreateParameterList(XPathNavigator api)
         {
-            List<Parameter> parameters = new List<Parameter>();
+            List<Parameter> parameters = [];
             XPathNodeIterator parameterNodes = api.Select("parameters/parameter");
 
             foreach(XPathNavigator parameterNode in parameterNodes)
             {
                 string name = parameterNode.GetAttribute("name", String.Empty);
                 XPathNavigator type = parameterNode.SelectSingleNode("*[1]");
-                Parameter parameter = new Parameter(name, CreateTypeReference(type));
+                Parameter parameter = new(name, CreateTypeReference(type));
                 parameters.Add(parameter);
             }
 
@@ -485,7 +485,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
 
         private static SpecializedTypeReference CreateSpecializedTypeReference(XPathNavigator node)
         {
-            Stack<Specialization> specializations = new Stack<Specialization>();
+            Stack<Specialization> specializations = new();
             XPathNavigator typeNode = node.Clone();
 
             while(typeNode != null)
@@ -494,14 +494,14 @@ namespace Sandcastle.Tools.BuildComponents.Targets
                 typeNode = typeNode.SelectSingleNode("type");
             }
 
-            return new SpecializedTypeReference(specializations.ToArray());
+            return new SpecializedTypeReference([.. specializations]);
         }
 
         private static Specialization CreateSpecialization(XPathNavigator node)
         {
             SimpleTypeReference template = CreateSimpleTypeReference(node);
 
-            List<TypeReference> arguments = new List<TypeReference>();
+            List<TypeReference> arguments = [];
             XPathNodeIterator specializationNodes = node.Select("specialization/*");
 
             foreach(XPathNavigator specializationNode in specializationNodes)
@@ -521,7 +521,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
                 throw new ArgumentNullException(nameof(node));
 
             string api = node.GetAttribute("api", String.Empty);
-            SimpleMemberReference member = new SimpleMemberReference(api);
+            SimpleMemberReference member = new(api);
 
             bool isSpecialized = (bool)node.Evaluate("boolean(./type//specialization)");
 

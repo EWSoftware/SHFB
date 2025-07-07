@@ -3,7 +3,7 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
-// Ignore Spelling: dup
+// Ignore Spelling: dup unstacker ret
 
 // Change history:
 // 11/22/2013 - EFW - Cleared out the conditional statements and updated based on changes to ListTemplate.cs.
@@ -19,9 +19,9 @@ namespace System.Compiler
     /// </summary>
     public class Unstacker : StandardVisitor
     {
-        private TrivialHashtable/*!*/ SucessorBlock = new TrivialHashtable();
-        private TrivialHashtable/*!*/ StackLocalsAtEntry = new TrivialHashtable();
-        private LocalsStack/*!*/ localsStack = new LocalsStack();
+        private TrivialHashtable/*!*/ SucessorBlock = new();
+        private TrivialHashtable/*!*/ StackLocalsAtEntry = new();
+        private LocalsStack/*!*/ localsStack = new();
 
         public Unstacker()
         {
@@ -45,13 +45,14 @@ namespace System.Compiler
         }
         public override Block VisitBlock(Block block)
         {
-            if (block == null) return null;
+            if(block == null)
+                return null;
+            
             LocalsStack stackLocalsAtEntry = (LocalsStack)this.StackLocalsAtEntry[block.UniqueKey];
-            if (stackLocalsAtEntry == null)
-            {
-                //Unreachable code, or the very first block
-                stackLocalsAtEntry = new LocalsStack();
-            }
+            
+            // If null, unreachable code or the very first block
+            stackLocalsAtEntry ??= new LocalsStack();
+            
             this.localsStack = stackLocalsAtEntry.Clone();
             base.VisitBlock(block);
             Block successor = (Block)this.SucessorBlock[block.UniqueKey];
@@ -97,7 +98,7 @@ namespace System.Compiler
             if(n <= 0)
                 return branch; //Empty stack, no need to copy
 
-            StatementList statements = new StatementList();
+            StatementList statements = [];
 
             this.localsStack.Transfer(targetStack, statements);
             statements.Add(branch);
@@ -172,7 +173,7 @@ namespace System.Compiler
             if (body == null)
                 return null;
 
-            BlockSorter blockSorter = new BlockSorter();
+            BlockSorter blockSorter = new();
             BlockList sortedBlocks = blockSorter.SortedBlocks;
             this.SucessorBlock = blockSorter.SuccessorBlock;
             this.StackLocalsAtEntry = new TrivialHashtable();
@@ -184,7 +185,7 @@ namespace System.Compiler
                 if (ehandler == null) continue;
                 Block handlerStart = ehandler.HandlerStartBlock;
                 if (handlerStart == null) continue;
-                LocalsStack lstack = new LocalsStack();
+                LocalsStack lstack = new();
                 this.StackLocalsAtEntry[handlerStart.UniqueKey] = lstack;
                 if (ehandler.HandlerType == NodeType.Catch)
                 {
@@ -278,7 +279,7 @@ namespace System.Compiler
                     topVal = this.elements[i];
                     //^ assume topVal != null;
                 }
-                Local dup = new Local(topVal.Type);
+                Local dup = new(topVal.Type);
                 if ((i = ++this.top) >= this.elements.Length) this.Grow();
                 this.elements[i] = dup;
                 return new AssignmentStatement(dup, topVal);
@@ -325,11 +326,11 @@ namespace System.Compiler
 
         private class BlockSorter : StandardVisitor
         {
-            private readonly TrivialHashtable/*!*/ VisitedBlocks = new TrivialHashtable();
-            private readonly TrivialHashtable/*!*/ BlocksThatDropThrough = new TrivialHashtable();
+            private readonly TrivialHashtable/*!*/ VisitedBlocks = new();
+            private readonly TrivialHashtable/*!*/ BlocksThatDropThrough = new();
             private bool lastBranchWasUnconditional;
-            internal BlockList/*!*/ SortedBlocks = new BlockList();
-            internal TrivialHashtable/*!*/ SuccessorBlock = new TrivialHashtable();
+            internal BlockList/*!*/ SortedBlocks = [];
+            internal TrivialHashtable/*!*/ SuccessorBlock = new();
 
             internal BlockSorter()
             {
@@ -343,7 +344,7 @@ namespace System.Compiler
                 Block previousBlock = null;
                 for (int i = 0, n = statements.Count; i < n; i++)
                 {
-                    if(!(statements[i] is Block b))
+                    if(statements[i] is not Block b)
                     {
                         Debug.Assert(false);
                         continue;

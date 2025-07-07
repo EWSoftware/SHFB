@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
-using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.BuildEngine;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.PlugIn;
 
 // Search for "TODO" to find changes that you need to make to this plug-in template.
 

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : Utility.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/15/2022
-// Note    : Copyright 2011-2022, Eric Woodruff, All rights reserved
+// Updated : 06/24/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a utility class with extension and utility methods.
 //
@@ -17,7 +17,7 @@
 // 04/02/2011  EFW  Created the code
 //===============================================================================================================
 
-// Ignore Spelling: Za
+// Ignore Spelling: Za cer
 
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using MsVsShellPackage = Microsoft.VisualStudio.Shell.Package;
 
 using SandcastleBuilder.Package.Properties;
-using SandcastleBuildItemMetadata = SandcastleBuilder.Utils.BuildItemMetadata;
+using SandcastleBuildItemMetadata = SandcastleBuilder.MSBuild.BuildItemMetadata;
 
 namespace SandcastleBuilder.Package
 {
@@ -45,13 +45,13 @@ namespace SandcastleBuilder.Package
         //=====================================================================
 
         // This is used to insert spaces for the Image project element alternate text
-        private static readonly Regex reInsertSpaces = new Regex(@"((?<=[a-z0-9])[A-Z](?=[a-z0-9]))|((?<=[A-Za-z])\d+)");
+        private static readonly Regex reInsertSpaces = new(@"((?<=[a-z0-9])[A-Z](?=[a-z0-9]))|((?<=[A-Za-z])\d+)");
 
         // Namespace and namespace group IDs are converted to NamespaceDoc and NamespaceGroupDoc type searches.
         // Overloads (O) are treated like member searches.
-        private static readonly char[] cerTypes = new[] { 'N', 'G', 'T', 'F', 'P', 'E', 'M', 'O' };
+        private static readonly char[] cerTypes = ['N', 'G', 'T', 'F', 'P', 'E', 'M', 'O'];
 
-        private static readonly Dictionary<string, string> cerOperatorToCodeOperator = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> cerOperatorToCodeOperator = new()
         {
             { "op_Addition", "operator +" },
             { "op_BitwiseAnd", "operator &" },

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : SpellCheckWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2021
-// Note    : Copyright 2013-2021, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2013-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to handle spell checking in the text editor windows
 //
@@ -90,7 +90,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             InitializeComponent();
 
-            issues = new List<SpellingIssue>();
+            issues = [];
         }
         #endregion
 
@@ -125,6 +125,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             TopicEditorWindow topicWindow = this.DockPanel.ActiveDocument as TopicEditorWindow;
 
             if(topicWindow == null)
+            {
                 foreach(IDockContent content in this.DockPanel.Documents)
                 {
                     topicWindow = content as TopicEditorWindow;
@@ -132,6 +133,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     if(topicWindow != null)
                         break;
                 }
+            }
 
             return topicWindow;
         }
@@ -168,7 +170,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 if(issue.Suggestions.Count != 0)
                 {
                     btnReplace.Enabled = btnReplaceAll.Enabled = btnAddWord.Enabled = true;
-                    lbSuggestions.Items.AddRange(issue.Suggestions.ToArray());
+                    lbSuggestions.Items.AddRange([.. issue.Suggestions]);
                 }
                 else
                     lbSuggestions.Items.Add("(No suggestions)");
@@ -188,8 +190,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private void AdjustIssuePositions(int line, int offset)
         {
             foreach(var issue in issues)
+            {
                 if(issue.Location.Y == line)
                     issue.Location = new Point(issue.Location.X + offset, issue.Location.Y);
+            }
         }
         #endregion
 
@@ -290,10 +294,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
             int idx = lbSuggestions.IndexFromPoint(e.Location);
 
             if(idx != -1)
+            {
                 if((ModifierKeys & Keys.Control) == 0)
                     btnReplace_Click(sender, e);
                 else
                     btnReplaceAll_Click(sender, e);
+            }
         }
 
         /// <summary>
@@ -343,15 +349,21 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 // Match the case of the first letter if necessary
                 if(replacement.Length > 1 && (Char.IsUpper(replacement[0]) != Char.IsUpper(replacement[1]) ||
                   (Char.IsLower(replacement[0]) && Char.IsLower(replacement[1]))))
+                {
                     if(Char.IsUpper(issue.Word[0]) && !Char.IsUpper(replacement[0]))
                     {
                         replacement = replacement.Substring(0, 1).ToUpper(
                             SpellCheckerConfiguration.DefaultLanguage) + replacement.Substring(1);
                     }
                     else
+                    {
                         if(Char.IsLower(issue.Word[0]) && !Char.IsLower(replacement[0]))
+                        {
                             replacement = replacement.Substring(0, 1).ToLower(
                                 SpellCheckerConfiguration.DefaultLanguage) + replacement.Substring(1);
+                        }
+                    }
+                }
 
                 length = currentTopicWindow.ReplaceTextAt(issue.Location, word.Length, replacement);
 
@@ -501,7 +513,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 IsMisspelling = true,
                 Word = e.Word,
                 Location = e.Position,
-                Suggestions = dictionary.SuggestCorrections(e.Word).ToList()
+                Suggestions = [.. dictionary.SuggestCorrections(e.Word)]
             });
         }
 

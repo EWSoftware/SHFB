@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : Utility.cs
 // Author  : Eric Woodruff
-// Updated : 04/21/2021
+// Updated : 07/06/2025
 //
 // This file contains a class with utility and extension methods.
 //
@@ -77,7 +77,7 @@ namespace Sandcastle.Installer.InstallerPages
         {
             // Check for a 64-bit process.  The tools will be in the x86 folder.  If running as a 32-bit process,
             // the folder will contain "(x86)" already if on a 64-bit OS.
-            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.Is64BitProcess ?
+            StringBuilder sb = new(Environment.GetFolderPath(Environment.Is64BitProcess ?
                 Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles));
 
             sb.Append(path);
@@ -105,7 +105,7 @@ namespace Sandcastle.Installer.InstallerPages
         {
             // Check for a 64-bit process.  The tools will be in the x86 folder.  If running as a 32-bit process,
             // the folder will contain "(x86)" already if on a 64-bit OS.
-            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.Is64BitProcess ?
+            StringBuilder sb = new(Environment.GetFolderPath(Environment.Is64BitProcess ?
                 Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles));
             string folder;
 
@@ -149,7 +149,7 @@ namespace Sandcastle.Installer.InstallerPages
             if(!File.Exists(installer))
                 throw new InvalidOperationException("Unable to locate installer: " + installer);
 
-            ProcessStartInfo psi = new ProcessStartInfo(installer, arguments)
+            ProcessStartInfo psi = new(installer, arguments)
             {
                 WorkingDirectory = Utility.BasePath
             };
@@ -180,7 +180,7 @@ namespace Sandcastle.Installer.InstallerPages
             if(ex == null)
                 return "No exception";
 
-            StringBuilder sb = new StringBuilder(ex.Message, 1024);
+            StringBuilder sb = new(ex.Message, 1024);
 
             // Don't bother including the generic aggregate exception message
             if(ex is AggregateException)
@@ -240,7 +240,7 @@ namespace Sandcastle.Installer.InstallerPages
 
             string path;
 
-            if(!(e.OriginalSource is Hyperlink link))
+            if(e.OriginalSource is not Hyperlink link)
                 return;
 
             // Convert relative URIs to absolute URIs
@@ -292,15 +292,13 @@ namespace Sandcastle.Installer.InstallerPages
 
             try
             {
-                using(Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
-                {
-                    FlowDocument flowDocument = (FlowDocument)XamlReader.Load(s);
+                using Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
+                FlowDocument flowDocument = (FlowDocument)XamlReader.Load(s);
 
-                    foreach(var b in flowDocument.Blocks.ToArray())
-                    {
-                        flowDocument.Blocks.Remove(b);
-                        blocks.Add(b);
-                    }
+                foreach(var b in flowDocument.Blocks.ToArray())
+                {
+                    flowDocument.Blocks.Remove(b);
+                    blocks.Add(b);
                 }
             }
             catch(Exception ex)

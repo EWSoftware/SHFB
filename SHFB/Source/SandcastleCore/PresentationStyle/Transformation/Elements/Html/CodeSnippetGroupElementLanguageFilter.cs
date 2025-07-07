@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : CodeSnippetGroupElementLanguageFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/22/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle codeSnippetGroup elements in presentation styles that use a
 // page-level language filter selector.
@@ -120,13 +120,9 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                     if(position != 1)
                         codeBlock.Attribute("class").Value += " is-hidden";
 
-                    var title = codeBlock.Descendants().FirstOrDefault(p => p.Attribute("id")?.Value == "Title");
-
-                    if(title == null)
-                    {
+                    var title = codeBlock.Descendants().FirstOrDefault(p => p.Attribute("id")?.Value == "Title") ??
                         throw new InvalidOperationException("Unable to locate the title container with the id " +
                             "'Title' in the syntax section code template");
-                    }
 
                     title.Attribute("id").Remove();
 
@@ -146,13 +142,9 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                     }
 
                     var codeContainer = codeBlock.Descendants("pre").FirstOrDefault(
-                        p => p.Attribute("id")?.Value == "CodeBlock");
-
-                    if(codeContainer == null)
-                    {
+                        p => p.Attribute("id")?.Value == "CodeBlock") ??
                         throw new InvalidOperationException("Unable to locate the code container with the id " +
                             "'CodeBlock' in the code snippet template");
-                    }
 
                     codeContainer.Attribute("id").Remove();
                     codeContainer.RemoveNodes();
@@ -177,18 +169,14 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
                             if(numberLines != null)
                             {
                                 var numberContainer = codeBlock.Descendants("pre").FirstOrDefault(
-                                    p => p.Attribute("id")?.Value == "LineNumbers");
-
-                                if(numberContainer == null)
-                                {
+                                    p => p.Attribute("id")?.Value == "LineNumbers") ??
                                     throw new InvalidOperationException("Unable to locate the line number " +
                                         "container with the id 'LineNumbers' in the code snippet template");
-                                }
 
                                 numberContainer.Attribute("id").Remove();
                                 numberContainer.RemoveNodes();
 
-                                int lineCount = snippet.Value.Split(new[] { "\r\n" }, StringSplitOptions.None).Length;
+                                int lineCount = snippet.Value.Split(["\r\n"], StringSplitOptions.None).Length;
 
                                 numberContainer.Value = String.Join("\r\n", Enumerable.Range(
                                     1, lineCount).Select(i => i.ToString(CultureInfo.InvariantCulture)));

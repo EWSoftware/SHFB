@@ -1,5 +1,5 @@
 //===============================================================================================================
-// System  : Sandcastle Help File Builder Plug-Ins UI
+// System  : Sandcastle Help File Builder Plug-Ins
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 04/17/20121

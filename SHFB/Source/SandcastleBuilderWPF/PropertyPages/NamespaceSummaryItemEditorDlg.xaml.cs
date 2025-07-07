@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : NamespaceSummaryItemEditorDlg.xaml.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
-// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
+// Updated : 06/21/2025
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit namespace summaries and to indicate which namespaces should appear
 // in the help file.
@@ -40,11 +40,10 @@ using System.Xml;
 using System.Xml.XPath;
 
 using Sandcastle.Core;
+using Sandcastle.Core.BuildEngine;
+using Sandcastle.Core.Project;
 
 using Sandcastle.Platform.Windows;
-
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildEngine;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {
@@ -81,11 +80,9 @@ namespace SandcastleBuilder.WPF.PropertyPages
         #region Private data members
         //=====================================================================
 
-        private SandcastleProject tempProject;
         private readonly NamespaceSummaryItemCollection nsColl;
         private Dictionary<string, List<string>> namespaceInfo;
         private readonly SortedDictionary<string, NamespaceSummaryItem> namespaceItems;
-        private BuildProcess buildProcess;
         private CancellationTokenSource cancellationTokenSource;
 
         #endregion
@@ -133,71 +130,70 @@ namespace SandcastleBuilder.WPF.PropertyPages
             XPathNavigator navDoc, navNamespace, navLibrary;
             string nsName, asmName;
 
-            namespaceInfo = new Dictionary<string, List<string>>();
+            namespaceInfo = [];
 
-            using(var reader = XmlReader.Create(reflectionFile, new XmlReaderSettings { CloseInput = true }))
+            using var reader = XmlReader.Create(reflectionFile, new XmlReaderSettings { CloseInput = true });
+            
+            reflectionInfo = new XPathDocument(reader);
+
+            navDoc = reflectionInfo.CreateNavigator();
+
+            // Namespace nodes don't contain assembly info so we'll have to look at all types and add all
+            // unique namespaces from their container info.
+            foreach(XPathNavigator container in navDoc.Select("reflection/apis/api[starts-with(@id, 'T:')]/containers"))
             {
-                reflectionInfo = new XPathDocument(reader);
+                cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
-                navDoc = reflectionInfo.CreateNavigator();
+                navNamespace = container.SelectSingleNode("namespace");
+                navLibrary = container.SelectSingleNode("library");
 
-                // Namespace nodes don't contain assembly info so we'll have to look at all types and add all
-                // unique namespaces from their container info.
-                foreach(XPathNavigator container in navDoc.Select("reflection/apis/api[starts-with(@id, 'T:')]/containers"))
+                if(navNamespace != null && navLibrary != null)
                 {
-                    cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                    nsName = navNamespace.GetAttribute("api", String.Empty).Substring(2);
+                    asmName = navLibrary.GetAttribute("assembly", String.Empty);
 
-                    navNamespace = container.SelectSingleNode("namespace");
-                    navLibrary = container.SelectSingleNode("library");
-
-                    if(navNamespace != null && navLibrary != null)
+                    if(namespaceInfo.TryGetValue(nsName, out List<string> assemblies))
                     {
-                        nsName = navNamespace.GetAttribute("api", String.Empty).Substring(2);
-                        asmName = navLibrary.GetAttribute("assembly", String.Empty);
-
-                        if(namespaceInfo.TryGetValue(nsName, out List<string> assemblies))
-                        {
-                            if(!assemblies.Contains(asmName))
-                                assemblies.Add(asmName);
-                        }
-                        else
-                            namespaceInfo.Add(nsName, new List<string>() { asmName });
+                        if(!assemblies.Contains(asmName))
+                            assemblies.Add(asmName);
                     }
+                    else
+                        namespaceInfo.Add(nsName, [asmName]);
                 }
+            }
 
-                // The global namespace (N:) isn't always listed but we'll add it as it does show up in the
-                // reflection info anyway.
-                if(!namespaceInfo.ContainsKey(String.Empty))
-                    namespaceInfo.Add(String.Empty, new List<string>());
+            // The global namespace (N:) isn't always listed but we'll add it as it does show up in the
+            // reflection info anyway.
+            if(!namespaceInfo.ContainsKey(String.Empty))
+                namespaceInfo.Add(String.Empty, []);
 
-                // Add new namespaces to the list as temporary items.  They will get added to the project if
-                // modified.
-                foreach(string ns in namespaceInfo.Keys)
-                {
-                    cancellationTokenSource.Token.ThrowIfCancellationRequested();
+            // Add new namespaces to the list as temporary items.  They will get added to the project if
+            // modified.
+            foreach(string ns in namespaceInfo.Keys)
+            {
+                cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
-                    nsName = (ns.Length == 0) ? "(global)" : ns;
+                nsName = (ns.Length == 0) ? "(global)" : ns;
 
-                    if(!namespaceItems.ContainsKey(nsName))
-                        namespaceItems.Add(nsName, nsColl.CreateTemporaryItem(ns, false));
+                if(!namespaceItems.ContainsKey(nsName))
+                    namespaceItems.Add(nsName, nsColl.CreateTemporaryItem(ns, false));
 
-                    namespaceInfo[ns].Sort();
-                }
+                namespaceInfo[ns].Sort();
+            }
 
-                // Add namespace group info, if present.  These are an abstract concept and aren't part of any
-                // assemblies.
-                foreach(XPathNavigator nsGroup in navDoc.Select("reflection/apis/api[starts-with(@id, 'G:') and " +
-                  "not(topicdata/@group='rootGroup')]/apidata"))
-                {
-                    cancellationTokenSource.Token.ThrowIfCancellationRequested();
+            // Add namespace group info, if present.  These are an abstract concept and aren't part of any
+            // assemblies.
+            foreach(XPathNavigator nsGroup in navDoc.Select("reflection/apis/api[starts-with(@id, 'G:') and " +
+              "not(topicdata/@group='rootGroup')]/apidata"))
+            {
+                cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
-                    nsName = nsGroup.GetAttribute("name", String.Empty) + NamespaceComparer.GroupSuffix;
+                nsName = nsGroup.GetAttribute("name", String.Empty) + NamespaceComparer.GroupSuffix;
 
-                    namespaceInfo.Add(nsName, new List<String>());
+                namespaceInfo.Add(nsName, []);
 
-                    if(!namespaceItems.ContainsKey(nsName))
-                        namespaceItems.Add(nsName, nsColl.CreateTemporaryItem(nsName, true));
-                }
+                if(!namespaceItems.ContainsKey(nsName))
+                    namespaceItems.Add(nsName, nsColl.CreateTemporaryItem(nsName, true));
             }
         }
         #endregion
@@ -213,6 +209,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private async void NamespaceSummaryItemEditorDlg_Loaded(object sender, RoutedEventArgs e)
         {
+            ISandcastleProject tempProject = null;
             string tempPath;
 
             cboAssembly.IsEnabled = txtSearchText.IsEnabled = btnAll.IsEnabled = btnNone.IsEnabled =
@@ -233,19 +230,16 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 if(!Directory.Exists(tempPath))
                     Directory.CreateDirectory(tempPath);
 
-                tempProject = new SandcastleProject(nsColl.Project.MSBuildProject)
-                {
-                    CleanIntermediates = false,
-                    OutputPath = tempPath
-                };
+                tempProject = nsColl.Project.Clone();
+                tempProject.CleanIntermediates = false;
+                tempProject.OutputPath = tempPath;
 
                 cancellationTokenSource = new CancellationTokenSource();
 
-                buildProcess = new BuildProcess(tempProject, PartialBuildType.TransformReflectionInfo)
-                {
-                    ProgressReportProvider = new Progress<BuildProgressEventArgs>(buildProcess_ReportProgress),
-                    CancellationToken = cancellationTokenSource.Token
-                };
+                var buildProcess = tempProject.CreateBuildProcess(PartialBuildType.TransformReflectionInfo);
+                
+                buildProcess.ProgressReportProvider = new Progress<BuildProgressEventArgs>(buildProcess_ReportProgress);
+                buildProcess.CancellationToken = cancellationTokenSource.Token;
 
                 await Task.Run(() => buildProcess.Build(), cancellationTokenSource.Token).ConfigureAwait(true);
 
@@ -271,9 +265,13 @@ namespace SandcastleBuilder.WPF.PropertyPages
                         var assemblies = new List<string>();
 
                         foreach(List<string> asmList in namespaceInfo.Values)
+                        {
                             foreach(string asm in asmList)
+                            {
                                 if(!assemblies.Contains(asm))
                                     assemblies.Add(asm);
+                            }
+                        }
 
                         assemblies.Sort();
                         assemblies.Insert(0, "<All>");
@@ -283,9 +281,11 @@ namespace SandcastleBuilder.WPF.PropertyPages
                         btnApplyFilter_Click(this, null);
                     }
                     else
+                    {
                         MessageBox.Show("Unable to build project to obtain API information.  Please perform a " +
                             "normal build to identify and correct the problem.", Constants.AppName,
                             MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
 
                     spLoading.Visibility = Visibility.Collapsed;
                     lbNamespaces.Focus();
@@ -294,22 +294,38 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 {
                     this.Close();
                 }
-
-                buildProcess = null;
+            }
+            catch(OperationCanceledException)
+            {
+                // Ignore cancellation requests
             }
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
+
                 MessageBox.Show("Unable to build project to obtain API information.  Error: " + ex.Message,
                     Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
-                if(cancellationTokenSource != null)
+                if(tempProject != null)
                 {
-                    cancellationTokenSource.Dispose();
-                    cancellationTokenSource = null;
+                    try
+                    {
+                        // Delete the temporary project's working files
+                        if(!String.IsNullOrEmpty(tempProject.OutputPath) && Directory.Exists(tempProject.OutputPath))
+                            Directory.Delete(tempProject.OutputPath, true);
+                    }
+                    catch
+                    {
+                        // Eat the exception.  We'll ignore it if the temporary files cannot be deleted.
+                    }
+
+                    tempProject.Dispose();
                 }
+
+                cancellationTokenSource?.Dispose();
+                cancellationTokenSource = null;
             }
         }
 
@@ -341,24 +357,9 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
             // Add new items that were modified
             foreach(var item in namespaceItems.Values.Where(ns => ns.IsDirty))
+            {
                 if(nsColl[item.Name] == null)
                     nsColl.Add(item);
-
-            if(tempProject != null)
-            {
-                try
-                {
-                    // Delete the temporary project's working files
-                    if(!String.IsNullOrEmpty(tempProject.OutputPath) && Directory.Exists(tempProject.OutputPath))
-                        Directory.Delete(tempProject.OutputPath, true);
-                }
-                catch
-                {
-                    // Eat the exception.  We'll ignore it if the temporary files cannot be deleted.
-                }
-
-                tempProject.Dispose();
-                tempProject = null;
             }
         }
 

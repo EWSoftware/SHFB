@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : EditorActions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 07/05/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains various custom actions for the topic editor
 //
@@ -45,11 +45,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// action</param>
         public override void Execute(TextArea textArea)
         {
-            using(GotoLineDlg dlg = new GotoLineDlg())
-            {
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    textArea.Caret.Line = dlg.LineNumber - 1;
-            }
+            using GotoLineDlg dlg = new();
+            
+            if(dlg.ShowDialog() == DialogResult.OK)
+                textArea.Caret.Line = dlg.LineNumber - 1;
         }
     }
     #endregion

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectPropertiesWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/10/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the project properties
 //
@@ -23,9 +23,10 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 
+using Sandcastle.Core.Project;
+
 using SandcastleBuilder.Gui.Properties;
 using SandcastleBuilder.Package.PropertyPages;
-using SandcastleBuilder.Utils;
 
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -39,7 +40,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         #region Private data members
         //=====================================================================
 
-        private SandcastleProject currentProject;
+        private ISandcastleProject currentProject;
 
         #endregion
 
@@ -49,7 +50,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <summary>
         /// This is used to get or set the current project
         /// </summary>
-        public SandcastleProject CurrentProject
+        public ISandcastleProject CurrentProject
         {
             get => currentProject;
             set
@@ -289,7 +290,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
             TreeNode node;
 
             // The property pages will be listed in this order
-            Type[] propertyPages = new[] {
+            Type[] propertyPages = 
+            [
                 typeof(BuildPropertiesPageControl),
                 typeof(HelpFilePropertiesPageControl),
                 typeof(Help1WebsitePropertiesPageControl),
@@ -303,7 +305,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 typeof(TransformArgumentsPageControl),
                 typeof(UserDefinedPropertiesPageControl),
                 typeof(BuildEventPropertiesPageControl)
-            };
+            ];
 
             try
             {

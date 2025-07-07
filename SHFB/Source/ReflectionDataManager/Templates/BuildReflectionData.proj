@@ -1,7 +1,7 @@
 ﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<!-- Sandcastle Tools MSBuild Tasks.  https://GitHub.com/EWSoftware/SHFB -->
 	<UsingTask TaskName="Sandcastle.Tools.MSBuild.MRefBuilder"
-		AssemblyFile="{@SHFBRoot}\net472\MRefBuilder.dll" />
+		AssemblyFile="{@SHFBRoot}\net48\MRefBuilder.dll" />
 
 	<!-- Task properties -->
 	<PropertyGroup>

@@ -15,10 +15,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.VisualStudio.Project</RootNamespace>
     <AssemblyName>Microsoft.VisualStudio.Project</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <AllowedAssemblyPrefix>$(AllowedAssemblyPrefix);Microsoft.Internal</AllowedAssemblyPrefix>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -174,13 +172,13 @@
     <EmbeddedResource Include="Resources\imagelis.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build" VersionOverride="17.14.8">
+    <PackageReference Include="Microsoft.Build">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Build.Tasks.Core" VersionOverride="17.14.8">
+    <PackageReference Include="Microsoft.Build.Tasks.Core">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Build.Utilities.Core" VersionOverride="17.14.8">
+    <PackageReference Include="Microsoft.Build.Utilities.Core">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.SDK">

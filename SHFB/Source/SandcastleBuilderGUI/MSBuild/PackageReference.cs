@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : PackageReferenceItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/20/2021
-// Note    : Copyright 2021, Eric Woodruff, All rights reserved
+// Updated : 06/22/2025
+// Note    : Copyright 2021-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a package reference item used by the build engine to location
 // additional components for the build.
@@ -22,7 +22,9 @@ using System.ComponentModel;
 
 using Microsoft.Build.Evaluation;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
+
+using SandcastleBuilder.MSBuild.HelpProject;
 
 namespace SandcastleBuilder.Gui.MSBuild
 {

@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : LanguageKeywordElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/04/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 06/19/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle languageKeyword elements
 //
@@ -19,6 +19,8 @@
 
 using System;
 using System.Xml.Linq;
+
+using Sandcastle.Core.Project;
 
 namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 {
@@ -47,7 +49,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
             bool first = true, isMarkdown = transformation.SupportedFormats == HelpFileFormats.Markdown,
                 isHtml = (transformation.SupportedFormats != HelpFileFormats.OpenXml && !isMarkdown);
 
-            foreach(string k in keyword.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach(string k in keyword.Split(['/'], StringSplitOptions.RemoveEmptyEntries))
             {
                 string kw = k.Trim();
 

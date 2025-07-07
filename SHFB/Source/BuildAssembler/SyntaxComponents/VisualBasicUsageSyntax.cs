@@ -1127,7 +1127,7 @@ namespace Sandcastle.Tools.SyntaxGenerators
             writer.WriteReferenceLink(api);
         }
 
-        private static readonly HashSet<string> reservedWords = new HashSet<string>
+        private static readonly HashSet<string> reservedWords = new()
         {
             "Alias",
             "Assembly",

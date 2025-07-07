@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MatchesRegexFunction.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
-// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a custom XPath function used to perform a regular expression search in XPath queries
 //
@@ -17,7 +17,7 @@
 // 07/27/2007  EFW  Created the code
 //===============================================================================================================
 
-// Ignore Spelling: utils Filt Excep
+// Ignore Spelling: Filt Excep Minargs Maxargs xslt
 
 using System;
 using System.Collections.Generic;
@@ -48,7 +48,7 @@ namespace SandcastleBuilder.WPF.XPath
         //=====================================================================
 
         // This is used to contain prior regular expressions so that they don't have to be created on each call
-        private static readonly Dictionary<string, Regex> regexDictionary = new Dictionary<string, Regex>();
+        private static readonly Dictionary<string, Regex> regexDictionary = [];
 
         #endregion
 
@@ -61,8 +61,7 @@ namespace SandcastleBuilder.WPF.XPath
         /// functions.
         /// </summary>
         /// <value>Always returns an array with two <c>String</c> types and a <c>Boolean</c> type specified</value>
-        public XPathResultType[] ArgTypes => new XPathResultType[] { XPathResultType.String,
-            XPathResultType.String, XPathResultType.Boolean };
+        public XPathResultType[] ArgTypes => [ XPathResultType.String, XPathResultType.String, XPathResultType.Boolean ];
 
         /// <summary>
         /// Gets the minimum number of arguments for the function. This enables the user to differentiate between
@@ -100,8 +99,10 @@ namespace SandcastleBuilder.WPF.XPath
             bool ignoreCase;
 
             if(args.Length != 3)
+            {
                 throw new ArgumentException("There must be three parameters passed to the 'matches-regex' function",
                     nameof(args));
+            }
 
             value = args[0].ToString();
             expression = args[1].ToString();

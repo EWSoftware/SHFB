@@ -11,7 +11,7 @@ namespace Sandcastle.Tools.BuildComponents.Snippets
     /// <summary>
     /// This defines a region of colorized code
     /// </summary>
-    public struct Region
+    public readonly struct Region
     {
         #region Properties
         //=====================================================================

@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AutoOutlineElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/08/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle autoOutline elements
 //
@@ -103,7 +103,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml
             if(intro != null)
             {
                 // If in an introduction, it outlines the top level sections
-                this.InsertAutoOutline(transformation, transformation.CurrentElement, intro.Parent, leadIn,
+                InsertAutoOutline(transformation, transformation.CurrentElement, intro.Parent, leadIn,
                     outlineType, 0, maxDepth);
             }
             else
@@ -119,7 +119,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml
 
                     if(sections != null)
                     {
-                        this.InsertAutoOutline(transformation, transformation.CurrentElement, sections, leadIn,
+                        InsertAutoOutline(transformation, transformation.CurrentElement, sections, leadIn,
                             AutoOutlineType.Subsection, 0, maxDepth);
                     }
                 }
@@ -136,7 +136,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml
         /// <param name="outlineType">The outline type</param>
         /// <param name="currentDepth">The current outline depth</param>
         /// <param name="maxDepth">The maximum outline depth</param>
-        private void InsertAutoOutline(TopicTransformationCore transformation, XElement renderTo,
+        private static void InsertAutoOutline(TopicTransformationCore transformation, XElement renderTo,
           XElement content, string leadIn, AutoOutlineType outlineType, int currentDepth, int maxDepth)
         {
             // Ignore any without a title section
@@ -215,7 +215,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml
 
                 if(subsections != null && currentDepth < maxDepth)
                 {
-                    this.InsertAutoOutline(transformation, li, subsections, null, AutoOutlineType.SubSubsection,
+                    InsertAutoOutline(transformation, li, subsections, null, AutoOutlineType.SubSubsection,
                         currentDepth + 1, maxDepth);
                 }
             }

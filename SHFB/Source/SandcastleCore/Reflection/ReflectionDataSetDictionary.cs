@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSetDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/23/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 07/02/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a dictionary of reflection data settings for the various .NET
 // Framework platforms and versions.
@@ -73,26 +73,40 @@ namespace Sandcastle.Core.Reflection
         /// copies in folders earlier in the search order.</remarks>
         public ReflectionDataSetDictionary(IEnumerable<string> componentLocations) : base(StringComparer.OrdinalIgnoreCase)
         {
-            List<string> files = new List<string>();
+            List<string> files = [];
 
             if(Directory.Exists(ComponentUtilities.CoreReflectionDataFolder))
-                foreach(string file in Directory.EnumerateFiles(ComponentUtilities.CoreReflectionDataFolder, "*.reflection",
-                  SearchOption.AllDirectories))
+            {
+                foreach(string file in Directory.EnumerateFiles(ComponentUtilities.CoreReflectionDataFolder,
+                  "*.reflection", SearchOption.AllDirectories))
+                {
                     files.Add(file);
+                }
+            }
 
             if(Directory.Exists(ComponentUtilities.ThirdPartyComponentsFolder))
-                foreach(string file in Directory.EnumerateFiles(ComponentUtilities.ThirdPartyComponentsFolder, "*.reflection",
-                  SearchOption.AllDirectories))
+            {
+                foreach(string file in Directory.EnumerateFiles(ComponentUtilities.ThirdPartyComponentsFolder,
+                  "*.reflection", SearchOption.AllDirectories))
+                {
                     files.Add(file);
+                }
+            }
 
             if(componentLocations != null)
+            {
                 foreach(string folder in componentLocations)
+                {
                     if(!String.IsNullOrWhiteSpace(folder) && Directory.Exists(folder))
                     {
                         foreach(string file in Directory.EnumerateFiles(folder, "*.reflection",
                           SearchOption.AllDirectories))
+                        {
                             files.Add(file);
+                        }
                     }
+                }
+            }
 
             foreach(string file in files)
             {
@@ -151,10 +165,8 @@ namespace Sandcastle.Core.Reflection
             {
                 dataSet = this.Values.Where(v => v.Platform == platform && v.IsCoreFramework).OrderBy(
                     v => v.Version).LastOrDefault(v => v.Version.Major == version.Major &&
-                         v.Version.Minor == version.Minor && v.IsPresent);
-
-                if(dataSet == null)
-                    dataSet = this.Values.Where(v => v.Platform == platform && v.IsCoreFramework).OrderBy(
+                         v.Version.Minor == version.Minor && v.IsPresent) ??
+                    this.Values.Where(v => v.Platform == platform && v.IsCoreFramework).OrderBy(
                         v => v.Version).FirstOrDefault(v => v.Version > version && v.IsPresent);
             }
 
@@ -184,7 +196,7 @@ namespace Sandcastle.Core.Reflection
             if(frameworks == null)
                 throw new ArgumentNullException(nameof(frameworks));
 
-            List<ReflectionDataSet> bestMatches = new List<ReflectionDataSet>();
+            List<ReflectionDataSet> bestMatches = [];
             ReflectionDataSet match;
 
             foreach(var framework in frameworks)
@@ -199,10 +211,8 @@ namespace Sandcastle.Core.Reflection
                         break;
 
                     case PlatformType.DotNetPortable:
-                        match = this.CoreFrameworkMatching(framework.PlatformType, new Version(framework.Version), false);
-
-                        if(match == null)
-                            match = this.CoreFrameworkMostRecent(PlatformType.DotNetFramework);
+                        match = this.CoreFrameworkMatching(framework.PlatformType, new Version(framework.Version), false) ??
+                            this.CoreFrameworkMostRecent(PlatformType.DotNetFramework);
                         break;
 
                     default:

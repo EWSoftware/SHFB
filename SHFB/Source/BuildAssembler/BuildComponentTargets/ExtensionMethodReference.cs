@@ -52,7 +52,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
         {
             this.Name = methodName ?? throw new ArgumentNullException(nameof(methodName));
             this.Parameters = parameters;
-            this.TemplateArgs = (templateArgs ?? new List<TypeReference>());
+            this.TemplateArgs = templateArgs ?? [];
         }
         #endregion
     }

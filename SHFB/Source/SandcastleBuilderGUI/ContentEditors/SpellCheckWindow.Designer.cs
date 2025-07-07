@@ -30,7 +30,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SpellCheckWindow));
-            this.statusBarTextProvider1 = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
+            this.statusBarTextProvider1 = new SandcastleBuilder.Gui.StatusBarTextProvider(this.components);
             this.btnIgnoreOnce = new System.Windows.Forms.Button();
             this.btnReplace = new System.Windows.Forms.Button();
             this.btnReplaceAll = new System.Windows.Forms.Button();
@@ -187,7 +187,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
         #endregion
 
-        private SandcastleBuilder.Utils.Controls.StatusBarTextProvider statusBarTextProvider1;
+        private SandcastleBuilder.Gui.StatusBarTextProvider statusBarTextProvider1;
         private System.Windows.Forms.Button btnIgnoreOnce;
         private System.Windows.Forms.Button btnReplaceAll;
         private System.Windows.Forms.Button btnReplace;
