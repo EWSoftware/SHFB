@@ -13,6 +13,7 @@
 	<item id="devlang_asyncKeyword">`async` (在 Visual Basic 中为 `Async`)</item>
 	<item id="devlang_awaitKeyword">`await` (在 Visual Basic 中为 `Await`)</item>
 	<item id="devlang_asyncAwaitKeyword">`async`/`await` (在 Visual Basic 中为 `Async`/`Await`)</item>
+  <item id="devlang_thisKeyword">`this` (`Me` in Visual Basic)</item>
 
 	<!-- Show Missing Component messages -->
 	<item id="SMCMissingTag">\[缺少 "{1}" 的 &lt;{0}&gt; 文档\]</item>

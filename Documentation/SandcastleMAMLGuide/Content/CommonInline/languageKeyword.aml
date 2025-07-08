@@ -37,8 +37,10 @@ formatting and will not change based on the language filter setting.</para>
 &lt;languageKeyword&gt;MustInherit&lt;/languageKeyword&gt;, &lt;languageKeyword&gt;sealed&lt;/languageKeyword&gt;,
 &lt;languageKeyword&gt;NotInheritable&lt;/languageKeyword&gt;, &lt;languageKeyword&gt;async&lt;/languageKeyword&gt;,
 &lt;languageKeyword&gt;await&lt;/languageKeyword&gt;, &lt;languageKeyword&gt;async/await&lt;/languageKeyword&gt;,
-&lt;languageKeyword&gt;Async, Await&lt;/languageKeyword&gt;, &lt;languageKeyword&gt;Async/Await&lt;/languageKeyword&gt;,
-&lt;languageKeyword&gt;let!&lt;/languageKeyword&gt;, &lt;languageKeyword&gt;async/let!&lt;/languageKeyword&gt;&lt;/para&gt;
+&lt;languageKeyword&gt;Async&lt;/languageKeyword&gt;, &lt;languageKeyword&gt;Await&lt;/languageKeyword&gt;,
+&lt;languageKeyword&gt;Async/Await&lt;/languageKeyword&gt;, &lt;languageKeyword&gt;let!&lt;/languageKeyword&gt;,
+&lt;languageKeyword&gt;async/let!&lt;/languageKeyword&gt;, &lt;languageKeyword&gt;this&lt;/languageKeyword&gt;,
+&lt;languageKeyword&gt;Me&lt;/languageKeyword&gt;/para&gt;
 
 				&lt;para&gt;These are unrecognized and will not change based on the language filter setting: 
 &lt;languageKeyword&gt;foreach&lt;/languageKeyword&gt;, &lt;languageKeyword&gt;while&lt;/languageKeyword&gt;,
@@ -59,8 +61,10 @@ formatting and will not change based on the language filter setting.</para>
 <languageKeyword>MustInherit</languageKeyword>, <languageKeyword>sealed</languageKeyword>,
 <languageKeyword>NotInheritable</languageKeyword>, <languageKeyword>async</languageKeyword>,
 <languageKeyword>await</languageKeyword>, <languageKeyword>async/await</languageKeyword>,
-<languageKeyword>Async, Await</languageKeyword>, <languageKeyword>Async/Await</languageKeyword>,
-<languageKeyword>let!</languageKeyword>, <languageKeyword>async/let!</languageKeyword></para>
+<languageKeyword>Async</languageKeyword>, <languageKeyword>Await</languageKeyword>,
+<languageKeyword>Async/Await</languageKeyword>, <languageKeyword>let!</languageKeyword>,
+<languageKeyword>async/let!</languageKeyword>, <languageKeyword>this</languageKeyword>,
+<languageKeyword>Me</languageKeyword></para>
 
 				<para>These are unrecognized and will not change based on the language filter setting: 
 <languageKeyword>foreach</languageKeyword>, <languageKeyword>while</languageKeyword>,

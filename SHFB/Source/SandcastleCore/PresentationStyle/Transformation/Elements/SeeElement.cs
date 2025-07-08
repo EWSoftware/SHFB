@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SeeElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2025
+// Updated : 07/07/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle see/seealso elements
@@ -218,6 +218,11 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                             case "await":
                             case "Await":
                                 includeItem = "devlang_awaitKeyword";
+                                break;
+
+                            case "this":
+                            case "Me":
+                                includeItem = "devlang_thisKeyword";
                                 break;
 
                             default:

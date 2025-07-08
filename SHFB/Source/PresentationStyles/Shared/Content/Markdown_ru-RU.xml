@@ -14,7 +14,7 @@
   <item id="devlang_asyncKeyword">`async` (`Async` в Visual Basic)</item>
   <item id="devlang_awaitKeyword">`await` (`Await` в Visual Basic)</item>
   <item id="devlang_asyncAwaitKeyword">`async`/`await` (`Async`/`Await` в Visual Basic)</item>
-
+  <item id="devlang_thisKeyword">`this` (`Me` in Visual Basic)</item>
 
 	<!-- Show Missing Component messages -->
   <item id="SMCMissingTag">\[&lt;{0}&gt; отсутствует в документации для "{1}"\]</item>

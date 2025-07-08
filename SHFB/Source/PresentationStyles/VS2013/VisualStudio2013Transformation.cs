@@ -325,6 +325,11 @@ namespace Sandcastle.PresentationStyles.VS2013
                     (LanguageSpecificText.VisualBasic, "Await"),
                     (LanguageSpecificText.FSharp, "let!"),
                     (LanguageSpecificText.Neutral, "await"),
+                ]),
+                new LanguageSpecificText(true,
+                [
+                    (LanguageSpecificText.VisualBasic, "Me"),
+                    (LanguageSpecificText.Neutral, "this"),
                 ])
             ]);
         }

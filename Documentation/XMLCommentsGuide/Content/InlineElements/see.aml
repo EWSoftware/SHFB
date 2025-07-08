@@ -105,7 +105,7 @@ the tooltip.</para>
 &lt;see langword="null | Nothing | nullptr | static | shared | virtual |
     Overridable | true | True | false | False | abstract | MustInherit |
     sealed | NotInheritable | async | await | async/await | Async | Await |
-		Async/Await | let! | async/let!" /&gt;
+		Async/Await | let! | async/let! | this | Me" /&gt;
 </code>
 
 						<para>The language keyword formatting form uses a <codeInline>langword</codeInline> attribute to

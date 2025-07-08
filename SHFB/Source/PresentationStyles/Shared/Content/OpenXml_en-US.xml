@@ -13,6 +13,7 @@
 	<item id="devlang_asyncKeyword"><span class="CodeInline">async</span> (<span class="CodeInline">Async</span> in Visual Basic)</item>
 	<item id="devlang_awaitKeyword"><span class="CodeInline">await</span> (<span class="CodeInline">Await</span> in Visual Basic)</item>
 	<item id="devlang_asyncAwaitKeyword"><span class="CodeInline">async</span>/<span class="CodeInline">await</span> (<span class="CodeInline">Async</span>/<span class="CodeInline">Await</span> in Visual Basic)</item>
+  <item id="devlang_thisKeyword"><span class="CodeInline">this</span> (<span class="CodeInline">Me</span> in Visual Basic)</item>
 
   <!-- Show Missing Component messages -->
   <item id="SMCMissingTag"><span class="MissingComment">[Missing &lt;{0}&gt; documentation for "{1}"]</span></item>

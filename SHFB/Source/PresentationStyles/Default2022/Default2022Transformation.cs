@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/05/2025
+// Updated : 07/07/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -360,6 +360,11 @@ namespace Sandcastle.PresentationStyles.Default2022
                     (LanguageSpecificText.VisualBasic, "Await"),
                     (LanguageSpecificText.FSharp, "let!"),
                     (LanguageSpecificText.Neutral, "await"),
+                ]),
+                new LanguageSpecificText(true,
+                [
+                    (LanguageSpecificText.VisualBasic, "Me"),
+                    (LanguageSpecificText.Neutral, "this"),
                 ])
             ]);
         }

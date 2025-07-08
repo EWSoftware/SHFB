@@ -292,6 +292,7 @@
 	<item id="devlang_asyncKeyword"><span class="keyword">async</span> (在 Visual Basic 中为 <span class="keyword">Async</span>)</item>
 	<item id="devlang_awaitKeyword"><span class="keyword">await</span> (在 Visual Basic 中为 <span class="keyword">Await</span>)</item>
 	<item id="devlang_asyncAwaitKeyword"><span class="keyword">async</span>/<span class="keyword">await</span> (在 Visual Basic 中为 <span class="keyword">Async</span>/<span class="keyword">Await</span>)</item>
+  <item id="devlang_thisKeyword"><span class="keyword">this</span> (<span class="keyword">Me</span> in Visual Basic)</item>
 
 	<!-- Development language metadata values for languages without a syntax generator -->
 	<item id="metaLang_batch">Batch Script</item>

@@ -13,6 +13,7 @@
 	<item id="devlang_asyncKeyword">`async` (Visual Basicでは`Async`)</item>
 	<item id="devlang_awaitKeyword">`await` (Visual Basicでは`Await`)</item>
 	<item id="devlang_asyncAwaitKeyword">`async`/`await` (Visual Basicでは`Async`/`Await`)</item>
+  <item id="devlang_thisKeyword">`this` (`Me` in Visual Basic)</item>
 
   <!-- Show Missing Component messages -->
   <item id="SMCMissingTag">\["{1}"に対する&lt;{0}&gt;がありません\]</item>
