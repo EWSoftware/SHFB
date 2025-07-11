@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : VersionBuilderPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/22/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to generate version information for assemblies in the current project
@@ -352,12 +352,12 @@ namespace SandcastleBuilder.PlugIns
                 // For the plug-in, we'll override some project settings
                 project.HtmlHelp1xCompilerPath = new FolderPath(builder.Help1CompilerFolder, true, project);
                 project.WorkingPath = new FolderPath(workingPath, true, project);
-                project.OutputPath = new FolderPath(Path.Combine(workingPath, @"..\PartialBuildLog\"), true, project);
+                project.OutputPath = new FolderPath(Path.Combine(workingPath, "..", "PartialBuildLog"), true, project);
 
                 // If the current project has defined OutDir, pass it on to the sub-project.
                 string outDir = builder.CurrentProject.ProjectOutDir;
 
-                if(!String.IsNullOrWhiteSpace(outDir) && outDir != @".\")
+                if(!String.IsNullOrWhiteSpace(outDir) && outDir != FilePath.DefaultOutDir)
                     project.MSBuildOutDir = outDir;
 
                 var buildProcess = project.CreateBuildProcess(PartialBuildType.GenerateReflectionInfo);

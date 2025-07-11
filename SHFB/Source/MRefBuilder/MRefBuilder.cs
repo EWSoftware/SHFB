@@ -2,7 +2,7 @@
 // System  : Sandcastle MRefBuilder Tool
 // File    : MRefBuilder.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/30/2022
+// Updated : 07/09/2025
 //
 // This file contains the class used to make MRefBuilder callable from MSBuild projects.
 //
@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Compiler;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -33,7 +34,6 @@ using Sandcastle.Tools.Reflection;
 
 using Sandcastle.Core;
 using Sandcastle.Core.Reflection;
-using System.Diagnostics;
 
 namespace Sandcastle.Tools.MSBuild
 {
@@ -466,8 +466,8 @@ namespace Sandcastle.Tools.MSBuild
             try
             {
                 // Create a writer
-                string sourceCodeBasePath = (string)configNav.Evaluate(
-                    "string(/configuration/dduetools/sourceContext/@basePath)");
+                string sourceCodeBasePath = ((string)configNav.Evaluate(
+                    "string(/configuration/dduetools/sourceContext/@basePath)")).CorrectFilePathSeparators();
                 bool warnOnMissingContext = false;
 
                 if(!String.IsNullOrWhiteSpace(sourceCodeBasePath))

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : CompletionNotificationPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/20/2025
+// Updated : 07/09/2025
 // Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to run after the build completes to send notification of the completion
@@ -32,6 +32,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 using Sandcastle.Core.BuildEngine;
 using Sandcastle.Core.PlugIn;
@@ -135,7 +136,10 @@ namespace SandcastleBuilder.PlugIns
             node = configuration.Element("xslTransform");
 
             if(node != null)
-                xslTransformFile = builder.SubstitutionTags.TransformText(node.Attribute("filename").Value);
+            {
+                xslTransformFile = builder.SubstitutionTags.TransformText(
+                    node.Attribute("filename").Value.CorrectFilePathSeparators());
+            }
 
             if((!credentials.UseDefaultCredentials && (credentials.UserName.Length == 0 ||
               credentials.Password.Length == 0)) || failureEMailAddress.Length == 0)

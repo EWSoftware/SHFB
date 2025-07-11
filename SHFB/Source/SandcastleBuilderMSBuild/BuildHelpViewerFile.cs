@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelpViewerFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/04/2025
+// Updated : 07/09/2025
 // Note    : Copyright 2009-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the MSBuild task used to compress the help content into a Microsoft Help Container (a ZIP
@@ -27,6 +27,8 @@ using System.Linq;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.MSBuild
 {
@@ -108,23 +110,23 @@ namespace SandcastleBuilder.MSBuild
         /// </summary>
         private void CompressFiles()
         {
-            int addCount = 0, baseFolderLength = this.WorkingFolder.Length;
+            string workingFolder = this.WorkingFolder.CorrectFilePathSeparators();
+            int addCount = 0, baseFolderLength = workingFolder.Length;
 
-            if(this.WorkingFolder[baseFolderLength - 1] != '\\')
+            if(workingFolder[baseFolderLength - 1] != Path.DirectorySeparatorChar)
                 baseFolderLength++;
 
-            fileCount = Directory.EnumerateFiles(this.WorkingFolder, "*", SearchOption.AllDirectories).Count();
+            fileCount = Directory.EnumerateFiles(workingFolder, "*", SearchOption.AllDirectories).Count();
 
             using var archive = ZipFile.Open(archiveName, ZipArchiveMode.Create);
             
             // Compress the entire working folder.  Files are stored relative to the root.  We'll handle
             // enumerating the files so that we can report progress.
-            foreach(var file in Directory.EnumerateFiles(this.WorkingFolder, "*", SearchOption.AllDirectories))
+            foreach(var file in Directory.EnumerateFiles(workingFolder, "*", SearchOption.AllDirectories))
             {
                 string entryName = file.Substring(baseFolderLength);
 
-                if(Path.DirectorySeparatorChar == '\\')
-                    entryName = entryName.Replace('\\', '/');
+                entryName = entryName.ToWebsiteOrZipFilePath();
 
                 archive.CreateEntryFromFile(file, entryName, CompressionLevel.Optimal);
 

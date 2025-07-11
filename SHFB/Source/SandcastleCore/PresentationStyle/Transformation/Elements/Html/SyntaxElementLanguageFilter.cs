@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SyntaxElementLanguageFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/02/2025
+// Updated : 07/09/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle syntax section elements in presentation styles that use a
@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -107,7 +108,10 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
             // Resolve unset paths on first use
             if(String.IsNullOrWhiteSpace(this.SyntaxSectionCodeTemplatePath))
-                this.SyntaxSectionCodeTemplatePath = transformation.ResolvePath(@"Templates\SyntaxSectionCodeTemplate.html");
+            {
+                this.SyntaxSectionCodeTemplatePath = transformation.ResolvePath(
+                    Path.Combine("Templates", "SyntaxSectionCodeTemplate.html"));
+            }
 
             var (title, content) = transformation.CreateSection(element.GenerateUniqueId(), true,
                 "title_definition", null);

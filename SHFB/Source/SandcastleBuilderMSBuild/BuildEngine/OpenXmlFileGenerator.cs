@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : OpenXmlFileGenerator.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/21/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to finish up creation of the Open XML file parts and compress the
@@ -102,7 +102,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         {
             this.buildProcess = buildProcess ?? throw new ArgumentNullException(nameof(buildProcess));
 
-            workingFolder = Path.Combine(buildProcess.WorkingFolder, @"Output\OpenXml");
+            workingFolder = Path.Combine(buildProcess.WorkingFolder, "Output", "OpenXml");
         }
         #endregion
 
@@ -117,7 +117,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         {
             XDocument topic;
             bool isFirstTopic = true;
-            string key, lastKey = null, documentPart = Path.Combine(workingFolder, @"word\document.xml");
+            string key, lastKey = null, documentPart = Path.Combine(workingFolder, "word", "document.xml");
             int topicCount = 0;
 
             externalHyperlinks = [];
@@ -128,7 +128,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
 
             // Get the key for the last topic.  We won't add a section break after it.
             // Don't use a simplified using here as we're reading the file again below.
-            using(var tocReader = XmlReader.Create(Path.Combine(workingFolder, @"..\..\toc.xml"),
+            using(var tocReader = XmlReader.Create(Path.Combine(workingFolder, "..", "..", "toc.xml"),
               new XmlReaderSettings { CloseInput = true }))
             {
                 while(tocReader.Read())
@@ -164,8 +164,8 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                             if(String.Equals(reader.LocalName, "body", StringComparison.Ordinal))
                             {
                                 // Load the TOC file and process the topics in TOC order
-                                using var tocReader = XmlReader.Create(Path.Combine(workingFolder,
-                                    @"..\..\toc.xml"), new XmlReaderSettings { CloseInput = true });
+                                using var tocReader = XmlReader.Create(Path.Combine(workingFolder, "..", "..",
+                                    "toc.xml"), new XmlReaderSettings { CloseInput = true });
                                     
                                 while(tocReader.Read())
                                 {
@@ -178,8 +178,8 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                                             // The topics are easier to update as XDocuments since we
                                             // have to deal with all the namespaces.  Plus we can use
                                             // LINQ to XML to find stuff.
-                                            topic = XDocument.Load(Path.Combine(workingFolder,
-                                                @"Topics\" + key + ".xml"));
+                                            topic = XDocument.Load(Path.Combine(workingFolder, "Topics",
+                                                key + ".xml"));
 
                                             this.ApplyChanges(topic, key);
 
@@ -246,7 +246,6 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                                                         "</w:p>");
                                                 }
                                             }
-
                                         }
 
                                         topicCount++;
@@ -436,14 +435,14 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         /// </summary>
         private void SaveRelationships()
         {
-            string relationshipsFilename = Path.Combine(workingFolder, @"word\_rels\document.xml.rels");
+            string relationshipsFilename = Path.Combine(workingFolder, "word", "_rels", "document.xml.rels");
 
             // If the relationships file does not exist, see if it's there under the alternate name used to
             // support the NuGet deployment.  Certain filenames reserved as part of the Open Packaging
             // Conventions cause problems with NuGet packages.  This works around the issue.
             if(!File.Exists(relationshipsFilename))
             {
-                string altName = Path.Combine(workingFolder, @"word\_rels\document.xml_rels");
+                string altName = Path.Combine(workingFolder, "word", "_rels", "document.xml_rels");
 
                 if(File.Exists(altName))
                     File.Move(altName, relationshipsFilename);
@@ -483,7 +482,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         /// or "no bullet" styles to the lists that use the same style at the same level.</remarks>
         private void SaveNumberingStyles()
         {
-            string numberingFilename = Path.Combine(workingFolder, @"word\numbering.xml");
+            string numberingFilename = Path.Combine(workingFolder, "word", "numbering.xml");
             XDocument numberingFile = XDocument.Load(numberingFilename);
             XElement root = numberingFile.Root;
 
@@ -1337,7 +1336,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         private void DetermineImageSize(string imageFilename, out long cx, out long cy)
         {
             // All images should be found relative to the main document part's folder
-            imageFilename = Path.Combine(workingFolder, @"word\" + imageFilename);
+            imageFilename = Path.Combine(workingFolder, "word", imageFilename);
 
             if(!imageSizes.TryGetValue(imageFilename, out SizeF size))
             {
@@ -1562,8 +1561,8 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         private void GenerateFileList()
         {
             string altName, contentTypesFile = Path.Combine(workingFolder, "[Content_Types].xml"),
-                relsFile = Path.Combine(workingFolder, @"_rels\.rels"),
-                documentParts = Path.Combine(workingFolder, @"word\_rels\document.xml.rels"), filename;
+                relsFile = Path.Combine(workingFolder, "_rels", ".rels"),
+                documentParts = Path.Combine(workingFolder, "word", "_rels", "document.xml.rels"), filename;
 
             archiveFiles.Add(contentTypesFile);
             archiveFiles.Add(relsFile);
@@ -1583,7 +1582,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
             // Do the same for the relationships file
             if(!File.Exists(relsFile))
             {
-                altName = Path.Combine(workingFolder, @"_rels\rels.xml_rels");
+                altName = Path.Combine(workingFolder, "_rels", "rels.xml_rels");
 
                 if(File.Exists(altName))
                     File.Move(altName, relsFile);
@@ -1598,7 +1597,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                 if(filename[0] == '/')
                     filename = filename.Substring(1);
 
-                filename = filename.Replace('/', '\\');
+                filename = filename.CorrectFilePathSeparators();
 
                 archiveFiles.Add(Path.GetFullPath(Path.Combine(workingFolder, filename)));
             }
@@ -1609,7 +1608,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
             foreach(var rel in relParts.Descendants(pr + "Relationship").Concat(docParts.Descendants(
               pr + "Relationship")))
             {
-                filename = rel.Attribute("Target").Value.Replace('/', '\\');
+                filename = rel.Attribute("Target").Value.CorrectFilePathSeparators();
 
                 // Assume anything other than a hyperlink is a file of some sort
                 if(!rel.Attribute("Type").Value.EndsWith("/hyperlink", StringComparison.Ordinal))
@@ -1617,12 +1616,12 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                     try
                     {
                         // Adjust the file path as needed to make it correct for the archive list
-                        if(filename.StartsWith(@"..\", StringComparison.Ordinal))
+                        if(filename.StartsWith(FilePath.RelativePathPrefix, StringComparison.Ordinal))
                             filename = filename.Substring(3);
                         else
                         {
                             if(!File.Exists(Path.Combine(workingFolder, filename)))
-                                filename = @"word\" + filename;
+                                filename = Path.Combine("word", filename);
                         }
 
                         filename = Path.GetFullPath(Path.Combine(workingFolder, filename));
@@ -1697,7 +1696,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         {
             int addCount = 0, baseFolderLength = workingFolder.Length;
 
-            if(workingFolder[baseFolderLength - 1] != '\\')
+            if(workingFolder[baseFolderLength - 1] != Path.DirectorySeparatorChar)
                 baseFolderLength++;
 
             fileCount = archiveFiles.Count;
@@ -1708,10 +1707,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
             // We'll handle enumerating the files so that we can report progress.
             foreach(var file in archiveFiles)
             {
-                string entryName = file.Substring(baseFolderLength);
-
-                if(Path.DirectorySeparatorChar == '\\')
-                    entryName = entryName.Replace('\\', '/');
+                string entryName = file.Substring(baseFolderLength).ToWebsiteOrZipFilePath();
 
                 archive.CreateEntryFromFile(file, entryName, CompressionLevel.Optimal);
 

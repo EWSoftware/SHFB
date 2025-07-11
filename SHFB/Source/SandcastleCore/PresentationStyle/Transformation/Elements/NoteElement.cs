@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : NoteElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2025
+// Updated : 07/09/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle note and alert elements
@@ -20,6 +20,7 @@
 // Ignore Spelling: todo
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -99,19 +100,34 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 
             // Resolve unset paths on first use
             if(String.IsNullOrWhiteSpace(this.NoteAlertTemplatePath))
-                this.NoteAlertTemplatePath = transformation.ResolvePath(@"Templates\NoteAlertTemplate.html");
+            {
+                this.NoteAlertTemplatePath = transformation.ResolvePath(
+                    Path.Combine("Templates", "NoteAlertTemplate.html"));
+            }
 
             if(String.IsNullOrWhiteSpace(this.CautionAlertTemplatePath))
-                this.CautionAlertTemplatePath = transformation.ResolvePath(@"Templates\CautionAlertTemplate.html");
+            {
+                this.CautionAlertTemplatePath = transformation.ResolvePath(
+                    Path.Combine("Templates", "CautionAlertTemplate.html"));
+            }
 
             if(String.IsNullOrWhiteSpace(this.SecurityAlertTemplatePath))
-                this.SecurityAlertTemplatePath = transformation.ResolvePath(@"Templates\SecurityAlertTemplate.html");
+            {
+                this.SecurityAlertTemplatePath = transformation.ResolvePath(
+                    Path.Combine("Templates", "SecurityAlertTemplate.html"));
+            }
 
             if(String.IsNullOrWhiteSpace(this.LanguageAlertTemplatePath))
-                this.LanguageAlertTemplatePath = transformation.ResolvePath(@"Templates\LanguageAlertTemplate.html");
+            {
+                this.LanguageAlertTemplatePath = transformation.ResolvePath(
+                    Path.Combine("Templates", "LanguageAlertTemplate.html"));
+            }
 
             if(String.IsNullOrWhiteSpace(this.ToDoAlertTemplatePath))
-                this.ToDoAlertTemplatePath = transformation.ResolvePath(@"Templates\ToDoAlertTemplate.html");
+            {
+                this.ToDoAlertTemplatePath = transformation.ResolvePath(
+                    Path.Combine("Templates", "ToDoAlertTemplate.html"));
+            }
 
             // XML comments note elements use type and MAML alert elements use class
             string noteType = element.Attribute("type")?.Value ?? element.Attribute("class")?.Value,

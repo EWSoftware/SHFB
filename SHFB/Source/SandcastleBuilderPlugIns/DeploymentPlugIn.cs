@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/20/2025
+// Updated : 07/09/2025
 // Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that can be used to deploy the resulting help file output to a location other
@@ -35,6 +35,7 @@ using System.Net.Cache;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildEngine;
 using Sandcastle.Core.PlugIn;
 using Sandcastle.Core.Project;
@@ -226,11 +227,11 @@ namespace SandcastleBuilder.PlugIns
             {
                 // Determine the path type
                 if(!target.IsAbsoluteUri)
-                    rootPath = Path.GetFullPath(target.OriginalString);
+                    rootPath = Path.GetFullPath(target.OriginalString).CorrectFilePathSeparators();
                 else
                 {
                     if(target.IsFile || target.IsUnc)
-                        rootPath = target.LocalPath;
+                        rootPath = target.LocalPath.CorrectFilePathSeparators();
                     else
                     {
                         // FTP, HTTP, etc.

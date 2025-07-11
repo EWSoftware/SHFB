@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/21/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a collection class used to hold the conceptual content topics for a project.
@@ -387,8 +387,8 @@ namespace Sandcastle.Core.ConceptualContent
             Topic topic, removeTopic;
             string name, newPath, projectPath = Path.GetDirectoryName(project.Filename);
 
-            if(basePath.Length !=0 && basePath[basePath.Length - 1] != '\\')
-                basePath += "\\";
+            if(basePath.Length !=0 && basePath[basePath.Length - 1] != Path.DirectorySeparatorChar)
+                basePath += Path.DirectorySeparatorChar;
 
             // Add files
             foreach(string file in Directory.EnumerateFiles(folder, "*.aml"))
@@ -508,7 +508,7 @@ namespace Sandcastle.Core.ConceptualContent
                     if(t.TopicFile != null)
                     {
                         entry.SourceFile = new FilePath(t.TopicFile.FullPath, t.TopicFile.ContentFile.BasePathProvider);
-                        entry.DestinationFile = "html\\" + t.Id + ".htm";
+                        entry.DestinationFile = Path.Combine("html", t.Id + ".htm");
                     }
 
                     entry.Id = t.Id;

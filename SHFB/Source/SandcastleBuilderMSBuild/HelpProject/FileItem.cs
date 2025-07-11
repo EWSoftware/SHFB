@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : FileItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/21/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a file that is part of the project (MAML/additional content, site
@@ -175,7 +175,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
             {
                 string path = includePath;
 
-                if(buildAction == BuildAction.Folder && path.EndsWith(@"\", StringComparison.Ordinal))
+                if(buildAction == BuildAction.Folder && path.Length != 0 && path[path.Length - 1] == Path.DirectorySeparatorChar)
                     return Path.GetFileName(path.Substring(0, path.Length - 1));
 
                 return Path.GetFileName(path);
@@ -184,7 +184,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
             {
                 string tempPath, newPath, path = includePath;
 
-                if(String.IsNullOrEmpty(value) || value.IndexOfAny(FilePath.PathAndWildcards) != -1)
+                if(String.IsNullOrWhiteSpace(value) || value.IndexOfAny(FilePath.PathAndWildcards) != -1)
                     throw new ArgumentException("New name cannot be blank and cannot contain path or wildcard characters");
 
                 if(buildAction != BuildAction.Folder)
@@ -215,7 +215,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
                 }
 
                 // Rename the folder and all items starting with the folder name
-                if(path.EndsWith(@"\", StringComparison.Ordinal))
+                if(path.Length != 0 && path[path.Length - 1] == Path.DirectorySeparatorChar)
                     path = path.Substring(0, path.Length - 1);
 
                 newPath = Path.Combine(Path.GetDirectoryName(path), value);
@@ -233,8 +233,10 @@ namespace SandcastleBuilder.MSBuild.HelpProject
                 }
 
                 Directory.Move(path, newPath);
+
                 path = this.Include;
-                newPath = Path.Combine(Path.GetDirectoryName(path.Substring(0, path.Length - 1)), value) + "\\";
+                newPath = Path.Combine(Path.GetDirectoryName(path.Substring(0, path.Length - 1)), value) + Path.DirectorySeparatorChar;
+
                 this.IncludePath = new FilePath(newPath, this.Project);
 
                 foreach(ProjectItem item in ((SandcastleProject)this.Project).MSBuildProject.AllEvaluatedItems)

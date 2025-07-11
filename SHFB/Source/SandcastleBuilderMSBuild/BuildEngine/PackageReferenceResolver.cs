@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : PackageReferenceResolver.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/21/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2017-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to resolve PackageReference elements in MSBuild project files
@@ -25,6 +25,7 @@ using System.Text.Json;
 
 using Microsoft.Build.Evaluation;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildEngine;
 
 namespace SandcastleBuilder.MSBuild.BuildEngine
@@ -65,18 +66,22 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                 if(packages != null && packageReferences.Count != 0 && nugetPackageFolders != null)
                 {
                     foreach(string assembly in this.ResolvePackageReferencesInternal(packageReferences))
+                    {
                         foreach(string folder in nugetPackageFolders)
                         {
-                            string path = Path.Combine(folder, assembly.Replace("/", @"\"));
+                            string path = Path.Combine(folder, assembly.CorrectFilePathSeparators());
 
                             if(File.Exists(path))
                                 yield return path;
                         }
+                    }
                 }
 
                 foreach(string folder in implicitPackageFolders)
+                {
                     foreach(string reference in Directory.EnumerateFiles(folder, "*.dll"))
                         yield return reference;
+                }
             }
         }
         #endregion

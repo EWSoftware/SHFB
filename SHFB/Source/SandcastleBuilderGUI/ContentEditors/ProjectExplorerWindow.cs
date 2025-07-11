@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/22/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to manage the project items and files
@@ -1022,7 +1022,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                     // The node name needs to preserve the path
                     newName = e.Node.FullPath;
-                    pos = newName.IndexOf('\\');
+                    pos = newName.IndexOf(Path.DirectorySeparatorChar);
 
                     if(pos != -1)
                         newName = newName.Substring(pos + 1);
@@ -1032,7 +1032,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     e.Node.Name = newName + e.Label;
 
                     if(nodeData.BuildAction == BuildAction.Folder)
-                        e.Node.Name += @"\";
+                        e.Node.Name += Path.DirectorySeparatorChar;
                 }
             }
             catch(Exception ex)
@@ -1651,7 +1651,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 if(dlg.ShowDialog() != DialogResult.OK)
                     return;
 
-                newFolder = dlg.SelectedPath + @"\";
+                newFolder = dlg.SelectedPath + Path.DirectorySeparatorChar;
             }
 
             if(!newFolder.StartsWith(path, StringComparison.OrdinalIgnoreCase))
@@ -2160,14 +2160,13 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             path = fileItem.FullPath;
 
-            if(path[path.Length - 1] == '\\')
+            if(path[path.Length - 1] == Path.DirectorySeparatorChar)
                 path = path.Substring(0, path.Length - 1);
 
             if(Path.GetDirectoryName(path) == Path.GetDirectoryName(newPath))
             {
-                MessageBox.Show("The source and destination paths match and " +
-                    "the item cannot be moved", Constants.AppName,
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("The source and destination paths match and the item cannot be moved",
+                    Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
 
@@ -2204,7 +2203,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                     Directory.Move(path, newPath);
                     path = fileItem.IncludePath;
-                    newPath += "\\";
+                    newPath += Path.DirectorySeparatorChar;
                     fileItem.IncludePath = new FilePath(newPath, fileItem.Project);
 
                     foreach(ProjectItem item in ((SandcastleProject)fileItem.Project).MSBuildProject.AllEvaluatedItems)
@@ -2465,7 +2464,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             if(nodeData.BuildAction == BuildAction.Project)
             {
                 basePath = Path.GetDirectoryName(currentProject.Filename);
-                basePath += "\\";
+                basePath += Path.DirectorySeparatorChar;
             }
             else
             {
@@ -2474,11 +2473,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 else
                 {
                     basePath = Path.GetDirectoryName(((FileItem)nodeData.Item).FullPath);
-                    basePath += "\\";
+                    basePath += Path.DirectorySeparatorChar;
                 }
             }
 
-            if(files[0][files[0].Length - 1] == '\\')
+            if(files[0][files[0].Length - 1] == Path.DirectorySeparatorChar)
             {
                 rootFolder = files[0];
 
@@ -2486,8 +2485,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     return;
 
                 rootFolder = rootFolder.Substring(0, rootFolder.Length - 1);
-                rootFolder = rootFolder.Substring(0, rootFolder.LastIndexOf('\\'));
-                rootFolder += "\\";
+                rootFolder = rootFolder.Substring(0, rootFolder.LastIndexOf(Path.DirectorySeparatorChar));
+                rootFolder += Path.DirectorySeparatorChar;
             }
 
             try
@@ -2511,7 +2510,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     newSelection = newPath;
 
                     // Add new item to project
-                    if(newPath[newPath.Length - 1] == '\\')
+                    if(newPath[newPath.Length - 1] == Path.DirectorySeparatorChar)
                         currentProject.AddFolderToProject(newPath);
                     else
                     {
@@ -2519,13 +2518,13 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         {
                             if(uniqueId == 0)
                             {
-                                newPath = String.Format(CultureInfo.InvariantCulture, "{0}\\Copy of {1}",
-                                    Path.GetDirectoryName(newPath), Path.GetFileName(file));
+                                newPath = Path.Combine(Path.GetDirectoryName(newPath),
+                                    $"Copy of {Path.GetFileName(file)}");
                             }
                             else
                             {
-                                newPath = String.Format(CultureInfo.InvariantCulture, "{0}\\Copy ({1}) of {2}",
-                                    Path.GetDirectoryName(newPath), uniqueId, Path.GetFileName(file));
+                                newPath = Path.Combine(Path.GetDirectoryName(newPath),
+                                    $"Copy {uniqueId} of {Path.GetFileName(file)}");
                             }
 
                             uniqueId++;

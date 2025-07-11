@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AssemblyLocation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/02/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain information about a location and the assemblies for a
@@ -274,12 +274,13 @@ namespace Sandcastle.Core.Reflection
                 {
                     // RootFolder\AssemblyName\Version\ref\dotnet\
                     version = Directory.EnumerateDirectories(sdkFolder).Where(
-                        d => Char.IsDigit(d[d.LastIndexOf('\\') + 1])).OrderBy(d => d).LastOrDefault();
+                        d => Char.IsDigit(d[d.LastIndexOf(IOPath.DirectorySeparatorChar) + 1])).OrderBy(
+                        d => d).LastOrDefault();
 
                     if(version != null)
                     {
-                        assemblyName = IOPath.Combine(version, @"ref\dotnet",
-                            sdkFolder.Substring(sdkFolder.LastIndexOf('\\') + 1));
+                        assemblyName = IOPath.Combine(version, "ref", "dotnet",
+                            sdkFolder.Substring(sdkFolder.LastIndexOf(IOPath.DirectorySeparatorChar) + 1));
 
                         if(File.Exists(assemblyName + ".dll"))
                             assemblyName += ".dll";
@@ -306,11 +307,13 @@ namespace Sandcastle.Core.Reflection
 
                     // RootFolder\AssemblyName\Version\
                     version = Directory.EnumerateDirectories(sdkFolder).Where(
-                        d => Char.IsDigit(d[d.LastIndexOf('\\') + 1])).OrderBy(d => d).LastOrDefault();
+                        d => Char.IsDigit(d[d.LastIndexOf(IOPath.DirectorySeparatorChar) + 1])).OrderBy(
+                        d => d).LastOrDefault();
 
                     if(version != null)
                     {
-                        assemblyName = IOPath.Combine(version, sdkFolder.Substring(sdkFolder.LastIndexOf('\\') + 1));
+                        assemblyName = IOPath.Combine(version, sdkFolder.Substring(
+                            sdkFolder.LastIndexOf(IOPath.DirectorySeparatorChar) + 1));
 
                         if(File.Exists(assemblyName + ".dll"))
                             assemblyName += ".dll";

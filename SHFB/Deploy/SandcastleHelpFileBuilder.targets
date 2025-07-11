@@ -7,7 +7,7 @@
 	<UsingTask TaskName="SandcastleBuilder.MSBuild.BuildHelp"
     AssemblyFile="$(MSBuildThisFileDirectory)$(SHFBTaskFolder)SandcastleBuilder.MSBuild.dll" />
 	<UsingTask TaskName="SandcastleBuilder.MSBuild.CleanHelp"
-    AssemblyFile="$(MSBuildThisFileDirectory)$(SHFBTaskFolder)\SandcastleBuilder.MSBuild.dll" />
+    AssemblyFile="$(MSBuildThisFileDirectory)$(SHFBTaskFolder)SandcastleBuilder.MSBuild.dll" />
 
 	<!-- Define OutDir if not set already so that it doesn't pick up our project OutputPath setting
        when the common targets are imported below. -->

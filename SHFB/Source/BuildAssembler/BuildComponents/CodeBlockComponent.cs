@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/05/2025
+// Updated : 07/09/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to search for <code> XML comment tags and colorize the code
@@ -311,7 +311,7 @@ namespace Sandcastle.Tools.BuildComponents
             nav = configuration.SelectSingleNode("basePath");
 
             if(nav != null)
-                basePath = nav.GetAttribute("value", String.Empty);
+                basePath = nav.GetAttribute("value", String.Empty).CorrectFilePathSeparators();
 
             if(String.IsNullOrEmpty(basePath))
                 basePath = Directory.GetCurrentDirectory();
@@ -319,7 +319,7 @@ namespace Sandcastle.Tools.BuildComponents
             // Get the output paths
             foreach(XPathNavigator path in configuration.Select("outputPaths/path"))
             {
-                value = path.GetAttribute("value", String.Empty);
+                value = path.GetAttribute("value", String.Empty).CorrectFilePathSeparators();
 
                 if(!Directory.Exists(value))
                     Directory.CreateDirectory(value);
@@ -386,10 +386,10 @@ namespace Sandcastle.Tools.BuildComponents
             }
 
             // The file and URL values are all required
-            syntaxFile = nav.GetAttribute("syntaxFile", String.Empty);
-            styleFile = nav.GetAttribute("styleFile", String.Empty);
-            stylesheet = nav.GetAttribute("stylesheet", String.Empty);
-            scriptFile = nav.GetAttribute("scriptFile", String.Empty);
+            syntaxFile = nav.GetAttribute("syntaxFile", String.Empty).CorrectFilePathSeparators();
+            styleFile = nav.GetAttribute("styleFile", String.Empty).CorrectFilePathSeparators();
+            stylesheet = nav.GetAttribute("stylesheet", String.Empty).CorrectFilePathSeparators();
+            scriptFile = nav.GetAttribute("scriptFile", String.Empty).CorrectFilePathSeparators();
 
             if(String.IsNullOrEmpty(syntaxFile))
             {
@@ -514,8 +514,8 @@ namespace Sandcastle.Tools.BuildComponents
 
                 // If the default transform is specified, switch to the Open XML version.  This can happen if
                 // the user adds the code block component to their project to override the default settings.
-                string defaultTransform = Path.Combine(Path.GetDirectoryName(asm.Location),
-                    @"Colorizer\highlight.xsl");
+                string defaultTransform = Path.Combine(Path.GetDirectoryName(asm.Location), "Colorizer",
+                    "highlight.xsl");
 
                 if(styleFile.Equals(defaultTransform, StringComparison.OrdinalIgnoreCase))
                 {
@@ -776,14 +776,8 @@ namespace Sandcastle.Tools.BuildComponents
             {
                 foreach(string outputPath in outputPaths)
                 {
-                    destStylesheet = Path.Combine(outputPath, stylesheetAttrPath.Replace("../", String.Empty));
-                    destScriptFile = Path.Combine(outputPath, scriptFileAttrPath.Replace("../", String.Empty));
-
-                    if(Path.DirectorySeparatorChar != '/')
-                    {
-                        destStylesheet = destStylesheet.Replace('/', Path.DirectorySeparatorChar);
-                        destScriptFile = destScriptFile.Replace('/', Path.DirectorySeparatorChar);
-                    }
+                    destStylesheet = Path.Combine(outputPath, stylesheetAttrPath.Replace("../", String.Empty)).CorrectFilePathSeparators();
+                    destScriptFile = Path.Combine(outputPath, scriptFileAttrPath.Replace("../", String.Empty)).CorrectFilePathSeparators();
 
                     if(!Directory.Exists(Path.GetDirectoryName(destStylesheet)))
                         Directory.CreateDirectory(Path.GetDirectoryName(destStylesheet));

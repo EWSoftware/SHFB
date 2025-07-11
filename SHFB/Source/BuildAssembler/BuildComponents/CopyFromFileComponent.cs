@@ -79,11 +79,13 @@ namespace Sandcastle.Tools.BuildComponents
 
             foreach(XPathNavigator dataNode in dataNodes)
             {
-                string dataFile = dataNode.GetAttribute("file", String.Empty);
+                string dataFile = dataNode.GetAttribute("file", String.Empty).CorrectFilePathSeparators();
 
                 if(String.IsNullOrWhiteSpace(dataFile))
+                {
                     this.WriteMessage(MessageLevel.Error, "Data elements must have a file attribute specifying " +
                         "a file from which to load data");
+                }
 
                 dataFile = Environment.ExpandEnvironmentVariables(dataFile);
 
@@ -95,8 +97,7 @@ namespace Sandcastle.Tools.BuildComponents
                 // Load a schema, if one is specified
                 string schemaFile = dataNode.GetAttribute("schema", String.Empty);
 
-                XmlReaderSettings settings = new()
-                { CloseInput = true };
+                XmlReaderSettings settings = new() { CloseInput = true };
 
                 if(!String.IsNullOrWhiteSpace(schemaFile))
                     settings.Schemas.Add(null, schemaFile);
@@ -109,8 +110,10 @@ namespace Sandcastle.Tools.BuildComponents
             }
 
             if(dataFiles.Count == 0)
+            {
                 this.WriteMessage(MessageLevel.Error, "At least one data element is required to specify the " +
                     "file from which to load data");
+            }
 
             // Get the source and target expressions for each copy command
             XPathNodeIterator copyNodes = configuration.Select("copy");
@@ -126,14 +129,18 @@ namespace Sandcastle.Tools.BuildComponents
                 string sourceXPath = copyNode.GetAttribute("source", String.Empty);
 
                 if(String.IsNullOrWhiteSpace(sourceXPath))
+                {
                     this.WriteMessage(MessageLevel.Error, "When instantiating a CopyFromFileComponent, you " +
                         "must specify a source XPath format using the source attribute");
+                }
 
                 string targetXPath = copyNode.GetAttribute("target", String.Empty);
 
                 if(String.IsNullOrEmpty(targetXPath))
+                {
                     this.WriteMessage(MessageLevel.Error, "When instantiating a CopyFromFileComponent, you " +
                         "must specify a target XPath format using the target attribute");
+                }
 
                 copyCommands.Add(new CopyFromFileCommand(this, dataFiles[sourceName], sourceXPath, targetXPath));
             }

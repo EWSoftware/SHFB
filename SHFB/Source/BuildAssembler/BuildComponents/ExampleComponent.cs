@@ -102,6 +102,7 @@ namespace Sandcastle.Tools.BuildComponents
                 try
                 {
                     reader.MoveToContent();
+
                     while(!reader.EOF)
                     {
                         if(reader.NodeType == XmlNodeType.Element && reader.Name == "item")
@@ -344,7 +345,8 @@ namespace Sandcastle.Tools.BuildComponents
 
             foreach(XPathNavigator contentNode in contentNodes)
             {
-                string file = contentNode.GetAttribute("file", String.Empty);
+                string file = contentNode.GetAttribute("file", String.Empty).CorrectFilePathSeparators();
+
                 file = Environment.ExpandEnvironmentVariables(file);
 
                 if(String.IsNullOrEmpty(file))
@@ -377,6 +379,7 @@ namespace Sandcastle.Tools.BuildComponents
                 }
 
                 colorization[language] = rules;
+
                 WriteMessage(MessageLevel.Info, "Loaded {0} colorization rules for the language '{1}'.",
                     rules.Count, language);
             }

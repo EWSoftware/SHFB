@@ -88,41 +88,49 @@ namespace Sandcastle.Tools.BuildComponents
             foreach(XPathNavigator targetsNode in targetsNodes)
             {
                 // Get the configuration values for this target
-                string inputPath = targetsNode.GetAttribute("input", String.Empty);
+                string inputPath = targetsNode.GetAttribute("input", String.Empty).CorrectFilePathSeparators();
 
-                if(String.IsNullOrEmpty(inputPath))
+                if(String.IsNullOrWhiteSpace(inputPath))
+                {
                     this.WriteMessage(MessageLevel.Error, "Each targets element must have an input attribute " +
                         "specifying a directory containing art files.");
+                }
 
                 inputPath = Environment.ExpandEnvironmentVariables(inputPath);
 
                 if(!Directory.Exists(inputPath))
+                {
                     this.WriteMessage(MessageLevel.Error, "The art input directory '{0}' does not exist.",
                         inputPath);
+                }
 
-                string baseOutputPath = targetsNode.GetAttribute("baseOutput", String.Empty);
+                string baseOutputPath = targetsNode.GetAttribute("baseOutput", String.Empty).CorrectFilePathSeparators();
 
-                if(!String.IsNullOrEmpty(baseOutputPath))
+                if(!String.IsNullOrWhiteSpace(baseOutputPath))
                     baseOutputPath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(baseOutputPath));
 
                 string outputPathValue = targetsNode.GetAttribute("outputPath", String.Empty);
 
-                if(String.IsNullOrEmpty(outputPathValue))
+                if(String.IsNullOrWhiteSpace(outputPathValue))
+                {
                     this.WriteMessage(MessageLevel.Error, "Each targets element must have an output attribute " +
                         "specifying a directory in which to place referenced art files.");
+                }
 
                 XPathExpression outputXPath = XPathExpression.Compile(outputPathValue);
 
                 string linkPath = targetsNode.GetAttribute("link", String.Empty);
 
-                if(String.IsNullOrEmpty(linkPath))
+                if(String.IsNullOrWhiteSpace(linkPath))
                     linkPath = "../art";
 
-                string map = targetsNode.GetAttribute("map", String.Empty);
+                string map = targetsNode.GetAttribute("map", String.Empty).CorrectFilePathSeparators();
 
-                if(String.IsNullOrEmpty(map))
+                if(String.IsNullOrWhiteSpace(map))
+                {
                     this.WriteMessage(MessageLevel.Error, "Each targets element must have a map attribute " +
                         "specifying a file that maps art IDs to files in the input directory.");
+                }
 
                 map = Environment.ExpandEnvironmentVariables(map);
 
@@ -131,12 +139,12 @@ namespace Sandcastle.Tools.BuildComponents
 
                 string format = targetsNode.GetAttribute("format", String.Empty);
 
-                XPathExpression formatXPath = String.IsNullOrEmpty(format) ? null :
+                XPathExpression formatXPath = String.IsNullOrWhiteSpace(format) ? null :
                     XPathExpression.Compile(format);
 
                 string relativeTo = targetsNode.GetAttribute("relative-to", String.Empty);
 
-                XPathExpression relativeToXPath = String.IsNullOrEmpty(relativeTo) ? null :
+                XPathExpression relativeToXPath = String.IsNullOrWhiteSpace(relativeTo) ? null :
                     XPathExpression.Compile(relativeTo);
 
                 // Load the content of the media map file
@@ -155,10 +163,10 @@ namespace Sandcastle.Tools.BuildComponents
                     targets[id] = new ArtTarget
                     {
                         Id = id,
-                        InputPath = Path.Combine(inputPath, file),
+                        InputPath = Path.Combine(inputPath, file).CorrectFilePathSeparators(),
                         BaseOutputPath = baseOutputPath,
                         OutputXPath = outputXPath,
-                        LinkPath = String.IsNullOrEmpty(name) ? linkPath : String.Concat(linkPath, "/", name),
+                        LinkPath = String.IsNullOrWhiteSpace(name) ? linkPath : String.Concat(linkPath, "/", name),
                         Text = text,
                         Name = name,
                         FormatXPath = formatXPath,
@@ -196,7 +204,7 @@ namespace Sandcastle.Tools.BuildComponents
 
                     writer.WriteStartElement("img");
 
-                    if(!String.IsNullOrEmpty(target.Text))
+                    if(!String.IsNullOrWhiteSpace(target.Text))
                         writer.WriteAttributeString("alt", target.Text);
 
                     if(target.FormatXPath == null)

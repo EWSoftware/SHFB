@@ -102,8 +102,8 @@ namespace Sandcastle.Tools.Reflection
 
             if(!String.IsNullOrWhiteSpace(sourceCodeBasePath))
             {
-                if(sourceCodeBasePath[sourceCodeBasePath.Length - 1] != '\\')
-                    sourceCodeBasePath += "\\";
+                if(sourceCodeBasePath[sourceCodeBasePath.Length - 1] != Path.DirectorySeparatorChar)
+                    sourceCodeBasePath += Path.DirectorySeparatorChar;
 
                 this.SourceCodeBasePath = sourceCodeBasePath;
                 this.WarnOnMissingContext = warnOnMissingContext;

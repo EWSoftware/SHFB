@@ -75,7 +75,7 @@ namespace Sandcastle.Tools.BuildComponents
 
             foreach(XPathNavigator copyNode in copyNodes)
             {
-                string basePath = copyNode.GetAttribute("base", String.Empty);
+                string basePath = copyNode.GetAttribute("base", String.Empty).CorrectFilePathSeparators();
 
                 if(String.IsNullOrWhiteSpace(basePath))
                     basePath = Environment.CurrentDirectory;
@@ -88,20 +88,26 @@ namespace Sandcastle.Tools.BuildComponents
                 string fileXPath = copyNode.GetAttribute("file", String.Empty);
 
                 if(String.IsNullOrWhiteSpace(fileXPath))
+                {
                     this.WriteMessage(MessageLevel.Error, "Each copy element must have a file attribute " +
                         "specifying the file XPath used to get the file from which to copy elements");
+                }
 
                 string sourceXPath = copyNode.GetAttribute("source", String.Empty);
 
                 if(String.IsNullOrWhiteSpace(sourceXPath))
+                {
                     this.WriteMessage(MessageLevel.Error, "When instantiating a CopyFromFilesComponent, you " +
                         "must specify a source XPath format using the source attribute");
+                }
 
                 string targetXPath = copyNode.GetAttribute("target", String.Empty);
 
                 if(String.IsNullOrEmpty(targetXPath))
+                {
                     this.WriteMessage(MessageLevel.Error, "When instantiating a CopyFromFilesComponent, you " +
                         "must specify a target XPath format using the target attribute");
+                }
 
                 copyCommands.Add(new CopyFromFilesCommand(this, basePath, fileXPath, sourceXPath, targetXPath));
             }

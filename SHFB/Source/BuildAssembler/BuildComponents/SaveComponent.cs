@@ -95,7 +95,7 @@ namespace Sandcastle.Tools.BuildComponents
                 throw new ArgumentException("When instantiating a save component, you must specify " +
                     "a the target file using the <save> element.", nameof(configuration));
 
-            string baseValue = saveNode.GetAttribute("base", String.Empty);
+            string baseValue = saveNode.GetAttribute("base", String.Empty).CorrectFilePathSeparators();
 
             if(!String.IsNullOrWhiteSpace(baseValue))
                 basePath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(baseValue));

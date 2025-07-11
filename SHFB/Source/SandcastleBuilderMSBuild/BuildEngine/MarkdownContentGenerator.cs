@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MarkdownContentGenerator.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/21/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to finish up creation of the markdown content and copy it to the
@@ -69,7 +69,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         {
             this.buildProcess = buildProcess ?? throw new ArgumentNullException(nameof(buildProcess));
 
-            workingFolder = Path.Combine(buildProcess.WorkingFolder, @"Output\Markdown");
+            workingFolder = Path.Combine(buildProcess.WorkingFolder, "Output", "Markdown");
         }
         #endregion
 
@@ -88,7 +88,8 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
             int topicCount = 0;
 
             // Load the TOC file and process the topics in TOC order.  This generates the sidebar TOC as well.
-            using(var tocReader = XmlReader.Create(Path.Combine(workingFolder, @"..\..\toc.xml"), new XmlReaderSettings { CloseInput = true }))
+            using(var tocReader = XmlReader.Create(Path.Combine(workingFolder, "..", "..", "toc.xml"),
+                new XmlReaderSettings { CloseInput = true }))
             using(StreamWriter sidebar = new(Path.Combine(workingFolder, "_Sidebar.md")))
             {
                 while(tocReader.Read())
@@ -409,12 +410,9 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
             if(destPath == null)
                 throw new ArgumentNullException(nameof(destPath));
 
-            if(destPath[destPath.Length - 1] != '\\')
-                destPath += @"\";
-
             foreach(string name in Directory.EnumerateFiles(sourcePath, "*.*"))
             {
-                string filename = destPath + Path.GetFileName(name);
+                string filename = Path.Combine(destPath, Path.GetFileName(name));
 
                 if(!Directory.Exists(destPath))
                     Directory.CreateDirectory(destPath);
@@ -432,8 +430,10 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
 
             // Ignore hidden folders as they may be under source control and are not wanted
             foreach(string folder in Directory.EnumerateDirectories(sourcePath))
+            {
                 if((File.GetAttributes(folder) & FileAttributes.Hidden) != FileAttributes.Hidden)
-                    RecursiveCopy(folder, destPath + folder.Substring(sourcePath.Length + 1), ref fileCount);
+                    RecursiveCopy(folder, Path.Combine(destPath, folder.Substring(sourcePath.Length + 1)), ref fileCount);
+            }
         }
         #endregion
     }

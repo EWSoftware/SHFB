@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/22/2025
+// Updated : 07/09/2025
 // Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class containing properties and methods used to locate and work with build components,
@@ -226,11 +226,13 @@ namespace Sandcastle.Core
                 string assemblyLocation = AssemblyFolder(null);
 
                 // We must check for the local app data folder as well as the All Users locations
+                string extensionsFolder = $"{Path.DirectorySeparatorChar}IDE{Path.DirectorySeparatorChar}Extensions{Path.DirectorySeparatorChar}";
+
                 if(assemblyLocation.IndexOf(Environment.GetFolderPath(
                   Environment.SpecialFolder.LocalApplicationData), StringComparison.OrdinalIgnoreCase) != -1 ||
-                  assemblyLocation.IndexOf(@"\IDE\Extensions\", StringComparison.OrdinalIgnoreCase) != -1)
+                  assemblyLocation.IndexOf(extensionsFolder, StringComparison.OrdinalIgnoreCase) != -1)
                 {
-                    rootFolder = Path.Combine(Environment.GetEnvironmentVariable("SHFBROOT"), "net48");
+                    rootFolder = Path.Combine(Environment.GetEnvironmentVariable("SHFBROOT"), "Tools");
                 }
 
                 // If not found, use the executing assembly's folder.  Builds and other stuff that relies on the
@@ -869,6 +871,42 @@ namespace Sandcastle.Core
 
                 return hash1 + (hash2 * 1566083941);
             }
+        }
+        #endregion
+
+        #region File path separator correction methods
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to ensure that <see cref="Path.DirectorySeparatorChar"/> is used to separate the parts
+        /// of a file path.
+        /// </summary>
+        /// <param name="path">The file path to check</param>
+        /// <remarks>This ensures proper file paths regardless of the current operating system</remarks>
+        /// <returns>The file path with the directory separators corrected if necessary</returns>
+        public static string CorrectFilePathSeparators(this string path)
+        {
+            char separator = Path.DirectorySeparatorChar == '/' ? '\\' : '/';
+
+            if(String.IsNullOrWhiteSpace(path) || path.IndexOf(separator) == -1)
+                return path;
+
+            return path.Replace(separator, Path.DirectorySeparatorChar);
+        }
+
+        /// <summary>
+        /// This is used to ensure that a forward slash is used to separate the parts of a website or zip file
+        /// item path.
+        /// </summary>
+        /// <param name="path">The file path to check</param>
+        /// <remarks>This ensures proper website and zip file item paths regardless of the current operating system</remarks>
+        /// <returns>The file path with the directory separators corrected if necessary</returns>
+        public static string ToWebsiteOrZipFilePath(this string path)
+        {
+            if(String.IsNullOrWhiteSpace(path) || path.IndexOf('\\') == -1)
+                return path;
+
+            return path.Replace('\\', '/');
         }
         #endregion
     }

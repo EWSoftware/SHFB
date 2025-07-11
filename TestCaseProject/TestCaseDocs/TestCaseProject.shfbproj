@@ -127,7 +127,15 @@
       <PlugInConfig id="Additional Content Only" enabled="False">
         <configuration />
       </PlugInConfig>
-<PlugInConfig id="Additional Notices" enabled="True"><configuration><Notices><Notice AttributeTypeName="T:TestDoc.UnsafeAttribute" NoticeMessage="@unsafeNoticeMessage" TagText="@unsafeTag" UseValueForText="true" /><Notice ElementName="topicNotice" NoticeMessage="@topicNoticeMessage" TagText="@topicNoticeTag" NoticeStyleClasses="tag is-success is-medium" TagStyleClasses="tag is-success is-rounded" UseValueForText="true" /></Notices></configuration></PlugInConfig></PlugInConfigurations>
+      <PlugInConfig id="Additional Notices" enabled="True">
+        <configuration>
+          <Notices>
+            <Notice AttributeTypeName="T:TestDoc.UnsafeAttribute" NoticeMessage="@unsafeNoticeMessage" TagText="@unsafeTag" UseValueForText="true" />
+            <Notice ElementName="topicNotice" NoticeMessage="@topicNoticeMessage" TagText="@topicNoticeTag" NoticeStyleClasses="tag is-success is-medium" TagStyleClasses="tag is-success is-rounded" UseValueForText="true" />
+          </Notices>
+        </configuration>
+      </PlugInConfig>
+    </PlugInConfigurations>
     <ApiFilter>
     </ApiFilter>
     <HelpFileFormat>Website</HelpFileFormat>

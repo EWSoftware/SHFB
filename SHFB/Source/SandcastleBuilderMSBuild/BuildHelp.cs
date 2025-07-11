@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/21/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the MSBuild task used to build help file output using the Sandcastle Help File Builder
@@ -367,7 +367,7 @@ namespace SandcastleBuilder.MSBuild
                     msBuildProject.SetGlobalProperty(BuildItemMetadata.Platform, this.Platform);
 
                     // Override the OutDir property if defined for Team Build.  Ignore ".\" as that's our default.
-                    if(!String.IsNullOrEmpty(this.OutDir) && this.OutDir != @".\")
+                    if(!String.IsNullOrEmpty(this.OutDir) && this.OutDir != FilePath.DefaultOutDir)
                         msBuildProject.SetGlobalProperty(BuildItemMetadata.OutDir, this.OutDir);
 
                     msBuildProject.ReevaluateIfNecessary();

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/13/2022
-// Note    : Copyright 2007-2022, Eric Woodruff, All rights reserved
+// Updated : 07/09/2025
+// Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to extract the XML comments into files that can be used for
 // IntelliSense.  Only the basic set of tags needed for IntelliSense are exported and only for documented API
@@ -283,12 +283,14 @@ namespace Sandcastle.Tools.BuildComponents
                 string attrValue = nav.GetAttribute("includeNamespaces", String.Empty);
 
                 if(!String.IsNullOrEmpty(attrValue) && !Boolean.TryParse(attrValue, out includeNamespaces))
+                {
                     throw new ArgumentException("You must specify a Boolean value for the <output> " +
                         "'includeNamespaces' attribute.", nameof(configuration));
+                }
 
-                attrValue = nav.GetAttribute("folder", String.Empty);
+                attrValue = nav.GetAttribute("folder", String.Empty).CorrectFilePathSeparators();
 
-                if(!String.IsNullOrEmpty(attrValue))
+                if(!String.IsNullOrWhiteSpace(attrValue))
                 {
                     outputFolder = Environment.ExpandEnvironmentVariables(attrValue);
 
@@ -296,9 +298,9 @@ namespace Sandcastle.Tools.BuildComponents
                         Directory.CreateDirectory(outputFolder);
                 }
 
-                attrValue = nav.GetAttribute("namespacesFile", String.Empty);
+                attrValue = nav.GetAttribute("namespacesFile", String.Empty).CorrectFilePathSeparators();
 
-                if(!String.IsNullOrEmpty(attrValue))
+                if(!String.IsNullOrWhiteSpace(attrValue))
                     namespacesFilename = attrValue;
 
                 // Allow limiting the writer task collection to conserve memory
@@ -306,7 +308,9 @@ namespace Sandcastle.Tools.BuildComponents
 
                 if(!String.IsNullOrWhiteSpace(attrValue) && Int32.TryParse(attrValue, out int boundedCapacity) &&
                   boundedCapacity > 0)
+                {
                     commentsList = new BlockingCollection<CommentsInfo>(boundedCapacity);
+                }
             }
 
             // Use a pipeline task to allow the actual saving to occur while other topics are being generated
@@ -333,8 +337,10 @@ namespace Sandcastle.Tools.BuildComponents
             if(key[0] == 'G' || key[0] == 'N' || key[0] == 'R')
                 commentsList.Add(new CommentsInfo(this, namespacesFilename, key, navComments));
             else
+            {
                 foreach(XPathNavigator asmName in navComments.Select(assemblyExpression))
                     commentsList.Add(new CommentsInfo(this, asmName.Value, key, navComments));
+            }
         }
 
         /// <summary>
@@ -353,8 +359,10 @@ namespace Sandcastle.Tools.BuildComponents
                     int count = commentsList.Count;
 
                     if(count != 0)
+                    {
                         this.WriteMessage(MessageLevel.Diagnostic, "Waiting for the IntelliSense comments " +
                             "writer task to finish ({0} member(s) remaining)...", count);
+                    }
 
                     commentsWriter.Wait();
                 }
@@ -446,6 +454,7 @@ namespace Sandcastle.Tools.BuildComponents
                     writer.WriteFullEndElement();
 
                     if(comments.EnumElements != null)
+                    {
                         foreach(var kv in comments.EnumElements)
                         {
                             writer.WriteStartElement("member");
@@ -453,6 +462,7 @@ namespace Sandcastle.Tools.BuildComponents
                             writer.WriteNode(kv.Value, true);
                             writer.WriteFullEndElement();
                         }
+                    }
                 }
             }
             catch(IOException ioEx)

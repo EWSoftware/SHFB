@@ -2,7 +2,7 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2025
+// Updated : 07/09/2025
 // Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to build the reflection data
@@ -142,30 +142,32 @@ namespace ReflectionDataManager
         /// </summary>
         public void Build()
         {
-            string projectFile, configFile = Path.Combine(ComponentUtilities.ToolsFolder,
-                @"Templates\BuildReflectionData.config");
+            string projectFile, configFile = Path.Combine(ComponentUtilities.ToolsFolder, "Templates",
+                "BuildReflectionData.config");
 
             string content = File.ReadAllText(configFile);
 
             content = content.Replace("{@Platform}", dataSet.Platform);
             content = content.Replace("{@Version}", dataSet.Version.ToString());
-            content = content.Replace("{@SHFBRoot}", ComponentUtilities.RootFolder);
             content = content.Replace("{@IgnoreIfUnresolved}", dataSet.IgnoreIfUnresolvedConfiguration());
             content = content.Replace("{@BindingRedirections}", dataSet.BindingRedirectionConfiguration());
             content = content.Replace("{@IgnoredNamespaces}", dataSet.IgnoredNamespacesConfiguration());
 
             if(!Path.GetDirectoryName(dataSet.Filename).StartsWith(Path.GetDirectoryName(
               Assembly.GetExecutingAssembly().Location), StringComparison.OrdinalIgnoreCase))
+            {
                 content = content.Replace("{@ComponentLocations}", String.Format(CultureInfo.InvariantCulture,
                     "<location folder=\"{0}\" />\r\n", WebUtility.HtmlEncode(Path.GetDirectoryName(
                     dataSet.Filename))));
+            }
 
             File.WriteAllText(Path.Combine(workingFolder, "BuildReflectionData.config"), content);
 
-            configFile = Path.Combine(ComponentUtilities.ToolsFolder, @"Templates\BuildReflectionData.proj");
+            configFile = Path.Combine(ComponentUtilities.ToolsFolder, "Templates", "BuildReflectionData.proj");
             content = File.ReadAllText(configFile);
 
-            content = content.Replace("{@SHFBRoot}", ComponentUtilities.RootFolder);
+            content = content.Replace("{@MRefBuilder}", Path.Combine(ComponentUtilities.RootFolder, "net48",
+                "MRefBuilder.dll"));
             content = content.Replace("{@HtmlEncWorkingFolder}", WebUtility.HtmlEncode(workingFolder));
 
             content = content.Replace("{@Assemblies}", String.Join("\r\n", dataSet.IncludedAssemblies.Select(

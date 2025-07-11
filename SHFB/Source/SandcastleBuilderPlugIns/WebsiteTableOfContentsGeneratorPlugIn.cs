@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : WebsiteTableOfContentsGeneratorPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Sam Harwell
-// Updated : 06/20/2025
+// Updated : 07/09/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved.
 //
 // This file contains a plug-in that is used to generate table of contents information for website-based
@@ -158,7 +158,7 @@ namespace SandcastleBuilder.PlugIns
                 if(file != null)
                 {
                     // The title isn't available until now as the static parts are resolved from shared content items
-                    string topicFile = Path.Combine(builder.WorkingFolder, @"Output\Website\html", file + ".htm");
+                    string topicFile = Path.Combine(builder.WorkingFolder, "Output", "Website", "html", file + ".htm");
 
                     var head = ComponentUtilities.XmlStreamAxis(topicFile, "head").FirstOrDefault() ??
                         throw new InvalidOperationException($"Head element not found in topic file {topicFile}");

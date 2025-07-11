@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : FullTextIndex.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/21/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to create a full-text index used to search for topics in the ASP.NET web
@@ -136,7 +136,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
             if(filePath == null)
                 throw new ArgumentNullException(nameof(filePath));
 
-            if(filePath[filePath.Length - 1] == '\\')
+            if(filePath[filePath.Length - 1] == Path.DirectorySeparatorChar)
                 rootPathLength = filePath.Length;
             else
                 rootPathLength = filePath.Length + 1;
@@ -200,7 +200,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                 // into a string separated by nulls.  Note that file paths are assumed to be relative to the
                 // root folder.
                 fileInfo = String.Join("\x0", [ title,
-                    name.Substring(rootPathLength).Replace('\\', '/'),
+                    name.Substring(rootPathLength).ToWebsiteOrZipFilePath(),
                     words.Length.ToString(CultureInfo.InvariantCulture) ]);
 
                 var wordCounts = new Dictionary<string, int>();
@@ -245,8 +245,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         /// <summary>
         /// Save the index information to the specified location.
         /// </summary>
-        /// <param name="indexPath">The path to which the index files are
-        /// saved.</param>
+        /// <param name="indexPath">The path to which the index files are saved.</param>
         /// <remarks>JSON serialization is used to save the index data.</remarks>
         public void SaveIndex(string indexPath)
         {
@@ -257,7 +256,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                 Directory.CreateDirectory(indexPath);
 
             // First, the easy part.  Save the filename index
-            using(StreamWriter sw = new(indexPath + "FTI_Files.json"))
+            using(StreamWriter sw = new(Path.Combine(indexPath, "FTI_Files.json")))
             {
                 sw.Write(JsonSerializer.Serialize(new List<string>(fileList)));
             }
@@ -278,9 +277,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
             // Save each part.  The letter is specified as an integer to allow for Unicode characters
             foreach(char letter in letters.Keys)
             {
-                using StreamWriter sw = new(String.Format(CultureInfo.InvariantCulture,
-                  "{0}\\FTI_{1}.json", indexPath, (int)letter));
-                
+                using StreamWriter sw = new(Path.Combine(indexPath, $"FTI_{(int)letter}.json"));
                 sw.Write(JsonSerializer.Serialize(letters[letter]));
             }
         }

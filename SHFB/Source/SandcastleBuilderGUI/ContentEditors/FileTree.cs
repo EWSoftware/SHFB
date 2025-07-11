@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : FileTree.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/22/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to manage the project's files in the Project Explorer tree view control
@@ -206,13 +206,13 @@ namespace SandcastleBuilder.Gui.ContentEditors
                             folderNames.Add(name);
 
                             // Note all paths leading up to this item as well
-                            parts = name.Split('\\');
+                            parts = name.Split(Path.DirectorySeparatorChar);
 
                             name = String.Empty;
 
                             for(int idx = 0; idx < parts.Length - 2; idx++)
                             {
-                                name += parts[idx] + @"\";
+                                name += parts[idx] + Path.DirectorySeparatorChar;
 
                                 if(additionalFolders.IndexOf(name) == -1)
                                     additionalFolders.Add(name);
@@ -222,8 +222,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 }
 
                 foreach(string folder in additionalFolders)
+                {
                     if(folderNames.IndexOf(folder) == -1)
                         folderNames.Add(folder);
+                }
 
                 folderNames.Sort();
 
@@ -241,9 +243,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     if(treeView.Nodes.Find(folder, true).Length != 0)
                         continue;
 
-                    if(name.IndexOf('\\') != -1)
+                    if(name.IndexOf(Path.DirectorySeparatorChar) != -1)
                     {
-                        matches = treeView.Nodes.Find(name.Substring(0, name.LastIndexOf('\\') + 1), true);
+                        matches = treeView.Nodes.Find(name.Substring(0,
+                            name.LastIndexOf(Path.DirectorySeparatorChar) + 1), true);
 
                         if(matches.Length == 1)
                         {

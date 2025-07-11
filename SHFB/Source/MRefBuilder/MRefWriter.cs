@@ -350,7 +350,7 @@ namespace Sandcastle.Tools
                         // to see if we can find a single best match.
                         while(typeNameParts.Count != 0)
                         {
-                            searchPattern = typeNameParts.Pop() + "\\" + searchPattern;
+                            searchPattern = Path.Combine(typeNameParts.Pop(), searchPattern);
 
                             var namespaceMatches = matches.Where(m => Path.Combine(
                                 Path.GetDirectoryName(m), Path.GetFileNameWithoutExtension(m)).EndsWith(

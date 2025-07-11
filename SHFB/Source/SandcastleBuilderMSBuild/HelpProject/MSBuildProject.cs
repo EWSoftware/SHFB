@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/21/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains an MSBuild project wrapper used by the Sandcastle Help File builder during the build
@@ -102,7 +102,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
                 {
                     outputPath = prop.EvaluatedValue;
                   
-                    if(outputPath == @".\")
+                    if(outputPath == FilePath.DefaultOutDir)
                         outputPath = null;
                     else
                     {
@@ -115,9 +115,11 @@ namespace SandcastleBuilder.MSBuild.HelpProject
                         {
                             outputPath = outputPath.Substring(0, outputPath.Length - 1);
 
-                            if(outputPath.LastIndexOf('\\') != -1)
+                            int lastSeparator = outputPath.LastIndexOf(Path.DirectorySeparatorChar);
+
+                            if(lastSeparator != -1)
                             {
-                                outputPath = outputPath.Substring(0, outputPath.LastIndexOf('\\'));
+                                outputPath = outputPath.Substring(0, lastSeparator);
 
                                 // The ProjectName property can override the actual project name
                                 if(properties.TryGetValue(BuildItemMetadata.ProjectName, out prop))
@@ -267,7 +269,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
                             {
                                 outputPath = prop.EvaluatedValue;
 
-                                if(outputPath == @".\")
+                                if(outputPath == FilePath.DefaultOutDir)
                                     outputPath = null;
                                 else
                                 {
@@ -281,9 +283,11 @@ namespace SandcastleBuilder.MSBuild.HelpProject
                                     {
                                         outputPath = outputPath.Substring(0, outputPath.Length - 1);
 
-                                        if(outputPath.LastIndexOf('\\') != -1)
+                                        int lastSeparator = outputPath.LastIndexOf(Path.DirectorySeparatorChar);
+
+                                        if(lastSeparator != -1)
                                         {
-                                            outputPath = outputPath.Substring(0, outputPath.LastIndexOf('\\'));
+                                            outputPath = outputPath.Substring(0, lastSeparator);
 
                                             // The ProjectName property can override the actual project name
                                             if(properties.TryGetValue(BuildItemMetadata.ProjectName, out prop))
@@ -619,7 +623,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
                     if(usesProjectSpecificOutput)
                     {
                         // The output directory will contain the SHFB project name so we need to remove it first
-                        if(outDir[outDir.Length - 1] == '\\')
+                        if(outDir[outDir.Length - 1] == Path.DirectorySeparatorChar)
                             outDir = outDir.Substring(0, outDir.Length - 1);
 
                         outDir = Path.Combine(Path.GetDirectoryName(outDir),

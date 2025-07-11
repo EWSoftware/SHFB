@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013PresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/20/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Visual Studio 2013 presentation style.
@@ -60,16 +60,16 @@ namespace Sandcastle.PresentationStyles.VS2013
             this.TopicTransformation = new VisualStudio2013Transformation(this.SupportedFormats, this.ResolvePath);
 
             // If relative, these paths are relative to the base path
-            this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";
+            this.BuildAssemblerConfiguration = Path.Combine("Configuration", "BuildAssembler.config");
 
             // Note that UNIX based web servers may be case-sensitive with regard to folder and filenames so
             // match the case of the folder and filenames in the literals to their actual casing on the file
             // system.
-            this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"icons\*.*"));
-            this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"scripts\*.*"));
-            this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"styles\*.*"));
-            this.ContentFiles.Add(new ContentFiles(HelpFileFormats.Website, null, @"Web\*.*",
-                String.Empty, [".aspx", ".html", ".htm", ".php"]));
+            this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, Path.Combine("icons", "*.*")));
+            this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, Path.Combine("scripts", "*.*")));
+            this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, Path.Combine("styles", "*.*")));
+            this.ContentFiles.Add(new ContentFiles(HelpFileFormats.Website, null,
+                Path.Combine("Web", "*.*"), String.Empty, [".aspx", ".html", ".htm", ".php"]));
 
             // Add the plug-in dependencies
             this.PlugInDependencies.Add(new PlugInDependency("Lightweight Website Style", null));
@@ -79,7 +79,7 @@ namespace Sandcastle.PresentationStyles.VS2013
         /// <remarks>This presentation style only uses the standard shared content</remarks>
         public override IEnumerable<string> ResourceItemFiles(string languageName)
         {
-            string filePath = this.ResolvePath(@"..\Shared\Content"),
+            string filePath = this.ResolvePath(Path.Combine("..", "Shared", "Content")),
                 fileSpec = "SharedContent_" + languageName + ".xml";
 
             if(!File.Exists(Path.Combine(filePath, fileSpec)))

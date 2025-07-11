@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TocEntryCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a collection class used to hold the table of contents entries for content layout and site
@@ -474,8 +474,8 @@ namespace Sandcastle.Core.ConceptualContent
             TocEntry topic, removeTopic;
             string name, newPath, projectPath = Path.GetDirectoryName(project.Filename);
 
-            if(basePath.Length != 0 && basePath[basePath.Length - 1] != '\\')
-                basePath += "\\";
+            if(basePath.Length != 0 && basePath[basePath.Length - 1] != Path.DirectorySeparatorChar)
+                basePath += Path.DirectorySeparatorChar;
 
             // Add files
             foreach(string file in Directory.EnumerateFiles(folder, "*.htm?").Concat(

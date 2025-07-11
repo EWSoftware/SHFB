@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/22/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the main form for the application.
@@ -1502,7 +1502,7 @@ namespace SandcastleBuilder.Gui
                     // Visual Studio conveniently provides a development web server that doesn't require IIS
                     path = Path.Combine(Environment.GetFolderPath(Environment.Is64BitProcess ?
                         Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles),
-                        @"Common Files\Microsoft Shared\DevServer");
+                        "Common Files", "Microsoft Shared", "DevServer");
 
                     if(Directory.Exists(path))
                     {
@@ -1520,7 +1520,7 @@ namespace SandcastleBuilder.Gui
                         // Try for IIS Express
                         webServerPath.Path = Path.Combine(Environment.GetFolderPath(Environment.Is64BitProcess ?
                             Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles),
-                            @"IIS Express\IISExpress.exe");
+                            "IIS Express", "IISExpress.exe");
                         vPath = String.Empty;
                     }
 
@@ -1906,10 +1906,10 @@ namespace SandcastleBuilder.Gui
                 if(excludedOutputFolder == null || excludedWorkingFolder == null)
                     excludedOutputFolder = excludedWorkingFolder = "??";
 
-                if(excludedOutputFolder.EndsWith("\\", StringComparison.Ordinal))
+                if(excludedOutputFolder[excludedOutputFolder.Length - 1] == Path.DirectorySeparatorChar)
                     excludedOutputFolder = excludedOutputFolder.Substring(0, excludedOutputFolder.Length - 1);
 
-                if(excludedWorkingFolder.EndsWith("\\", StringComparison.Ordinal))
+                if(excludedWorkingFolder[excludedWorkingFolder.Length - 1] == Path.DirectorySeparatorChar)
                     excludedWorkingFolder = excludedWorkingFolder.Substring(0, excludedWorkingFolder.Length - 1);
 
                 fsw.Path = Path.GetDirectoryName(project.Filename);

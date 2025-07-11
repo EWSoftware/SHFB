@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/22/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the project class.
@@ -284,7 +284,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
                     // Ignore ".\" as that's our default.
                     if(msBuildProject.GlobalProperties.TryGetValue(BuildItemMetadata.OutDir, out outDir))
                     {
-                        if(outDir == @".\")
+                        if(outDir == FilePath.DefaultOutDir)
                             outDir = null;
                     }
                 }
@@ -2150,7 +2150,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
             if(folder == null)
                 throw new ArgumentNullException(nameof(folder));
 
-            if(folder.Length != 0 && folder[folder.Length - 1] == '\\')
+            if(folder.Length != 0 && folder[folder.Length - 1] == Path.DirectorySeparatorChar)
                 folder = folder.Substring(0, folder.Length - 1);
 
             if(!Path.IsPathRooted(folder))
@@ -2168,13 +2168,16 @@ namespace SandcastleBuilder.MSBuild.HelpProject
             // Folders don't always have a relative path in the item when first added.  As such, check both the
             // relative and full paths for a match.
             foreach(ProjectItem item in msBuildProject.GetItems(folderAction))
+            {
                 if(item.EvaluatedInclude == folderPath.PersistablePath ||
-                  item.EvaluatedInclude + @"\" == folderPath.PersistablePath ||
-                  item.EvaluatedInclude == folderPath.Path || item.EvaluatedInclude + @"\" == folderPath.Path)
+                  item.EvaluatedInclude + Path.DirectorySeparatorChar == folderPath.PersistablePath ||
+                  item.EvaluatedInclude == folderPath.Path ||
+                  item.EvaluatedInclude + Path.DirectorySeparatorChar == folderPath.Path)
                 {
                     newFileItem = new FileItem(this, item);
                     break;
                 }
+            }
 
             if(!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
@@ -2231,15 +2234,17 @@ namespace SandcastleBuilder.MSBuild.HelpProject
                     Directory.CreateDirectory(Path.GetDirectoryName(destinationFile));
 
                 // Make sure folder items exists for all parts of the path
-                folders = Path.GetDirectoryName(filePath.PersistablePath).Split('\\');
+                folders = Path.GetDirectoryName(filePath.PersistablePath).Split(Path.DirectorySeparatorChar);
                 itemPath = String.Empty;
 
                 foreach(string path in folders)
+                {
                     if(path.Length != 0)
                     {
-                        itemPath += path + "\\";
+                        itemPath += path + Path.DirectorySeparatorChar;
                         this.AddFolderToProject(itemPath);
                     }
+                }
 
                 if(File.Exists(sourceFile))
                 {

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PresentationStyleSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain settings information for a specific presentation style
@@ -283,16 +283,13 @@ namespace Sandcastle.Core.PresentationStyle
             if(destPath == null)
                 throw new ArgumentNullException(nameof(destPath));
 
-            int idx = sourcePath.LastIndexOf('\\');
+            int idx = sourcePath.LastIndexOf(Path.DirectorySeparatorChar);
 
             string dirName = sourcePath.Substring(0, idx), fileSpec = sourcePath.Substring(idx + 1), filename;
 
-            if(destPath[destPath.Length - 1] != '\\')
-                destPath += @"\";
-
             foreach(string name in Directory.EnumerateFiles(dirName, fileSpec))
             {
-                filename = destPath + Path.GetFileName(name);
+                filename = Path.Combine(destPath, Path.GetFileName(name));
 
                 // Don't overwrite content that was copied from the project or by a plug-in.  This allows project
                 // content to override the standard content.
@@ -324,7 +321,8 @@ namespace Sandcastle.Core.PresentationStyle
                 {
                     if((File.GetAttributes(folder) & FileAttributes.Hidden) != FileAttributes.Hidden)
                     {
-                        RecursiveCopy(folder + @"\*.*", destPath + folder.Substring(dirName.Length + 1) + @"\",
+                        RecursiveCopy(Path.Combine(folder, "*.*"),
+                            Path.Combine(destPath, folder.Substring(dirName.Length + 1)),
                             progressReporter, templateFileExtensions, transformTemplate);
                     }
                 }

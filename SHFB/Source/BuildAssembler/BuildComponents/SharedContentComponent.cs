@@ -121,8 +121,10 @@ namespace Sandcastle.Tools.BuildComponents
             XPathNodeIterator contextNodes = configuration.Select("context");
 
             foreach(XPathNavigator cn in contextNodes)
+            {
                 context.AddNamespace(cn.GetAttribute("prefix", String.Empty),
                     cn.GetAttribute("name", String.Empty));
+            }
 
             // Item keys are compared case-insensitively
             content = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -156,6 +158,7 @@ namespace Sandcastle.Tools.BuildComponents
 
                 if(String.IsNullOrEmpty(item))
                     item = "string(@item)";
+
                 try
                 {
                     XPathExpression item_expression = XPathExpression.Compile(item, context);
@@ -182,17 +185,19 @@ namespace Sandcastle.Tools.BuildComponents
 
             // If not defined, assume include and includeAttribute are to be replaced using the default names
             if(elements.Count == 0)
+            {
                 elements.Add(new SharedContentElement("//include | //includeAttribute", "string(@item)",
                     "parameter", "string(@name)", context));
+            }
 
             // Load the content item files
             XPathNodeIterator content_nodes = configuration.Select("content");
 
             foreach(XPathNavigator content_node in content_nodes)
             {
-                string sharedContentFiles = content_node.GetAttribute("file", String.Empty);
+                string sharedContentFiles = content_node.GetAttribute("file", String.Empty).CorrectFilePathSeparators();
 
-                if(String.IsNullOrEmpty(sharedContentFiles))
+                if(String.IsNullOrWhiteSpace(sharedContentFiles))
                     this.WriteMessage(MessageLevel.Error, "The content/@file attribute must specify a path.");
 
                 this.ParseDocuments(sharedContentFiles);

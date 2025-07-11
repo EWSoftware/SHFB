@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/22/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -1277,8 +1277,11 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                         {
                             this.DefaultTopicFile = this.DefaultTopicFile.Substring(this.WorkingFolder.Length + 7);
 
-                            if(this.DefaultTopicFile.IndexOf('\\') != -1)
-                                this.DefaultTopicFile = this.DefaultTopicFile.Substring(this.DefaultTopicFile.IndexOf('\\') + 1);
+                            if(this.DefaultTopicFile.IndexOf(Path.DirectorySeparatorChar) != -1)
+                            {
+                                this.DefaultTopicFile = this.DefaultTopicFile.Substring(
+                                    this.DefaultTopicFile.IndexOf(Path.DirectorySeparatorChar) + 1);
+                            }
                         }
                     }
 
@@ -1771,7 +1774,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
             bool isBadPath = false;
             int pos;
 
-            if(tempPath.Length != 0 && tempPath[tempPath.Length - 1] == '\\')
+            if(tempPath.Length != 0 && tempPath[tempPath.Length - 1] == Path.DirectorySeparatorChar)
                 tempPath = tempPath.Substring(0, tempPath.Length - 1);
 
             if(tempPath.Length == 2 && tempPath[1] == ':')
@@ -1785,15 +1788,15 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                   StringComparison.OrdinalIgnoreCase))
                     isBadPath = true;
 
-                if(tempPath[0] == '\\' && tempPath[1] == '\\')
+                if(tempPath[0] == Path.DirectorySeparatorChar && tempPath[1] == Path.DirectorySeparatorChar)
                 {
                     // UNC path.  Make sure it has more than just a share after the server name.
                     tempPath = tempPath.Substring(2);
 
-                    pos = tempPath.IndexOf('\\');
+                    pos = tempPath.IndexOf(Path.DirectorySeparatorChar);
 
                     if(pos != -1)
-                        pos = tempPath.IndexOf('\\', pos + 1);
+                        pos = tempPath.IndexOf(Path.DirectorySeparatorChar, pos + 1);
 
                     // This isn't perfect as the actual root of the share may be several folders down.  You
                     // can't have it all.
@@ -1941,7 +1944,8 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                 StringBuilder sb = new(Environment.GetFolderPath(Environment.Is64BitProcess ?
                     Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles));
 
-                sb.Append(@"\HTML Help Workshop");
+                sb.Append(Path.DirectorySeparatorChar);
+                sb.Append("HTML Help Workshop");
 
                 foreach(DriveInfo di in DriveInfo.GetDrives())
                 {
@@ -1965,8 +1969,8 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                     "for details.\r\n");
             }
 
-            if(this.Help1CompilerFolder[this.Help1CompilerFolder.Length - 1] != '\\')
-                this.Help1CompilerFolder += @"\";
+            if(this.Help1CompilerFolder[this.Help1CompilerFolder.Length - 1] != Path.DirectorySeparatorChar)
+                this.Help1CompilerFolder += Path.DirectorySeparatorChar;
 
             this.ReportProgress("Found HTML Help 1 compiler in '{0}'", this.Help1CompilerFolder);
         }

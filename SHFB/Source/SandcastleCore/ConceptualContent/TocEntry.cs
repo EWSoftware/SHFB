@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TocEntry.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a table of contents entry.  This is used to build the table of
@@ -512,7 +512,7 @@ namespace Sandcastle.Core.ConceptualContent
         /// <returns>The topic in its <c>&lt;a&gt;</c> element form</returns>
         public string ToAnchor(string innerText)
         {
-            string path = this.SourceFile.PersistablePath.Replace('\\', '/');
+            string path = this.SourceFile.PersistablePath.ToWebsiteOrZipFilePath();
 
             if(String.IsNullOrEmpty(path))
                 path = "#";

@@ -2,7 +2,7 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : MainWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/05/2025
+// Updated : 07/09/2025
 // Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the main window for the application and is used to edit the reflection data set files
@@ -348,8 +348,10 @@ namespace ReflectionDataManager
             if(!String.IsNullOrWhiteSpace(location.StoredPath))
                 dlg.SelectedPath = location.Path;
             else
+            {
                 dlg.SelectedPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
-                    @"Reference Assemblies\Microsoft\Framework");
+                    "Reference Assemblies", "Microsoft", "Framework");
+            }
 
             // If selected, set the new folder
             if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)

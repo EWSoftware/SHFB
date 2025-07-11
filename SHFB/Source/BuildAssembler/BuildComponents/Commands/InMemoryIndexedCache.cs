@@ -175,12 +175,12 @@ namespace Sandcastle.Tools.BuildComponents.Commands
             HashSet<string> namespaceFileFilter = [];
             string baseDirectory, wildcardPath, recurseValue, dupWarning, fullPath, directoryPart, filePart;
 
-            baseDirectory = configuration.GetAttribute("base", String.Empty);
+            baseDirectory = configuration.GetAttribute("base", String.Empty).CorrectFilePathSeparators();
 
             if(!String.IsNullOrWhiteSpace(baseDirectory))
                 baseDirectory = Environment.ExpandEnvironmentVariables(baseDirectory);
 
-            wildcardPath = configuration.GetAttribute("files", String.Empty);
+            wildcardPath = configuration.GetAttribute("files", String.Empty).CorrectFilePathSeparators();
 
             if(String.IsNullOrWhiteSpace(wildcardPath))
             {
@@ -202,7 +202,7 @@ namespace Sandcastle.Tools.BuildComponents.Commands
             if(String.IsNullOrWhiteSpace(dupWarning) || !Boolean.TryParse(dupWarning, out bool reportDuplicateIds))
                 reportDuplicateIds = true;
 
-            if(String.IsNullOrEmpty(baseDirectory))
+            if(String.IsNullOrWhiteSpace(baseDirectory))
                 fullPath = wildcardPath;
             else
                 fullPath = Path.Combine(baseDirectory, wildcardPath);
@@ -211,7 +211,7 @@ namespace Sandcastle.Tools.BuildComponents.Commands
 
             directoryPart = Path.GetDirectoryName(fullPath);
 
-            if(String.IsNullOrEmpty(directoryPart))
+            if(String.IsNullOrWhiteSpace(directoryPart))
                 directoryPart = Environment.CurrentDirectory;
 
             filePart = Path.GetFileName(fullPath);

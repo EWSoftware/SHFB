@@ -131,29 +131,33 @@ namespace Sandcastle.Tools.BuildComponents.Targets
             string id = configuration.GetAttribute("id", String.Empty);
 
             // Get base directory
-            string baseValue = configuration.GetAttribute("base", String.Empty);
+            string baseValue = configuration.GetAttribute("base", String.Empty).CorrectFilePathSeparators();
 
             // Get file pattern
-            string filesValue = configuration.GetAttribute("files", String.Empty);
+            string filesValue = configuration.GetAttribute("files", String.Empty).CorrectFilePathSeparators();
 
-            if(String.IsNullOrEmpty(filesValue))
+            if(String.IsNullOrWhiteSpace(filesValue))
+            {
                 throw new ArgumentException("Each targets element must have a files attribute " +
                     "specifying which target files to load.", nameof(configuration));
+            }
 
             // Determine whether to search recursively
             bool recurse = false;
             string recurseValue = configuration.GetAttribute("recurse", String.Empty);
 
-            if(!String.IsNullOrEmpty(recurseValue) && !Boolean.TryParse(recurseValue, out recurse))
+            if(!String.IsNullOrWhiteSpace(recurseValue) && !Boolean.TryParse(recurseValue, out recurse))
+            {
                 throw new ArgumentException(String.Format(CultureInfo.InvariantCulture, "On the targets " +
                     "element, recurse='{0}' is not an allowed value.", recurseValue), nameof(configuration));
+            }
 
             this.Recurse = recurse;
 
             // Turn baseValue and filesValue into directoryPath and filePattern
             string fullPath;
 
-            if(String.IsNullOrEmpty(baseValue))
+            if(String.IsNullOrWhiteSpace(baseValue))
                 fullPath = filesValue;
             else
                 fullPath = Path.Combine(baseValue, filesValue);
@@ -162,21 +166,25 @@ namespace Sandcastle.Tools.BuildComponents.Targets
 
             this.DirectoryPath = Path.GetDirectoryName(fullPath);
 
-            if(String.IsNullOrEmpty(this.DirectoryPath))
+            if(String.IsNullOrWhiteSpace(this.DirectoryPath))
                 this.DirectoryPath = Environment.CurrentDirectory;
 
             this.FilePattern = Path.GetFileName(fullPath);
 
             // Verify that the directory exists
             if(!Directory.Exists(this.DirectoryPath))
+            {
                 throw new ArgumentException(String.Format(CultureInfo.InvariantCulture, "The targets " +
                     "directory '{0}' does not exist.  The configuration is most likely out of date.  Please " +
                     "delete this component from the project, add it back, and reconfigure it.",
                     this.DirectoryPath), nameof(configuration));
+            }
 
             if(String.IsNullOrWhiteSpace(id))
+            {
                 id = Path.Combine(this.DirectoryPath, this.FilePattern).GetHashCodeDeterministic().ToString("X",
                     CultureInfo.InvariantCulture);
+            }
 
             this.DictionaryId = id;
 

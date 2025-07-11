@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : ProjectElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/21/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a wrapper class for build items in the project
@@ -20,6 +20,7 @@
 
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 
 using Microsoft.Build.Evaluation;
@@ -77,8 +78,8 @@ namespace SandcastleBuilder.MSBuild.HelpProject
                         throw new ArgumentException("The filename cannot be blank and cannot contain wildcards (* or ?)");
 
                     // Folder items must end in a backslash
-                    if(item.ItemType == BuildAction.Folder.ToString() && value[value.Length - 1] != '\\')
-                        value += @"\";
+                    if(item.ItemType == BuildAction.Folder.ToString() && value[value.Length - 1] != Path.DirectorySeparatorChar)
+                        value += Path.DirectorySeparatorChar;
 
                     item.UnevaluatedInclude = value;
                     this.OnPropertyChanged();
@@ -126,8 +127,8 @@ namespace SandcastleBuilder.MSBuild.HelpProject
 
             projectFile = project ?? throw new ArgumentNullException(nameof(project));
 
-            if(itemType == BuildAction.Folder.ToString() && itemPath[itemPath.Length - 1] != '\\')
-                itemPath += @"\";
+            if(itemType == BuildAction.Folder.ToString() && itemPath[itemPath.Length - 1] != Path.DirectorySeparatorChar)
+                itemPath += Path.DirectorySeparatorChar;
 
             item = project.MSBuildProject.AddItem(itemType, itemPath)[0];
             projectFile.MSBuildProject.ReevaluateIfNecessary();

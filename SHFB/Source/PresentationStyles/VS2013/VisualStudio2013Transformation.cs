@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/20/2025
+// Updated : 07/09/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -56,7 +57,7 @@ namespace Sandcastle.PresentationStyles.VS2013
         public VisualStudio2013Transformation(HelpFileFormats supportedFormats, Func<string, string> resolvePath) :
           base(supportedFormats, resolvePath)
         {
-            this.TopicTemplatePath = this.ResolvePath(@"Templates\TopicTemplate.html");
+            this.TopicTemplatePath = this.ResolvePath(Path.Combine("Templates", "TopicTemplate.html"));
             this.UsesLegacyCodeColorizer = true;
         }
         #endregion

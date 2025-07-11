@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/21/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -163,24 +163,18 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
             if(destFolder == null)
                 throw new ArgumentNullException(nameof(destFolder));
 
-            if(sourceFolder.Length != 0 && sourceFolder[sourceFolder.Length - 1] != '\\')
-                sourceFolder += @"\";
-
-            if(destFolder.Length != 0 && destFolder[destFolder.Length - 1] != '\\')
-                destFolder += @"\";
-
             try
             {
                 // When reading the file, use the default encoding but detect the encoding if byte order marks
                 // are present.
-                templateText = ComponentUtilities.ReadWithEncoding(sourceFolder + templateFile, ref enc);
+                templateText = ComponentUtilities.ReadWithEncoding(Path.Combine(sourceFolder, templateFile), ref enc);
 
                 // Find and replace all substitution tags with a matching value from the project.  They can be
                 // nested.
                 while(reField.IsMatch(templateText))
                     templateText = reField.Replace(templateText, fieldMatchEval);
 
-                transformedFile = destFolder + templateFile;
+                transformedFile = Path.Combine(destFolder, templateFile);
 
                 // Write the file back out using its original encoding
                 using StreamWriter sw = new(transformedFile, false, enc);
@@ -1340,7 +1334,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         [SubstitutionTag]
         private string WebDefaultTopic()
         {
-            return currentBuild.DefaultTopicFile.Replace('\\', '/');
+            return currentBuild.DefaultTopicFile.ToWebsiteOrZipFilePath();
         }
 
         /// <summary>

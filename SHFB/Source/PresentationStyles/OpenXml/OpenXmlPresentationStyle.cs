@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : OpenXmlPresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/20/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Open XML presentation style.
@@ -66,10 +66,10 @@ namespace Sandcastle.PresentationStyles.OpenXml
             this.TopicTransformation = new OpenXmlTransformation(this.ResolvePath);
 
             // If relative, these paths are relative to the base path
-            this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";
+            this.BuildAssemblerConfiguration = Path.Combine("Configuration", "BuildAssembler.config");
 
-            this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, null, @"DocumentParts\*.*",
-                String.Empty, [".xml"]));
+            this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, null,
+                Path.Combine("DocumentParts", "*.*"), String.Empty, [".xml"]));
         }
 
         /// <inheritdoc />
@@ -77,7 +77,7 @@ namespace Sandcastle.PresentationStyles.OpenXml
         /// Open XML specific values.</remarks>
         public override IEnumerable<string> ResourceItemFiles(string languageName)
         {
-            string filePath = this.ResolvePath(@"..\Shared\Content"),
+            string filePath = this.ResolvePath(Path.Combine("..", "Shared", "Content")),
                 fileSpec = "SharedContent_" + languageName + ".xml";
 
             if(!File.Exists(Path.Combine(filePath, fileSpec)))

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : OutputWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 07/08/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to contain and view the build output
 //
@@ -58,7 +58,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     else
                     {
                         // Try to cut it off at a whole folder name
-                        int pos = value.Substring(0, value.Length - 50).LastIndexOf('\\');
+                        int pos = value.Substring(0, value.Length - 50).LastIndexOf(Path.DirectorySeparatorChar);
 
                         if(pos == -1)
                             pos = value.Length - 50;

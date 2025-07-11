@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : LightweightWebsiteStylePlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Sam Harwell
-// Updated : 06/20/2025
+// Updated : 07/09/2025
 // Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved.
 //           Portions Copyright 2014-2022, Sam Harwell, All rights reserved.
 //
@@ -32,6 +32,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildEngine;
 using Sandcastle.Core.PlugIn;
 
@@ -254,7 +255,7 @@ namespace SandcastleBuilder.PlugIns
                     resizableBar,
                     resizeUi);
 
-                string path = Path.Combine(builder.WorkingFolder, @"Output\Website", current.Attribute("Url").Value);
+                string path = Path.Combine(builder.WorkingFolder, "Output", "Website", current.Attribute("Url").Value);
                 string outputFile = File.ReadAllText(path, Encoding.UTF8);
 
                 // Search box
@@ -326,7 +327,7 @@ namespace SandcastleBuilder.PlugIns
                     new XAttribute("href", "#!")),
                 new XElement("a",
                     new XAttribute("data-tochassubtree", "true"),
-                    new XAttribute("href", "../" + builder.DefaultTopicFile.Replace("\\", "/")),
+                    new XAttribute("href", "../" + builder.DefaultTopicFile.ToWebsiteOrZipFilePath()),
                     new XAttribute("title", builder.ResolvedHelpTitle),
                     new XAttribute("tocid", "roottoc"),
                     new XText(builder.SubstitutionTags.TransformText(builder.CurrentProject.HelpTitle))));

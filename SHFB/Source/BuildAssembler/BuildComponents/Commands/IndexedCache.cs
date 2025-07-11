@@ -199,7 +199,7 @@ namespace Sandcastle.Tools.BuildComponents.Commands
                         string programFiles = Environment.GetFolderPath(Environment.Is64BitProcess ?
                             Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles);
 
-                        path = path.Replace("%PROGRAMFILESDIR%", programFiles + @"\");
+                        path = path.Replace("%PROGRAMFILESDIR%", programFiles + Path.DirectorySeparatorChar);
                     }
 
                     if(!Path.IsPathRooted(path) || !File.Exists(path))

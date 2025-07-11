@@ -1,7 +1,7 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Components
 // File    : MSHCComponent.cs
-// Note    : Copyright 2010-2023 Microsoft Corporation
+// Note    : Copyright 2010-2025 Microsoft Corporation
 //
 // This file contains a modified version of the original MSHCComponent that allows the inclusion of a sortOrder
 // attribute on the table of contents file elements.  This allows the sort order of the elements to be defined
@@ -32,6 +32,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
@@ -167,8 +168,8 @@ namespace Sandcastle.Tools.BuildComponents
 
                 value = data.GetAttribute("toc-file", String.Empty);
 
-                if(!String.IsNullOrEmpty(value))
-                    tocFile = value;
+                if(!String.IsNullOrWhiteSpace(value))
+                    tocFile = value.CorrectFilePathSeparators();
             }
 
             using var reader = XmlReader.Create(Path.GetFullPath(Environment.ExpandEnvironmentVariables(tocFile)),

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : WildcardReferencesPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/20/2025
+// Updated : 07/09/2025
 // Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to modify the MRefBuilder project file by adding in reference
@@ -27,6 +27,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildEngine;
 using Sandcastle.Core.PlugIn;
 
@@ -122,8 +123,8 @@ namespace SandcastleBuilder.PlugIns
             // Find all unique references
             foreach(var r in referencePaths)
             {
-                foreach(string fullPath in Directory.EnumerateFiles(r.ReferencePath, r.Wildcard,
-                  r.Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
+                foreach(string fullPath in Directory.EnumerateFiles(r.ReferencePath.ToString().CorrectFilePathSeparators(),
+                  r.Wildcard, r.Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
                 {
                     string filename = Path.GetFileNameWithoutExtension(fullPath);
 

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : TitleAndKeywordHtmlExtract.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/21/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to extract title and keyword information from HTML files for use in creating
@@ -48,6 +48,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildEngine;
 
 namespace SandcastleBuilder.MSBuild.BuildEngine
@@ -678,8 +679,8 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
 
                     if(!String.IsNullOrEmpty(kw.File))
                     {
-                        WriteHelp1IndexEntry(kw.MainEntry, kw.File.Substring(baseFolderLength).Replace(
-                            '\\', '/'), writer, 3);
+                        WriteHelp1IndexEntry(kw.MainEntry,
+                            kw.File.Substring(baseFolderLength).ToWebsiteOrZipFilePath(), writer, 3);
                     }
                 }
                 else
@@ -699,13 +700,13 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                                 // qualified if necessary.
                                 title = titles[Path.GetFileNameWithoutExtension(k.File)].TopicTitle;
 
-                                WriteHelp1IndexEntry(title, k.File.Substring(baseFolderLength).Replace(
-                                    '\\', '/'), writer, 4);
+                                WriteHelp1IndexEntry(title,
+                                    k.File.Substring(baseFolderLength).ToWebsiteOrZipFilePath(), writer, 4);
                             }
                             else
                             {
-                                WriteHelp1IndexEntry(k.SubEntry, k.File.Substring(baseFolderLength).Replace(
-                                    '\\', '/'), writer, 4);
+                                WriteHelp1IndexEntry(k.SubEntry,
+                                    k.File.Substring(baseFolderLength).ToWebsiteOrZipFilePath(), writer, 4);
                             }
                         }
                     }
@@ -807,7 +808,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                             {
                                 titleInfo = value;
                                 title = titleInfo.TocTitle;
-                                htmlFile = titleInfo.File.Substring(baseFolderLength).Replace('\\', '/');
+                                htmlFile = titleInfo.File.Substring(baseFolderLength).ToWebsiteOrZipFilePath();
                             }
                             else
                             {

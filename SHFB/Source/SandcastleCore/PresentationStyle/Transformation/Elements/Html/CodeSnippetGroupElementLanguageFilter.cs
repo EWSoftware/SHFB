@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : CodeSnippetGroupElementLanguageFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/02/2025
+// Updated : 07/09/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle codeSnippetGroup elements in presentation styles that use a
@@ -82,10 +82,16 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
 
                 // Resolve unset paths on first use
                 if(String.IsNullOrWhiteSpace(this.CodeSnippetTemplatePath))
-                    this.CodeSnippetTemplatePath = transformation.ResolvePath(@"Templates\CodeSnippetTemplate.html");
+                {
+                    this.CodeSnippetTemplatePath = transformation.ResolvePath(
+                        Path.Combine("Templates", "CodeSnippetTemplate.html"));
+                }
 
                 if(String.IsNullOrWhiteSpace(this.CodeSnippetNumberedTemplatePath))
-                    this.CodeSnippetNumberedTemplatePath = transformation.ResolvePath(@"Templates\CodeSnippetNumberedTemplate.html");
+                {
+                    this.CodeSnippetNumberedTemplatePath = transformation.ResolvePath(
+                        Path.Combine("Templates", "CodeSnippetNumberedTemplate.html"));
+                }
 
                 XDocument codeOnlyTemplate = TopicTransformationCore.LoadTemplateFile(this.CodeSnippetTemplatePath, null),
                     withNumbersTemplate = null;

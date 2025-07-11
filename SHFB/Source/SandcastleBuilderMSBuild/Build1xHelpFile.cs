@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : Build1xHelpFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/14/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 07/09/2025
+// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the MSBuild task used to run HHC.EXE which is used to compile a Help 1 (CHM) help file
 //
@@ -23,6 +23,8 @@ using System.IO;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.MSBuild
 {
@@ -165,7 +167,7 @@ namespace SandcastleBuilder.MSBuild
         /// <returns>True if successful or false on failure</returns>
         public override bool Execute()
         {
-            Directory.SetCurrentDirectory(this.WorkingFolder);
+            Directory.SetCurrentDirectory(this.WorkingFolder.CorrectFilePathSeparators());
 
             // HHC is backwards and returns zero on failure and non-zero on success
             if(base.Execute() && this.ExitCode == 0 && String.IsNullOrEmpty(this.LocalizeApp))

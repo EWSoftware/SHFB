@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : FilePath.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to represent a file path.  Support is included for treating the path as fixed
@@ -42,6 +42,16 @@ namespace Sandcastle.Core
     public class FilePath : ICloneable
     {
         #region Common file path constants
+
+        /// <summary>
+        /// This defines the relative path prefix
+        /// </summary>
+        public static readonly string RelativePathPrefix = new(['.', '.', IOPath.DirectorySeparatorChar]);
+
+        /// <summary>
+        /// This defines the default <c>OutDir</c> MSBuild property value (.\)
+        /// </summary>
+        public static readonly string DefaultOutDir = new(['.', IOPath.DirectorySeparatorChar]);
 
         /// <summary>
         /// This defines the common wildcard characters
@@ -207,7 +217,8 @@ namespace Sandcastle.Core
                     if(!Directory.Exists(IOPath.GetDirectoryName(checkPath)))
                         return false;
 
-                    pos = checkPath.LastIndexOf('\\');
+                    pos = checkPath.LastIndexOf(IOPath.DirectorySeparatorChar);
+
                     if(pos == -1)
                     {
                         fileSpec = checkPath;
@@ -535,7 +546,9 @@ namespace Sandcastle.Core
             if(relativePath.Length > 1 && relativePath[0] == '.' &&
               (relativePath[1] == IOPath.DirectorySeparatorChar ||
               relativePath[1] == IOPath.AltDirectorySeparatorChar))
+            {
                 relativePath = relativePath.Substring(2);
+            }
 
             // Split the paths into their component parts
             string[] baseParts = basePath.Split(IOPath.DirectorySeparatorChar);

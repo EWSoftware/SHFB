@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/20/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the code used to modify the help file project files to create a better table of contents
@@ -520,13 +520,13 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
             if(destinationPath == null)
                 throw new ArgumentNullException(nameof(destinationPath));
 
-            int idx = sourcePath.LastIndexOf('\\');
+            int idx = sourcePath.LastIndexOf(Path.DirectorySeparatorChar);
 
             string dirName = sourcePath.Substring(0, idx), fileSpec = sourcePath.Substring(idx + 1), filename;
 
             foreach(string name in Directory.EnumerateFiles(dirName, fileSpec))
             {
-                filename = destinationPath + Path.GetFileName(name);
+                filename = Path.Combine(destinationPath, Path.GetFileName(name));
 
                 if(!Directory.Exists(destinationPath))
                     Directory.CreateDirectory(destinationPath);
@@ -549,8 +549,8 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                 {
                     if((File.GetAttributes(folder) & FileAttributes.Hidden) != FileAttributes.Hidden)
                     {
-                        this.RecursiveCopy(folder + @"\*.*", destinationPath + folder.Substring(dirName.Length + 1) + @"\",
-                            ref fileCount);
+                        this.RecursiveCopy(Path.Combine(folder, "*.*"),
+                            Path.Combine(destinationPath, folder.Substring(dirName.Length + 1)), ref fileCount);
                     }
                 }
             }
@@ -643,8 +643,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         /// </summary>
         private void GenerateWebsite()
         {
-            string webWorkingFolder = String.Format(CultureInfo.InvariantCulture, "{0}Output\\{1}",
-                this.WorkingFolder, HelpFileFormats.Website);
+            string webWorkingFolder = Path.Combine(this.WorkingFolder, "Output", HelpFileFormats.Website.ToString());
             int fileCount = 0;
 
             // Generate the full-text index for the ASP.NET search option
@@ -656,7 +655,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
 
                 FullTextIndex index = new(this.WorkingFolder + "StopWordList.txt", this.Language);
                 index.CreateFullTextIndex(webWorkingFolder);
-                index.SaveIndex(webWorkingFolder + @"\fti\");
+                index.SaveIndex(Path.Combine(webWorkingFolder, "fti"));
 
                 this.ExecutePlugIns(ExecutionBehaviors.After);
             }
@@ -669,7 +668,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
             this.ExecutePlugIns(ExecutionBehaviors.Before);
 
             // Copy the help pages and related content
-            this.RecursiveCopy(webWorkingFolder + @"\*.*", this.OutputFolder, ref fileCount);
+            this.RecursiveCopy(Path.Combine(webWorkingFolder, "*.*"), this.OutputFolder, ref fileCount);
             this.ReportProgress("Copied {0} files for the website content", fileCount);
 
             this.GatherBuildOutputFilenames();
@@ -690,16 +689,16 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                 {
                     if((project.HelpFileFormat & value) != 0)
                     {
-                        this.HelpFormatOutputFolders.Add(String.Format(CultureInfo.InvariantCulture,
-                            @"{0}Output\{1}\", this.WorkingFolder, value));
+                        this.HelpFormatOutputFolders.Add(Path.Combine(this.WorkingFolder, "Output",
+                            value.ToString()) + Path.DirectorySeparatorChar);
                     }
                 }
             }
 
             foreach(string baseFolder in this.HelpFormatOutputFolders)
             {
-                if(!Directory.Exists(baseFolder + subFolder))
-                    Directory.CreateDirectory(baseFolder + subFolder);
+                if(!Directory.Exists(Path.Combine(baseFolder, subFolder ?? String.Empty)))
+                    Directory.CreateDirectory(Path.Combine(baseFolder, subFolder ?? String.Empty));
             }
         }
         #endregion

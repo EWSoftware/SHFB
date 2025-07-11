@@ -147,17 +147,21 @@ namespace Sandcastle.Tools.BuildComponents
 
             foreach(XPathNavigator navigator in configuration.Select("targets"))
             {
-                basePath = navigator.GetAttribute("base", String.Empty);
+                basePath = navigator.GetAttribute("base", String.Empty).CorrectFilePathSeparators();
 
                 if(String.IsNullOrEmpty(basePath))
+                {
                     this.WriteMessage(MessageLevel.Error, "Every targets element must have a base attribute " +
                         "that specifies the path to a directory of target metadata files.");
+                }
 
                 basePath = Environment.ExpandEnvironmentVariables(basePath);
 
                 if(!Directory.Exists(basePath))
+                {
                     this.WriteMessage(MessageLevel.Error, "The specified target metadata directory '{0}' " +
                         "does not exist.", basePath);
+                }
 
                 attribute = navigator.GetAttribute("url", String.Empty);
 
@@ -184,10 +188,12 @@ namespace Sandcastle.Tools.BuildComponents
                 attribute = navigator.GetAttribute("type", String.Empty);
 
                 if(String.IsNullOrEmpty(attribute))
+                {
                     this.WriteMessage(MessageLevel.Error, "Every targets element must have a type attribute " +
                         "that specifies what kind of link to create to targets found in that directory.");
+                }
 
-                if(!Enum.TryParse<ConceptualLinkType>(attribute, true, out ConceptualLinkType linkType))
+                if(!Enum.TryParse(attribute, true, out ConceptualLinkType linkType))
                     this.WriteMessage(MessageLevel.Error, "'{0}' is not a valid link type.", attribute);
 
                 targetDirectory = new TargetDirectory(basePath, urlExp, textExp, linkTextExp, linkType);

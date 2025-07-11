@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : MarkdownTransformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/20/2025
+// Updated : 07/09/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -59,7 +60,7 @@ namespace Sandcastle.PresentationStyles.Markdown
         /// <param name="resolvePath">The function used to resolve content file paths for the presentation style</param>
         public MarkdownTransformation(Func<string, string> resolvePath) : base(HelpFileFormats.Markdown, resolvePath)
         {
-            this.TopicTemplatePath = this.ResolvePath(@"Templates\TopicTemplate.xml");
+            this.TopicTemplatePath = this.ResolvePath(Path.Combine("Templates", "TopicTemplate.xml"));
         }
         #endregion
 
@@ -300,11 +301,11 @@ namespace Sandcastle.PresentationStyles.Markdown
                 // MAML elements
                 new NoteElement("alert")
                 {
-                    CautionAlertTemplatePath = this.ResolvePath(@"Templates\CautionAlertTemplate.xml"),
-                    LanguageAlertTemplatePath = this.ResolvePath(@"Templates\LanguageAlertTemplate.xml"),
-                    NoteAlertTemplatePath = this.ResolvePath(@"Templates\NoteAlertTemplate.xml"),
-                    SecurityAlertTemplatePath = this.ResolvePath(@"Templates\SecurityAlertTemplate.xml"),
-                    ToDoAlertTemplatePath = this.ResolvePath(@"Templates\ToDoAlertTemplate.xml")
+                    CautionAlertTemplatePath = this.ResolvePath(Path.Combine("Templates", "CautionAlertTemplate.xml")),
+                    LanguageAlertTemplatePath = this.ResolvePath(Path.Combine("Templates", "LanguageAlertTemplate.xml")),
+                    NoteAlertTemplatePath = this.ResolvePath(Path.Combine("Templates", "NoteAlertTemplate.xml")),
+                    SecurityAlertTemplatePath = this.ResolvePath(Path.Combine("Templates", "SecurityAlertTemplate.xml")),
+                    ToDoAlertTemplatePath = this.ResolvePath(Path.Combine("Templates", "ToDoAlertTemplate.xml"))
                 },
                 new MarkdownElement("application", "**", "**", "strong"),
                 new NamedSectionElement("appliesTo"),
@@ -408,11 +409,11 @@ namespace Sandcastle.PresentationStyles.Markdown
                 new ImplementsElement(),
                 new NoteElement("note")
                 {
-                    CautionAlertTemplatePath = this.ResolvePath(@"Templates\CautionAlertTemplate.xml"),
-                    LanguageAlertTemplatePath = this.ResolvePath(@"Templates\LanguageAlertTemplate.xml"),
-                    NoteAlertTemplatePath = this.ResolvePath(@"Templates\NoteAlertTemplate.xml"),
-                    SecurityAlertTemplatePath = this.ResolvePath(@"Templates\SecurityAlertTemplate.xml"),
-                    ToDoAlertTemplatePath = this.ResolvePath(@"Templates\ToDoAlertTemplate.xml")
+                    CautionAlertTemplatePath = this.ResolvePath(Path.Combine("Templates", "CautionAlertTemplate.xml")),
+                    LanguageAlertTemplatePath = this.ResolvePath(Path.Combine("Templates", "LanguageAlertTemplate.xml")),
+                    NoteAlertTemplatePath = this.ResolvePath(Path.Combine("Templates", "NoteAlertTemplate.xml")),
+                    SecurityAlertTemplatePath = this.ResolvePath(Path.Combine("Templates", "SecurityAlertTemplate.xml")),
+                    ToDoAlertTemplatePath = this.ResolvePath(Path.Combine("Templates", "ToDoAlertTemplate.xml"))
                 },
                 new MarkdownElement("paramref", "name", "*", "*", "em"),
                 // This is handled as a notice

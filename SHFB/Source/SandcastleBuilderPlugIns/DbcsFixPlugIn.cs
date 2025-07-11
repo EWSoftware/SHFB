@@ -97,7 +97,7 @@ namespace SandcastleBuilder.PlugIns
             var node = configuration.Element("sbAppLocale");
 
             if(node != null)
-                sbAppLocalePath = node.Attribute("path").Value;
+                sbAppLocalePath = node.Attribute("path").Value.CorrectFilePathSeparators();
 
             if(String.IsNullOrWhiteSpace(sbAppLocalePath))
             {

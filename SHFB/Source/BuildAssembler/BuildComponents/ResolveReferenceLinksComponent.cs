@@ -177,12 +177,16 @@ namespace Sandcastle.Tools.BuildComponents
                 attrValue = targetsNode.GetAttribute("type", String.Empty);
 
                 if(String.IsNullOrWhiteSpace(attrValue))
+                {
                     this.WriteMessage(MessageLevel.Error, "Each targets element must have a type attribute " +
                         "that specifies which type of links to create");
+                }
 
                 if(!Enum.TryParse(attrValue, true, out ReferenceLinkType type))
+                {
                     this.WriteMessage(MessageLevel.Error, "'{0}' is not a supported reference link type",
                         attrValue);
+                }
 
                 // Check for shared instance by ID.  If not there, create it and add it.
                 id = targetsNode.GetAttribute("id", String.Empty);

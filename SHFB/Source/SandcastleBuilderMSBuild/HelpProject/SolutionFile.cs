@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : SolutionFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/21/2025
+// Updated : 07/08/2025
 // Note    : Copyright 2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to parse project information out of solution files (.sln or .slnx)
@@ -25,6 +25,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
+using Sandcastle.Core;
 using Sandcastle.Core.Project;
 
 namespace SandcastleBuilder.MSBuild.HelpProject
@@ -119,7 +120,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
 
                 foreach(Match solutionMatch in projects)
                 {
-                    filename = Path.Combine(folder, solutionMatch.Groups["Path"].Value.Replace('/', '\\'));
+                    filename = Path.Combine(folder, solutionMatch.Groups["Path"].Value.CorrectFilePathSeparators());
 
                     if(projectFileExtension.Contains(Path.GetExtension(filename)))
                         yield return new ProjectFileConfiguration(filename) { ProjectGuid = solutionMatch.Groups["GUID"].Value };
@@ -131,7 +132,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
                 {
                     foreach(var p in slnxContent.Root.Descendants("Project"))
                     {
-                        filename = p.Attribute("Path")?.Value.Replace('/', '\\');
+                        filename = p.Attribute("Path")?.Value.CorrectFilePathSeparators();
 
                         if(!String.IsNullOrWhiteSpace(filename) && projectFileExtension.Contains(Path.GetExtension(filename)))
                             yield return new ProjectFileConfiguration(Path.Combine(folder, filename)) { ProjectElement = p };

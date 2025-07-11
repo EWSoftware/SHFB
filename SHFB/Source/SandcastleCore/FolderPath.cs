@@ -111,8 +111,8 @@ namespace Sandcastle.Core
 
             path = Environment.ExpandEnvironmentVariables(path);
 
-            return (path[path.Length - 1] == IOPath.DirectorySeparatorChar ||
-                path[path.Length - 1] == IOPath.AltDirectorySeparatorChar);
+            return path[path.Length - 1] == IOPath.DirectorySeparatorChar ||
+                path[path.Length - 1] == IOPath.AltDirectorySeparatorChar;
         }
 
         /// <summary>
