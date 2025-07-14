@@ -20,6 +20,7 @@
 		<Project File="BuildComponent.csproj" ReplaceParameters="true">
 			<ProjectItem TargetFileName="$safeprojectname$Component.cs" ReplaceParameters="true" OpenInEditor="true">BuildComponent.cs</ProjectItem>
 			<ProjectItem TargetFileName="GlobalSuppressions.cs" ReplaceParameters="true">GlobalSuppressions.cs</ProjectItem>
+			<ProjectItem TargetFileName="ReadMe.md" ReplaceParameters="true">ReadMe.md</ProjectItem>
 			<Folder Name="build" TargetFolderName="build">
 				<ProjectItem TargetFileName="$safeprojectname$.props">BuildComponent.props</ProjectItem>
 			</Folder>

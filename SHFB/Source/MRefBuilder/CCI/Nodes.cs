@@ -9630,12 +9630,10 @@ done:
 
             for(int i = 0, n = members == null ? 0 : members.Count; i < n; i++)
             {
-                Method m = members[i] as Method;
-
                 // !EFW - Bug fix for problem reported by SHarwell.  Must compare type parameter counts too.
                 // If not, overloaded methods, one with and one without generic parameters, will be matched
                 // incorrectly.
-                if(m == null || !m.TypeParameterCountsMatch(method))
+                if(members[i] is not Method m || !m.TypeParameterCountsMatch(method))
                     continue;
 
                 if(m.ParametersMatchStructurally(method.Parameters))
@@ -16011,40 +16009,43 @@ tryNext:
             ParameterList pars = this.Parameters;
             int n = pars == null ? 0 : pars.Count;
             int m = parameters == null ? 0 : parameters.Count;
+            
             if(n != m)
                 return false;
+            
             if(parameters == null)
                 return true;
+            
             for(int i = 0; i < n; i++)
             {
                 Parameter par1 = pars[i];
                 Parameter par2 = parameters[i];
+                
                 if(par1 == null || par2 == null)
                     return false;
+                
                 if(par1.Type != par2.Type)
-                    return false;
-            }
-            return true;
-        }
+                {
+                    // !EFW - If one type is in mscorlib and the other isn't but the assemblies are in the same
+                    // folder and the type names match, assume they are the same.  This covers an odd case where
+                    // the types mismatch if one is from .NET Framework and other from .NET Standard such as
+                    // System.Xml.Linq.XElement.  This can happen for overridden methods in a type from a .NET
+                    // Framework assembly that derives from a type in a .NET Standard assembly.  I'm not sure if
+                    // this is the best fix but it solves the problem.
+                    if(((par1.Type.DeclaringModule.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase) &&
+                      !par2.Type.DeclaringModule.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase)) ||
+                      (!par1.Type.DeclaringModule.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase) &&
+                      par2.Type.DeclaringModule.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase))) &&
+                      par1.Type.FullName == par2.Type.FullName && par1.Type.DeclaringModule.Directory.Equals(
+                      par2.Type.DeclaringModule.Directory, StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
 
-        public virtual bool ParametersMatchExceptLast(ParameterList parameters)
-        {
-            ParameterList pars = this.Parameters;
-            int n = pars == null ? 0 : pars.Count;
-            int m = parameters == null ? 0 : parameters.Count;
-            if(n != m)
-                return false;
-            if(parameters == null)
-                return true;
-            for(int i = 0; i < n - 1; i++)
-            {
-                Parameter par1 = pars[i];
-                Parameter par2 = parameters[i];
-                if(par1 == null || par2 == null)
                     return false;
-                if(par1.Type != par2.Type)
-                    return false;
+                }
             }
+            
             return true;
         }
 
@@ -16066,84 +16067,6 @@ tryNext:
                 if(par1.Type == null || par2.Type == null)
                     return false;
                 if(par1.Type != par2.Type && !par1.Type.IsStructurallyEquivalentTo(par2.Type))
-                    return false;
-            }
-            return true;
-        }
-
-        public virtual bool ParametersMatchStructurallyIncludingOutFlag(ParameterList parameters)
-        {
-            return this.ParametersMatchStructurallyIncludingOutFlag(parameters, false);
-        }
-
-        public virtual bool ParametersMatchStructurallyIncludingOutFlag(ParameterList parameters, bool allowCoVariance)
-        {
-            ParameterList pars = this.Parameters;
-            int n = pars == null ? 0 : pars.Count;
-            int m = parameters == null ? 0 : parameters.Count;
-            if(n != m)
-                return false;
-            if(parameters == null)
-                return true;
-            for(int i = 0; i < n; i++)
-            {
-                Parameter par1 = pars[i];
-                Parameter par2 = parameters[i];
-                if(par1 == null || par2 == null)
-                    return false;
-                if(par1.Type == null || par2.Type == null)
-                    return false;
-                if((par1.Flags & ParameterFlags.Out) != (par2.Flags & ParameterFlags.Out))
-                    return false;
-                if(par1.Type != par2.Type && !par1.Type.IsStructurallyEquivalentTo(par2.Type))
-                {
-                    if(allowCoVariance && !par2.Type.IsValueType)
-                        return par2.Type.IsAssignableTo(par1.Type);
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        public virtual bool ParametersMatchStructurallyExceptLast(ParameterList parameters)
-        {
-            ParameterList pars = this.Parameters;
-            int n = pars == null ? 0 : pars.Count;
-            int m = parameters == null ? 0 : parameters.Count;
-            if(n != m)
-                return false;
-            if(parameters == null)
-                return true;
-            for(int i = 0; i < n - 1; i++)
-            {
-                Parameter par1 = pars[i];
-                Parameter par2 = parameters[i];
-                if(par1 == null || par2 == null)
-                    return false;
-                if(par1.Type == null || par2.Type == null)
-                    return false;
-                if(par1.Type != par2.Type && !par1.Type.IsStructurallyEquivalentTo(par2.Type))
-                    return false;
-            }
-            return true;
-        }
-
-        public virtual bool ParametersMatchIncludingOutFlag(ParameterList parameters)
-        {
-            ParameterList pars = this.Parameters;
-            int n = pars == null ? 0 : pars.Count;
-            int m = parameters == null ? 0 : parameters.Count;
-            if(n != m)
-                return false;
-            if(parameters == null)
-                return true;
-            for(int i = 0; i < n; i++)
-            {
-                Parameter par1 = pars[i];
-                Parameter par2 = parameters[i];
-                if(par1.Type != par2.Type)
-                    return false;
-                if((par1.Flags & ParameterFlags.Out) != (par2.Flags & ParameterFlags.Out))
                     return false;
             }
             return true;
@@ -16173,6 +16096,7 @@ tryNext:
             }
             return true;
         }
+
         public virtual bool ParameterTypesMatchStructurally(TypeNodeList argumentTypes)
         {
             int n = this.Parameters == null ? 0 : this.Parameters.Count;
@@ -16195,6 +16119,7 @@ tryNext:
             }
             return true;
         }
+
         public virtual bool TemplateParametersMatch(TypeNodeList templateParameters)
         {
             TypeNodeList locPars = this.TemplateParameters;

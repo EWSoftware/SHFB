@@ -20,6 +20,7 @@
 		<Project File="SyntaxGenerator.vbproj" ReplaceParameters="true">
 			<ProjectItem TargetFileName="$safeprojectname$DeclarationSyntaxGenerator.vb" ReplaceParameters="true" OpenInEditor="true">SyntaxGenerator.vb</ProjectItem>
 			<ProjectItem TargetFileName="GlobalSuppressions.vb" ReplaceParameters="true">GlobalSuppressions.vb</ProjectItem>
+			<ProjectItem TargetFileName="ReadMe.md" ReplaceParameters="true">ReadMe.md</ProjectItem>
 			<Folder Name="build" TargetFolderName="build">
 				<ProjectItem TargetFileName="$safeprojectname$.props">SyntaxGenerator.props</ProjectItem>
 			</Folder>

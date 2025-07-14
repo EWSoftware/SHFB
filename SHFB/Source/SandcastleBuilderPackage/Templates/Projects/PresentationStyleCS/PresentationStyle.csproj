@@ -3,7 +3,7 @@
 			 for information on why conditional target frameworks are used. -->
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
 		<!-- Use the full framework for debugging -->
-		<TargetFramework>net47</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
@@ -37,6 +37,7 @@
 		<PackageProjectUrl></PackageProjectUrl>
 		<PackageLicenseExpression>MS-PL</PackageLicenseExpression>
 		<PackageReleaseNotes></PackageReleaseNotes>
+		<PackageReadmeFile>ReadMe.md</PackageReadmeFile>
 		<IsTool>true</IsTool>
 		<NoWarn>$(NoWarn);NU5128</NoWarn>
 		<ContentTargetFolders>tools\</ContentTargetFolders>
@@ -47,6 +48,7 @@
 			<Pack>true</Pack>
 			<PackagePath>build\</PackagePath>
 		</None>
+		<None Include="ReadMe.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>

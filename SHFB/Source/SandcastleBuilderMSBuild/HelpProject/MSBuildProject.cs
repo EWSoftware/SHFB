@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/08/2025
+// Updated : 07/12/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains an MSBuild project wrapper used by the Sandcastle Help File builder during the build
@@ -677,6 +677,12 @@ namespace SandcastleBuilder.MSBuild.HelpProject
             string rootPath, path;
 
             rootPath = Path.GetDirectoryName(this.ProjectFile.FullPath);
+
+            // TODO: The assumption below is only partly correct.  This does need to return the project
+            // references so that they can be parsed for assemblies and XML comments files.  If not, XML comments
+            // files for inherited docs can be missed.  However, projects should be ignored if part of the
+            // documentation sources.  This would be recursive as references and comments from those projects and
+            // any project references they contain would have to be included too.
 
             // Nested project references are ignored.  We'll assume that they exist in the folder with the target
             // and they'll be found automatically.  

@@ -19,6 +19,7 @@
 	<TemplateContent>
 		<Project File="PlugIn.csproj" ReplaceParameters="true">
 			<ProjectItem TargetFileName="$safeprojectname$PlugIn.cs" ReplaceParameters="true" OpenInEditor="true">PlugIn.cs</ProjectItem>
+			<ProjectItem TargetFileName="ReadMe.md" ReplaceParameters="true">ReadMe.md</ProjectItem>
 			<Folder Name="build" TargetFolderName="build">
 				<ProjectItem TargetFileName="$safeprojectname$.props">PlugIn.props</ProjectItem>
 			</Folder>

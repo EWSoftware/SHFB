@@ -71,7 +71,7 @@ internal static partial class AssemblyInfo
     // binary compatibility with prior releases.  It should only be changed if a breaking change is made that
     // requires assemblies that reference older versions to be recompiled against the newer version.
     //
-    // If this changes, update the version in SandcastleCore.csproj as well.
+    // If this changes, update the version in the SandcastleBuilderMSBuild copy as well.
     public const string StrongNameVersion = "2025.7.9.0";
 
     // Common assembly file version

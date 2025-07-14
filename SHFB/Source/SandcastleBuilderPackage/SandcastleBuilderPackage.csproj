@@ -558,6 +558,10 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
     </Content>
+    <Content Include="Templates\Projects\PresentationStyleCS\ReadMe.md">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
     -->
     <Content Include="Templates\Projects\SyntaxGeneratorCS\AssemblyInfo.cs">
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -675,6 +679,10 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>
     </Content>
+    <Content Include="Templates\Projects\BuildComponentCS\ReadMe.md">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>
+    </Content>
     <Content Include="Templates\Projects\BuildComponentVB\BuildComponent.props">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
@@ -684,6 +692,10 @@
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
     </Content>
     <Content Include="Templates\Projects\BuildComponentVB\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentVB\ReadMe.md">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
     </Content>
@@ -707,6 +719,10 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
     </Content>
+    <Content Include="Templates\Projects\PlugInCS\ReadMe.md">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
+    </Content>
     <Content Include="Templates\Projects\PlugInCS\PlugIn.csproj">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
@@ -716,6 +732,10 @@
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
     </Content>
     <Content Include="Templates\Projects\PlugInVB\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInVB\ReadMe.md">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInVB</VSIXSubPath>
     </Content>
@@ -731,6 +751,10 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
     </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\ReadMe.md">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
     <Content Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.csproj">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
@@ -740,6 +764,10 @@
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
     </Content>
     <Content Include="Templates\Projects\SyntaxGeneratorVB\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\ReadMe.md">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
     </Content>

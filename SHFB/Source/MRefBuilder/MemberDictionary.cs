@@ -142,6 +142,7 @@ namespace Sandcastle.Tools
 
             // Now iterate up through the type hierarchy
             for(TypeNode parentType = type.BaseType; parentType != null; parentType = parentType.BaseType)
+            {
                 foreach(var parentMember in parentType.Members)
                 {
                     // Don't add constructors
@@ -205,6 +206,7 @@ namespace Sandcastle.Tools
                     // Otherwise, add the member 
                     this.AddMember(parentMember);
                 }
+            }
         }
         #endregion
 
@@ -258,21 +260,39 @@ namespace Sandcastle.Tools
                 bool parameterMismatch = false;
 
                 for(int i = 0; i < parameters.Count; i++)
-                    if(parameters[i].Type != candidateParameters[i].Type)
+                {
+                    TypeNode p1 = parameters[i].Type, p2 = candidateParameters[i].Type;
+
+                    if(p1 != p2)
                     {
+                        // !EFW - If one type is in mscorlib and the other isn't but the assemblies are in the
+                        // same folder and the type names match, assume they are the same.  This covers an odd
+                        // case where the types mismatch if one is from .NET Framework and other from .NET
+                        // Standard such as System.Xml.Linq.XElement.  This can happen for overridden methods in
+                        // a type from a .NET Framework assembly that derives from a type in a .NET Standard
+                        // assembly.  I'm not sure if this is the best fix but it solves the problem.
+                        if(((p1.DeclaringModule.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase) &&
+                          !p2.DeclaringModule.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase)) ||
+                          (!p1.DeclaringModule.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase) &&
+                          p2.DeclaringModule.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase))) &&
+                          p1.FullName == p2.FullName && p1.DeclaringModule.Directory.Equals(
+                          p2.DeclaringModule.Directory, StringComparison.OrdinalIgnoreCase))
+                        {
+                            continue;
+                        }
+
                         // !EFW - Template parameters always cause a mismatch here and it can cause an
                         // overridden member to be included incorrectly.  So, if either type is not a
                         // template parameter or, if both are template parameters and the names don't
                         // match, consider it a mismatch.  If not, carry on.  It's not perfect but it
                         // should work for most cases.
-                        if(!parameters[i].Type.IsTemplateParameter ||
-                          !candidateParameters[i].Type.IsTemplateParameter ||
-                          parameters[i].Type.FullName != candidateParameters[i].Type.FullName)
+                        if(!p1.IsTemplateParameter || !p2.IsTemplateParameter || p1.FullName != p2.FullName)
                         {
                             parameterMismatch = true;
                             break;
                         }
                     }
+                }
 
                 // If the parameters match, we have the member
                 if(!parameterMismatch)
@@ -361,8 +381,10 @@ namespace Sandcastle.Tools
             get
             {
                 foreach(var entries in index.Values)
+                {
                     foreach(var entry in entries)
                         yield return entry;
+                }
             }
         }
 
@@ -384,8 +406,10 @@ namespace Sandcastle.Tools
                 index.TryGetValue(name, out List<Member> members);
 
                 if(members != null)
+                {
                     foreach(var m in members)
                         yield return m;
+                }
             }
         }
         #endregion

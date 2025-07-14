@@ -7,7 +7,7 @@
 '       dotnet build.
 '
 '      <ItemGroup>
-'          <None Include="..\$safeprojectname$\bin\$(Configuration)\net472\$safeprojectname$.dll">
+'          <None Include="..\$safeprojectname$\bin\$(Configuration)\net48\$safeprojectname$.dll">
 '              <Pack>true</Pack>
 '              <PackagePath>tools\</PackagePath>
 '              <Visible>false</Visible>

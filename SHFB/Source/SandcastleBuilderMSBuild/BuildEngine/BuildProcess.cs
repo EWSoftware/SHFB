@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/08/2025
+// Updated : 07/13/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -512,8 +512,6 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         {
             ComponentAssemblyResolver resolver = null;
             Project msBuildProject = null;
-            ProjectItem projectItem;
-            string helpFile, scriptFile, hintPath;
             SandcastleProject originalProject = null;
             bool success = true;
 
@@ -758,7 +756,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
 
                     // If the help file is open, it will fail to build so try to get rid of it now before we
                     // get too far into it.
-                    helpFile = this.OutputFolder + this.ResolvedHtmlHelpName + ".chm";
+                    string helpFile = this.OutputFolder + this.ResolvedHtmlHelpName + ".chm";
 
                     if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0 && File.Exists(helpFile))
                         File.Delete(helpFile);
@@ -900,7 +898,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                 if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 {
                     substitutionTags.TransformTemplate("MRefBuilder.config", this.TemplateFolder, this.WorkingFolder);
-                    scriptFile = substitutionTags.TransformTemplate("GenerateRefInfo.proj", this.TemplateFolder,
+                    string scriptFile = substitutionTags.TransformTemplate("GenerateRefInfo.proj", this.TemplateFolder,
                         this.WorkingFolder);
 
                     // The project is named uniquely due to a cache used by the assembly resolution task that
@@ -918,14 +916,14 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                         // Add the references
                         foreach(var r in referenceDictionary.Values)
                         {
-                            projectItem = msBuildProject.AddItem(r.ReferenceType, r.ReferenceName,
+                            var projectItem = msBuildProject.AddItem(r.ReferenceType, r.ReferenceName,
                                 r.Metadata.Select(m => new KeyValuePair<string, string>(m.Name, m.Value)))[0];
 
                             // Make sure hint paths are correct by adding the project folder to any relative
                             // paths.  Skip any containing MSBuild variable references.
                             if(projectItem.HasMetadata(BuildItemMetadata.HintPath))
                             {
-                                hintPath = projectItem.GetMetadataValue(BuildItemMetadata.HintPath);
+                                string hintPath = projectItem.GetMetadataValue(BuildItemMetadata.HintPath);
 
                                 if(!Path.IsPathRooted(hintPath) && hintPath.IndexOf("$(",
                                   StringComparison.Ordinal) == -1)
@@ -1043,32 +1041,50 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                 // Generate namespace summary information
                 this.GenerateNamespaceSummaries();
 
-                // For any reference assemblies that have a hint path, add any matching XML comments file to
-                // the comments file collection for base class comments.  We add these after generating namespace
-                // summaries as these aren't relevant to that step and we don't want to modify them.  We also
-                // want the project documentation source XML files to override comments in these if there's a
-                // conflict so we add them ahead of all other comments files.  We still need to copy the files as
-                // the rest of the build process expects them to be in the working folder.
-                foreach(var r in referenceDictionary.Values.Where(r => r.Metadata.Any(v => v.Name == "HintPath")))
+                // For any reference assemblies that have a hint path or a fully qualified include path, add any
+                // matching XML comments file to the comments file collection for base class comments.  We add
+                // these after generating namespace summaries as these aren't relevant to that step and we don't
+                // want to modify them.  We also want the project documentation source XML files to override
+                // comments in these if there's a conflict so we add them ahead of all other comments files.  We
+                // still need to copy the files as the rest of the build process expects them to be in the
+                // working folder.
+                int insertIndex = 0;
+
+                foreach(var r in referenceDictionary.Values.Where(r => Path.IsPathRooted(r.ReferenceName) ||
+                  r.Metadata.Any(v => v.Name == "HintPath")))
                 {
-                    string comments = Path.ChangeExtension(r.Metadata.First(kv => kv.Name == "HintPath").Value, ".xml");
-                    string workingPath = Path.Combine(this.WorkingFolder, Path.GetFileName(comments));
-                    int idx = 0;
+                    string comments;
 
-                    if(File.Exists(comments) && !this.CommentsFiles.Any(c => c.SourcePath == workingPath))
+                    if(Path.IsPathRooted(r.ReferenceName))
+                        comments = Path.ChangeExtension(r.ReferenceName, ".xml");
+                    else
+                        comments = Path.ChangeExtension(r.Metadata.First(kv => kv.Name == "HintPath").Value, ".xml");
+
+                    // Ignore netstandard.xml as it should be covered by the framework comments files.
+                    // It also tends to have invalid XML and won't load anyway.
+                    if(!comments.EndsWith("netstandard.xml", StringComparison.OrdinalIgnoreCase))
                     {
-                        File.Copy(comments, workingPath, true);
-                        File.SetAttributes(workingPath, FileAttributes.Normal);
+                        string workingPath = Path.Combine(this.WorkingFolder, Path.GetFileName(comments));
 
-                        this.CommentsFiles.Insert(idx++, new XmlCommentsFile(workingPath));
+                        if(File.Exists(comments) && !this.CommentsFiles.Any(c => c.SourcePath == workingPath))
+                        {
+                            this.ReportProgress("Adding reference assembly XML comments file: {0}", comments);
+
+                            File.Copy(comments, workingPath, true);
+                            File.SetAttributes(workingPath, FileAttributes.Normal);
+
+                            this.CommentsFiles.Insert(insertIndex++, new XmlCommentsFile(workingPath));
+                        }
                     }
                 }
 
                 // Issue a warning if any invalid XML comments files are found.  These will be ignored.  These
                 // occur most often in NuGet packages.  Contact the package owner if you want them fixed.
                 foreach(var f in this.CommentsFiles.Where(cf => !cf.IsValid))
+                {
                     this.ReportWarning("BE0031", "Ignoring invalid XML comments file '{0}'.  Reason: {1}",
                         f.SourcePath, f.InvalidReason);
+                }
 
                 // Expand <inheritdoc /> tags?
                 if(this.CommentsFiles.ContainsInheritedDocumentation)
@@ -1351,7 +1367,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
-                        scriptFile = substitutionTags.TransformTemplate("Build1xHelpFile.proj", this.TemplateFolder,
+                        substitutionTags.TransformTemplate("Build1xHelpFile.proj", this.TemplateFolder,
                             this.WorkingFolder);
 
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
@@ -1407,7 +1423,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                         File.SetAttributes(Path.Combine(this.WorkingFolder, "HelpLibraryManagerLauncher.exe"),
                             FileAttributes.Normal);
 
-                        scriptFile = substitutionTags.TransformTemplate("BuildHelpViewerFile.proj", this.TemplateFolder,
+                        substitutionTags.TransformTemplate("BuildHelpViewerFile.proj", this.TemplateFolder,
                             this.WorkingFolder);
 
                         this.ExecutePlugIns(ExecutionBehaviors.Before);

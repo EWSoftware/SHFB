@@ -20,6 +20,7 @@
 		<Project File="SyntaxGenerator.csproj" ReplaceParameters="true">
 			<ProjectItem TargetFileName="$safeprojectname$DeclarationSyntaxGenerator.cs" ReplaceParameters="true" OpenInEditor="true">SyntaxGenerator.cs</ProjectItem>
 			<ProjectItem TargetFileName="GlobalSuppressions.cs" ReplaceParameters="true">GlobalSuppressions.cs</ProjectItem>
+			<ProjectItem TargetFileName="ReadMe.md" ReplaceParameters="true">ReadMe.md</ProjectItem>
 			<Folder Name="build" TargetFolderName="build">
 				<ProjectItem TargetFileName="$safeprojectname$.props">SyntaxGenerator.props</ProjectItem>
 			</Folder>

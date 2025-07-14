@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : IBuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/22/2025
+// Updated : 07/12/2025
 // Note    : Copyright 2025, Eric Woodruff, All rights reserved
 //
 // This file contains the interface used to interact with a help file builder build process
@@ -133,6 +133,12 @@ namespace Sandcastle.Core.BuildEngine
         /// found after the build process has finished.
         /// </summary>
         string OutputFolder { get; }
+
+        /// <summary>
+        /// This read-only property returns a collection of the output folders specific to each help file format
+        /// produced by the build.
+        /// </summary>
+        Collection<string> HelpFormatOutputFolders { get; }
 
         /// <summary>
         /// This read-only property is used to get the name of the reflection information file

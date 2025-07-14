@@ -160,10 +160,10 @@ case-insensitive).</para>
 			</row>
 			<row>
 				<entry>
-					<para>SandcastleBuilder\.Utils.*Project</para>
+					<para>Sandcastle\.Core.*Project</para>
 				</entry>
 				<entry>
-					<para>Find any member in a namespace starting with "SandcastleBuilder.Utils" containing the text
+					<para>Find any member in a namespace starting with "Sandcastle.Core" containing the text
 "Project" (when the "Fully-qualified" option is enabled).</para>
 				</entry>
 			</row>

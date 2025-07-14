@@ -19,6 +19,7 @@
 	<TemplateContent>
 		<Project File="PlugIn.vbproj" ReplaceParameters="true">
 			<ProjectItem TargetFileName="$projectname$PlugIn.vb" ReplaceParameters="true" OpenInEditor="true">PlugIn.vb</ProjectItem>
+			<ProjectItem TargetFileName="ReadMe.md" ReplaceParameters="true">ReadMe.md</ProjectItem>
 			<Folder Name="build" TargetFolderName="build">
 				<ProjectItem TargetFileName="$safeprojectname$.props">PlugIn.props</ProjectItem>
 			</Folder>

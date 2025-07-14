@@ -191,7 +191,7 @@ namespace Sandcastle.Installer.InstallerPages
                             // This is used to suppress prompting if the package appears to be installed and the
                             // user clicks Next to continue.  VS2012 and later VSIX installers puts the package in
                             // a randomly named folder so we'll have to search for it.
-                            string shfbPackage = Directory.EnumerateFiles(packagePath, "SandcastleBuilder.Utils.dll",
+                            string shfbPackage = Directory.EnumerateFiles(packagePath, "Sandcastle.Core.dll",
                                 SearchOption.AllDirectories).FirstOrDefault();
 
                             if(shfbPackage != null)
@@ -202,7 +202,7 @@ namespace Sandcastle.Installer.InstallerPages
                     // Versions after 2015.7.25.0 are installed for all users
                     if(Directory.Exists(vs.AllUsersExtensionsPath))
                     {
-                        string shfbPackage = Directory.EnumerateFiles(vs.AllUsersExtensionsPath, "SandcastleBuilder.Utils.dll",
+                        string shfbPackage = Directory.EnumerateFiles(vs.AllUsersExtensionsPath, "Sandcastle.Core.dll",
                             SearchOption.AllDirectories).FirstOrDefault();
 
                         if(shfbPackage != null)

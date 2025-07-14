@@ -6,12 +6,34 @@
 			<para>This topic provides information on migrating build components, plug-ins, presentation styles, and
 syntax generators built against v2021.4.9.0 and earlier to the latest release that supports .NET Core and
 deploying the components as NuGet packages.  Presentation styles also underwent a complete rewrite in
-version 2022.8.14.0.  However, you may be able to replace your presentation style with simpler build components or
-plug-ins rather than reimplementing an entire presentation style.</para>
+version 2022.8.14.0.  However, you may be able to replace your presentation style with simpler build components
+or plug-ins rather than reimplementing an entire presentation style.  Further changes made after version
+2025.3.22.0 made the <localUri>EWSoftware.SandcastleBuilder.Utils</localUri> NuGet package obsolete.</para>
 
 			<autoOutline excludeRelatedTopics="true" lead="none" />
 		</introduction>
 
+		<section address="Post20250322">
+			<title>Updating Projects After v2025.3.22.0</title>
+			<content>
+				<para>The <localUri>EWSoftware.SandcastleBuilder.Utils</localUri> NuGet package should not be used after
+version 2025.3.22.0.  All code in it was moved to the <localUri>EWSoftware.Sandcastle.Core</localUri> package and
+other internal assemblies.  To update projects using the obsolete package, simply remove it and update the
+package reference for <localUri>EWSoftware.Sandcastle.Core</localUri> to the latest release.</para>
+
+				<para>Once the package references have been updated, you will have to update the imported namespaces in
+the plug-in and component code.  Replace any <codeInline>SandcastleBuilder.Utils</codeInline> namespace
+references with ones from <codeInline>Sandcastle.Core</codeInline> such as
+<codeInline>Sandcastle.Core.BuildAssembler</codeInline>,
+<codeInline>Sandcastle.Core.BuildAssembler.BuildComponent</codeInline>,
+<codeInline>Sandcastle.Core.BuildEngine</codeInline>, <codeInline>Sandcastle.Core.PlugIn</codeInline>
+and <codeInline>Sandcastle.Core.Project</codeInline>.  You will also need to replace references to types
+such as <codeInline>BuildProcess</codeInline> and <codeInline>SandcastleProject</codeInline> with their
+equivalent interfaces such as <codeInline>IBuildProcess</codeInline> and
+<codeInline>ISandcastleProject</codeInline>.</para>
+			</content>
+		</section>
+		
 		<section address="QuickUpdate">
 			<title>Quick Updates for MSBuild Support Only</title>
 			<content>
@@ -23,10 +45,10 @@ based on the project type:</para>
 				<list class="bullet">
 					<listItem>
 						<para>Remove any references to <localUri>Sandcastle.Core</localUri> and
-<localUri>SandcastleBuilder.Utils</localUri> and replace them with NuGet package references to
-<localUri>EWSoftware.Sandcastle.Core</localUri> and/or <localUri>EWSoftware.SandcastleBuilder.Utils</localUri> as
-needed.  Use the latest release available for each.  Note that the version may not match the latest release of
-the help file builder as the package version for these only changes when there are breaking changes to the API.</para>
+<localUri>SandcastleBuilder.Utils</localUri> and replace them with a NuGet package references to
+<localUri>EWSoftware.Sandcastle.Core</localUri>.  Use the latest release available.  Note that the version may
+not match the latest release of the help file builder as the package version for these only changes when there
+are breaking changes to the API.</para>
 					</listItem>
 
 					<listItem>
@@ -68,8 +90,8 @@ configuration, they should be made directly to the passed in XML element.</para>
 						</alert>
 						
 						<code language="cs">
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
 
 #region Plug-in configuration editor factory for MEF
 //=====================================================================

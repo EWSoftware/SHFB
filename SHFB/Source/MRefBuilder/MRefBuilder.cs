@@ -138,7 +138,7 @@ namespace Sandcastle.Tools.MSBuild
                 Debugger.Break();
             }
 #endif
-                    Assembly application = Assembly.GetCallingAssembly();
+            Assembly application = Assembly.GetCallingAssembly();
             System.Reflection.AssemblyName applicationData = application.GetName();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(application.Location);
 

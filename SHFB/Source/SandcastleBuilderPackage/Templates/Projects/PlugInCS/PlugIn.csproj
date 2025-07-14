@@ -37,6 +37,7 @@
 		<PackageProjectUrl></PackageProjectUrl>
 		<PackageLicenseExpression>MS-PL</PackageLicenseExpression>
 		<PackageReleaseNotes></PackageReleaseNotes>
+		<PackageReadmeFile>ReadMe.md</PackageReadmeFile>
 		<IsTool>true</IsTool>
 		<NoWarn>$(NoWarn);NU5128</NoWarn>
 		<ContentTargetFolders>tools\</ContentTargetFolders>
@@ -47,18 +48,19 @@
 			<Pack>true</Pack>
 			<PackagePath>build\</PackagePath>
 		</None>
+		<None Include="ReadMe.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.ComponentModel.Composition" Version="6.0.0" />
-		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2025.3.22.0" />
+		<PackageReference Include="System.ComponentModel.Composition" Version="9.0.7" />
+		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2025.7.9.0" />
 	</ItemGroup>
 
 	<!-- TODO: If you have a project with configuration forms, you can include it in this package by
 						 manually adding the assemblies needed for them here.  This keeps the platform-specific UI elements
 						 isolated and allows the component to work with MSBuild and dotnet build.
 	<ItemGroup>
-		<None Include="..\$safeprojectname$UI\bin\$(Configuration)\net472\$safeprojectname$UI.dll">
+		<None Include="..\$safeprojectname$UI\bin\$(Configuration)\net48\$safeprojectname$UI.dll">
 			<Pack>true</Pack>
 			<PackagePath>tools\</PackagePath>
 			<Visible>false</Visible>

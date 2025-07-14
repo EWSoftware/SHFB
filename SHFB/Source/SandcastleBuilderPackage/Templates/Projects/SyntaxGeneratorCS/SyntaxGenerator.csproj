@@ -37,6 +37,7 @@
 		<PackageProjectUrl></PackageProjectUrl>
 		<PackageLicenseExpression>MS-PL</PackageLicenseExpression>
 		<PackageReleaseNotes></PackageReleaseNotes>
+		<PackageReadmeFile>ReadMe.md</PackageReadmeFile>
 		<IsTool>true</IsTool>
 		<NoWarn>$(NoWarn);NU5128</NoWarn>
 		<ContentTargetFolders>tools\</ContentTargetFolders>
@@ -47,6 +48,7 @@
 			<Pack>true</Pack>
 			<PackagePath>build\</PackagePath>
 		</None>
+		<None Include="ReadMe.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -56,8 +58,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.ComponentModel.Composition" Version="6.0.0" />
-		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2025.3.22.0" />
+		<PackageReference Include="System.ComponentModel.Composition" Version="9.0.7" />
+		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2025.7.9.0" />
 	</ItemGroup>
 
 </Project>

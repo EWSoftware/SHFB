@@ -50,7 +50,7 @@ in the Project Explorer.  In the context menu, select <ui>Add Documentation Sour
 source</newTerm> is a file such as an assembly or a Visual Studio solution or project from which information will be
 extracted to produce API documentation.  For this demo, navigate to the help file builder folder
 (typically <localUri>C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder</localUri>) and select the
-<localUri>SandcastleBuilder.WPF.dll</localUri> assembly.</para>
+<localUri>.\Tools\Sandcastle.Platform.Windows.dll</localUri> assembly.</para>
 
                 <alert class="tip">
                   <para>When selecting either an assembly or an XML comments file, the help file builder will
@@ -68,7 +68,7 @@ necessary to create inherited member information for the documented classes but 
 the API documentation.  Right click on the <ui>References</ui> node and select <ui>Add File/Project Reference</ui>.
 For this demo, navigate to the help file builder folder (typically
 <localUri>C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder</localUri>)  and select the
-<localUri>SandcastleBuilder.Utils.dll</localUri> assembly.</para>
+<localUri>.\Tools\Sandcastle.Core.dll</localUri> assembly.</para>
 
                 <token>SolutionDocSource</token>
               </content>
