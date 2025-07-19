@@ -28,9 +28,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
-using IOPath = System.IO.Path;
-
 using Sandcastle.Core.Design;
+
+using IOPath = System.IO.Path;
 
 namespace Sandcastle.Core
 {
@@ -63,7 +63,7 @@ namespace Sandcastle.Core
         /// </summary>
         public static readonly char[] PathAndWildcards = [ IOPath.VolumeSeparatorChar,
             IOPath.PathSeparator, IOPath.DirectorySeparatorChar, IOPath.AltDirectorySeparatorChar, '*', '?' ];
-        
+
         #endregion
 
         #region Private data members
@@ -338,7 +338,7 @@ namespace Sandcastle.Core
         /// <param name="firstPath">The first object to compare</param>
         /// <param name="secondPath">The second object to compare</param>
         /// <returns>True if equal, false if not.</returns>
-        public static bool operator == (FilePath firstPath, FilePath secondPath)
+        public static bool operator ==(FilePath firstPath, FilePath secondPath)
         {
             if(firstPath is null && secondPath is null)
                 return true;
@@ -355,7 +355,7 @@ namespace Sandcastle.Core
         /// <param name="firstPath">The first object to compare</param>
         /// <param name="secondPath">The second object to compare</param>
         /// <returns>True if not equal, false if they are.</returns>
-        public static bool operator != (FilePath firstPath, FilePath secondPath)
+        public static bool operator !=(FilePath firstPath, FilePath secondPath)
         {
             if(firstPath is null && secondPath is null)
                 return false;
@@ -615,7 +615,7 @@ namespace Sandcastle.Core
         public FilePath(string path, IBasePathProvider provider)
         {
             basePathProvider = provider;
-            this.Path = path;
+            this.Path = path.CorrectFilePathSeparators();
         }
 
         /// <summary>
@@ -627,7 +627,7 @@ namespace Sandcastle.Core
         public FilePath(string path, bool isFixed, IBasePathProvider provider)
         {
             basePathProvider = provider;
-            this.Path = path;
+            this.Path = path.CorrectFilePathSeparators();
             isFixedPath = isFixed;
         }
         #endregion

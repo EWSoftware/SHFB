@@ -101,7 +101,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
                 if(properties.TryGetValue(BuildItemMetadata.OutDir, out ProjectProperty prop))
                 {
                     outputPath = prop.EvaluatedValue;
-                  
+
                     if(outputPath == FilePath.DefaultOutDir)
                         outputPath = null;
                     else
@@ -236,7 +236,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
                     }
                 }
 
-                return assemblyName;
+                return assemblyName.CorrectFilePathSeparators();
             }
         }
 
