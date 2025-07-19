@@ -78,6 +78,13 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         {
             this.currentBuild = currentBuild;
 
+            // set a local string to "dotnet" if OS is Linux, otherwise set it to "dotnet.exe" for Windows
+            string dotnetExe;
+            if(Environment.OSVersion.Platform == PlatformID.Unix)
+                dotnetExe = "dotnet";
+            else
+                dotnetExe = "dotnet.exe";
+
             // Use the latest version of MSBuild available rather than a specific version
             string latestToolsVersion = (ProjectCollection.GlobalProjectCollection.Toolsets.FirstOrDefault(
                     t => t.ToolsVersion.Equals("Current", StringComparison.OrdinalIgnoreCase))?.ToolsVersion) ??
@@ -98,10 +105,10 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
                 if(this.MSBuildExePath.Length < 5)
                     break;
 
-                this.MSBuildExePath = Path.Combine(this.MSBuildExePath, "dotnet.exe");
+                this.MSBuildExePath = Path.Combine(this.MSBuildExePath, dotnetExe);
             }
 
-            this.IsDotNetCoreBuild = this.MSBuildExePath.IndexOf("dotnet.exe", StringComparison.OrdinalIgnoreCase) != -1;
+            this.IsDotNetCoreBuild = this.MSBuildExePath.IndexOf(dotnetExe, StringComparison.OrdinalIgnoreCase) != -1;
         }
         #endregion
 
