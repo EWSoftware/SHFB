@@ -30,10 +30,10 @@ using System.Xml.XPath;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using Sandcastle.Tools.Reflection;
 
 using Sandcastle.Core;
 using Sandcastle.Core.Reflection;
+using Sandcastle.Tools.Reflection;
 
 namespace Sandcastle.Tools.MSBuild
 {
@@ -85,7 +85,7 @@ namespace Sandcastle.Tools.MSBuild
         /// <summary>
         /// This is used to indicate whether or not to wait for the debugger to attach to the process
         /// </summary>
-        public bool WaitForDebugger { get; set; }
+        public bool WaitForDebugger = true;
 #endif
         #endregion
 

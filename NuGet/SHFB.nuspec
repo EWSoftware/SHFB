@@ -19,7 +19,7 @@
 				 only need to install the packages that you actually need. -->
 	</metadata>
 	<files>
-		<file src="..\SHFB\Deploy\**\*" target="tools" exclude="..\SHFB\Deploy\Data\**\*;..\SHFB\Deploy\Extras\**\*;..\SHFB\Deploy\Help\**\*;..\SHFB\Deploy\Schemas\**\*;..\SHFB\Deploy\Snippets\**\*;..\SHFB\Deploy\Tools\**\*;..\SHFB\Deploy\**\.gitignore;..\SHFB\Deploy\**\*.pdb" />
+		<file src="..\SHFB\Deploy\**\*" target="tools" exclude="..\SHFB\Deploy\Data\**\*;..\SHFB\Deploy\Extras\**\*;..\SHFB\Deploy\Help\**\*;..\SHFB\Deploy\Schemas\**\*;..\SHFB\Deploy\Snippets\**\*;..\SHFB\Deploy\Tools\**\*;..\SHFB\Deploy\**\.gitignore" />
 		<file src="..\SHFB\Deploy\Tools\HelpLibraryManagerLauncher.exe*" target="tools\Tools" />
 		<file src="ReadMe.md" target="ReadMe.md" />
 		<file src="EWSoftware.SHFB.props" target="build" />
