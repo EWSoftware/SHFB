@@ -85,7 +85,7 @@ namespace Sandcastle.Tools.MSBuild
         /// <summary>
         /// This is used to indicate whether or not to wait for the debugger to attach to the process
         /// </summary>
-        public bool WaitForDebugger = true;
+        public bool WaitForDebugger { get; set; } = true;
 #endif
         #endregion
 
