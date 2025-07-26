@@ -30,10 +30,10 @@ using System.Xml.XPath;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using Sandcastle.Tools.Reflection;
 
 using Sandcastle.Core;
 using Sandcastle.Core.Reflection;
+using Sandcastle.Tools.Reflection;
 
 namespace Sandcastle.Tools.MSBuild
 {
@@ -80,13 +80,6 @@ namespace Sandcastle.Tools.MSBuild
         /// </summary>
         /// <value>References are optional</value>
         public ITaskItem[] References { get; set; }
-
-#if DEBUG
-        /// <summary>
-        /// This is used to indicate whether or not to wait for the debugger to attach to the process
-        /// </summary>
-        public bool WaitForDebugger { get; set; }
-#endif
         #endregion
 
         #region ICancelableTask Members
@@ -117,26 +110,23 @@ namespace Sandcastle.Tools.MSBuild
         {
             string currentDirectory = null;
             bool success = false;
-#if DEBUG
-            if(this.WaitForDebugger)
+#if DEBUG && WAIT_FOR_DEBUGGER
+            while(!Debugger.IsAttached && !waitCancelled)
             {
-                while(!Debugger.IsAttached && !waitCancelled)
-                {
 #if NET9_0_OR_GREATER
                     this.Log.LogMessage("DEBUG MODE: Waiting for debugger to attach (process ID: {0})",
                         Environment.ProcessId);
 #else
-                    this.Log.LogMessage("DEBUG MODE: Waiting for debugger to attach (process ID: {0})",
-                        Process.GetCurrentProcess().Id);
+                this.Log.LogMessage("DEBUG MODE: Waiting for debugger to attach (process ID: {0})",
+                    Process.GetCurrentProcess().Id);
 #endif
-                    System.Threading.Thread.Sleep(1000);
-                }
-
-                if(waitCancelled)
-                    return false;
-
-                Debugger.Break();
+                System.Threading.Thread.Sleep(1000);
             }
+
+            if(waitCancelled)
+                return false;
+
+            Debugger.Break();
 #endif
             Assembly application = Assembly.GetCallingAssembly();
             System.Reflection.AssemblyName applicationData = application.GetName();
