@@ -24,6 +24,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Threading;
@@ -163,6 +164,21 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         /// <inheritdoc />
         public void AddComponents(XPathNavigator configuration)
         {
+#if DEBUG && WAIT_FOR_DEBUGGER
+            while(!Debugger.IsAttached)
+            {
+#if NET9_0_OR_GREATER
+                Console.WriteLine("DEBUG MODE: Waiting for debugger to attach (process ID: {0})",
+                        Environment.ProcessId);
+#else
+                Console.WriteLine("DEBUG MODE: Waiting for debugger to attach (process ID: {0})",
+                        Process.GetCurrentProcess().Id);
+#endif
+                System.Threading.Thread.Sleep(1000);
+            }
+
+            Debugger.Break();
+#endif
             components.AddRange(this.LoadComponents(configuration));
         }
 

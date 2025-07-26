@@ -17,9 +17,14 @@
 		<RootNamespace>Sandcastle.Tools.MSBuild</RootNamespace>
 		<!-- For this, we want all of the dependency assemblies so that the dotnet tool can find them (NetCore builds) -->
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<Configurations>Debug;Release;Wait For Debugger</Configurations>
 	</PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Wait For Debugger|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
@@ -31,8 +36,20 @@
 		<OutputPath>..\..\Deploy\</OutputPath>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Wait For Debugger|AnyCPU'">
+	  <OutputPath>..\..\Deploy\</OutputPath>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<OutputPath>..\..\Deploy\</OutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Wait For Debugger|net48|AnyCPU'">
+	  <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Wait For Debugger|net9.0|AnyCPU'">
+	  <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>
