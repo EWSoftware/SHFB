@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/08/2025
+// Updated : 07/27/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the project class.
@@ -1482,6 +1482,24 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         /// assemblies and private members in base types are documented.
         /// </summary>
         public bool DocumentInternalAndPrivateIfExternal => (this.VisibleItems & VisibleItems.InternalAndPrivateIfExternal) != 0;
+
+        /// <summary>
+        /// This read-only property is used to get whether or not extension methods are included in member list
+        /// topics.
+        /// </summary>
+        /// <value>Note that the property is the inverse of the underlying <see cref="VisibleItems.OmitExtensionMethods"/>
+        /// value to maintain backward compatibility with prior releases.</value>
+        public bool IncludeExtensionMethodsInMemberLists => (this.VisibleItems & VisibleItems.OmitExtensionMethods) == 0;
+
+        /// <summary>
+        /// This read-only property is used to get whether or not extension methods that extend <see cref="Object"/>
+        /// are included in member list topics.
+        /// </summary>
+        /// <remarks>This has no effect if <see cref="IncludeExtensionMethodsInMemberLists"/> is false.</remarks>
+        /// <value>Note that the property is the inverse of the underlying <see cref="VisibleItems.OmitObjectExtensionMethods"/>
+        /// value to maintain backward compatibility with prior releases.</value>
+        public bool IncludeObjectExtensionMethodsInMemberLists => (this.VisibleItems & VisibleItems.OmitObjectExtensionMethods) == 0;
+
 
         /// <summary>
         /// This read-only property is used to get the API filter

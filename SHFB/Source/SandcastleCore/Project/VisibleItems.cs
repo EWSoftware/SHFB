@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : VisibleItems.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/15/2025
+// Updated : 07/27/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the enumerated type that defines the optional visible items in the help file
@@ -76,6 +76,15 @@ namespace Sandcastle.Core.Project
         /// this to work, the internal and/or private member options must also be enabled.  Inherited internal
         /// and private framework members are not affected by this as they are controlled by the other related
         /// options.</summary>
-        InternalAndPrivateIfExternal      = 0x00010000
+        InternalAndPrivateIfExternal      = 0x00010000,
+        /// <summary>
+        /// Omit extension methods from member list topics.
+        /// </summary>
+        OmitExtensionMethods              = 0x00020000,
+        /// <summary>
+        /// Omit extension methods that extend <see cref="Object"/> from member list topics.
+        /// </summary>
+        /// <remarks>This has no effect if <see cref="OmitExtensionMethods"/> is included.</remarks>
+        OmitObjectExtensionMethods = 0x00040000,
     }
 }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/09/2025
+// Updated : 07/22/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -2016,7 +2016,7 @@ namespace Sandcastle.PresentationStyles.VS2013
             if(allMembers == null)
                 return;
 
-            List<XElement> fieldMembers = [], extensionsMethods = [];
+            List<XElement> fieldMembers = [], extensionMethods = [];
 
             // Enumerations can have extension methods which need to be rendered in a separate section
             foreach(var m in allMembers)
@@ -2034,7 +2034,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                     fieldMembers.Add(m);
                 }
                 else
-                    extensionsMethods.Add(m);
+                    extensionMethods.Add(m);
             }
 
             if(fieldMembers.Count != 0)
@@ -2165,7 +2165,7 @@ namespace Sandcastle.PresentationStyles.VS2013
                 }
             }
 
-            if(extensionsMethods.Count != 0)
+            if(extensionMethods.Count != 0)
                 RenderApiTypeMemberLists(transformation);
         }
 

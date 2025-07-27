@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : VisibilityPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 06/19/2025
+// Updated : 07/27/2025
 // Note    : Copyright 2017-2025, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Visibility category properties
@@ -104,27 +104,38 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 if(chkInternalAndPrivateIfExternal.IsChecked ?? false)
                     items |= VisibleItems.InternalAndPrivateIfExternal;
 
+                // These two are inverted to maintain backward compatibility with the prior versions
+                if(!chkIncludeExtensionMethods.IsChecked ?? false)
+                    items |= VisibleItems.OmitExtensionMethods;
+
+                if(!chkIncludeObjectExtensionMethods.IsChecked ?? false)
+                    items |= VisibleItems.OmitObjectExtensionMethods;
+
                 return items;
             }
             set
             {
-                chkAttributes.IsChecked = ((value & VisibleItems.Attributes) != 0);
-                chkExplicitInterfaceImplementations.IsChecked = ((value & VisibleItems.ExplicitInterfaceImplementations) != 0);
-                chkInheritedFrameworkInternalMembers.IsChecked = ((value & VisibleItems.InheritedFrameworkInternalMembers) != 0);
-                chkInheritedFrameworkMembers.IsChecked = ((value & VisibleItems.InheritedFrameworkMembers) != 0);
-                chkInheritedFrameworkPrivateMembers.IsChecked = ((value & VisibleItems.InheritedFrameworkPrivateMembers) != 0);
-                chkInheritedMembers.IsChecked = ((value & VisibleItems.InheritedMembers) != 0);
-                chkInternals.IsChecked = ((value & VisibleItems.Internals) != 0);
-                chkPrivateFields.IsChecked = ((value & VisibleItems.PrivateFields) != 0);
-                chkPrivates.IsChecked = ((value & VisibleItems.Privates) != 0);
-                chkProtected.IsChecked = ((value & VisibleItems.Protected) != 0);
-                chkProtectedInternalAsProtected.IsChecked = ((value & VisibleItems.ProtectedInternalAsProtected) != 0);
-                chkSealedProtected.IsChecked = ((value & VisibleItems.SealedProtected) != 0);
-                chkNoPIATypes.IsChecked = ((value & VisibleItems.NoPIATypes) != 0);
-                chkPublicCompilerGenerated.IsChecked = ((value & VisibleItems.PublicCompilerGenerated) != 0);
-                chkEditorBrowsableNever.IsChecked = ((value & VisibleItems.EditorBrowsableNever) != 0);
-                chkNonBrowsable.IsChecked = ((value & VisibleItems.NonBrowsable) != 0);
-                chkInternalAndPrivateIfExternal.IsChecked = ((value & VisibleItems.InternalAndPrivateIfExternal) != 0);
+                chkAttributes.IsChecked = (value & VisibleItems.Attributes) != 0;
+                chkExplicitInterfaceImplementations.IsChecked = (value & VisibleItems.ExplicitInterfaceImplementations) != 0;
+                chkInheritedFrameworkInternalMembers.IsChecked = (value & VisibleItems.InheritedFrameworkInternalMembers) != 0;
+                chkInheritedFrameworkMembers.IsChecked = (value & VisibleItems.InheritedFrameworkMembers) != 0;
+                chkInheritedFrameworkPrivateMembers.IsChecked = (value & VisibleItems.InheritedFrameworkPrivateMembers) != 0;
+                chkInheritedMembers.IsChecked = (value & VisibleItems.InheritedMembers) != 0;
+                chkInternals.IsChecked = (value & VisibleItems.Internals) != 0;
+                chkPrivateFields.IsChecked = (value & VisibleItems.PrivateFields) != 0;
+                chkPrivates.IsChecked = (value & VisibleItems.Privates) != 0;
+                chkProtected.IsChecked = (value & VisibleItems.Protected) != 0;
+                chkProtectedInternalAsProtected.IsChecked = (value & VisibleItems.ProtectedInternalAsProtected) != 0;
+                chkSealedProtected.IsChecked = (value & VisibleItems.SealedProtected) != 0;
+                chkNoPIATypes.IsChecked = (value & VisibleItems.NoPIATypes) != 0;
+                chkPublicCompilerGenerated.IsChecked = (value & VisibleItems.PublicCompilerGenerated) != 0;
+                chkEditorBrowsableNever.IsChecked = (value & VisibleItems.EditorBrowsableNever) != 0;
+                chkNonBrowsable.IsChecked = (value & VisibleItems.NonBrowsable) != 0;
+                chkInternalAndPrivateIfExternal.IsChecked = (value & VisibleItems.InternalAndPrivateIfExternal) != 0;
+
+                // These two are inverted to maintain backward compatibility with the prior versions
+                chkIncludeExtensionMethods.IsChecked = (value & VisibleItems.OmitExtensionMethods) == 0;
+                chkIncludeObjectExtensionMethods.IsChecked = (value & VisibleItems.OmitObjectExtensionMethods) == 0;
             }
         }
 
@@ -334,6 +345,16 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     this.UpdateApiFilterInfo();
                 }
             }
+        }
+
+        /// <summary>
+        /// Enable or disable the object extension methods checkbox based on the state of this one
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void chkIncludeExtensionMethods_Click(object sender, RoutedEventArgs e)
+        {
+            chkIncludeObjectExtensionMethods.IsEnabled = chkIncludeExtensionMethods.IsChecked ?? false;
         }
         #endregion
     }

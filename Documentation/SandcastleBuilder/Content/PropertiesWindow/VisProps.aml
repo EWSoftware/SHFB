@@ -218,6 +218,31 @@ Protected</codeInline> is set to false, this option is ignored.</para>
 			</content>
 		</section>
 
+		<section address="ExtMethods">
+			<title>Include extension methods in member list topics (IncludeExtensionMethodsInMemberLists)</title>
+			<content>
+				<para>When set to true, the default, the help file builder will include an extension methods section in
+member list topics for types to which the extension methods apply.  If set to false, the extension methods
+section in member list topics is omitted and extension methods will only appear within their containing type
+documentation topics.</para>
+
+			</content>
+		</section>
+
+		<section address="ObjExtMethods">
+			<title>Include extension methods that extend System.Object (IncludeObjectExtensionMethodsInMemberLists)</title>
+			<content>
+				<para>When set to true, the default, the help file builder will include extension methods that extend
+<codeInline>System.Object</codeInline> in the extension methods section in member list topics for all types.  If
+set to false, those extension methods will be omitted from member list topics and will only appear within their
+containing type documentation topics.  This is useful if you find that such methods are not useful to all types
+within your documentation and prefer to leave them out.  They are automatically omitted from enumerated types as
+such general extension methods typically serve no useful purpose if listed for enumerations.  If the main
+extension methods option above is set to false, this option will have no effect.</para>
+
+			</content>
+		</section>
+
 		<section address="ApiFilter">
 			<title>Edit API Filter (ApiFilter)</title>
 			<content>

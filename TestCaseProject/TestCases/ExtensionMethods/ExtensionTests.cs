@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Reflection;
 
 namespace TestDoc.ExtensionMethods
 {
@@ -90,6 +92,14 @@ namespace TestDoc.ExtensionMethods
         /// </summary>
         /// <param name="testStruct">A <see cref="TestStruct"/> instance.</param>
         public static void ExtendNullableStructByActualRef(this ref TestStruct? testStruct)
+        {
+        }
+
+        /// <summary>
+        /// Enum extension method
+        /// </summary>
+        /// <param name="value">The enum value</param>
+        public static void EnumExtensionMethod(this Enum value)
         {
         }
     }
