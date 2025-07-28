@@ -13,6 +13,7 @@
 // 06/16/2015 - EFW - Fixed the extension method parameter comparisons so that it doesn't add extension methods
 // to types with matching method signatures.
 // 07/31/2022 - EFW - Added support for nullable, reference, and nullable reference type extension methods
+// 07/27/2025 - EFW - Added support for omitting extension methods from member lists
 
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,7 @@ namespace Sandcastle.Tools
         private readonly Dictionary<TypeNode, List<Method>> index;
         private readonly ManagedReflectionWriter mrw;
         private bool isExtensionMethod;
+        private readonly bool includeInMemberList, includeObjectExtensions;
 
         #endregion
 
@@ -54,6 +56,12 @@ namespace Sandcastle.Tools
             index = [];
 
             this.mrw = writer ?? throw new ArgumentNullException(nameof(writer));
+
+            if(!Boolean.TryParse(configuration.GetAttribute("includeInMemberList", ""), out includeInMemberList))
+                includeInMemberList = true;
+
+            if(!Boolean.TryParse(configuration.GetAttribute("includeObjectExtensions", ""), out includeObjectExtensions))
+                includeObjectExtensions = true;
 
             writer.RegisterStartTagCallback("apis", RecordExtensionMethods);
             writer.RegisterStartTagCallback("apidata", AddExtensionSubsubgroup);
@@ -94,7 +102,9 @@ namespace Sandcastle.Tools
                     {
                         if(member is not Method method || !mrw.ApiFilter.IsExposedMember(method) ||
                           !method.Attributes.Any(a => a.Type.FullName == "System.Runtime.CompilerServices.ExtensionAttribute"))
+                        {
                             continue;
+                        }
 
                         ParameterList parameters = method.Parameters;
 
@@ -176,19 +186,20 @@ namespace Sandcastle.Tools
         /// <param name="info">For this callback, this is a member dictionary</param>
         private void AddExtensionMethods(XmlWriter writer, object info)
         {
-            if(info is not MemberDictionary members)
+            if(!includeInMemberList || info is not MemberDictionary members)
                 return;
 
             TypeNode type = members.Type;
 
             foreach(Interface contract in type.Interfaces)
             {
-
                 if(index.TryGetValue(contract, out List<Method> extensionMethods))
                 {
                     foreach(Method extensionMethod in extensionMethods)
+                    {
                         if(!IsExtensionMethodHidden(extensionMethod, members))
                             AddExtensionMethod(writer, type, extensionMethod, null);
+                    }
                 }
 
                 if(contract.IsGeneric && contract.TemplateArguments != null && contract.TemplateArguments.Count > 0)
@@ -214,12 +225,25 @@ namespace Sandcastle.Tools
 
             while(comparisonType != null)
             {
+                // Stop if object extension methods are not wanted and we're on System.Object
+                if(!includeObjectExtensions && comparisonType.BaseType == null)
+                    break;
+
+                // Don't go beyond ValueType for enums as it likely doesn't make sense to list any extension
+                // methods for ValueType and/or Object for them.  They could but most often will not.
+                if(type.NodeType == NodeType.EnumNode &&
+                  comparisonType.FullName.Equals("System.ValueType", StringComparison.Ordinal))
+                {
+                    break;
+                }
 
                 if(index.TryGetValue(comparisonType, out List<Method> extensionMethods))
                 {
                     foreach(Method extensionMethod in extensionMethods)
+                    {
                         if(!IsExtensionMethodHidden(extensionMethod, members))
                             AddExtensionMethod(writer, type, extensionMethod, null);
+                    }
                 }
 
                 if(comparisonType.IsGeneric && comparisonType.TemplateArguments != null &&
@@ -229,10 +253,16 @@ namespace Sandcastle.Tools
                     TypeNode specialization = comparisonType.TemplateArguments[0];
 
                     if(index.TryGetValue(templateType, out extensionMethods))
+                    {
                         foreach(Method extensionMethod in extensionMethods)
+                        {
                             if(IsValidTemplateArgument(specialization, extensionMethod.TemplateParameters[0]))
+                            {
                                 if(!IsExtensionMethodHidden(extensionMethod, members))
                                     AddExtensionMethod(writer, type, extensionMethod, specialization);
+                            }
+                        }
+                    }
                 }
 
                 comparisonType = comparisonType.BaseType;
@@ -257,9 +287,8 @@ namespace Sandcastle.Tools
           TypeNode specialization)
         {
             // !EFW - Bug fix
-            // Don't add extension method support to enumerations and static classes
-            if(type != null && (type.NodeType == NodeType.EnumNode || (type.NodeType == NodeType.Class &&
-              type.IsAbstract && type.IsSealed)))
+            // Don't add extension method support to static classes
+            if(type != null && type.NodeType == NodeType.Class && type.IsAbstract && type.IsSealed)
                 return;
 
             // If this is a specialization of a generic method, construct a Method object that describes
@@ -356,9 +385,13 @@ namespace Sandcastle.Tools
             InterfaceList contracts = parameter.Interfaces;
 
             if(contracts != null)
+            {
                 foreach(Interface contract in contracts)
+                {
                     if(!type.IsAssignableTo(contract))
                         return false;
+                }
+            }
 
             TypeNode parent = parameter.BaseType;
 
@@ -417,8 +450,10 @@ namespace Sandcastle.Tools
         {
             // !EFW - Don't ignore the first extension method parameter, it does need to be included.
             for(int i = 0; i < methodParams.Count; i++)
+            {
                 if(methodParams[i].Type.FullName != extensionParams[i].Type.FullName)
                     return false;
+            }
 
             return true;
         }

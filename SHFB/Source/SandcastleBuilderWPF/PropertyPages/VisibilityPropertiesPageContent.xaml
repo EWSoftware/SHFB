@@ -5,10 +5,11 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 	xmlns:shfb="clr-namespace:SandcastleBuilder.WPF"
 	xmlns:shfbProps="clr-namespace:SandcastleBuilder.WPF.PropertyPages"
-	mc:Ignorable="d" d:DesignWidth="475" d:DesignHeight="430"
-	MinWidth="475" MinHeight="430" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+	mc:Ignorable="d" d:DesignWidth="475" MinWidth="475" MinHeight="490"
+	Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
 	<Grid ToggleButton.Checked="CheckBox_Click" ToggleButton.Unchecked="CheckBox_Click">
 		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
@@ -55,7 +56,13 @@ attribute set to Never" HorizontalAlignment="Left" Margin="0,3" />
 			<Image Width="12" Margin="10,0,0,0" Source="{x:Static shfb:SharedResources.InformationIcon}"
 				ToolTip="This option is ignored if the Protected Members option is turned off"/>
 		</StackPanel>
-		<Grid Grid.Row="3" Margin="10,0,3,3">
+		<StackPanel Grid.Row="3" Margin="10,5,0,5">
+			<CheckBox Name="chkIncludeExtensionMethods" IsChecked="True" Margin="0,3" 
+					Content="Include extension methods in member list topics" Click="chkIncludeExtensionMethods_Click" />
+			<CheckBox Name="chkIncludeObjectExtensionMethods" IsChecked="True"  Margin="20,3,3,3" 
+					Content="Include extension methods that extend System.Object" />
+		</StackPanel>
+		<Grid Grid.Row="4" Margin="10,0,3,3">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto"/>
 				<ColumnDefinition Width="Auto" />

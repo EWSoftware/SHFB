@@ -32,6 +32,7 @@ namespace Sandcastle.Tools.BuildComponents.Targets
         private static readonly XPathExpression apiNameExpression = XPathExpression.Compile("string(apidata/@name)");
         private static readonly XPathExpression apiGroupExpression = XPathExpression.Compile("string(apidata/@group)");
         private static readonly XPathExpression apiSubgroupExpression = XPathExpression.Compile("string(apidata/@subgroup)");
+        private static readonly XPathExpression apiSubSubgroupExpression = XPathExpression.Compile("string(apidata/@subsubgroup)");
 
         // Member data
         private static readonly XPathExpression apiOverloadIdExpression = XPathExpression.Compile("string(overload/@api | memberdata/@overload)");
@@ -215,6 +216,13 @@ namespace Sandcastle.Tools.BuildComponents.Targets
 
             foreach(XPathNavigator elementNode in elementNodes)
             {
+                string subSubGroup = (string)elementNode.Evaluate(apiSubSubgroupExpression);
+
+                // Ignore extension methods.  We don't want to map them to the enumeration type.  They should
+                // go to their member topic.
+                if(subSubGroup == "extension")
+                    continue;
+
                 string memberId = elementNode.GetAttribute("api", String.Empty);
 
                 // Try to get name from attribute on element node

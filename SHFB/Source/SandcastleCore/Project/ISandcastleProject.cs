@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ISandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/22/2025
+// Updated : 07/27/2025
 // Note    : Copyright 2025, Eric Woodruff, All rights reserved
 //
 // This file contains the interface used to interact with a Sandcastle Help File Builder project
@@ -769,6 +769,23 @@ namespace Sandcastle.Core.Project
         /// assemblies and private members in base types are documented.
         /// </summary>
         bool DocumentInternalAndPrivateIfExternal { get; }
+
+        /// <summary>
+        /// This read-only property is used to get whether or not extension methods are included in member list
+        /// topics.
+        /// </summary>
+        /// <value>Note that the property is the inverse of the underlying <see cref="VisibleItems.OmitExtensionMethods"/>
+        /// value to maintain backward compatibility with prior releases.</value>
+        bool IncludeExtensionMethodsInMemberLists { get; }
+
+        /// <summary>
+        /// This read-only property is used to get whether or not extension methods that extend <see cref="Object"/>
+        /// are included in member list topics.
+        /// </summary>
+        /// <remarks>This has no effect if <see cref="IncludeExtensionMethodsInMemberLists"/> is false.</remarks>
+        /// <value>Note that the property is the inverse of the underlying <see cref="VisibleItems.OmitObjectExtensionMethods"/>
+        /// value to maintain backward compatibility with prior releases.</value>
+        bool IncludeObjectExtensionMethodsInMemberLists { get; }
 
         /// <summary>
         /// This read-only property is used to get the API filter

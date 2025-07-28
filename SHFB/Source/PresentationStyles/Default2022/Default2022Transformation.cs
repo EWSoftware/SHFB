@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Default2022Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/09/2025
+// Updated : 07/26/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -1763,7 +1763,7 @@ $("".toggleSection"").keypress(function () {
             if(allMembers == null)
                 return;
 
-            List<XElement> fieldMembers = [], extensionsMethods = [];
+            List<XElement> fieldMembers = [], extensionMethods = [];
 
             // Enumerations can have extension methods which need to be rendered in a separate section
             foreach(var m in allMembers)
@@ -1781,7 +1781,7 @@ $("".toggleSection"").keypress(function () {
                     fieldMembers.Add(m);
                 }
                 else
-                    extensionsMethods.Add(m);
+                    extensionMethods.Add(m);
             }
 
             if(fieldMembers.Count != 0)
@@ -1899,7 +1899,7 @@ $("".toggleSection"").keypress(function () {
                 }
             }
 
-            if(extensionsMethods.Count != 0)
+            if(extensionMethods.Count != 0)
                 RenderApiTypeMemberLists(transformation);
         }
 
@@ -2056,7 +2056,6 @@ $("".toggleSection"").keypress(function () {
                         e.Element("memberdata").Attribute("overload") == null &&
                         !(e.Parent.Attribute("api")?.Value ?? String.Empty).StartsWith(
                             "Overload:", StringComparison.Ordinal)) ? "false" : "true";
-                    bool isExtensionMethod = e.AttributeOfType("T:System.Runtime.CompilerServices.ExtensionAttribute") != null;
 
                     var summaryCell = new XElement("td");
 
@@ -2482,7 +2481,31 @@ $("".toggleSection"").keypress(function () {
                 u => u.Attribute("id")?.Value == "InThisArticleMenu");
 
             if(inThisArticleMenu == null || this.AlwaysShowTopLevelAutoOutline)
+            {
+                // If not used, hide the In This Article column and give the space back to the content column.
+                // If not hidden, the content column can overflow if wide enough and the blank column
+                // can prevent clicking links in the overlapped section.
+                XAttribute classAttr;
+                var divElement = body.Descendants("div").FirstOrDefault(
+                    div => div.Attribute("id")?.Value == "InThisArticleColumn");
+
+                if(divElement != null)
+                {
+                    classAttr = divElement.Attribute("class");
+                    classAttr?.Value = classAttr.Value.Replace("is-hidden-mobile", "is-hidden");
+                }
+
+                divElement = body.Descendants("div").FirstOrDefault(
+                    div => div.Attribute("id")?.Value == "TopicContent");
+
+                if(divElement != null)
+                {
+                    classAttr = divElement.Attribute("class");
+                    classAttr?.Value = classAttr.Value.Replace("is-7", "is-9");
+                }
+
                 return;
+            }
 
             var parent = inThisArticleMenu;
             string lastElementName = null;
