@@ -6,13 +6,14 @@
 		<TargetFramework>net48</TargetFramework>
 		<UseWPF>True</UseWPF>
 		<UseWindowsForms>True</UseWindowsForms>
-		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
-		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
-		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
-		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
-		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<Company>Eric Woodruff</Company>
+		<Title>Sandcastle Guided Installation</Title>
+		<AssemblyTitle>Sandcastle Guided Installation</AssemblyTitle>
+		<Copyright>Copyright (c) 2011-2021, Eric Woodruff, All Rights Reserved</Copyright>
+		<!-- NOTE: Update app.manifest with this version number when it changes -->
+		<Version>2025.7.27.0</Version>
+		<FileVersion>2025.7.27.0</FileVersion>
+		<Description>This utility is used to guide you through the installation of the various tools needed to create a working setup to build help files with the Sandcastle Help File Builder and Tools.</Description>
 		<AssemblyName>SandcastleInstaller</AssemblyName>
 		<RootNamespace>Sandcastle.Installer</RootNamespace>
 		<ApplicationIcon>Resources\HelpDoc.ico</ApplicationIcon>

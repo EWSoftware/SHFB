@@ -1,8 +1,8 @@
 //===============================================================================================================
 // System  : Sandcastle Tools - MRefBuilder
 // File    : AssemblyInfo.cs
-// Updated : 04/09/2021
-// Note    : Copyright 2006-2021, Microsoft Corporation, All rights reserved
+// Updated : 07/28/2025
+// Note    : Copyright 2006-2025, Microsoft Corporation, All rights reserved
 //
 // MRefBuilder assembly attributes.
 //
@@ -12,20 +12,7 @@
 //
 //=============================================================================
 
-using System;
-using System.Reflection;
-
-//
-// General Information about an assembly is controlled through the following set of attributes.  Change these
-// attribute values to modify the information associated with an assembly.
-//
-[assembly: AssemblyTitle("MRefBuilder")]
-[assembly: AssemblyDescription("This is used to parse assemblies and generate reflection information files " +
-    "containing details about the APIs that can be used to create help files.")]
-
-[assembly: CLSCompliant(false)]
-
-#if NET8_0_OR_GREATER
+#if NET9_0_OR_GREATER
 // This tool is dependent on Windows APIs
 [assembly:System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif

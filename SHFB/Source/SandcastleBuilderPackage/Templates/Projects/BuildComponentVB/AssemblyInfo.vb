@@ -5,14 +5,10 @@ Imports System.Runtime.InteropServices
 
 ' General assembly information
 <Assembly: AssemblyCopyright(AssemblyInfo.Copyright)>
-<Assembly: AssemblyCulture("")>
 
 <Assembly: ComVisible(false)>
 
 <Assembly: CLSCompliant(true)>
-
-' Resources contained within the assembly are English
-<Assembly: NeutralResourcesLanguage("en")>
 
 <Assembly: AssemblyVersion(AssemblyInfo.ProductVersion)>
 <Assembly: AssemblyFileVersion(AssemblyInfo.ProductVersion)>

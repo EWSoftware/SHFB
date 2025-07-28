@@ -5,14 +5,10 @@ using System.Runtime.InteropServices;
 
 // General assembly information
 [assembly: AssemblyCopyright(AssemblyInfo.Copyright)]
-[assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 
 [assembly: CLSCompliant(true)]
-
-// Resources contained within the assembly are English
-[assembly: NeutralResourcesLanguage("en")]
 
 [assembly: AssemblyVersion(AssemblyInfo.ProductVersion)]
 [assembly: AssemblyFileVersion(AssemblyInfo.ProductVersion)]

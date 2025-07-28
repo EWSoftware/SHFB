@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
-// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
+// Updated : 07/28/2025
+// Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // Sandcastle Help File Builder Visual Studio package attributes.
 //
@@ -17,17 +17,15 @@
 // 03/18/2011  EFW  Created the code
 //===============================================================================================================
 
-using System;
 using System.Reflection;
+using System.Resources;
 
-//
-// General Information about an assembly is controlled through the following set of attributes.  Change these
-// attribute values to modify the information associated with an assembly.
-//
+[assembly: AssemblyProduct("Sandcastle Help File Builder and Tools")]
 [assembly: AssemblyTitle("Sandcastle Help File Builder Visual Studio Integration Package")]
 [assembly: AssemblyDescription("A Visual Studio package used to create project files that build help " +
     "documentation using Sandcastle.")]
 
-[assembly: CLSCompliant(false)]
+// Resources contained within the assembly are English
+[assembly: NeutralResourcesLanguage("en")]
 
 // See AssemblyInfoShared.cs for the shared attributes common to all projects in the solution

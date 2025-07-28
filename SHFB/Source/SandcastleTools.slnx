@@ -11,17 +11,13 @@
   <Project Path="BuildAssembler/SyntaxComponents/SyntaxComponents.csproj" />
   <Project Path="CodeColorizer/ColorizerLibrary/ColorizerLibrary.csproj" />
   <Project Path="HelpLibraryManagerLauncher/HelpLibraryManagerLauncher.csproj" />
-  <Project Path="MRefBuilder/MRefBuilder.csproj">
-    <BuildType Solution="Debug|*" Project="Wait For Debugger" />
-  </Project>
+  <Project Path="MRefBuilder/MRefBuilder.csproj" />
   <Project Path="PresentationStyles/PresentationStyles.csproj" />
   <Project Path="ReflectionDataManager/ReflectionDataManager.csproj" />
   <Project Path="SandcastleBuilderGUI/SandcastleBuilderGui.csproj">
     <BuildDependency Project="CodeColorizer/ColorizerLibrary/ColorizerLibrary.csproj" />
   </Project>
-  <Project Path="SandcastleBuilderMSBuild/SandcastleBuilderMSBuild.csproj">
-    <BuildType Solution="Debug|*" Project="Wait For Debugger" />
-  </Project>
+  <Project Path="SandcastleBuilderMSBuild/SandcastleBuilderMSBuild.csproj" />
   <Project Path="SandcastleBuilderPlugIns/SandcastleBuilderPlugIns.csproj" />
   <Project Path="SandcastleBuilderPlugInsUI/SandcastleBuilderPlugInsUI.csproj" />
   <Project Path="SandcastleBuilderWPF/SandcastleBuilderWPF_GUI.csproj" />
