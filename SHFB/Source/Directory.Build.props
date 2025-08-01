@@ -2,6 +2,8 @@
 	<PropertyGroup>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)SandcastleTools.snk</AssemblyOriginatorKeyFile>
+		<NeutralLanguage>en</NeutralLanguage>
+		<Product>Sandcastle Help File Builder and Tools</Product>
 
 		<!-- Using preview to gain access to the field keyword -->
 		<LangVersion>preview</LangVersion>

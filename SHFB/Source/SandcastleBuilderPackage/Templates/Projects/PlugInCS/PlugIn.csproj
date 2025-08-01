@@ -26,6 +26,7 @@
 		<Product>$safeprojectname$</Product>
 		<Title>$safeprojectname$ Plug-In</Title>
 		<Description>A Sandcastle Help File Builder plug-in</Description>
+		<NeutralLanguage>en</NeutralLanguage>
 		<Version>1.0.0.0</Version>
 		<Authors>$username$</Authors>
 		<Company>$username$</Company>

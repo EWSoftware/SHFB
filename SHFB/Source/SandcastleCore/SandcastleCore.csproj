@@ -3,18 +3,16 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
-		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
 		<AssemblyName>Sandcastle.Core</AssemblyName>
 		<RootNamespace>Sandcastle.Core</RootNamespace>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>EWSoftware.Sandcastle.Core</PackageId>
 		<Title>Sandcastle Tools Core Class Library</Title>
+		<AssemblyTitle>Sandcastle Tools Core Class Library</AssemblyTitle>
 		<!-- This should match the strong name version in AssemblyInfoShared.cs -->
 		<Version>2025.7.9.0</Version>
 		<Authors>Eric Woodruff</Authors>

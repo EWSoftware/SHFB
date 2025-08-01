@@ -4,13 +4,14 @@
 		<!-- The .NET Framework is targeted for the web example -->
 		<TargetFrameworks>netstandard2.0;net48</TargetFrameworks>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
-		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
-		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
-		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
-		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<Company>Jonathan de Halleux</Company>
+		<Product>Code Colorizer Library</Product>
+		<Title>Code Colorizer Library</Title>
+		<AssemblyTitle>Code Colorizer Library</AssemblyTitle>
+		<Copyright>Copyright (c) 2003-2021, Jonathan de Halleux, All Rights Reserved</Copyright>
+		<Version>2021.4.6.0</Version>
+		<FileVersion>2021.4.6.0</FileVersion>
+		<Description>This library is used to colorize blocks of code for output as HTML.</Description>
 	</PropertyGroup>
 
 </Project>

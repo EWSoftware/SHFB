@@ -7,13 +7,13 @@
 		<UseWindowsForms>true</UseWindowsForms>
 		<UseWpf>true</UseWpf>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
-		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<Title>Sandcastle Help File Builder WPF Controls</Title>
+		<AssemblyTitle>Sandcastle Help File Builder WPF Controls</AssemblyTitle>
+		<Description>This assembly contains shared WPF controls and classes common to both the standalone GUI and the Visual Studio package</Description>
 		<AssemblyName>SandcastleBuilder.WPF</AssemblyName>
 		<RootNamespace>SandcastleBuilder.WPF</RootNamespace>
 	</PropertyGroup>

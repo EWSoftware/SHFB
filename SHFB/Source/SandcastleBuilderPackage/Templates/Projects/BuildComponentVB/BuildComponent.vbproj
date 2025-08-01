@@ -26,6 +26,7 @@
 		<Product>$safeprojectname$</Product>
 		<Title>$safeprojectname$ Build Component</Title>
 		<Description>A Sandcastle Help File Builder build component</Description>
+		<NeutralLanguage>en</NeutralLanguage>
 		<Version>1.0.0.0</Version>
 		<Authors>$username$</Authors>
 		<Company>$username$</Company>

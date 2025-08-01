@@ -6,13 +6,13 @@
 		<TargetFramework>net48</TargetFramework>
 		<UseWPF>True</UseWPF>
 		<UseWindowsForms>True</UseWindowsForms>
-		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
-		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<Title>Sandcastle Tools - Reflection Data Manager</Title>
+		<AssemblyTitle>Sandcastle Tools - Reflection Data Manager</AssemblyTitle>
+		<Description>This is used to create reflection data definition files for the various .NET frameworks and to build the reflection information files used by the other Sandcastle tools</Description>
 		<ApplicationIcon>Resources\ReflectionData.ico</ApplicationIcon>
 	</PropertyGroup>
 

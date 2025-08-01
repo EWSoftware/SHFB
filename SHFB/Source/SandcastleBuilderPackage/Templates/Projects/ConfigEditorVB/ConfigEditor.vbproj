@@ -9,6 +9,7 @@
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AssemblyName>$safeprojectname$</AssemblyName>
 		<RootNamespace>$safeprojectname$</RootNamespace>
+		<NeutralLanguage>en</NeutralLanguage>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -5,13 +5,14 @@
 		<!-- NOTE: This is an interactive utility so we'll only target the .NET Framework. -->
 		<TargetFramework>net48</TargetFramework>
 		<UseWPF>True</UseWPF>
-		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
-		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<Title>Sandcastle Help File Builder Project Launcher</Title>
+		<AssemblyTitle>Sandcastle Help File Builder Project Launcher</AssemblyTitle>
+		<Description>This utility is used to open Sandcastle Help File Builder project files using either the standalone GUI or Visual Studio</Description>
 		<AssemblyName>SHFBProjectLauncher</AssemblyName>
 		<RootNamespace>SandcastleBuilder.ProjectLauncher</RootNamespace>
 		<ApplicationIcon>Resources\SHFBProjectLauncher.ico</ApplicationIcon>

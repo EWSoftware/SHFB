@@ -43,7 +43,7 @@ namespace Sandcastle.Tools.MSBuild
         //=====================================================================
 
         private ManagedReflectionWriter apiVisitor;
-#if DEBUG
+#if DEBUG && WAIT_FOR_DEBUGGER
         private bool waitCancelled;
 #endif
         #endregion
@@ -93,7 +93,7 @@ namespace Sandcastle.Tools.MSBuild
         {
             if(apiVisitor != null)
                 apiVisitor.Canceled = true;
-#if DEBUG
+#if DEBUG && WAIT_FOR_DEBUGGER
             waitCancelled = true;
 #endif
         }

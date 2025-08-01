@@ -3,23 +3,15 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
-		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<Title>BuildAssembler - Build Component Targets Library</Title>
+		<AssemblyTitle>BuildAssembler - Build Component Targets Library</AssemblyTitle>
 		<AssemblyName>Sandcastle.Tools.BuildComponents.Targets</AssemblyName>
 		<RootNamespace>Sandcastle.Tools.BuildComponents.Targets</RootNamespace>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DefineConstants>TRACE;ASSEMBLYSPECIFICVERSION</DefineConstants>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DefineConstants>TRACE;ASSEMBLYSPECIFICVERSION</DefineConstants>
+		<DefineConstants>$(DefineConstants);ASSEMBLYSPECIFICVERSION</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>

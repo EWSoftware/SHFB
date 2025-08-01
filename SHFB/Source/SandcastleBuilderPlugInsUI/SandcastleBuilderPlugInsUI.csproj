@@ -7,13 +7,13 @@
 		<UseWindowsForms>true</UseWindowsForms>
 		<UseWpf>true</UseWpf>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
-		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<Title>Sandcastle Help File Builder Plug-Ins UI</Title>
+		<AssemblyTitle>Sandcastle Help File Builder Plug-Ins UI</AssemblyTitle>
+		<Description>This contains build process plug-ins configuration forms used by the Sandcastle Help File Builder</Description>
 		<AssemblyName>SandcastleBuilder.PlugIns.UI</AssemblyName>
 		<RootNamespace>SandcastleBuilder.PlugIns.UI</RootNamespace>
 	</PropertyGroup>

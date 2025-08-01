@@ -3,13 +3,13 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
-		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<Title>BuildAssembler - Build Components Library</Title>
+		<AssemblyTitle>BuildAssembler - Build Components Library</AssemblyTitle>
+		<Description>This contains a set of build components used to transform API reflection data into help topics</Description>
 		<AssemblyName>Sandcastle.Tools.BuildComponents</AssemblyName>
 		<RootNamespace>Sandcastle.Tools.BuildComponents</RootNamespace>
 	</PropertyGroup>

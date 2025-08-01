@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/08/2021
+// Updated : 07/27/2025
 //
 // Sandcastle Guided Installation application attributes.
 //
@@ -19,39 +19,22 @@
 //===============================================================================================================
 
 using System;
-using System.Reflection;
-using System.Resources;
 using System.Runtime.InteropServices;
 
-// Resources contained within the assembly are English
-[assembly: NeutralResourcesLanguage("en")]
-
-//
-// General Information about an assembly is controlled through the following set of attributes. Change these
-// attribute values to modify the information associated with an assembly.
-//
-[assembly: AssemblyProduct("Sandcastle Guided Installation")]
-[assembly: AssemblyTitle("Sandcastle Guided Installation")]
-[assembly: AssemblyDescription("This utility is used to guide you through the installation of the various " +
-    "tools needed to create a working setup to build help files with the Sandcastle Help File Builder and Tools.")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Eric Woodruff")]
-[assembly: AssemblyCopyright("Copyright \xA9 2011-2021, Eric Woodruff, All Rights Reserved")]
-[assembly: AssemblyTrademark("Eric Woodruff, All Rights Reserved")]
-[assembly: AssemblyCulture("")]
-
+// The assembly is CLS compliant
 [assembly: CLSCompliant(true)]
+
+// Not visible to COM
 [assembly: ComVisible(false)]
 
 //
-// Version information for an assembly consists of the following four values:
+// PLEASE NOTE:
+// Version information for an assembly consists of the following four values based on the current date:
 //
-//      Year of release
-//      Month of release
-//      Day of release
-//      Revision (typically zero unless multiple releases are made on the same day)
+//      Year of release     4 digit year
+//      Month of release    1 or 2 digit month
+//      Day of release      1 or 2 digit day
+//      Revision            Typically zero unless multiple releases are made on the same day.  In such cases,
+//                          increment the revision by one with each same day release.
 //
-// This versioning scheme allows build component and plug-in developers to use the same major, minor, and build
-// numbers as the Sandcastle Help File Builder to indicate with which version their components are compatible.
-//
-[assembly: AssemblyVersion("2021.9.8.0")]  // NOTE: Update app.manifest with this version number when it changes
+// Set the version in the Version and FileVersion properties in project file and app.manifest file.

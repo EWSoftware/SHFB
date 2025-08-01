@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AssemblyInfoShared.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/09/2025
+// Updated : 07/28/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // Sandcastle Tools common assembly attributes.
@@ -18,28 +18,24 @@
 // 12/22/2013  EFW  Updated the version numbering scheme to use a date-based value
 //===============================================================================================================
 
+using System;
 using System.Reflection;
-using System.Resources;
 using System.Runtime.InteropServices;
 
-// NOTE: See AssemblyInfo.cs for project-specific assembly attributes
+// NOTE: See AssemblyInfo.cs and/or the project file for project-specific assembly attributes
 
 // General assembly information
-[assembly: AssemblyProduct("Sandcastle Help File Builder and Tools")]
 [assembly: AssemblyCompany("Microsoft Corporation/Eric Woodruff")]
 [assembly: AssemblyCopyright(AssemblyInfo.Copyright)]
-[assembly: AssemblyCulture("")]
-#if DEBUG
-[assembly: AssemblyConfiguration("Debug")]
-#else
-[assembly: AssemblyConfiguration("Release")]
-#endif
 
 // Not visible to COM
 [assembly: ComVisible(false)]
 
-// Resources contained within the assembly are English
-[assembly: NeutralResourcesLanguage("en")]
+#if NOT_CLS_COMPLIANT
+[assembly: CLSCompliant(false)]
+#else
+[assembly: CLSCompliant(true)]
+#endif
 
 // Version numbers.  See comments below.
 

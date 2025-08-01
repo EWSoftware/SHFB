@@ -2,13 +2,13 @@
 
   <PropertyGroup>
 		<TargetFrameworks>net48;net9.0</TargetFrameworks>
-		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
-		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<Title>Sandcastle Tools - MRefBuilder</Title>
+		<AssemblyTitle>Sandcastle Tools - MRefBuilder</AssemblyTitle>
+		<Description>This is used to parse assemblies and generate reflection information files containing details about the APIs that can be used to create help files</Description>
 		<!-- Don't go above C# 13 for now as the code uses variables named field which may conflict with the field
 		     keyword in C# 14.  Those need to be cleaned up first. -->
 		<LangVersion>13.0</LangVersion>
@@ -18,19 +18,9 @@
 		<!-- For this, we want all of the dependency assemblies so that the dotnet tool can find them (NetCore builds) -->
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<Configurations>Debug;Release;Wait For Debugger</Configurations>
+		<DefineConstants>$(DefineConstants);NOT_CLS_COMPLIANT</DefineConstants>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Wait For Debugger|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<OutputPath>..\..\Deploy\</OutputPath>

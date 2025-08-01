@@ -3,13 +3,13 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
-		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<Title>BuildAssembler - Syntax Component Library</Title>
+		<AssemblyTitle>BuildAssembler - Syntax Component Library</AssemblyTitle>
+		<Description>This contains a set of supporting build components that are used to generate language syntax sections in help topics</Description>
 		<RootNamespace>Sandcastle.Tools.SyntaxGenerators</RootNamespace>
 		<AssemblyName>Sandcastle.Tools.SyntaxGenerators</AssemblyName>
 	</PropertyGroup>

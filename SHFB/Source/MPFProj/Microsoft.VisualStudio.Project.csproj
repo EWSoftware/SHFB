@@ -193,7 +193,6 @@
     <None Include="Diagrams\HierarchyClasses.cd" />
     <None Include="Diagrams\PropertiesClasses.cd" />
     <None Include="Diagrams\ReferenceClasses.cd" />
-    <None Include="Key.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

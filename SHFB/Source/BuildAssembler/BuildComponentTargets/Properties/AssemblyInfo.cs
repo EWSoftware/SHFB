@@ -1,8 +1,8 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Tools - BuildAssembler Build Component Targets Library
 // File    : AssemblyInfo.cs
-// Updated : 07/10/2021
-// Note    : Copyright 2013-2021, Microsoft Corporation, All rights reserved
+// Updated : 07/28/2025
+// Note    : Copyright 2013-2025, Microsoft Corporation, All rights reserved
 //
 // BuildAssembler build component targets assembly attributes.
 //
@@ -15,14 +15,10 @@
 using System;
 using System.Reflection;
 
-// General assembly information
-[assembly: AssemblyTitle("BuildAssembler - Build Component Targets Library")]
 [assembly: AssemblyDescription("This contains a set of build component reference link target classes used to " +
     "generate reference links in API topics.  They are separate from the main assembly as they are " +
     "serializable.  By separating them, they can be versioned independently of the main assembly so that " +
     "caches containing instances of the classes do not have to be rebuilt with every Sandcastle tools release.")]
-
-[assembly: CLSCompliant(true)]
 
 // NOTE: See the description attribute for the reason this assembly is versioned independently of the others.
 [assembly: AssemblyVersion("2021.7.10.0")]

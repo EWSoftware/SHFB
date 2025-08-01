@@ -3,13 +3,13 @@
 	<PropertyGroup>
 		<TargetFrameworks>net48;net9.0</TargetFrameworks>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
-		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<Title>Sandcastle Help File Builder MSBuild tasks</Title>
+		<AssemblyTitle>Sandcastle Help File Builder MSBuild tasks</AssemblyTitle>
+		<Description>This assembly contains the MSBuild tasks used to create help files with the Sandcastle Help File Builder</Description>
 		<AssemblyName>SandcastleBuilder.MSBuild</AssemblyName>
 		<RootNamespace>SandcastleBuilder.MSBuild</RootNamespace>
 		<!-- For this, we want all of the dependency assemblies so that the dotnet tool can find them (NetCore builds) -->

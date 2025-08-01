@@ -7,13 +7,13 @@
 		<UseWindowsForms>true</UseWindowsForms>
 		<UseWpf>true</UseWpf>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
-		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<Title>BuildAssembler - Build Components UI Library</Title>
+		<AssemblyTitle>BuildAssembler - Build Components UI Library</AssemblyTitle>
+		<Description>This contains a set of configuration forms used to edit build component configurations</Description>
 		<AssemblyName>Sandcastle.Tools.BuildComponents.UI</AssemblyName>
 		<RootNamespace>Sandcastle.Tools.BuildComponents.UI</RootNamespace>
 	</PropertyGroup>

@@ -7,13 +7,13 @@
 		<UseWindowsForms>true</UseWindowsForms>
 		<UseWpf>true</UseWpf>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
 		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
-		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<Title>Sandcastle Windows Platform Library</Title>
+		<AssemblyTitle>Sandcastle Windows Platform Library</AssemblyTitle>
+		<Description>This contains a set of utility classes used by the Sandcastle Tools that are specific to the Windows platform</Description>
 		<AssemblyName>Sandcastle.Platform.Windows</AssemblyName>
 		<RootNamespace>Sandcastle.Platform.Windows</RootNamespace>
 	</PropertyGroup>
