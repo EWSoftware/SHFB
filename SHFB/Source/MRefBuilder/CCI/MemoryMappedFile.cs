@@ -12,6 +12,7 @@ using System.IO;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
+using Microsoft.Win32.SafeHandles;
 
 namespace System.Compiler.Metadata
 {
@@ -349,10 +350,21 @@ namespace System.Compiler.Metadata
     {
         private byte* buffer;
         private int length;
+        private SafeMemoryMappedViewHandle handle;
+        private bool success;
 
         public MemoryMappedFile(string fileName)
         {
-            this.OpenMap(fileName);
+            // using .NET 6.0+ MemoryMappedFile APIs
+            using IO.MemoryMappedFiles.MemoryMappedFile mmf = IO.MemoryMappedFiles.MemoryMappedFile.CreateFromFile(
+                fileName, FileMode.Open, null, 0, IO.MemoryMappedFiles.MemoryMappedFileAccess.Read);
+            using IO.MemoryMappedFiles.MemoryMappedViewStream viewStream = mmf.CreateViewStream(0, 0, IO.MemoryMappedFiles.MemoryMappedFileAccess.Read);
+            handle = viewStream.SafeMemoryMappedViewHandle;
+
+            // use the underlying handle to access the memory (note this will throw an exception if the handle is invalid)
+            handle.DangerousAddRef(ref success);
+            buffer = (byte*)viewStream.SafeMemoryMappedViewHandle.DangerousGetHandle();
+            length = (int)viewStream.Length;
         }
         ~MemoryMappedFile()
         {
@@ -395,80 +407,20 @@ namespace System.Compiler.Metadata
             }
         }
 
-        private void OpenMap(string filename)
-        {
-            IntPtr hmap;
-            int length;
-            using (FileStream stream = new(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                if (stream.Length > Int32.MaxValue)
-                    throw new FileLoadException(ExceptionStrings.FileTooBig, filename);
-
-                length = unchecked((int)stream.Length);
-                hmap = CreateFileMapping(stream.SafeFileHandle.DangerousGetHandle(), IntPtr.Zero, PageAccess.PAGE_READONLY, 0, length, null);
-
-                if (hmap == IntPtr.Zero)
-                {
-                    int rc = Marshal.GetLastWin32Error();
-                    throw new FileLoadException(String.Format(CultureInfo.CurrentCulture,
-                      ExceptionStrings.CreateFileMappingReturnedErrorCode, rc.ToString()), filename);
-                }
-            }
-            this.buffer = (byte*)MapViewOfFile(hmap, FileMapAccess.FILE_MAP_READ, 0, 0, (IntPtr)length);
-            MemoryMappedFile.CloseHandle(hmap);
-            if (this.buffer == null)
-            {
-                int rc = Marshal.GetLastWin32Error();
-                throw new FileLoadException(String.Format(CultureInfo.CurrentCulture,
-                    ExceptionStrings.MapViewOfFileReturnedErrorCode, rc.ToString()), filename);
-            }
-            this.length = length;
-        }
         private void CloseMap()
         {
-            if (buffer != null)
+            // clean up the memory mapped file handle if sucessfully created
+            if(success)
             {
-                UnmapViewOfFile(buffer);
-                buffer = null;
+                handle.DangerousRelease();
+                handle.Dispose();
+                handle = null;
+                success = false;
             }
         }
 
         void ISourceText.MakeCollectible()
         {
         }
-
-        private enum PageAccess : int { PAGE_READONLY = 0x02 };
-        private enum FileMapAccess : int { FILE_MAP_READ = 0x0004 };
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr CreateFileMapping(
-          IntPtr hFile,           // handle to file
-          IntPtr lpAttributes,    // security
-          PageAccess flProtect,   // protection
-          int dwMaximumSizeHigh,  // high-order DWORD of size
-          int dwMaximumSizeLow,   // low-order DWORD of size
-          string lpName           // object name
-          );
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern void* MapViewOfFile(
-          IntPtr hFileMappingObject,      // handle to file-mapping object
-          FileMapAccess dwDesiredAccess,  // access mode
-          int dwFileOffsetHigh,           // high-order DWORD of offset
-          int dwFileOffsetLow,            // low-order DWORD of offset
-          IntPtr dwNumberOfBytesToMap        // number of bytes to map
-          );
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool UnmapViewOfFile(
-          void* lpBaseAddress // starting address
-          );
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool CloseHandle(
-          IntPtr hObject  // handle to object
-          );
     }
 }

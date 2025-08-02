@@ -277,22 +277,23 @@ namespace System.Compiler.Metadata
             this.sortedTablesMask = this.tables.tablesHeader.maskSorted;
         }
 
-        [DllImport("kernel32", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern unsafe bool ReadFile(IntPtr FileHandle, byte* Buffer, int NumberOfBytesToRead, int* NumberOfBytesRead, IntPtr Overlapped);
-
         private unsafe void ReadFileIntoUnmanagedBuffer(System.IO.FileStream/*!*/ inputStream)
         {
-            long size = inputStream.Seek(0, System.IO.SeekOrigin.End);
-            if (size > Int32.MaxValue) throw new System.IO.FileLoadException();
-            inputStream.Seek(0, System.IO.SeekOrigin.Begin);
-            int n = (int)size;
-            this.bufferLength = n;
-            this.unmanagedBuffer = new UnmanagedBuffer(n);
-            byte* pb = (byte*)this.unmanagedBuffer.Pointer;
+            // read all the data from the input stream into a local buffer
+            byte[] buffer = new byte[inputStream.Length];
+            int bytesRead = inputStream.Read(buffer, 0, buffer.Length);
+            if(bytesRead != buffer.Length)
+                throw new FileLoadException(String.Format(CultureInfo.CurrentCulture, "Failed to read the file: {0}, expected size: {1}, bytes read: {2}", inputStream.Name, buffer.Length, bytesRead));
 
-            if(!Reader.ReadFile(inputStream.SafeFileHandle.DangerousGetHandle(), pb, n, &n, IntPtr.Zero))
-                throw new System.IO.FileLoadException();
+            this.bufferLength = buffer.Length;
+            this.unmanagedBuffer = new UnmanagedBuffer(buffer.Length);
+            // copy the data from the local buffer to the unmanaged buffer
+            fixed(byte* pBuffer = buffer)
+            {
+                byte* pb = (byte*)this.unmanagedBuffer.Pointer;
+                for(int i = 0; i < buffer.Length; i++)
+                    *pb++ = pBuffer[i];
+            }
         }
 
         internal void SetupDebugReader(string filename, string pdbSearchPath)
