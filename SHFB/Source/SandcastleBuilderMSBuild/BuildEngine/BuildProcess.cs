@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/13/2025
+// Updated : 08/18/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -117,7 +117,9 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
 
         // The composition container for build components and the syntax generator list
         private CompositionContainer componentContainer;
-        private List<ISyntaxGeneratorMetadata> syntaxGenerators;
+        private List<ISyntaxGeneratorMetadata> syntaxGeneratorMetadata;
+        private List<Lazy<ICopyComponentFactory, ICopyComponentMetadata>> copyComponents;
+        private List<Lazy<ISyntaxGeneratorFactory, ISyntaxGeneratorMetadata>> syntaxGeneratorComponents;
         private Dictionary<string, BuildComponentFactory> buildComponents;
 
         // Framework, assembly, and reference information
@@ -465,10 +467,23 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         /// <summary>
         /// This read-only property returns the syntax generator metadata
         /// </summary>
-        internal IEnumerable<ISyntaxGeneratorMetadata> SyntaxGenerators =>
-            syntaxGenerators ??= [.. componentContainer.GetExports<ISyntaxGeneratorFactory,
+        internal IEnumerable<ISyntaxGeneratorMetadata> SyntaxGeneratorMetadata =>
+            syntaxGeneratorMetadata ??= [.. componentContainer.GetExports<ISyntaxGeneratorFactory,
                     ISyntaxGeneratorMetadata>().Select(sf => sf.Metadata)];
 
+        /// <summary>
+        /// This read-only property returns the syntax generator components
+        /// </summary>
+        internal IEnumerable<Lazy<ISyntaxGeneratorFactory, ISyntaxGeneratorMetadata>> SyntaxGeneratorComponents =>
+            syntaxGeneratorComponents ??= [.. componentContainer.GetExports<ISyntaxGeneratorFactory,
+                ISyntaxGeneratorMetadata>()];
+
+        /// <summary>
+        /// This read-only property returns the copy component metadata
+        /// </summary>
+        internal IEnumerable<Lazy<ICopyComponentFactory, ICopyComponentMetadata>> CopyFromIndexComponents =>
+            copyComponents ??= [.. componentContainer.GetExports<ICopyComponentFactory,
+                ICopyComponentMetadata>()];
         #endregion
 
         #region Constructors
@@ -1202,7 +1217,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
 
                 // If F# syntax is being generated, add some of the F# namespaces as the syntax sections generate
                 // references to types that may not be there in non-F# projects.
-                if(ComponentUtilities.SyntaxFiltersFrom(this.SyntaxGenerators, project.SyntaxFilters).Any(
+                if(ComponentUtilities.SyntaxFiltersFrom(this.SyntaxGeneratorMetadata, project.SyntaxFilters).Any(
                   f => f.Id == "F#"))
                 {
                     rn.Add("Microsoft.FSharp.Core");
@@ -1246,7 +1261,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
 
                         // Set the language filter items used by the presentation style transformation
                         this.PresentationStyle.TopicTransformation.AddLanguageFilterItems(
-                            ComponentUtilities.SyntaxFilterLanguagesFrom(this.SyntaxGenerators,
+                            ComponentUtilities.SyntaxFilterLanguagesFrom(this.SyntaxGeneratorMetadata,
                             project.SyntaxFilters));
 
                         // Build the help topics

@@ -35,6 +35,7 @@ using System.Xml.XPath;
 using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
+using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 using Sandcastle.Core.BuildEngine;
 using Sandcastle.Core.PresentationStyle.Transformation;
 
@@ -148,6 +149,14 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
 
         /// <inheritdoc />
         public IEnumerable<BuildComponentCore> BuildComponents => components;
+
+        /// <inheritdoc />
+        public IEnumerable<Lazy<ISyntaxGeneratorFactory, ISyntaxGeneratorMetadata>> SyntaxGeneratorComponents =>
+            currentBuild.SyntaxGeneratorComponents;
+
+        /// <inheritdoc />
+        public IEnumerable<Lazy<ICopyComponentFactory, ICopyComponentMetadata>> CopyFromIndexComponents =>
+            currentBuild.CopyFromIndexComponents;
 
         /// <inheritdoc />
         public IDictionary<string, object> Data { get; } = new Dictionary<string, object>();

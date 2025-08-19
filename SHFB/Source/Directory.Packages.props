@@ -16,10 +16,10 @@
     <PackageVersion Include="Microsoft.VisualStudio.SDK" Version="17.14.40265" />
     <PackageVersion Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="3.14.2075" />
     <PackageVersion Include="NHunspell" Version="1.2.5554.16953" />
-    <PackageVersion Include="SixLabors.ImageSharp" Version="2.1.10" />
-    <PackageVersion Include="System.CodeDom" Version="9.0.6" />
-    <PackageVersion Include="System.ComponentModel.Composition" Version="9.0.6" />
+    <PackageVersion Include="SixLabors.ImageSharp" Version="2.1.11" />
+    <PackageVersion Include="System.CodeDom" Version="9.0.8" />
+    <PackageVersion Include="System.ComponentModel.Composition" Version="9.0.8" />
     <PackageVersion Include="System.IO.Compression" Version="4.3.0" />
-    <PackageVersion Include="System.Text.Json" Version="9.0.6" />
+    <PackageVersion Include="System.Text.Json" Version="9.0.8" />
   </ItemGroup>
 </Project>

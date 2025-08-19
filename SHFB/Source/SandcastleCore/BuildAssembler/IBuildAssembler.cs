@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : IBuildAssembler.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 08/18/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the interface used to define the common Build Assembler tool methods
 //
@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Xml.XPath;
 
 using Sandcastle.Core.BuildAssembler.BuildComponent;
+using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 using Sandcastle.Core.PresentationStyle.Transformation;
 
 namespace Sandcastle.Core.BuildAssembler
@@ -51,6 +52,16 @@ namespace Sandcastle.Core.BuildAssembler
         /// This read-only property returns the current list of build components
         /// </summary>
         IEnumerable<BuildComponentCore> BuildComponents { get; }
+
+        /// <summary>
+        /// This read-only property returns the syntax generator component factories
+        /// </summary>
+        IEnumerable<Lazy<ISyntaxGeneratorFactory, ISyntaxGeneratorMetadata>> SyntaxGeneratorComponents { get; }
+
+        /// <summary>
+        /// This read-only property returns the copy from index component factories
+        /// </summary>
+        IEnumerable<Lazy<ICopyComponentFactory, ICopyComponentMetadata>> CopyFromIndexComponents { get; }
 
         /// <summary>
         /// This read-only property returns a dictionary that can be used to store information shared between

@@ -829,7 +829,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         [SubstitutionTag]
         private string SyntaxFilters()
         {
-            return ComponentUtilities.SyntaxFilterGeneratorsFrom(currentBuild.SyntaxGenerators,
+            return ComponentUtilities.SyntaxFilterGeneratorsFrom(currentBuild.SyntaxGeneratorMetadata,
                 sandcastleProject.SyntaxFilters);
         }
         #endregion

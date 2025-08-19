@@ -12,7 +12,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Xml;
 using System.Xml.XPath;
@@ -40,17 +39,11 @@ namespace Sandcastle.Tools.BuildComponents
         [BuildComponentExport("Copy From Index Component")]
         public sealed class Factory : BuildComponentFactory
         {
-            /// <summary>
-            /// This is used to import the list of copy component factories that is passed to the build component
-            /// when it is created.
-            /// </summary>
-            [ImportMany(typeof(ICopyComponentFactory))]
-            private List<Lazy<ICopyComponentFactory, ICopyComponentMetadata>> CopyComponents { get; set; }
-
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new CopyFromIndexComponent(this.BuildAssembler, this.CopyComponents);
+                // ImportMany only works on .NET Framework so we use the build engine to get them instead
+                return new CopyFromIndexComponent(this.BuildAssembler, [.. this.BuildAssembler.CopyFromIndexComponents]);
             }
         }
         #endregion

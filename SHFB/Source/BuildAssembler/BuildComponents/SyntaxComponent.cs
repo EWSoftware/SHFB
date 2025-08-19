@@ -49,11 +49,6 @@ namespace Sandcastle.Tools.BuildComponents
             "and sort code snippets based on the order of the defined syntax generators.")]
         public sealed class Factory : BuildComponentFactory
         {
-            // This is used to import the list of syntax generator factories that is passed to the build
-            // component when it is created.
-            [ImportMany(typeof(ISyntaxGeneratorFactory))]
-            private List<Lazy<ISyntaxGeneratorFactory, ISyntaxGeneratorMetadata>> SyntaxGenerators { get; set; }
-
             /// <summary>
             /// Constructor
             /// </summary>
@@ -70,7 +65,8 @@ namespace Sandcastle.Tools.BuildComponents
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new SyntaxComponent(this.BuildAssembler, this.SyntaxGenerators);
+                // ImportMany only works on .NET Framework so we use the build engine to get them instead
+                return new SyntaxComponent(this.BuildAssembler, [.. this.BuildAssembler.SyntaxGeneratorComponents]);
             }
 
             /// <inheritdoc />
