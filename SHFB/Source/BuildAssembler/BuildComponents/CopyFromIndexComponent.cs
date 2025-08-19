@@ -42,8 +42,7 @@ namespace Sandcastle.Tools.BuildComponents
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                // ImportMany only works on .NET Framework so we use the build engine to get them instead
-                return new CopyFromIndexComponent(this.BuildAssembler, [.. this.BuildAssembler.CopyFromIndexComponents]);
+                return new CopyFromIndexComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -80,11 +79,9 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        /// <param name="copyComponentFactories">The list of available copy component factory components</param>
-        protected CopyFromIndexComponent(IBuildAssembler buildAssembler,
-          List<Lazy<ICopyComponentFactory, ICopyComponentMetadata>> copyComponentFactories) : base(buildAssembler)
+        protected CopyFromIndexComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
-            this.copyComponentFactories = copyComponentFactories;
+            this.copyComponentFactories = [.. this.BuildAssembler.CopyFromIndexComponents];
         }
         #endregion
 

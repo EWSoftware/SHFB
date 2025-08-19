@@ -65,8 +65,7 @@ namespace Sandcastle.Tools.BuildComponents
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                // ImportMany only works on .NET Framework so we use the build engine to get them instead
-                return new SyntaxComponent(this.BuildAssembler, [.. this.BuildAssembler.SyntaxGeneratorComponents]);
+                return new SyntaxComponent(this.BuildAssembler);
             }
 
             /// <inheritdoc />
@@ -107,12 +106,9 @@ namespace Sandcastle.Tools.BuildComponents
         /// Constructor
         /// </summary>
         /// <param name="buildAssembler">A reference to the build assembler</param>
-        /// <param name="generatorFactories">The list of available syntax generator factory components</param>
-        protected SyntaxComponent(IBuildAssembler buildAssembler,
-          List<Lazy<ISyntaxGeneratorFactory, ISyntaxGeneratorMetadata>> generatorFactories) : base(buildAssembler)
+        protected SyntaxComponent(IBuildAssembler buildAssembler) : base(buildAssembler)
         {
-            this.generatorFactories = generatorFactories ?? throw new ArgumentNullException(nameof(generatorFactories));
-
+            generatorFactories = [.. this.BuildAssembler.SyntaxGeneratorComponents];
             generatorLanguages = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             languageSet = [];
             languageOrder = [];
