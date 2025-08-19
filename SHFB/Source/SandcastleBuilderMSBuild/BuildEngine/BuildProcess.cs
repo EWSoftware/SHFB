@@ -426,11 +426,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         /// This returns the filename of the default topic as determined by the build engine
         /// </summary>
         /// <remarks>The path is relative to the root of the output folder (i.e. html/DefaultTopic.htm)</remarks>
-        public string DefaultTopicFile
-        {
-            get => field ?? String.Empty;
-            private set => field = value;
-        }
+        public string DefaultTopicFile { get; private set; }
 
         /// <summary>
         /// This returns the <see cref="SandcastleProject.HelpTitle"/> project property value with all
