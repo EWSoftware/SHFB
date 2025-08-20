@@ -855,7 +855,7 @@ namespace Sandcastle.Tools.BuildComponents
             XmlAttribute srcFile = code.Attributes["source"];
 
             if(srcFile != null)
-                sourceFile = srcFile.Value;
+                sourceFile = srcFile.Value.CorrectFilePathSeparators();
 
             if(String.IsNullOrWhiteSpace(sourceFile))
             {
