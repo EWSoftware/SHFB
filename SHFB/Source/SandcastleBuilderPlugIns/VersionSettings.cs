@@ -49,7 +49,7 @@ namespace SandcastleBuilder.PlugIns
         /// <remarks>This is used to group like versions of projects.</remarks>
         public string FrameworkLabel
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -70,7 +70,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string Version
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -94,7 +94,7 @@ namespace SandcastleBuilder.PlugIns
         /// assemblies such as references, API filter settings, etc.</value>
         public FilePath HelpFileProject
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -119,7 +119,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string ErrorMessage
         {
-            get => field;
+            get;
             private set
             {
                 field = value;
@@ -133,7 +133,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string VersionInfoDescription
         {
-            get => field;
+            get;
             private set
             {
                 field = value;

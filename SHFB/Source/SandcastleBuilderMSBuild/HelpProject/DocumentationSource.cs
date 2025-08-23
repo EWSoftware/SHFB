@@ -59,7 +59,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
           DefaultValue(null)]
         public string Configuration
         {
-            get => field;
+            get;
             set
             {
                 field = (value ?? String.Empty).Trim();
@@ -77,7 +77,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
           "source.  If blank, the platform from the owning help file project will be used."), DefaultValue(null)]
         public string Platform
         {
-            get => field;
+            get;
             set
             {
                 field = (value ?? String.Empty).Trim();
@@ -95,7 +95,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
           "use multi-targeting.  If blank, the first target framework will be used."), DefaultValue(null)]
         public string TargetFramework
         {
-            get => field;
+            get;
             set
             {
                 field = (value ?? String.Empty).Trim();
@@ -112,7 +112,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
           RefreshProperties(RefreshProperties.All)]
         public FilePath SourceFile
         {
-            get => field;
+            get;
             set
             {
                 if(value == null || value.Path.Length == 0)
@@ -135,7 +135,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
           "search the top-level folder."), DefaultValue(false)]
         public bool IncludeSubFolders
         {
-            get => field;
+            get;
             set
             {
                 field = value;

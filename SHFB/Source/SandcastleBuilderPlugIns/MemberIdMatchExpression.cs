@@ -45,7 +45,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string MatchExpression
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -64,7 +64,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string ReplacementValue
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -83,7 +83,7 @@ namespace SandcastleBuilder.PlugIns
         /// <value>True to match and replace as a regular expression, false to use literal match and replace</value>
         public bool MatchAsRegEx
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -101,7 +101,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string ErrorMessage
         {
-            get => field;
+            get;
             private set
             {
                 field = value;

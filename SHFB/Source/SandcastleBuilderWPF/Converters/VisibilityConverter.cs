@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : VisibilityConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/20/2021
-// Note    : Copyright 2021, Eric Woodruff, All rights reserved
+// Updated : 08/23/2025
+// Note    : Copyright 2021-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a converter that converts various value types to a visibility states (hidden or visible)
 //
@@ -38,7 +38,8 @@ namespace SandcastleBuilder.WPF.Converters
                 invertResult = false;
 
             if((value != null && value is string url && !String.IsNullOrWhiteSpace(url)) ||
-              (value is bool boolValue && boolValue) || (value is int intValue && intValue != 0))
+              (value is bool boolValue && boolValue) || (value is int intValue && intValue != 0) ||
+              (value is long longValue && longValue != 0))
             {
                 result = Visibility.Visible;
             }

@@ -74,7 +74,7 @@ namespace SandcastleBuilder.PlugIns.UI
             /// </summary>
             public string Expression
             {
-                get => field;
+                get;
                 set
                 {
                     if(field != value)
@@ -105,7 +105,7 @@ namespace SandcastleBuilder.PlugIns.UI
             /// </summary>
             public string ErrorMessage
             {
-                get => field;
+                get;
                 set
                 {
                     field = value;

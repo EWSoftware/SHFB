@@ -50,7 +50,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public HtmlSdkLinkType HtmlSdkLinkType
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -68,7 +68,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public MSHelpViewerSdkLinkType MSHelpViewerSdkLinkType
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -86,7 +86,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public HtmlSdkLinkType WebsiteSdkLinkType
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -107,7 +107,7 @@ namespace SandcastleBuilder.PlugIns
         /// assemblies such as references, API filter settings, etc.</value>
         public FilePath HelpFileProject
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -132,7 +132,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string ErrorMessage
         {
-            get => field;
+            get;
             private set
             {
                 field = value;
@@ -146,7 +146,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string ReferenceLinkDescription
         {
-            get => field;
+            get;
             private set
             {
                 field = value;

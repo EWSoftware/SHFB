@@ -43,7 +43,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string AssemblyName
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -62,7 +62,7 @@ namespace SandcastleBuilder.PlugIns
         /// <value>If omitted, "null" is assumed</value>
         public string PublicKeyToken
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -81,7 +81,7 @@ namespace SandcastleBuilder.PlugIns
         /// <value>If omitted, "neutral" is assumed</value>
         public string Culture
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -99,7 +99,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string OldVersion
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -120,7 +120,7 @@ namespace SandcastleBuilder.PlugIns
         /// version.</value>
         public string OldVersionTo
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -138,7 +138,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string NewVersion
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -158,7 +158,7 @@ namespace SandcastleBuilder.PlugIns
         /// <value>If specified, the properties in the Binding Redirect category are ignored.</value>
         public FilePath ConfigurationFile
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -183,7 +183,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string ErrorMessage
         {
-            get => field;
+            get;
             private set
             {
                 field = value;
@@ -197,7 +197,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string BindingRedirectDescription
         {
-            get => field;
+            get;
             private set
             {
                 field = value;

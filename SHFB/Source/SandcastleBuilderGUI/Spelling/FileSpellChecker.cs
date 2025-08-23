@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : FileSpellChecker.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/05/2025
+// Updated : 07/23/2025
 // Note    : Copyright 2013-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to spell check files in the SHFB project
@@ -317,6 +317,7 @@ namespace SandcastleBuilder.Gui.Spelling
                             case '0':   // NUL or Octal
                             case 'a':   // BEL
                             case 'b':   // BS
+                            case 'e':   // Escape
                             case 'f':   // FF
                             case 'n':   // LF
                             case 'r':   // CR

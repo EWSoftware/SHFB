@@ -478,7 +478,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string ProjectSummary
         {
-            get => field;
+            get;
             set => field = (value ?? String.Empty).Trim();
         }
 
@@ -514,7 +514,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         /// <value>If left blank, the current project's folder is searched instead</value>
         public FolderPath ComponentPath
         {
-            get => field;
+            get;
             set
             {
                 if(value == null)
@@ -531,7 +531,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         /// <value>If left blank, source context information will be omitted from the reflection data</value>
         public FolderPath SourceCodeBasePath
         {
-            get => field;
+            get;
             set
             {
                 if(value == null)
@@ -555,7 +555,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         /// <value>You only need to set this if the builder cannot determine the path for itself</value>
         public FolderPath HtmlHelp1xCompilerPath
         {
-            get => field;
+            get;
             set
             {
                 if(value == null)
@@ -575,7 +575,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         /// erased without warning prior to copying the new web site content to it!</para></remarks>
         public string OutputPath
         {
-            get => field;
+            get;
             set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -599,7 +599,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         /// erased without warning when the build starts.</para></value>
         public FolderPath WorkingPath
         {
-            get => field;
+            get;
             set
             {
                 if(value == null)
@@ -669,7 +669,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         /// saved in the path identified in the <see cref="OutputPath" /> property.</value>
         public FilePath BuildLogFile
         {
-            get => field;
+            get;
             private set
             {
                 if(value == null)
@@ -705,7 +705,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string FrameworkVersion
         {
-            get => field;
+            get;
             set
             {
                 // Let bad values through.  The property pages or the build engine will catch bad values if
@@ -813,7 +813,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string RootNamespaceTitle
         {
-            get => field;
+            get;
             private set => field = (value ?? String.Empty).Trim();
         }
 
@@ -833,7 +833,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         /// <remarks>Namespace groups are determined automatically and may be documented as well</remarks>
         public int MaximumGroupParts
         {
-            get => field;
+            get;
             private set
             {
                 if(value < 2)
@@ -849,7 +849,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string HelpTitle
         {
-            get => field;
+            get;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -869,7 +869,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string HtmlHelpName
         {
-            get => field;
+            get;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -888,7 +888,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string HelpFileVersion
         {
-            get => field;
+            get;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -911,7 +911,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         /// catalog is <c>VS_100_EN-US</c>.</remarks>
         public CultureInfo Language
         {
-            get => field;
+            get;
             private set
             {
                 if(value == null || value == CultureInfo.InvariantCulture)
@@ -928,7 +928,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string CopyrightHref
         {
-            get => field;
+            get;
             private set => field = (value ?? String.Empty).Trim();
         }
 
@@ -940,7 +940,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string CopyrightText
         {
-            get => field;
+            get;
             private set => field = (value ?? String.Empty).Trim();
         }
 
@@ -960,7 +960,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string FeedbackEMailAddress
         {
-            get => field;
+            get;
             private set => field = (value ?? String.Empty).Trim();
         }
 
@@ -973,7 +973,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string FeedbackEMailLinkText
         {
-            get => field;
+            get;
             private set => field = (value ?? String.Empty).Trim();
         }
 
@@ -983,7 +983,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string HeaderText
         {
-            get => field;
+            get;
             private set => field = (value ?? String.Empty).Trim();
         }
 
@@ -993,7 +993,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string FooterText
         {
-            get => field;
+            get;
             private set => field = (value ?? String.Empty).Trim();
         }
 
@@ -1012,7 +1012,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string PresentationStyle
         {
-            get => field;
+            get;
             private set
             {
                 // Let bad values through.  The property pages or the build engine will catch bad values if
@@ -1037,7 +1037,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         /// <value>The default is <strong>Standard</strong> (C#, VB.NET, and C++)</value>
         public string SyntaxFilters
         {
-            get => field;
+            get;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -1095,7 +1095,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string CatalogProductId
         {
-            get => field;
+            get;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -1120,7 +1120,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string CatalogVersion
         {
-            get => field;
+            get;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -1140,7 +1140,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string CatalogName
         {
-            get => field;
+            get;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -1160,7 +1160,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string VendorName
         {
-            get => field;
+            get;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -1182,7 +1182,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string ProductTitle
         {
-            get => field;
+            get;
             private set => field = (value ?? String.Empty).Trim();
         }
 
@@ -1193,7 +1193,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string TopicVersion
         {
-            get => field;
+            get;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -1213,7 +1213,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string TocParentId
         {
-            get => field;
+            get;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -1232,7 +1232,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         [EscapeValue]
         public string TocParentVersion
         {
-            get => field;
+            get;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -1252,7 +1252,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
         /// other project properties.</value>
         public int TocOrder
         {
-            get => field;
+            get;
             private set
             {
                 if(value < -1)

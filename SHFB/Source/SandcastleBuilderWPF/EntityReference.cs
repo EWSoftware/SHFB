@@ -63,7 +63,7 @@ namespace SandcastleBuilder.WPF
         /// </summary>
         public bool IsSelected
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)

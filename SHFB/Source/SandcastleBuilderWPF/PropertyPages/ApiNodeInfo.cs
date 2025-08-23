@@ -116,7 +116,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public Brush BackgroundBrush
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -132,7 +132,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public bool IsIncluded
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -148,7 +148,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public bool IsExpanded
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -164,7 +164,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public bool IsSelected
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)

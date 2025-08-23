@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : DownloadCountConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/18/2021
-// Note    : Copyright 2021, Eric Woodruff, All rights reserved
+// Updated : 08/23/2025
+// Note    : Copyright 2021-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a converter that converts download counts to a more compact form for display
 //
@@ -31,12 +31,12 @@ namespace SandcastleBuilder.WPF.Converters
         /// <inheritdoc />
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            double downloadCount = (int)value;
+            double downloadCount = (long)value;
             string convertedValue;
 
             // Display format is based on the behavior of the Visual Studio NuGet package manager tool window
             if(downloadCount >= 1000000000)
-                convertedValue = $"{downloadCount / 1000000000:N1}G";
+                convertedValue = $"{downloadCount / 1000000000:N1}B";
             else if(downloadCount >= 100000000)
                 convertedValue = $"{downloadCount / 1000000:N0}M";
             else if(downloadCount >= 10000000)

@@ -371,7 +371,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         /// file and must have its <c>Visible</c> property set to True in the layout file.</remarks>
         public string ApiTocParentId
         {
-            get => field;
+            get;
             set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -391,7 +391,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         /// project properties.</remarks>
         public int ApiTocOrder
         {
-            get => field;
+            get;
             set
             {
                 if(value < -1)
@@ -410,7 +410,7 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         /// <c>Visible</c> property set to False in the layout file.</remarks>
         public string RootContentContainerId
         {
-            get => field;
+            get;
             set
             {
                 if(String.IsNullOrWhiteSpace(value))

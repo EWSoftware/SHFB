@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : NuGetPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/04/2025
+// Updated : 08/23/2025
 // Note    : Copyright 2021-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain the details about a NuGet package
@@ -78,7 +78,7 @@ namespace SandcastleBuilder.WPF.NuGet
         /// <summary>
         /// This read-only property returns the total number of downloads for the package
         /// </summary>
-        public int TotalDownloads { get; }
+        public long TotalDownloads { get; }
 
         /// <summary>
         /// This read-only property returns the available versions of the package
@@ -107,7 +107,7 @@ namespace SandcastleBuilder.WPF.NuGet
         /// </summary>
         public bool IsInstalled
         {
-            get => field;
+            get;
             set
             {
                 field = value;
@@ -121,7 +121,7 @@ namespace SandcastleBuilder.WPF.NuGet
         /// </summary>
         public string InstalledVersion
         {
-            get => field;
+            get;
             set
             {
                 field = value;
@@ -152,7 +152,7 @@ namespace SandcastleBuilder.WPF.NuGet
             this.Description = packageInfo.GetProperty("description").GetString();
             this.LatestVersion = packageInfo.GetProperty("version").GetString();
             this.Authors = String.Join(", ", packageInfo.GetProperty("authors").EnumerateArray().Select(a => a.GetString()));
-            this.TotalDownloads = packageInfo.GetProperty("totalDownloads").GetInt32();
+            this.TotalDownloads = packageInfo.GetProperty("totalDownloads").GetInt64();
 
             var versions = new HashSet<string>(packageInfo.GetProperty("versions").EnumerateArray().Select(
                 v => v.GetProperty("version").GetString()), StringComparer.OrdinalIgnoreCase).ToList();

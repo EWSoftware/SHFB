@@ -42,7 +42,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public FolderPath ReferencePath
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -67,7 +67,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string Wildcard
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -88,7 +88,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public bool Recursive
         {
-            get => field;
+            get;
             set
             {
                 if(field != value)
@@ -106,7 +106,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string ErrorMessage
         {
-            get => field;
+            get;
             private set
             {
                 field = value;
@@ -120,7 +120,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public string ReferenceDescription
         {
-            get => field;
+            get;
             set
             {
                 field = value;
