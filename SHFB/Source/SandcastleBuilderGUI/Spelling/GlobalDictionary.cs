@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : GlobalDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/05/2025
+// Updated : 08/24/2025
 // Note    : Copyright 2013-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that implements the global dictionary
@@ -21,9 +21,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
-using NHunspell;
+using WeCantSpell.Hunspell;
 
 namespace SandcastleBuilder.Gui.Spelling
 {
@@ -36,10 +37,9 @@ namespace SandcastleBuilder.Gui.Spelling
         //=====================================================================
 
         private static Dictionary<string, GlobalDictionary> globalDictionaries;
-        private static SpellEngine spellEngine;
-
+        
+        private readonly WordList wordList;
         private readonly HashSet<string> ignoredWords;
-        private readonly SpellFactory spellFactory;
         private readonly string ignoredWordsFile;
 
         #endregion
@@ -61,11 +61,11 @@ namespace SandcastleBuilder.Gui.Spelling
         /// Private constructor
         /// </summary>
         /// <param name="culture">The language to use for the dictionary</param>
-        /// <param name="spellFactory">The spell factory to use when checking words</param>
-        private GlobalDictionary(CultureInfo culture, SpellFactory spellFactory)
+        /// <param name="wordList">The word list to use when checking words</param>
+        private GlobalDictionary(CultureInfo culture, WordList wordList)
         {
             this.Language = culture;
-            this.spellFactory = spellFactory;
+            this.wordList = wordList;
 
             ignoredWords = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             ignoredWordsFile = Path.Combine(SpellCheckerConfiguration.ConfigurationFilePath,
@@ -83,8 +83,8 @@ namespace SandcastleBuilder.Gui.Spelling
         {
             try
             {
-                if(spellFactory != null && !String.IsNullOrWhiteSpace(word))
-                    return spellFactory.Spell(word);
+                if(wordList != null && !String.IsNullOrWhiteSpace(word))
+                    return wordList.Check(word);
             }
             catch(Exception ex)
             {
@@ -98,12 +98,10 @@ namespace SandcastleBuilder.Gui.Spelling
         /// <inheritdoc />
         public IEnumerable<string> SuggestCorrections(string word)
         {
-            List<string> suggestions = null;
-
             try
             {
-                if(spellFactory != null && !String.IsNullOrWhiteSpace(word))
-                    suggestions = spellFactory.Suggest(word);
+                if(wordList != null && !String.IsNullOrWhiteSpace(word))
+                    return wordList.Suggest(word);
             }
             catch(Exception ex)
             {
@@ -111,7 +109,7 @@ namespace SandcastleBuilder.Gui.Spelling
                 // Eat exceptions, there's not much we can do
             }
 
-            return suggestions ?? [];
+            return [];
         }
 
         /// <inheritdoc />
@@ -177,32 +175,18 @@ namespace SandcastleBuilder.Gui.Spelling
                 {
                     string dllPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-                    if(spellEngine == null)
-                    {
-                        Hunspell.NativeDllPath = dllPath;
-                        spellEngine = new SpellEngine();
-                    }
-
                     // Look in the configuration folder first for user-supplied dictionaries
                     string dictionaryFile = Path.Combine(SpellCheckerConfiguration.ConfigurationFilePath,
-                        culture.Name.Replace("-", "_") + ".aff");
+                        culture.Name.Replace("-", "_") + ".dic");
 
                     // If not found, default to the English dictionary supplied with the package.  This can at
                     // least clue us in that it didn't find the language-specific dictionary when the suggestions
                     // are in English.
                     if(!File.Exists(dictionaryFile))
-                        dictionaryFile = Path.Combine(dllPath, "en_US.aff");
+                        dictionaryFile = Path.Combine(dllPath, "en_US.dic");
 
-                    LanguageConfig lc = new()
-                    {
-                        LanguageCode = culture.Name,
-                        HunspellAffFile = dictionaryFile,
-                        HunspellDictFile = Path.ChangeExtension(dictionaryFile, ".dic")
-                    };
-
-                    spellEngine.AddLanguage(lc);
-
-                    gd = new GlobalDictionary(culture, spellEngine[culture.Name]);
+                    gd = new GlobalDictionary(culture, WordList.CreateFromFiles(dictionaryFile,
+                        Path.ChangeExtension(dictionaryFile, ".aff")));
                     
                     globalDictionaries.Add(culture.Name, gd);
                 }

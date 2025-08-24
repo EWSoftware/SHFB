@@ -19,6 +19,9 @@
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<ApplicationIcon>Resources\SandcastleBuilder.ico</ApplicationIcon>
 		<DefineConstants>$(DefineConstants);STANDALONEGUI</DefineConstants>
+		<!-- This is no longer signed as it uses WeCantSpell.Hunspell which isn't signed and I couldn't be bothered
+				 to create a signed version of it.  This isn't deployed via NuGet so it isn't really necessary anyway.  -->
+		<SignAssembly>false</SignAssembly>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -84,7 +87,7 @@
 		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" />
 		<PackageReference Include="Microsoft.Build.Locator" />
 		<PackageReference Include="ICSharpCode.TextEditor" />
-		<PackageReference Include="NHunspell" />
+		<PackageReference Include="WeCantSpell.Hunspell" />
 	</ItemGroup>
 
 	<ItemGroup>

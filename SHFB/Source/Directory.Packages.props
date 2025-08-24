@@ -21,5 +21,6 @@
     <PackageVersion Include="System.ComponentModel.Composition" Version="9.0.8" />
     <PackageVersion Include="System.IO.Compression" Version="4.3.0" />
     <PackageVersion Include="System.Text.Json" Version="9.0.8" />
+    <PackageVersion Include="WeCantSpell.Hunspell" Version="6.0.1" />
   </ItemGroup>
 </Project>
