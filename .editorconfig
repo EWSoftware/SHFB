@@ -177,6 +177,7 @@ dotnet_style_predefined_type_for_member_access = false:error
 dotnet_style_coalesce_expression = true:suggestion
 dotnet_style_collection_initializer = true:suggestion
 dotnet_style_explicit_tuple_names = true:error
+dotnet_style_namespace_declarations = file_scoped:suggestion
 dotnet_style_null_propagation = true:suggestion
 dotnet_style_object_initializer = true:suggestion
 dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggestion

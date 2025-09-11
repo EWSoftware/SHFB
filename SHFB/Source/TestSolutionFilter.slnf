@@ -1,0 +1,10 @@
+{
+  // A solution filter file to test handling one as a SHFB project documenation source
+  "solution": {
+    "path": "SandcastleTools.slnx",
+    "projects": [
+      "CodeColorizer\\ColorizerLibrary\\ColorizerLibrary.csproj",
+      "SandcastleCore\\SandcastleCore.csproj",
+    ]
+  }
+}
