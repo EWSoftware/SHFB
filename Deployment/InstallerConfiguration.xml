@@ -28,10 +28,10 @@
 
 		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage">
 			<package name="SandcastleBuilder.Package.vsix"
-				id="SHFB.A8C96335-DAF7-4D30-89E2-B004400E4525" supportedVersions="17" />
+				id="SHFB.A8C96335-DAF7-4D30-89E2-B004400E4525" supportedVersions="17,18" />
 
-			<page type="Sandcastle.Installer.InstallerPages.MamlIntelliSensePage" supportedVersions="17" />
-			<page type="Sandcastle.Installer.InstallerPages.MamlSnippetsPage" supportedVersions="17" />
+			<page type="Sandcastle.Installer.InstallerPages.MamlIntelliSensePage" supportedVersions="17,18" />
+			<page type="Sandcastle.Installer.InstallerPages.MamlSnippetsPage" supportedVersions="17,18" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.VisualStudioSpellCheckerPage" />
