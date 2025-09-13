@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MamlLinkQuickInfoSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
-// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
+// Updated : 09/12/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that determines whether or not quick info should be shown for specific MAML
 // elements and what is should contain.
@@ -23,251 +23,233 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Language.Intellisense;
-using Microsoft.VisualStudio.PlatformUI;
-using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Adornments;
 using Microsoft.VisualStudio.Text.Tagging;
 
-namespace SandcastleBuilder.Package.GoToDefinition
+namespace SandcastleBuilder.Package.GoToDefinition;
+
+/// <summary>
+/// This class is used to determine whether or not quick info should be shown for specific MAML elements and
+/// what it should contain.
+/// </summary>
+internal sealed class MamlLinkQuickInfoSource : IAsyncQuickInfoSource
 {
+    #region Private data members
+    //=====================================================================
+
+    private readonly ITextBuffer textBuffer;
+    private readonly IViewTagAggregatorFactoryService aggregatorFactory;
+    private readonly bool ctrlClickEnabled;
+
+    #endregion
+
+    #region Constructor
+    //=====================================================================
+
     /// <summary>
-    /// This class is used to determine whether or not quick info should be shown for specific MAML elements and
-    /// what it should contain.
+    /// Constructor
     /// </summary>
-// TODO: Type is obsolete.  Update to use IAsyncQuickInfoSource
-#pragma warning disable CS0618
-    internal sealed class MamlLinkQuickInfoSource : IQuickInfoSource
+    /// <param name="buffer">The buffer to use</param>
+    /// <param name="aggregatorFactory">The aggregator factory to use</param>
+    /// <param name="ctrlClickEnabled">True if Ctrl+Click on definition is enabled, false if not</param>
+    public MamlLinkQuickInfoSource(ITextBuffer buffer, IViewTagAggregatorFactoryService aggregatorFactory,
+      bool ctrlClickEnabled)
     {
-        #region Private data members
-        //=====================================================================
+        this.textBuffer = buffer;
+        this.aggregatorFactory = aggregatorFactory;
+        this.ctrlClickEnabled = ctrlClickEnabled;
+    }
+    #endregion
 
-        private readonly SVsServiceProvider serviceProvider;
-        private readonly ITextBuffer textBuffer;
-        private readonly MamlLinkQuickInfoSourceProvider provider;
-        private readonly bool ctrlClickEnabled;
+    #region IAsyncQuickInfoSource implementation
+    //=====================================================================
 
-        #endregion
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        // Nothing to dispose of for this one
+    }
 
-        #region Constructor
-        //=====================================================================
+    /// <inheritdoc />
+    public Task<QuickInfoItem> GetQuickInfoItemAsync(IAsyncQuickInfoSession session,
+      CancellationToken cancellationToken)
+    {
+        var triggerPoint = session.GetTriggerPoint(textBuffer.CurrentSnapshot);
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="serviceProvider">The service provider to use</param>
-        /// <param name="buffer">The buffer to use</param>
-        /// <param name="provider">The quick info source provider to use</param>
-        /// <param name="ctrlClickEnabled">True if Ctrl+Click on definition is enabled, false if not</param>
-        public MamlLinkQuickInfoSource(SVsServiceProvider serviceProvider, ITextBuffer buffer,
-          MamlLinkQuickInfoSourceProvider provider, bool ctrlClickEnabled)
+        if(triggerPoint == null)
+            return Task.FromResult<QuickInfoItem>(null);
+
+        using var tagAggregator = aggregatorFactory.CreateTagAggregator<IClassificationTag>(session.TextView);
+        var lineSpan = triggerPoint.Value.GetContainingLine();
+        string elementName = null, attrName = null, name, spanText;
+        ContainerElement content = null;
+        ITrackingSpan applicableToSpan;
+
+        foreach(IMappingTagSpan<IClassificationTag> curTag in tagAggregator.GetTags(
+          new SnapshotSpan(lineSpan.Start, lineSpan.End)))
         {
-            this.serviceProvider = serviceProvider;
-            this.textBuffer = buffer;
-            this.provider = provider;
-            this.ctrlClickEnabled = ctrlClickEnabled;
-        }
-        #endregion
+            name = curTag.Tag.ClassificationType.Classification.ToLowerInvariant();
+            var tagSpan = curTag.Span.GetSpans(textBuffer).First();
 
-        #region IQuickInfoSource implementation
-        //=====================================================================
-
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            // Nothing to dispose of for this one
-        }
-
-        /// <inheritdoc />
-        public void AugmentQuickInfoSession(IQuickInfoSession session, IList<object> quickInfoContent,
-          out ITrackingSpan applicableToSpan)
-        {
-            applicableToSpan = null;
-
-            var tagAggregator = provider.AggregatorFactory.CreateTagAggregator<IClassificationTag>(session.TextView);
-            var triggerPoint = session.GetTriggerPoint(textBuffer.CurrentSnapshot);
-
-            if(triggerPoint != null)
+            switch(name)
             {
-                SnapshotSpan tagSpan;
-                var lineSpan = triggerPoint.Value.GetContainingLine();
-                string elementName = null, attrName = null, name, spanText;
-                UIElement content;
-
-                // Get the tags for the line containing the mouse point
-                foreach(IMappingTagSpan<IClassificationTag> curTag in tagAggregator.GetTags(
-                  new SnapshotSpan(lineSpan.Start, lineSpan.End)))
-                {
-                    name = curTag.Tag.ClassificationType.Classification.ToLowerInvariant();
-
-                    switch(name)
-                    {
-                        case "xml name":
-                            tagSpan = curTag.Span.GetSpans(textBuffer).First();
-                            elementName = tagSpan.GetText();
-                            break;
-
-                        case "xml attribute":
-                            tagSpan = curTag.Span.GetSpans(textBuffer).First();
-                            attrName = tagSpan.GetText();
-                            break;
-
-                        case "xml attribute value":
-                            tagSpan = curTag.Span.GetSpans(textBuffer).First();
-
-                            if(tagSpan.Contains(triggerPoint.Value))
-                            {
-                                if(((elementName == "image" || elementName == "link") && attrName == "xlink:href") ||
-                                  (elementName == "topic" && attrName == "id"))
-                                {
-#pragma warning disable VSTHRD010
-                                    content = this.CreateInfoText(elementName, tagSpan.GetText());
-#pragma warning restore VSTHRD010
-
-                                    if(content != null)
-                                    {
-                                        applicableToSpan = textBuffer.CurrentSnapshot.CreateTrackingSpan(tagSpan,
-                                            SpanTrackingMode.EdgeExclusive);
-
-                                        quickInfoContent.Add(content);
-                                    }
-                                }
-
-                                return;
-                            }
-                            break;
-
-                        case "xml text":
-                            tagSpan = curTag.Span.GetSpans(textBuffer).First();
-
-                            if(tagSpan.Contains(triggerPoint.Value))
-                            {
-                                spanText = tagSpan.GetText().Trim();
-                                content = null;
-
-                                switch(elementName)
-                                {
-                                    case "codeEntityReference":
-                                        if(spanText.IsCodeEntityReference())
-                                            content = this.CreateInfoText(elementName, tagSpan.GetText());
-                                        break;
-
-                                    case "codeReference":
-                                        if(spanText.IsCodeReferenceId())
-                                            content = this.CreateInfoText(elementName, tagSpan.GetText());
-                                        break;
-
-                                    case "token":
-                                        content = this.CreateInfoText(elementName, tagSpan.GetText());
-                                        break;
-
-                                    default:
-                                        // We only get info about the current line so we may just get some XML
-                                        // text if the starting tag is on a prior line.  In such cases, see if
-                                        // the text looks like an entity reference or a code reference ID.  If
-                                        // so, offer it as a clickable link.  If not, ignore it.
-                                        if(String.IsNullOrWhiteSpace(elementName))
-                                            if(spanText.IsCodeEntityReference())
-                                                content = this.CreateInfoText("codeEntityReference", tagSpan.GetText());
-                                            else
-                                                if(spanText.IsCodeReferenceId())
-                                                    content = this.CreateInfoText("codeReference", tagSpan.GetText());
-                                        break;
-                                }
-
-                                if(content != null)
-                                {
-                                    // Ignore any leading whitespace on the span so that the pop-up open directly
-                                    // under the text.
-                                    spanText = tagSpan.GetText();
-
-                                    int offset = spanText.Length - spanText.TrimStart().Length;
-
-                                    applicableToSpan = textBuffer.CurrentSnapshot.CreateTrackingSpan(
-                                        tagSpan.Start + offset, tagSpan.Length - offset, SpanTrackingMode.EdgeExclusive);
-
-                                    quickInfoContent.Add(content);
-                                }
-                                return;
-                            }
-                            break;
-
-                        default:
-                            break;
-                    }
-                } 
-            }
-        }
-
-        /// <summary>
-        /// This is used to get the content to add to the quick info by looking up the given topic ID to get its
-        /// title and filename if possible.
-        /// </summary>
-        /// <param name="elementName">The element name for which to create content</param>
-        /// <param name="id">The ID to look up if necessary</param>
-        /// <returns>The content to add to the quick info (a text block element containing the additional info
-        /// about the element)</returns>
-        private UIElement CreateInfoText(string elementName, string id)
-        {
-            if(String.IsNullOrWhiteSpace(elementName) || String.IsNullOrWhiteSpace(id))
-                return null;
-
-            var textBlock = new TextBlock();
-
-            switch(elementName)
-            {
-                case "image":
-                case "link":
-                case "topic":
-                    var projectFileSearcher = new ProjectFileSearcher(serviceProvider, null);
-
-#pragma warning disable VSTHRD010
-                    bool found = projectFileSearcher.GetInfoFor(elementName == "image" ?
-                        ProjectFileSearcher.IdType.Image : ProjectFileSearcher.IdType.Link, id,
-                        out string title, out _, out string relativePath);
-#pragma warning restore VSTHRD010
-
-                    textBlock.Inlines.AddRange(new Inline[] {
-                        new Bold(new Run(elementName == "image" ? "Alternate Text: " : "Title: ")),
-                        new Run(title),
-                        new LineBreak(),
-                        new Bold(new Run("Filename: ")),
-                        new Run(relativePath)
-                    });
-
-                    if(elementName != "topic" && found & ctrlClickEnabled)
-                        textBlock.Inlines.AddRange(new Inline[] {
-                            new LineBreak(),
-                            new Run("Ctrl+Click to open the file")
-                        });
+                case "xml name":
+                    elementName = tagSpan.GetText();
                     break;
 
-                case "codeEntityReference":
-                    if(!ctrlClickEnabled)
-                        return null;
+                case "xml attribute":
+                    attrName = tagSpan.GetText();
+                    break;
 
-                    textBlock.Inlines.Add(new Run("Ctrl+Click to go to definition (within solution only)"));
+                case "xml attribute value":
+                    if(tagSpan.Contains(triggerPoint.Value))
+                    {
+                        if(((elementName == "image" || elementName == "link") && attrName == "xlink:href") ||
+                            (elementName == "topic" && attrName == "id"))
+                        {
+                            content = this.CreateInfoText(elementName, tagSpan.GetText());
+
+                            if(content != null)
+                            {
+                                applicableToSpan = textBuffer.CurrentSnapshot.CreateTrackingSpan(tagSpan,
+                                    SpanTrackingMode.EdgeExclusive);
+
+                                return Task.FromResult(new QuickInfoItem(applicableToSpan, content));
+                            }
+                        }
+
+                        return Task.FromResult<QuickInfoItem>(null);
+                    }
+                    break;
+
+                case "xml text":
+                    if(tagSpan.Contains(triggerPoint.Value))
+                    {
+                        spanText = tagSpan.GetText().Trim();
+
+                        switch(elementName)
+                        {
+                            case "codeEntityReference":
+                                if(spanText.IsCodeEntityReference())
+                                    content = this.CreateInfoText(elementName, tagSpan.GetText());
+                                break;
+
+                            case "codeReference":
+                                if(spanText.IsCodeReferenceId())
+                                    content = this.CreateInfoText(elementName, tagSpan.GetText());
+                                break;
+
+                            case "token":
+                                content = this.CreateInfoText(elementName, tagSpan.GetText());
+                                break;
+
+                            default:
+                                // We only get info about the current line so we may just get some XML text if
+                                // the starting tag is on a prior line.  In such cases, see if the text looks
+                                // like an entity reference or a code reference ID.  If so, offer it as a
+                                // clickable link.  If not, ignore it.
+                                if(String.IsNullOrWhiteSpace(elementName))
+                                {
+                                    if(spanText.IsCodeEntityReference())
+                                        content = this.CreateInfoText("codeEntityReference", tagSpan.GetText());
+                                    else
+                                    {
+                                        if(spanText.IsCodeReferenceId())
+                                            content = this.CreateInfoText("codeReference", tagSpan.GetText());
+                                    }
+                                }
+                                break;
+                        }
+
+                        if(content != null)
+                        {
+                            // Ignore any leading whitespace on the span so that the pop-up open directly
+                            // under the text.
+                            spanText = tagSpan.GetText();
+
+                            int offset = spanText.Length - spanText.TrimStart().Length;
+
+                            applicableToSpan = textBuffer.CurrentSnapshot.CreateTrackingSpan(
+                                tagSpan.Start + offset, tagSpan.Length - offset, SpanTrackingMode.EdgeExclusive);
+
+                            return Task.FromResult(new QuickInfoItem(applicableToSpan, content));
+                        }
+
+                        return Task.FromResult<QuickInfoItem>(null);
+                    }
                     break;
 
                 default:
-                    if(!ctrlClickEnabled)
-                        return null;
-
-                    textBlock.Inlines.Add(new Run("Ctrl+Click to open the containing file"));
                     break;
             }
-
-            // Set the styles in order to support other themes
-            textBlock.SetResourceReference(TextBlock.BackgroundProperty, EnvironmentColors.ToolTipBrushKey);
-            textBlock.SetResourceReference(TextBlock.ForegroundProperty, EnvironmentColors.ToolTipTextBrushKey);
-
-            return textBlock;
         }
-        #endregion
+
+        return Task.FromResult<QuickInfoItem>(null);
     }
-#pragma warning restore CS0618
+
+    /// <summary>
+    /// This is used to get the content to add to the quick info by looking up the given topic ID to get its
+    /// title and filename if possible.
+    /// </summary>
+    /// <param name="elementName">The element name for which to create content</param>
+    /// <param name="id">The ID to look up if necessary</param>
+    /// <returns>The content to add to the quick info (a text block element containing the additional info
+    /// about the element)</returns>
+    private ContainerElement CreateInfoText(string elementName, string id)
+    {
+        if(String.IsNullOrWhiteSpace(elementName) || String.IsNullOrWhiteSpace(id))
+            return null;
+
+        var elements = new List<ClassifiedTextElement>();
+
+        switch(elementName)
+        {
+            case "image":
+            case "link":
+            case "topic":
+                var projectFileSearcher = new ProjectFileSearcher(null);
+
+                var (found, title, _, relativePath) = projectFileSearcher.GetInfoForId(elementName == "image" ?
+                    ProjectFileSearcher.IdType.Image : ProjectFileSearcher.IdType.Link, id);
+
+                elements.Add(new ClassifiedTextElement(new ClassifiedTextRun(PredefinedClassificationTypeNames.Other,
+                    elementName == "image" ? "Alternate Text: " : "Title: ", ClassifiedTextRunStyle.Bold),
+                    new ClassifiedTextRun(PredefinedClassificationTypeNames.Other, title)));
+                elements.Add(new ClassifiedTextElement(new ClassifiedTextRun(PredefinedClassificationTypeNames.Other,
+                    "Filename: ",ClassifiedTextRunStyle.Bold),
+                    new ClassifiedTextRun(PredefinedClassificationTypeNames.Other, relativePath)));
+
+                if(elementName != "topic" && found & ctrlClickEnabled)
+                {
+                    elements.Add(new ClassifiedTextElement(new ClassifiedTextRun(
+                        PredefinedClassificationTypeNames.Other, "Ctrl+Click to open the file")));
+                }
+                break;
+
+            case "codeEntityReference":
+                if(!ctrlClickEnabled)
+                    return null;
+
+                elements.Add(new ClassifiedTextElement(new ClassifiedTextRun(
+                    PredefinedClassificationTypeNames.Other, "Ctrl+Click to go to definition (within solution only)")));
+                break;
+
+            default:
+                if(!ctrlClickEnabled)
+                    return null;
+
+                elements.Add(new ClassifiedTextElement(new ClassifiedTextRun(
+                    PredefinedClassificationTypeNames.Other, "Ctrl+Click to open the containing file")));
+                break;
+        }
+
+        return new ContainerElement(ContainerElementStyle.Stacked, elements);
+    }
+    #endregion
 }

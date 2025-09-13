@@ -28,8 +28,8 @@ using Microsoft.VisualStudio.Shell;
 namespace SandcastleBuilder.Package.GoToDefinition
 {
     /// <summary>
-    /// This is used to provide the mouse processor that highlights available <c>cref</c> attribute,
-    /// conceptualLink element, and token element link targets in XML comments and goes to their definitions.
+    /// This is used to provide the mouse processor that highlights available conceptualLink element and token
+    /// element link targets in XML comments and goes to their definitions.
     /// </summary>
     /// <remarks>This only supports C#.  See <see cref="CodeEntitySearcher"/> for the reasons why.</remarks>
     [Export(typeof(IMouseProcessorProvider))]
