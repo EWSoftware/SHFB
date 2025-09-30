@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : XmlCommentsLinkQuickInfoSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/12/2025
+// Updated : 09/29/2025
 // Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that determines whether or not quick info should be shown for specific XML
@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,7 +27,8 @@ using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Adornments;
-using Microsoft.VisualStudio.Text.Tagging;
+using Microsoft.VisualStudio.Text.Classification;
+using Microsoft.VisualStudio.Shell;
 
 namespace SandcastleBuilder.Package.GoToDefinition;
 
@@ -42,7 +42,7 @@ internal sealed class XmlCommentsLinkQuickInfoSource : IAsyncQuickInfoSource
     //=====================================================================
 
     private readonly ITextBuffer textBuffer;
-    private readonly IViewTagAggregatorFactoryService aggregatorFactory;
+    private readonly IViewClassifierAggregatorService classifierAggregatorService;
     private readonly bool ctrlClickEnabled;
 
     #endregion
@@ -54,13 +54,13 @@ internal sealed class XmlCommentsLinkQuickInfoSource : IAsyncQuickInfoSource
     /// Constructor
     /// </summary>
     /// <param name="buffer">The buffer to use</param>
-    /// <param name="aggregatorFactory">The aggregator factory to use</param>
+    /// <param name="classifierAggregatorService">The classifier aggregator service to use</param>
     /// <param name="ctrlClickEnabled">True if Ctrl+Click on definition is enabled, false if not</param>
-    public XmlCommentsLinkQuickInfoSource(ITextBuffer buffer, IViewTagAggregatorFactoryService aggregatorFactory,
+    public XmlCommentsLinkQuickInfoSource(ITextBuffer buffer, IViewClassifierAggregatorService classifierAggregatorService,
       bool ctrlClickEnabled)
     {
         this.textBuffer = buffer;
-        this.aggregatorFactory = aggregatorFactory;
+        this.classifierAggregatorService = classifierAggregatorService;
         this.ctrlClickEnabled = ctrlClickEnabled;
     }
     #endregion
@@ -75,25 +75,29 @@ internal sealed class XmlCommentsLinkQuickInfoSource : IAsyncQuickInfoSource
     }
 
     /// <inheritdoc />
-    public Task<QuickInfoItem> GetQuickInfoItemAsync(IAsyncQuickInfoSession session,
+    public async Task<QuickInfoItem> GetQuickInfoItemAsync(IAsyncQuickInfoSession session,
       CancellationToken cancellationToken)
     {
         var triggerPoint = session.GetTriggerPoint(textBuffer.CurrentSnapshot);
 
-        if(triggerPoint == null)
-            return Task.FromResult<QuickInfoItem>(null);
+        if (triggerPoint == null)
+            return null;
 
-        using var tagAggregator = aggregatorFactory.CreateTagAggregator<IClassificationTag>(session.TextView);
         var lineSpan = triggerPoint.Value.GetContainingLine();
         string elementName = null, attrName = null, identifier = null, name;
         ContainerElement content;
         ITrackingSpan applicableToSpan;
 
-        foreach(IMappingTagSpan<IClassificationTag> curTag in tagAggregator.GetTags(
-          new SnapshotSpan(lineSpan.Start, lineSpan.End)))
+        // Getting the classifier needs to run on the UI thread
+        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+
+        var classifier = classifierAggregatorService.GetClassifier(session.TextView);
+        var classificationSpans = classifier.GetClassificationSpans(new SnapshotSpan(lineSpan.Start, lineSpan.End));
+
+        foreach (var curSpan in classificationSpans)
         {
-            name = curTag.Tag.ClassificationType.Classification.ToLowerInvariant();
-            var tagSpan = curTag.Span.GetSpans(textBuffer).First();
+            name = curSpan.ClassificationType.Classification.ToLowerInvariant();
+            var tagSpan = curSpan.Span;
 
             if(name.IndexOf("identifier", StringComparison.Ordinal) != -1)
                 name = "identifier";
@@ -123,10 +127,10 @@ internal sealed class XmlCommentsLinkQuickInfoSource : IAsyncQuickInfoSource
                             applicableToSpan = textBuffer.CurrentSnapshot.CreateTrackingSpan(tagSpan,
                                 SpanTrackingMode.EdgeExclusive);
 
-                            return Task.FromResult(new QuickInfoItem(applicableToSpan, content));
+                            return new QuickInfoItem(applicableToSpan, content);
                         }
 
-                        return Task.FromResult<QuickInfoItem>(null);
+                        return null;
                     }
                     break;
 
@@ -163,11 +167,11 @@ internal sealed class XmlCommentsLinkQuickInfoSource : IAsyncQuickInfoSource
                                 applicableToSpan = textBuffer.CurrentSnapshot.CreateTrackingSpan(span,
                                     SpanTrackingMode.EdgeExclusive);
 
-                                return Task.FromResult(new QuickInfoItem(applicableToSpan, content));
+                                return new QuickInfoItem(applicableToSpan, content);
                             }
                         }
 
-                        return Task.FromResult<QuickInfoItem>(null);
+                        return null;
                     }
                     break;
 
@@ -181,10 +185,10 @@ internal sealed class XmlCommentsLinkQuickInfoSource : IAsyncQuickInfoSource
                             applicableToSpan = textBuffer.CurrentSnapshot.CreateTrackingSpan(tagSpan,
                                 SpanTrackingMode.EdgeExclusive);
 
-                            return Task.FromResult(new QuickInfoItem(applicableToSpan, content));
+                            return new QuickInfoItem(applicableToSpan, content);
                         }
 
-                        return Task.FromResult<QuickInfoItem>(null);
+                        return null;
                     }
                     break;
 
@@ -193,7 +197,7 @@ internal sealed class XmlCommentsLinkQuickInfoSource : IAsyncQuickInfoSource
             }
         }
 
-        return Task.FromResult<QuickInfoItem>(null);
+        return null;
     }
 
     /// <summary>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : XmlCommentsLinkQuickInfoSourceProvider.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/12/2025
+// Updated : 09/29/2025
 // Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that creates the quick info source specific to XML comments elements
@@ -22,7 +22,7 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Tagging;
+using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
 
 namespace SandcastleBuilder.Package.GoToDefinition;
@@ -36,22 +36,21 @@ namespace SandcastleBuilder.Package.GoToDefinition;
 [ContentType("csharp")]
 internal sealed class XmlCommentsLinkQuickInfoSourceProvider : IAsyncQuickInfoSourceProvider
 {
-    //[Import]
-    //private readonly SVsServiceProvider GlobalServiceProvider;
+    [Import]
+    internal SVsServiceProvider GlobalServiceProvider = null;
 
     [Import]
-    internal IViewTagAggregatorFactoryService AggregatorFactory { get; set; }
+    internal IViewClassifierAggregatorService ClassifierAggregatorService { get; set; }
 
     /// <inheritdoc />
     public IAsyncQuickInfoSource TryCreateQuickInfoSource(ITextBuffer textBuffer)
     {
-        // TODO: This is causing a crash in code analysis for some reason so it's disabled for now
-        //var options = new MefProviderOptions(GlobalServiceProvider);
+        var options = new MefProviderOptions(GlobalServiceProvider);
 
-        //if(!options.EnableGoToDefinition)
+        if(!options.EnableGoToDefinition)
             return null;
 
-        //return new XmlCommentsLinkQuickInfoSource(textBuffer, this.AggregatorFactory,
-        //    options.EnableCtrlClickGoToDefinition);
+        return new XmlCommentsLinkQuickInfoSource(textBuffer, ClassifierAggregatorService,
+            options.EnableCtrlClickGoToDefinition);
     }
 }

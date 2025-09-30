@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : GoToDefinitionTextViewCreationListener.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2019
-// Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
+// Updated : 09/29/2025
+// Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to connect the Go To Definition command filter to the text view adapters
 //
@@ -29,59 +29,58 @@ using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
 
-namespace SandcastleBuilder.Package.GoToDefinition
+namespace SandcastleBuilder.Package.GoToDefinition;
+
+/// <summary>
+/// This class is used to connect the Go To Definition command filter to the text view adapters
+/// </summary>
+/// <remarks>The command filter is only connected to C# and XML text view adapters.  The command will be
+/// available to C# and XML files in any project type, not just SHFB projects.</remarks>
+[Export(typeof(IVsTextViewCreationListener)), ContentType("csharp"), ContentType("xml"),
+  TextViewRole(PredefinedTextViewRoles.Document)]
+internal sealed class GoToDefinitionTextViewCreationListener : IVsTextViewCreationListener
 {
-    /// <summary>
-    /// This class is used to connect the Go To Definition command filter to the text view adapters
-    /// </summary>
-    /// <remarks>The command filter is only connected to C# and XML text view adapters.  The command will be
-    /// available to C# and XML files in any project type, not just SHFB projects.</remarks>
-    [Export(typeof(IVsTextViewCreationListener)), ContentType("csharp"), ContentType("xml"),
-      TextViewRole(PredefinedTextViewRoles.Document)]
-    internal sealed class GoToDefinitionTextViewCreationListener : IVsTextViewCreationListener
+    #region MEF imports
+    //=====================================================================
+
+    [Import]
+    private readonly IVsEditorAdaptersFactoryService editorAdaptersFactoryService = null;
+
+    [Import]
+    internal SVsServiceProvider ServiceProvider { get; set; }
+
+    [Import]
+    public IViewClassifierAggregatorService ClassifierAggregatorService { get; set; }
+
+    [Import]
+    public ITextStructureNavigatorSelectorService TextStructureNavigatorSelectorService { get; set; }
+
+    #endregion
+
+    #region IVsTextViewCreationListener implementation
+    //=====================================================================
+
+    /// <inheritdoc />
+    public void VsTextViewCreated(IVsTextView textViewAdapter)
     {
-        #region MEF imports
-        //=====================================================================
+        var options = new MefProviderOptions(ServiceProvider);
 
-        [Import]
-        private readonly IVsEditorAdaptersFactoryService editorAdaptersFactoryService = null;
-
-        [Import]
-        internal SVsServiceProvider ServiceProvider { get; set; }
-
-        [Import]
-        public IClassifierAggregatorService ClassifierAggregatorService { get; set; }
-
-        [Import]
-        public ITextStructureNavigatorSelectorService TextStructureNavigatorSelectorService { get; set; }
-
-        #endregion
-
-        #region IVsTextViewCreationListener implementation
-        //=====================================================================
-
-        /// <inheritdoc />
-        public void VsTextViewCreated(IVsTextView textViewAdapter)
+        if(options.EnableGoToDefinition)
         {
-            var options = new MefProviderOptions(ServiceProvider);
+            var textView = editorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
 
-            if(options.EnableGoToDefinition)
+            if(textView != null)
             {
-                var textView = editorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
+                var filter = new GoToDefinitionCommandTarget(textView, this);
 
-                if(textView != null)
+                if(ErrorHandler.Succeeded(textViewAdapter.AddCommandFilter(filter, out IOleCommandTarget nextTarget)))
                 {
-                    var filter = new GoToDefinitionCommandTarget(textView, this);
-
-                    if(ErrorHandler.Succeeded(textViewAdapter.AddCommandFilter(filter, out IOleCommandTarget nextTarget)))
-                    {
-                        filter.NextTarget = nextTarget;
-                        textView.Properties.GetOrCreateSingletonProperty(() => filter);
-                    }
+                    filter.NextTarget = nextTarget;
+                    textView.Properties.GetOrCreateSingletonProperty(() => filter);
                 }
             }
         }
-        #endregion
     }
+    #endregion
 }
 

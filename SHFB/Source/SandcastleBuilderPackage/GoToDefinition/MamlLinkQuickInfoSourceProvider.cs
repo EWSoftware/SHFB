@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MamlLinkQuickInfoSourceProvider.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/12/2025
+// Updated : 09/29/2025
 // Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that creates the quick info source specific to MAML elements
@@ -22,7 +22,7 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Tagging;
+using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
 
 namespace SandcastleBuilder.Package.GoToDefinition;
@@ -37,10 +37,10 @@ namespace SandcastleBuilder.Package.GoToDefinition;
 internal sealed class MamlLinkQuickInfoSourceProvider : IAsyncQuickInfoSourceProvider
 {
     [Import]
-    private SVsServiceProvider GlobalServiceProvider = null;
+    internal SVsServiceProvider GlobalServiceProvider = null;
 
     [Import]
-    internal IViewTagAggregatorFactoryService AggregatorFactory { get; set; }
+    internal IViewClassifierAggregatorService ClassifierAggregatorService { get; set; }
 
     /// <inheritdoc />
     public IAsyncQuickInfoSource TryCreateQuickInfoSource(ITextBuffer textBuffer)
@@ -50,6 +50,7 @@ internal sealed class MamlLinkQuickInfoSourceProvider : IAsyncQuickInfoSourcePro
         if(!options.EnableGoToDefinition)
             return null;
 
-        return new MamlLinkQuickInfoSource(textBuffer, this.AggregatorFactory, options.EnableCtrlClickGoToDefinition);
+        return new MamlLinkQuickInfoSource(textBuffer, this.ClassifierAggregatorService,
+            options.EnableCtrlClickGoToDefinition);
     }
 }

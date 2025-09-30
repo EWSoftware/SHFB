@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : GoToDefinitionCommandTarget.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/12/2025
+// Updated : 09/29/2025
 // Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to enable the Go To Definition context menu command in XML comments and MAML
@@ -153,7 +153,7 @@ internal sealed class GoToDefinitionCommandTarget : IOleCommandTarget
             if(extent.IsSignificant)
             {
                 var line = pos.GetContainingLine();
-                var aggregator = provider.ClassifierAggregatorService.GetClassifier(buffer);
+                var aggregator = provider.ClassifierAggregatorService.GetClassifier(textView);
                 var identifierSpan = ProcessSpans(pos, aggregator.GetClassificationSpans(
                     new SnapshotSpan(line.Start, line.End)), out string definitionType);
 

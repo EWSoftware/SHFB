@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : XmlGoToDefinitionMouseProcessorProvider.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us) - Based on code originally written by Noah Richards
-// Updated : 01/09/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
+// Updated : 09/29/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that creates the mouse processor specific to MAML files
 //
@@ -25,43 +25,42 @@ using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using Microsoft.VisualStudio.Shell;
 
-namespace SandcastleBuilder.Package.GoToDefinition
+namespace SandcastleBuilder.Package.GoToDefinition;
+
+/// <summary>
+/// This is used to provide the mouse processor that highlights available MAML element link targets and goes
+/// to their definitions in their related files.
+/// </summary>
+/// <remarks>For code entity references, this only supports C#.  See <see cref="CodeEntitySearcher"/> for the
+/// reasons why.</remarks>
+[Export(typeof(IMouseProcessorProvider))]
+[TextViewRole(PredefinedTextViewRoles.Document)]
+[ContentType("xml")]
+[Name("SHFB XML Go To Definition Mouse Processor Provider")]
+[Order(Before = "WordSelection")]
+internal sealed class XmlGoToDefinitionMouseProcessorProvider : IMouseProcessorProvider
 {
-    /// <summary>
-    /// This is used to provide the mouse processor that highlights available MAML element link targets and goes
-    /// to their definitions in their related files.
-    /// </summary>
-    /// <remarks>For code entity references, this only supports C#.  See <see cref="CodeEntitySearcher"/> for the
-    /// reasons why.</remarks>
-    [Export(typeof(IMouseProcessorProvider))]
-    [TextViewRole(PredefinedTextViewRoles.Document)]
-    [ContentType("xml")]
-    [Name("SHFB XML Go To Definition Mouse Processor Provider")]
-    [Order(Before = "WordSelection")]
-    internal sealed class XmlGoToDefinitionMouseProcessorProvider : IMouseProcessorProvider
+    [Import]
+    private IViewClassifierAggregatorService AggregatorFactory = null;
+
+    [Import]
+    private ITextStructureNavigatorSelectorService NavigatorService = null;
+
+    [Import]
+    private SVsServiceProvider GlobalServiceProvider = null;
+
+    /// <inheritdoc />
+    public IMouseProcessor GetAssociatedProcessor(IWpfTextView view)
     {
-        [Import]
-        private IClassifierAggregatorService AggregatorFactory = null;
+        var options = new MefProviderOptions(GlobalServiceProvider);
 
-        [Import]
-        private ITextStructureNavigatorSelectorService NavigatorService = null;
+        if(!options.EnableGoToDefinition || !options.EnableCtrlClickGoToDefinition)
+            return null;
 
-        [Import]
-        private SVsServiceProvider GlobalServiceProvider = null;
+        var buffer = view.TextBuffer;
 
-        /// <inheritdoc />
-        public IMouseProcessor GetAssociatedProcessor(IWpfTextView view)
-        {
-            var options = new MefProviderOptions(GlobalServiceProvider);
-
-            if(!options.EnableGoToDefinition || !options.EnableCtrlClickGoToDefinition)
-                return null;
-
-            var buffer = view.TextBuffer;
-
-            return new XmlGoToDefinitionMouseProcessor(view, GlobalServiceProvider,
-                AggregatorFactory.GetClassifier(buffer), NavigatorService.GetTextStructureNavigator(buffer),
-                CtrlKeyState.GetStateForView(view));
-        }
+        return new XmlGoToDefinitionMouseProcessor(view, GlobalServiceProvider,
+            AggregatorFactory.GetClassifier(view), NavigatorService.GetTextStructureNavigator(buffer),
+            CtrlKeyState.GetStateForView(view));
     }
 }
