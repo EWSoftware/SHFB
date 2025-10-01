@@ -1365,11 +1365,16 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isSelected="true" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" isSelected="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
+    <Topic id="45d01e39-8086-4e10-85e6-69591d26a032" visible="True" title="Version 2025.9.30.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2025.9.30.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="4ba0d138-85d4-4bb5-8b65-08a77f6ee0b3" visible="True" title="Version 2025.3.22.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2025.3.22.0" />

@@ -14,7 +14,7 @@ or plug-ins rather than reimplementing an entire presentation style.  Further ch
 		</introduction>
 
 		<section address="Post20250322">
-			<title>Updating Projects After v2025.3.22.0</title>
+			<title>Updating Projects For Use With v2025.9.30.0 and Later</title>
 			<content>
 				<para>The <localUri>EWSoftware.SandcastleBuilder.Utils</localUri> NuGet package should not be used after
 version 2025.3.22.0.  All code in it was moved to the <localUri>EWSoftware.Sandcastle.Core</localUri> package and

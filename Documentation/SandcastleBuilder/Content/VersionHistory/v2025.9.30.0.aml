@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="45d01e39-8086-4e10-85e6-69591d26a032" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2025.9.30.0.</para>
+		</introduction>
+
+		<section address="BreakingChanges">
+			<title>Breaking Changes in This Release</title>
+			<content>
+				<alert class="important">
+					<para>If you have created custom build components, syntax generators, plug-ins, or presentation styles,
+you will need to rebuild them against the latest release of the help file builder NuGet package.</para>
+				</alert>
+				
+				<list class="bullet">
+					<listItem>
+						<para>The <legacyBold>SandcastleBuilder.Utils</legacyBold> assembly has been removed.  Its
+functionality has been moved into the <legacyBold>Sandcastle.Core</legacyBold> and other internal assemblies.
+Third-party components should remove the reference to the <legacyBold>EWSoftware.SandcastleBuilder.Utils</legacyBold>
+NuGet package and update the reference to the <legacyBold>EWSoftware.Sandcastle.Core</legacyBold> package to the
+latest release.  You will also need to update some namespace references.  See the
+<link xlink:href="bc933f8f-e792-45bf-afec-62aa2c46aa3b" /> topic for more information.</para>
+
+						<para>These changes should prevent future issues with changes to MSBuild breaking the standalone GUI
+and should facilitate future changes related to the MSBuild tasks and the build engine in general.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated all tools to .NET Framework 4.8 and .NET 9.0.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+		
+		<section>
+			<title>Build Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed a bug in MRefBuilder related to parameter matching when parameter types where in both
+mscorlib and another framework assembly.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed handling of XML comments files related to assemblies from package references.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added two new visibility options to allow removing the extension methods section from member
+list topics entirely or just hiding extension methods that extend <codeInline>System.Object</codeInline>.</para>
+					</listItem>
+				
+					<listItem>
+						<para>Fixed how <codeInline>CopyFromIndexComponent</codeInline> and <codeInline>SyntaxComponent</codeInline>
+obtain their component factory info due to lack of <codeInline>ImportMany</codeInline> MEF attribute support in
+dotnet builds.</para>
+					</listItem>
+				
+					<listItem>
+						<para>Added support for using solution filter files (<localUri>*.slnf</localUri>) as documentation
+sources.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the reflection data set files to support .NET 10.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<section>
+			<title>Sandcastle Help File Builder</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Removed Visual Studio 2017 and 2019 support from the extension package.  The extension now only
+supports Visual Studio 2022 and later.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for installing the extension package in Visual Studio 2026.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the preview tool window so that it handles duplicate token IDs.  Updated the token editor
+to warn if a duplicate token ID is seen within the same file.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section>
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Added <codeInline>this</codeInline>/<codeInline>Me</codeInline> language specific text support.</para>
+					</listItem>
+
+					<listItem>
+						<para>If the Always Show Top Level Auto-Outline option is used, the In This Article column is now
+hidden to prevent it silently overlaying the main content and blocking links from being clicked.</para>
+					</listItem>
+
+					<listItem>
+						<para>Enabled showing applicable extension methods on enumerated types.</para>
+					</listItem>
+
+					<listItem>
+						<para>Changed the Obsolete notice back to using the standard notice text rather than the attribute
+message.</para>
+					</listItem>
+				
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

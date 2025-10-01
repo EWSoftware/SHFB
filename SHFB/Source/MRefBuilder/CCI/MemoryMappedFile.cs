@@ -7,11 +7,12 @@
 // 11/22/2013 - EFW - Cleared out the conditional statements
 // 12/16/2013 - EFW - Added hack to work around a bug when parsing .NETCore 4.5 assemblies.
 
+// Ignore Spelling: Substring
+
 using System.Diagnostics;
 using System.IO;
-using System.Globalization;
-using System.Runtime.InteropServices;
 using System.Text;
+
 using Microsoft.Win32.SafeHandles;
 
 namespace System.Compiler.Metadata
@@ -348,17 +349,20 @@ namespace System.Compiler.Metadata
     /// </summary>   
     unsafe public sealed class MemoryMappedFile : IDisposable, ISourceTextBuffer
     {
-        private byte* buffer;
-        private int length;
+        private readonly byte* buffer;
+        private readonly int length;
         private SafeMemoryMappedViewHandle handle;
         private bool success;
 
         public MemoryMappedFile(string fileName)
         {
-            // using .NET 6.0+ MemoryMappedFile APIs
+            // Using .NET 6.0+ MemoryMappedFile APIs.  We need to use a file stream with shared read access since
+            // the assembly may be open in another process.
+            using var mmfStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
             using IO.MemoryMappedFiles.MemoryMappedFile mmf = IO.MemoryMappedFiles.MemoryMappedFile.CreateFromFile(
-                fileName, FileMode.Open, null, 0, IO.MemoryMappedFiles.MemoryMappedFileAccess.Read);
+                mmfStream, null, 0, IO.MemoryMappedFiles.MemoryMappedFileAccess.Read, HandleInheritability.None, false);
             using IO.MemoryMappedFiles.MemoryMappedViewStream viewStream = mmf.CreateViewStream(0, 0, IO.MemoryMappedFiles.MemoryMappedFileAccess.Read);
+
             handle = viewStream.SafeMemoryMappedViewHandle;
 
             // use the underlying handle to access the memory (note this will throw an exception if the handle is invalid)
@@ -366,10 +370,12 @@ namespace System.Compiler.Metadata
             buffer = (byte*)viewStream.SafeMemoryMappedViewHandle.DangerousGetHandle();
             length = (int)viewStream.Length;
         }
+
         ~MemoryMappedFile()
         {
             this.CloseMap();
         }
+
         public void Dispose()
         {
             this.CloseMap();
@@ -384,6 +390,7 @@ namespace System.Compiler.Metadata
                 return this.buffer;
             }
         }
+        
         public int Length
         {
             get
@@ -409,7 +416,7 @@ namespace System.Compiler.Metadata
 
         private void CloseMap()
         {
-            // clean up the memory mapped file handle if sucessfully created
+            // clean up the memory mapped file handle if successfully created
             if(success)
             {
                 handle.DangerousRelease();

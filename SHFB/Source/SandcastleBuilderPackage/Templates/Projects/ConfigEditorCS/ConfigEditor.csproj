@@ -18,6 +18,6 @@
 		<ProjectReference Include="..\ComponentPlugInName\ComponentPlugInName.csproj" />
 		-->
 		<PackageReference Include="System.ComponentModel.Composition" Version="9.0.7" />
-		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2025.7.9.0" />
+		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2025.9.30.0" />
 	</ItemGroup>
 </Project>

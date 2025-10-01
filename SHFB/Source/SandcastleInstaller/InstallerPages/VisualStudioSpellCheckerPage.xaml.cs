@@ -2,9 +2,9 @@
 // System  : Sandcastle Guided Installation
 // File    : VisualStudioSpellCheckerPage.cs
 // Author  : Eric Woodruff
-// Updated : 04/21/2021
+// Updated : 09/30/2025
 //
-// This file contains a page containing information about the Visual Studio Spell Checker
+// This file contains a page containing information about the Spell Check My Code extension.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code and can found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
@@ -29,7 +29,7 @@ namespace Sandcastle.Installer.InstallerPages
         //=====================================================================
 
         /// <inheritdoc />
-        public override string PageTitle => "Visual Studio Spell Checker";
+        public override string PageTitle => "Spell Check My Code Extension";
 
         #endregion
 

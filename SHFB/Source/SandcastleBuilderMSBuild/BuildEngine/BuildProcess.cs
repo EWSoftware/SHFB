@@ -312,7 +312,7 @@ public partial class BuildProcess : IBuildProcess
     /// <summary>
     /// This is used to get the conceptual content settings in effect for the build
     /// </summary>
-    public ConceptualContentSettings ConceptualContent =>
+    public IConceptualContentSettings ConceptualContent =>
         // Create on first use.  Plug-ins may want to add stuff earlier than we need it.
         conceptualContent ??= new ConceptualContentSettings(project);
 
@@ -1133,7 +1133,7 @@ public partial class BuildProcess : IBuildProcess
                 if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 {
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
-                    this.ConceptualContent.CopyContentFiles(this);
+                    conceptualContent.CopyContentFiles(this);
                     this.ExecutePlugIns(ExecutionBehaviors.After);
                 }
 
@@ -1143,7 +1143,7 @@ public partial class BuildProcess : IBuildProcess
                 if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 {
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
-                    this.ConceptualContent.CreateConfigurationFiles(this);
+                    conceptualContent.CreateConfigurationFiles(this);
                     this.ExecutePlugIns(ExecutionBehaviors.After);
                 }
             }
