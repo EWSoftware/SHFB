@@ -3,7 +3,7 @@
 			 for information on why conditional target frameworks are used. -->
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
 		<!-- Use the full framework for debugging -->
-		<TargetFramework>net47</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
@@ -59,7 +59,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.ComponentModel.Composition" Version="9.0.7" />
+		<PackageReference Include="System.ComponentModel.Composition" Version="9.0.8" />
 		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2025.9.30.0" />
 	</ItemGroup>
 

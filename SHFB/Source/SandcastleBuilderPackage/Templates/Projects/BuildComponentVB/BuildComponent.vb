@@ -3,6 +3,7 @@ Imports System.Reflection
 Imports System.Xml
 Imports System.Xml.XPath
 
+Imports Sandcastle.Core
 Imports Sandcastle.Core.BuildAssembler
 Imports Sandcastle.Core.BuildAssembler.BuildComponent
 

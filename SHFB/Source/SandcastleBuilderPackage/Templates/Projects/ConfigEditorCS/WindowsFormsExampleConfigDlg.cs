@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 
 using Sandcastle.Core;
+using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.PlugIn;
 using Sandcastle.Core.Project;
 
@@ -45,7 +46,7 @@ namespace $safeprojectname$
         public sealed class PlugInFactory : IPlugInConfigurationEditor
         {
             /// <inheritdoc />
-            public bool EditConfiguration(SandcastleProject project, XElement configuration)
+            public bool EditConfiguration(ISandcastleProject project, XElement configuration)
             {
                 using(var dlg = new WindowsFormsExampleConfigDlg(configuration))
                 {

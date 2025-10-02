@@ -37,7 +37,7 @@ namespace $safeprojectname$
 
         private List<ExecutionPoint> executionPoints;
 
-        private BuildProcess builder;
+        private IBuildProcess builder;
 
         #endregion
 
@@ -69,7 +69,7 @@ namespace $safeprojectname$
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XElement configuration)
+        public void Initialize(IBuildProcess buildProcess, XElement configuration)
         {
             builder = buildProcess;
 

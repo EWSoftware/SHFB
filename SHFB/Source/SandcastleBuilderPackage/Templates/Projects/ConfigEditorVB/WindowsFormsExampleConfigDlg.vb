@@ -2,6 +2,7 @@
 Imports System.Windows.Forms
 
 Imports Sandcastle.Core
+Imports Sandcastle.Core.BuildAssembler
 Imports Sandcastle.Core.PlugIn
 Imports Sandcastle.Core.Project
 
@@ -41,7 +42,7 @@ Public Class WindowsFormsExampleConfigDlg
         Implements IPlugInConfigurationEditor
 
         ''' <inheritdoc />
-        Private Function EditConfiguration(project As SandcastleProject, configuration As XElement) As Boolean Implements IPlugInConfigurationEditor.EditConfiguration
+        Private Function EditConfiguration(project As ISandcastleProject, configuration As XElement) As Boolean Implements IPlugInConfigurationEditor.EditConfiguration
             Using dlg As New WindowsFormsExampleConfigDlg(configuration)
                 Return dlg.ShowDialog() = DialogResult.OK
             End Using

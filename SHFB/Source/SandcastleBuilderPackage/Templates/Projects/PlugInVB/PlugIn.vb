@@ -3,8 +3,8 @@ Imports System.Collections.Generic
 Imports System.Linq
 Imports System.Xml.Linq
 
-using Sandcastle.Core.BuildEngine;
-using Sandcastle.Core.PlugIn;
+Imports Sandcastle.Core.BuildEngine
+Imports Sandcastle.Core.PlugIn
 
 ' Search for "TODO" to find changes that you need to make to this plug-in template.
 
@@ -38,7 +38,7 @@ Namespace $safeprojectname$
 
         Private plugInExecutionPoints As List(Of ExecutionPoint)
 
-        Private builder As BuildProcess
+        Private builder As IBuildProcess
 
         #End Region
 
@@ -69,7 +69,7 @@ Namespace $safeprojectname$
         ''' </summary>
         ''' <param name="buildProcess">A reference to the current build process</param>
         ''' <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        Public Sub Initialize(buildProcess As BuildProcess, configuration As XElement) Implements IPlugIn.Initialize
+        Public Sub Initialize(buildProcess As IBuildProcess, configuration As XElement) Implements IPlugIn.Initialize
             builder = buildProcess
 
             Dim metadata As HelpFileBuilderPlugInExportAttribute = DirectCast(Enumerable.First(Of Object)(
