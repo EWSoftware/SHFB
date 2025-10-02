@@ -13,7 +13,7 @@
 		<page type="Sandcastle.Installer.InstallerPages.WelcomePage" />
 
 		<page type="Sandcastle.Installer.InstallerPages.WhatsNewPage">
-			<whatsNew url="https://EWSoftware.github.io/SHFB/html/4ba0d138-85d4-4bb5-8b65-08a77f6ee0b3.htm"
+			<whatsNew url="https://EWSoftware.github.io/SHFB/html/45d01e39-8086-4e10-85e6-69591d26a032.htm"
 				description="Current Version Release Notes" />
 			<whatsNew url="https://EWSoftware.github.io/SHFB/html/bc933f8f-e792-45bf-afec-62aa2c46aa3b.htm"
 				description="Third-Party Component Migration Support" />
