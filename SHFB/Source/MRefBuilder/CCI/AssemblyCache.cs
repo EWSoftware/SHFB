@@ -22,57 +22,6 @@ namespace System.Compiler
         private static readonly object Lock = new();
         private static bool FusionLoaded;
 
-        /// <param name="codeBaseUri">Uri pointing to the assembly</param>
-        public static bool Contains(Uri codeBaseUri)
-        {
-            if(codeBaseUri == null)
-            {
-                Debug.Fail("codeBaseUri == null");
-                return false;
-            }
-
-            lock(GlobalAssemblyCache.Lock)
-            {
-                if(!GlobalAssemblyCache.FusionLoaded)
-                {
-                    GlobalAssemblyCache.FusionLoaded = true;
-                    System.Reflection.Assembly systemAssembly = typeof(object).Assembly;
-                    ////^ assume systemAssembly != null && systemAssembly.Location != null;
-                    string dir = Path.GetDirectoryName(systemAssembly.Location);
-                    ////^ assume dir != null;
-                    GlobalAssemblyCache.LoadLibrary(Path.Combine(dir, "fusion.dll"));
-                }
-
-                int rc = GlobalAssemblyCache.CreateAssemblyEnum(out IAssemblyEnum assemblyEnum, null, null, GAC, 0);
-
-                if(rc < 0 || assemblyEnum == null)
-                    return false;
-
-                while(assemblyEnum.GetNextAssembly(out IApplicationContext applicationContext, out IAssemblyName currentName, 0) == 0)
-                {
-                    //^ assume currentName != null;
-                    AssemblyName assemblyName = new(currentName);
-                    string scheme = codeBaseUri.Scheme;
-
-                    if(scheme != null && assemblyName.CodeBase.StartsWith(scheme))
-                    {
-                        try
-                        {
-                            Uri foundUri = new(assemblyName.CodeBase);
-
-                            if(codeBaseUri.Equals(foundUri))
-                                return true;
-                        }
-                        catch(Exception)
-                        {
-                        }
-                    }
-                }
-
-                return false;
-            }
-        }
-
         /// <summary>
         /// Returns the original location of the corresponding assembly if available, otherwise returns the
         /// location of the shadow copy.  If the corresponding assembly is not in the GAC, null is returned.
@@ -82,6 +31,13 @@ namespace System.Compiler
             if(assemblyReference == null)
             {
                 Debug.Fail("assemblyReference == null");
+                return null;
+            }
+
+            // Linux does not have GAC, return null
+            if(Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                Debug.WriteLine($"Linux cannot resolve GAC references for assembly: {assemblyReference.Name}");
                 return null;
             }
 
