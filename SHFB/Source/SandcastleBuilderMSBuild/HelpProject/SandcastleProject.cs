@@ -583,7 +583,7 @@ namespace SandcastleBuilder.MSBuild.HelpProject
                 else
                     value = FolderPath.TerminatePath(value);
 
-                field = value;
+                field = value.CorrectFilePathSeparators();
             }
         }
 
