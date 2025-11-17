@@ -9,11 +9,19 @@
   -->
 
   <PropertyGroup>
-    <HtmlHelpName>TestDoc</HtmlHelpName>
-    <RootNamespaceTitle>Root Namespace</RootNamespaceTitle>
-    <HelpTitle>Test Help File</HelpTitle>
+    <HtmlHelpName>TestDocOverride</HtmlHelpName>
+    <RootNamespaceTitle>Root Namespace Override</RootNamespaceTitle>
+    <HelpTitle>Test Help File Override</HelpTitle>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <!-- Add the overridden properties as the value of the SubstitutionTags property -->
+    <SubstitutionTags>$(SubstitutionTags);HtmlHelpName=$(HtmlHelpName);
+      RootNamespaceTitle=$(RootNamespaceTitle);HelpTitle=$(HelpTitle)
+    </SubstitutionTags>
+  </PropertyGroup>
+
+  <!-- Example target override -->
   <Target Name="BeforeBuildHelp">
     <Message Text="BeforeBuildHelp override executed" />
   </Target>

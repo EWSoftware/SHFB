@@ -119,18 +119,7 @@ project's <codeInline>OutputPath</codeInline> property after a build.</para>
 
 				<para>Prefix options with '-' or '/'.  Property values should be enclosed in double quotes if they
 contain spaces, commas, or other special characters. All relative paths specified on the command line and those
-in a response file (see below) are relative to the project's path as usual.  Below are a couple of example
-command lines:</para>
-
-<code language="bat" title="Note: Lines wrapped for display purposes">
-%ProgramFiles(x86)%\MSBuild\14.0\bin\MSBuild.exe
-    /p:Configuration=Release HelpFile.shfbproj
-
-%ProgramFiles(x86)%\MSBuild\14.0\bin\MSBuild.exe
-    /p:CopyrightText="Copyright \xa9 2006-2011"
-    /p:FeedbackEMailAdress="Eric@EWoodruff.us"
-    HelpFile.shfbproj
-</code>
+in a response file (see below) are relative to the project's path as usual.</para>
 
 				<alert class="important">
 					<para>Property names specified on the command line or in response files are case-insensitive as are
@@ -181,13 +170,33 @@ quotes.</para>
 
 <code language="xml" title="Example Override Project File">
 <![CDATA[<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Example documentation source overrides
   <PropertyGroup>
-    <HtmlHelpName>TestDoc</HtmlHelpName>
-    <CleanIntermediates>True</CleanIntermediates>
-    <RootNamespaceTitle>Root Namespace Container</RootNamespaceTitle>
-    <PresentationStyle>Default2022</PresentationStyle>
-    <HelpTitle>Test Help File</HelpTitle>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="..\..\OtherProject\bin\Release\OtherAssembly.xml" xmlns="" />
+      <DocumentationSource sourceFile="..\..\OtherProject\bin\Release\OtherAssembly.dll" xmlns="" />
+    </DocumentationSources>
   </PropertyGroup>
+  -->
+
+  <PropertyGroup>
+    <HtmlHelpName>TestDocOverride</HtmlHelpName>
+    <RootNamespaceTitle>Root Namespace Override</RootNamespaceTitle>
+    <HelpTitle>Test Help File Override</HelpTitle>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Add the overridden properties as the value of the SubstitutionTags property -->
+    <SubstitutionTags>$(SubstitutionTags);HtmlHelpName=$(HtmlHelpName);
+      RootNamespaceTitle=$(RootNamespaceTitle);HelpTitle=$(HelpTitle)
+    </SubstitutionTags>
+  </PropertyGroup>
+
+  <!-- Example target override -->
+  <Target Name="BeforeBuildHelp">
+    <Message Text="BeforeBuildHelp override executed" />
+  </Target>
+
 </Project>]]>
 </code>
 

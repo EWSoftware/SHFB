@@ -48,8 +48,7 @@
         Properties="$(SubstitutionTags)"
 				OutDir="$(OutDir)"
 				Verbose="$(Verbose)"
-				DumpLogOnFailure="$(DumpLogOnFailure)"
-				AlwaysLoadProject="$(AlwaysLoadProject)">
+				DumpLogOnFailure="$(DumpLogOnFailure)">
 			<Output TaskParameter="Help1Files" ItemName="Help1Files" />
 			<Output TaskParameter="HelpViewerFiles" ItemName="HelpViewerFiles" />
 			<Output TaskParameter="WebsiteFiles" ItemName="WebsiteFiles" />
