@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : EntryElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2025
+// Updated : 11/22/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the entry element based on the parent element
@@ -22,46 +22,45 @@ using System.Xml.Linq;
 
 using Sandcastle.Core.Project;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html;
+
+/// <summary>
+/// Handle the <c>entry</c> element based on the parent element
+/// </summary>
+public class EntryElement : Element
 {
-    /// <summary>
-    /// Handle the <c>entry</c> element based on the parent element
-    /// </summary>
-    public class EntryElement : Element
+    /// <inheritdoc />
+    public EntryElement() : base("entry")
     {
-        /// <inheritdoc />
-        public EntryElement() : base("entry")
+    }
+
+    /// <inheritdoc />
+    public override void Render(TopicTransformationCore transformation, XElement element)
+    {
+        if(transformation == null)
+            throw new ArgumentNullException(nameof(transformation));
+
+        if(element == null)
+            throw new ArgumentNullException(nameof(element));
+
+        XElement cell;
+
+        if(element.Parent.Parent.Name.LocalName == "tableHeader")
+            cell = new XElement("th");
+        else
         {
+            cell = new XElement("td");
+
+            string address = element.Attribute("address")?.Value;
+
+            if(!String.IsNullOrWhiteSpace(address))
+                cell.Add(new XAttribute("id", address));
         }
 
-        /// <inheritdoc />
-        public override void Render(TopicTransformationCore transformation, XElement element)
-        {
-            if(transformation == null)
-                throw new ArgumentNullException(nameof(transformation));
+        transformation.CurrentElement.Add(cell);
+        transformation.RenderChildElements(cell, element.Nodes());
 
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
-
-            XElement cell;
-
-            if(element.Parent.Parent.Name.LocalName == "tableHeader")
-                cell = new XElement("th");
-            else
-            {
-                cell = new XElement("td");
-
-                string address = element.Attribute("address")?.Value;
-
-                if(!String.IsNullOrWhiteSpace(address))
-                    cell.Add(new XAttribute("id", address));
-            }
-
-            transformation.CurrentElement.Add(cell);
-            transformation.RenderChildElements(cell, element.Nodes());
-
-            if(transformation.SupportedFormats == HelpFileFormats.Markdown)
-                transformation.CurrentElement.Add("\n");
-        }
+        if(transformation.SupportedFormats == HelpFileFormats.Markdown)
+            transformation.CurrentElement.Add("\n");
     }
 }

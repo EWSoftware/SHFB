@@ -28,6 +28,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Markdig.Signed" />
 		<PackageReference Include="System.ComponentModel.Composition" />
 	</ItemGroup>
 

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : LanguageKeywordElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/07/2025
+// Updated : 12/01/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle languageKeyword elements
@@ -20,35 +20,90 @@
 using System;
 using System.Xml.Linq;
 
+using Sandcastle.Core.PresentationStyle.Conversion;
 using Sandcastle.Core.Project;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements;
+
+/// <summary>
+/// This handles <c>languageKeyword</c> elements
+/// </summary>
+public class LanguageKeywordElement : Element
 {
-    /// <summary>
-    /// This handles <c>languageKeyword</c> elements
-    /// </summary>
-    public class LanguageKeywordElement : Element
+    /// <inheritdoc />
+    public LanguageKeywordElement() : base("languageKeyword")
     {
-        /// <inheritdoc />
-        public LanguageKeywordElement() : base("languageKeyword")
+    }
+
+    /// <inheritdoc />
+    public override void Render(TopicTransformationCore transformation, XElement element)
+    {
+        if(transformation == null)
+            throw new ArgumentNullException(nameof(transformation));
+
+        if(element == null)
+            throw new ArgumentNullException(nameof(element));
+
+        string keyword = element.Value?.NormalizeWhiteSpace();
+
+        // If there is a slash, separate the keywords and render each one individually
+        bool first = true, isMarkdown = transformation.SupportedFormats == HelpFileFormats.Markdown,
+            isHtml = (transformation.SupportedFormats != HelpFileFormats.OpenXml && !isMarkdown);
+
+        // If converting, use the language keyword format
+        if(transformation is MarkdownConversionTransformation)
         {
+            foreach(string k in keyword.Split(['/'], StringSplitOptions.RemoveEmptyEntries))
+            {
+                string kw = k.Trim();
+                char? languageSpecificText;
+
+                if(!String.IsNullOrWhiteSpace(kw))
+                {
+                    if(!first)
+                        transformation.CurrentElement.Add('/');
+                    else
+                        first = false;
+
+                    // If it's an LST keyword, prefix it so that the codeInline handler tries to use LST for it
+                    switch(kw)
+                    {
+                        case "null":
+                        case "Nothing":
+                        case "nullptr":
+                        case "static":
+                        case "Shared":
+                        case "virtual":
+                        case "Overridable":
+                        case "true":
+                        case "True":
+                        case "false":
+                        case "False":
+                        case "abstract":
+                        case "MustInherit":
+                        case "sealed":
+                        case "NotInheritable":
+                        case "async":
+                        case "Async":
+                        case "await":
+                        case "Await":
+                        case "let!":
+                        case "this":
+                        case "Me":
+                            languageSpecificText = '@';
+                            break;
+
+                        default:
+                            languageSpecificText = null;
+                            break;
+                    }
+
+                    transformation.CurrentElement.Add($"`{languageSpecificText}{kw}`");
+                }
+            }
         }
-
-        /// <inheritdoc />
-        public override void Render(TopicTransformationCore transformation, XElement element)
+        else
         {
-            if(transformation == null)
-                throw new ArgumentNullException(nameof(transformation));
-
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
-
-            string keyword = element.Value?.NormalizeWhiteSpace();
-
-            // If there is a slash, separate the keywords and render each one individually
-            bool first = true, isMarkdown = transformation.SupportedFormats == HelpFileFormats.Markdown,
-                isHtml = (transformation.SupportedFormats != HelpFileFormats.OpenXml && !isMarkdown);
-
             foreach(string k in keyword.Split(['/'], StringSplitOptions.RemoveEmptyEntries))
             {
                 string kw = k.Trim();
@@ -57,6 +112,8 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                 {
                     if(!first)
                         transformation.CurrentElement.Add('/');
+                    else
+                        first = false;
 
                     if(isHtml)
                     {
@@ -116,6 +173,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
 
                             case "await":
                             case "Await":
+                            case "let!":
                                 includeItem = "devlang_awaitKeyword";
                                 break;
 
@@ -149,8 +207,6 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                             }
                         }
                     }
-
-                    first = false;
                 }
             }
         }

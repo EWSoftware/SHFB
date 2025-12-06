@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : ConceptualContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/30/2025
+// Updated : 12/05/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to hold the conceptual content for a project during a build
@@ -367,8 +367,13 @@ public class ConceptualContentSettings : IConceptualContentSettings
                     "duplicate ID is '{1}'", t.Id, t.TopicFile.FullPath));
             }
 
-            File.Copy(t.TopicFile.FullPath, destFile);
-            File.SetAttributes(destFile, FileAttributes.Normal);
+            if(t.DocumentType != DocumentType.Markdown)
+            {
+                File.Copy(t.TopicFile.FullPath, destFile);
+                File.SetAttributes(destFile, FileAttributes.Normal);
+            }
+            else
+                File.WriteAllText(destFile, builder.MarkdownToMamlConverter.ConvertFromFile(t.Id, t.TopicFile.FullPath));
 
             // Add referenced namespaces to the build process
             var rn = builder.ReferencedNamespaces;
@@ -488,7 +493,8 @@ public class ConceptualContentSettings : IConceptualContentSettings
         File.Delete(conceptualManifest);
     }
 
-
+    // !!TODO: These aren't really necessary as the same info appears in _ContentMetadata_.xml so it could
+    //         likely be used as the source if this info.
     /// <summary>
     /// This is used to create the companion file used by the build component that resolves conceptual links
     /// </summary>
@@ -510,9 +516,25 @@ public class ConceptualContentSettings : IConceptualContentSettings
                     WebUtility.HtmlEncode(topic.LinkText));
 
             // It's small enough that we'll just write it out as a string rather than using an XML writer
-            using StreamWriter sw = new(Path.Combine(folder, topic.Id + ".cmp.xml"), false, Encoding.UTF8);
-            
-            sw.WriteLine(
+            using(StreamWriter sw = new(Path.Combine(folder, topic.Id + ".cmp.xml"), false, Encoding.UTF8))
+            {
+                sw.WriteLine(
+                    "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n" +
+                    "<metadata>\r\n" +
+                    "  <topic id=\"{0}\">\r\n" +
+                    "    <title>{1}</title>\r\n" +
+                    "{2}" +
+                    "  </topic>\r\n" +
+                    "</metadata>\r\n", WebUtility.HtmlEncode(topic.Id),
+                    WebUtility.HtmlEncode(topic.DisplayTitle), linkElement);
+            }
+
+            // Write the same info to the alternate ID file if necessary
+            if(!String.IsNullOrWhiteSpace(topic.AlternateId))
+            {
+                using StreamWriter sw = new(Path.Combine(folder, topic.AlternateId + ".cmp.xml"), false, Encoding.UTF8);
+
+                sw.WriteLine(
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n" +
                 "<metadata>\r\n" +
                 "  <topic id=\"{0}\">\r\n" +
@@ -521,6 +543,7 @@ public class ConceptualContentSettings : IConceptualContentSettings
                 "  </topic>\r\n" +
                 "</metadata>\r\n", WebUtility.HtmlEncode(topic.Id),
                 WebUtility.HtmlEncode(topic.DisplayTitle), linkElement);
+            }
         }
 
         foreach(Topic t in topic.Subtopics)
@@ -543,8 +566,11 @@ public class ConceptualContentSettings : IConceptualContentSettings
         {
             writer.WriteStartElement("topic");
             writer.WriteAttributeString("id", topic.Id);
-            writer.WriteAttributeString("revisionNumber",
-                topic.RevisionNumber.ToString(CultureInfo.InvariantCulture));
+
+            if(!String.IsNullOrWhiteSpace(topic.AlternateId))
+                writer.WriteAttributeString("alternateId", topic.AlternateId);
+
+            writer.WriteAttributeString("revisionNumber", "1");
 
             // Write out the help file version project property value
             writer.WriteStartElement("item");

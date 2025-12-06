@@ -5,8 +5,8 @@
 		<NeutralLanguage>en</NeutralLanguage>
 		<Product>Sandcastle Help File Builder and Tools</Product>
 
-		<!-- Using preview to gain access to the field keyword -->
-		<LangVersion>preview</LangVersion>
+		<!-- Using 14.0 for the field keyword.  If you only have VS 2022, setting it to preview should work too. -->
+		<LangVersion>14.0</LangVersion>
 
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>

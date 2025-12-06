@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ThreadsafetyElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/26/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 11/28/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle threadsafety elements
 //
@@ -20,71 +20,70 @@
 using System;
 using System.Xml.Linq;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements;
+
+/// <summary>
+/// This is used to handle <c>threadsafety</c> elements
+/// </summary>
+public class ThreadsafetyElement : Element
 {
-    /// <summary>
-    /// This is used to handle <c>threadsafety</c> elements
-    /// </summary>
-    public class ThreadsafetyElement : Element
+    #region Constructor
+    //=====================================================================
+
+    /// <inheritdoc />
+    public ThreadsafetyElement() : base("threadsafety")
     {
-        #region Constructor
-        //=====================================================================
+    }
+    #endregion
 
-        /// <inheritdoc />
-        public ThreadsafetyElement() : base("threadsafety")
+    #region Methods
+    //=====================================================================
+
+    /// <inheritdoc />
+    public override void Render(TopicTransformationCore transformation, XElement element)
+    {
+        if(transformation == null)
+            throw new ArgumentNullException(nameof(transformation));
+
+        if(element == null)
+            throw new ArgumentNullException(nameof(element));
+
+        var (title, content) = transformation.CreateSection(element.GenerateUniqueId(), true,
+            "title_threadSafety", null, 0);
+
+        if(title != null)
+            transformation.CurrentElement.Add(title);
+
+        if(content != null)
+            transformation.CurrentElement.Add(content);
+        else
+            content = transformation.CurrentElement;
+
+        if(element.Value.NormalizeWhiteSpace().Length != 0)
+            transformation.RenderChildElements(content, element.Nodes());
+        else
         {
-        }
-        #endregion
+            if(!Boolean.TryParse(element.Attribute("static")?.Value, out bool staticThreadSafe))
+                staticThreadSafe = true;
 
-        #region Methods
-        //=====================================================================
+            if(!Boolean.TryParse(element.Attribute("instance")?.Value, out bool instanceThreadSafe))
+                instanceThreadSafe = false;
 
-        /// <inheritdoc />
-        public override void Render(TopicTransformationCore transformation, XElement element)
-        {
-            if(transformation == null)
-                throw new ArgumentNullException(nameof(transformation));
-
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
-
-            var (title, content) = transformation.CreateSection(element.GenerateUniqueId(), true,
-                "title_threadSafety", null);
-
-            if(title != null)
-                transformation.CurrentElement.Add(title);
-
-            if(content != null)
-                transformation.CurrentElement.Add(content);
-            else
-                content = transformation.CurrentElement;
-
-            if(element.Value.NormalizeWhiteSpace().Length != 0)
-                transformation.RenderChildElements(content, element.Nodes());
+            if(staticThreadSafe && !instanceThreadSafe)
+                content.Add(new XElement("include", new XAttribute("item", "boilerplate_threadSafety")));
             else
             {
-                if(!Boolean.TryParse(element.Attribute("static")?.Value, out bool staticThreadSafe))
-                    staticThreadSafe = true;
-
-                if(!Boolean.TryParse(element.Attribute("instance")?.Value, out bool instanceThreadSafe))
-                    instanceThreadSafe = false;
-
-                if(staticThreadSafe && !instanceThreadSafe)
-                    content.Add(new XElement("include", new XAttribute("item", "boilerplate_threadSafety")));
+                if(staticThreadSafe)
+                    content.Add(new XElement("include", new XAttribute("item", "text_staticThreadSafe")));
                 else
-                {
-                    if(staticThreadSafe)
-                        content.Add(new XElement("include", new XAttribute("item", "text_staticThreadSafe")));
-                    else
-                        content.Add(new XElement("include", new XAttribute("item", "text_staticNotThreadSafe")));
+                    content.Add(new XElement("include", new XAttribute("item", "text_staticNotThreadSafe")));
 
-                    if(instanceThreadSafe)
-                        content.Add(new XElement("include", new XAttribute("item", "text_instanceThreadSafe")));
-                    else
-                        content.Add(new XElement("include", new XAttribute("item", "text_instanceNotThreadSafe")));
-                }
+                if(instanceThreadSafe)
+                    content.Add(new XElement("include", new XAttribute("item", "text_instanceThreadSafe")));
+                else
+                    content.Add(new XElement("include", new XAttribute("item", "text_instanceNotThreadSafe")));
             }
         }
-        #endregion
     }
+    #endregion
 }

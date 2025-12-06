@@ -12,7 +12,7 @@ text will change appropriately based on the selected language.</para>
 				<para>Enter the element in the topic and specify one of the recognized language keywords as the inner
 text.  The keyword can be any of the following values: <codeInline>null</codeInline>,
 <codeInline>Nothing</codeInline>, <codeInline>nullptr</codeInline>, <codeInline>static</codeInline>,
-<codeInline>shared</codeInline>, <codeInline>virtual</codeInline>, <codeInline>Overridable</codeInline>,
+<codeInline>Shared</codeInline>, <codeInline>virtual</codeInline>, <codeInline>Overridable</codeInline>,
 <codeInline>true</codeInline>, <codeInline>True</codeInline>, <codeInline>false</codeInline>,
 <codeInline>False</codeInline>, <codeInline>abstract</codeInline>, <codeInline>MustInherit</codeInline>,
 <codeInline>sealed</codeInline>, <codeInline>NotInheritable</codeInline>, <codeInline>async</codeInline>,
@@ -30,7 +30,7 @@ formatting and will not change based on the language filter setting.</para>
 				&lt;para&gt;Change the language filter setting to see the keyword change:
 &lt;languageKeyword&gt;null&lt;/languageKeyword&gt;, &lt;languageKeyword&gt;Nothing&lt;/languageKeyword&gt;,
 &lt;languageKeyword&gt;nullptr&lt;/languageKeyword&gt;, &lt;languageKeyword&gt;static&lt;/languageKeyword&gt;,
-&lt;languageKeyword&gt;shared&lt;/languageKeyword&gt;, &lt;languageKeyword&gt;virtual&lt;/languageKeyword&gt;,
+&lt;languageKeyword&gt;Shared&lt;/languageKeyword&gt;, &lt;languageKeyword&gt;virtual&lt;/languageKeyword&gt;,
 &lt;languageKeyword&gt;Overridable&lt;/languageKeyword&gt;, &lt;languageKeyword&gt;true&lt;/languageKeyword&gt;,
 &lt;languageKeyword&gt;True&lt;/languageKeyword&gt;, &lt;languageKeyword&gt;false&lt;/languageKeyword&gt;,
 &lt;languageKeyword&gt;False&lt;/languageKeyword&gt;, &lt;languageKeyword&gt;abstract&lt;/languageKeyword&gt;,
@@ -54,7 +54,7 @@ formatting and will not change based on the language filter setting.</para>
 				<para>Change the language filter setting to see the keyword change:
 <languageKeyword>null</languageKeyword>, <languageKeyword>Nothing</languageKeyword>,
 <languageKeyword>nullptr</languageKeyword>, <languageKeyword>static</languageKeyword>,
-<languageKeyword>shared</languageKeyword>, <languageKeyword>virtual</languageKeyword>,
+<languageKeyword>Shared</languageKeyword>, <languageKeyword>virtual</languageKeyword>,
 <languageKeyword>Overridable</languageKeyword>, <languageKeyword>true</languageKeyword>,
 <languageKeyword>True</languageKeyword>, <languageKeyword>false</languageKeyword>,
 <languageKeyword>False</languageKeyword>, <languageKeyword>abstract</languageKeyword>,

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : DefinedTermElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/02/2025
+// Updated : 11/22/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle defined term elements based on the topic type
@@ -20,40 +20,39 @@
 using System;
 using System.Xml.Linq;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml;
+
+/// <summary>
+/// This handles defined term elements based on the topic type
+/// </summary>
+public class DefinedTermElement : OpenXmlElement
 {
-    /// <summary>
-    /// This handles defined term elements based on the topic type
-    /// </summary>
-    public class DefinedTermElement : OpenXmlElement
+    /// <inheritdoc />
+    public DefinedTermElement(string name) : base(name, true)
     {
-        /// <inheritdoc />
-        public DefinedTermElement(string name) : base(name)
-        {
-        }
+    }
 
-        /// <inheritdoc />
-        public override void Render(TopicTransformationCore transformation, XElement element)
-        {
-            if(transformation == null)
-                throw new ArgumentNullException(nameof(transformation));
+    /// <inheritdoc />
+    public override void Render(TopicTransformationCore transformation, XElement element)
+    {
+        if(transformation == null)
+            throw new ArgumentNullException(nameof(transformation));
 
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
+        if(element == null)
+            throw new ArgumentNullException(nameof(element));
 
-            XElement span = new("span", new XAttribute("class", "Bold")),
-                para = new(WordProcessingML + "p",
-                new XElement(WordProcessingML + "pPr",
-                    new XElement(WordProcessingML + "spacing",
-                        new XAttribute(WordProcessingML + "after", "0"))), span);
+        XElement span = new("span", new XAttribute("class", "Bold")),
+            para = new(WordProcessingML + "p",
+            new XElement(WordProcessingML + "pPr",
+                new XElement(WordProcessingML + "spacing",
+                    new XAttribute(WordProcessingML + "after", "0"))), span);
 
-            string address = element.Attribute("address")?.Value;
+        string address = element.Attribute("address")?.Value;
 
-            if(!String.IsNullOrWhiteSpace(address))
-                AddAddressBookmark(transformation.CurrentElement, address);
+        if(!String.IsNullOrWhiteSpace(address))
+            AddAddressBookmark(transformation.CurrentElement, address);
 
-            transformation.CurrentElement.Add(para);
-            transformation.RenderChildElements(span, element.Nodes());
-        }
+        transformation.CurrentElement.Add(para);
+        transformation.RenderChildElements(span, element.Nodes());
     }
 }

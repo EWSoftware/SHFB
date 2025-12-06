@@ -61,9 +61,9 @@
 		<Folder Include="media" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Include="Content\VersionHistory\v1.0.0.0.aml" />
-		<None Include="Content\VersionHistory\VersionHistory.aml" />
-		<None Include="Content\Welcome.aml" />
+		<None Include="Content\VersionHistory\v1.0.0.0.md" />
+		<None Include="Content\VersionHistory\VersionHistory.md" />
+		<None Include="Content\Welcome.md" />
 	</ItemGroup>
 	<ItemGroup>
 		<ContentLayout Include="ContentLayout.content" />

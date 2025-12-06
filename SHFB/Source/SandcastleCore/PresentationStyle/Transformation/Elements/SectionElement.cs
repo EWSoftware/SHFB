@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : SectionElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2025
+// Updated : 12/03/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle general section elements
@@ -22,115 +22,125 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
+using Sandcastle.Core.PresentationStyle.Conversion;
 using Sandcastle.Core.Project;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements;
+
+/// <summary>
+/// This is used to handle general <c>section</c> elements in a topic
+/// </summary>
+public class SectionElement : Element
 {
-    /// <summary>
-    /// This is used to handle general <c>section</c> elements in a topic
-    /// </summary>
-    public class SectionElement : Element
+    #region Private data members
+    //=====================================================================
+
+    private static readonly HashSet<XName> possibleAncestors =
+    [
+        Ddue + "attributesandElements",
+        Ddue + "codeExample",
+        Ddue + "dotNetFrameworkEquivalent",
+        Ddue + "elementInformation",
+        Ddue + "exceptions",
+        Ddue + "introduction",
+        Ddue + "languageReferenceRemarks",
+        Ddue + "nextSteps",
+        Ddue + "parameters",
+        Ddue + "prerequisites",
+        Ddue + "procedure",
+        Ddue + "relatedTopics",
+        Ddue + "remarks",
+        Ddue + "requirements",
+        Ddue + "schemaHierarchy",
+        Ddue + "syntaxSection",
+        Ddue + "textValue",
+        Ddue + "type",
+        Ddue + "section"
+    ];
+    #endregion
+
+    #region Constructor
+    //=====================================================================
+
+    /// <inheritdoc />
+    public SectionElement() : base("section", true)
     {
-        #region Private data members
-        //=====================================================================
+    }
+    #endregion
 
-        private static readonly HashSet<XName> possibleAncestors =
-        [
-            Ddue + "attributesandElements",
-            Ddue + "codeExample",
-            Ddue + "dotNetFrameworkEquivalent",
-            Ddue + "elementInformation",
-            Ddue + "exceptions",
-            Ddue + "introduction",
-            Ddue + "languageReferenceRemarks",
-            Ddue + "nextSteps",
-            Ddue + "parameters",
-            Ddue + "prerequisites",
-            Ddue + "procedure",
-            Ddue + "relatedTopics",
-            Ddue + "remarks",
-            Ddue + "requirements",
-            Ddue + "schemaHierarchy",
-            Ddue + "syntaxSection",
-            Ddue + "textValue",
-            Ddue + "type",
-            Ddue + "section"
-        ];
-        #endregion
+    #region Methods
+    //=====================================================================
 
-        #region Constructor
-        //=====================================================================
+    /// <inheritdoc />
+    public override void Render(TopicTransformationCore transformation, XElement element)
+    {
+        if(transformation == null)
+            throw new ArgumentNullException(nameof(transformation));
 
-        /// <inheritdoc />
-        public SectionElement() : base("section")
+        if(element == null)
+            throw new ArgumentNullException(nameof(element));
+
+        XElement title = null, content = null, childContent = element.Element(Ddue + "content"),
+            titleElement = element.Element(Ddue + "title");
+        var sections = element.Elements(Ddue + "sections");
+
+        if(titleElement != null || (childContent != null && (childContent.Elements().Any() ||
+          childContent.Value.NormalizeWhiteSpace().Length != 0)) || sections.Any())
         {
-        }
-        #endregion
+            string address = element.Attribute("address")?.Value ?? element.Attribute("id")?.Value,
+                titleText = titleElement?.Value.NormalizeWhiteSpace();
+            int headingLevel = (int?)titleElement?.Attribute("level") ?? 0;
 
-        #region Methods
-        //=====================================================================
-
-        /// <inheritdoc />
-        public override void Render(TopicTransformationCore transformation, XElement element)
-        {
-            if(transformation == null)
-                throw new ArgumentNullException(nameof(transformation));
-
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
-
-            XElement title = null, content = null, childContent = element.Element(Ddue + "content");
-            var sections = element.Elements(Ddue + "sections");
-
-            if((childContent != null && (childContent.Elements().Any() ||
-              childContent.Value.NormalizeWhiteSpace().Length != 0)) || sections.Any())
+            // If nested within any of these ancestor elements, render it as a subsection
+            if(element.Ancestors().Any(a => possibleAncestors.Contains(a.Name)))
             {
-                string address = element.Attribute("address")?.Value;
-                var titleText = element.Element(Ddue + "title")?.Value.NormalizeWhiteSpace();
-
-                // If nested within any of these ancestor elements, render it as a subsection
-                if(element.Ancestors().Any(a => possibleAncestors.Contains(a.Name)))
+                if(!String.IsNullOrWhiteSpace(titleText))
                 {
-                    if(!String.IsNullOrWhiteSpace(titleText))
+                    (title, content) = transformation.CreateSubsection(false, titleText);
+
+                    if(!String.IsNullOrWhiteSpace(address))
                     {
-                        (title, content) = transformation.CreateSubsection(false, titleText);
-
-                        if(!String.IsNullOrWhiteSpace(address))
+                        switch(transformation.SupportedFormats)
                         {
-                            switch(transformation.SupportedFormats)
-                            {
-                                case HelpFileFormats.OpenXml:
-                                    OpenXml.OpenXmlElement.AddAddressBookmark(transformation.CurrentElement, address);
-                                    break;
+                            case HelpFileFormats.OpenXml:
+                                OpenXml.OpenXmlElement.AddAddressBookmark(transformation.CurrentElement, address);
+                                break;
 
-                                case HelpFileFormats.Markdown:
+                            case HelpFileFormats.Markdown:
+                                // Address bookmarks are suppressed for conversion
+                                if(transformation is not MarkdownConversionTransformation)
                                     Markdown.MarkdownElement.AddAddressBookmark(title, address);
-                                    break;
+                                break;
 
-                                default:
-                                    title.Add(new XAttribute("id", address));
-                                    break;
-                            }
+                            default:
+                                title.Add(new XAttribute("id", address));
+                                break;
                         }
                     }
                 }
-                else
-                {
-                    (title, content) = transformation.CreateSection(element.GenerateUniqueId(), false,
-                        titleText, address);
-                }
-
-                if(title != null)
-                    transformation.CurrentElement.Add(title);
-                
-                if(content != null)
-                    transformation.CurrentElement.Add(content);
-
-                // Render this section's content and any subsections
-                transformation.RenderChildElements(content ?? transformation.CurrentElement,
-                    new[] { childContent }.Concat(sections));
             }
+            else
+            {
+                (title, content) = transformation.CreateSection(element.GenerateUniqueId(), false,
+                    titleText, address, headingLevel);
+            }
+
+            if(title != null)
+                transformation.CurrentElement.Add(title);
+            
+            if(content != null)
+                transformation.CurrentElement.Add(content);
+
+            // Render this section's content and any subsections.  Child content must contain something or it
+            // can render a self-closing div which messes up the layout.
+            childContent ??= new XElement(Ddue + "content");
+
+            if(!childContent.Nodes().Any())
+                childContent.Add(new XText(" "));
+
+            transformation.RenderChildElements(content ?? transformation.CurrentElement,
+                new[] { childContent }.Concat(sections));
         }
-        #endregion
     }
+    #endregion
 }

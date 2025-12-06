@@ -595,77 +595,17 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Conceptual</VSIXSubPath>
     </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\ErrorMessage\ErrorMessage.aml">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\ErrorMessage</VSIXSubPath>
-    </Content>
     <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Glossary\Glossary.aml">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Glossary</VSIXSubPath>
     </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\HowTo\HowTo.aml">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\HowTo</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Orientation\Orientation.aml">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Orientation</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Reference\Reference.aml">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Reference</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\RefNoSyntax\RefNoSyntax.aml">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\RefNoSyntax</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\RefWithSyntax\RefWithSyntax.aml">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\RefWithSyntax</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Sample\Sample.aml">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Sample</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechArch\SDKTechArch.aml">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechArch</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechCodeDir\SDKTechnCodeDir.aml">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechCodeDir</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechOrient\SDKTechOrient.aml">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechOrient</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechScen\SDKTechScen.aml">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechScen</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechSum\SDKTechSum.aml">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechSum</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Troubleshooting\Troubleshooting.aml">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Troubleshooting</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\UIReference\UIReference.aml">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\UIReference</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.aml">
+		<Content Include="Templates\ProjectItems\ConceptualContent\Topics\Markdown\Markdown.md">
+			<IncludeInVSIX>true</IncludeInVSIX>
+			<VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Markdown</VSIXSubPath>
+		</Content>
+		<Content Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.aml">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Walkthrough</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Whitepaper\Whitepaper.aml">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Whitepaper</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\XMLReference\XMLReference.aml">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\XMLReference</VSIXSubPath>
     </Content>
     <Content Include="Templates\Projects\BuildComponentCS\BuildComponent.csproj">
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -791,15 +731,15 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
     </Content>
-    <Content Include="Templates\Projects\SandcastleBuilderProject\v1.0.0.0.aml">
+    <Content Include="Templates\Projects\SandcastleBuilderProject\v1.0.0.0.md">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
     </Content>
-    <Content Include="Templates\Projects\SandcastleBuilderProject\VersionHistory.aml">
+    <Content Include="Templates\Projects\SandcastleBuilderProject\VersionHistory.md">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
     </Content>
-    <Content Include="Templates\Projects\SandcastleBuilderProject\Welcome.aml">
+    <Content Include="Templates\Projects\SandcastleBuilderProject\Welcome.md">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
     </Content>
@@ -823,77 +763,17 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Conceptual</VSIXSubPath>
     </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\ErrorMessage\ErrorMessage.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\ErrorMessage</VSIXSubPath>
-    </Content>
     <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Glossary\Glossary.vstemplate">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Glossary</VSIXSubPath>
     </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\HowTo\HowTo.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\HowTo</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Orientation\Orientation.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Orientation</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Reference\Reference.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Reference</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\RefNoSyntax\RefNoSyntax.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\RefNoSyntax</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\RefWithSyntax\RefWithSyntax.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\RefWithSyntax</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Sample\Sample.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Sample</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechArch\SDKTechArch.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechArch</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechCodeDir\SDKTechnCodeDir.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechCodeDir</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechOrient\SDKTechOrient.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechOrient</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechScen\SDKTechScen.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechScen</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechSum\SDKTechSum.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechSum</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Troubleshooting\Troubleshooting.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Troubleshooting</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\UIReference\UIReference.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\UIReference</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.vstemplate">
+		<Content Include="Templates\ProjectItems\ConceptualContent\Topics\Markdown\Markdown.vstemplate">
+			<IncludeInVSIX>true</IncludeInVSIX>
+			<VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Markdown</VSIXSubPath>
+		</Content>
+		<Content Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.vstemplate">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Walkthrough</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Whitepaper\Whitepaper.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Whitepaper</VSIXSubPath>
-    </Content>
-    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\XMLReference\XMLReference.vstemplate">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\XMLReference</VSIXSubPath>
     </Content>
     <Content Include="Templates\Projects\BuildComponentCS\BuildComponentCS.vstemplate">
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -1135,5 +1015,11 @@ Copy "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)..\..\Deployment\InstallRes
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Don't go above C# 13.0 for now as this project doesn't like using version 14.0.  This must be
+         placed at the end or it gets overridden somewhere and fails trying to use 14.0 again. -->
+	<LangVersion>13.0</LangVersion>
   </PropertyGroup>
 </Project>

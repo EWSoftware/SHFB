@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : CodeEntityReferenceElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/08/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 12/01/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle codeEntityReference elements
 //
@@ -20,33 +20,62 @@
 using System;
 using System.Xml.Linq;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
+using Sandcastle.Core.PresentationStyle.Conversion;
+
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements;
+
+/// <summary>
+/// This handles <c>codeEntityReference</c> elements
+/// </summary>
+public class CodeEntityReferenceElement : Element
 {
-    /// <summary>
-    /// This handles <c>codeEntityReference</c> elements
-    /// </summary>
-    public class CodeEntityReferenceElement : Element
+    /// <inheritdoc />
+    public CodeEntityReferenceElement() : base("codeEntityReference")
     {
-        /// <inheritdoc />
-        public CodeEntityReferenceElement() : base("codeEntityReference")
+    }
+
+    /// <inheritdoc />
+    public override void Render(TopicTransformationCore transformation, XElement element)
+    {
+        if(transformation == null)
+            throw new ArgumentNullException(nameof(transformation));
+
+        if(element == null)
+            throw new ArgumentNullException(nameof(element));
+
+        string linkTarget = element.Value.NormalizeWhiteSpace(),
+            linkText = element.Attribute("linkText")?.Value.NormalizeWhiteSpace();
+        bool qualifyHint = element.Attribute("qualifyHint").ToBoolean(),
+            autoUpgrade = element.Attribute("autoUpgrade").ToBoolean();
+        XElement link;
+
+        if(transformation is MarkdownConversionTransformation)
         {
+            link = transformation.CurrentElement;
+
+            link.Add($"[{linkText}](@{linkTarget})");
+
+            if(qualifyHint || autoUpgrade)
+            {
+                link.Add("{");
+
+                if(qualifyHint)
+                {
+                    link.Add("show-container=\"true\" show-parameters=\"true\"");
+
+                    if(autoUpgrade)
+                        link.Add(" ");
+                }
+
+                if(autoUpgrade)
+                    link.Add("prefer-overload=\"true\"");
+
+                link.Add("}");
+            }
         }
-
-        /// <inheritdoc />
-        public override void Render(TopicTransformationCore transformation, XElement element)
+        else
         {
-            if(transformation == null)
-                throw new ArgumentNullException(nameof(transformation));
-
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
-
-            string linkTarget = element.Value.NormalizeWhiteSpace(),
-                linkText = element.Attribute("linkText")?.Value.NormalizeWhiteSpace();
-            bool qualifyHint = element.Attribute("qualifyHint").ToBoolean(),
-                autoUpgrade = element.Attribute("autoUpgrade").ToBoolean();
-
-            var link = new XElement("referenceLink",
+            link = new XElement("referenceLink",
                 new XAttribute("target", linkTarget));
 
             if(qualifyHint)

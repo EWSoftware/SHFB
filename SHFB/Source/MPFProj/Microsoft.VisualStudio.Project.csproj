@@ -202,4 +202,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <!-- Don't go above C# 13.0 for now as this project doesn't like using version 14.0.  This must be
+         placed at the end or it gets overridden somewhere and fails trying to use 14.0 again. -->
+	<LangVersion>13.0</LangVersion>
+  </PropertyGroup>
+
 </Project>

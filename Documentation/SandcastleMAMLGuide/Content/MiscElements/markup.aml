@@ -48,7 +48,7 @@ custom build components.
 &lt;p&gt;This content is only compatible with &lt;strong&gt;HTML&lt;/strong&gt; and &lt;strong&gt;Markdown&lt;/strong&gt;
 presentation style formats.&lt;/p&gt;
 
-&lt;p&gt;It is &lt;strong&gt;NOT&lt;/strong&gt; recommended that you use the &lt;em&gt;markup&lt;/em&gt; element for
+&lt;p&gt;It is &lt;strong&gt;NOT&lt;/strong&gt; recommended that you use the &lt;span class="code"&gt;markup&lt;/span&gt; element for
 normal conceptual content when an equivalent &lt;u&gt;MAML element&lt;/u&gt; already exists.
 Its use should be restricted to custom build components.&lt;/p&gt;
 &lt;/markup&gt;
@@ -93,7 +93,7 @@ custom build components.
 <p>This content is only compatible with <strong>HTML</strong> and <strong>Markdown</strong>
 presentation style formats.</p>
 
-<p>It is <strong>NOT</strong> recommended that you use the <code>markup</code> element for
+<p>It is <strong>NOT</strong> recommended that you use the <span class="code">markup</span> element for
 normal conceptual content when an equivalent <u>MAML element</u> already exists.
 Its use should be restricted to custom build components.</p>
 </markup>

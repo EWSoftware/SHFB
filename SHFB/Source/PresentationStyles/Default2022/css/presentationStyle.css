@@ -172,10 +172,12 @@ div.is-centered {
     margin-bottom: 1em;
 }
 
-.content span.code, span.command, span.parameter {
+code, .content span.code, span.command, span.parameter {
     font-family: Consolas, Courier, monospace;
+    font-size: 1em;
     color: #000066;
     background-color: #f4f4f4;
+    padding: 0;
 }
 
 .content span.selflink {

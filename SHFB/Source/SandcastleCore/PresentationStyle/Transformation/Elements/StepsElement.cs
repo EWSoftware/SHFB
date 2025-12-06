@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : StepsElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2025
+// Updated : 11/28/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle steps elements
@@ -23,54 +23,54 @@ using System.Xml.Linq;
 
 using Sandcastle.Core.Project;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements;
+
+/// <summary>
+/// This is used to handle general <c>steps</c> elements in a topic
+/// </summary>
+public class StepsElement : Element
 {
-    /// <summary>
-    /// This is used to handle general <c>steps</c> elements in a topic
-    /// </summary>
-    public class StepsElement : Element
+    #region Constructor
+    //=====================================================================
+
+    /// <inheritdoc />
+    public StepsElement() : base("steps", true)
     {
-        #region Constructor
-        //=====================================================================
-
-        /// <inheritdoc />
-        public StepsElement() : base("steps")
-        {
-        }
-        #endregion
-
-        #region Methods
-        //=====================================================================
-
-        /// <inheritdoc />
-        public override void Render(TopicTransformationCore transformation, XElement element)
-        {
-            if(transformation == null)
-                throw new ArgumentNullException(nameof(transformation));
-
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
-
-            string style = element.Attribute("class")?.Value;
-            int steps = element.Elements(Ddue + "step").Count();
-            XElement list;
-
-            // Open XML always uses an unordered list element and applies a class attribute to let the Open XML
-            // file generator know how to style the list.
-            if(steps > 1 && style.Equals("ordered", StringComparison.Ordinal) &&
-              transformation.SupportedFormats != HelpFileFormats.OpenXml)
-            {
-                list = new XElement("ol");
-            }
-            else
-                list = new XElement("ul");
-
-            if(transformation.SupportedFormats == HelpFileFormats.OpenXml)
-                list.Add(new XAttribute("class", steps > 1 ? style : "bullet"));
-
-            transformation.CurrentElement.Add(list);
-            transformation.RenderChildElements(list, element.Elements(Ddue + "step"));
-        }
-        #endregion
     }
+    #endregion
+
+    #region Methods
+    //=====================================================================
+
+    /// <inheritdoc />
+    public override void Render(TopicTransformationCore transformation, XElement element)
+    {
+        if(transformation == null)
+            throw new ArgumentNullException(nameof(transformation));
+
+        if(element == null)
+            throw new ArgumentNullException(nameof(element));
+
+        string elementName = "ul", style = element.Attribute("class")?.Value;
+        XElement list;
+
+        int steps = element.Elements(Ddue + "step").Count();
+
+        // Open XML always uses an unordered list element and applies a class attribute to let the Open XML
+        // file generator know how to style the list.
+        if(steps > 1 && style.Equals("ordered", StringComparison.Ordinal) &&
+          transformation.SupportedFormats != HelpFileFormats.OpenXml)
+        {
+            elementName = "ol";
+        }
+
+        list = new XElement(elementName);
+
+        if(transformation.SupportedFormats == HelpFileFormats.OpenXml)
+            list.Add(new XAttribute("class", steps > 1 ? style : "bullet"));
+
+        transformation.CurrentElement.Add(list);
+        transformation.RenderChildElements(list, element.Nodes());
+    }
+    #endregion
 }

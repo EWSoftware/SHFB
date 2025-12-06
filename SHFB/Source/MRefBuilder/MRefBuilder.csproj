@@ -18,7 +18,6 @@
 		<!-- For this, we want all of the dependency assemblies so that the dotnet tool can find them (NetCore builds) -->
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<Configurations>Debug;Release;Wait For Debugger</Configurations>
-		<DefineConstants>$(DefineConstants);NOT_CLS_COMPLIANT</DefineConstants>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
 

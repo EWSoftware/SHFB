@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : MarkupElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2025
+// Updated : 12/04/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle the markup element, a parent element that does not itself have any
@@ -21,77 +21,91 @@
 using System;
 using System.Xml.Linq;
 
+using Sandcastle.Core.PresentationStyle.Conversion;
 using Sandcastle.Core.Project;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements;
+
+/// <summary>
+/// This handles the <c>markup</c> element, a parent element that does not itself have any rendered
+/// representation.  It just clones the child nodes, removes any XML namespaces, and passes them through
+/// as-is.
+/// </summary>
+/// <remarks><para>This will allow build components and topic authors to add HTML or other elements such as
+/// <c>include</c> elements for localized shared content to a pre-transformed document.  This prevents it
+/// from being removed as unrecognized content by the transformations.</para>
+/// 
+/// <para>An optional <c>contentType</c> attribute is supported that defines the type of content (Html,
+/// OpenXml, or Markdown).  This allows rendering of content based on the content type supported by the
+/// presentation style.</para>
+/// 
+/// <para>When specified, presentation styles that only support Open XML will only render markup element
+/// content with a content type of "OpenXml".  Presentation styles that only support Markdown will only
+/// render markup element content with a content type of "Html" or "Markdown".  All others will only render
+/// the content if the type is "Html".  If the attribute is omitted, the content will be rendered regardless
+/// of the presentation style's formats whether or not they actually support it.</para></remarks>
+public class MarkupElement : Element
 {
-    /// <summary>
-    /// This handles the <c>markup</c> element, a parent element that does not itself have any rendered
-    /// representation.  It just clones the child nodes, removes any XML namespaces, and passes them through
-    /// as-is.
-    /// </summary>
-    /// <remarks><para>This will allow build components and topic authors to add HTML or other elements such as
-    /// <c>include</c> elements for localized shared content to a pre-transformed document.  This prevents it
-    /// from being removed as unrecognized content by the transformations.</para>
-    /// 
-    /// <para>An optional <c>contentType</c> attribute is supported that defines the type of content (Html,
-    /// OpenXml, or Markdown).  This allows rendering of content based on the content type supported by the
-    /// presentation style.</para>
-    /// 
-    /// <para>When specified, presentation styles that only support Open XML will only render markup element
-    /// content with a content type of "OpenXml".  Presentation styles that only support Markdown will only
-    /// render markup element content with a content type of "Html" or "Markdown".  All others will only render
-    /// the content if the type is "Html".  If the attribute is omitted, the content will be rendered regardless
-    /// of the presentation style's formats whether or not they actually support it.</para></remarks>
-    public class MarkupElement : Element
+    /// <inheritdoc />
+    public MarkupElement() : base("markup", true)
     {
-        /// <inheritdoc />
-        public MarkupElement() : base("markup")
+        this.DoNotParse = true;
+    }
+
+    /// <inheritdoc />
+    public override void Render(TopicTransformationCore transformation, XElement element)
+    {
+        if(transformation == null)
+            throw new ArgumentNullException(nameof(transformation));
+
+        if(element == null)
+            throw new ArgumentNullException(nameof(element));
+
+        var contentType = element.Attribute("contentType")?.Value;
+
+        // If converting, just clone it
+        if(transformation is MarkdownConversionTransformation)
         {
+            XElement c = new(element);
+
+            c.RemoveNamespaces();
+
+            transformation.CurrentElement.Add("\n");
+            transformation.CurrentElement.Add(c);
+            transformation.CurrentElement.Add("\n");
+            return;
         }
 
-        /// <inheritdoc />
-        public override void Render(TopicTransformationCore transformation, XElement element)
+        // If a content type is specified, ignore the element in unsupported formats.
+        if(contentType != null)
         {
-            if(transformation == null)
-                throw new ArgumentNullException(nameof(transformation));
-
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
-
-            var contentType = element.Attribute("contentType")?.Value;
-
-            // If a content type is specified, ignore the element in unsupported formats
-            if(contentType != null)
+            switch(transformation.SupportedFormats)
             {
-                switch(transformation.SupportedFormats)
-                {
-                    case HelpFileFormats.OpenXml:
-                        if(!contentType.Equals("OpenXml", StringComparison.OrdinalIgnoreCase))
-                            return;
-                        break;
+                case HelpFileFormats.OpenXml:
+                    if(!contentType.Equals("OpenXml", StringComparison.OrdinalIgnoreCase))
+                        return;
+                    break;
 
-                    case HelpFileFormats.Markdown:
-                        if(!contentType.Equals("Markdown", StringComparison.OrdinalIgnoreCase) &&
-                           !contentType.Equals("Html", StringComparison.OrdinalIgnoreCase))
-                        {
-                            return;
-                        }
-                        break;
+                case HelpFileFormats.Markdown:
+                    if(!contentType.Equals("Markdown", StringComparison.OrdinalIgnoreCase) &&
+                       !contentType.Equals("Html", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return;
+                    }
+                    break;
 
-                    default:
-                        if(!contentType.Equals("Html", StringComparison.OrdinalIgnoreCase))
-                            return;
-                        break;
-                }
+                default:
+                    if(!contentType.Equals("Html", StringComparison.OrdinalIgnoreCase))
+                        return;
+                    break;
             }
-
-            XElement clone = new(element);
-
-            clone.RemoveNamespaces();
-
-            foreach(var child in clone.Nodes())
-                transformation.CurrentElement.Add(child);
         }
+
+        XElement clone = new(element);
+
+        clone.RemoveNamespaces();
+
+        foreach(var child in clone.Nodes())
+            transformation.CurrentElement.Add(child);
     }
 }

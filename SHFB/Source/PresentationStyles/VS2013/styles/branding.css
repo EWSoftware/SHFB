@@ -506,10 +506,12 @@ div.caption {
 }
 
 /* Keyword and phrase styles */
-span.code, span.command {
+code, span.code, span.command {
     font-family: Consolas, Courier, monospace;
+    font-size: 1em;
     color: #000066;
     background-color: #f4f4f4;
+    padding: 0;
 }
 
 span.selflink {
@@ -578,19 +580,19 @@ span.noLink {
 }
 
 /* Media  styles */
-div.mediaNear {
+figure.mediaNear, div.mediaNear {
     text-align: left;
     margin-top: 1em;
     margin-bottom: 1em;
 }
 
-div.mediaFar {
+figure.mediaFar, div.mediaFar {
     text-align: right;
     margin-top: 1em;
     margin-bottom: 1em;
 }
 
-div.mediaCenter {
+figure.mediaCenter, div.mediaCenter {
     text-align: center;
     margin-top: 1em;
     margin-bottom: 1em;

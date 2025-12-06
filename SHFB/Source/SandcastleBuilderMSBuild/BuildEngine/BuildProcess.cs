@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/12/2025
+// Updated : 12/03/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -78,27 +78,27 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Xml;
 using System.Xml.XPath;
 
+using Microsoft.Build.Evaluation;
+
 using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
-using Sandcastle.Core.Reflection;
-using Sandcastle.Core.PresentationStyle;
-
-using Microsoft.Build.Evaluation;
-
 using Sandcastle.Core.BuildEngine;
-using Sandcastle.Core.Project;
+using Sandcastle.Core.InheritedDocumentation;
+using Sandcastle.Core.Markdown;
 using Sandcastle.Core.PlugIn;
+using Sandcastle.Core.PresentationStyle;
+using Sandcastle.Core.Project;
+using Sandcastle.Core.Reflection;
 
 using SandcastleBuilder.MSBuild.HelpProject;
-using System.Net;
-using Sandcastle.Core.InheritedDocumentation;
 
 namespace SandcastleBuilder.MSBuild.BuildEngine;
 
@@ -446,6 +446,25 @@ public partial class BuildProcess : IBuildProcess
     /// </summary>
     /// <value>These namespaces are used to limit what the Resolve Reference Links component has to index</value>
     public HashSet<string> ReferencedNamespaces => referencedNamespaces ??= [];
+
+    /// <summary>
+    /// This read-only property obtains an instance of the Markdown to MAML converter
+    /// </summary>
+    public MarkdownToMamlConverter MarkdownToMamlConverter
+    {
+        get
+        {
+            if(field == null)
+            {
+                var (blockTags, doNotParseTags) = this.PresentationStyle.TopicTransformation.HtmlBlockAndDoNotParseTags;
+
+                field = new MarkdownToMamlConverter(false, blockTags, doNotParseTags);
+                field.SetUpPipeline();
+            }
+
+            return field;
+        }
+    }
 
     /// <summary>
     /// This read-only property returns the MEF component container

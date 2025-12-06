@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/12/2025
+// Updated : 12/05/2025
 // Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to look up code entity references, code snippets, tokens, images,
@@ -336,12 +336,11 @@ public partial class EntityReferencesControl : UserControl
                 {
                     EntityType = EntityType.TocEntry,
                     Id = t.Id,
-                    Label = (t.Title ?? t.Id ?? "(No title)"),
-                    ToolTip = String.Format(CultureInfo.CurrentCulture, "ID: {0}\nFile: {1}",
-                        (t.Id ?? t.Title ?? "(No ID)"), t.SourceFile),
+                    Label = t.Title ?? t.Id ?? "(No title)",
+                    ToolTip = $"ID: {t.Id ?? t.Title ?? "(No ID)"}\nAlt ID: {t.AlternateId ?? "(None)"}\nFile: {t.SourceFile}",
                     Tag = t,
                     IsExpanded = t.IsExpanded,
-                    IsSelected = (t.IsSelected && !hasSelectedItem)
+                    IsSelected = t.IsSelected && !hasSelectedItem
                 };
 
                 // Only use the first selected item
@@ -712,19 +711,27 @@ public partial class EntityReferencesControl : UserControl
                 case EntityType.Image:
                     ImageReference ir = (ImageReference)r.Tag;
 
-                    if(cboInsertAs.SelectedIndex == 0)
-                        textToCopy = ir.ToMediaLink();
-                    else
+                    switch(cboInsertAs.SelectedIndex)
                     {
-                        if(cboInsertAs.SelectedIndex == 1)
+                        case 0:
+                            textToCopy = ir.ToMarkdownLink();
+                            break;
+
+                        case 1:
+                            textToCopy = ir.ToMediaLink();
+                            break;
+
+                        case 2:
                             textToCopy = ir.ToMediaLinkInline();
-                        else
-                        {
-                            if(cboInsertAs.SelectedIndex == 2)
-                                textToCopy = ir.ToExternalLink();
-                            else
-                                textToCopy = ir.ToImageLink();
-                        }
+                            break;
+
+                        case 3:
+                            textToCopy = ir.ToExternalLink();
+                            break;
+
+                        default:
+                            textToCopy = ir.ToImageLink();
+                            break;
                     }
                     break;
 
@@ -737,25 +744,25 @@ public partial class EntityReferencesControl : UserControl
                     TocEntry toc = (TocEntry)r.Tag;
 
                     // MAML topic?
-                    if(!String.IsNullOrEmpty(toc.Id))
+                    if(!String.IsNullOrWhiteSpace(toc.Id))
                     {
-                        if(cboInsertAs.SelectedIndex == 0)
+                        switch(cboInsertAs.SelectedIndex)
                         {
-                            textToCopy = String.Format(CultureInfo.InvariantCulture,
-                                "<link xlink:href=\"{0}\" />", toc.Id ?? "[Unknown ID]");
-                        }
-                        else
-                        {
-                            if(cboInsertAs.SelectedIndex == 1)
-                            {
-                                textToCopy = String.Format(CultureInfo.InvariantCulture,
-                                    "<conceptualLink target=\"{0}\" />", toc.Id ?? "[Unknown ID]");
-                            }
-                            else
-                            {
-                                textToCopy = String.Format(CultureInfo.InvariantCulture,
-                                    "<a href=\"html/{0}.htm\">{1}</a>", toc.Id, toc.Title);
-                            }
+                            case 0:
+                                textToCopy = $"[](@{toc.Id})";
+                                break;
+
+                            case 1:
+                                textToCopy = $"<link xlink:href=\"{toc.Id}\" />";
+                                break;
+
+                            case 2:
+                                textToCopy = $"<conceptualLink target=\"{toc.Id}\" />";
+                                break;
+
+                            default:
+                                textToCopy = $"<a href=\"html/{toc.Id}.htm\">{toc.Title}</a>";
+                                break;
                         }
                     }
                     else
@@ -765,10 +772,24 @@ public partial class EntityReferencesControl : UserControl
                 default:    // Code entity reference
                     CodeEntityReference ce = (CodeEntityReference)r.Tag;
 
-                    if(cboInsertAs.SelectedIndex == 0)
-                        textToCopy = ce.ToCodeEntityReference();
-                    else
-                        textToCopy = ce.ToSee();
+                    switch(cboInsertAs.SelectedIndex)
+                    {
+                        case 0:
+                            textToCopy = ce.ToMarkdownLink(false);
+                            break;
+
+                        case 1:
+                            textToCopy = ce.ToMarkdownLink(true);
+                            break;
+
+                        case 2:
+                            textToCopy = ce.ToCodeEntityReference();
+                            break;
+
+                        default:
+                            textToCopy = ce.ToSee();
+                            break;
+                    }
                     break;
             }
         }
@@ -929,6 +950,7 @@ public partial class EntityReferencesControl : UserControl
                     break;
 
                 case EntityType.Image:
+                    cboInsertAs.Items.Add("Markdown image link");
                     cboInsertAs.Items.Add("MAML media link");
                     cboInsertAs.Items.Add("MAML inline media link");
                     cboInsertAs.Items.Add("MAML external link");
@@ -940,6 +962,7 @@ public partial class EntityReferencesControl : UserControl
                     break;
 
                 case EntityType.TocEntry:
+                    cboInsertAs.Items.Add("Markdown link");
                     cboInsertAs.Items.Add("MAML link");
                     cboInsertAs.Items.Add("XML comments conceptualLink");
                     cboInsertAs.Items.Add("HTML anchor link");
@@ -954,6 +977,8 @@ public partial class EntityReferencesControl : UserControl
                     break;
 
                 default:    // Code entities
+                    cboInsertAs.Items.Add("Markdown link");
+                    cboInsertAs.Items.Add("Markdown link (qualified)");
                     cboInsertAs.Items.Add("MAML code entity reference");
                     cboInsertAs.Items.Add("XML comments see link");
                     cboInsertAs.SelectedIndex = 0;

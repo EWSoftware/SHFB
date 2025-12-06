@@ -15,17 +15,17 @@
 	<TemplateContent>
 		<Project File="SandcastleBuilder.shfbproj" ReplaceParameters="true">
 			<Folder Name="Content" TargetFolderName="Content">
-				<ProjectItem TargetFileName="Welcome.aml" ReplaceParameters="true" OpenInEditor="true">Welcome.aml</ProjectItem>
+				<ProjectItem TargetFileName="Welcome.md" ReplaceParameters="false" OpenInEditor="true">Welcome.md</ProjectItem>
 				<Folder Name="VersionHistory" TargetFolderName="VersionHistory">
-					<ProjectItem TargetFileName="v1.0.0.0.aml" ReplaceParameters="true">v1.0.0.0.aml</ProjectItem>
-					<ProjectItem TargetFileName="VersionHistory.aml" ReplaceParameters="true">VersionHistory.aml</ProjectItem>
+					<ProjectItem TargetFileName="v1.0.0.0.md" ReplaceParameters="false">v1.0.0.0.md</ProjectItem>
+					<ProjectItem TargetFileName="VersionHistory.md" ReplaceParameters="false">VersionHistory.md</ProjectItem>
 				</Folder>
 			</Folder>
 			<Folder Name="icons" TargetFolderName="icons">
 				<ProjectItem TargetFileName="Help.png" ReplaceParameters="false">Help.png</ProjectItem>
 			</Folder>
 			<Folder Name="media" TargetFolderName="media" />
-			<ProjectItem TargetFileName="ContentLayout.content" ReplaceParameters="true">ContentLayout.content</ProjectItem>
+			<ProjectItem TargetFileName="ContentLayout.content" ReplaceParameters="false">ContentLayout.content</ProjectItem>
 		</Project>
 	</TemplateContent>
 </VSTemplate>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : CodeEntityReference.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2025
+// Updated : 12/03/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a conceptual content code entity reference link
@@ -19,68 +19,93 @@
 
 using System;
 
-namespace Sandcastle.Core.ConceptualContent
+namespace Sandcastle.Core.ConceptualContent;
+
+/// <summary>
+/// This represents a conceptual content CodeEntityReference that can be used to insert a common item, value,
+/// or construct into topics.
+/// </summary>
+public class CodeEntityReference
 {
+    #region Properties
+    //=====================================================================
+
     /// <summary>
-    /// This represents a conceptual content CodeEntityReference that can be used to insert a common item, value,
-    /// or construct into topics.
+    /// This is used to get or set the CodeEntityReference name
     /// </summary>
-    public class CodeEntityReference
+    public string Id { get; set; }
+
+    #endregion
+
+    #region Constructor
+    //=====================================================================
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="id">The reference ID</param>
+    public CodeEntityReference(string id)
     {
-        #region Properties
-        //=====================================================================
-
-        /// <summary>
-        /// This is used to get or set the CodeEntityReference name
-        /// </summary>
-        public string Id { get; set; }
-
-        #endregion
-
-        #region Constructor
-        //=====================================================================
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="id">The reference ID</param>
-        public CodeEntityReference(string id)
-        {
-            this.Id = id;
-        }
-        #endregion
-
-        #region Convert to code reference element format
-        //=====================================================================
-
-        /// <summary>
-        /// Convert the entity to its <c>&lt;codeEntityReference&gt;</c> element form
-        /// </summary>
-        /// <returns>The entity in its <c>&lt;codeEntityReference&gt;</c> element form</returns>
-        public string ToCodeEntityReference()
-        {
-            string autoUpgrade;
-
-            // If it's a member, add the autoUpgrade attribute so that
-            // overloads are preferred if found.
-            if(this.Id[0] == 'M')
-                autoUpgrade = " autoUpgrade=\"true\"";
-            else
-                autoUpgrade = String.Empty;
-
-            // The name will not be fully qualified by default
-            return String.Concat("<codeEntityReference qualifyHint=\"false\"", autoUpgrade, ">", this.Id,
-                "</codeEntityReference>");
-        }
-
-        /// <summary>
-        /// Convert the entity to its <c>&lt;see&gt;</c> element form
-        /// </summary>
-        /// <returns>The token in its <c>&lt;see&gt;</c> element form</returns>
-        public string ToSee()
-        {
-            return String.Concat("<see cref=\"", this.Id, "\" />");
-        }
-        #endregion
+        this.Id = id;
     }
+    #endregion
+
+    #region Convert to code reference element format
+    //=====================================================================
+
+    /// <summary>
+    /// Convert the entity to its Markdown link form
+    /// </summary>
+    /// <returns>The entity in its Markdown link form</returns>
+    public string ToMarkdownLink(bool qualified)
+    {
+        // If it's a member, add the autoUpgrade attribute so that overloads are preferred if found
+        string options = (this.Id[0] == 'M') ? "prefer-overload=\"true\"" : String.Empty;
+
+        if(qualified)
+        {
+            if(options.Length != 0)
+                options += " ";
+
+            options += "show-container=\"true\"";
+
+            if(this.Id[0] == 'M')
+                options += " show-parameters=\"true\"";
+        }
+
+        if(options.Length != 0)
+            options = "{" + options + "}";
+
+        return $"[](@{this.Id}){options}";
+    }
+
+
+    /// <summary>
+    /// Convert the entity to its <c>&lt;codeEntityReference&gt;</c> element form
+    /// </summary>
+    /// <returns>The entity in its <c>&lt;codeEntityReference&gt;</c> element form</returns>
+    public string ToCodeEntityReference()
+    {
+        string autoUpgrade;
+
+        // If it's a member, add the autoUpgrade attribute so that overloads are preferred if found
+        if(this.Id[0] == 'M')
+            autoUpgrade = " autoUpgrade=\"true\"";
+        else
+            autoUpgrade = String.Empty;
+
+        // The name will not be fully qualified by default
+        return String.Concat("<codeEntityReference qualifyHint=\"false\"", autoUpgrade, ">", this.Id,
+            "</codeEntityReference>");
+    }
+
+    /// <summary>
+    /// Convert the entity to its <c>&lt;see&gt;</c> element form
+    /// </summary>
+    /// <returns>The token in its <c>&lt;see&gt;</c> element form</returns>
+    public string ToSee()
+    {
+        return String.Concat("<see cref=\"", this.Id, "\" />");
+    }
+    #endregion
 }

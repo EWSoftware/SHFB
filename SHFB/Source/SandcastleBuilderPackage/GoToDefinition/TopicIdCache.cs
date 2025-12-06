@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TopicIdCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/12/2025
+// Updated : 11/26/2025
 // Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to cache information about MAML topic IDs and their related files
@@ -200,6 +200,7 @@ internal class TopicIdCache
         {
             try
             {
+                // !!TODO: Add support for Markdown topic files.
                 // We could scan the projects for the files but passing the project folders is less info to
                 // gather when calling this and the Project class doesn't indicate that it is thread-safe.
                 foreach(string file in Directory.EnumerateFiles(folder, "*.aml", SearchOption.AllDirectories))

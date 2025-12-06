@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TableCellElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/09/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 11/22/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle table cell elements based on the topic type
 //
@@ -28,7 +28,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.OpenXml
     public class TableCellElement : OpenXmlElement
     {
         /// <inheritdoc />
-        public TableCellElement(string name) : base(name)
+        public TableCellElement(string name) : base(name, true)
         {
         }
 

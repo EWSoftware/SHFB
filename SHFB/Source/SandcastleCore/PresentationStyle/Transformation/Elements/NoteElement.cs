@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : NoteElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/09/2025
+// Updated : 11/30/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle note and alert elements
@@ -22,119 +22,128 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Linq;
 
+using Sandcastle.Core.PresentationStyle.Conversion;
 using Sandcastle.Core.Project;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements;
+
+/// <summary>
+/// This is used to handle <c>note</c> and <c>alert</c> elements in a topic
+/// </summary>
+public class NoteElement : Element
 {
+    #region Properties
+    //=====================================================================
+
     /// <summary>
-    /// This is used to handle <c>note</c> and <c>alert</c> elements in a topic
+    /// This is used to get or set the Note alert template file path
     /// </summary>
-    public class NoteElement : Element
+    /// <value>If not set by the owning transformation or something else, the element will try to resolve
+    /// the default path on first use.</value>
+    public string NoteAlertTemplatePath { get; set; }
+
+    /// <summary>
+    /// This is used to get or set the Caution alert template file path
+    /// </summary>
+    /// <value>This must be set by the owning transformation</value>
+    /// <value>If not set by the owning transformation or something else, the element will try to resolve
+    /// the default path on first use.</value>
+    public string CautionAlertTemplatePath { get; set; }
+
+    /// <summary>
+    /// This is used to get or set the Security alert template file path
+    /// </summary>
+    /// <value>This must be set by the owning transformation</value>
+    /// <value>If not set by the owning transformation or something else, the element will try to resolve
+    /// the default path on first use.</value>
+    public string SecurityAlertTemplatePath { get; set; }
+
+    /// <summary>
+    /// This is used to get or set the Language alert template file path
+    /// </summary>
+    /// <value>This must be set by the owning transformation</value>
+    /// <value>If not set by the owning transformation or something else, the element will try to resolve
+    /// the default path on first use.</value>
+    public string LanguageAlertTemplatePath { get; set; }
+
+    /// <summary>
+    /// This is used to get or set the To Do alert template file path
+    /// </summary>
+    /// <value>This must be set by the owning transformation</value>
+    /// <value>If not set by the owning transformation or something else, the element will try to resolve
+    /// the default path on first use.</value>
+    public string ToDoAlertTemplatePath { get; set; }
+
+    #endregion
+
+    #region Constructor
+    //=====================================================================
+
+    /// <inheritdoc />
+    public NoteElement(string name) : base(name, true)
     {
-        #region Properties
-        //=====================================================================
+    }
+    #endregion
 
-        /// <summary>
-        /// This is used to get or set the Note alert template file path
-        /// </summary>
-        /// <value>If not set by the owning transformation or something else, the element will try to resolve
-        /// the default path on first use.</value>
-        public string NoteAlertTemplatePath { get; set; }
+    #region Methods
+    //=====================================================================
 
-        /// <summary>
-        /// This is used to get or set the Caution alert template file path
-        /// </summary>
-        /// <value>This must be set by the owning transformation</value>
-        /// <value>If not set by the owning transformation or something else, the element will try to resolve
-        /// the default path on first use.</value>
-        public string CautionAlertTemplatePath { get; set; }
+    /// <inheritdoc />
+    public override void Render(TopicTransformationCore transformation, XElement element)
+    {
+        if(transformation == null)
+            throw new ArgumentNullException(nameof(transformation));
 
-        /// <summary>
-        /// This is used to get or set the Security alert template file path
-        /// </summary>
-        /// <value>This must be set by the owning transformation</value>
-        /// <value>If not set by the owning transformation or something else, the element will try to resolve
-        /// the default path on first use.</value>
-        public string SecurityAlertTemplatePath { get; set; }
+        if(element == null)
+            throw new ArgumentNullException(nameof(element));
 
-        /// <summary>
-        /// This is used to get or set the Language alert template file path
-        /// </summary>
-        /// <value>This must be set by the owning transformation</value>
-        /// <value>If not set by the owning transformation or something else, the element will try to resolve
-        /// the default path on first use.</value>
-        public string LanguageAlertTemplatePath { get; set; }
+        bool convertingMarkdown = transformation is MarkdownConversionTransformation;
 
-        /// <summary>
-        /// This is used to get or set the To Do alert template file path
-        /// </summary>
-        /// <value>This must be set by the owning transformation</value>
-        /// <value>If not set by the owning transformation or something else, the element will try to resolve
-        /// the default path on first use.</value>
-        public string ToDoAlertTemplatePath { get; set; }
-
-        #endregion
-
-        #region Constructor
-        //=====================================================================
-
-        /// <inheritdoc />
-        public NoteElement(string name) : base(name)
+        // Resolve unset paths on first use
+        if(!convertingMarkdown && String.IsNullOrWhiteSpace(this.NoteAlertTemplatePath))
         {
+            this.NoteAlertTemplatePath = transformation.ResolvePath(
+                Path.Combine("Templates", "NoteAlertTemplate.html"));
         }
-        #endregion
 
-        #region Methods
-        //=====================================================================
-
-        /// <inheritdoc />
-        public override void Render(TopicTransformationCore transformation, XElement element)
+        if(!convertingMarkdown && String.IsNullOrWhiteSpace(this.CautionAlertTemplatePath))
         {
-            if(transformation == null)
-                throw new ArgumentNullException(nameof(transformation));
+            this.CautionAlertTemplatePath = transformation.ResolvePath(
+                Path.Combine("Templates", "CautionAlertTemplate.html"));
+        }
 
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
+        if(!convertingMarkdown && String.IsNullOrWhiteSpace(this.SecurityAlertTemplatePath))
+        {
+            this.SecurityAlertTemplatePath = transformation.ResolvePath(
+                Path.Combine("Templates", "SecurityAlertTemplate.html"));
+        }
 
-            // Resolve unset paths on first use
-            if(String.IsNullOrWhiteSpace(this.NoteAlertTemplatePath))
-            {
-                this.NoteAlertTemplatePath = transformation.ResolvePath(
-                    Path.Combine("Templates", "NoteAlertTemplate.html"));
-            }
+        if(!convertingMarkdown && String.IsNullOrWhiteSpace(this.LanguageAlertTemplatePath))
+        {
+            this.LanguageAlertTemplatePath = transformation.ResolvePath(
+                Path.Combine("Templates", "LanguageAlertTemplate.html"));
+        }
 
-            if(String.IsNullOrWhiteSpace(this.CautionAlertTemplatePath))
-            {
-                this.CautionAlertTemplatePath = transformation.ResolvePath(
-                    Path.Combine("Templates", "CautionAlertTemplate.html"));
-            }
+        if(!convertingMarkdown && String.IsNullOrWhiteSpace(this.ToDoAlertTemplatePath))
+        {
+            this.ToDoAlertTemplatePath = transformation.ResolvePath(
+                Path.Combine("Templates", "ToDoAlertTemplate.html"));
+        }
 
-            if(String.IsNullOrWhiteSpace(this.SecurityAlertTemplatePath))
-            {
-                this.SecurityAlertTemplatePath = transformation.ResolvePath(
-                    Path.Combine("Templates", "SecurityAlertTemplate.html"));
-            }
+        // XML comments note elements use type and MAML alert elements use class
+        string noteType = element.Attribute("type")?.Value ?? element.Attribute("class")?.Value,
+            userDefinedTitle = element.Attribute("title")?.Value;
 
-            if(String.IsNullOrWhiteSpace(this.LanguageAlertTemplatePath))
-            {
-                this.LanguageAlertTemplatePath = transformation.ResolvePath(
-                    Path.Combine("Templates", "LanguageAlertTemplate.html"));
-            }
-
-            if(String.IsNullOrWhiteSpace(this.ToDoAlertTemplatePath))
-            {
-                this.ToDoAlertTemplatePath = transformation.ResolvePath(
-                    Path.Combine("Templates", "ToDoAlertTemplate.html"));
-            }
-
-            // XML comments note elements use type and MAML alert elements use class
-            string noteType = element.Attribute("type")?.Value ?? element.Attribute("class")?.Value,
-                title, altTitle, template, userDefinedTitle = element.Attribute("title")?.Value;
+        if(!convertingMarkdown)
+        {
+            string title, altTitle, template;
 
             switch(noteType)
             {
+                case "note":
                 case "tip":
                     title = "alert_title_tip";
                     altTitle = "alert_altText_tip";
@@ -263,6 +272,120 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                     transformation.CurrentElement.Add(n);
             }
         }
-        #endregion
+        else
+        {
+            // Alerts can be complicated as they may contain more than simple paragraphs.  As long as it only
+            // contains text or paragraphs with text and inline elements, we'll do our best to convert it to
+            // Markdown.  If not, pass it through in a MAML alert element wrapper.
+            XElement firstElement = element.Nodes().FirstOrDefault() as XElement;
+
+            if(!element.Nodes().All(n => n is XText || n is XComment ||
+              (n is XElement e && e.Name.LocalName == "para")))
+            {
+                transformation.CurrentElement.Add("\n");
+
+                var el = new XElement(this.Name);
+
+                foreach(var attr in element.Attributes())
+                    el.Add(new XAttribute(attr.Name.LocalName, attr.Value));
+
+                transformation.CurrentElement.Add(el);
+                transformation.RenderChildElements(el, element.Nodes());
+            }
+            else
+            {
+                transformation.CurrentElement.Add($"\n&#62; [!{noteType.ToUpperInvariant()}");
+
+                if(!String.IsNullOrWhiteSpace(userDefinedTitle))
+                    transformation.CurrentElement.Add($", {userDefinedTitle.NormalizeWhiteSpace()}");
+
+                transformation.CurrentElement.Add("]\n&#62; ");
+
+                // This is a bit tricky as we have to prefix each line start with "> ".  So, render it to
+                // a temporary element and then copy all of the text out prefixing as we go.
+                var el = new XElement(this.Name);
+
+                transformation.RenderChildElements(el, element.Nodes());
+
+                // First move the content of paragraphs into the parent element.
+                foreach(var para in el.Elements().Where(e => e.Name.LocalName == "para").ToList())
+                {
+                    var priorNode = para.PreviousNode;
+
+                    foreach(var node in para.Nodes().ToList())
+                    {
+                        node.Remove();
+                        para.AddAfterSelf(node);
+                    }
+
+                    para.Remove();
+                }
+
+                // Prefix each line with "> ".
+                StringBuilder sb = new(10240);
+                bool isFirst = true;
+
+                foreach(var b in el.Nodes())
+                {
+                    if(b is XText textBlock)
+                    {
+                        sb.Clear();
+                        sb.Append(textBlock.Value);
+
+                        int idx = 0;
+
+                        do
+                        {
+                            while(idx < sb.Length && (sb[idx] == '\r' || sb[idx] == '\n'))
+                            {
+                                if(isFirst)
+                                    sb.Remove(idx, 1);
+                                else
+                                {
+                                    if(idx > 0 && sb[idx - 1] == '\n')
+                                        break;
+
+                                    idx++;
+                                }
+                            }
+
+                            // Don't insert a prefix if there is an inline prior to the text with no line break after it
+                            if(!isFirst && (textBlock.PreviousNode is not XElement || idx != 0))
+                                sb.Insert(idx, "&#62; ");
+                            else
+                                isFirst = false;
+
+                            while(idx < sb.Length && sb[idx] != '\r' && sb[idx] != '\n')
+                                idx++;
+
+                        } while(idx < sb.Length);
+
+                        // Remove any trailing spaces if this is the last text node in the block
+                        if(textBlock.NextNode is null)
+                        {
+                            idx--;
+
+                            while(idx >= 0 && sb[idx] == ' ')
+                            {
+                                sb.Remove(idx, 1);
+                                idx--;
+                            }
+                        }
+
+                        textBlock.Value = sb.ToString();
+                    }
+                }
+
+                // And finally, move the nodes to the current element.
+                foreach(var n in el.Nodes().ToList())
+                {
+                    n.Remove();
+                    transformation.CurrentElement.Add(n);
+                }
+            }
+
+            transformation.CurrentElement.Add("\n");
+        }
     }
+    #endregion
 }

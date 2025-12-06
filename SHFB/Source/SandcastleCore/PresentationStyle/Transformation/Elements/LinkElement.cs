@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : LinkElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/04/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 11/24/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle link elements
 //
@@ -20,33 +20,51 @@
 using System;
 using System.Xml.Linq;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
+using Sandcastle.Core.PresentationStyle.Conversion;
+
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements;
+
+/// <summary>
+/// This handles <c>link</c> elements
+/// </summary>
+public class LinkElement : Element
 {
-    /// <summary>
-    /// This handles <c>link</c> elements
-    /// </summary>
-    public class LinkElement : Element
+    /// <inheritdoc />
+    public LinkElement() : base("link")
     {
-        /// <inheritdoc />
-        public LinkElement() : base("link")
+    }
+
+    /// <inheritdoc />
+    public override void Render(TopicTransformationCore transformation, XElement element)
+    {
+        if(transformation == null)
+            throw new ArgumentNullException(nameof(transformation));
+
+        if(element == null)
+            throw new ArgumentNullException(nameof(element));
+
+        string linkTarget = element.Attribute(Xlink + "href")?.Value;
+
+        if(!String.IsNullOrWhiteSpace(linkTarget))
         {
-        }
+            XElement link;
 
-        /// <inheritdoc />
-        public override void Render(TopicTransformationCore transformation, XElement element)
-        {
-            if(transformation == null)
-                throw new ArgumentNullException(nameof(transformation));
-
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
-
-            string linkTarget = element.Attribute(Xlink + "href")?.Value;
-
-            if(!String.IsNullOrWhiteSpace(linkTarget))
+            if(transformation is MarkdownConversionTransformation)
             {
-                XElement link;
+                link = transformation.CurrentElement;
 
+                link.Add("[");
+
+                if(element.FirstNode != null)
+                    transformation.RenderChildElements(link, element.Nodes());
+
+                if(linkTarget[0] != '#')
+                    linkTarget = "@" + linkTarget;
+
+                link.Add($"]({linkTarget})");
+            }
+            else
+            {
                 // In-page link or verified external link?
                 if(linkTarget[0] == '#')
                     link = new XElement("a", new XAttribute("href", linkTarget));

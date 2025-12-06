@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : NamedStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
-// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
+// Updated : 11/29/2025
+// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to contain the named styles used in the converted flow document
 //
@@ -17,50 +17,61 @@
 // 01/02/2012  EFW  Created the code
 //===============================================================================================================
 
-namespace SandcastleBuilder.WPF.Maml
+namespace SandcastleBuilder.WPF.Maml;
+
+/// <summary>
+/// These define the named styles used in the converted flow document
+/// </summary>
+public static class NamedStyle
 {
-    /// <summary>
-    /// These define the named styles used in the converted flow document
-    /// </summary>
-    public static class NamedStyle
-    {
-        /// <summary>Alert body style</summary>
-        public const string AlertBody = "AlertBody";
-        /// <summary>Alert title style</summary>
-        public const string AlertTitle = "AlertTitle";
-        /// <summary>Code block style</summary>
-        public const string CodeBlock = "CodeBlock";
-        /// <summary>Code inline style</summary>
-        public const string CodeInline = "CodeInline";
-        /// <summary>Defined term style</summary>
-        public const string DefinedTerm = "DefinedTerm";
-        /// <summary>Definition style</summary>
-        public const string Definition = "Definition";
-        /// <summary>Glossary definition style</summary>
-        public const string GlossaryDefinition = "GlossaryDefinition";
-        /// <summary>Glossary division title style</summary>
-        public const string GlossaryDivisionTitle = "GlossaryDivisionTitle";
-        /// <summary>Glossary letter bar style</summary>
-        public const string GlossaryLetterBar = "GlossaryLetterBar";
-        /// <summary>Glossary letter title style</summary>
-        public const string GlossaryLetterTitle = "GlossaryLetterTitle";
-        /// <summary>Literal style</summary>
-        public const string Literal = "Literal";
-        /// <summary>Math style</summary>
-        public const string Math = "Math";
-        /// <summary>No margin paragraph style</summary>
-        public const string NoMargin = "NoMargin";
-        /// <summary>No top margin paragraph style</summary>
-        public const string NoTopMargin = "NoTopMargin";
-        /// <summary>Quote paragraph style</summary>
-        public const string Quote = "Quote";
-        /// <summary>Related topic title style</summary>
-        public const string RelatedTopicTitle = "RelatedTopicTitle";
-        /// <summary>Table header row style</summary>
-        public const string TableHeaderRow = "TableHeaderRow";
-        /// <summary>Table title style</summary>
-        public const string TableTitle = "TableTitle";
-        /// <summary>Title style</summary>
-        public const string Title = "Title";
-    }
+    /// <summary>Alert body style</summary>
+    public const string AlertBody = "AlertBody";
+    /// <summary>Alert title style</summary>
+    public const string AlertTitle = "AlertTitle";
+    /// <summary>Code block style</summary>
+    public const string CodeBlock = "CodeBlock";
+    /// <summary>Code inline style</summary>
+    public const string CodeInline = "CodeInline";
+    /// <summary>Defined term style</summary>
+    public const string DefinedTerm = "DefinedTerm";
+    /// <summary>Definition style</summary>
+    public const string Definition = "Definition";
+    /// <summary>Glossary definition style</summary>
+    public const string GlossaryDefinition = "GlossaryDefinition";
+    /// <summary>Glossary division title style</summary>
+    public const string GlossaryDivisionTitle = "GlossaryDivisionTitle";
+    /// <summary>Glossary letter bar style</summary>
+    public const string GlossaryLetterBar = "GlossaryLetterBar";
+    /// <summary>Glossary letter title style</summary>
+    public const string GlossaryLetterTitle = "GlossaryLetterTitle";
+    /// <summary>Literal style</summary>
+    public const string Literal = "Literal";
+    /// <summary>Math style</summary>
+    public const string Math = "Math";
+    /// <summary>No margin paragraph style</summary>
+    public const string NoMargin = "NoMargin";
+    /// <summary>No top margin paragraph style</summary>
+    public const string NoTopMargin = "NoTopMargin";
+    /// <summary>Block quote section style</summary>
+    public const string BlockQuote = "BlockQuote";
+    /// <summary>Quote paragraph style</summary>
+    public const string Quote = "Quote";
+    /// <summary>Related topic title style</summary>
+    public const string RelatedTopicTitle = "RelatedTopicTitle";
+    /// <summary>Table header row style</summary>
+    public const string TableHeaderRow = "TableHeaderRow";
+    /// <summary>Table title style</summary>
+    public const string TableTitle = "TableTitle";
+    /// <summary>Heading 1</summary>
+    public const string Heading1 = "Heading1";
+    /// <summary>Heading 2</summary>
+    public const string Heading2 = "Heading2";
+    /// <summary>Heading 3</summary>
+    public const string Heading3 = "Heading3";
+    /// <summary>Heading 4</summary>
+    public const string Heading4 = "Heading4";
+    /// <summary>Heading 5</summary>
+    public const string Heading5 = "Heading5";
+    /// <summary>Heading 6</summary>
+    public const string Heading6 = "Heading6";
 }

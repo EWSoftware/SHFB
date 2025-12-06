@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/27/2025
+// Updated : 11/26/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the project class.
@@ -2095,7 +2095,6 @@ namespace SandcastleBuilder.MSBuild.HelpProject
                 case ".htm":
                 case ".html":
                 case ".js":
-                case ".md":
                 case ".txt":
                 case ".zip":
                     return BuildAction.Content;

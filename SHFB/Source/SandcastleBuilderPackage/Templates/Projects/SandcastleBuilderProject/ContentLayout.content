@@ -1,18 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Topics>
-  <Topic id="$guid2$" visible="True" isDefault="true" isSelected="true" title="Welcome to the [TODO: Add project name]">
-    <HelpKeywords>
-      <HelpKeyword index="K" term="Welcome" />
-    </HelpKeywords>
-  </Topic>
-  <Topic id="$guid3$" visible="True" isExpanded="true" title="Version History">
-    <HelpKeywords>
-      <HelpKeyword index="K" term="version, history" />
-    </HelpKeywords>
-    <Topic id="$guid4$" visible="True" title="Version 1.0.0.0">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="version, 1.0.0.0" />
-      </HelpKeywords>
-    </Topic>
+  <Topic id="Welcome" visible="True" isDefault="true" isSelected="true" />
+  <Topic id="VersionHistory" visible="True" isExpanded="true">
+    <Topic id="v1-0-0-0" visible="True" />
   </Topic>
 </Topics>

@@ -632,7 +632,40 @@ namespace SandcastleBuilder.MSBuild.BuildEngine
         private static void ConvertHtmlLineBreaks(XDocument document)
         {
             foreach(var lineBreak in document.Descendants("br").ToList())
-                lineBreak.ReplaceWith(new XElement(w + "r", new XElement(w + "br")));
+            {
+                XElement parent = lineBreak.Parent, br = new(w + "r", new XElement(w + "br"));
+
+                // If not in a paragraph, try to move it to the prior paragraph or the next paragraph following
+                // any other line breaks.
+                if(parent.Name.LocalName != "p")
+                {
+                    if(lineBreak.PreviousNode is XElement pn && pn.Name.LocalName == "p")
+                    {
+                        lineBreak.Remove();
+                        pn.Add(br);
+                    }
+                    else
+                    {
+                        XNode next = lineBreak.NextNode;
+
+                        while(next != null && next is XElement nn && nn.Name.LocalName == "br")
+                            next = next.NextNode;
+
+                        if(next is XElement p && p.Name.LocalName == "p")
+                        {
+                            lineBreak.Remove();
+                            p.AddFirst(br);
+                        }
+                        else
+                        {
+                            // Give up and wrap it in a paragraph
+                            lineBreak.ReplaceWith(new XElement(w + "p", br));
+                        }
+                    }
+                }
+                else
+                    lineBreak.ReplaceWith(br);
+            }
         }
 
         /// <summary>

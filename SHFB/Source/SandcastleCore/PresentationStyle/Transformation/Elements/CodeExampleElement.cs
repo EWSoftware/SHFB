@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : CodeExampleElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/26/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 11/28/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle codeExample elements
 //
@@ -21,56 +21,55 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements;
+
+/// <summary>
+/// This is used to handle <c>codeExample</c> elements in a topic
+/// </summary>
+/// <remarks>The first <c>codeExample</c> element encountered will create a section and all other
+/// <c>codeExample</c> elements within the parent element will be included in the section and will not be
+/// processed separately.</remarks>
+public class CodeExampleElement : Element
 {
-    /// <summary>
-    /// This is used to handle <c>codeExample</c> elements in a topic
-    /// </summary>
-    /// <remarks>The first <c>codeExample</c> element encountered will create a section and all other
-    /// <c>codeExample</c> elements within the parent element will be included in the section and will not be
-    /// processed separately.</remarks>
-    public class CodeExampleElement : Element
+    #region Constructor
+    //=====================================================================
+
+    /// <inheritdoc />
+    public CodeExampleElement() : base("codeExample", true)
     {
-        #region Constructor
-        //=====================================================================
-
-        /// <inheritdoc />
-        public CodeExampleElement() : base("codeExample")
-        {
-        }
-        #endregion
-
-        #region Methods
-        //=====================================================================
-
-        /// <inheritdoc />
-        public override void Render(TopicTransformationCore transformation, XElement element)
-        {
-            if(transformation == null)
-                throw new ArgumentNullException(nameof(transformation));
-
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
-
-            if(!element.PrecedingSiblings(element.Name).Any())
-            {
-                var (title, content) = transformation.CreateSection(element.GenerateUniqueId(), true,
-                    "title_example", null);
-
-                if(title != null)
-                    transformation.CurrentElement.Add(title);
-
-                if(content != null)
-                    transformation.CurrentElement.Add(content);
-                else
-                    content = transformation.CurrentElement;
-
-                transformation.RenderChildElements(content, element.Nodes());
-
-                foreach(var otherExample in element.FollowingSiblings(element.Name))
-                    transformation.RenderChildElements(content, otherExample.Nodes());
-            }
-        }
-        #endregion
     }
+    #endregion
+
+    #region Methods
+    //=====================================================================
+
+    /// <inheritdoc />
+    public override void Render(TopicTransformationCore transformation, XElement element)
+    {
+        if(transformation == null)
+            throw new ArgumentNullException(nameof(transformation));
+
+        if(element == null)
+            throw new ArgumentNullException(nameof(element));
+
+        if(!element.PrecedingSiblings(element.Name).Any())
+        {
+            var (title, content) = transformation.CreateSection(element.GenerateUniqueId(), true,
+                "title_example", null, 0);
+
+            if(title != null)
+                transformation.CurrentElement.Add(title);
+
+            if(content != null)
+                transformation.CurrentElement.Add(content);
+            else
+                content = transformation.CurrentElement;
+
+            transformation.RenderChildElements(content, element.Nodes());
+
+            foreach(var otherExample in element.FollowingSiblings(element.Name))
+                transformation.RenderChildElements(content, otherExample.Nodes());
+        }
+    }
+    #endregion
 }

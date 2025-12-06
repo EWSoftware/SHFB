@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : AssemblyInfoShared.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/30/2025
+// Updated : 11/25/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // Sandcastle Help File Builder common assembly attributes.
@@ -27,14 +27,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("Eric Woodruff")]
 [assembly: AssemblyCopyright(AssemblyInfo.Copyright)]
 
-// Not visible to COM
+// Not visible to COM and not CLS compliant
 [assembly: ComVisible(false)]
-
-#if NOT_CLS_COMPLIANT
 [assembly: CLSCompliant(false)]
-#else
-[assembly: CLSCompliant(true)]
-#endif
 
 // Version numbers.  See comments below.
 

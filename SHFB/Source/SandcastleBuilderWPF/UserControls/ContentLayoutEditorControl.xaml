@@ -33,7 +33,7 @@
       Executed="cmdMoveUp_Executed" />
     <CommandBinding Command="shfbCommands:EditorCommands.Sort" CanExecute="cmdSort_CanExecute"
       Executed="cmdSort_Executed" />
-  </UserControl.CommandBindings>
+	</UserControl.CommandBindings>
   <UserControl.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -294,7 +294,9 @@
                   <Image Source="{StaticResource Sort}" />
                 </MenuItem.Icon>
               </MenuItem>
-              <Separator />
+							<MenuItem Header="Con_vert to Markdown" Command="shfbCommands:EditorCommands.ConvertToMarkdown"
+								CommandTarget="{Binding ElementName=tvContent}"/>
+							<Separator />
               <MenuItem Header="E_xpand/Collapse" ItemsSource="{DynamicResource ExpandCollapseMenuItems}">
                 <MenuItem.Icon>
                   <Image Source="{StaticResource ExpandCollapse}" />
@@ -404,17 +406,12 @@
                 <Grid.RowDefinitions>
                   <RowDefinition />
                   <RowDefinition />
-                  <RowDefinition />
                 </Grid.RowDefinitions>
                 <Label Content="_ID" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" Target="{Binding ElementName=txtID}" />
                 <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Name="txtID" Margin="3,0"
 									IsReadOnly="True" Text="{Binding Id, Mode=OneWay}" IsReadOnlyCaretVisible="True" TabIndex="6" />
-                <Label Content="Revision #" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="1" />
-                <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"
-									MinWidth="50"  Name="txtRevNumber" Margin="3,0" IsReadOnly="True"
-									Text="{Binding RevisionNumber, Mode=OneWay}" IsReadOnlyCaretVisible="True" TabIndex="7" />
-                <Label Content="Topic Filename" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2" />
-                <Grid Grid.Row="2" Grid.Column="1">
+                <Label Content="Topic Filename" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="1" />
+                <Grid Grid.Row="1" Grid.Column="1">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />
@@ -462,13 +459,13 @@
                 </Grid.RowDefinitions>
                 <Label Content="_Title" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" Target="{Binding ElementName=txtTitle}" />
                 <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Name="txtTitle" Margin="3,0"
-                Text="{Binding Title, Mode=TwoWay}" TabIndex="13" />
+									Text="{Binding Title, Mode=TwoWay}" IsEnabled="{Binding IsMamlTopic, Mode=OneWay}" TabIndex="13" />
                 <Label Content="Link Text" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="1" />
                 <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Name="txtLinkText"
-                Margin="3,0" Text="{Binding LinkText, Mode=TwoWay}" TabIndex="14" />
+									Margin="3,0" Text="{Binding LinkText, Mode=TwoWay}" IsEnabled="{Binding IsMamlTopic, Mode=OneWay}" TabIndex="14" />
                 <Label Content="TOC Title" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2" />
                 <TextBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Name="txtTOCTitle"
-                Margin="3,0" Text="{Binding TocTitle, Mode=TwoWay}" TabIndex="15" />
+									Margin="3,0" Text="{Binding TocTitle, Mode=TwoWay}" IsEnabled="{Binding IsMamlTopic, Mode=OneWay}" TabIndex="15" />
                 <CheckBox Grid.Row="3" Grid.Column="1" Content="Sho_w in the table of contents" VerticalAlignment="Center"
                     Name="chkVisible" Margin="3,3" IsChecked="{Binding Visible, Mode=TwoWay}" TabIndex="16" />
                 <CheckBox Grid.Row="4" Grid.Column="1" Content="Use as the de_fault topic" VerticalAlignment="Center"

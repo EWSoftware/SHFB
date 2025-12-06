@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ConvertibleElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2025
+// Updated : 12/04/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that handles elements that are converted to a different element name and have an
@@ -22,144 +22,144 @@ using System;
 using System.Xml.Linq;
 using Sandcastle.Core.Project;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements;
+
+/// <summary>
+/// This handles elements that are converted to a different element name and have an optional style
+/// attribute.
+/// </summary>
+public class ConvertibleElement : Element
 {
+    #region Properties
+    //=====================================================================
+
     /// <summary>
-    /// This handles elements that are converted to a different element name and have an optional style
-    /// attribute.
+    /// This read-only property returns the element name that will be rendered in the topic
     /// </summary>
-    public class ConvertibleElement : Element
+    public string RenderedName { get; }
+
+    /// <summary>
+    /// This read-only property returns the style name if specified
+    /// </summary>
+    /// <value>If null, no style attribute will be rendered</value>
+    public string StyleName { get; }
+
+    /// <summary>
+    /// This read-only property returns true if the element is addressable (it can have an address attribute
+    /// that serves as a link target).
+    /// </summary>
+    public bool Addressable { get; }
+
+    /// <summary>
+    /// This read-only property returns the name of the attribute value from which to get the value for the
+    /// converted element's content.  If null, the elements nodes are used instead.
+    /// </summary>
+    public string ValueAttributeName { get; }
+
+    #endregion
+
+    #region Constructors
+    //=====================================================================
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="name">The element name</param>
+    /// <param name="renderedElement">The element name to use in the rendered topic</param>
+    /// <overloads>There are four overloads for the constructor</overloads>
+    public ConvertibleElement(string name, string renderedElement) : base(name)
     {
-        #region Properties
-        //=====================================================================
+        this.RenderedName = renderedElement;
+    }
 
-        /// <summary>
-        /// This read-only property returns the element name that will be rendered in the topic
-        /// </summary>
-        public string RenderedName { get; }
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="name">The element name</param>
+    /// <param name="renderedElement">The element name to use in the rendered topic</param>
+    /// <param name="addressable">True if it can have an address attribute, false if not</param>
+    /// <param name="isBlockElement">True if the element is a block element, false if it is not</param>
+    public ConvertibleElement(string name, string renderedElement, bool addressable,
+      bool isBlockElement = false) : base(name, isBlockElement)
+    {
+        this.RenderedName = renderedElement;
+        this.Addressable = addressable;
+    }
 
-        /// <summary>
-        /// This read-only property returns the style name if specified
-        /// </summary>
-        /// <value>If null, no style attribute will be rendered</value>
-        public string StyleName { get; }
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="name">The element name</param>
+    /// <param name="renderedElement">The element name to use in the rendered topic</param>
+    /// <param name="styleName">The style name to use in the style attribute</param>
+    /// <param name="isBlockElement">True if the element is a block element, false if it is not</param>
+    public ConvertibleElement(string name, string renderedElement, string styleName,
+      bool isBlockElement = false) : this(name, renderedElement, false, isBlockElement)
+    {
+        this.StyleName = styleName;
+    }
 
-        /// <summary>
-        /// This read-only property returns true if the element is addressable (it can have an address attribute
-        /// that serves as a link target).
-        /// </summary>
-        public bool Addressable { get; }
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="name">The element name</param>
+    /// <param name="valueAttributeName">The attribute name from which to get the value to render in the content</param>
+    /// <param name="renderedElement">The element name to use in the rendered topic</param>
+    /// <param name="styleName">The style name to use in the style attribute</param>
+    public ConvertibleElement(string name, string valueAttributeName, string renderedElement,
+      string styleName) : this(name, renderedElement)
+    {
+        this.StyleName = styleName;
+        this.ValueAttributeName = valueAttributeName;
+    }
+    #endregion
 
-        /// <summary>
-        /// This read-only property returns the name of the attribute value from which to get the value for the
-        /// converted element's content.  If null, the elements nodes are used instead.
-        /// </summary>
-        public string ValueAttributeName { get; }
+    #region Methods
+    //=====================================================================
 
-        #endregion
+    /// <inheritdoc />
+    public override void Render(TopicTransformationCore transformation, XElement element)
+    {
+        if(transformation == null)
+            throw new ArgumentNullException(nameof(transformation));
 
-        #region Constructors
-        //=====================================================================
+        if(element == null)
+            throw new ArgumentNullException(nameof(element));
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="name">The element name</param>
-        /// <param name="renderedElement">The element name to use in the rendered topic</param>
-        /// <overloads>There are three overloads for the constructor</overloads>
-        public ConvertibleElement(string name, string renderedElement) : base(name)
+        var el = new XElement(this.RenderedName);
+
+        if(!String.IsNullOrWhiteSpace(this.StyleName))
+            el.Add(new XAttribute("class", this.StyleName));
+
+        if(this.Addressable)
         {
-            this.RenderedName = renderedElement;
-        }
+            string address = (element.Attribute("address") ?? element.Attribute("id"))?.Value;
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="name">The element name</param>
-        /// <param name="renderedElement">The element name to use in the rendered topic</param>
-        /// <param name="addressable">True if it can have an address attribute, false if not</param>
-        /// <overloads>There are three overloads for the constructor</overloads>
-        public ConvertibleElement(string name, string renderedElement, bool addressable) : base(name)
-        {
-            this.RenderedName = renderedElement;
-            this.Addressable = addressable;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="name">The element name</param>
-        /// <param name="renderedElement">The element name to use in the rendered topic</param>
-        /// <param name="styleName">The style name to use in the style attribute</param>
-        /// <overloads>There are two overloads for the constructor</overloads>
-        public ConvertibleElement(string name, string renderedElement, string styleName) : this(name, renderedElement)
-        {
-            this.StyleName = styleName;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="name">The element name</param>
-        /// <param name="valueAttributeName">The attribute name from which to get the value to render in the content</param>
-        /// <param name="renderedElement">The element name to use in the rendered topic</param>
-        /// <param name="styleName">The style name to use in the style attribute</param>
-        /// <overloads>There are two overloads for the constructor</overloads>
-        public ConvertibleElement(string name, string valueAttributeName, string renderedElement,
-          string styleName) : this(name, renderedElement)
-        {
-            this.StyleName = styleName;
-            this.ValueAttributeName = valueAttributeName;
-        }
-        #endregion
-
-        #region Methods
-        //=====================================================================
-
-        /// <inheritdoc />
-        public override void Render(TopicTransformationCore transformation, XElement element)
-        {
-            if(transformation == null)
-                throw new ArgumentNullException(nameof(transformation));
-
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
-
-            var el = new XElement(this.RenderedName);
-
-            if(!String.IsNullOrWhiteSpace(this.StyleName))
-                el.Add(new XAttribute("class", this.StyleName));
-
-            if(this.Addressable)
+            if(!String.IsNullOrWhiteSpace(address))
             {
-                string address = element.Attribute("address")?.Value;
-
-                if(!String.IsNullOrWhiteSpace(address))
+                switch(transformation.SupportedFormats)
                 {
-                    switch(transformation.SupportedFormats)
-                    {
-                        case HelpFileFormats.OpenXml:
-                            OpenXml.OpenXmlElement.AddAddressBookmark(transformation.CurrentElement, address);
-                            break;
+                    case HelpFileFormats.OpenXml:
+                        OpenXml.OpenXmlElement.AddAddressBookmark(transformation.CurrentElement, address);
+                        break;
 
-                        case HelpFileFormats.Markdown:
-                            Markdown.MarkdownElement.AddAddressBookmark(transformation.CurrentElement, address);
-                            break;
+                    case HelpFileFormats.Markdown:
+                        Markdown.MarkdownElement.AddAddressBookmark(transformation.CurrentElement, address);
+                        break;
 
-                        default:
-                            el.Add(new XAttribute("id", address));
-                            break;
-                    }
+                    default:
+                        el.Add(new XAttribute("id", address));
+                        break;
                 }
             }
-
-            transformation.CurrentElement.Add(el);
-
-            if(String.IsNullOrWhiteSpace(this.ValueAttributeName))
-                transformation.RenderChildElements(el, element.Nodes());
-            else
-                el.Add(element.Attribute(this.ValueAttributeName)?.Value);
         }
-        #endregion
+
+        transformation.CurrentElement.Add(el);
+
+        if(String.IsNullOrWhiteSpace(this.ValueAttributeName))
+            transformation.RenderChildElements(el, element.Nodes());
+        else
+            el.Add(element.Attribute(this.ValueAttributeName)?.Value);
     }
+    #endregion
 }

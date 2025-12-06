@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : NonRenderedParentElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/05/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 11/22/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle parent elements that do not themselves have any rendered
 // representation.
@@ -21,43 +21,42 @@
 using System;
 using System.Xml.Linq;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements;
+
+/// <summary>
+/// This handles parent elements that do not themselves have any rendered representation.  It simply parses
+/// each of the child nodes in the given element if it has any and renders those as needed.
+/// </summary>
+public class NonRenderedParentElement : Element
 {
+    #region Constructor
+    //=====================================================================
+
     /// <summary>
-    /// This handles parent elements that do not themselves have any rendered representation.  It simply parses
-    /// each of the child nodes in the given element if it has any and renders those as needed.
+    /// Constructor
     /// </summary>
-    public class NonRenderedParentElement : Element
+    /// <remarks>This element only contains child elements and has no title.  If it contains a title
+    /// element, it will be ignored.</remarks>
+    /// <param name="name">The element name</param>
+    public NonRenderedParentElement(string name) : base(name, true)
     {
-        #region Constructor
-        //=====================================================================
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <remarks>This element only contains child elements and has no title.  If it contains a title
-        /// element, it will be ignored.</remarks>
-        /// <param name="name">The element name</param>
-        public NonRenderedParentElement(string name) : base(name)
-        {
-        }
-        #endregion
-
-        #region Methods
-        //=====================================================================
-
-        /// <inheritdoc />
-        public override void Render(TopicTransformationCore transformation, XElement element)
-        {
-            if(transformation == null)
-                throw new ArgumentNullException(nameof(transformation));
-
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
-
-            foreach(var child in element.Nodes())
-                transformation.RenderNode(child);
-        }
-        #endregion
     }
+    #endregion
+
+    #region Methods
+    //=====================================================================
+
+    /// <inheritdoc />
+    public override void Render(TopicTransformationCore transformation, XElement element)
+    {
+        if(transformation == null)
+            throw new ArgumentNullException(nameof(transformation));
+
+        if(element == null)
+            throw new ArgumentNullException(nameof(element));
+
+        foreach(var child in element.Nodes())
+            transformation.RenderNode(child);
+    }
+    #endregion
 }

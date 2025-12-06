@@ -371,7 +371,8 @@ namespace SandcastleBuilder.Package.Editors
                 {
                     this.AddTopicFile(filename, e.Parameter != null);
 
-                    t?.IsSelected = true;
+                    if(t != null)
+                        t.IsSelected = true;
                 }
 
                 thisNode?.ProjectMgr.RefreshProject();

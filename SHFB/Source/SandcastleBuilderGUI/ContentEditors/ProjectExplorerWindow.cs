@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/12/2025
+// Updated : 11/26/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to manage the project items and files
@@ -293,6 +293,7 @@ public partial class ProjectExplorerWindow : BaseContentEditor
                     case ".html":
                     case ".js":
                     case ".log":
+                    case ".md":
                     case ".txt":
                     case ".xml":
                         editor = new TopicEditorWindow(fullName);
@@ -433,10 +434,11 @@ public partial class ProjectExplorerWindow : BaseContentEditor
     {
         EventHandler onClick = new(templateFile_OnClick);
         ToolStripMenuItem miTemplate;
-        string name;
+        string name, templatePath = Path.Combine(Path.GetDirectoryName(
+          Assembly.GetExecutingAssembly().Location), "ConceptualTemplates");
 
-        foreach(string file in Directory.EnumerateFiles(Path.Combine(Path.GetDirectoryName(
-          Assembly.GetExecutingAssembly().Location), "ConceptualTemplates"), "*.aml"))
+        foreach(string file in Directory.EnumerateFiles(templatePath, "*.md").Concat(
+          Directory.EnumerateFiles(templatePath, "*.aml")))
         {
             name = Path.GetFileNameWithoutExtension(file);
 
@@ -478,7 +480,8 @@ public partial class ProjectExplorerWindow : BaseContentEditor
 
         if(Directory.Exists(name))
         {
-            foreach(string file in Directory.EnumerateFiles(name, "*.aml"))
+            foreach(string file in Directory.EnumerateFiles(name, "*.md").Concat(
+              Directory.EnumerateFiles(name, "*.aml")))
             {
                 name = Path.GetFileNameWithoutExtension(file);
 
@@ -775,6 +778,7 @@ public partial class ProjectExplorerWindow : BaseContentEditor
                     case ".html":
                     case ".js":
                     case ".log":
+                    case ".md":
                     case ".txt":
                     case ".xml":
                         return false;
@@ -1745,10 +1749,10 @@ public partial class ProjectExplorerWindow : BaseContentEditor
             using OpenFileDialog dlg = new();
             
             dlg.Title = "Select the file(s) to add";
-            dlg.Filter = "Project Files (*.aml, *.htm*, *.css, *.js, " +
-                "*.content, *.sitemap, *.snippets, *.tokens, *.items)|*.aml;" +
+            dlg.Filter = "Project Files (*.md, *.aml, *.htm*, *.css, *.js, " +
+                "*.content, *.sitemap, *.snippets, *.tokens, *.items)|*.md;*.aml;" +
                 "*.htm*;*.css;*.js;*.content;*.sitemap;*.tokens;" +
-                "*.snippets;*.items|Content Files (*.aml, *.htm*)|*.aml;*.htm*|" +
+                "*.snippets;*.items|Content Files (*.md, *.aml, *.htm*)|*.md;*.aml;*.htm*|" +
                 "Content Layout Files (*.content, *.sitemap)|" +
                 "*.content;*.sitemap|Image Files (*.bmp, *.gif, " +
                 "*.jpg, *.jpe*, *.png)|*.bmp;*.gif;*.jpg;*.jpe*;" +

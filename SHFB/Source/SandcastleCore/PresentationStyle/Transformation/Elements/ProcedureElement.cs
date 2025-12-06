@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ProcedureElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2025
+// Updated : 11/22/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle procedure elements
@@ -23,90 +23,89 @@ using System.Xml.Linq;
 
 using Sandcastle.Core.Project;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements;
+
+/// <summary>
+/// This is used to handle general <c>procedure</c> elements in a topic
+/// </summary>
+public class ProcedureElement : Element
 {
-    /// <summary>
-    /// This is used to handle general <c>procedure</c> elements in a topic
-    /// </summary>
-    public class ProcedureElement : Element
+    #region Constructor
+    //=====================================================================
+
+    /// <inheritdoc />
+    public ProcedureElement() : base("procedure", true)
     {
-        #region Constructor
-        //=====================================================================
-
-        /// <inheritdoc />
-        public ProcedureElement() : base("procedure")
-        {
-        }
-        #endregion
-
-        #region Methods
-        //=====================================================================
-
-        /// <inheritdoc />
-        public override void Render(TopicTransformationCore transformation, XElement element)
-        {
-            if(transformation == null)
-                throw new ArgumentNullException(nameof(transformation));
-
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
-
-            XElement content;
-            string address = element.Attribute("address")?.Value;
-            var titleText = element.Element(Ddue + "title")?.Value.NormalizeWhiteSpace();
-
-            switch(transformation.SupportedFormats)
-            {
-                case HelpFileFormats.OpenXml:
-                    content = transformation.CurrentElement;
-
-                    if(!String.IsNullOrWhiteSpace(address))
-                        OpenXml.OpenXmlElement.AddAddressBookmark(content, address);
-
-                    if(!String.IsNullOrWhiteSpace(titleText))
-                    {
-                        content.Add(new XElement(OpenXml.OpenXmlElement.WordProcessingML + "p",
-                            new XElement(OpenXml.OpenXmlElement.WordProcessingML + "pPr",
-                                new XElement(OpenXml.OpenXmlElement.WordProcessingML + "pStyle",
-                                    new XAttribute(OpenXml.OpenXmlElement.WordProcessingML + "val", "Heading5"))),
-                            titleText));
-                    }
-                    break;
-
-                case HelpFileFormats.Markdown:
-                    content = transformation.CurrentElement;
-
-                    if(!String.IsNullOrWhiteSpace(titleText))
-                        content.Add("### ", titleText);
-
-                    if(!String.IsNullOrWhiteSpace(address))
-                        Markdown.MarkdownElement.AddAddressBookmark(content, address);
-                    break;
-
-                default:
-                    if(!String.IsNullOrWhiteSpace(titleText))
-                    {
-                        var title = new XElement("h3", titleText);
-
-                        if(!String.IsNullOrWhiteSpace(address))
-                            title.Add(new XAttribute("id", address));
-
-                        transformation.CurrentElement.Add(title);
-                    }
-
-                    content = new XElement("div");
-
-                    if(!String.IsNullOrWhiteSpace(address) && String.IsNullOrWhiteSpace(titleText))
-                        content.Add(new XAttribute("id", address));
-
-                    transformation.CurrentElement.Add(content);
-                    break;
-            }
-
-            // Render the steps and conclusion
-            transformation.RenderChildElements(content, element.Elements(Ddue + "steps").Concat(
-                element.Elements(Ddue + "conclusion")));
-        }
-        #endregion
     }
+    #endregion
+
+    #region Methods
+    //=====================================================================
+
+    /// <inheritdoc />
+    public override void Render(TopicTransformationCore transformation, XElement element)
+    {
+        if(transformation == null)
+            throw new ArgumentNullException(nameof(transformation));
+
+        if(element == null)
+            throw new ArgumentNullException(nameof(element));
+
+        XElement content;
+        string address = element.Attribute("address")?.Value;
+        var titleText = element.Element(Ddue + "title")?.Value.NormalizeWhiteSpace();
+
+        switch(transformation.SupportedFormats)
+        {
+            case HelpFileFormats.OpenXml:
+                content = transformation.CurrentElement;
+
+                if(!String.IsNullOrWhiteSpace(address))
+                    OpenXml.OpenXmlElement.AddAddressBookmark(content, address);
+
+                if(!String.IsNullOrWhiteSpace(titleText))
+                {
+                    content.Add(new XElement(OpenXml.OpenXmlElement.WordProcessingML + "p",
+                        new XElement(OpenXml.OpenXmlElement.WordProcessingML + "pPr",
+                            new XElement(OpenXml.OpenXmlElement.WordProcessingML + "pStyle",
+                                new XAttribute(OpenXml.OpenXmlElement.WordProcessingML + "val", "Heading5"))),
+                        titleText));
+                }
+                break;
+
+            case HelpFileFormats.Markdown:
+                content = transformation.CurrentElement;
+
+                if(!String.IsNullOrWhiteSpace(titleText))
+                    content.Add("### ", titleText);
+
+                if(!String.IsNullOrWhiteSpace(address))
+                    Markdown.MarkdownElement.AddAddressBookmark(content, address);
+                break;
+
+            default:
+                if(!String.IsNullOrWhiteSpace(titleText))
+                {
+                    var title = new XElement("h3", titleText);
+
+                    if(!String.IsNullOrWhiteSpace(address))
+                        title.Add(new XAttribute("id", address));
+
+                    transformation.CurrentElement.Add(title);
+                }
+
+                content = new XElement("div");
+
+                if(!String.IsNullOrWhiteSpace(address) && String.IsNullOrWhiteSpace(titleText))
+                    content.Add(new XAttribute("id", address));
+
+                transformation.CurrentElement.Add(content);
+                break;
+        }
+
+        // Render the steps and conclusion
+        transformation.RenderChildElements(content, element.Elements(Ddue + "steps").Concat(
+            element.Elements(Ddue + "conclusion")));
+    }
+    #endregion
 }

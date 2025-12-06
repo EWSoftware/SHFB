@@ -6,9 +6,9 @@ Imports System.Runtime.InteropServices
 ' General assembly information
 <Assembly: AssemblyCopyright(AssemblyInfo.Copyright)>
 
-<Assembly: ComVisible(false)>
+<Assembly: ComVisible(False)>
 
-<Assembly: CLSCompliant(true)>
+<Assembly: CLSCompliant(False)>
 
 <Assembly: AssemblyVersion(AssemblyInfo.ProductVersion)>
 <Assembly: AssemblyFileVersion(AssemblyInfo.ProductVersion)>

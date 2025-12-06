@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : MediaLinkInlineElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2025
+// Updated : 11/24/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle mediaLinkInline elements
@@ -20,50 +20,55 @@
 using System;
 using System.Xml.Linq;
 
+using Sandcastle.Core.PresentationStyle.Conversion;
 using Sandcastle.Core.Project;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements;
+
+/// <summary>
+/// This handles <c>mediaLinkInline</c> elements
+/// </summary>
+public class MediaLinkInlineElement : Element
 {
+    #region Properties
+    //=====================================================================
+
     /// <summary>
-    /// This handles <c>mediaLinkInline</c> elements
+    /// This is used to get or set the media style for HTML formats
     /// </summary>
-    public class MediaLinkInlineElement : Element
+    /// <value>The default if not set explicitly is <c>mediaInline</c></value>
+    public string MediaStyle { get; set; } = "mediaInline";
+
+    #endregion
+
+    #region Constructor
+    //=====================================================================
+
+    /// <inheritdoc />
+    public MediaLinkInlineElement() : base("mediaLinkInline")
     {
-        #region Properties
-        //=====================================================================
+    }
+    #endregion
 
-        /// <summary>
-        /// This is used to get or set the media style for HTML formats
-        /// </summary>
-        /// <value>The default if not set explicitly is <c>mediaInline</c></value>
-        public string MediaStyle { get; set; } = "mediaInline";
+    #region Methods
+    //=====================================================================
 
-        #endregion
+    /// <inheritdoc />
+    public override void Render(TopicTransformationCore transformation, XElement element)
+    {
+        if(transformation == null)
+            throw new ArgumentNullException(nameof(transformation));
 
-        #region Constructor
-        //=====================================================================
+        if(element == null)
+            throw new ArgumentNullException(nameof(element));
 
-        /// <inheritdoc />
-        public MediaLinkInlineElement() : base("mediaLinkInline")
+        string linkTarget = element.Element(Ddue + "image")?.Attribute(Xlink + "href")?.Value;
+
+        if(!String.IsNullOrWhiteSpace(linkTarget))
         {
-        }
-        #endregion
-
-        #region Methods
-        //=====================================================================
-
-        /// <inheritdoc />
-        public override void Render(TopicTransformationCore transformation, XElement element)
-        {
-            if(transformation == null)
-                throw new ArgumentNullException(nameof(transformation));
-
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
-
-            string linkTarget = element.Element(Ddue + "image")?.Attribute(Xlink + "href")?.Value;
-
-            if(!String.IsNullOrWhiteSpace(linkTarget))
+            if(transformation is MarkdownConversionTransformation || transformation.SupportedFormats == HelpFileFormats.Markdown)
+                transformation.CurrentElement.Add($"![](@{linkTarget})");
+            else
             {
                 XElement link;
 
@@ -81,6 +86,6 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                 transformation.CurrentElement.Add(link);
             }
         }
-        #endregion
     }
+    #endregion
 }

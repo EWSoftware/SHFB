@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ExternalLinkElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/04/2022
-// Note    : Copyright 2022, Eric Woodruff, All rights reserved
+// Updated : 12/01/2025
+// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle externalLink elements
 //
@@ -20,30 +20,59 @@
 using System;
 using System.Xml.Linq;
 
-namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
+using Sandcastle.Core.PresentationStyle.Conversion;
+
+namespace Sandcastle.Core.PresentationStyle.Transformation.Elements;
+
+/// <summary>
+/// This handles <c>externalLink</c> elements
+/// </summary>
+public class ExternalLinkElement : Element
 {
-    /// <summary>
-    /// This handles <c>externalLink</c> elements
-    /// </summary>
-    public class ExternalLinkElement : Element
+    /// <inheritdoc />
+    public ExternalLinkElement() : base("externalLink", true)
     {
-        /// <inheritdoc />
-        public ExternalLinkElement() : base("externalLink")
+    }
+
+    /// <inheritdoc />
+    public override void Render(TopicTransformationCore transformation, XElement element)
+    {
+        if(transformation == null)
+            throw new ArgumentNullException(nameof(transformation));
+
+        if(element == null)
+            throw new ArgumentNullException(nameof(element));
+
+        string linkTarget = element.Element(Ddue + "linkTarget")?.Value.NormalizeWhiteSpace(),
+            linkAltText = element.Element(Ddue + "linkAlternateText")?.Value.NormalizeWhiteSpace();
+
+        if(transformation is MarkdownConversionTransformation)
         {
+            // If converting, use the Markdown format.  The rel attribute is added by an extension automatically
+            // so we don't have to deal with it here.  The default target is _blank so we omit it if not needed.
+            string linkText = element.Element(Ddue + "linkText")?.Value.NormalizeWhiteSpace(),
+                linkUri = element.Element(Ddue + "linkUri")?.Value.NormalizeWhiteSpace();
+
+            if(linkText.Equals(linkUri, StringComparison.OrdinalIgnoreCase) &&
+              String.IsNullOrWhiteSpace(linkAltText) && linkTarget != "_self")
+            {
+                transformation.CurrentElement.Add(new XText(linkUri));
+            }
+            else
+            {
+                if(!String.IsNullOrWhiteSpace(linkTarget) && linkTarget != "_blank")
+                    linkTarget = $"{{target={linkTarget}}}";
+                else
+                    linkTarget = null;
+
+                if(String.IsNullOrWhiteSpace(linkAltText))
+                    transformation.CurrentElement.Add(new XText($"[{linkText}]({linkUri}){linkTarget}"));
+                else
+                    transformation.CurrentElement.Add(new XText($"[{linkText}]({linkUri} \"{linkAltText}\"){linkTarget}"));
+            }
         }
-
-        /// <inheritdoc />
-        public override void Render(TopicTransformationCore transformation, XElement element)
+        else
         {
-            if(transformation == null)
-                throw new ArgumentNullException(nameof(transformation));
-
-            if(element == null)
-                throw new ArgumentNullException(nameof(element));
-
-            string linkTarget = element.Element(Ddue + "linkTarget")?.Value.NormalizeWhiteSpace(),
-                linkAltText = element.Element(Ddue + "linkAlternateText")?.Value.NormalizeWhiteSpace();
-
             if(String.IsNullOrWhiteSpace(linkTarget))
                 linkTarget = "_blank";
 

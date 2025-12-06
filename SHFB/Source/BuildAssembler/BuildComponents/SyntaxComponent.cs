@@ -16,7 +16,6 @@
 // 03/28/2018 - EFW - Made some changes to set the title to the language ID for unrecognized languages
 
 using System;
-using System.ComponentModel.Composition;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
@@ -369,8 +368,9 @@ namespace Sandcastle.Tools.BuildComponents
 
                 // If the parent is null, it was a sibling of a lead node and has already been handled.  If
                 // the parent is another code element, ignore it as it's a nested code element which will be
-                // replaced later with actual code by the Code Block Component.
-                if(code.ParentNode == null || code.ParentNode.LocalName == "code")
+                // replaced later with actual code by the Code Block Component.  If there are no attributes,
+                // assume it is a code inline element and skip it.
+                if(code.ParentNode == null || code.ParentNode.LocalName == "code" || code.Attributes.Count == 0)
                     continue;
 
                 if(code.LocalName != "div")

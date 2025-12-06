@@ -7,4 +7,4 @@ Imports System.Runtime.InteropServices
 
 <Assembly: ComVisible(False)>
 
-<Assembly: CLSCompliant(True)>
+<Assembly: CLSCompliant(False)>
