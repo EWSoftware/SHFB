@@ -25,6 +25,7 @@
 // 10/05/2021 - EFW - Added support for excluding internal members inherited from base types in other assemblies
 // and private members from base types.
 // 01/04/2024 - EFW - Added support for .NET 7 static interface members
+// 12/06/2025 - EFW - Added support for excluding extension block types
 
 using System;
 using System.Collections.Generic;
@@ -36,1055 +37,1069 @@ using System.Compiler;
 
 using Sandcastle.Core.Project;
 
-namespace Sandcastle.Tools.Reflection
+namespace Sandcastle.Tools.Reflection;
+
+/// <summary>
+/// This class is used to implement the API filter which removes unwanted members from the output
+/// </summary>
+public class ApiFilter
 {
+    #region Private data members
+    //=====================================================================
+
+    private VisibleItems visibleItems;
+    private readonly RootFilter apiFilter, attributeFilter;
+    private readonly Dictionary<string, bool> namespaceCache, typeExposedCache;
+
+    #endregion
+
+    #region Properties
+    //=====================================================================
+
     /// <summary>
-    /// This class is used to implement the API filter which removes unwanted members from the output
+    /// This is used to get or set whether or not attributes on types and members are included in the output
     /// </summary>
-    public class ApiFilter
+    /// <value>Set to true to include attributes or false to hide them.  When false certain required
+    /// attributes will still be included such as <c>ObsoleteAttribute</c>, <c>ExtensionAttribute</c>, etc.</value>
+    public bool IncludeAttributes
     {
-        #region Private data members
-        //=====================================================================
-
-        private VisibleItems visibleItems;
-        private readonly RootFilter apiFilter, attributeFilter;
-        private readonly Dictionary<string, bool> namespaceCache, typeExposedCache;
-
-        #endregion
-
-        #region Properties
-        //=====================================================================
-
-        /// <summary>
-        /// This is used to get or set whether or not attributes on types and members are included in the output
-        /// </summary>
-        /// <value>Set to true to include attributes or false to hide them.  When false certain required
-        /// attributes will still be included such as <c>ObsoleteAttribute</c>, <c>ExtensionAttribute</c>, etc.</value>
-        public bool IncludeAttributes
+        get => (visibleItems & VisibleItems.Attributes) != 0;
+        set
         {
-            get => ((visibleItems & VisibleItems.Attributes) != 0);
-            set
-            {
-                if(value)
-                    visibleItems |= VisibleItems.Attributes;
-                else
-                    visibleItems &= ~VisibleItems.Attributes;
-            }
+            if(value)
+                visibleItems |= VisibleItems.Attributes;
+            else
+                visibleItems &= ~VisibleItems.Attributes;
         }
+    }
 
-        /// <summary>
-        /// This is used to get or set whether or not explicit interface implementations are included in the
-        /// output.
-        /// </summary>
-        /// <value>Set to true to include explicit interface implementations or false to hide them</value>
-        public bool IncludeExplicitInterfaceImplementations
+    /// <summary>
+    /// This is used to get or set whether or not explicit interface implementations are included in the
+    /// output.
+    /// </summary>
+    /// <value>Set to true to include explicit interface implementations or false to hide them</value>
+    public bool IncludeExplicitInterfaceImplementations
+    {
+        get => (visibleItems & VisibleItems.ExplicitInterfaceImplementations) != 0;
+        set
         {
-            get => ((visibleItems & VisibleItems.ExplicitInterfaceImplementations) != 0);
-            set
-            {
-                if(value)
-                    visibleItems |= VisibleItems.ExplicitInterfaceImplementations;
-                else
-                    visibleItems &= ~VisibleItems.ExplicitInterfaceImplementations;
-            }
+            if(value)
+                visibleItems |= VisibleItems.ExplicitInterfaceImplementations;
+            else
+                visibleItems &= ~VisibleItems.ExplicitInterfaceImplementations;
         }
+    }
 
-        /// <summary>
-        /// This is used to get or set whether or not inherited members are included in the output
-        /// </summary>
-        /// <value>Set to true to include inherited members or false to hide them</value>
-        public bool IncludeInheritedMembers
+    /// <summary>
+    /// This is used to get or set whether or not inherited members are included in the output
+    /// </summary>
+    /// <value>Set to true to include inherited members or false to hide them</value>
+    public bool IncludeInheritedMembers
+    {
+        get => (visibleItems & VisibleItems.InheritedMembers) != 0;
+        set
         {
-            get => ((visibleItems & VisibleItems.InheritedMembers) != 0);
-            set
-            {
-                if(value)
-                    visibleItems |= VisibleItems.InheritedMembers;
-                else
-                    visibleItems &= ~(VisibleItems.InheritedMembers | VisibleItems.InheritedFrameworkMembers |
-                        VisibleItems.InheritedFrameworkInternalMembers |
-                        VisibleItems.InheritedFrameworkPrivateMembers);
-            }
+            if(value)
+                visibleItems |= VisibleItems.InheritedMembers;
+            else
+                visibleItems &= ~(VisibleItems.InheritedMembers | VisibleItems.InheritedFrameworkMembers |
+                    VisibleItems.InheritedFrameworkInternalMembers |
+                    VisibleItems.InheritedFrameworkPrivateMembers);
         }
+    }
 
-        /// <summary>
-        /// This is used to get or set whether or not inherited framework members are included in the output
-        /// </summary>
-        /// <value>Set to true to include inherited framework members or false to hide them.  For this to work,
-        /// <see cref="IncludeInheritedMembers"/> must also be enabled.</value>
-        public bool IncludeInheritedFrameworkMembers
+    /// <summary>
+    /// This is used to get or set whether or not inherited framework members are included in the output
+    /// </summary>
+    /// <value>Set to true to include inherited framework members or false to hide them.  For this to work,
+    /// <see cref="IncludeInheritedMembers"/> must also be enabled.</value>
+    public bool IncludeInheritedFrameworkMembers
+    {
+        get => (visibleItems & VisibleItems.InheritedFrameworkMembers) != 0;
+        set
         {
-            get => ((visibleItems & VisibleItems.InheritedFrameworkMembers) != 0);
-            set
-            {
-                if(value)
-                    visibleItems |= (VisibleItems.InheritedMembers | VisibleItems.InheritedFrameworkMembers);
-                else
-                    visibleItems &= ~(VisibleItems.InheritedFrameworkMembers |
-                        VisibleItems.InheritedFrameworkInternalMembers |
-                        VisibleItems.InheritedFrameworkPrivateMembers);
-            }
+            if(value)
+                visibleItems |= (VisibleItems.InheritedMembers | VisibleItems.InheritedFrameworkMembers);
+            else
+                visibleItems &= ~(VisibleItems.InheritedFrameworkMembers |
+                    VisibleItems.InheritedFrameworkInternalMembers |
+                    VisibleItems.InheritedFrameworkPrivateMembers);
         }
+    }
 
-        /// <summary>
-        /// This is used to get or set whether or not inherited private framework members are included in the
-        /// output.
-        /// </summary>
-        /// <value>Set to true to include inherited private framework members or false to hide them.  For this to
-        /// work, <see cref="IncludeInheritedFrameworkMembers"/> and <see cref="IncludePrivates"/> must also be
-        /// enabled.</value>
-        public bool IncludeInheritedFrameworkPrivateMembers
+    /// <summary>
+    /// This is used to get or set whether or not inherited private framework members are included in the
+    /// output.
+    /// </summary>
+    /// <value>Set to true to include inherited private framework members or false to hide them.  For this to
+    /// work, <see cref="IncludeInheritedFrameworkMembers"/> and <see cref="IncludePrivates"/> must also be
+    /// enabled.</value>
+    public bool IncludeInheritedFrameworkPrivateMembers
+    {
+        get => (visibleItems & VisibleItems.InheritedFrameworkPrivateMembers) != 0;
+        set
         {
-            get => ((visibleItems & VisibleItems.InheritedFrameworkPrivateMembers) != 0);
-            set
+            if(value)
             {
-                if(value)
-                {
-                    visibleItems |= (VisibleItems.InheritedMembers | VisibleItems.InheritedFrameworkMembers |
-                        VisibleItems.InheritedFrameworkPrivateMembers | VisibleItems.Privates);
-                }
-                else
-                    visibleItems &= ~VisibleItems.InheritedFrameworkPrivateMembers;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not inherited internal framework members are included in the
-        /// output.
-        /// </summary>
-        /// <value>Set to true to include inherited internal framework members or false to hide them.  For this
-        /// to work, <see cref="IncludeInheritedFrameworkMembers"/> and <see cref="IncludeInternals"/> must also
-        /// be enabled.</value>
-        public bool IncludeInheritedFrameworkInternalMembers
-        {
-            get => ((visibleItems & VisibleItems.InheritedFrameworkInternalMembers) != 0);
-            set
-            {
-                if(value)
-                {
-                    visibleItems |= (VisibleItems.InheritedMembers | VisibleItems.InheritedFrameworkMembers |
-                        VisibleItems.InheritedFrameworkInternalMembers | VisibleItems.Internals);
-                }
-                else
-                    visibleItems &= ~VisibleItems.InheritedFrameworkInternalMembers;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not internal members are included in the output
-        /// </summary>
-        /// <value>Set to true to include internal members or false to hide them</value>
-        public bool IncludeInternals
-        {
-            get => ((visibleItems & VisibleItems.Internals) != 0);
-            set
-            {
-                if(value)
-                    visibleItems |= VisibleItems.Internals;
-                else
-                    visibleItems &= ~(VisibleItems.Internals | VisibleItems.InheritedFrameworkInternalMembers);
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not private members are included in the output
-        /// </summary>
-        /// <value>Set to true to include private members or false to hide them</value>
-        public bool IncludePrivates
-        {
-            get => ((visibleItems & VisibleItems.Privates) != 0);
-            set
-            {
-                if(value)
-                    visibleItems |= VisibleItems.Privates;
-                else
-                    visibleItems &= ~(VisibleItems.Privates | VisibleItems.PrivateFields |
-                        VisibleItems.InheritedFrameworkPrivateMembers);
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not private fields are included in the output
-        /// </summary>
-        /// <value>Set to true to include private fields or false to hide them.  For this to work,
-        /// <see cref="IncludePrivates"/> must also be enabled.</value>
-        /// <remarks>Private fields are most often used to back properties and do not have documentation.  With
-        /// this set to false, they are omitted from the output to reduce unnecessary clutter.</remarks>
-        public bool IncludePrivateFields
-        {
-            get => ((visibleItems & VisibleItems.PrivateFields) != 0);
-            set
-            {
-                if(value)
-                    visibleItems |= (VisibleItems.Privates | VisibleItems.PrivateFields);
-                else
-                    visibleItems &= ~VisibleItems.PrivateFields;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not protected members are included in the output
-        /// </summary>
-        /// <value>Set to true to include protected members or false to hide them</value>
-        public bool IncludeProtected
-        {
-            get => ((visibleItems & VisibleItems.Protected) != 0);
-            set
-            {
-                if(value)
-                    visibleItems |= VisibleItems.Protected;
-
-                else
-                    visibleItems &= ~(VisibleItems.Protected | VisibleItems.SealedProtected);
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not "protected internal" members are output as "protected" only
-        /// in the output.
-        /// </summary>
-        /// <value>Set to true to output "protected internal" members as "protected" only or false to include
-        /// them normally.  This option is ignored if <see cref="IncludeProtected"/> is false.</value>
-        public bool IncludeProtectedInternalAsProtected
-        {
-            get => ((visibleItems & VisibleItems.ProtectedInternalAsProtected) != 0);
-            set
-            {
-                if(value)
-                    visibleItems |= VisibleItems.ProtectedInternalAsProtected;
-                else
-                    visibleItems &= ~VisibleItems.ProtectedInternalAsProtected;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not protected members of sealed classes are included in the
-        /// output.
-        /// </summary>
-        /// <value>Set to true to include protected members of sealed classes or false to hide them.  For this to
-        /// work, <see cref="IncludeProtected"/> must also be enabled.</value>
-        public bool IncludeSealedProtected
-        {
-            get => ((visibleItems & VisibleItems.SealedProtected) != 0);
-            set
-            {
-                if(value)
-                    visibleItems |= (VisibleItems.SealedProtected | VisibleItems.Protected);
-                else
-                    visibleItems &= ~VisibleItems.SealedProtected;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not no-PIA (Primary Interop Assembly) embedded interop types
-        /// are included in the output.
-        /// </summary>
-        /// <value>Set to true to include no-PIA embedded interop types or false to hide them</value>
-        public bool IncludeNoPIATypes
-        {
-            get => ((visibleItems & VisibleItems.NoPIATypes) != 0);
-            set
-            {
-                if(value)
-                    visibleItems |= VisibleItems.NoPIATypes;
-                else
-                    visibleItems &= ~VisibleItems.NoPIATypes;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not public compiler generated types/members are included in the
-        /// output.
-        /// </summary>
-        /// <value>Set to true to include public compiler generated types/members or false to hide them.
-        /// Protected, internal, and private compiler generated types/members are always excluded.</value>
-        public bool IncludePublicCompilerGenerated
-        {
-            get => ((visibleItems & VisibleItems.PublicCompilerGenerated) != 0);
-            set
-            {
-                if(value)
-                    visibleItems |= VisibleItems.PublicCompilerGenerated;
-                else
-                    visibleItems &= ~VisibleItems.PublicCompilerGenerated;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not types and members marked with an
-        /// <see cref="System.ComponentModel.EditorBrowsableAttribute"/> set to <c>Never</c> are included in the
-        /// output.
-        /// </summary>
-        /// <value>Set to true to include types and members marked as not browsable in the editor or false to
-        /// hide them.</value>
-        public bool IncludeEditorBrowsableNever
-        {
-            get => ((visibleItems & VisibleItems.EditorBrowsableNever) != 0);
-            set
-            {
-                if(value)
-                    visibleItems |= VisibleItems.EditorBrowsableNever;
-                else
-                    visibleItems &= ~VisibleItems.EditorBrowsableNever;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not types and members marked with a
-        /// <see cref="System.ComponentModel.BrowsableAttribute"/> set to <c>False</c> are included in the
-        /// output.
-        /// </summary>
-        /// <value>Set to true to include types and members marked as non-browsable or false to hide them</value>
-        public bool IncludeNonBrowsable
-        {
-            get => ((visibleItems & VisibleItems.NonBrowsable) != 0);
-            set
-            {
-                if(value)
-                    visibleItems |= VisibleItems.NonBrowsable;
-                else
-                    visibleItems &= ~VisibleItems.NonBrowsable;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not internal members inherited from base type in other
-        /// assemblies and private members inherited from based types are included in the output.
-        /// </summary>
-        /// <value>Set to true to include internal member outside of the assembly and private members from base
-        /// types or false to hide them</value>
-        public bool InternalAndPrivateIfExternal
-        {
-            get => ((visibleItems & VisibleItems.InternalAndPrivateIfExternal) != 0);
-            set
-            {
-                if(value)
-                    visibleItems |= VisibleItems.InternalAndPrivateIfExternal;
-                else
-                    visibleItems &= ~VisibleItems.InternalAndPrivateIfExternal;
-            }
-        }
-        #endregion
-
-        #region Constructor
-        //=====================================================================
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="configuration">The XPath navigator from which to read the configuration</param>
-        public ApiFilter(XPathNavigator configuration)
-        {
-            if(configuration == null)
-                throw new ArgumentNullException(nameof(configuration));
-
-            namespaceCache = [];
-            typeExposedCache = [];
-
-            // Visibility settings
-            this.IncludeAttributes = (bool)configuration.Evaluate("boolean(visibility/attributes[@expose='true'])");
-            this.IncludeExplicitInterfaceImplementations = (bool)configuration.Evaluate("boolean(visibility/explicitInterfaceImplementations[@expose='true'])");
-            this.IncludeInheritedMembers = (bool)configuration.Evaluate("boolean(visibility/inheritedMembers[@expose='true'])");
-            this.IncludeInheritedFrameworkMembers = (bool)configuration.Evaluate("boolean(visibility/inheritedFrameworkMembers[@expose='true'])");
-            this.IncludeInheritedFrameworkInternalMembers = (bool)configuration.Evaluate("boolean(visibility/inheritedFrameworkInternalMembers[@expose='true'])");
-            this.IncludeInheritedFrameworkPrivateMembers = (bool)configuration.Evaluate("boolean(visibility/inheritedFrameworkPrivateMembers[@expose='true'])");
-            this.IncludeInternals = (bool)configuration.Evaluate("boolean(visibility/internals[@expose='true'])");
-            this.IncludePrivates = (bool)configuration.Evaluate("boolean(visibility/privates[@expose='true'])");
-            this.IncludePrivateFields = (bool)configuration.Evaluate("boolean(visibility/privateFields[@expose='true'])");
-            this.IncludeProtected = (bool)configuration.Evaluate("boolean(visibility/protected[@expose='true'])");
-            this.IncludeSealedProtected = (bool)configuration.Evaluate("boolean(visibility/sealedProtected[@expose='true'])");
-            this.IncludeProtectedInternalAsProtected = (bool)configuration.Evaluate("boolean(visibility/protectedInternalAsProtected[@expose='true'])");
-            this.IncludeNoPIATypes = (bool)configuration.Evaluate("boolean(visibility/noPIATypes[@expose='true'])");
-            this.IncludePublicCompilerGenerated = (bool)configuration.Evaluate("boolean(visibility/publicCompilerGenerated[@expose='true'])");
-            this.IncludeEditorBrowsableNever = (bool)configuration.Evaluate("boolean(visibility/editorBrowsableNever[@expose='true'])");
-            this.IncludeNonBrowsable = (bool)configuration.Evaluate("boolean(visibility/nonBrowsable[@expose='true'])");
-            this.InternalAndPrivateIfExternal = (bool)configuration.Evaluate("boolean(visibility/internalAndPrivateIfExternal[@expose='true'])");
-
-            // API filter
-            XPathNavigator apiFilterNode = configuration.SelectSingleNode("apiFilter");
-
-            if(apiFilterNode != null)
-            {
-                XmlReader configurationReader = apiFilterNode.ReadSubtree();
-                configurationReader.MoveToContent();
-                apiFilter = new RootFilter(configurationReader);
-                configurationReader.Close();
+                visibleItems |= (VisibleItems.InheritedMembers | VisibleItems.InheritedFrameworkMembers |
+                    VisibleItems.InheritedFrameworkPrivateMembers | VisibleItems.Privates);
             }
             else
-                apiFilter = new RootFilter();
+                visibleItems &= ~VisibleItems.InheritedFrameworkPrivateMembers;
+        }
+    }
 
-            // Attribute filter
-            XPathNavigator attributeFilterNode = configuration.SelectSingleNode("attributeFilter");
-
-            if(attributeFilterNode != null)
+    /// <summary>
+    /// This is used to get or set whether or not inherited internal framework members are included in the
+    /// output.
+    /// </summary>
+    /// <value>Set to true to include inherited internal framework members or false to hide them.  For this
+    /// to work, <see cref="IncludeInheritedFrameworkMembers"/> and <see cref="IncludeInternals"/> must also
+    /// be enabled.</value>
+    public bool IncludeInheritedFrameworkInternalMembers
+    {
+        get => (visibleItems & VisibleItems.InheritedFrameworkInternalMembers) != 0;
+        set
+        {
+            if(value)
             {
-                XmlReader configurationReader = attributeFilterNode.ReadSubtree();
-                configurationReader.MoveToContent();
-                attributeFilter = new RootFilter(configurationReader);
-                configurationReader.Close();
+                visibleItems |= (VisibleItems.InheritedMembers | VisibleItems.InheritedFrameworkMembers |
+                    VisibleItems.InheritedFrameworkInternalMembers | VisibleItems.Internals);
             }
             else
-                attributeFilter = new RootFilter();
+                visibleItems &= ~VisibleItems.InheritedFrameworkInternalMembers;
         }
-        #endregion
+    }
 
-        #region API filter methods
-        //=====================================================================
-
-        /// <summary>
-        /// This is used to see if a type has exposed members
-        /// </summary>
-        /// <param name="type">The type to check for exposed members</param>
-        /// <returns>True if it has exposed members, false if not</returns>
-        public virtual bool HasExposedMembers(TypeNode type)
+    /// <summary>
+    /// This is used to get or set whether or not internal members are included in the output
+    /// </summary>
+    /// <value>Set to true to include internal members or false to hide them</value>
+    public bool IncludeInternals
+    {
+        get => (visibleItems & VisibleItems.Internals) != 0;
+        set
         {
-            if(type == null)
-                throw new ArgumentNullException(nameof(type));
+            if(value)
+                visibleItems |= VisibleItems.Internals;
+            else
+                visibleItems &= ~(VisibleItems.Internals | VisibleItems.InheritedFrameworkInternalMembers);
+        }
+    }
 
-            return apiFilter.HasExposedMembers(type);
+    /// <summary>
+    /// This is used to get or set whether or not private members are included in the output
+    /// </summary>
+    /// <value>Set to true to include private members or false to hide them</value>
+    public bool IncludePrivates
+    {
+        get => (visibleItems & VisibleItems.Privates) != 0;
+        set
+        {
+            if(value)
+                visibleItems |= VisibleItems.Privates;
+            else
+                visibleItems &= ~(VisibleItems.Privates | VisibleItems.PrivateFields |
+                    VisibleItems.InheritedFrameworkPrivateMembers);
+        }
+    }
+
+    /// <summary>
+    /// This is used to get or set whether or not private fields are included in the output
+    /// </summary>
+    /// <value>Set to true to include private fields or false to hide them.  For this to work,
+    /// <see cref="IncludePrivates"/> must also be enabled.</value>
+    /// <remarks>Private fields are most often used to back properties and do not have documentation.  With
+    /// this set to false, they are omitted from the output to reduce unnecessary clutter.</remarks>
+    public bool IncludePrivateFields
+    {
+        get => (visibleItems & VisibleItems.PrivateFields) != 0;
+        set
+        {
+            if(value)
+                visibleItems |= (VisibleItems.Privates | VisibleItems.PrivateFields);
+            else
+                visibleItems &= ~VisibleItems.PrivateFields;
+        }
+    }
+
+    /// <summary>
+    /// This is used to get or set whether or not protected members are included in the output
+    /// </summary>
+    /// <value>Set to true to include protected members or false to hide them</value>
+    public bool IncludeProtected
+    {
+        get => (visibleItems & VisibleItems.Protected) != 0;
+        set
+        {
+            if(value)
+                visibleItems |= VisibleItems.Protected;
+
+            else
+                visibleItems &= ~(VisibleItems.Protected | VisibleItems.SealedProtected);
+        }
+    }
+
+    /// <summary>
+    /// This is used to get or set whether or not "protected internal" members are output as "protected" only
+    /// in the output.
+    /// </summary>
+    /// <value>Set to true to output "protected internal" members as "protected" only or false to include
+    /// them normally.  This option is ignored if <see cref="IncludeProtected"/> is false.</value>
+    public bool IncludeProtectedInternalAsProtected
+    {
+        get => (visibleItems & VisibleItems.ProtectedInternalAsProtected) != 0;
+        set
+        {
+            if(value)
+                visibleItems |= VisibleItems.ProtectedInternalAsProtected;
+            else
+                visibleItems &= ~VisibleItems.ProtectedInternalAsProtected;
+        }
+    }
+
+    /// <summary>
+    /// This is used to get or set whether or not protected members of sealed classes are included in the
+    /// output.
+    /// </summary>
+    /// <value>Set to true to include protected members of sealed classes or false to hide them.  For this to
+    /// work, <see cref="IncludeProtected"/> must also be enabled.</value>
+    public bool IncludeSealedProtected
+    {
+        get => (visibleItems & VisibleItems.SealedProtected) != 0;
+        set
+        {
+            if(value)
+                visibleItems |= (VisibleItems.SealedProtected | VisibleItems.Protected);
+            else
+                visibleItems &= ~VisibleItems.SealedProtected;
+        }
+    }
+
+    /// <summary>
+    /// This is used to get or set whether or not no-PIA (Primary Interop Assembly) embedded interop types
+    /// are included in the output.
+    /// </summary>
+    /// <value>Set to true to include no-PIA embedded interop types or false to hide them</value>
+    public bool IncludeNoPIATypes
+    {
+        get => (visibleItems & VisibleItems.NoPIATypes) != 0;
+        set
+        {
+            if(value)
+                visibleItems |= VisibleItems.NoPIATypes;
+            else
+                visibleItems &= ~VisibleItems.NoPIATypes;
+        }
+    }
+
+    /// <summary>
+    /// This is used to get or set whether or not public compiler generated types/members are included in the
+    /// output.
+    /// </summary>
+    /// <value>Set to true to include public compiler generated types/members or false to hide them.
+    /// Protected, internal, and private compiler generated types/members are always excluded.</value>
+    public bool IncludePublicCompilerGenerated
+    {
+        get => (visibleItems & VisibleItems.PublicCompilerGenerated) != 0;
+        set
+        {
+            if(value)
+                visibleItems |= VisibleItems.PublicCompilerGenerated;
+            else
+                visibleItems &= ~VisibleItems.PublicCompilerGenerated;
+        }
+    }
+
+    /// <summary>
+    /// This is used to get or set whether or not types and members marked with an
+    /// <see cref="System.ComponentModel.EditorBrowsableAttribute"/> set to <c>Never</c> are included in the
+    /// output.
+    /// </summary>
+    /// <value>Set to true to include types and members marked as not browsable in the editor or false to
+    /// hide them.</value>
+    public bool IncludeEditorBrowsableNever
+    {
+        get => (visibleItems & VisibleItems.EditorBrowsableNever) != 0;
+        set
+        {
+            if(value)
+                visibleItems |= VisibleItems.EditorBrowsableNever;
+            else
+                visibleItems &= ~VisibleItems.EditorBrowsableNever;
+        }
+    }
+
+    /// <summary>
+    /// This is used to get or set whether or not types and members marked with a
+    /// <see cref="System.ComponentModel.BrowsableAttribute"/> set to <c>False</c> are included in the
+    /// output.
+    /// </summary>
+    /// <value>Set to true to include types and members marked as non-browsable or false to hide them</value>
+    public bool IncludeNonBrowsable
+    {
+        get => (visibleItems & VisibleItems.NonBrowsable) != 0;
+        set
+        {
+            if(value)
+                visibleItems |= VisibleItems.NonBrowsable;
+            else
+                visibleItems &= ~VisibleItems.NonBrowsable;
+        }
+    }
+
+    /// <summary>
+    /// This is used to get or set whether or not internal members inherited from base type in other
+    /// assemblies and private members inherited from based types are included in the output.
+    /// </summary>
+    /// <value>Set to true to include internal member outside of the assembly and private members from base
+    /// types or false to hide them</value>
+    public bool InternalAndPrivateIfExternal
+    {
+        get => (visibleItems & VisibleItems.InternalAndPrivateIfExternal) != 0;
+        set
+        {
+            if(value)
+                visibleItems |= VisibleItems.InternalAndPrivateIfExternal;
+            else
+                visibleItems &= ~VisibleItems.InternalAndPrivateIfExternal;
+        }
+    }
+    #endregion
+
+    #region Constructor
+    //=====================================================================
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="configuration">The XPath navigator from which to read the configuration</param>
+    public ApiFilter(XPathNavigator configuration)
+    {
+        if(configuration == null)
+            throw new ArgumentNullException(nameof(configuration));
+
+        namespaceCache = [];
+        typeExposedCache = [];
+
+        // Visibility settings
+        this.IncludeAttributes = (bool)configuration.Evaluate("boolean(visibility/attributes[@expose='true'])");
+        this.IncludeExplicitInterfaceImplementations = (bool)configuration.Evaluate("boolean(visibility/explicitInterfaceImplementations[@expose='true'])");
+        this.IncludeInheritedMembers = (bool)configuration.Evaluate("boolean(visibility/inheritedMembers[@expose='true'])");
+        this.IncludeInheritedFrameworkMembers = (bool)configuration.Evaluate("boolean(visibility/inheritedFrameworkMembers[@expose='true'])");
+        this.IncludeInheritedFrameworkInternalMembers = (bool)configuration.Evaluate("boolean(visibility/inheritedFrameworkInternalMembers[@expose='true'])");
+        this.IncludeInheritedFrameworkPrivateMembers = (bool)configuration.Evaluate("boolean(visibility/inheritedFrameworkPrivateMembers[@expose='true'])");
+        this.IncludeInternals = (bool)configuration.Evaluate("boolean(visibility/internals[@expose='true'])");
+        this.IncludePrivates = (bool)configuration.Evaluate("boolean(visibility/privates[@expose='true'])");
+        this.IncludePrivateFields = (bool)configuration.Evaluate("boolean(visibility/privateFields[@expose='true'])");
+        this.IncludeProtected = (bool)configuration.Evaluate("boolean(visibility/protected[@expose='true'])");
+        this.IncludeSealedProtected = (bool)configuration.Evaluate("boolean(visibility/sealedProtected[@expose='true'])");
+        this.IncludeProtectedInternalAsProtected = (bool)configuration.Evaluate("boolean(visibility/protectedInternalAsProtected[@expose='true'])");
+        this.IncludeNoPIATypes = (bool)configuration.Evaluate("boolean(visibility/noPIATypes[@expose='true'])");
+        this.IncludePublicCompilerGenerated = (bool)configuration.Evaluate("boolean(visibility/publicCompilerGenerated[@expose='true'])");
+        this.IncludeEditorBrowsableNever = (bool)configuration.Evaluate("boolean(visibility/editorBrowsableNever[@expose='true'])");
+        this.IncludeNonBrowsable = (bool)configuration.Evaluate("boolean(visibility/nonBrowsable[@expose='true'])");
+        this.InternalAndPrivateIfExternal = (bool)configuration.Evaluate("boolean(visibility/internalAndPrivateIfExternal[@expose='true'])");
+
+        // API filter
+        XPathNavigator apiFilterNode = configuration.SelectSingleNode("apiFilter");
+
+        if(apiFilterNode != null)
+        {
+            XmlReader configurationReader = apiFilterNode.ReadSubtree();
+            configurationReader.MoveToContent();
+            apiFilter = new RootFilter(configurationReader);
+            configurationReader.Close();
+        }
+        else
+            apiFilter = new RootFilter();
+
+        // Attribute filter
+        XPathNavigator attributeFilterNode = configuration.SelectSingleNode("attributeFilter");
+
+        if(attributeFilterNode != null)
+        {
+            XmlReader configurationReader = attributeFilterNode.ReadSubtree();
+            configurationReader.MoveToContent();
+            attributeFilter = new RootFilter(configurationReader);
+            configurationReader.Close();
+        }
+        else
+            attributeFilter = new RootFilter();
+    }
+    #endregion
+
+    #region API filter methods
+    //=====================================================================
+
+    /// <summary>
+    /// This is used to see if a type has exposed members
+    /// </summary>
+    /// <param name="type">The type to check for exposed members</param>
+    /// <returns>True if it has exposed members, false if not</returns>
+    public virtual bool HasExposedMembers(TypeNode type)
+    {
+        if(type == null)
+            throw new ArgumentNullException(nameof(type));
+
+        return apiFilter.HasExposedMembers(type);
+    }
+
+    /// <summary>
+    /// This is used to see if an API member is exposed based on its type
+    /// </summary>
+    /// <param name="api">The API member to check</param>
+    /// <returns>True if it is exposed, false if not</returns>
+    public virtual bool IsExposedApi(Member api)
+    {
+        if(api is Namespace space)
+            return this.IsExposedNamespace(space);
+
+        TypeNode type = api as TypeNode;
+
+        if(type != null)
+            return this.IsExposedType(type);
+
+        return this.IsExposedMember(api);
+    }
+
+    /// <summary>
+    /// This is used to see if a namespace is exposed
+    /// </summary>
+    /// <param name="space">The namespace to check</param>
+    /// <returns>True if the namespace contains any exposed types or types with exposed members, false if not</returns>
+    public virtual bool IsExposedNamespace(Namespace space)
+    {
+        if(space == null)
+            throw new ArgumentNullException(nameof(space));
+
+        // !EFW - Bug fix.  Some obfuscated assemblies have mangled names containing characters that
+        // are not valid in XML.  Exclude those by default.
+        if(space.FullName.HasInvalidXmlCharacters())
+            return false;
+
+        string name = space.Name.Name;
+
+        // Look in cache to see if namespace exposure is already determined
+        if(!namespaceCache.TryGetValue(name, out bool exposed))
+        {
+            // The namespace is exposed if any types in it are exposed              
+            exposed = this.NamespaceContainsExposedTypes(space) ?? false;
+
+            // the namespace is also exposed if it contains exposed members, even if all types are hidden
+            if(!exposed)
+                exposed = this.NamespaceContainsExposedMembers(space);
+
+            // Cache the result 
+            namespaceCache.Add(name, exposed);
         }
 
-        /// <summary>
-        /// This is used to see if an API member is exposed based on its type
-        /// </summary>
-        /// <param name="api">The API member to check</param>
-        /// <returns>True if it is exposed, false if not</returns>
-        public virtual bool IsExposedApi(Member api)
+        return exposed;
+    }
+
+    /// <summary>
+    /// This is used to see if a type is exposed
+    /// </summary>
+    /// <param name="type">The type to check</param>
+    /// <returns>True if the type is exposed, false if not</returns>
+    public virtual bool IsExposedType(TypeNode type)
+    {
+        TypeNode curType;
+        bool exposed = false;
+
+        if(type == null)
+            throw new ArgumentNullException(nameof(type));
+
+        // !EFW - Bug fix.  Some obfuscated assemblies have mangled names containing characters that
+        // are not valid in XML.  Exclude those by default.
+        if(type.FullName.HasInvalidXmlCharacters())
+            return false;
+
+        // !EFW - Bug fix.  If not a recognized visibility, ignore it as it's probably an obfuscated
+        // type and it won't be of any use anyway.
+        if(!type.IsPublic && !type.IsAssembly && !type.IsFamilyOrAssembly && !type.IsFamily &&
+          !type.IsFamilyAndAssembly && !type.IsPrivate)
+            return false;
+
+        // !EFW - Added a check for exposed members in unexposed types.  This effectively exposes the type
+        // and it should be included whenever this check occurs for it.
+        if(type.DeclaringModule != null && !typeExposedCache.TryGetValue(type.DeclaringModule.Name + "/" +
+          type.FullName, out exposed))
         {
-            if(api is Namespace space)
-                return this.IsExposedNamespace(space);
+            exposed = apiFilter.IsExposedType(type);
 
-            TypeNode type = api as TypeNode;
+            // The type is exposed if any of its members are exposed
+            if(!exposed)
+                exposed = this.HasExposedMembers(type);
 
-            if(type != null)
-                return this.IsExposedType(type);
+            // !EFW - Bug fix.  Compiler generated types can be public (i.e. member using the fixed keyword).
+            // Don't include compiler-generated types.  Check this and all parents for a compiler generated
+            // attribute.  No-PIA types are kept if wanted though as are public compiler generated types
+            // if explicitly indicated via the visibility settings.
+            curType = type;
 
-            return this.IsExposedMember(api);
-        }
-
-        /// <summary>
-        /// This is used to see if a namespace is exposed
-        /// </summary>
-        /// <param name="space">The namespace to check</param>
-        /// <returns>True if the namespace contains any exposed types or types with exposed members, false if not</returns>
-        public virtual bool IsExposedNamespace(Namespace space)
-        {
-            if(space == null)
-                throw new ArgumentNullException(nameof(space));
-
-            // !EFW - Bug fix.  Some obfuscated assemblies have mangled names containing characters that
-            // are not valid in XML.  Exclude those by default.
-            if(space.FullName.HasInvalidXmlCharacters())
-                return false;
-
-            string name = space.Name.Name;
-
-            // Look in cache to see if namespace exposure is already determined
-            if(!namespaceCache.TryGetValue(name, out bool exposed))
+            while(curType != null)
             {
-                // The namespace is exposed if any types in it are exposed              
-                exposed = this.NamespaceContainsExposedTypes(space) ?? false;
-
-                // the namespace is also exposed if it contains exposed members, even if all types are hidden
-                if(!exposed)
-                    exposed = this.NamespaceContainsExposedMembers(space);
-
-                // Cache the result 
-                namespaceCache.Add(name, exposed);
-            }
-
-            return exposed;
-        }
-
-        /// <summary>
-        /// This is used to see if a type is exposed
-        /// </summary>
-        /// <param name="type">The type to check</param>
-        /// <returns>True if the type is exposed, false if not</returns>
-        public virtual bool IsExposedType(TypeNode type)
-        {
-            TypeNode curType;
-            bool exposed = false;
-
-            if(type == null)
-                throw new ArgumentNullException(nameof(type));
-
-            // !EFW - Bug fix.  Some obfuscated assemblies have mangled names containing characters that
-            // are not valid in XML.  Exclude those by default.
-            if(type.FullName.HasInvalidXmlCharacters())
-                return false;
-
-            // !EFW - Bug fix.  If not a recognized visibility, ignore it as it's probably an obfuscated
-            // type and it won't be of any use anyway.
-            if(!type.IsPublic && !type.IsAssembly && !type.IsFamilyOrAssembly && !type.IsFamily &&
-              !type.IsFamilyAndAssembly && !type.IsPrivate)
-                return false;
-
-            // !EFW - Added a check for exposed members in unexposed types.  This effectively exposes the type
-            // and it should be included whenever this check occurs for it.
-            if(type.DeclaringModule != null && !typeExposedCache.TryGetValue(type.DeclaringModule.Name + "/" +
-              type.FullName, out exposed))
-            {
-                exposed = apiFilter.IsExposedType(type);
-
-                // The type is exposed if any of its members are exposed
-                if(!exposed)
-                    exposed = this.HasExposedMembers(type);
-
-                // !EFW - Bug fix.  Compiler generated types can be public (i.e. member using the fixed keyword).
-                // Don't include compiler-generated types.  Check this and all parents for a compiler generated
-                // attribute.  No-PIA types are kept if wanted though as are public compiler generated types
-                // if explicitly indicated via the visibility settings.
-                curType = type;
-
-                while(curType != null)
+                if(curType.Attributes.Any(
+                  attr => attr.Type.FullName == "System.Runtime.CompilerServices.CompilerGeneratedAttribute") &&
+                  (!this.IncludeNoPIATypes || !IsEmbeddedInteropType(curType)) &&
+                  (!this.IncludePublicCompilerGenerated || !type.IsPublic))
                 {
-                    if(curType.Attributes.Any(
-                      attr => attr.Type.FullName == "System.Runtime.CompilerServices.CompilerGeneratedAttribute") &&
-                      (!this.IncludeNoPIATypes || !IsEmbeddedInteropType(curType)) &&
-                      (!this.IncludePublicCompilerGenerated || !type.IsPublic))
-                    {
-                        // !EFW - Hack for WINDMD assemblies.  For these, the compiler hides the original class
-                        // as an internal class prefixed with "<CLR>" and generates a type with the public
-                        // members and tagged with a CompilerGenerated attribute.  So, if compiler generated but
-                        // has a matching "<CLR>" prefixed type, let it through.
-                        if(curType.DeclaringModule == null || curType.Name == null || !curType.DeclaringModule.Types.Any(
-                          t => t.Name != null && t.Name.Name == "<CLR>" + curType.Name.Name))
-                            return false;
-                    }
-
-                    curType = curType.DeclaringType;    // Check the next parent
+                    // !EFW - Hack for WINDMD assemblies.  For these, the compiler hides the original class
+                    // as an internal class prefixed with "<CLR>" and generates a type with the public
+                    // members and tagged with a CompilerGenerated attribute.  So, if compiler generated but
+                    // has a matching "<CLR>" prefixed type, let it through.
+                    if(curType.DeclaringModule == null || curType.Name == null || !curType.DeclaringModule.Types.Any(
+                      t => t.Name != null && t.Name.Name == "<CLR>" + curType.Name.Name))
+                        return false;
                 }
 
-                if(!this.IsVisible(type))
-                    exposed = false;
+                // Special case for extension block compiler generated types.  We can only identify these by
+                // their unique naming pattern.
+                int ebIndex = curType.FullName.IndexOf(">$", StringComparison.Ordinal);
 
-                // Filter out no-PIA embedded interop types
-                if(!this.IncludeNoPIATypes && IsEmbeddedInteropType(type))
-                    exposed = false;
+                // It's likely anything with the above pattern is not wanted but we'll limit it to
+                // extension blocks for now.
+                if(ebIndex > 3 && curType.FullName[ebIndex - 2] == '<')
+                    return false;
 
-                // Cache the result.  Use the declaring module and full type name as the key so that an internal
-                // type in one assembly doesn't hide a public type of the same name in another assembly if the
-                // internal one is seen first.
-                typeExposedCache.Add(type.DeclaringModule.Name + "/" + type.FullName, exposed);
+                curType = curType.DeclaringType;    // Check the next parent
             }
 
-            // Only the current type is checked.  Base types are not checked for the attribute.  This mimics
-            // the behavior of the Object Browser which works the same way.  Unless the attribute is actually
-            // present and set to Never, the type will appear.
-            if(exposed && !this.IncludeEditorBrowsableNever)
-                exposed = IsEditorBrowsable(type.Attributes);
+            if(!this.IsVisible(type))
+                exposed = false;
 
-            // As above, only the current type is checked
-            if(exposed && !this.IncludeNonBrowsable)
-                exposed = IsBrowsable(type.Attributes);
-
-            return exposed;
-        }
-
-        /// <summary>
-        /// This is used to see if an API member is hidden via the <c>EditorBrowsableAttribute</c>
-        /// </summary>
-        /// <param name="attributes">The attribute list to check</param>
-        /// <returns>Return true if the attribute is not present.  If present, it returns false if set to
-        /// <c>Never</c>, otherwise it returns true.</returns>
-        private static bool IsEditorBrowsable(AttributeList attributes)
-        {
-            var editorBrowsable = attributes.FirstOrDefault(attr => attr.Type.FullName ==
-                "System.ComponentModel.EditorBrowsableAttribute");
-
-            if(editorBrowsable != null && editorBrowsable.Expressions.Count != 0)
-            {
-                if(editorBrowsable.Expressions[0] is Literal l)
-                {
-                    if(l.Value is int value)
-                        return value != 1;
-
-                    // Certain combinations of platform (.NET 5.0 and .NET Standard 2.x for example) cannot be
-                    // mixed as the types don't match up correctly between the core assemblies.  In such cases,
-                    // the assemblies will have to be documented separately.
-                    throw new InvalidOperationException("Unexpected EditorBrowsableAttribute value type.  The " +
-                        "platforms for the documentation source assemblies may not be compatible and may need " +
-                        "to be documented separately.  See the help topic for SHFB error code BE0070 for more " +
-                        "information.");
-                }
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// This is used to see if an API member is hidden via the <c>BrowsableAttribute</c>
-        /// </summary>
-        /// <param name="attributes">The attribute list to check</param>
-        /// <returns>Return true if the attribute is not present.  If present, it returns the attribute setting.</returns>
-        private static bool IsBrowsable(AttributeList attributes)
-        {
-            var browsable = attributes.FirstOrDefault(attr => attr.Type.FullName ==
-                "System.ComponentModel.BrowsableAttribute");
-
-            if(browsable != null && browsable.Expressions.Count != 0)
-            {
-                if(browsable.Expressions[0] is Literal l)
-                {
-                    if(l.Value is bool value)
-                        return value;
-
-                    // Certain combinations of platform (.NET 5.0 and .NET Standard 2.x for example) cannot be
-                    // mixed as the types don't match up correctly between the core assemblies.  In such cases,
-                    // the assemblies will have to be documented separately.
-                    throw new InvalidOperationException("Unexpected BrowsableAttribute value type.  The " +
-                        "platforms for the documentation source assemblies may not be compatible and may " +
-                        "need to be documented separately.  See the help topic for SHFB error code BE0070 for " +
-                        "more information.");
-                }
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// This is used to determine if the given interface is to be documented
-        /// </summary>
-        /// <param name="type">The type node for the interface</param>
-        /// <returns>True if it is to be documented, false if not</returns>
-        /// <remarks>Note that if an interface is not documented, any non-explicitly implemented members will
-        /// still show up in the implementing class but will be listed as normal public members.</remarks>
-        public virtual bool IsDocumentedInterface(TypeNode type)
-        {
-            if(type == null)
-                throw new ArgumentNullException(nameof(type));
-
-            // ApiFilter was extended to support interfaces that are filtered out (embedded interop types) but
-            // still contribute to the list of a type's implemented interfaces.
+            // Filter out no-PIA embedded interop types
             if(!this.IncludeNoPIATypes && IsEmbeddedInteropType(type))
+                exposed = false;
+
+            // Cache the result.  Use the declaring module and full type name as the key so that an internal
+            // type in one assembly doesn't hide a public type of the same name in another assembly if the
+            // internal one is seen first.
+            typeExposedCache.Add(type.DeclaringModule.Name + "/" + type.FullName, exposed);
+        }
+
+        // Only the current type is checked.  Base types are not checked for the attribute.  This mimics
+        // the behavior of the Object Browser which works the same way.  Unless the attribute is actually
+        // present and set to Never, the type will appear.
+        if(exposed && !this.IncludeEditorBrowsableNever)
+            exposed = IsEditorBrowsable(type.Attributes);
+
+        // As above, only the current type is checked
+        if(exposed && !this.IncludeNonBrowsable)
+            exposed = IsBrowsable(type.Attributes);
+
+        return exposed;
+    }
+
+    /// <summary>
+    /// This is used to see if an API member is hidden via the <c>EditorBrowsableAttribute</c>
+    /// </summary>
+    /// <param name="attributes">The attribute list to check</param>
+    /// <returns>Return true if the attribute is not present.  If present, it returns false if set to
+    /// <c>Never</c>, otherwise it returns true.</returns>
+    private static bool IsEditorBrowsable(AttributeList attributes)
+    {
+        var editorBrowsable = attributes.FirstOrDefault(attr => attr.Type.FullName ==
+            "System.ComponentModel.EditorBrowsableAttribute");
+
+        if(editorBrowsable != null && editorBrowsable.Expressions.Count != 0)
+        {
+            if(editorBrowsable.Expressions[0] is Literal l)
+            {
+                if(l.Value is int value)
+                    return value != 1;
+
+                // Certain combinations of platform (.NET 5.0 and .NET Standard 2.x for example) cannot be
+                // mixed as the types don't match up correctly between the core assemblies.  In such cases,
+                // the assemblies will have to be documented separately.
+                throw new InvalidOperationException("Unexpected EditorBrowsableAttribute value type.  The " +
+                    "platforms for the documentation source assemblies may not be compatible and may need " +
+                    "to be documented separately.  See the help topic for SHFB error code BE0070 for more " +
+                    "information.");
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// This is used to see if an API member is hidden via the <c>BrowsableAttribute</c>
+    /// </summary>
+    /// <param name="attributes">The attribute list to check</param>
+    /// <returns>Return true if the attribute is not present.  If present, it returns the attribute setting.</returns>
+    private static bool IsBrowsable(AttributeList attributes)
+    {
+        var browsable = attributes.FirstOrDefault(attr => attr.Type.FullName ==
+            "System.ComponentModel.BrowsableAttribute");
+
+        if(browsable != null && browsable.Expressions.Count != 0)
+        {
+            if(browsable.Expressions[0] is Literal l)
+            {
+                if(l.Value is bool value)
+                    return value;
+
+                // Certain combinations of platform (.NET 5.0 and .NET Standard 2.x for example) cannot be
+                // mixed as the types don't match up correctly between the core assemblies.  In such cases,
+                // the assemblies will have to be documented separately.
+                throw new InvalidOperationException("Unexpected BrowsableAttribute value type.  The " +
+                    "platforms for the documentation source assemblies may not be compatible and may " +
+                    "need to be documented separately.  See the help topic for SHFB error code BE0070 for " +
+                    "more information.");
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// This is used to determine if the given interface is to be documented
+    /// </summary>
+    /// <param name="type">The type node for the interface</param>
+    /// <returns>True if it is to be documented, false if not</returns>
+    /// <remarks>Note that if an interface is not documented, any non-explicitly implemented members will
+    /// still show up in the implementing class but will be listed as normal public members.</remarks>
+    public virtual bool IsDocumentedInterface(TypeNode type)
+    {
+        if(type == null)
+            throw new ArgumentNullException(nameof(type));
+
+        // ApiFilter was extended to support interfaces that are filtered out (embedded interop types) but
+        // still contribute to the list of a type's implemented interfaces.
+        if(!this.IncludeNoPIATypes && IsEmbeddedInteropType(type))
+            return false;
+
+        if(!this.IsVisible(type))
+            return false;
+
+        return apiFilter.IsExposedType(type);
+    }
+
+    /// <summary>
+    /// This is used to see if a member is exposed
+    /// </summary>
+    /// <param name="Member">The member node to check</param>
+    /// <returns>True if the member is exposed, false if not</returns>
+    public virtual bool IsExposedMember(Member member)
+    {
+        if(member == null)
+            throw new ArgumentNullException(nameof(member));
+
+        // !EFW - Bug fix.  Some obfuscated assemblies have mangled names containing characters that
+        // are not valid in XML.  Exclude those by default.
+        if(member.FullName.HasInvalidXmlCharacters())
+            return false;
+
+        // !EFW - Bug fix.  If not a recognized visibility, ignore it as it's probably an obfuscated
+        // member and it won't be of any use anyway.
+        if(!member.IsPublic && !member.IsAssembly && !member.IsFamilyOrAssembly && !member.IsFamily &&
+          !member.IsFamilyAndAssembly && !member.IsPrivate)
+            return false;
+
+        TypeNode type = member.DeclaringType;
+
+        // Members of delegates are not exposed
+        if(type.NodeType == NodeType.DelegateNode)
+            return false;
+
+        // Accessor methods for properties and events are not exposed
+        if(member.IsSpecialName && member.NodeType == NodeType.Method)
+        {
+            string name = member.Name.Name;
+
+            if(name.Contains("get_"))
                 return false;
 
+            if(name.Contains("set_"))
+                return false;
+
+            // !EFW - Added for Windows Store/Phone
+            if(name.Contains("put_"))
+                return false;
+
+            if(name.Contains("add_"))
+                return false;
+
+            if(name.Contains("remove_"))
+                return false;
+
+            if(name.Contains("raise_"))
+                return false;
+        }
+
+        // The value field of enumerations is not exposed
+        if(member.IsSpecialName && type.NodeType == NodeType.EnumNode && member.NodeType == NodeType.Field &&
+          member.Name.Name == "value__")
+            return false;
+
+        // Members marked as compiler-generated are not exposed unless public and wanted
+        if(member.Attributes.Any(attr => attr.Type.FullName == "System.Runtime.CompilerServices.CompilerGeneratedAttribute") &&
+         (!this.IncludePublicCompilerGenerated || !member.IsPublic))
+            return false;
+
+        // Members marked with an EditorBrowsableAttribute set to Never based on the visibility settings
+        if(!this.IncludeEditorBrowsableNever)
+        {
+            // Only the current member is checked.  Overridden members in base types are not checked for the
+            // attribute.  This mimics the behavior of the Object Browser which works the same way.  Unless
+            // the attribute is actually present and set to Never, the member will appear.
+            if(!IsEditorBrowsable(member.Attributes))
+                return false;
+        }
+
+        // Members marked with a BrowsableAttribute set to False based on the visibility settings
+        if(!this.IncludeNonBrowsable)
+        {
+            // As above, only the current member is checked
+            if(!IsBrowsable(member.Attributes))
+                return false;
+        }
+
+        // If not visible based on the visibility settings, ignore it
+        if(!this.IsVisible(member))
+            return false;
+
+        // One more test to deal with a weird case: a private method is an explicit implementation for
+        // a property accessor, but is not marked with the special name flag. To find these, test for
+        // the accessibility of the methods they implement.
+        if(member.IsPrivate && member.NodeType == NodeType.Method)
+        {
+            Method method = (Method)member;
+            var  implements = method.ImplementedInterfaceMethods?.FirstOrDefault();
+
+            if(implements != null && !this.IsExposedMember(implements))
+                return false;
+        }
+
+        // Same for explicit property implementations
+        if(member.IsPrivate && member.NodeType == NodeType.Property)
+        {
+            Property property = (Property)member;
+            var implements = property.GetImplementedProperties().FirstOrDefault();
+
+            if(implements != null && !this.IsExposedMember(implements))
+                return false;
+        }
+
+        // Same for explicit event implementations
+        if(member.IsPrivate && member.NodeType == NodeType.Event)
+        {
+            Event evt = (Event)member;
+            var implements = evt.GetImplementedEvents().FirstOrDefault();
+
+            if(implements != null && !this.IsExposedMember(implements))
+                return false;
+        }
+
+        // Okay, passed all tests, the member is exposed as long as the base filters allow it
+        return apiFilter.IsExposedMember(member);
+    }
+
+    /// <summary>
+    /// This is used to see if an attribute type is exposed
+    /// </summary>
+    /// <param name="attribute">The attribute node to check</param>
+    /// <returns>True if the attribute is exposed, false if not</returns>
+    public virtual bool IsExposedAttribute(AttributeNode attribute)
+    {
+        if(attribute == null)
+            throw new ArgumentNullException(nameof(attribute));
+
+        // Check whether the attribute type is exposed
+        TypeNode attributeType = attribute.Type;
+
+        // C# 7.x generates a private attribute type if target framework does not support it.
+        // We need to pass those attributes through and filter them later (ref struct, readonly struct)
+        if(attributeType.FullName.StartsWith("System.Runtime.CompilerServices", StringComparison.Ordinal))
+            return attributeFilter.IsRequiredType(attributeType);
+
+        if(!this.IsExposedType(attributeType))
+            return false;
+
+        // Check whether expressions used to instantiate the attribute are exposed
+        foreach(var expression in attribute.Expressions)
+            if(!this.IsExposedExpression(expression))
+                return false;
+
+        // If excluding attributes, just check for ones that are required
+        if(!this.IncludeAttributes)
+            return attributeFilter.IsRequiredType(attributeType);
+
+        // Apply user filters to the attribute
+        return attributeFilter.IsExposedType(attributeType);
+    }
+
+    /// <summary>
+    /// This is used to determine if a type or member is visible based on the visibility settings
+    /// </summary>
+    /// <param name="member">The type or member to check</param>
+    /// <returns>True if visible based on the current visibility settings, false if not</returns>
+    public virtual bool IsVisible(Member member)
+    {
+        if(member == null)
+            throw new ArgumentNullException(nameof(member));
+
+        // Handle types first as a limited set of options apply to them
+        TypeNode type = member as TypeNode;
+
+        if(type != null)
+        {
+            // All parent types must be visible
+            if(type.DeclaringType != null && !this.IsVisible(type.DeclaringType))
+                return false;
+
+            // For protected, if it's protected internal, only remove them if not including internals
+            if((!this.IncludePrivates && type.IsPrivate) || (!this.IncludeInternals && type.IsAssembly) ||
+              (!this.IncludeProtected && (type.IsFamily || (type.IsFamilyOrAssembly && !this.IncludeInternals))))
+                return false;
+
+            // Ignore private protected types unless including internals
+            if(!this.IncludeInternals && type.IsFamilyAndAssembly)
+                return false;
+
+            return true;
+        }
+
+        type = member.DeclaringType;
+        Property property = member as Property;
+        Event evt = member as Event;
+        Method method = member as Method;
+
+        // Explicit member implementation?
+        if((property != null && property.IsPrivate && property.GetImplementedProperties().Any()) ||
+          (evt != null && evt.IsPrivate && evt.GetImplementedEvents().Any()) ||
+          (method != null && method.IsPrivate && method.GetImplementedMethods().Any()))
+        {
             if(!this.IsVisible(type))
                 return false;
 
-            return apiFilter.IsExposedType(type);
+            return this.IncludeExplicitInterfaceImplementations;
         }
 
-        /// <summary>
-        /// This is used to see if a member is exposed
-        /// </summary>
-        /// <param name="Member">The member node to check</param>
-        /// <returns>True if the member is exposed, false if not</returns>
-        public virtual bool IsExposedMember(Member member)
+        if(this.IncludePrivates && member.IsPrivate)
         {
-            if(member == null)
-                throw new ArgumentNullException(nameof(member));
-
-            // !EFW - Bug fix.  Some obfuscated assemblies have mangled names containing characters that
-            // are not valid in XML.  Exclude those by default.
-            if(member.FullName.HasInvalidXmlCharacters())
-                return false;
-
-            // !EFW - Bug fix.  If not a recognized visibility, ignore it as it's probably an obfuscated
-            // member and it won't be of any use anyway.
-            if(!member.IsPublic && !member.IsAssembly && !member.IsFamilyOrAssembly && !member.IsFamily &&
-              !member.IsFamilyAndAssembly && !member.IsPrivate)
-                return false;
-
-            TypeNode type = member.DeclaringType;
-
-            // Members of delegates are not exposed
-            if(type.NodeType == NodeType.DelegateNode)
-                return false;
-
-            // Accessor methods for properties and events are not exposed
-            if(member.IsSpecialName && member.NodeType == NodeType.Method)
+            if(member is Field field)
             {
-                string name = member.Name.Name;
-
-                if(name.Contains("get_"))
+                if(!this.IncludePrivateFields)
                     return false;
 
-                if(name.Contains("set_"))
-                    return false;
-
-                // !EFW - Added for Windows Store/Phone
-                if(name.Contains("put_"))
-                    return false;
-
-                if(name.Contains("add_"))
-                    return false;
-
-                if(name.Contains("remove_"))
-                    return false;
-
-                if(name.Contains("raise_"))
+                // Remove backing fields that correspond to events.  These can never be documented and should
+                // not show up.
+                if(field.Type.Name.Name.Contains("EventHandler"))
                     return false;
             }
 
-            // The value field of enumerations is not exposed
-            if(member.IsSpecialName && type.NodeType == NodeType.EnumNode && member.NodeType == NodeType.Field &&
-              member.Name.Name == "value__")
-                return false;
-
-            // Members marked as compiler-generated are not exposed unless public and wanted
-            if(member.Attributes.Any(attr => attr.Type.FullName == "System.Runtime.CompilerServices.CompilerGeneratedAttribute") &&
-             (!this.IncludePublicCompilerGenerated || !member.IsPublic))
-                return false;
-
-            // Members marked with an EditorBrowsableAttribute set to Never based on the visibility settings
-            if(!this.IncludeEditorBrowsableNever)
-            {
-                // Only the current member is checked.  Overridden members in base types are not checked for the
-                // attribute.  This mimics the behavior of the Object Browser which works the same way.  Unless
-                // the attribute is actually present and set to Never, the member will appear.
-                if(!IsEditorBrowsable(member.Attributes))
-                    return false;
-            }
-
-            // Members marked with a BrowsableAttribute set to False based on the visibility settings
-            if(!this.IncludeNonBrowsable)
-            {
-                // As above, only the current member is checked
-                if(!IsBrowsable(member.Attributes))
-                    return false;
-            }
-
-            // If not visible based on the visibility settings, ignore it
-            if(!this.IsVisible(member))
-                return false;
-
-            // One more test to deal with a weird case: a private method is an explicit implementation for
-            // a property accessor, but is not marked with the special name flag. To find these, test for
-            // the accessibility of the methods they implement.
-            if(member.IsPrivate && member.NodeType == NodeType.Method)
-            {
-                Method method = (Method)member;
-                var  implements = method.ImplementedInterfaceMethods?.FirstOrDefault();
-
-                if(implements != null && !this.IsExposedMember(implements))
-                    return false;
-            }
-
-            // Same for explicit property implementations
-            if(member.IsPrivate && member.NodeType == NodeType.Property)
-            {
-                Property property = (Property)member;
-                var implements = property.GetImplementedProperties().FirstOrDefault();
-
-                if(implements != null && !this.IsExposedMember(implements))
-                    return false;
-            }
-
-            // Same for explicit event implementations
-            if(member.IsPrivate && member.NodeType == NodeType.Event)
-            {
-                Event evt = (Event)member;
-                var implements = evt.GetImplementedEvents().FirstOrDefault();
-
-                if(implements != null && !this.IsExposedMember(implements))
-                    return false;
-            }
-
-            // Okay, passed all tests, the member is exposed as long as the base filters allow it
-            return apiFilter.IsExposedMember(member);
+            return this.IsVisible(type);
         }
 
-        /// <summary>
-        /// This is used to see if an attribute type is exposed
-        /// </summary>
-        /// <param name="attribute">The attribute node to check</param>
-        /// <returns>True if the attribute is exposed, false if not</returns>
-        public virtual bool IsExposedAttribute(AttributeNode attribute)
+        if(this.IncludeInternals && (member.IsAssembly || member.IsFamilyAndAssembly))
+            return this.IsVisible(type);
+
+        // For protected, if it's protected internal, only remove them if not including internals
+        if(!this.IncludeProtected && (member.IsFamily || (member.IsFamilyOrAssembly && !this.IncludeInternals)))
+            return false;
+
+        // If the member isn't visible outside the assembly, we won't expose it unless including protected
+        // members of sealed classes, private classes, and/or internal classes.
+        if(!member.IsVisibleOutsideAssembly)
         {
-            if(attribute == null)
-                throw new ArgumentNullException(nameof(attribute));
-
-            // Check whether the attribute type is exposed
-            TypeNode attributeType = attribute.Type;
-
-            // C# 7.x generates a private attribute type if target framework does not support it.
-            // We need to pass those attributes through and filter them later (ref struct, readonly struct)
-            if(attributeType.FullName.StartsWith("System.Runtime.CompilerServices", StringComparison.Ordinal))
-                return attributeFilter.IsRequiredType(attributeType);
-
-            if(!this.IsExposedType(attributeType))
+            if(!this.IncludeSealedProtected && type.IsSealed && (member.IsFamily || member.IsFamilyOrAssembly))
                 return false;
 
-            // Check whether expressions used to instantiate the attribute are exposed
-            foreach(var expression in attribute.Expressions)
-                if(!this.IsExposedExpression(expression))
-                    return false;
+            if(!member.IsPrivate && !(member.IsAssembly || member.IsFamilyAndAssembly))
+                return this.IsVisible(type);
 
-            // If excluding attributes, just check for ones that are required
-            if(!this.IncludeAttributes)
-                return attributeFilter.IsRequiredType(attributeType);
-
-            // Apply user filters to the attribute
-            return attributeFilter.IsExposedType(attributeType);
+            return false;
         }
 
-        /// <summary>
-        /// This is used to determine if a type or member is visible based on the visibility settings
-        /// </summary>
-        /// <param name="member">The type or member to check</param>
-        /// <returns>True if visible based on the current visibility settings, false if not</returns>
-        public virtual bool IsVisible(Member member)
+        return true;
+    }
+
+    /// <summary>
+    /// This is used to see if a member is an inherited base framework member and, if so, if it should be
+    /// excluded.
+    /// </summary>
+    /// <param name="type">The type to compare the member against</param>
+    /// <param name="member">The potential inherited base framework member</param>
+    /// <returns>True if the inherited base framework member is to be excluded, false to include it</returns>
+    public bool IsExcludedFrameworkMember(TypeNode type, Member member)
+    {
+        if(type == null)
+            throw new ArgumentNullException(nameof(type));
+        
+        if(member == null)
+            throw new ArgumentNullException(nameof(member));
+
+        string memberNamespace = member.DeclaringType.Namespace.Name;
+
+        if(type.Namespace.Name != memberNamespace && (memberNamespace == "System" ||
+          memberNamespace == "Microsoft" ||
+          memberNamespace.StartsWith("System.", StringComparison.Ordinal) ||
+          memberNamespace.StartsWith("Microsoft.", StringComparison.Ordinal)))
         {
-            if(member == null)
-                throw new ArgumentNullException(nameof(member));
-
-            // Handle types first as a limited set of options apply to them
-            TypeNode type = member as TypeNode;
-
-            if(type != null)
-            {
-                // All parent types must be visible
-                if(type.DeclaringType != null && !this.IsVisible(type.DeclaringType))
-                    return false;
-
-                // For protected, if it's protected internal, only remove them if not including internals
-                if((!this.IncludePrivates && type.IsPrivate) || (!this.IncludeInternals && type.IsAssembly) ||
-                  (!this.IncludeProtected && (type.IsFamily || (type.IsFamilyOrAssembly && !this.IncludeInternals))))
-                    return false;
-
-                // Ignore private protected types unless including internals
-                if(!this.IncludeInternals && type.IsFamilyAndAssembly)
-                    return false;
-
-                return true;
-            }
-
-            type = member.DeclaringType;
             Property property = member as Property;
             Event evt = member as Event;
             Method method = member as Method;
 
-            // Explicit member implementation?
+            // Explicit member implementation?  Keep these unless removing all framework members.
             if((property != null && property.IsPrivate && property.GetImplementedProperties().Any()) ||
               (evt != null && evt.IsPrivate && evt.GetImplementedEvents().Any()) ||
               (method != null && method.IsPrivate && method.GetImplementedMethods().Any()))
             {
-                if(!this.IsVisible(type))
-                    return false;
-
-                return this.IncludeExplicitInterfaceImplementations;
+                return !this.IncludeInheritedFrameworkMembers;
             }
 
-            if(this.IncludePrivates && member.IsPrivate)
-            {
-                if(member is Field field)
-                {
-                    if(!this.IncludePrivateFields)
-                        return false;
+            return (!this.IncludeInheritedFrameworkMembers ||
+                (!this.IncludeInheritedFrameworkInternalMembers && member.IsAssembly) ||
+                (!this.IncludeInheritedFrameworkPrivateMembers && (member.IsPrivate ||
+                member.IsFamilyAndAssembly)));
+        }
 
-                    // Remove backing fields that correspond to events.  These can never be documented and should
-                    // not show up.
-                    if(field.Type.Name.Name.Contains("EventHandler"))
-                        return false;
-                }
+        return false;
+    }
+    #endregion
 
-                return this.IsVisible(type);
-            }
+    #region Helper methods
+    //=====================================================================
 
-            if(this.IncludeInternals && (member.IsAssembly || member.IsFamilyAndAssembly))
-                return this.IsVisible(type);
+    /// <summary>
+    /// This is used to get a description of the member's visibility
+    /// </summary>
+    /// <param name="api">The API member for which to get the visibility description</param>
+    /// <returns>The visibility description</returns>
+    public string GetVisibility(Member api)
+    {
+        if(api == null)
+            throw new ArgumentNullException(nameof(api));
 
-            // For protected, if it's protected internal, only remove them if not including internals
-            if(!this.IncludeProtected && (member.IsFamily || (member.IsFamilyOrAssembly && !this.IncludeInternals)))
+        if(api.IsPublic)
+            return "public";
+
+        // Internal
+        if(api.IsAssembly)
+            return "assembly";
+
+        // Protected internal
+        if(api.IsFamilyOrAssembly)
+        {
+            if(this.IncludeProtectedInternalAsProtected)
+                return "family";
+
+            return "family or assembly";
+        }
+
+        // Protected
+        if(api.IsFamily)
+            return "family";
+
+        // Protected private (accessible by the class and those derived from it within the same assembly).
+        // This is a C++ feature not supported in other languages.
+        if(api.IsFamilyAndAssembly)
+            return "family and assembly";
+
+        if(api.IsPrivate)
+            return "private";
+
+        throw new InvalidOperationException("Unknown access level for " + api.FullName);
+    }
+
+    /// <summary>
+    /// Check for any exposed types in a namespace
+    /// </summary>
+    /// <param name="space">The namespace to check</param>
+    /// <returns>True if the namespace contains exposed types, false if it does not, or null if there are no
+    /// exposed types but the API filter is empty.</returns>
+    private bool? NamespaceContainsExposedTypes(Namespace space)
+    {
+        foreach(var type in space.Types)
+        {
+            if(this.IsExposedType(type))
+                return true;
+        }
+
+        return (apiFilter.NamespaceFilterCount == 0) ? (bool?)null : false;
+    }
+
+    /// <summary>
+    /// Check for any exposed members in any of the types
+    /// </summary>
+    /// <param name="space">The namespace to check</param>
+    /// <returns>True if the type has an exposed member filter and it is matched are set to true.</returns>
+    /// <remarks>This is used to determine if the namespace should be visited.  If the namespace and all
+    /// types are set to false for exposed, we still want to visit them if any members are visible.</remarks>
+    private bool NamespaceContainsExposedMembers(Namespace space)
+    {
+        foreach(var type in space.Types)
+        {
+            if(this.HasExposedMembers(type))
+                return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Check to see if an expression contains exposed types
+    /// </summary>
+    /// <param name="expression">The expression to check</param>
+    /// <returns>True if the expression is exposed, false if not</returns>
+    private bool IsExposedExpression(Expression expression)
+    {
+        if(expression.NodeType == NodeType.Literal)
+        {
+            Literal literal = (Literal)expression;
+            TypeNode type = literal.Type;
+
+            if(!this.IsExposedType(type))
                 return false;
 
-            // If the member isn't visible outside the assembly, we won't expose it unless including protected
-            // members of sealed classes, private classes, and/or internal classes.
-            if(!member.IsVisibleOutsideAssembly)
+            if(type.FullName == "System.Type")
             {
-                if(!this.IncludeSealedProtected && type.IsSealed && (member.IsFamily || member.IsFamilyOrAssembly))
+                // If the value is itself a type, we need to test whether that type is visible
+                TypeNode value = literal.Value as TypeNode;
+
+                // !EFW - Bug Fix.  Don't exclude the type if it has exposed members.  That effectively
+                // exposes the type as well.
+                if(value != null && !this.IsExposedType(value) && !this.HasExposedMembers(value))
                     return false;
-
-                if(!member.IsPrivate && !(member.IsAssembly || member.IsFamilyAndAssembly))
-                    return this.IsVisible(type);
-
-                return false;
             }
 
             return true;
         }
-
-        /// <summary>
-        /// This is used to see if a member is an inherited base framework member and, if so, if it should be
-        /// excluded.
-        /// </summary>
-        /// <param name="type">The type to compare the member against</param>
-        /// <param name="member">The potential inherited base framework member</param>
-        /// <returns>True if the inherited base framework member is to be excluded, false to include it</returns>
-        public bool IsExcludedFrameworkMember(TypeNode type, Member member)
+        else
         {
-            if(type == null)
-                throw new ArgumentNullException(nameof(type));
-            
-            if(member == null)
-                throw new ArgumentNullException(nameof(member));
-
-            string memberNamespace = member.DeclaringType.Namespace.Name;
-
-            if(type.Namespace.Name != memberNamespace && (memberNamespace == "System" ||
-              memberNamespace == "Microsoft" ||
-              memberNamespace.StartsWith("System.", StringComparison.Ordinal) ||
-              memberNamespace.StartsWith("Microsoft.", StringComparison.Ordinal)))
+            if(expression.NodeType == NodeType.NamedArgument)
             {
-                Property property = member as Property;
-                Event evt = member as Event;
-                Method method = member as Method;
-
-                // Explicit member implementation?  Keep these unless removing all framework members.
-                if((property != null && property.IsPrivate && property.GetImplementedProperties().Any()) ||
-                  (evt != null && evt.IsPrivate && evt.GetImplementedEvents().Any()) ||
-                  (method != null && method.IsPrivate && method.GetImplementedMethods().Any()))
-                {
-                    return !this.IncludeInheritedFrameworkMembers;
-                }
-
-                return (!this.IncludeInheritedFrameworkMembers ||
-                    (!this.IncludeInheritedFrameworkInternalMembers && member.IsAssembly) ||
-                    (!this.IncludeInheritedFrameworkPrivateMembers && (member.IsPrivate ||
-                    member.IsFamilyAndAssembly)));
+                NamedArgument assignment = (NamedArgument)expression;
+                return this.IsExposedExpression(assignment.Value);
             }
-
-            return false;
-        }
-        #endregion
-
-        #region Helper methods
-        //=====================================================================
-
-        /// <summary>
-        /// This is used to get a description of the member's visibility
-        /// </summary>
-        /// <param name="api">The API member for which to get the visibility description</param>
-        /// <returns>The visibility description</returns>
-        public string GetVisibility(Member api)
-        {
-            if(api == null)
-                throw new ArgumentNullException(nameof(api));
-
-            if(api.IsPublic)
-                return "public";
-
-            // Internal
-            if(api.IsAssembly)
-                return "assembly";
-
-            // Protected internal
-            if(api.IsFamilyOrAssembly)
-            {
-                if(this.IncludeProtectedInternalAsProtected)
-                    return "family";
-
-                return "family or assembly";
-            }
-
-            // Protected
-            if(api.IsFamily)
-                return "family";
-
-            // Protected private (accessible by the class and those derived from it within the same assembly).
-            // This is a C++ feature not supported in other languages.
-            if(api.IsFamilyAndAssembly)
-                return "family and assembly";
-
-            if(api.IsPrivate)
-                return "private";
-
-            throw new InvalidOperationException("Unknown access level for " + api.FullName);
         }
 
-        /// <summary>
-        /// Check for any exposed types in a namespace
-        /// </summary>
-        /// <param name="space">The namespace to check</param>
-        /// <returns>True if the namespace contains exposed types, false if it does not, or null if there are no
-        /// exposed types but the API filter is empty.</returns>
-        private bool? NamespaceContainsExposedTypes(Namespace space)
-        {
-            foreach(var type in space.Types)
-                if(this.IsExposedType(type))
-                    return true;
-
-            return (apiFilter.NamespaceFilterCount == 0) ? (bool?)null : false;
-        }
-
-        /// <summary>
-        /// Check for any exposed members in any of the types
-        /// </summary>
-        /// <param name="space">The namespace to check</param>
-        /// <returns>True if the type has an exposed member filter and it is matched are set to true.</returns>
-        /// <remarks>This is used to determine if the namespace should be visited.  If the namespace and all
-        /// types are set to false for exposed, we still want to visit them if any members are visible.</remarks>
-        private bool NamespaceContainsExposedMembers(Namespace space)
-        {
-            foreach(var type in space.Types)
-                if(this.HasExposedMembers(type))
-                    return true;
-
-            return false;
-        }
-
-        /// <summary>
-        /// Check to see if an expression contains exposed types
-        /// </summary>
-        /// <param name="expression">The expression to check</param>
-        /// <returns>True if the expression is exposed, false if not</returns>
-        private bool IsExposedExpression(Expression expression)
-        {
-            if(expression.NodeType == NodeType.Literal)
-            {
-                Literal literal = (Literal)expression;
-                TypeNode type = literal.Type;
-
-                if(!this.IsExposedType(type))
-                    return false;
-
-                if(type.FullName == "System.Type")
-                {
-                    // If the value is itself a type, we need to test whether that type is visible
-                    TypeNode value = literal.Value as TypeNode;
-
-                    // !EFW - Bug Fix.  Don't exclude the type if it has exposed members.  That effectively
-                    // exposes the type as well.
-                    if(value != null && !this.IsExposedType(value) && !this.HasExposedMembers(value))
-                        return false;
-                }
-
-                return true;
-            }
-            else
-                if(expression.NodeType == NodeType.NamedArgument)
-                {
-                    NamedArgument assignment = (NamedArgument)expression;
-                    return this.IsExposedExpression(assignment.Value);
-                }
-
-            throw new InvalidOperationException("Encountered unrecognized expression");
-        }
-
-        /// <summary>
-        /// This is used to check a type to see if it is an embedded interop type
-        /// </summary>
-        /// <param name="type">The type to check</param>
-        /// <returns>True if it is an embedded interop type, false if not.  To be true, the type must have a
-        /// <see cref="System.Runtime.CompilerServices.CompilerGeneratedAttribute"/> and a
-        /// <see cref="System.Runtime.InteropServices.TypeIdentifierAttribute"/>.</returns>
-        private static bool IsEmbeddedInteropType(TypeNode type)
-        {
-            bool compilerGeneratedAttribute = false, typeIdentifierAttribute = false;
-
-            foreach(var attribute in type.Attributes)
-            {
-                if(attribute.Type.FullName == "System.Runtime.CompilerServices.CompilerGeneratedAttribute")
-                    compilerGeneratedAttribute = true;
-
-                if(attribute.Type.FullName == "System.Runtime.InteropServices.TypeIdentifierAttribute")
-                    typeIdentifierAttribute = true;
-            }
-
-            return (compilerGeneratedAttribute && typeIdentifierAttribute);
-        }
-        #endregion
+        throw new InvalidOperationException("Encountered unrecognized expression");
     }
+
+    /// <summary>
+    /// This is used to check a type to see if it is an embedded interop type
+    /// </summary>
+    /// <param name="type">The type to check</param>
+    /// <returns>True if it is an embedded interop type, false if not.  To be true, the type must have a
+    /// <see cref="System.Runtime.CompilerServices.CompilerGeneratedAttribute"/> and a
+    /// <see cref="System.Runtime.InteropServices.TypeIdentifierAttribute"/>.</returns>
+    private static bool IsEmbeddedInteropType(TypeNode type)
+    {
+        bool compilerGeneratedAttribute = false, typeIdentifierAttribute = false;
+
+        foreach(var attribute in type.Attributes)
+        {
+            if(attribute.Type.FullName == "System.Runtime.CompilerServices.CompilerGeneratedAttribute")
+                compilerGeneratedAttribute = true;
+
+            if(attribute.Type.FullName == "System.Runtime.InteropServices.TypeIdentifierAttribute")
+                typeIdentifierAttribute = true;
+        }
+
+        return compilerGeneratedAttribute && typeIdentifierAttribute;
+    }
+    #endregion
 }
