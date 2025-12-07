@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Handlers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/04/2025
+// Updated : 12/06/2025
 // Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the element handler methods for the MAML to flow document converter class
@@ -1078,7 +1078,8 @@ public partial class MamlToFlowDocumentConverter
     private static void ImageElement(ElementProperties props)
     {
         UIElement child;
-        string id = props.Element.Attribute("src")?.Value ?? props.Element.Attribute("target")?.Value ?? "???";
+        string id = props.Element.Attribute("src")?.Value ?? props.Element.Attribute("target")?.Value ?? "???",
+            altText = props.Element.Attribute("alt")?.Value ?? props.Element.Attribute("altText")?.Value;
         KeyValuePair<string, string> imageInfo = new(null, null);
         HorizontalAlignment alignment = HorizontalAlignment.Left;
         var attribute = props.Element.Parent?.Parent?.Attribute("placement")?.Value ??
@@ -1124,8 +1125,9 @@ public partial class MamlToFlowDocumentConverter
             {
                 Height = bm.Height,
                 Width = bm.Width,
-                ToolTip = !String.IsNullOrEmpty(imageInfo.Value) ? imageInfo.Value :
-                    "ID: " + id + "\nFilename: " + imageInfo.Key,
+                ToolTip = !String.IsNullOrEmpty(altText) ? altText :
+                    !String.IsNullOrEmpty(imageInfo.Value) ? imageInfo.Value :
+                        "ID: " + id + "\nFilename: " + imageInfo.Key,
                 Margin = new Thickness(5, 0, 5, 0),
                 HorizontalAlignment = alignment,
                 Source = bm

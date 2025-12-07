@@ -44,9 +44,12 @@ public sealed class LinkInlineRenderer : Markdig.Renderers.Html.Inlines.LinkInli
             {
                 if(link.IsImage)
                 {
-                    // !!TODO: Add support for LiteralInline inner text to override the image alternate text
-                    // A new attribute is needed that the ResolveArtLinksComponent can use to set it.
-                    renderer.Write($"<artLink target=\"{link.Url.Substring(1)}\" />");
+                    renderer.Write($"<artLink target=\"{link.Url.Substring(1)}\"");
+
+                    if(link.FirstChild is LiteralInline innerText)
+                        renderer.Write($" altText=\"{innerText.Content}\"");
+
+                    renderer.Write(" />");
                 }
                 else
                 {

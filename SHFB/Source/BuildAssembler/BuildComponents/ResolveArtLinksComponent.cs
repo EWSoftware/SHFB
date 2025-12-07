@@ -9,6 +9,7 @@
 // copy it every time the same ID is encountered.  As with the SharedContentComponent, this one doesn't load
 // enough info to warrant trying to share the common data across all instances.
 // 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
+// 12/06/2025 - EFW - Added support for user-defined altText on the artLink element
 
 using System;
 using System.Collections.Generic;
@@ -186,7 +187,8 @@ namespace Sandcastle.Tools.BuildComponents
 
             foreach(XPathNavigator artLink in document.CreateNavigator().Select(artLinkExpression).ToArray())
             {
-                string name = artLink.GetAttribute("target", String.Empty);
+                string name = artLink.GetAttribute("target", String.Empty),
+                    altText = artLink.GetAttribute("altText", String.Empty);
 
                 if(targets.TryGetValue(name, out ArtTarget target))
                 {
@@ -204,8 +206,13 @@ namespace Sandcastle.Tools.BuildComponents
 
                     writer.WriteStartElement("img");
 
-                    if(!String.IsNullOrWhiteSpace(target.Text))
-                        writer.WriteAttributeString("alt", target.Text);
+                    if(!String.IsNullOrWhiteSpace(altText))
+                        writer.WriteAttributeString("alt", altText);
+                    else
+                    {
+                        if(!String.IsNullOrWhiteSpace(target.Text))
+                            writer.WriteAttributeString("alt", target.Text);
+                    }
 
                     if(target.FormatXPath == null)
                         writer.WriteAttributeString("src", target.LinkPath);

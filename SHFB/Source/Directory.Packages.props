@@ -5,12 +5,14 @@
   <ItemGroup>
     <PackageVersion Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.129" />
     <PackageVersion Include="ICSharpCode.TextEditor" Version="3.2.1.6466" />
-    <PackageVersion Include="Markdig.Signed" Version="0.44.0" />
-    <PackageVersion Include="Microsoft.Build" Version="17.14.28" />
-    <PackageVersion Include="Microsoft.Build.Framework" Version="17.14.28" />
+    <PackageVersion Include="Markdig.Signed" Version="0.40.0" />
+		<!-- DO NOT go above 17.13.26 or the System.Memory dependency causes issues.   It can't be over v4.5.5
+		     in order to work properly with MSBuild. -->
+    <PackageVersion Include="Microsoft.Build" Version="17.13.26" />
+    <PackageVersion Include="Microsoft.Build.Framework" Version="17.13.26" />
     <PackageVersion Include="Microsoft.Build.Locator" Version="1.10.2" />
-    <PackageVersion Include="Microsoft.Build.Tasks.Core" Version="17.14.28" />
-    <PackageVersion Include="Microsoft.Build.Utilities.Core" Version="17.14.28" />
+    <PackageVersion Include="Microsoft.Build.Tasks.Core" Version="17.13.26" />
+    <PackageVersion Include="Microsoft.Build.Utilities.Core" Version="17.13.26" />
     <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0" />
     <PackageVersion Include="Microsoft.DiaSymReader.PortablePdb" Version="1.6.0" />
@@ -21,7 +23,7 @@
     <PackageVersion Include="System.CodeDom" Version="9.0.10" />
     <PackageVersion Include="System.ComponentModel.Composition" Version="9.0.10" />
     <PackageVersion Include="System.IO.Compression" Version="4.3.0" />
-    <PackageVersion Include="System.Text.Json" Version="9.0.10" />
+		<PackageVersion Include="System.Text.Json" Version="9.0.10" />
     <PackageVersion Include="WeCantSpell.Hunspell" Version="6.0.3" />
   </ItemGroup>
 </Project>

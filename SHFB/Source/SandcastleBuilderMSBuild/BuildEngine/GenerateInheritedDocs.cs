@@ -322,9 +322,8 @@ public class GenerateInheritedDocs
             // param, typeparam, returns from the related type member comments.
             foreach(XmlNode inheritTag in n.SelectNodes("inheritdoc"))
             {
-                string cref = inheritTag.Attributes["cref"]?.Value;
-
-                int ebIndex = cref.IndexOf(">$", StringComparison.Ordinal);
+                string cref = inheritTag?.Attributes["cref"]?.Value;
+                int ebIndex = cref?.IndexOf(">$", StringComparison.Ordinal) ?? -1;
 
                 if(ebIndex != -1 && (cref[0] == 'M' || cref[0] == 'P'))
                 {

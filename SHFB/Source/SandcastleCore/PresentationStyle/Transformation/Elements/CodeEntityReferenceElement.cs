@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : CodeEntityReferenceElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/01/2025
+// Updated : 12/06/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle codeEntityReference elements
@@ -61,7 +61,10 @@ public class CodeEntityReferenceElement : Element
 
                 if(qualifyHint)
                 {
-                    link.Add("show-container=\"true\" show-parameters=\"true\"");
+                    link.Add("show-container=\"true\"");
+
+                    if(linkTarget[0] == 'M')
+                        link.Add(" show-parameters=\"true\"");
 
                     if(autoUpgrade)
                         link.Add(" ");
