@@ -48,7 +48,7 @@
       <NamespaceSummaryItem name="XMLCommentsExamples" isDocumented="True">This namespace contains classes used to demonstrate the various XML comments elements.</NamespaceSummaryItem>
     </NamespaceSummaries>
     <PlugInConfigurations>
-      <PlugInConfig id="Output Deployment" enabled="True">
+      <PlugInConfig id="Output Deployment" enabled="False">
         <configuration deleteAfterDeploy="true" verboseLogging="false">
           <deploymentLocation id="help1x" location="">
             <userCredentials useDefault="true" userName="" password="" />
@@ -190,71 +190,70 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Bibliography.xml" />
-    <None Include="Content\IdStrings.aml" />
-    <None Include="Content\MiscElements\AttachedEventComments.aml" />
-    <None Include="Content\MiscElements\AttachedPropertyComments.aml" />
-    <None Include="Content\MiscElements\CodeContracts.aml" />
-    <None Include="Content\MiscElements\conceptualLink.aml" />
-    <None Include="Content\MiscElements\exclude.aml" />
-    <None Include="Content\MiscElements\filterpriority.aml" />
-    <None Include="Content\MiscElements\include.aml" />
-    <None Include="Content\MiscElements\InheritDoc.aml" />
-    <None Include="Content\MiscElements\MiscElements.aml" />
-    <None Include="Content\MiscElements\overloads.aml" />
-    <None Include="Content\MiscElements\token.aml" />
-    <None Include="Content\MSHelpViewerRoot.aml" />
-    <None Include="Content\NamespaceDoc.aml" />
-    <None Include="Content\SectionElements\bibliography.aml" />
-    <None Include="Content\SectionElements\revisionHistory.aml" />
-    <None Include="Content\SharedComments.aml" />
-    <None Include="Content\BlockElements\BlockElements.aml" />
-    <None Include="Content\BlockElements\code.aml" />
+    <None Include="Content\Glossary.md" />
+    <None Include="Content\VersionHistory\v1.0.0.0.md" />
+    <None Include="Content\VersionHistory\v2014.1.26.0.md" />
+    <None Include="Content\VersionHistory\v2014.5.31.0.md" />
+    <None Include="Content\VersionHistory\v2014.11.22.0.md" />
+    <None Include="Content\VersionHistory\v2015.10.10.0.md" />
+    <None Include="Content\VersionHistory\v2019.11.7.0.md" />
+    <None Include="Content\VersionHistory\v2022.4.16.0.md" />
+    <None Include="Content\VersionHistory\VersionHistory.md" />
+    <None Include="Content\Donate.md" />
+    <None Include="Content\LinksToResources.md" />
+    <None Include="Content\FAQ.md" />
+    <None Include="Content\MiscElements\token.md" />
+    <None Include="Content\MiscElements\overloads.md" />
+    <None Include="Content\MiscElements\InheritDoc.md" />
+    <None Include="Content\MiscElements\include.md" />
+    <None Include="Content\MiscElements\filterpriority.md" />
+    <None Include="Content\MiscElements\exclude.md" />
+    <None Include="Content\MiscElements\conceptualLink.md" />
+    <None Include="Content\MiscElements\CodeContracts.md" />
+    <None Include="Content\MiscElements\AttachedPropertyComments.md" />
+    <None Include="Content\MiscElements\AttachedEventComments.md" />
+    <None Include="Content\MiscElements\MiscElements.md" />
+    <None Include="Content\InlineElements\typeparamref.md" />
+    <None Include="Content\InlineElements\see.md" />
+    <None Include="Content\InlineElements\paramref.md" />
+    <None Include="Content\InlineElements\c.md" />
+    <None Include="Content\InlineElements\InlineElements.md" />
+    <None Include="Content\BlockElements\para.md" />
+    <None Include="Content\BlockElements\note.md" />
+    <None Include="Content\BlockElements\code.md" />
+    <None Include="Content\BlockElements\BlockElements.md" />
+    <None Include="Content\SectionElements\value.md" />
+    <None Include="Content\SectionElements\typeparam.md" />
+    <None Include="Content\SectionElements\threadsafety.md" />
+    <None Include="Content\SectionElements\summary.md" />
+    <None Include="Content\SectionElements\seealso.md" />
+    <None Include="Content\SectionElements\revisionHistory.md" />
+    <None Include="Content\SectionElements\returns.md" />
+    <None Include="Content\SectionElements\remarks.md" />
+    <None Include="Content\SectionElements\preliminary.md" />
+    <None Include="Content\SectionElements\permission.md" />
+    <None Include="Content\SectionElements\param.md" />
+    <None Include="Content\SectionElements\exception.md" />
+    <None Include="Content\SectionElements\example.md" />
+    <None Include="Content\SectionElements\event.md" />
+    <None Include="Content\SectionElements\bibliography.md" />
+    <None Include="Content\SectionElements\SectionElements.md" />
+    <None Include="Content\NamespaceDoc.md" />
+    <None Include="Content\SharedComments.md" />
+    <None Include="Content\NamespaceComments.md" />
+    <None Include="Content\IdStrings.md" />
+    <None Include="Content\UsageNotes.md" />
+    <None Include="Content\ProjectSetup.md" />
+    <None Include="Content\License.md" />
+    <None Include="Content\Welcome.md" />
     <None Include="Content\BlockElements\list.aml" />
-    <None Include="Content\BlockElements\note.aml" />
-    <None Include="Content\BlockElements\para.aml" />
-    <None Include="Content\Donate.aml" />
-    <None Include="Content\FAQ.aml" />
-    <None Include="Content\Glossary.aml" />
-    <None Include="Content\InlineElements\c.aml" />
-    <None Include="Content\InlineElements\InlineElements.aml" />
-    <None Include="Content\InlineElements\paramref.aml" />
-    <None Include="Content\InlineElements\see.aml" />
-    <None Include="Content\InlineElements\typeparamref.aml" />
-    <None Include="Content\License.aml" />
-    <None Include="Content\LinksToResources.aml" />
-    <None Include="Content\NamespaceComments.aml" />
-    <None Include="Content\ProjectSetup.aml" />
-    <None Include="Content\SectionElements\event.aml" />
-    <None Include="Content\SectionElements\example.aml" />
-    <None Include="Content\SectionElements\exception.aml" />
-    <None Include="Content\SectionElements\param.aml" />
-    <None Include="Content\SectionElements\permission.aml" />
-    <None Include="Content\SectionElements\preliminary.aml" />
-    <None Include="Content\SectionElements\remarks.aml" />
-    <None Include="Content\SectionElements\returns.aml" />
-    <None Include="Content\SectionElements\SectionElements.aml" />
-    <None Include="Content\SectionElements\seealso.aml" />
-    <None Include="Content\SectionElements\summary.aml" />
-    <None Include="Content\SectionElements\threadsafety.aml" />
-    <None Include="Content\SectionElements\typeparam.aml" />
-    <None Include="Content\SectionElements\value.aml" />
-    <None Include="Content\UsageNotes.aml" />
-    <None Include="Content\VersionHistory\v1.0.0.0.aml" />
-    <None Include="Content\VersionHistory\v2019.11.7.0.aml" />
-    <None Include="Content\VersionHistory\v2022.4.16.0.aml" />
-    <None Include="Content\VersionHistory\VersionHistory.aml" />
-    <None Include="Content\VersionHistory\v2014.1.26.0.aml" />
-    <None Include="Content\VersionHistory\v2014.5.31.0.aml" />
-    <None Include="Content\VersionHistory\v2014.11.22.0.aml" />
-    <None Include="Content\VersionHistory\v2015.10.10.0.aml" />
-    <None Include="Content\Welcome.aml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="media\PayPal.gif">
+    <Image Include="media\PayPal.gif">
       <ImageId>PayPal</ImageId>
       <AlternateText>Pay Pal</AlternateText>
       <CopyToMedia>True</CopyToMedia>
-    </Content>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Tokens Include="..\SandcastleBuilder\CommonTokens.tokens">

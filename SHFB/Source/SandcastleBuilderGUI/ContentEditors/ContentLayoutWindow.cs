@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ContentLayoutWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/05/2025
+// Updated : 12/06/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the conceptual content items.
@@ -651,6 +651,8 @@ public partial class ContentLayoutWindow : BaseContentEditor
                         File.Delete(newFilename);
 
                     File.Move(t.TopicFile.FullPath, newFilename);
+
+                    contentLayoutFile.Project.AddFileToProject(newFilename, newFilename);
 
                     t.Title = t.TocTitle = t.LinkText = null;
                     t.Keywords.Clear();

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/16/2025
+// Updated : 12/07/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the MSBuild task used to build help file output using the Sandcastle Help File Builder
@@ -31,6 +31,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 
@@ -264,6 +265,7 @@ public class BuildHelp : Task, ICancelableTask, IProgress<BuildProgressEventArgs
     public override bool Execute()
     {
         Project msBuildProject = null;
+        bool removeProjectWhenDisposed = false;
         string line;
 
         // If canceled already, just return
@@ -280,17 +282,32 @@ public class BuildHelp : Task, ICancelableTask, IProgress<BuildProgressEventArgs
                     this.ProjectFile);
             }
 
-            // Create the project and set the configuration and platform options
-            msBuildProject = new Project(this.ProjectFile);
+            // When running under Visual Studio, the project may appear in the global project collection and we
+            // should use it rather than loading another copy.
+            var matchingProjects = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(
+                this.ProjectFile);
 
-            msBuildProject.SetGlobalProperty(BuildItemMetadata.Configuration, this.Configuration);
-            msBuildProject.SetGlobalProperty(BuildItemMetadata.Platform, this.Platform);
+            if(matchingProjects.Count != 0)
+            {
+                if(matchingProjects.Count != 1)
+                    Log.LogWarning(null, "BHT0004", "BHT0004", "SHFB", 0, 0, 0, 0, "Multiple matching " +
+                        "projects were found.  Only the first one found will be built.");
 
-            // Override the OutDir property if defined for Team Build.  Ignore ".\" as that's our default.
-            if(!String.IsNullOrEmpty(this.OutDir) && this.OutDir != FilePath.DefaultOutDir)
-                msBuildProject.SetGlobalProperty(BuildItemMetadata.OutDir, this.OutDir);
+                msBuildProject = matchingProjects.First();
+            }
+            else
+            {
+                msBuildProject = new Project(this.ProjectFile);
 
-            msBuildProject.ReevaluateIfNecessary();
+                msBuildProject.SetGlobalProperty(BuildItemMetadata.Configuration, this.Configuration);
+                msBuildProject.SetGlobalProperty(BuildItemMetadata.Platform, this.Platform);
+
+                // Override the OutDir property if defined for Team Build.  Ignore ".\" as that's our default.
+                if(!String.IsNullOrEmpty(this.OutDir) && this.OutDir != FilePath.DefaultOutDir)
+                    msBuildProject.SetGlobalProperty(BuildItemMetadata.OutDir, this.OutDir);
+
+                msBuildProject.ReevaluateIfNecessary();
+            }
 
             // Initialize properties that where provided in Properties
             if(!String.IsNullOrWhiteSpace(Properties))
@@ -353,7 +370,7 @@ public class BuildHelp : Task, ICancelableTask, IProgress<BuildProgressEventArgs
             cts = null;
 
             // If we loaded it, we must unload it.  If not, it is cached and may cause problems later.
-            if(msBuildProject != null)
+            if(removeProjectWhenDisposed && msBuildProject != null)
             {
                 ProjectCollection.GlobalProjectCollection.UnloadProject(msBuildProject);
                 ProjectCollection.GlobalProjectCollection.UnloadProject(msBuildProject.Xml);

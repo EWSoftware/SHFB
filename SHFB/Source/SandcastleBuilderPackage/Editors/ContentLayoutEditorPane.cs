@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ContentLayoutFileEditorPane.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/05/2025
+// Updated : 12/07/2025
 // Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to host the content layout file editor control
@@ -25,6 +25,10 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+
+using EnvDTE;
+
+using EnvDTE80;
 
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Project;
@@ -527,14 +531,32 @@ public class ContentLayoutEditorPane : SimpleEditorPane<ContentLayoutEditorFacto
 
                 if(converter.ConvertTopic(t))
                 {
-                    string newFilename = Path.ChangeExtension(t.TopicFile.FullPath, ".md");
+                    string oldFilename = t.TopicFile.FullPath,
+                        newFilename = Path.ChangeExtension(oldFilename, ".md"),
+                        backupFilename = Path.ChangeExtension(oldFilename, ".aml.bak");
+                    
                     var newItem = contentLayoutFile.Project.AddFileToProject(newFilename, newFilename);
+                    
+                    File.Move(oldFilename, backupFilename);
 
-                    contentLayoutFile.Project.FindFile(t.TopicFile.FullPath)?.RemoveFromProjectFile();
-
-                    newFilename = Path.ChangeExtension(t.TopicFile.FullPath, ".aml_bak");
-
-                    File.Move(t.TopicFile.FullPath, newFilename);
+                    if(this.FileNode.ProjectMgr.FindChild(oldFilename) is FileNode oldFileNode)
+                    {
+                        string projectFolder = oldFileNode.ProjectMgr.ProjectFolder;
+                        string relativeBackupPath = backupFilename.StartsWith(projectFolder, 
+                            StringComparison.OrdinalIgnoreCase)
+                            ? backupFilename.Substring(projectFolder.Length).TrimStart(Path.DirectorySeparatorChar)
+                            : Path.GetFileName(backupFilename);
+                        
+                        oldFileNode.ItemNode.Item.Xml.Include = relativeBackupPath;
+                        oldFileNode.ItemNode.RefreshProperties();
+                        
+                        // Notify the RDT that the document has been renamed
+                        DocumentManager.RenameDocument(oldFileNode.ProjectMgr.Site, oldFilename, 
+                            backupFilename, oldFileNode.ID);
+                        
+                        // Invalidate the parent to refresh the Solution Explorer display
+                        oldFileNode.OnInvalidateItems(oldFileNode.Parent);
+                    }
 
                     t.Title = t.TocTitle = t.LinkText = null;
                     t.Keywords.Clear();
@@ -549,7 +571,7 @@ public class ContentLayoutEditorPane : SimpleEditorPane<ContentLayoutEditorFacto
         }
         finally
         {
-            this.FileNode?.ProjectMgr.RefreshProject();
+            this.FileNode.ProjectMgr.RefreshProject();
             this.UIControl.Topics.MatchProjectFilesToTopics();
             this.UIControl.RefreshTopicInfo();
         }

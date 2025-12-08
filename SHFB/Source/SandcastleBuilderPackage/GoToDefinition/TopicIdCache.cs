@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TopicIdCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/26/2025
+// Updated : 12/07/2025
 // Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to cache information about MAML topic IDs and their related files
@@ -24,6 +24,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+
+using Sandcastle.Core.Markdown;
 
 using MSBuildProject = Microsoft.Build.Evaluation.Project;
 
@@ -200,16 +202,26 @@ internal class TopicIdCache
         {
             try
             {
-                // !!TODO: Add support for Markdown topic files.
                 // We could scan the projects for the files but passing the project folders is less info to
                 // gather when calling this and the Project class doesn't indicate that it is thread-safe.
-                foreach(string file in Directory.EnumerateFiles(folder, "*.aml", SearchOption.AllDirectories))
+                foreach(string file in Directory.EnumerateFiles(folder, "*.aml", SearchOption.AllDirectories).Concat(
+                  Directory.EnumerateFiles(folder, "*.md", SearchOption.AllDirectories)))
                 {
                     try
                     {
-                        var doc = XDocument.Load(file);
+                        string id, title = null;
 
-                        string id = (string)doc.Root.Attribute("id") ?? String.Empty;
+                        if(Path.GetExtension(file).Equals(".md", StringComparison.OrdinalIgnoreCase))
+                        {
+                            var md = new MarkdownFile(file);
+                            id = md.UniqueId;
+                            title = md.Title;
+                        }
+                        else
+                        {
+                            var doc = XDocument.Load(file);
+                            id = (string)doc.Root.Attribute("id") ?? String.Empty;
+                        }
 
                         if(topicInfo.TryGetValue(id, out TopicInfo info))
                         {
@@ -217,7 +229,7 @@ internal class TopicIdCache
                             info.RelativePath = file.Substring(folder.Length + 1);
 
                             if(info.Title == "(No title)")
-                                info.Title = Path.GetFileNameWithoutExtension(file);
+                                info.Title = title ?? Path.GetFileNameWithoutExtension(file);
                         }
                     }
                     catch(Exception ex)

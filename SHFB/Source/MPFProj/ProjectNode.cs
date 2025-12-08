@@ -5382,12 +5382,7 @@ namespace Microsoft.VisualStudio.Project
                 for (int i = 0; i < affectedNodes; i++)
                 {
                     HierarchyNode n = this.NodeFromItemId(itemidAffectedNodes[i]);
-                    if (n == null)
-                    {
-                        throw new ArgumentException(SR.GetString(SR.InvalidParameter, CultureInfo.CurrentUICulture), nameof(itemidAffectedNodes));
-                    }
-
-                    n.ReDraw(UIHierarchyElement.SccState);
+                    n?.ReDraw(UIHierarchyElement.SccState);
                 }
             }
             return VSConstants.S_OK;

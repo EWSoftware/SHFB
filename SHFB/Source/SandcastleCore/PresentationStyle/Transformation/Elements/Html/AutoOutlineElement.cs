@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AutoOutlineElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/04/2025
+// Updated : 12/07/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle autoOutline elements
@@ -209,7 +209,7 @@ public class AutoOutlineElement : Element
 
         if(outlineType <= AutoOutlineType.TopNoRelated && !String.IsNullOrWhiteSpace(this.TopLevelStyleName))
             ul.Add(new XAttribute("class", this.TopLevelStyleName));
-        
+
         renderTo.Add(ul);
 
         foreach(var s in content.Elements(Ddue + "section"))
@@ -367,6 +367,9 @@ public class AutoOutlineElement : Element
         // Heading levels can vary so we'll track depth independent of heading level
         int baseDepth = 0;
         XElement list = new("ul");
+
+        if(start == null && !String.IsNullOrWhiteSpace(this.TopLevelStyleName))
+            list.Add(new XAttribute("class", this.TopLevelStyleName));
 
         transformation.CurrentElement.Add(list);
 
