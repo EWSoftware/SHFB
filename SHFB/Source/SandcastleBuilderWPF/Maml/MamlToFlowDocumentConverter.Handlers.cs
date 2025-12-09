@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -337,6 +338,9 @@ public partial class MamlToFlowDocumentConverter
         // For code elements with no attributes, treat them like a codeInline element
         if(!codeElement.HasAttributes && codeElement.Name.LocalName == "code")
         {
+            if(props.Converter.CurrentBlockElement is not Paragraph)
+                props.Converter.AddToBlockContainer(new Paragraph());
+
             InlineCodeElement(props);
             return;
         }
@@ -1380,6 +1384,8 @@ public partial class MamlToFlowDocumentConverter
             {
                 if(String.IsNullOrWhiteSpace(linkText))
                 {
+                    href = WebUtility.UrlDecode(href);
+
                     // Code entity reference
                     bool qualifyHint = (bool?)props.Element.Attribute("show-container") ?? false;
 

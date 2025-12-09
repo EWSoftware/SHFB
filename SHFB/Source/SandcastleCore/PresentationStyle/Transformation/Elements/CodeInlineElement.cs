@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : CodeInlineElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/25/2025
+// Updated : 12/08/2025
 // Note    : Copyright 2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class that handles codeInline elements
@@ -76,7 +76,7 @@ public class CodeInlineElement : Element
 
         if(!String.IsNullOrWhiteSpace(keyword))
         {
-            if(keyword[0] == '@')
+            if(keyword[0] == ':')
             {
                 RenderLST(transformation, element);
                 return;

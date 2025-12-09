@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : LanguageKeywordElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/01/2025
+// Updated : 12/08/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle languageKeyword elements
@@ -90,7 +90,7 @@ public class LanguageKeywordElement : Element
                         case "let!":
                         case "this":
                         case "Me":
-                            languageSpecificText = '@';
+                            languageSpecificText = ':';
                             break;
 
                         default:

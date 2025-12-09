@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Core.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/03/2025
+// Updated : 12/08/2025
 // Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the core methods of the class used to convert a MAML topic file to a flow document so that
@@ -772,6 +772,16 @@ public partial class MamlToFlowDocumentConverter
                 tableCell.Blocks.Add((Block)blockElement);
                 parentBlocks.Push(currentBlock);
                 currentBlock = blockElement;
+                return;
+            }
+
+            // If we're in a paragraph, return to the parent section if there is one.  This can sometimes happen
+            // when there is an implied paragraph or one was added by the prior handler to contain an inline
+            // element.
+            if(currentBlock is Paragraph && parentBlocks.Count != 0)
+            {
+                currentBlock = parentBlocks.Pop();
+                this.AddToBlockContainer(blockElement);
                 return;
             }
         }
