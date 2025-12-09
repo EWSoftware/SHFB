@@ -130,6 +130,7 @@ public class MamlToMarkdownTopicConverter
     /// Convert the topic to Markdown format
     /// </summary>
     /// <param name="topic">The topic to process</param>
+    /// <returns>True if successful, false if not</returns>
     public bool ConvertTopic(Topic topic)
     {
         // Ignore empty container nodes and non-MAML files

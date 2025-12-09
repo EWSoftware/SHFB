@@ -54,21 +54,6 @@
 request help using them, visit the <token>SHFB</token> project site.</para>
 					</listItem>
 
-					<listItem>
-						<para>For discussion and questions about help systems in general, visit the <externalLink>
-<linkText>Microsoft Q&amp;A Forums</linkText>
-<linkUri>https://docs.microsoft.com/en-us/answers/products/?WT.mc_id=msdnredirect-web-msdn</linkUri>
-<linkTarget>_blank</linkTarget>
-</externalLink>.</para>
-					</listItem>
-
-					<listItem>
-						<para>The retired <externalLink>
-<linkText>Microsoft Developer Documentation and Help System forum</linkText>
-<linkUri>https://social.msdn.microsoft.com/Forums/en-US/home?forum=devdocs</linkUri>
-<linkTarget>_blank</linkTarget>
-</externalLink> may also provide information on older help systems.</para>
-					</listItem>
 				</list>
 
 			</content>
@@ -79,25 +64,25 @@ request help using them, visit the <token>SHFB</token> project site.</para>
 			<content>
 				<list class="bullet">
 					<listItem>
-						<para>If you need a spell checker for Visual Studio, the <legacyBold>Visual Studio Spell Checker</legacyBold>
+						<para>If you need a spell checker for Visual Studio, the <legacyBold>Spell Check My Code</legacyBold>
 extension can be downloaded and installed from the Visual Studio Gallery.  It is an editor extension that checks
 the spelling of comments, strings, and plain text as you type or interactively with a tool window.  Support is
 included for spell checking source code, XML files, and MAML topic files.  Versions are available for 
 <externalLink>
 	<linkText>Visual Studio 2013 and 2015</linkText>
-	<linkAlternateText>Visual Studio Spell Checker (VS2013/2015)</linkAlternateText>
+	<linkAlternateText>Spell Check My Code (VS2013/2015)</linkAlternateText>
 	<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.VisualStudioSpellChecker</linkUri>
 	<linkTarget>_blank</linkTarget>
 </externalLink>, 
 <externalLink>
 	<linkText>Visual Studio 2017 and 2019</linkText>
-	<linkAlternateText>Visual Studio Spell Checker (VS2017/2019)</linkAlternateText>
+	<linkAlternateText>Spell Check My Code (VS2017/2019)</linkAlternateText>
 	<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.VisualStudioSpellCheckerVS2017andLater</linkUri>
 	<linkTarget>_blank</linkTarget>
 </externalLink> and
 <externalLink>
 	<linkText>Visual Studio 2022 and Later</linkText>
-	<linkAlternateText>Visual Studio Spell Checker (VS2022+)</linkAlternateText>
+	<linkAlternateText>Spell Check My Code (VS2022+)</linkAlternateText>
 	<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.VisualStudioSpellCheckerVS2022andLater</linkUri>
 	<linkTarget>_blank</linkTarget>
 </externalLink>.</para>

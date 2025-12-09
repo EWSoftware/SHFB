@@ -71,6 +71,7 @@ public class MamlTopicRenderer : HtmlRenderer
     //=====================================================================
 
     /// <inheritdoc />
+    /// <returns>The rendered Markdown object</returns>
     public override object Render(MarkdownObject markdownObject)
     {
         if(markdownObject is not MarkdownDocument document)

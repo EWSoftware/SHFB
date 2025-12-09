@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ListElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/01/2025
+// Updated : 12/08/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle list elements based on the topic type
@@ -89,7 +89,7 @@ public class ListElement : Element
     private void RenderMamlList(TopicTransformationCore transformation, XElement element)
     {
         string elementName = "ul", start = null;
-        string styleName = null, style = element.Attribute("class")?.Value;
+        string styleName = null, style = element.Attribute("class")?.Value.ToLowerInvariant();
 
         switch(style)
         {
@@ -221,7 +221,7 @@ public class ListElement : Element
     {
         string elementName, start = null;
 
-        switch(element.Attribute("type")?.Value)
+        switch(element.Attribute("type")?.Value.ToLowerInvariant())
         {
             case "definition":
                 elementName = "dl";

@@ -80,6 +80,11 @@
       <NamespaceSummaryItem name="Sandcastle.Core.InheritedDocumentation" isDocumented="True">This namespace contains types used to generate inherited documentation.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="Sandcastle.Core.PlugIn" isDocumented="True">This namespace contains types used to create plug-ins for the help file builder.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="Sandcastle.Core.Project" isDocumented="True">This namespace contains types used to interact with the help file builder project.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.Markdown" isDocumented="True">This namespace contains types used to convert Markdown content to MAML for the build.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.Markdown.Extensions" isDocumented="True">This namespace contains Markdig extensions used to convert Markdown to MAML.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.Markdown.Parsers" isDocumented="True">This namespace contains Markdig parsers used to convert Markdown to MAML.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.Markdown.Renderers" isDocumented="True">This namespace contains Markdig renderers used to convert Markdown to MAML.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle.Conversion" isDocumented="True">This namespace contains an internal presentation style used to convert MAML topics to Markdown topics.</NamespaceSummaryItem>
     </NamespaceSummaries>
     <CleanIntermediates>True</CleanIntermediates>
     <ApiFilter>
@@ -173,7 +178,8 @@
       <Argument Key="RobotsMetadata" Value="" />
       <Argument Key="BibliographyDataFile" Value="" />
       <Argument Key="RootBreadcrumbTitleText" Value="SHFB" />
-      <Argument Key="CollapsibleSections" Value="True" />
+      <Argument Key="ResizableTocColumn" Value="False" />
+      <Argument Key="CollapsibleSections" Value="False" />
       <Argument Key="LogoFile" Value="Sandcastle.jpg" />
       <Argument Key="LogoHeight" Value="69" />
       <Argument Key="LogoWidth" Value="" />
@@ -187,8 +193,11 @@
       <Argument Key="EnumMemberSortOrder" Value="Value" />
       <Argument Key="FlagsEnumValueFormat" Value="HexValue" />
       <Argument Key="FlagsEnumSeparatorSize" Value="0" />
+      <Argument Key="IncludeIntegerEnumSeparators" Value="true" />
       <Argument Key="BaseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/SHFB/Source/" />
       <Argument Key="RequestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" />
+      <Argument Key="ShowParametersOnAllMethods" Value="False" />
+      <Argument Key="AlwaysShowTopLevelAutoOutline" Value="False" />
     </TransformComponentArguments>
     <WebsiteSdkLinkType>Msdn</WebsiteSdkLinkType>
     <HtmlSdkLinkType>Msdn</HtmlSdkLinkType>

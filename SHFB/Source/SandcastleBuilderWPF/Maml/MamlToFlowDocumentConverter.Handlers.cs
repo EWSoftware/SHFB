@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Handlers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/06/2025
+// Updated : 12/08/2025
 // Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the element handler methods for the MAML to flow document converter class
@@ -696,7 +696,7 @@ public partial class MamlToFlowDocumentConverter
             case "list":
             case "steps":
             case "ul":
-                switch(props.Element.Attribute("class")?.Value)
+                switch(props.Element.Attribute("class")?.Value.ToLowerInvariant())
                 {
                     case "ordered":
                         markerStyle = TextMarkerStyle.Decimal;

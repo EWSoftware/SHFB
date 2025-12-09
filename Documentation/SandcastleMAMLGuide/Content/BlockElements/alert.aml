@@ -14,8 +14,8 @@ attribute.  The content of the alert element is usually one or more paragraphs o
 information.</para>
 
         <alert class="note">
-          <para>The <codeInline>class</codeInline> attribute value is case-sensitive.  Unrecognized values will
-default to the "note" alert style.</para>
+          <para>The <codeInline>class</codeInline> attribute value is not case-sensitive.  Unrecognized values
+will default to the "note" alert style.</para>
         </alert>
 
         <para>The <codeInline>class</codeInline> attribute can be any of the following values which fall into
@@ -70,7 +70,7 @@ that it will override the default title.</para>
 &lt;/alert&gt;
 
 &lt;alert class="caution"&gt;
-  &lt;para&gt;The class attribute value is case-sensitive.&lt;/para&gt;
+  &lt;para&gt;Unrecognized class values will default to "note".&lt;/para&gt;
 &lt;/alert&gt;
 
 &lt;alert class="security"&gt;
@@ -100,7 +100,7 @@ that it will override the default title.</para>
         </alert>
 
         <alert class="caution">
-          <para>The class attribute value is case-sensitive.</para>
+          <para>Unrecognized class values will default to "note".</para>
         </alert>
 
         <alert class="security">

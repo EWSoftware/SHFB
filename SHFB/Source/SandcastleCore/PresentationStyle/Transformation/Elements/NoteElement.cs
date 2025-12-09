@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : NoteElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/30/2025
+// Updated : 12/08/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle note and alert elements
@@ -141,9 +141,8 @@ public class NoteElement : Element
         {
             string title, altTitle, template;
 
-            switch(noteType)
+            switch(noteType?.ToLowerInvariant())
             {
-                case "note":
                 case "tip":
                     title = "alert_title_tip";
                     altTitle = "alert_altText_tip";

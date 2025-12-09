@@ -463,7 +463,7 @@ public partial class TopicPreviewerControl : UserControl
         if(!String.IsNullOrWhiteSpace(link.Host))
         {
             var topics = tableOfContents.Find(
-                t => t.Id.Equals(link.Host, StringComparison.OrdinalIgnoreCase) ||
+                t => (t.Id?.Equals(link.Host, StringComparison.OrdinalIgnoreCase) ?? false) ||
                      (t.AlternateId?.Equals(link.Host, StringComparison.OrdinalIgnoreCase) ?? false), true);
 
             if(topics.Any())

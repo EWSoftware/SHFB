@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ListElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/22/2025
+// Updated : 12/08/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle list elements based on the topic type
@@ -61,7 +61,7 @@ public class ListElement : OpenXmlElement
     /// <param name="element">The element to render</param>
     private static void RenderMamlList(TopicTransformationCore transformation, XElement element)
     {
-        string start = null, listType = element.Attribute("class")?.Value;
+        string start = null, listType = element.Attribute("class")?.Value.ToLowerInvariant();
 
         if(listType == "ordered")
             start = element.Attribute("start")?.Value;
@@ -86,7 +86,7 @@ public class ListElement : OpenXmlElement
     private static void RenderXmlCommentsList(TopicTransformationCore transformation, XElement element)
     {
         XElement container, bold;
-        string start, listType = element.Attribute("type")?.Value;
+        string start, listType = element.Attribute("type")?.Value.ToLowerInvariant();
 
         switch(listType)
         {

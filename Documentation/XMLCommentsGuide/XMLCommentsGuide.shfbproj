@@ -48,7 +48,7 @@
       <NamespaceSummaryItem name="XMLCommentsExamples" isDocumented="True">This namespace contains classes used to demonstrate the various XML comments elements.</NamespaceSummaryItem>
     </NamespaceSummaries>
     <PlugInConfigurations>
-      <PlugInConfig id="Output Deployment" enabled="False">
+      <PlugInConfig id="Output Deployment" enabled="True">
         <configuration deleteAfterDeploy="true" verboseLogging="false">
           <deploymentLocation id="help1x" location="">
             <userCredentials useDefault="true" userName="" password="" />
@@ -122,7 +122,7 @@
       <Argument Key="BibliographyDataFile" Value="Bibliography.xml" />
       <Argument Key="RootBreadcrumbTitleText" Value="XML Comments" />
       <Argument Key="ResizableTocColumn" Value="False" />
-      <Argument Key="CollapsibleSections" Value="True" />
+      <Argument Key="CollapsibleSections" Value="False" />
       <Argument Key="LogoFile" Value="Sandcastle.jpg" />
       <Argument Key="LogoHeight" Value="50" />
       <Argument Key="LogoWidth" Value="" />
@@ -190,6 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Bibliography.xml" />
+    <None Include="Content\BlockElements\list.md" />
     <None Include="Content\Glossary.md" />
     <None Include="Content\VersionHistory\v1.0.0.0.md" />
     <None Include="Content\VersionHistory\v2014.1.26.0.md" />
@@ -246,7 +247,6 @@
     <None Include="Content\ProjectSetup.md" />
     <None Include="Content\License.md" />
     <None Include="Content\Welcome.md" />
-    <None Include="Content\BlockElements\list.aml" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="media\PayPal.gif">

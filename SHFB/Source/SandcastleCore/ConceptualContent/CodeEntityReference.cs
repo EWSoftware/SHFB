@@ -56,6 +56,7 @@ public class CodeEntityReference
     /// <summary>
     /// Convert the entity to its Markdown link form
     /// </summary>
+    /// <param name="qualified">True if the link should be qualified with the namespace and parameter, false if not</param>
     /// <returns>The entity in its Markdown link form</returns>
     public string ToMarkdownLink(bool qualified)
     {

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Static.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/29/2025
+// Updated : 12/08/2025
 // Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the static data definitions used by the MAML to flow document converter class
@@ -109,26 +109,19 @@ public partial class MamlToFlowDocumentConverter
     /// </summary>
     /// <remarks>This is used to map alert class names to titles.  The key is the alert class and the value
     /// is the display title.</remarks>
-    private static readonly Dictionary<string, string> alertTitles = new()
+    private static readonly Dictionary<string, string> alertTitles = new(StringComparer.OrdinalIgnoreCase)
     {
-        // We could use a case-insensitive comparer here but the XML is case-sensitive so we'll stay case
-        // sensitive too so that errors in the title value show up.  These could be localized but we're not
-        // doing that for now.
         { "c#", "C# Note" },
-        { "C#", "C# Note" },
         { "c++", "C++ Note" },
-        { "C++", "C++ Note" },
         { "caller", "Notes to Callers" },
         { "caution", "Caution" },
         { "cpp", "C++ Note" },
-        { "CPP", "C++ Note" },
         { "cs", "C# Note" },
         { "csharp", "C# Note" },
         { "implement", "Notes to Implementers" },
         { "important", "Important" },
         { "inherit", "Notes to Inheritors" },
         { "j#", "J# Note" },
-        { "J#", "J# Note" },
         { "JSharp", "J# Note" },
         { "note", "Note" },
         { "security", "Security Note" },
@@ -136,7 +129,6 @@ public partial class MamlToFlowDocumentConverter
         { "tip", "Tip" },
         { "todo", "To Do" },
         { "vb", "Visual Basic Note" },
-        { "VB", "Visual Basic Note" },
         { "visual basic", "Visual Basic Note" },
         { "visual basic note", "Visual Basic Note" },
         { "visual c# note", "C# Note" },
