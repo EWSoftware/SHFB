@@ -11,7 +11,7 @@ This project is composed of two separate parts that work together: the Sandcastl
 File Builder.  The Sandcastle tools are used to create help files for managed class libraries containing both
 conceptual and API reference topics.  API reference topics are created by combining the XML comments that are
 embedded in your source code with the syntax and structure of the types which is acquired by reflecting against
-the associated .NET Framework assemblies.  Conceptual topics are created by converting topic that you author
+the associated .NET Framework assemblies.  Conceptual topics are created by converting files that you author
 containing Markdown or Microsoft Assistance Markup Language (MAML).  The Sandcastle tools are command-line based
 and have no GUI front-end, project management features, or an automated build process.
 
