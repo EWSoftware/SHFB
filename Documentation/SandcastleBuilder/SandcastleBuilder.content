@@ -1,27 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Topics>
-  <Topic id="bd1ddb51-1c4f-434f-bb1a-ce2135d3a909" visible="True" isDefault="true" title="Welcome">
-    <HelpKeywords>
-      <HelpKeyword index="K" term="Welcome" />
-      <HelpKeyword index="K" term="Getting started, Welcome" />
-      <HelpKeyword index="K" term="GitHub" />
-      <HelpKeyword index="K" term="SHFB" />
-      <HelpKeyword index="K" term="project location" />
-      <HelpKeyword index="K" term="HomePage" />
-      <HelpKeyword index="K" term="DefaultPage" />
-    </HelpKeywords>
-  </Topic>
+  <Topic id="bd1ddb51-1c4f-434f-bb1a-ce2135d3a909" visible="True" isDefault="true" />
   <Topic id="24504fda-d3ef-4dd9-8335-6db8b25d00f2" visible="True" title="License Agreement">
     <HelpKeywords>
       <HelpKeyword index="K" term="License agreement" />
     </HelpKeywords>
   </Topic>
-  <Topic id="ac8e467d-c0aa-4a6d-9690-73d148f67bc7" visible="True" title="Benefits and Features">
-    <HelpKeywords>
-      <HelpKeyword index="K" term="benefits" />
-      <HelpKeyword index="K" term="features" />
-    </HelpKeywords>
-  </Topic>
+  <Topic id="ac8e467d-c0aa-4a6d-9690-73d148f67bc7" visible="True" />
   <Topic id="21c2a363-6c94-440b-8985-6b224d275463" visible="True" title="Known Issues and Limitations">
     <HelpKeywords>
       <HelpKeyword index="K" term="known issues" />
@@ -32,14 +17,7 @@
     <HelpKeywords>
       <HelpKeyword index="K" term="Getting Started" />
     </HelpKeywords>
-    <Topic id="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" visible="True" title="Installation Instructions">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="Getting started, installation" />
-        <HelpKeyword index="K" term="installation" />
-        <HelpKeyword index="K" term="prerequisites" />
-        <HelpKeyword index="K" term="requirements" />
-      </HelpKeywords>
-    </Topic>
+    <Topic id="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" visible="True" />
     <Topic id="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" visible="True" title="Sandcastle Help File Builder Overview">
       <HelpKeywords>
         <HelpKeyword index="K" term="Getting started, overview" />
@@ -73,11 +51,7 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="Getting started, user preferences" />
       </HelpKeywords>
-      <Topic id="6a35198a-3713-4eb7-929d-555fddc0ccb6" visible="True" title="General Preferences">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="Getting started, user preferences - general" />
-        </HelpKeywords>
-      </Topic>
+      <Topic id="6a35198a-3713-4eb7-929d-555fddc0ccb6" visible="True" />
       <Topic id="836847bc-d780-468b-ae23-f014f0829a0f" visible="True" title="Spell Checking Options">
         <HelpKeywords>
           <HelpKeyword index="K" term="Getting started, user preferences - spell checking" />
@@ -142,19 +116,8 @@
         <HelpKeyword index="K" term="Visual Studio, item file templates" />
       </HelpKeywords>
     </Topic>
-    <Topic id="7cbf7f9b-d456-430a-8f85-9e30ed250cfa" visible="True" title="Visual Studio Text Editor">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="Visual Studio, text editor" />
-        <HelpKeyword index="K" term="Visual Studio, IntelliSense" />
-        <HelpKeyword index="K" term="Visual Studio, snippets" />
-        <HelpKeyword index="K" term="Visual Studio, HTML encoding text" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="ba11d6d5-2f99-4b26-b384-21324ef1b49a" visible="True" title="Go To Definition Support">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="Visual Studio, Go To Definition" />
-      </HelpKeywords>
-    </Topic>
+    <Topic id="7cbf7f9b-d456-430a-8f85-9e30ed250cfa" visible="True" />
+    <Topic id="ba11d6d5-2f99-4b26-b384-21324ef1b49a" visible="True" />
   </Topic>
   <Topic id="e12c2b9f-18c7-4718-850b-ac3c2e293672" visible="True" title="Solution/Project Explorer Window">
     <HelpKeywords>
@@ -370,11 +333,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="e49eea91-a9ef-4aa5-ad8f-16ebd61b798a" visible="True" title="Entity References Window">
-    <HelpKeywords>
-      <HelpKeyword index="K" term="Entity References window" />
-    </HelpKeywords>
-  </Topic>
+  <Topic id="e49eea91-a9ef-4aa5-ad8f-16ebd61b798a" visible="True" />
   <Topic id="a76a88ff-d67f-4eb5-9622-90287c786c1b" visible="True" title="Text Editor Window">
     <HelpKeywords>
       <HelpKeyword index="K" term="text editor" />
@@ -390,31 +349,14 @@
       <HelpKeyword index="K" term="resource item file editor" />
     </HelpKeywords>
   </Topic>
-  <Topic id="5292ce5c-fda1-4a77-9155-a11755ef1730" visible="True" title="Conceptual and Additional Content">
-    <HelpKeywords>
-      <HelpKeyword index="K" term="additional content, general overview" />
-      <HelpKeyword index="K" term="conceptual content, general overview" />
-    </HelpKeywords>
-    <Topic id="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" visible="True" title="Conceptual Content">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="conceptual content, overview" />
-      </HelpKeywords>
-      <Topic id="54e3dc97-5125-441e-8e84-7f9303e95f26" visible="True" title="Content Layout File Editor">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="conceptual content, content layout file editor" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="4b8ab701-2321-4d24-a287-8848de086f68" visible="True" title="Topic Files">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="conceptual content, topic files" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="ed6870bb-772d-4596-9fc1-5638ae6d621b" visible="True" title="Token Files">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="conceptual content, token files" />
-        </HelpKeywords>
-      </Topic>
+  <Topic id="5292ce5c-fda1-4a77-9155-a11755ef1730" visible="True">
+    <Topic id="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" visible="True" isExpanded="true">
+      <Topic id="54e3dc97-5125-441e-8e84-7f9303e95f26" visible="True" />
+      <Topic id="4b8ab701-2321-4d24-a287-8848de086f68" visible="True" />
+      <Topic id="ed6870bb-772d-4596-9fc1-5638ae6d621b" visible="True" />
     </Topic>
+    <Topic id="MarkdownSupport" visible="True" />
+    <Topic id="ConvertingToMarkdown" visible="True" />
     <Topic id="ba42b2c2-985d-46f1-ba4c-3d921edcafe3" visible="True" title="Content Placement Options">
       <HelpKeywords>
         <HelpKeyword index="K" term="conceptual content, content placement options" />
@@ -1365,11 +1307,8 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" isSelected="true" title="Version History">
-    <HelpKeywords>
-      <HelpKeyword index="K" term="History" />
-      <HelpKeyword index="K" term="Version History" />
-    </HelpKeywords>
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true">
+    <Topic id="v2025.12.18.0" visible="True" isSelected="true" />
     <Topic id="45d01e39-8086-4e10-85e6-69591d26a032" visible="True" title="Version 2025.9.30.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2025.9.30.0" />

@@ -489,7 +489,8 @@
               <DataGrid Name="dgIndexKeywords" AutoGenerateColumns="False" CanUserAddRows="True"
 								CanUserReorderColumns="False" CanUserSortColumns="False" MinRowHeight="20" MinHeight="100"
 								RowHeaderWidth="25" DataContext="{Binding ElementName=tvContent, Path=SelectedValue.Keywords}"
-								ItemsSource="{Binding}" TabIndex="21">
+								ItemsSource="{Binding}" TabIndex="21"
+								IsEnabled="{Binding ElementName=tvContent, Path=SelectedItem.IsMamlTopic, Mode=OneWay}">
                 <DataGrid.Columns>
                   <DataGridComboBoxColumn x:Name="dgcboIndex" Header="Index" Width="130" SelectedValuePath="Key"
 										DisplayMemberPath="Value" SelectedValueBinding="{Binding Index, Mode=TwoWay}"

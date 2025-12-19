@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ContentLayoutWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/06/2025
+// Updated : 12/10/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the conceptual content items.
@@ -613,6 +613,9 @@ public partial class ContentLayoutWindow : BaseContentEditor
                 topics.AddRange(ucContentLayoutEditor.Topics.All());
                 break;
         }
+
+        foreach(var t in topics.Where(t => !t.IsMamlTopic).ToList())
+            topics.Remove(t);
 
         if(WinFormsMessageBox.Show($"You are about to convert {topics.Count} MAML topic file(s) to Markdown topic  " +
           "files.  Each new Markdown topic will replace the existing MAML topic in the project and content layout " +

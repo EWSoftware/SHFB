@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TopicIdCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/07/2025
+// Updated : 12/18/2025
 // Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to cache information about MAML topic IDs and their related files
@@ -209,13 +209,14 @@ internal class TopicIdCache
                 {
                     try
                     {
-                        string id, title = null;
+                        string id, title = null, alternateId = null;
 
                         if(Path.GetExtension(file).Equals(".md", StringComparison.OrdinalIgnoreCase))
                         {
                             var md = new MarkdownFile(file);
                             id = md.UniqueId;
                             title = md.Title;
+                            alternateId = md.AlternateId;
                         }
                         else
                         {
@@ -223,13 +224,20 @@ internal class TopicIdCache
                             id = (string)doc.Root.Attribute("id") ?? String.Empty;
                         }
 
-                        if(topicInfo.TryGetValue(id, out TopicInfo info))
+                        if(topicInfo.TryGetValue(id, out TopicInfo info) ||
+                          (alternateId != null && topicInfo.TryGetValue(alternateId, out info)))
                         {
                             info.Filename = file;
                             info.RelativePath = file.Substring(folder.Length + 1);
 
                             if(info.Title == "(No title)")
                                 info.Title = title ?? Path.GetFileNameWithoutExtension(file);
+
+                            if(!topicInfo.ContainsKey(id))
+                                topicInfo.TryAdd(id, info);
+
+                            if(alternateId != null && !topicInfo.ContainsKey(alternateId))
+                                topicInfo.TryAdd(alternateId, info);
                         }
                     }
                     catch(Exception ex)

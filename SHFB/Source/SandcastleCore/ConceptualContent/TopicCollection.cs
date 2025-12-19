@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/05/2025
+// Updated : 12/12/2025
 // Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a collection class used to hold the conceptual content topics for a project.
@@ -344,7 +344,7 @@ public class TopicCollection : BindingList<Topic>, ITableOfContents
     }
 
     /// <summary>
-    /// Set the topic file in any entry that has a matching ID
+    /// Set the topic file in any entry that has a matching ID or filename
     /// </summary>
     /// <param name="topicFile">The topic file</param>
     /// <remarks>The IDs should be unique across all entries but, if a duplicate exists, this will help find
@@ -353,7 +353,8 @@ public class TopicCollection : BindingList<Topic>, ITableOfContents
     {
         foreach(Topic t in this)
         {
-            if(t.Id == topicFile.Id)
+            if(t.Id == topicFile.Id || (!String.IsNullOrWhiteSpace(t.AlternateId) &&
+              t.AlternateId == topicFile.AlternateId) || (t.TopicFile?.FullPath.Equals(topicFile.FullPath) ?? false))
             {
                 t.TopicFile = topicFile;
 

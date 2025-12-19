@@ -476,7 +476,7 @@ public class MarkdownConversionTransformation : TopicTransformationCore
                     idx++;
 
                 // Don't strip all leading whitespace if it's less than two characters as it may be necessary
-                // separating whitespace between elements.  Even then, we'll leave on space just in case if this
+                // separating whitespace between elements.  Even then, we'll leave one space just in case if this
                 // isn't the first node.
                 if(idx + 2 < sb.Length && Char.IsWhiteSpace(sb[idx]) && Char.IsWhiteSpace(sb[idx + 1]))
                 {

@@ -59,8 +59,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.ComponentModel.Composition" Version="9.0.8" />
-		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2025.9.30.0" />
+		<PackageReference Include="System.ComponentModel.Composition" Version="9.0.10" />
+		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2025.12.18.0" />
 	</ItemGroup>
 
 </Project>

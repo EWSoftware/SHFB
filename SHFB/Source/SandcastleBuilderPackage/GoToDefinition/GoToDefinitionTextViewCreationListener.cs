@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : GoToDefinitionTextViewCreationListener.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/29/2025
+// Updated : 12/16/2025
 // Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to connect the Go To Definition command filter to the text view adapters
@@ -34,10 +34,10 @@ namespace SandcastleBuilder.Package.GoToDefinition;
 /// <summary>
 /// This class is used to connect the Go To Definition command filter to the text view adapters
 /// </summary>
-/// <remarks>The command filter is only connected to C# and XML text view adapters.  The command will be
-/// available to C# and XML files in any project type, not just SHFB projects.</remarks>
+/// <remarks>The command filter is only connected to C#, XML, and Markdown text view adapters.  The command will
+/// be available to C#, XML, and Markdown files in any project type, not just SHFB projects.</remarks>
 [Export(typeof(IVsTextViewCreationListener)), ContentType("csharp"), ContentType("xml"),
-  TextViewRole(PredefinedTextViewRoles.Document)]
+  ContentType("vs-markdown"), TextViewRole(PredefinedTextViewRoles.Document)]
 internal sealed class GoToDefinitionTextViewCreationListener : IVsTextViewCreationListener
 {
     #region MEF imports

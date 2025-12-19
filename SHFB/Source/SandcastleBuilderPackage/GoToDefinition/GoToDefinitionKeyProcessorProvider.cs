@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : GoToDefinitionKeyProcessorProvider.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us) - Based on code originally written by Noah Richards
-// Updated : 01/09/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
+// Updated : 12/16/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to provide the key processor that tracks Ctrl key state for C# and XML files
 //
@@ -23,34 +23,34 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Utilities;
 
-namespace SandcastleBuilder.Package.GoToDefinition
+namespace SandcastleBuilder.Package.GoToDefinition;
+
+/// <summary>
+/// This is used to provide the key processor that tracks Ctrl key state for C# and XML files
+/// </summary>
+/// <remarks>This is used in conjunction with the Go To Definition mouse tracker for XML comments, MAML, and
+/// Markdown link elements.  For code, this only supports C#.  See <see cref="CodeEntitySearcher"/> for the
+/// reasons why.</remarks>
+[Export(typeof(IKeyProcessorProvider))]
+[TextViewRole(PredefinedTextViewRoles.Document)]
+[ContentType("csharp")]
+[ContentType("xml")]
+[ContentType("vs-markdown")]
+[Name("SHFB Go To Definition Key Processor Provider")]
+[Order(Before = "VisualStudioKeyboardProcessor")]
+internal sealed class GoToDefinitionKeyProcessorProvider : IKeyProcessorProvider
 {
-    /// <summary>
-    /// This is used to provide the key processor that tracks Ctrl key state for C# and XML files
-    /// </summary>
-    /// <remarks>This is used in conjunction with the Go To Definition mouse tracker for XML comments and MAML
-    /// link elements.  For code, this only supports C#.  See <see cref="CodeEntitySearcher"/> for the reasons
-    /// why.</remarks>
-    [Export(typeof(IKeyProcessorProvider))]
-    [TextViewRole(PredefinedTextViewRoles.Document)]
-    [ContentType("csharp")]
-    [ContentType("xml")]
-    [Name("SHFB Go To Definition Key Processor Provider")]
-    [Order(Before = "VisualStudioKeyboardProcessor")]
-    internal sealed class GoToDefinitionKeyProcessorProvider : IKeyProcessorProvider
+    [Import]
+    private SVsServiceProvider serviceProvider = null;
+
+    public KeyProcessor GetAssociatedProcessor(IWpfTextView view)
     {
-        [Import]
-        private SVsServiceProvider serviceProvider = null;
+        var options = new MefProviderOptions(serviceProvider);
 
-        public KeyProcessor GetAssociatedProcessor(IWpfTextView view)
-        {
-            var options = new MefProviderOptions(serviceProvider);
+        if(!options.EnableGoToDefinition || !options.EnableCtrlClickGoToDefinition)
+            return null;
 
-            if(!options.EnableGoToDefinition || !options.EnableCtrlClickGoToDefinition)
-                return null;
-
-            return view.Properties.GetOrCreateSingletonProperty(typeof(GoToDefinitionKeyProcessor),
-                () => new GoToDefinitionKeyProcessor(CtrlKeyState.GetStateForView(view)));
-        }
+        return view.Properties.GetOrCreateSingletonProperty(typeof(GoToDefinitionKeyProcessor),
+            () => new GoToDefinitionKeyProcessor(CtrlKeyState.GetStateForView(view)));
     }
 }

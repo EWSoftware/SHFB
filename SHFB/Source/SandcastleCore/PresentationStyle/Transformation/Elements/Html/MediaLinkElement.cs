@@ -133,7 +133,7 @@ public class MediaLinkElement : Element
             }
 
             if(!String.IsNullOrWhiteSpace(placement))
-                mediaLink.Add($"{{placement={placement}}}");
+                mediaLink.Add($"{{placement=\"{placement}\"}}");
 
             mediaLink.Add($"\n![](@{linkTarget})\n^^^");
 

@@ -485,7 +485,7 @@ public class Topic : INotifyPropertyChanged
     /// <returns>The topic in its Markdown link form</returns>
     public string ToMarkdownLink(string innerText)
     {
-        return $"[{innerText}]({contentId})";
+        return $"[{innerText}](@{contentId})";
     }
 
     /// <summary>

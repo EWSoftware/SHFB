@@ -176,7 +176,7 @@ internal sealed class GoToDefinitionCommandTarget : IOleCommandTarget
 
     /// <summary>
     /// This is used to process the spans and try to figure out whether or not we have something we can use
-    /// for Go To Definition and, i so, the definition type.
+    /// for Go To Definition and, if so, the definition type.
     /// </summary>
     /// <param name="cursorPos">The cursor position.</param>
     /// <param name="spans">The spans to process.</param>

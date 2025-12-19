@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : UnderlineClassifierProvider.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us) - Based on code originally written by Noah Richards
-// Updated : 01/09/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
+// Updated : 12/16/2025
+// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class that creates the underline classifier used by the MAML and XML comments Go To
 // Definition handlers.
@@ -27,67 +27,67 @@ using Microsoft.VisualStudio.Utilities;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Tagging;
 
-namespace SandcastleBuilder.Package.GoToDefinition
+namespace SandcastleBuilder.Package.GoToDefinition;
+
+/// <summary>
+/// This class is used to create the underline classifier used by the MAML, Markdown, and XML comments Go To
+/// Definition handlers.
+/// </summary>
+[Export(typeof(IViewTaggerProvider))]
+[ContentType("csharp")]
+[ContentType("xml")]
+[ContentType("vs-markdown")]
+[TagType(typeof(ClassificationTag))]
+internal sealed class UnderlineClassifierProvider : IViewTaggerProvider
 {
-    /// <summary>
-    /// This class is used to create the underline classifier used by the MAML and XML comments Go To Definition
-    /// handlers.
-    /// </summary>
-    [Export(typeof(IViewTaggerProvider))]
-    [ContentType("csharp")]
-    [ContentType("xml")]
-    [TagType(typeof(ClassificationTag))]
-    internal sealed class UnderlineClassifierProvider : IViewTaggerProvider
+    #region Internal data members
+    //=====================================================================
+
+    [Import]
+    internal IClassificationTypeRegistryService ClassificationRegistry = null;
+
+    [Export(typeof(ClassificationTypeDefinition))]
+    [Name(UnderlineClassifier.UnderlineClassifierType)]
+    internal static ClassificationTypeDefinition underlineClassificationType = null;
+
+    internal static IClassificationType UnderlineClassification;
+
+    [Import]
+    private SVsServiceProvider serviceProvider = null;
+
+    #endregion
+
+    #region IViewTaggerProvider implementation
+    //=====================================================================
+
+    /// <inheritdoc />
+    public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
     {
-        #region Internal data members
-        //=====================================================================
+        var options = new MefProviderOptions(serviceProvider);
 
-        [Import]
-        internal IClassificationTypeRegistryService ClassificationRegistry = null;
+        if(textView.TextBuffer != buffer || !options.EnableGoToDefinition || !options.EnableCtrlClickGoToDefinition)
+            return null;
 
-        [Export(typeof(ClassificationTypeDefinition))]
-        [Name(UnderlineClassifier.UnderlineClassifierType)]
-        internal static ClassificationTypeDefinition underlineClassificationType = null;
+        UnderlineClassification ??= ClassificationRegistry.GetClassificationType(UnderlineClassifier.UnderlineClassifierType);
 
-        internal static IClassificationType UnderlineClassification;
-
-        [Import]
-        private SVsServiceProvider serviceProvider = null;
-
-        #endregion
-
-        #region IViewTaggerProvider implementation
-        //=====================================================================
-
-        /// <inheritdoc />
-        public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
-        {
-            var options = new MefProviderOptions(serviceProvider);
-
-            if(textView.TextBuffer != buffer || !options.EnableGoToDefinition || !options.EnableCtrlClickGoToDefinition)
-                return null;
-
-            UnderlineClassification ??= ClassificationRegistry.GetClassificationType(UnderlineClassifier.UnderlineClassifierType);
-
-            return GetClassifierForView(textView) as ITagger<T>;
-        }
-        #endregion
-
-        #region Helper method
-        //=====================================================================
-
-        /// <summary>
-        /// This helper method is used to get the underline classifier for the given view
-        /// </summary>
-        /// <param name="view">The view for which to get the underline classifier</param>
-        /// <returns>The underline classifier for the view or null if not found or it could not be set</returns>
-        public static UnderlineClassifier GetClassifierForView(ITextView view)
-        {
-            if(UnderlineClassification == null)
-                return null;
-
-            return view.Properties.GetOrCreateSingletonProperty(() => new UnderlineClassifier());
-        }
-        #endregion
+        return GetClassifierForView(textView) as ITagger<T>;
     }
+    #endregion
+
+    #region Helper method
+    //=====================================================================
+
+    /// <summary>
+    /// This helper method is used to get the underline classifier for the given view
+    /// </summary>
+    /// <param name="view">The view for which to get the underline classifier</param>
+    /// <returns>The underline classifier for the view or null if not found or it could not be set</returns>
+    public static UnderlineClassifier GetClassifierForView(ITextView view)
+    {
+        if(UnderlineClassification == null)
+            return null;
+
+        return view.Properties.GetOrCreateSingletonProperty(() => new UnderlineClassifier());
+    }
+    #endregion
 }

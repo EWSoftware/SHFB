@@ -14,7 +14,7 @@
 		<Title>Sandcastle Tools Core Class Library</Title>
 		<AssemblyTitle>Sandcastle Tools Core Class Library</AssemblyTitle>
 		<!-- This should match the strong name version in AssemblyInfoShared.cs -->
-		<Version>2025.9.30.0</Version>
+		<Version>2025.12.18.0</Version>
 		<Authors>Eric Woodruff</Authors>
 		<Description>This contains a set of core base classes and Managed Extensibility Framework (MEF) classes common to the Sandcastle Help File Builder tool set and third-party tools.</Description>
 		<PackageIconUrl>https://github.com/EWSoftware/SHFB/raw/master/SHFB/Source/SandcastleLogo.png</PackageIconUrl>

@@ -7,6 +7,14 @@ all that you need to know about Microsoft Assistance Markup Language (MAML) as u
 help files containing conceptual content.  If you have any information, tips, updates, or corrections that you
 would like to see added to the guide, feel free to submit them to the author using the <legacyBold>Send
 Comments</legacyBold> link in the page footer.</para>
+
+			<alert class="note">
+				<para>As of version 2025.12.18.0, the help file builder supports using Markdown for conceptual topics and
+it is no longer required to use MAML.  This allows for editing topics in a much easier manner and allows mixing
+in HTML and/or MAML elements as needed when Markdown doesn't provide the needed capabilities.  Since most people
+are more familiar with Markdown than MAML, this is now the preferred approach and is the default topic format for
+all new projects going forward.</para>
+			</alert>
     </introduction>
 
     <section>

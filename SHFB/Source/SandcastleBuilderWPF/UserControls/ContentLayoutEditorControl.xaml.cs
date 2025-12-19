@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ContentLayoutEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/29/2025
+// Updated : 12/12/2025
 // Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to edit content layout files
@@ -173,6 +173,7 @@ public partial class ContentLayoutEditorControl : UserControl
         txtTitle.GetBindingExpression(UIElement.IsEnabledProperty).UpdateTarget();
         txtTOCTitle.GetBindingExpression(UIElement.IsEnabledProperty).UpdateTarget();
         txtLinkText.GetBindingExpression(UIElement.IsEnabledProperty).UpdateTarget();
+        dgIndexKeywords.GetBindingExpression(UIElement.IsEnabledProperty).UpdateTarget();
     }
 
     /// <summary>
@@ -184,7 +185,13 @@ public partial class ContentLayoutEditorControl : UserControl
         string textToCopy;
 
         if(tvContent.SelectedItem is Topic t && !String.IsNullOrEmpty(t.Id))
-            textToCopy = String.Format(CultureInfo.InvariantCulture, "<link xlink:href=\"{0}\" />", t.Id);
+        {
+            // Assume that if it's a MAML topic, the drop target will be as well
+            if(t.IsMamlTopic)
+                textToCopy = t.ToLink(null);
+            else
+                textToCopy = t.ToMarkdownLink(null);
+        }
         else
             textToCopy = null;
 
@@ -217,16 +224,22 @@ public partial class ContentLayoutEditorControl : UserControl
                 case "ApiParentMode":
                     // There can be only one API content parent
                     if(selectedTopic != null && selectedTopic.ApiParentMode != ApiParentMode.None)
+                    {
                         foreach(var match in this.Topics.Find(
                           t => t.ApiParentMode != ApiParentMode.None && t != selectedTopic, false))
+                        {
                             match.ApiParentMode = ApiParentMode.None;
+                        }
+                    }
                     break;
 
                 case "IsDefaultTopic":
                     // There can be only one default topic
                     if(selectedTopic != null && selectedTopic.IsDefaultTopic)
+                    {
                         foreach(var match in this.Topics.Find(t => t.IsDefaultTopic && t != selectedTopic, false))
                             match.IsDefaultTopic = false;
+                    }
                     break;
 
                 case "IsMSHVRootContentContainer":
@@ -245,7 +258,9 @@ public partial class ContentLayoutEditorControl : UserControl
 
                         foreach(var match in this.Topics.Find(t => t.IsMSHVRootContentContainer &&
                           t != selectedTopic, false))
+                        {
                             match.IsMSHVRootContentContainer = false;
+                        }
                     }
                     break;
 
@@ -258,7 +273,7 @@ public partial class ContentLayoutEditorControl : UserControl
 
         // Update control state based on the collection content
         tvContent.IsEnabled = expFileProps.IsEnabled = expTopicProps.IsEnabled = expIndexKeywords.IsEnabled =
-            (this.Topics != null && this.Topics.Count != 0);
+            this.Topics != null && this.Topics.Count != 0;
 
         CommandManager.InvalidateRequerySuggested();
 
@@ -303,6 +318,8 @@ public partial class ContentLayoutEditorControl : UserControl
         // If this is the first time, get all matches
         matchEnumerator ??= this.Topics.Find(t =>
               (!String.IsNullOrEmpty(t.Id) && t.Id.IndexOf(txtFindID.Text,
+                StringComparison.CurrentCultureIgnoreCase) != -1) ||
+              (!String.IsNullOrEmpty(t.AlternateId) && t.AlternateId.IndexOf(txtFindID.Text,
                 StringComparison.CurrentCultureIgnoreCase) != -1) ||
               (!String.IsNullOrEmpty(t.DisplayTitle) && t.DisplayTitle.IndexOf(txtFindID.Text,
                 StringComparison.CurrentCultureIgnoreCase) != -1), true).GetEnumerator();
@@ -817,7 +834,9 @@ public partial class ContentLayoutEditorControl : UserControl
                     // not a child of the dragged item.  Either condition makes for an invalid drop target.
                     if(dropTarget != null && dragSource != null && dropTarget != dragSource &&
                       !dragSource.Subtopics.Find(t => t == dropTarget, false).Any())
+                    {
                         e.Effects = DragDropEffects.Move;
+                    }
                 }
             }
         }

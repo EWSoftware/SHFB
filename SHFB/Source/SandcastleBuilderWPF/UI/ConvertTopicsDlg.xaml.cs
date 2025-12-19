@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ConvertTopicsDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/05/2025
+// Updated : 12/18/2025
 // Note    : Copyright 2025, Eric Woodruff, All rights reserved
 //
 // This file contains a form used to select options for the MAML to Markdown topic conversion
@@ -18,6 +18,8 @@
 //===============================================================================================================
 
 using System.Windows;
+
+using Sandcastle.Platform.Windows;
 
 namespace SandcastleBuilder.WPF.UI;
 
@@ -79,7 +81,7 @@ public partial class ConvertTopicsDlg : Window
     /// <param name="e">The event arguments</param>
     private void btnHelp_Click(object sender, RoutedEventArgs e)
     {
-        MessageBox.Show("!!TODO: Implement this");
+        UiUtility.ShowHelpTopic("ConvertingToMarkdown");
     }
 
     /// <summary>

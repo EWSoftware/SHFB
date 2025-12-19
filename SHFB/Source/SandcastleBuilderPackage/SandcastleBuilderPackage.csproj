@@ -81,6 +81,10 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GoToDefinition\MarkdownGoToDefinitionMouseProcessor.cs" />
+    <Compile Include="GoToDefinition\MarkdownGoToDefinitionMouseProcessorProvider.cs" />
+    <Compile Include="GoToDefinition\MarkdownLinkQuickInfoSource.cs" />
+    <Compile Include="GoToDefinition\MarkdownLinkQuickInfoSourceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\SandcastleBuilderMSBuild\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -599,11 +603,11 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Glossary</VSIXSubPath>
     </Content>
-		<Content Include="Templates\ProjectItems\ConceptualContent\Topics\Markdown\Markdown.md">
-			<IncludeInVSIX>true</IncludeInVSIX>
-			<VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Markdown</VSIXSubPath>
-		</Content>
-		<Content Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.aml">
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Markdown\Markdown.md">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Markdown</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.aml">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Walkthrough</VSIXSubPath>
     </Content>
@@ -767,11 +771,11 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Glossary</VSIXSubPath>
     </Content>
-		<Content Include="Templates\ProjectItems\ConceptualContent\Topics\Markdown\Markdown.vstemplate">
-			<IncludeInVSIX>true</IncludeInVSIX>
-			<VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Markdown</VSIXSubPath>
-		</Content>
-		<Content Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.vstemplate">
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Markdown\Markdown.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Markdown</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.vstemplate">
       <IncludeInVSIX>true</IncludeInVSIX>
       <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Walkthrough</VSIXSubPath>
     </Content>
@@ -1016,10 +1020,9 @@ Copy "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)..\..\Deployment\InstallRes
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
-
   <PropertyGroup>
     <!-- Don't go above C# 13.0 for now as this project doesn't like using version 14.0.  This must be
          placed at the end or it gets overridden somewhere and fails trying to use 14.0 again. -->
-	<LangVersion>13.0</LangVersion>
+    <LangVersion>13.0</LangVersion>
   </PropertyGroup>
 </Project>

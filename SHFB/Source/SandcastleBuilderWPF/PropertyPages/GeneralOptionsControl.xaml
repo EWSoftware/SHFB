@@ -42,7 +42,7 @@
 					Margin="0,3,0,3" HorizontalAlignment="Left" />
 				<CheckBox Name="chkOpenHelpAfterBuild" Content="_Open help file after successful build" Margin="0,3,0,15"
 					HorizontalAlignment="Left" />
-				<CheckBox Name="chkEnableGoToDefinition" Content="Enable MAM_L/XML comments Go To Definition"
+				<CheckBox Name="chkEnableGoToDefinition" Content="Enable Markdown/MAM_L/XML comments Go To Definition"
 					Margin="0,3,0,3" HorizontalAlignment="Left" Click="chkEnableGoToDefinition_Click"/>
 				<CheckBox Name="chkEnableCtrlClickGoToDefinition" Content="Enable Ctrl+Clic_k to go to definition"
 					Margin="20,3,0,3" HorizontalAlignment="Left" />

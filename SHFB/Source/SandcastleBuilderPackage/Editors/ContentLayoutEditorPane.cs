@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ContentLayoutFileEditorPane.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/07/2025
+// Updated : 12/11/2025
 // Note    : Copyright 2011-2025, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to host the content layout file editor control
@@ -347,8 +347,11 @@ public class ContentLayoutEditorPane : SimpleEditorPane<ContentLayoutEditorFacto
             {
                 var node = thisNode.ProjectMgr.GetSelectedNodes().FirstOrDefault();
 
-                if(node != null && node.Url.EndsWith(".aml", StringComparison.OrdinalIgnoreCase))
+                if(node != null && (node.Url.EndsWith(".aml", StringComparison.OrdinalIgnoreCase) ||
+                  node.Url.EndsWith(".md", StringComparison.OrdinalIgnoreCase)))
+                {
                     this.AddTopicFile(node.Url, e.Parameter != null);
+                }
             }
         }
     }
@@ -502,6 +505,9 @@ public class ContentLayoutEditorPane : SimpleEditorPane<ContentLayoutEditorFacto
                 topics.AddRange(this.UIControl.Topics.All());
                 break;
         }
+
+        foreach(var t in topics.Where(t => !t.IsMamlTopic).ToList())
+            topics.Remove(t);
 
         if(VsShellUtilities.ShowMessageBox(this, $"You are about to convert {topics.Count} MAML topic file(s) " +
           "to Markdown topic files.  Each new Markdown topic will replace the existing MAML topic in the " +

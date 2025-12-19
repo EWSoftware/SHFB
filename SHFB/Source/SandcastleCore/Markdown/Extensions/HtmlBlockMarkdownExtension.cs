@@ -149,6 +149,9 @@ public class HtmlBlockMarkdownExtension : IMarkdownExtension
                             // needs a single root element.  There's nothing we can do about that here.  The fix
                             // is to edit the source document and split the second block element's opening tag
                             // onto a new line.
+                            //
+                            // Catching the exception can be slow while debugging since it still logs the
+                            // exception to the debug window.  It runs much faster when not debugging.
                             xdoc = XDocument.Parse(blockText.ToString(), LoadOptions.PreserveWhitespace);
                         }
                         catch

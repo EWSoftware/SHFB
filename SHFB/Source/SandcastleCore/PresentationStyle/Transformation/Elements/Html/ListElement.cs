@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ListElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/08/2025
+// Updated : 12/09/2025
 // Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle list elements based on the topic type
@@ -153,7 +153,7 @@ public class ListElement : Element
                     // Steps should contain a content element but don't always
                     if(s.Element(Ddue + "content") is XElement content)
                         return content;
-                    
+
                     return s;
                 })];
             }
@@ -182,7 +182,12 @@ public class ListElement : Element
                     foreach(var n in li.Nodes())
                     {
                         if(n is XElement e && e.Name.LocalName == "para")
+                        {
+                            if(n.PreviousNode is XElement)
+                                el.Add("\n\n  ");
+
                             transformation.RenderChildElements(el, e.Nodes());
+                        }
                         else
                             transformation.RenderNode(n);
                     }
