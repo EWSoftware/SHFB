@@ -1,52 +1,4 @@
-﻿/* Fixed layout settings.  Disabled for now.  If enabled, the In This Article section doesn't stick to the top.
-html, body {
-    height: 100%;
-    overflow: hidden;
-}
-
-.fixedLayout {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.fixedHeader, .fixedFooter {
-    flex: 0;
-}
-
-.fixedContent {
-    overflow-x: hidden;
-    overflow-y: auto;
-    flex: 1;
-}
-
-/ * Disabled the fixed layout in mobile * /
-@media screen and (max-width: 768px) {
-    html, body {
-        height: 100%;
-        overflow: auto;
-    }
-
-
-    .fixedLayout {
-        height: 100%;
-        display: block;
-        flex: 0 1 auto;
-    }
-
-    .fixedHeader, .fixedFooter {
-        flex: 0 1 auto;
-    }
-
-    .fixedContent {
-        overflow-x: hidden;
-        overflow-y: hidden;
-        flex: 0 1 auto;
-    }
-}
-*/
-
-/* Hide the TOC and In This Article columns when printed */
+﻿/* Hide the TOC and In This Article columns when printed */
 @media print {
     #ShowHideTOCColumn, #TOCColumn, #InThisArticleColumn {
         display: none;
@@ -117,7 +69,7 @@ div.is-centered {
 }
 
 /* MAML and XML comments element styles */
-.content h4 {
+.content h4, .content h5, .content h6 {
     margin-top: 0.8em;
     margin-bottom: .5em;
 }

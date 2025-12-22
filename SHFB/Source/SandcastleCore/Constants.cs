@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : Constants.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/13/2022
-// Note    : Copyright 2006-2022, Eric Woodruff, All rights reserved
+// Updated : 12/22/2025
+// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains various constants for the help file builder applications
 //
@@ -24,36 +24,35 @@
 using System;
 using System.IO;
 
-namespace Sandcastle.Core
+namespace Sandcastle.Core;
+
+/// <summary>
+/// This class holds a set of constants that define various application values such as the application name,
+/// common data folder locations, etc.
+/// </summary>
+public static class Constants
 {
+    //=====================================================================
+
+    /// <summary>The company name</summary>
+    public const string CompanyName = "EWSoftware";
+
+    /// <summary>The application name</summary>
+    public const string AppName = "Sandcastle Help File Builder";
+
+    /// <summary>The default presentation style</summary>
+    public const string DefaultPresentationStyle = "Themed2026";
+
     /// <summary>
-    /// This class holds a set of constants that define various application values such as the application name,
-    /// common data folder locations, etc.
+    /// The application folder in which the component and user data files are stored.
     /// </summary>
-    public static class Constants
-    {
-        //=====================================================================
+    /// <remarks>This folder will be located under the <see cref="Environment.SpecialFolder">CommonApplicationData</see>
+    /// or <see cref="Environment.SpecialFolder">LocalApplicationData</see> folder.</remarks>
+    public static readonly string ProgramDataFolder = Path.Combine(CompanyName, AppName);
 
-        /// <summary>The company name</summary>
-        public const string CompanyName = "EWSoftware";
-
-        /// <summary>The application name</summary>
-        public const string AppName = "Sandcastle Help File Builder";
-
-        /// <summary>The default presentation style</summary>
-        public const string DefaultPresentationStyle = "Default2022";
-
-        /// <summary>
-        /// The application folder in which the component and user data files are stored.
-        /// </summary>
-        /// <remarks>This folder will be located under the <see cref="Environment.SpecialFolder">CommonApplicationData</see>
-        /// or <see cref="Environment.SpecialFolder">LocalApplicationData</see> folder.</remarks>
-        public static readonly string ProgramDataFolder = Path.Combine(CompanyName, AppName);
-
-        /// <summary>
-        /// This folder is located under the <see cref="Environment.SpecialFolder">CommonApplicationData</see>
-        /// folder and contains custom build components that can be added to a project.
-        /// </summary>
-        public static readonly string ComponentsAndPlugInsFolder = Path.Combine(ProgramDataFolder, "Components and Plug-Ins");
-    }
+    /// <summary>
+    /// This folder is located under the <see cref="Environment.SpecialFolder">CommonApplicationData</see>
+    /// folder and contains custom build components that can be added to a project.
+    /// </summary>
+    public static readonly string ComponentsAndPlugInsFolder = Path.Combine(ProgramDataFolder, "Components and Plug-Ins");
 }

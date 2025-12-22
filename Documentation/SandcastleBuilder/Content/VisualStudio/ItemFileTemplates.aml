@@ -51,7 +51,7 @@ example conceptual content template is shown below:</para>
 This will cause Visual Studio to automatically insert a new GUID value in the topic when it is added to a project.</para>
 </alert>
 
-<code language="c#" title="Example Template File: BlankTopic.aml">
+<code language="xml" title="Example Template File: BlankTopic.aml">
 &lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;topic id="$guid1$" revisionNumber="1"&gt;
   &lt;developerConceptualDocument

@@ -1,11 +1,11 @@
-﻿//===============================================================================================================
+//===============================================================================================================
 // System  : Sandcastle Tools Standard Presentation Styles
-// File    : Default2022PresentationStyle.cs
+// File    : Themed2026PresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 12/21/2025
-// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
+// Note    : Copyright 2025, Eric Woodruff, All rights reserved
 //
-// This file contains the presentation style definition for the Default 2022 presentation style.
+// This file contains the presentation style definition for the Themed 2026 presentation style.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
@@ -14,7 +14,7 @@
 //
 //    Date     Who  Comments
 // ==============================================================================================================
-// 03/16/2022  EFW  Created the code
+// 12/19/2025  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -26,15 +26,15 @@ using Sandcastle.Core;
 using Sandcastle.Core.PresentationStyle;
 using Sandcastle.Core.Project;
 
-namespace Sandcastle.PresentationStyles.Default2022;
+namespace Sandcastle.PresentationStyles.Themed2026;
 
 /// <summary>
-/// This contains the definition for the Default 2022 presentation style
+/// This contains the definition for the Themed 2026 presentation style
 /// </summary>
-[PresentationStyleExport("Default2022", "Default 2022", Version = AssemblyInfo.ProductVersion,
-  Copyright = AssemblyInfo.Copyright, Description = "This presentation style generates website output with a " +
-    "responsive layout.")]
-public sealed class Default2022PresentationStyle : PresentationStyleSettings
+[PresentationStyleExport("Themed2026", "Themed 2026", Version = AssemblyInfo.ProductVersion,
+  Copyright = AssemblyInfo.Copyright, Description = "This is the default presentation style.  It generates " +
+    "website output with a responsive layout and supports switching between light and dark themes.")]
+public sealed class Themed2026PresentationStyle : PresentationStyleSettings
 {
     /// <inheritdoc />
     public override string Location => ComponentUtilities.AssemblyFolder(Assembly.GetExecutingAssembly());
@@ -42,10 +42,10 @@ public sealed class Default2022PresentationStyle : PresentationStyleSettings
     /// <summary>
     /// Constructor
     /// </summary>
-    public Default2022PresentationStyle()
+    public Themed2026PresentationStyle()
     {
         // The base path of the presentation style files relative to the assembly's location
-        this.BasePath = "Default2022";
+        this.BasePath = "Themed2026";
 
         this.SupportedFormats = HelpFileFormats.Website;
 
@@ -53,7 +53,7 @@ public sealed class Default2022PresentationStyle : PresentationStyleSettings
 
         this.DocumentModelApplicator = new StandardDocumentModel();
         this.ApiTableOfContentsGenerator = new StandardApiTocGenerator();
-        this.TopicTransformation = new Default2022Transformation(this);
+        this.TopicTransformation = new Themed2026Transformation(this);
 
         // If relative, these paths are relative to the base path
         this.BuildAssemblerConfiguration = Path.Combine("Configuration", "BuildAssembler.config");

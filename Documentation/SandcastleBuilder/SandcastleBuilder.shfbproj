@@ -33,7 +33,7 @@
     <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
     <CopyrightText>[v{%40HelpFileVersion}] Copyright \xA9 2006-2025, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
-    <PresentationStyle>Default2022</PresentationStyle>
+    <PresentationStyle>Themed2026</PresentationStyle>
     <SyntaxFilters>Standard</SyntaxFilters>
     <HelpFileVersion>2025.12.18.0</HelpFileVersion>
     <ComponentConfigurations>
@@ -179,14 +179,12 @@
       <Argument Key="BibliographyDataFile" Value="" />
       <Argument Key="RootBreadcrumbTitleText" Value="SHFB" />
       <Argument Key="ResizableTocColumn" Value="False" />
-      <Argument Key="CollapsibleSections" Value="False" />
       <Argument Key="LogoFile" Value="Sandcastle.jpg" />
       <Argument Key="LogoHeight" Value="69" />
       <Argument Key="LogoWidth" Value="" />
       <Argument Key="LogoAltText" Value="Sandcastle Help File Builder" />
       <Argument Key="LogoPlacement" Value="Left" />
       <Argument Key="LogoAlignment" Value="Left" />
-      <Argument Key="LogoUrl" Value="https://github.com/EWSoftware/SHFB" />
       <Argument Key="MaxVersionParts" Value="" />
       <Argument Key="DefaultLanguage" Value="cs" />
       <Argument Key="IncludeEnumValues" Value="True" />
@@ -194,6 +192,7 @@
       <Argument Key="FlagsEnumValueFormat" Value="HexValue" />
       <Argument Key="FlagsEnumSeparatorSize" Value="0" />
       <Argument Key="IncludeIntegerEnumSeparators" Value="true" />
+      <Argument Key="ProjectUrl" Value="https://github.com/EWSoftware/SHFB" />
       <Argument Key="BaseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/SHFB/Source/" />
       <Argument Key="RequestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" />
       <Argument Key="ShowParametersOnAllMethods" Value="False" />

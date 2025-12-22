@@ -34,7 +34,7 @@
     <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
     <CopyrightText>[v{%40HelpFileVersion}] Sandcastle MAML Guide</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
-    <PresentationStyle>Default2022</PresentationStyle>
+    <PresentationStyle>Themed2026</PresentationStyle>
     <HelpFileVersion>2022.4.16.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
@@ -42,41 +42,7 @@
       <PlugInConfig id="Additional Content Only" enabled="True">
         <configuration />
       </PlugInConfig>
-      <PlugInConfig id="Output Deployment" enabled="True">
-        <configuration deleteAfterDeploy="true" verboseLogging="false">
-          <deploymentLocation id="help1x" location="">
-            <userCredentials useDefault="true" userName="" password="" />
-            <proxyCredentials useProxy="false" proxyServer="">
-              <userCredentials useDefault="true" userName="" password="" />
-            </proxyCredentials>
-          </deploymentLocation>
-          <deploymentLocation id="helpViewer" location="" renameMSHA="false">
-            <userCredentials useDefault="true" userName="" password="" />
-            <proxyCredentials useProxy="false" proxyServer="">
-              <userCredentials useDefault="true" userName="" password="" />
-            </proxyCredentials>
-          </deploymentLocation>
-          <deploymentLocation id="website" location="..\WebHelp\MAMLGuide\">
-            <userCredentials useDefault="true" userName="" password="" />
-            <proxyCredentials useProxy="false" proxyServer="">
-              <userCredentials useDefault="true" userName="" password="" />
-            </proxyCredentials>
-          </deploymentLocation>
-          <deploymentLocation id="openXml" location="">
-            <userCredentials useDefault="true" userName="" password="" />
-            <proxyCredentials useProxy="false" proxyServer="">
-              <userCredentials useDefault="true" userName="" password="" />
-            </proxyCredentials>
-          </deploymentLocation>
-          <deploymentLocation id="markdown" location="">
-            <userCredentials useDefault="true" userName="" password="" />
-            <proxyCredentials useProxy="false" proxyServer="">
-              <userCredentials useDefault="true" userName="" password="" />
-            </proxyCredentials>
-          </deploymentLocation>
-        </configuration>
-      </PlugInConfig>
-    </PlugInConfigurations>
+<PlugInConfig id="Output Deployment" enabled="True"><configuration deleteAfterDeploy="true" verboseLogging="false"><deploymentLocation id="help1x" location=""><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="helpViewer" location="" renameMSHA="false"><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="website" location="..\WebHelp\MAMLGuide\"><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="openXml" location=""><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="markdown" location=""><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation></configuration></PlugInConfig></PlugInConfigurations>
     <HelpFileFormat>Website</HelpFileFormat>
     <ProductTitle>Sandcastle MAML Guide</ProductTitle>
     <VendorName>EWSoftware</VendorName>
@@ -107,14 +73,12 @@
       <Argument Key="BibliographyDataFile" Value="Bibliography.xml" />
       <Argument Key="RootBreadcrumbTitleText" Value="MAML Guide" />
       <Argument Key="ResizableTocColumn" Value="False" />
-      <Argument Key="CollapsibleSections" Value="False" />
       <Argument Key="LogoFile" Value="Sandcastle.jpg" />
       <Argument Key="LogoHeight" Value="50" />
       <Argument Key="LogoWidth" Value="" />
       <Argument Key="LogoAltText" Value="Sandcastle MAML Guide" />
       <Argument Key="LogoPlacement" Value="Left" />
       <Argument Key="LogoAlignment" Value="Left" />
-      <Argument Key="LogoUrl" Value="https://github.com/EWSoftware/SHFB" />
       <Argument Key="MaxVersionParts" Value="" />
       <Argument Key="DefaultLanguage" Value="cs" />
       <Argument Key="IncludeEnumValues" Value="True" />
@@ -122,6 +86,7 @@
       <Argument Key="FlagsEnumValueFormat" Value="HexValue" />
       <Argument Key="FlagsEnumSeparatorSize" Value="0" />
       <Argument Key="IncludeIntegerEnumSeparators" Value="true" />
+      <Argument Key="ProjectUrl" Value="https://github.com/EWSoftware/SHFB" />
       <Argument Key="BaseSourceCodeUrl" Value="" />
       <Argument Key="RequestExampleUrl" Value="" />
       <Argument Key="ShowParametersOnAllMethods" Value="False" />

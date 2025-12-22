@@ -25,13 +25,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Remove="Default2022\Templates\LanguageAlertTemplate.html" />
-		<None Remove="Default2022\Templates\ToDoAlertTemplate.html" />
-		<None Remove="VS2013\Templates\LanguageAlertTemplate.html" />
-		<None Remove="VS2013\Templates\ToDoAlertTemplate.html" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Compile Include="..\SandcastleBuilderMSBuild\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
 	</ItemGroup>
 
@@ -69,6 +62,9 @@
 		<Content Include="Shared\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+		<Content Include="Themed2026\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 		<Content Include="VS2013\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -79,6 +75,7 @@
 		<Content Remove="Markdown\**\*.cs" />
 		<Content Remove="OpenXml\**\*.cs" />
 		<Content Remove="Shared\**\*.cs" />
+		<Content Remove="Themed2026\**\*.cs" />
 		<Content Remove="VS2013\**\*.cs" />
 	</ItemGroup>
 
@@ -92,11 +89,6 @@
 	  <Content Update="Default2022\RootWebsiteContent\SearchHelp.aspx">
 	    <SubType>ASPXCodeBehind</SubType>
 	  </Content>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Default2022\webfonts\" />
-	  <Folder Include="Markdown\Templates\" />
 	</ItemGroup>
 
 </Project>
