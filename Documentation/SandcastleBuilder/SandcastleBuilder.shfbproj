@@ -265,6 +265,13 @@
     <Folder Include="media\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\PlugIns\DBCSFixPlugIn.md" />
+    <None Include="Content\GettingStarted\TeamBuild.md" />
+    <None Include="Content\GettingStarted\ConsoleBuild.md" />
+    <None Include="Content\GettingStarted\XCopyDeployment.md" />
+    <None Include="Content\GettingStarted\GettingStarted.md" />
+    <None Include="Content\GettingStarted\GitHubWorkflow.md" />
+    <None Include="Content\License.md" />
     <None Include="Content\GettingStarted\GeneralPreferences.md" />
     <None Include="Content\VersionHistory\v2025.12.18.0.md" />
     <None Include="Content\VisualStudio\GoToDefinition.md" />
@@ -349,7 +356,6 @@
     <None Include="Content\GettingStarted\ContentFileEditors.aml" />
     <None Include="Content\GettingStarted\DynamicProperties.aml" />
     <None Include="Content\GettingStarted\SpellCheckerOptions.aml" />
-    <None Include="Content\GettingStarted\XCopyDeployment.aml" />
     <None Include="Content\MarkdownContent.aml" />
     <None Include="Content\OpenXmlFormat.aml" />
     <None Include="Content\PlugIns\DocumentedEntitiesOnlyPlugIn.aml" />
@@ -532,15 +538,12 @@
     <None Include="Content\VersionHistory\v1.0to1.7\v1.7.0.0.aml" />
     <None Include="Content\ErrorsAndWarnings\ErrorsAndWarnings.aml" />
     <None Include="Content\Glossary.aml" />
-    <None Include="Content\GettingStarted\ConsoleBuild.aml" />
     <None Include="Content\CustomBuild.aml" />
     <None Include="Content\CustomHdrFtr.aml" />
     <None Include="Content\Donate.aml" />
     <None Include="Content\LangRes.aml" />
-    <None Include="Content\License.aml" />
     <None Include="Content\Links.aml" />
     <None Include="Content\GettingStarted\LogFile.aml" />
-    <None Include="Content\GettingStarted\TeamBuild.aml" />
     <None Include="Content\CompConfig\CodeBlockComponent.aml" />
     <None Include="Content\CompConfig\CompConfig.aml" />
     <None Include="Content\CompConfig\IntelliSenseComponent.aml" />
@@ -562,7 +565,6 @@
     <None Include="Content\PlugIns\AddContentPlugIn.aml" />
     <None Include="Content\PlugIns\AddRefLinksPlugIn.aml" />
     <None Include="Content\PlugIns\CompNotifyPlugIn.aml" />
-    <None Include="Content\PlugIns\DBCSFixPlugIn.aml" />
     <None Include="Content\PlugIns\DeployPlugIn.aml" />
     <None Include="Content\PlugIns\PlugIns.aml" />
     <None Include="Content\PlugIns\TocExcludePlugIn.aml" />
@@ -589,7 +591,6 @@
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0007.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0042.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0063.aml" />
-    <None Include="Content\GettingStarted\GettingStarted.aml" />
     <None Include="Content\ProjectExplorer\DocumentationSources.aml" />
     <None Include="Content\ProjectExplorer\References.aml" />
     <None Include="Content\ProjectExplorer\FileItems.aml" />

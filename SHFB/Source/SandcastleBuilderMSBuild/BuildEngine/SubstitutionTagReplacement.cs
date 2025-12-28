@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/27/2025
+// Updated : 12/28/2025
 // Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -491,6 +491,16 @@ public class SubstitutionTagReplacement : ISubstitutionTags
     }
 
     /// <summary>
+    /// The presentation style's icon file path (non-relative)
+    /// </summary>
+    /// <returns>The presentation style's icon path (non-relative)</returns>
+    [SubstitutionTag]
+    private string IconPathNonRelative()
+    {
+        return presentationStyle.TopicTransformation.IconPath.TrimStart(['.', '/']);
+    }
+
+    /// <summary>
     /// The presentation style's style sheet file path
     /// </summary>
     /// <returns>The presentation style's style sheet path</returns>
@@ -498,6 +508,16 @@ public class SubstitutionTagReplacement : ISubstitutionTags
     private string StyleSheetPath()
     {
         return presentationStyle.TopicTransformation.StyleSheetPath;
+    }
+
+    /// <summary>
+    /// The presentation style's style sheet file path (non-relative)
+    /// </summary>
+    /// <returns>The presentation style's style sheet path (non-relative)</returns>
+    [SubstitutionTag]
+    private string StyleSheetPathNonRelative()
+    {
+        return presentationStyle.TopicTransformation.StyleSheetPath.TrimStart(['.', '/']);
     }
 
     /// <summary>
@@ -522,6 +542,27 @@ public class SubstitutionTagReplacement : ISubstitutionTags
     }
 
     /// <summary>
+    /// The presentation style's locale-specific style sheet file link element (non-relative)
+    /// </summary>
+    /// <returns>The presentation style's locale-specific style sheet link element (non-relative)</returns>
+    [SubstitutionTag]
+    private string LocaleSpecificStyleSheetNonRelative()
+    {
+        string localeSpecificStyleSheet = presentationStyle.ResolvePath(
+            $"css{Path.PathSeparator}{sandcastleProject.Language?.Name ?? "en-US"}.css");
+
+        if(!File.Exists(localeSpecificStyleSheet))
+            localeSpecificStyleSheet = String.Empty;
+        else
+        {
+            localeSpecificStyleSheet = "<link rel=\"stylesheet\" " +
+                $"href=\"{presentationStyle.TopicTransformation.StyleSheetPath.TrimStart(['.', '/']) + Path.GetFileName(localeSpecificStyleSheet)}\" />";
+        }
+
+        return localeSpecificStyleSheet;
+    }
+
+    /// <summary>
     /// The presentation style's script file path
     /// </summary>
     /// <returns>The presentation style's script path</returns>
@@ -532,27 +573,38 @@ public class SubstitutionTagReplacement : ISubstitutionTags
     }
 
     /// <summary>
+    /// The presentation style's script file path (non-relative)
+    /// </summary>
+    /// <returns>The presentation style's script path (non-relative)</returns>
+    [SubstitutionTag]
+    private string ScriptPathNonRelative()
+    {
+        return currentBuild.PresentationStyle.TopicTransformation.ScriptPath.TrimStart(['.', '/']);
+    }
+
+    /// <summary>
     /// The Lunr language-specific script files if the project language is supported
     /// </summary>
     /// <returns>The Lunr language-specific script files or an empty string</returns>
     [SubstitutionTag]
     private string LunrLanguageScriptFiles()
     {
-        string lunrSpecificScript = presentationStyle.ResolvePath(
-            $"scripts{Path.DirectorySeparatorChar}lunr.{sandcastleProject.Language?.TwoLetterISOLanguageName ?? "en"}.js");
+        string lunrLanguageScript = presentationStyle.ResolvePath(
+            $"scripts{Path.DirectorySeparatorChar}lunr.{sandcastleProject.Language?.TwoLetterISOLanguageName ?? "en"}.js"),
+            scriptFilePath = presentationStyle.TopicTransformation.ScriptPath.TrimStart(['.', '/']);
 
-        if(!File.Exists(lunrSpecificScript))
-            lunrSpecificScript = String.Empty;
+        if(!File.Exists(lunrLanguageScript))
+            lunrLanguageScript = String.Empty;
         else
         {
-            lunrSpecificScript =
-                $"<script src=\"{presentationStyle.TopicTransformation.ScriptPath}lunr.stemmer.support.js\"></script>\r\n" +
-                $"\t<script src=\"{presentationStyle.TopicTransformation.ScriptPath}tinyseg.js\"></script>\r\n" +
-                $"\t<script src=\"{presentationStyle.TopicTransformation.ScriptPath}lunr.multi.js\"></script>\r\n" +
-                $"\t<script src=\"{presentationStyle.TopicTransformation.ScriptPath + Path.GetFileName(lunrSpecificScript)}\"></script>";
+            lunrLanguageScript =
+                $"<script src=\"{scriptFilePath}lunr.stemmer.support.js\"></script>\r\n" +
+                $"\t<script src=\"{scriptFilePath}tinyseg.js\"></script>\r\n" +
+                $"\t<script src=\"{scriptFilePath}lunr.multi.js\"></script>\r\n" +
+                $"\t<script src=\"{scriptFilePath + Path.GetFileName(lunrLanguageScript)}\"></script>";
         }
 
-        return lunrSpecificScript;
+        return lunrLanguageScript;
     }
 
     /// <summary>
@@ -562,15 +614,15 @@ public class SubstitutionTagReplacement : ISubstitutionTags
     [SubstitutionTag]
     private string LunrUseLanguagExtension()
     {
-        string lunrSpecificScript = presentationStyle.ResolvePath(
+        string lunrLanguageScript = presentationStyle.ResolvePath(
             $"scripts{Path.DirectorySeparatorChar}lunr.{sandcastleProject.Language?.TwoLetterISOLanguageName ?? "en"}.js");
 
-        if(!File.Exists(lunrSpecificScript))
-            lunrSpecificScript = String.Empty;
+        if(!File.Exists(lunrLanguageScript))
+            lunrLanguageScript = String.Empty;
         else
-            lunrSpecificScript = $"lunr.multiLanguage('en', '{sandcastleProject.Language.TwoLetterISOLanguageName}');";
+            lunrLanguageScript = $"lunr.multiLanguage('en', '{sandcastleProject.Language.TwoLetterISOLanguageName}');";
 
-        return lunrSpecificScript;
+        return lunrLanguageScript;
     }
     #endregion
 

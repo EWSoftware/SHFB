@@ -69,6 +69,7 @@ eventdata
 eventhandler
 exactspelling
 exe
+executables
 expr
 fastcall
 fielddata
@@ -223,6 +224,7 @@ typeof
 typeparam
 typeparameter
 typeparamref
+ubuntu
 ui
 uid
 uint

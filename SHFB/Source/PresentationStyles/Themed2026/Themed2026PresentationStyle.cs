@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Themed2026PresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/27/2025
+// Updated : 12/28/2025
 // Note    : Copyright 2025, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Themed 2026 presentation style.
@@ -33,7 +33,8 @@ namespace Sandcastle.PresentationStyles.Themed2026;
 /// </summary>
 [PresentationStyleExport("Themed2026", "Themed 2026", Version = AssemblyInfo.ProductVersion,
   Copyright = AssemblyInfo.Copyright, Description = "This is the default presentation style.  It generates " +
-    "website output with a responsive layout and supports switching between light and dark themes.")]
+    "website output with a responsive layout, supports switching between light and dark themes, and has an " +
+    "improved full-text search option.")]
 public sealed class Themed2026PresentationStyle : PresentationStyleSettings
 {
     /// <inheritdoc />

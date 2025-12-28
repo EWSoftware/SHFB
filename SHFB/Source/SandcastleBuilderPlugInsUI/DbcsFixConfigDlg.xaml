@@ -42,9 +42,9 @@ encoding changes applied by the Sandcastle HTML Extract tool will be applied.
 Help File Builder</Hyperlink>
 			</TextBlock>
 			<TextBlock Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">
-        <Hyperlink Name="lnkSteelBytes" NavigateUri="http://www.SteelBytes.com/?mid=45"
-          RequestNavigate="lnkProjectSite_RequestNavigate"  ToolTip="http://www.SteelBytes.com/?mid=45">Steel Bytes
-SBAppLocale</Hyperlink>
+        <Hyperlink Name="lnkSteelBytes" NavigateUri="https://github.com/EWSoftware/SHFB/blob/master/ThirdPartyTools/SBAppLocale_ENG.zip"
+          RequestNavigate="lnkProjectSite_RequestNavigate"
+					ToolTip="https://github.com/EWSoftware/SHFB/blob/master/ThirdPartyTools/SBAppLocale_ENG.zip">Steel Bytes SBAppLocale</Hyperlink>
 			</TextBlock>
 			<Button Grid.Column="3" Name="btnHelp" Margin="0,3,3,3" Padding="3" MinWidth="80" Content="Help"
 				Click="btnHelp_Click"  ToolTip="View help for this component" />

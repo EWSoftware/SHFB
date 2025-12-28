@@ -63,32 +63,39 @@ purpose and non-infringement.
 
 Copyright Notices
 -----------------
-Bulma is Copyright (c) 2022-2025 Jeremy Thomas, All Rights Reserved.  Code released
+Bulma is Copyright (c) 2022-2026 Jeremy Thomas, All Rights Reserved.  Code released
 under the MIT license (https://github.com/jgthms/bulma).
 
 Font Awesome Free - License - https://fontawesome.com/license/free
 (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
-Copyright (c) 2022-2025 Fonticons, Inc., All Rights Reserved.
+Copyright (c) 2022-2026 Fonticons, Inc., All Rights Reserved.
 
-Highlight.js is Copyright (c) 2006-2025 Ivan Sagalaev and other contributors
+Highlight.js is Copyright (c) 2006-2026 Ivan Sagalaev and other contributors
 (https://highlightjs.org/) License: BSD-3-Clause
 
-The ICSharpCode.TextEditor is Copyright (c) 2000-2025 IC#Code, All Rights
+The ICSharpCode.TextEditor is Copyright (c) 2000-2026 IC#Code, All Rights
 Reserved.
 
-The Weifen Luo DockPanel Suite is Copyright (c) 2007-2025 Weifen Luo and other
+Lunr.js is Copyright (c) 2012-2026 Oliver Nightingale, All Rights Reserved.
+http://lunrjs.com
+
+Lunr Languages is Copyright (c) 2014-2026 Mihai Valentin, All Rights Reserved.
+https://github.com/MihaiValentin/lunr-languages
+
+The WeCantSpell.Hunspell library is Copyright (C) 2002-2026 Kevin Hendricks
+(MySpell) and Copyright (C) 2002-2026 Németh László (Hunspell), All
+Rights Reserved.
+https://github.com/aarondandy/WeCantSpell.Hunspell
+
+The Weifen Luo DockPanel Suite is Copyright (c) 2007-2026 Weifen Luo and other
 contributors, All Rights Reserved.
 
-The WeCantSpell.Hunspell library is Copyright (C) 2002 Kevin Hendricks
-(MySpell) and Copyright (C) 2002-2022 Németh László (Hunspell), All
-Rights Reserved.
+SBAppLocale is Copyright 2005-2026 Steel Bytes, All Rights Reserved.
 
-SBAppLocale is Copyright 2005-2025 Steel Bytes, All Rights Reserved.
-
-The code colorizer library is Copyright (c) 2003-2025, Jonathan de Halleux,
+The code colorizer library is Copyright (c) 2003-2026, Jonathan de Halleux,
 All Rights Reserved.
 
-All other code is Copyright (c) 2006-2025, Eric Woodruff, All Rights Reserved.
+All other code is Copyright (c) 2006-2026, Eric Woodruff, All Rights Reserved.
 
 The English US dictionary is based on a subset of the original English wordlist
 created by Kevin Atkinson for Pspell and Aspell and thus is covered by his
