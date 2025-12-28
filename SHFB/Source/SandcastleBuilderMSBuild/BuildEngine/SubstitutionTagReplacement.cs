@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/21/2025
+// Updated : 12/27/2025
 // Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -17,7 +17,7 @@
 // 05/10/2015  EFW  Refactored the substitution tag replacement code and moved it into its own class
 //===============================================================================================================
 
-// Ignore Spelling: concat Url img src onclick javascript dest
+// Ignore Spelling: dest
 
 using System;
 using System.Collections.Generic;
@@ -508,7 +508,7 @@ public class SubstitutionTagReplacement : ISubstitutionTags
     private string LocaleSpecificStyleSheet()
     {
         string localeSpecificStyleSheet = presentationStyle.ResolvePath(
-            $"css\\{sandcastleProject.Language?.Name ?? "en-US"}.css");
+            $"css{Path.PathSeparator}{sandcastleProject.Language?.Name ?? "en-US"}.css");
 
         if(!File.Exists(localeSpecificStyleSheet))
             localeSpecificStyleSheet = String.Empty;
@@ -529,6 +529,48 @@ public class SubstitutionTagReplacement : ISubstitutionTags
     private string ScriptPath()
     {
         return currentBuild.PresentationStyle.TopicTransformation.ScriptPath;
+    }
+
+    /// <summary>
+    /// The Lunr language-specific script files if the project language is supported
+    /// </summary>
+    /// <returns>The Lunr language-specific script files or an empty string</returns>
+    [SubstitutionTag]
+    private string LunrLanguageScriptFiles()
+    {
+        string lunrSpecificScript = presentationStyle.ResolvePath(
+            $"scripts{Path.DirectorySeparatorChar}lunr.{sandcastleProject.Language?.TwoLetterISOLanguageName ?? "en"}.js");
+
+        if(!File.Exists(lunrSpecificScript))
+            lunrSpecificScript = String.Empty;
+        else
+        {
+            lunrSpecificScript =
+                $"<script src=\"{presentationStyle.TopicTransformation.ScriptPath}lunr.stemmer.support.js\"></script>\r\n" +
+                $"\t<script src=\"{presentationStyle.TopicTransformation.ScriptPath}tinyseg.js\"></script>\r\n" +
+                $"\t<script src=\"{presentationStyle.TopicTransformation.ScriptPath}lunr.multi.js\"></script>\r\n" +
+                $"\t<script src=\"{presentationStyle.TopicTransformation.ScriptPath + Path.GetFileName(lunrSpecificScript)}\"></script>";
+        }
+
+        return lunrSpecificScript;
+    }
+
+    /// <summary>
+    /// The Lunr language-specific usage call if the project language is supported
+    /// </summary>
+    /// <returns>The Lunr language-specific usage call or an empty string</returns>
+    [SubstitutionTag]
+    private string LunrUseLanguagExtension()
+    {
+        string lunrSpecificScript = presentationStyle.ResolvePath(
+            $"scripts{Path.DirectorySeparatorChar}lunr.{sandcastleProject.Language?.TwoLetterISOLanguageName ?? "en"}.js");
+
+        if(!File.Exists(lunrSpecificScript))
+            lunrSpecificScript = String.Empty;
+        else
+            lunrSpecificScript = $"lunr.multiLanguage('en', '{sandcastleProject.Language.TwoLetterISOLanguageName}');";
+
+        return lunrSpecificScript;
     }
     #endregion
 

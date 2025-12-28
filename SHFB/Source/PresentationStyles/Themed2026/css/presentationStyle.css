@@ -171,11 +171,11 @@ div.is-centered {
     padding-bottom: 0.75em;
 }
 
-.content dt {
+.content dt, .container dt {
     font-weight: 600;
 }
 
-.content dd {
+.content dd, .container dd {
     margin-bottom: 1em;
 }
 

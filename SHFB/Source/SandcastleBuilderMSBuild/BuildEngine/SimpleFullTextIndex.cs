@@ -1,12 +1,12 @@
 //===============================================================================================================
 // System  : Sandcastle Help File Builder MSBuild Tasks
-// File    : FullTextIndex.cs
+// File    : SimpleFullTextIndex.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/29/2025
+// Updated : 12/27/2025
 // Note    : Copyright 2007-2025, Eric Woodruff, All rights reserved
 //
-// This file contains a class used to create a full-text index used to search for topics in the ASP.NET web
-// pages.  It's a really basic implementation but should get the job done.
+// This file contains a class used to create a simple full-text index used to search for topics in the ASP.NET
+// web pages.  It's a really basic implementation but should get the job done.
 //
 // Design Decision:
 //    In order to keep the serialized index files free from dependencies on user-defined data types, the index
@@ -33,7 +33,6 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
@@ -43,13 +42,13 @@ using Sandcastle.Core;
 namespace SandcastleBuilder.MSBuild.BuildEngine;
 
 /// <summary>
-/// This is a really basic implementation of an algorithm used to create a full-text index of the website
-/// pages so that they can be searched using the ASP.NET web pages.
+/// This is a really basic implementation of an algorithm used to create a full-text index of the website pages
+/// so that they can be searched using the ASP.NET web pages.
 /// </summary>
-/// <remarks>So that an assembly does not have to be deployed to deserialize the index information, the
-/// index information is represented using built-in data types (string and long).
+/// <remarks>So that an assembly does not have to be deployed to deserialize the index information, the index
+/// information is represented using built-in data types (string and long).
 /// </remarks>
-public class FullTextIndex
+public class SimpleFullTextIndex : IFullTextIndex
 {
     #region Private class members
     //=====================================================================
@@ -93,7 +92,7 @@ public class FullTextIndex
     /// <param name="exclusions">The file containing common word exclusions.  The file should contain one
     /// word per line in lowercase.  These words will not appear in the index.</param>
     /// <param name="language">The culture information</param>
-    public FullTextIndex(string exclusions, CultureInfo language)
+    public SimpleFullTextIndex(string exclusions, CultureInfo language)
     {
         Encoding enc = Encoding.Default;
         string content;
@@ -123,10 +122,7 @@ public class FullTextIndex
     #region Methods
     //=====================================================================
 
-    /// <summary>
-    /// Create a full-text index from web pages found in the specified file path
-    /// </summary>
-    /// <param name="filePath">The path containing the files to index</param>
+    /// <inheritdoc />
     /// <remarks>Words in the exclusion list and those that are less than two characters long will not appear
     /// in the index.</remarks>
     public void CreateFullTextIndex(string filePath)
@@ -141,8 +137,7 @@ public class FullTextIndex
         else
             rootPathLength = filePath.Length + 1;
 
-        Parallel.ForEach(Directory.EnumerateFiles(filePath, "*.htm?", SearchOption.AllDirectories),
-          new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount * 20 }, name =>
+        foreach(var name in Directory.EnumerateFiles(filePath, "*.htm?", SearchOption.AllDirectories))
         {
             string fileInfo, title;
             string[] words;
@@ -165,14 +160,7 @@ public class FullTextIndex
 
             if(contentMatch.Success)
                 content = contentMatch.Value;
-//#if DEBUG
-//                else
-//                {
-//                    // If it stops here, the regex needs updating or we should probably let the presentation
-//                    // style tell us how to find its content div.  For now, the layout is common.
-//                    System.Diagnostics.Debugger.Break();
-//                }
-//#endif
+
             // Put some space between tags
             content = content.Replace("><", "> <");
 
@@ -239,13 +227,10 @@ public class FullTextIndex
                     wordDictionary[word].Enqueue(((long)(count - 1) << 16) + (wordCounts[word] & 0xFFFF));
                 }
             }
-        });
+        }
     }
 
-    /// <summary>
-    /// Save the index information to the specified location.
-    /// </summary>
-    /// <param name="indexPath">The path to which the index files are saved.</param>
+    /// <inheritdoc />
     /// <remarks>JSON serialization is used to save the index data.</remarks>
     public void SaveIndex(string indexPath)
     {

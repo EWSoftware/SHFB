@@ -2,12 +2,12 @@
 // System  : Sandcastle Help File Builder
 // File    : presentationStyle.js
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/21/2025
+// Updated : 12/27/2025
 // Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //           Portions Copyright 2010-2025 Microsoft, All rights reserved
 //
-// This file contains the methods necessary to implement the language filtering, collapsible section, and
-// copy to clipboard options.
+// This file contains the methods necessary to implement the language filtering, copy to clipboard, searching, and
+// table of contents options.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
@@ -32,7 +32,7 @@
 // for all languages to which it does not apply.
 var allLSTSetIds = new Object();
 
-var clipboardHandler = null;
+var clipboardHandler = null, searchIndex = null, fileIndex = null;
 
 // Set the default language
 function SetDefaultLanguage(defaultLanguage)
@@ -374,12 +374,25 @@ function OnSearchPageLoad()
     }
 }
 
-// Perform a search using the best available method
+// Show or hide the search help
+function ShowHideHelp()
+{
+    var helpInfo = document.getElementById("HelpInfo");
+
+    if(helpInfo !== null)
+    {
+        if(helpInfo.classList.contains("is-hidden"))
+            helpInfo.classList.remove("is-hidden");
+        else
+            helpInfo.classList.add("is-hidden");
+    }
+}
+
+// Perform a search
 function PerformSearch()
 {
-    var searchText = document.getElementById("txtSearchText").value;
-    var sortByTitle = document.getElementById("chkSortByTitle").checked;
-    var searchResults = document.getElementById("searchResults");
+    let searchText = document.getElementById("txtSearchText").value;
+    let searchResults = document.getElementById("searchResults");
 
     if(searchText.length === 0)
     {
@@ -387,192 +400,73 @@ function PerformSearch()
         return;
     }
 
+    // Get the index data if not already loaded
+    if(!searchIndex || !fileIndex)
+    {
+        searchResults.innerHTML = "Loading index...";
+
+        $.ajax({
+            type: "GET",
+            url: "searchIndex.json",
+            cache: false,
+            dataType: "json",
+            async: false,
+            success: function (data)
+            {
+                {@LunrUseLanguagExtension}
+                searchIndex = lunr.Index.load(data)
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "fileIndex.json",
+            cache: false,
+            dataType: "json",
+            async: false,
+            success: function (data)
+            {
+                fileIndex = data;
+            }
+        });
+
+        if(!searchIndex || !fileIndex) {
+            searchResults.innerHTML = "<strong>Unable to load index information</strong>";
+            return;
+        }
+    }
+
     searchResults.innerHTML = "Searching...";
 
-    // Parse the keywords
-    var keywords = ParseKeywords(searchText);
-
-    // Get the list of files.  We'll be getting multiple files so we need to do this synchronously.
-    var fileList = [];
-
-    $.ajax({
-        type: "GET",
-        url: "fti/FTI_Files.json",
-        cache: false,
-        dataType: "json",
-        async: false,
-        success: function (data)
-        {
-            $.each(data, function (key, val)
-            {
-                fileList[key] = val;
-            });
-        }
-    });
-
-    var letters = [];
-    var wordDictionary = {};
-    var wordNotFound = false;
-
-    // Load the keyword files for each keyword starting letter
-    for(var idx = 0; idx < keywords.length && !wordNotFound; idx++)
+    try
     {
-        var letter = keywords[idx].substring(0, 1);
+        let results = searchIndex.search(searchText);
 
-        if($.inArray(letter, letters) === -1)
+        // Format and show the results
+        let content = "<div class=\"tags\"><span class=\"tag is-info\">" + results.length + " results for \"" +
+            searchText + "\"";
+
+        if(results.length > 50)
+            content += " (only showing first 50 matches)";
+
+        content += "</span></div><dl>";
+
+        for(let i = 0; i < 50 && i < results.length; i++)
         {
-            letters.push(letter);
-
-            $.ajax({
-                type: "GET",
-                url: "fti/FTI_" + letter.charCodeAt(0) + ".json",
-                cache: false,
-                dataType: "json",
-                async: false,
-                success: function (data)
-                {
-                    var wordCount = 0;
-
-                    $.each(data, function (key, val)
-                    {
-                        wordDictionary[key] = val;
-                        wordCount++;
-                    });
-
-                    if(wordCount === 0)
-                        wordNotFound = true;
-                }
-            });
+            let rIdx = parseInt(results[i].ref);
+            content += "<dt><a href=\"html/" + fileIndex[rIdx].f + ".htm\" target=\"_blank\">" + fileIndex[rIdx].t +
+                "</a></dt><dd>" + fileIndex[rIdx].c + "...</dd>";
         }
+
+        content += "</dl>";
+
+        searchResults.innerHTML = content;
     }
-
-    if(wordNotFound)
-        searchResults.innerHTML = "<strong>Nothing found</strong>";
-    else
-        searchResults.innerHTML = SearchForKeywords(keywords, fileList, wordDictionary, sortByTitle);
-}
-
-// Split the search text up into keywords
-function ParseKeywords(keywords)
-{
-    var keywordList = [];
-    var checkWord;
-    var words = keywords.split(/[\s!@#$%^&*()\-=+[\]{}\\|<>;:'",.<>/?`~]+/);
-
-    for(var idx = 0; idx < words.length; idx++)
+    catch(ex)
     {
-        checkWord = words[idx].toLowerCase();
-
-        if(checkWord.length >= 2 && $.inArray(checkWord, keywordList) === -1)
-            keywordList.push(checkWord);
+        searchResults.innerHTML = "Query error: " + ex.message;
+        return;
     }
-
-    return keywordList;
-}
-
-// Search for keywords and generate a block of HTML containing the results
-function SearchForKeywords(keywords, fileInfo, wordDictionary, sortByTitle)
-{
-    var matches = [], matchingFileIndices = [], rankings = [];
-    var isFirst = true;
-    var idx;
-
-    for(idx = 0; idx < keywords.length; idx++)
-    {
-        var word = keywords[idx];
-        var occurrences = wordDictionary[word];
-
-        // All keywords must be found
-        if(occurrences === null)
-            return "<strong>Nothing found</strong>";
-
-        matches[word] = occurrences;
-        var occurrenceIndices = [];
-
-        // Get a list of the file indices for this match.  These are 64-bit numbers but JavaScript only does
-        // bit shifts on 32-bit values so we divide by 2^16 to get the same effect as ">> 16" and use floor()
-        // to truncate the result.
-        for(var ind in occurrences)
-            occurrenceIndices.push(Math.floor(occurrences[ind] / Math.pow(2, 16)));
-
-        if(isFirst)
-        {
-            isFirst = false;
-
-            for(var matchInd in occurrenceIndices)
-                matchingFileIndices.push(occurrenceIndices[matchInd]);
-        }
-        else
-        {
-            // After the first match, remove files that do not appear for all found keywords
-            for(var checkIdx = 0; checkIdx < matchingFileIndices.length; checkIdx++)
-            {
-                if($.inArray(matchingFileIndices[checkIdx], occurrenceIndices) === -1)
-                {
-                    matchingFileIndices.splice(checkIdx, 1);
-                    checkIdx--;
-                }
-            }
-        }
-    }
-
-    if(matchingFileIndices.length === 0)
-        return "<strong>Nothing found</strong>";
-
-    // Rank the files based on the number of times the words occurs
-    for(var fileIdx = 0; fileIdx < matchingFileIndices.length; fileIdx++)
-    {
-        // Split out the title, filename, and word count
-        var matchingIdx = matchingFileIndices[fileIdx];
-        var fileIndex = fileInfo[matchingIdx].split(/\0/);
-
-        var title = fileIndex[0];
-        var filename = fileIndex[1];
-        var wordCount = parseInt(fileIndex[2]);
-        var matchCount = 0;
-
-        for(idx = 0; idx < keywords.length; idx++)
-        {
-            occurrences = matches[keywords[idx]];
-
-            for(var ind2 in occurrences)
-            {
-                var entry = occurrences[ind2];
-
-                // These are 64-bit numbers but JavaScript only does bit shifts on 32-bit values so we divide
-                // by 2^16 to get the same effect as ">> 16" and use floor() to truncate the result.
-                if(Math.floor(entry / Math.pow(2, 16)) === matchingIdx)
-                    matchCount += (entry & 0xFFFF);
-            }
-        }
-
-        rankings.push({ Filename: filename, PageTitle: title, Rank: matchCount * 1000 / wordCount });
-
-        if(rankings.length > 99)
-            break;
-    }
-
-    rankings.sort(function (x, y)
-    {
-        if(!sortByTitle)
-            return y.Rank - x.Rank;
-
-        return x.PageTitle.localeCompare(y.PageTitle);
-    });
-
-    // Format and return the results
-    var content = "<ol>";
-
-    for(var r in rankings)
-        content += "<li><a href=\"" + rankings[r].Filename + "\" target=\"_blank\">" +
-            rankings[r].PageTitle + "</a></li>";
-
-    content += "</ol>";
-
-    if(rankings.length < matchingFileIndices.length)
-        content += "<p>Omitted " + (matchingFileIndices.length - rankings.length) + " more results</p>";
-
-    return content;
 }
 
 //===============================================================================================================
@@ -586,12 +480,14 @@ window.onload = function ()
     resizer = document.getElementById("Resizer");
     tocDiv = document.getElementById("TOCColumn");
 
-    resizer.addEventListener("mousedown", function (e)
-    {
-        e.preventDefault();
-        document.addEventListener("mousemove", ResizerMouseMove);
-        document.addEventListener("mouseup", ResizerMouseUp);
-    });
+    if(resizer) {
+        resizer.addEventListener("mousedown", function (e)
+        {
+            e.preventDefault();
+            document.addEventListener("mousemove", ResizerMouseMove);
+            document.addEventListener("mouseup", ResizerMouseUp);
+        });
+    }
 }
 
 function ResizerMouseMove(e)

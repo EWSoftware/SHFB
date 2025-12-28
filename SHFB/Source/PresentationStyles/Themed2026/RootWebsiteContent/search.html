@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="light">
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link rel="shortcut icon" href="icons/favicon.ico" />
 	<link rel="shortcut icon" href="{@IconPath}favicon.ico" />
 	<link rel="stylesheet" href="{@StyleSheetPath}bulma.min.css" />
 	<link rel="stylesheet" href="{@StyleSheetPath}fontawesome.min.css" />
@@ -13,8 +12,8 @@
 	<link rel="stylesheet" href="{@StyleSheetPath}presentationStyle.css" />
 	{@LocaleSpecificStyleSheet}
 	<script src="{@ScriptPath}jquery-3.5.1.min.js"></script>
-	<script src="{@ScriptPath}clipboard.min.js"></script>
-	<script src="{@ScriptPath}highlight.min.js"></script>
+	<script src="{@ScriptPath}lunr.min.js"></script>
+	{@LunrLanguageScriptFiles}
 	<script src="{@ScriptPath}themeSwitcher.js"></script>
 	<script src="{@ScriptPath}presentationStyle.js"></script>
 	<title>{@HtmlEncHelpTitle} - Search</title>
@@ -33,32 +32,76 @@
 
 	<div class="columns">
 		<div id="SearchContainer" class="content column is-centered">
-			<form id="SearchForm" action="#" onsubmit=PerformSearch(); return false;">
-				<div class="field">
+			<form id="SearchForm" action="#" onsubmit="PerformSearch(); return false;">
+				<div class="field has-addons">
 					<div class="control has-icons-left">
 						<input id="txtSearchText" class="input" type="text" size="50" maxlength="200" placeholder="Search" />
 						<span class="icon is-small is-left">
 							<i class="fa fa-search"></i>
 						</span>
-						<button id="SearchButton" type="submit" class="is-hidden"></button>
 					</div>
-				</div>
-				<div class="field">
 					<div class="control">
-						<input id="chkSortByTitle" type="checkbox" onclick="PerformSearch();" />
-						<label for="chkSortByTitle">Sort by title</label>
+						<button id="SearchButton" type="submit" class="button is-link">Search</button>
+					</div>
+					<div class="control">
+						<button class="button is-info" onclick="ShowHideHelp(); return false;">
+							<span class="icon is-small">
+								<i class="fa-regular fa-circle-question" aria-hidden="true"></i>
+							</span>
+						</button>
 					</div>
 				</div>
 			</form>
 		</div>
 	</div>
 
-	<div class="columns">
-		<div class="content column is-centered">
-			<br />
-			<div id="searchResults">
-			</div>
+	<div class="columns is-hidden" id="HelpInfo">
+		<div class="column content is-centered pl-5 pr-5">
+			<article class="message is-info">
+				<div class="message-body">
+					<p>Enter one or more terms for the search separated by spaces.  Results are sorted by relevance with
+the most relevant matches listed first.  By default, each search term is optional in a matching document though
+a document must have at least one matching term.  It is possible to specify that a term must be present in
+matching documents or that it must be absent in matching documents.  To indicate that a term must be present in
+matching documents the term should be prefixed with a plus (+) and to indicate that a term must be absent the
+term should be prefixed with a minus (-).  Without either prefix the term's presence in matching documents is
+optional.  For example:</p>
+
+					<ul>
+						<li><em>foo bar</em> - Matching documents may contain either "foo" or "bar" or both.</li>
+						<li><em>+foo +bar</em> - Matching documents must contain both "foo" and "bar".</li>
+						<li><em>+foo bar -baz</em> - Matching documents must contain "foo", might contain "bar", and must not
+contain "baz"</li>
+					</ul>
+
+					<p>A wildcard, represented by an asterisk (*), can appear anywhere in a search term.  For example:</p>
+
+					<ul>
+						<li><em>foo*</em> - Match all documents containing words beginning with "foo".</li>
+						<li><em>*oo</em> - Match all documents containing words ending with "oo".</li>
+						<li><em>f*o</em> - Match all documents containing words starting with "f" ending with "o".</li>
+					</ul>
+
+					<p>In multi-term searches, a single term may be more important than others. In such cases, you can add
+a term level boost.  Any document that matches a boosted term will get a higher relevance score and appear higher
+up in the results. A boost is applied by appending a caret (^) and then a positive integer to a term.  For
+example, <em>foo^10 bar</em> weights the term "foo" 10 times higher than the term "bar". Different terms can have
+different boosts.</p>
+
+					<p>Fuzzy matching is supported on search terms which can be helpful if the spelling of a term is
+unclear or to increase the number of search results that are returned.  Fuzziness is applied by appending a
+tilde (~) and then a positive integer to a term.  For example, <em>foo~1</em> matches all documents that have a
+word within 1 edit distance of "foo".  An edit distance of 1 allows words to match if either adding, removing,
+changing or transposing a character in the word would lead to a match. For example "boo" requires a single edit
+(replacing "f" with "b") and would match, but "boot" would not as it also requires an additional "t" at the
+end.</p>
+
+				</div>
+			</article>
 		</div>
+	</div>
+
+	<div class="container pl-5 pr-5" id="searchResults">
 	</div>
 
 	<div class="columns">

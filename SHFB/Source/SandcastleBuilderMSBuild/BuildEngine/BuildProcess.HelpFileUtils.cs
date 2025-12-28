@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/30/2025
+// Updated : 12/27/2025
 // Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
 //
 // This file contains the code used to modify the help file project files to create a better table of contents
@@ -656,9 +656,27 @@ public partial class BuildProcess
         {
             this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-            FullTextIndex index = new(this.WorkingFolder + "StopWordList.txt", this.Language);
-            index.CreateFullTextIndex(webWorkingFolder);
-            index.SaveIndex(Path.Combine(webWorkingFolder, "fti"));
+            // Older presentation styles use the simple full-text index.  Newer ones use Lunr which provides
+            // for a better search experience.
+            IFullTextIndex index;
+            string lunrSpecificScript = this.PresentationStyle.ResolvePath(
+                $"scripts{Path.DirectorySeparatorChar}lunr.min.js"), indexFolder, indexFileFolder;
+
+            if(File.Exists(lunrSpecificScript))
+            {
+                index = new LunrFullTextIndex(this.Language);
+                indexFolder = Path.Combine(webWorkingFolder, "html");
+                indexFileFolder = webWorkingFolder;
+            }
+            else
+            {
+                index = new SimpleFullTextIndex(this.WorkingFolder + "StopWordList.txt", this.Language);
+                indexFolder = webWorkingFolder;
+                indexFileFolder = Path.Combine(webWorkingFolder, "fti");
+            }
+
+            index.CreateFullTextIndex(indexFolder);
+            index.SaveIndex(indexFileFolder);
 
             this.ExecutePlugIns(ExecutionBehaviors.After);
         }

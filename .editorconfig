@@ -100,12 +100,12 @@ vsspell_include_in_project_spell_check = false
 vsspell_spell_check_as_you_type = false
 vsspell_include_in_project_spell_check = false
 
-[bulma.css]
+[bulma*.css]
 # VSSPELL: Ignore spell checking in Bulma CSS
 vsspell_spell_check_as_you_type = false
 vsspell_include_in_project_spell_check = false
 
-[font-awesome.css]
+[{font,brands,regular,solid}*.css]
 # VSSPELL: Ignore spell checking in Font Awesome CSS
 vsspell_spell_check_as_you_type = false
 vsspell_include_in_project_spell_check = false
@@ -113,6 +113,18 @@ vsspell_include_in_project_spell_check = false
 [MPFProj_Shared/**]
 # VSSPELL: Ignore spell checking in the MPF project
 vsspell_include_in_project_spell_check = false
+
+[**/Lunr/**]
+# VSSPELL: Ignore spell checking in the ported Lunr project code
+vsspell_spell_check_as_you_type = false
+vsspell_include_in_project_spell_check = false
+vsspell_code_analyzers_enabled = false
+
+[**/Lunr/Languages/**]
+# VSSPELL: Ignore spell checking in the ported Lunr project code
+vsspell_spell_check_as_you_type = false
+vsspell_include_in_project_spell_check = false
+vsspell_code_analyzers_enabled = false
 
 [*.{aml,asax,ascx,asmx,asp,aspx,axml,config,content,cshtml,csproj,database,datasource,dbml,disco,discomap,dtsx,edmx,exclude,fxcop,htm,html,items,layout,maml,manifest,master,msha,myapp,nunit,nuspec,proj,projitems,props,publishproj,pubxml,rdl,rdlc,resx,ruleset,settings,shfbproj,shproj,sitemap,snippets,soap,svc,svcinfo,svcmap,targets,tasks,tokens,vbhtml,vbproj,vcxproj,vcxproj.filters,vsct,vsixmanifest,vstemplate,webinfo,wsdl,xaml,xamlcfg,xml,xsd,xsl,xslt,xsx}]
 # XML files of various types

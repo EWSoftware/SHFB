@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Themed2026PresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/21/2025
+// Updated : 12/27/2025
 // Note    : Copyright 2025, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Themed 2026 presentation style.
@@ -63,9 +63,10 @@ public sealed class Themed2026PresentationStyle : PresentationStyleSettings
         // system.
         this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, Path.Combine("css", "*.*")));
         this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, Path.Combine("icons", "*.*")));
-        this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, Path.Combine("scripts", "*.*")));
+        this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, null, Path.Combine("scripts", "*.*"),
+            "scripts", [".js"]));
         this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, Path.Combine("webfonts", "*.*")));
-        this.ContentFiles.Add(new ContentFiles(HelpFileFormats.Website, null,
+        this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, null,
             Path.Combine("RootWebsiteContent", "*.*"), String.Empty, [".aspx", ".htm", ".html", ".php"]));
 
         // Add the plug-in dependencies

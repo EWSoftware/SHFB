@@ -41,7 +41,7 @@
     <FeedbackEMailLinkText>Me. %28{%40CustomProperty}%29</FeedbackEMailLinkText>
     <HeaderText>Date Only: {%40BuildDate:MMM  d, yyyy} Full Date: {%40BuildDate}</HeaderText>
     <FooterText>Full Date: {%40BuildDate} Date Only: {%40BuildDate:MMM  d, yyyy}</FooterText>
-    <PresentationStyle>Default2022</PresentationStyle>
+    <PresentationStyle>Themed2026</PresentationStyle>
     <HelpFileVersion>{%40Major}.{%40Minor}.{%40Build}.{%40Revision} Beta</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Code Block Component" enabled="True">
