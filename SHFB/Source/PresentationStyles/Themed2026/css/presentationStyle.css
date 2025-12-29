@@ -76,6 +76,34 @@
 }
 
 /* Additional styles for SHFB documentation websites */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+    body > header {
+        border-block-end: 1px solid;
+        border-color: var(--theme-border);
+    }
+
+    body > main {
+        display: flex;
+        flex: 1;
+    }
+
+        body > main > article {
+            width: 100%;
+        }
+
+@media (min-width: 768px) {
+    body > header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+}
+
 div#ProjectLink a {
     color: var(--theme-header-text);
 }
@@ -83,6 +111,16 @@ div#ProjectLink a {
 .sticky {
     position: sticky;
     top: 10px;
+}
+
+@media (min-width: 768px) {
+    body {
+        --header-height: 60px; /* Adjusted to actual height in presentationStyle.js */
+    }
+
+    .sticky {
+        top: calc(var(--header-height) + 10px);
+    }
 }
 
 .border-top {
@@ -465,13 +503,13 @@ sup.citation a:link a:visited a:active {
     cursor: pointer;
 }
 
-#ThemeSwitcher .theme-icon-dark {
-    display: inline-block;
-}
+    #ThemeSwitcher .theme-icon-dark {
+        display: inline-block;
+    }
 
-#ThemeSwitcher .theme-icon-light {
-    display: none;
-}
+    #ThemeSwitcher .theme-icon-light {
+        display: none;
+    }
 
 :root[data-theme="dark"] #ThemeSwitcher .theme-icon-dark {
     display: none;

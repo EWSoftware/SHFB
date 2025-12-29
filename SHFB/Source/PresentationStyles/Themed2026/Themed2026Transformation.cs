@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Themed2026Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/22/2025
+// Updated : 12/29/2025
 // Note    : Copyright 2025, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
@@ -1071,8 +1071,8 @@ public class Themed2026Transformation : TopicTransformationCore
 
         if(!String.IsNullOrWhiteSpace(logoFile))
         {
-            var headerDiv = body.Descendants("div").FirstOrDefault(d => d.Attribute("id")?.Value == "Header") ??
-                throw new InvalidOperationException("A div element with the ID 'Header' was not found");
+            var header = body.Descendants().FirstOrDefault(d => d.Attribute("id")?.Value == "Header") ??
+                throw new InvalidOperationException("An element with the ID 'Header' was not found");
 
             string logoAltText = this.LogoAltText;
             int logoWidth = this.LogoWidth, logoHeight = this.LogoHeight;
@@ -1101,7 +1101,7 @@ public class Themed2026Transformation : TopicTransformationCore
                     switch(this.LogoAlignment)
                     {
                         case LogoAlignment.Right:
-                            headerDiv.AddFirst(new XElement("div",
+                            header.AddFirst(new XElement("div",
                                     new XAttribute("class", "pageHeader level mb-0 pt-0 px-2"),
                                 new XElement("div",
                                     new XAttribute("class", "level-left"), Element.NonBreakingSpace),
@@ -1113,13 +1113,13 @@ public class Themed2026Transformation : TopicTransformationCore
                             break;
 
                         case LogoAlignment.Center:
-                            headerDiv.AddFirst(new XElement("div",
+                            header.AddFirst(new XElement("div",
                                 new XAttribute("class", "pageHeader is-centered mb-0 pt-0"),
                                 image));
                             break;
 
                         default:    // Left
-                            headerDiv.AddFirst(new XElement("div",
+                            header.AddFirst(new XElement("div",
                                 new XAttribute("class", "pageHeader pt-0 px-2"),
                                 image));
                             break;
@@ -1127,9 +1127,9 @@ public class Themed2026Transformation : TopicTransformationCore
                     break;
 
                 case LogoPlacement.Right:
-                    var langFilterContainer = headerDiv.Descendants("div").FirstOrDefault(d =>
+                    var langFilterContainer = header.Descendants().FirstOrDefault(d =>
                         d.Attribute("id")?.Value == "LangFilterSearchContainer") ??
-                        throw new InvalidOperationException("A div element with the ID 'LangFilterSearchContainer' was not found");
+                        throw new InvalidOperationException("An element with the ID 'LangFilterSearchContainer' was not found");
 
                     langFilterContainer.Add(new XElement("div",
                         new XAttribute("class", "level-item"),
@@ -1137,9 +1137,9 @@ public class Themed2026Transformation : TopicTransformationCore
                     break;
 
                 default:        // Left
-                    var titleContainer = headerDiv.Descendants("div").FirstOrDefault(d =>
+                    var titleContainer = header.Descendants().FirstOrDefault(d =>
                         d.Attribute("id")?.Value == "TitleContainer") ??
-                        throw new InvalidOperationException("A div element with the ID 'TitleContainer' was not found");
+                        throw new InvalidOperationException("An element with the ID 'TitleContainer' was not found");
 
                     titleContainer.AddFirst(new XElement("div",
                         new XAttribute("class", "level-item"),
@@ -1148,13 +1148,13 @@ public class Themed2026Transformation : TopicTransformationCore
             }
         }
 
-        var projectLinkDiv = body.Descendants("div").FirstOrDefault(d => d.Attribute("id")?.Value == "ProjectLink");
+        var projectLinkContainer = body.Descendants().FirstOrDefault(d => d.Attribute("id")?.Value == "ProjectLink");
 
-        if(projectLinkDiv != null)
+        if(projectLinkContainer != null)
         {
             if(!String.IsNullOrWhiteSpace(this.ProjectUrl))
             {
-                projectLinkDiv.Add(new XElement("a",
+                projectLinkContainer.Add(new XElement("a",
                     new XAttribute("href", this.ProjectUrl),
                     new XAttribute("rel", "noopener noreferrer"),
                     new XAttribute("target", "_blank"),
@@ -1164,7 +1164,7 @@ public class Themed2026Transformation : TopicTransformationCore
                                 "fa-brands fa-github" : "fa-solid fa-file-code"), String.Empty))));
             }
             else
-                projectLinkDiv.Remove();
+                projectLinkContainer.Remove();
         }
 
         this.CurrentElement.Add(new XElement("h1",
@@ -2504,21 +2504,19 @@ public class Themed2026Transformation : TopicTransformationCore
             // If not hidden, the content column can overflow if wide enough and the blank column
             // can prevent clicking links in the overlapped section.
             XAttribute classAttr;
-            var divElement = body.Descendants("div").FirstOrDefault(
-                div => div.Attribute("id")?.Value == "InThisArticleColumn");
+            var container = body.Descendants().FirstOrDefault(d => d.Attribute("id")?.Value == "InThisArticleColumn");
 
-            if(divElement != null)
+            if(container != null)
             {
-                classAttr = divElement.Attribute("class");
+                classAttr = container.Attribute("class");
                 classAttr?.Value = classAttr.Value.Replace("is-hidden-mobile", "is-hidden");
             }
 
-            divElement = body.Descendants("div").FirstOrDefault(
-                div => div.Attribute("id")?.Value == "TopicContent");
+            container = body.Descendants().FirstOrDefault(d => d.Attribute("id")?.Value == "TopicContent");
 
-            if(divElement != null)
+            if(container != null)
             {
-                classAttr = divElement.Attribute("class");
+                classAttr = container.Attribute("class");
                 classAttr?.Value = classAttr.Value.Replace("is-7", "is-9");
             }
 

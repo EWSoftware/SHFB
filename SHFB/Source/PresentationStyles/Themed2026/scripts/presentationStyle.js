@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : presentationStyle.js
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/27/2025
+// Updated : 12/29/2025
 // Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
 //           Portions Copyright 2010-2025 Microsoft, All rights reserved
 //
@@ -227,7 +227,22 @@ function InitializeQuickLinks()
                 for(i = 0; i < quickLinks.length; i++)
                 {
                     if(quickLinks[i] === this)
-                        headerElements[i].scrollIntoView();
+                    {
+                        // Adjust for sticky header height
+                        const header = document.querySelector('body > header');
+
+                        if (header)
+                        {
+                            const headerHeight = header.offsetHeight;
+                            const elementPosition = headerElements[i].getBoundingClientRect().top;
+                            const offsetPosition = window.scrollY + elementPosition - headerHeight - 10;
+                            
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
 
                     quickLinks[i].classList.remove("is-active-quickLink");
                 }
@@ -477,6 +492,14 @@ var resizer, tocDiv;
 
 window.onload = function ()
 {
+    // Adjust the header height so that the In This Article section doesn't go under it
+    const header = document.querySelector('body > header');
+
+    if (header) {
+        const headerHeight = header.offsetHeight;
+        document.body.style.setProperty('--header-height', `${headerHeight}px`);
+    }
+
     resizer = document.getElementById("Resizer");
     tocDiv = document.getElementById("TOCColumn");
 

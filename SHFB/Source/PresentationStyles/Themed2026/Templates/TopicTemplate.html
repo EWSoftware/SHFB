@@ -23,96 +23,96 @@
 </head>
 <body>
 	<!-- IMPORTANT: All IDs should remain unchanged.  You are free to move things around though. -->
-	<div>
-		<div id="Header">
-			<!-- The logo will be inserted based on the transformation arguments. -->
-			<!-- Logo above, left example
-      <div class="pageHeader pt-0 px-2">
-        <img alt="Test logo" style="height: 16px; width: 800px;" src="../icons/Sandcastle.jpg" />
-      </div> -->
-			<!--Logo above, center example
-			<div class="pageHeader is-centered mb-0 pt-0">
-        <img alt="Test logo" style="height: 16px; width: 800px;" src="../icons/Sandcastle.jpg" />
-			</div> -->
-			<!-- Logo above, right example
-			<div class="pageHeader level mb-0 pt-0 px-2">
-				<div class="level-left">&#160;</div>
-				<div class="level-right">
-					<div class="level-item">
-            <img alt="Test logo" style="height: 16px; width: 800px;" src="../icons/Sandcastle.jpg" />
-					</div>
+	<header class="pageHeader" id="Header">
+		<!-- The logo will be inserted based on the transformation arguments. -->
+		<!-- Logo above, left example
+		<div class="pt-0 px-2">
+			<img alt="Test logo" style="height: 16px; width: 800px;" src="../icons/Sandcastle.jpg" />
+		</div> -->
+		<!--Logo above, center example
+		<div class="is-centered mb-0 pt-0">
+			<img alt="Test logo" style="height: 16px; width: 800px;" src="../icons/Sandcastle.jpg" />
+		</div> -->
+		<!-- Logo above, right example
+		<div class="level mb-0 pt-0 px-2">
+			<div class="level-left">&#160;</div>
+			<div class="level-right">
+				<div class="level-item">
+					<img alt="Test logo" style="height: 16px; width: 800px;" src="../icons/Sandcastle.jpg" />
 				</div>
-			</div> -->
-			<div class="pageHeader level mb-0 py-2 px-4">
-				<div id="TitleContainer" class="level-left">
-					<!-- Logo left example
-					<div class="level-item">
-						<img class="image" style="height: 32px;" src="Sandcastle.jpg" />
-					</div> -->
-					<div id="DocumentationTitle" class="level-item">
-						<include item="documentationTitle" />
-					</div>
+			</div>
+		</div> -->
+		<div class="level mb-0 py-2 px-4">
+			<div id="TitleContainer" class="level-left">
+				<!-- Logo left example
+				<div class="level-item">
+					<img class="image" style="height: 32px;" src="Sandcastle.jpg" />
+				</div> -->
+				<div id="DocumentationTitle" class="level-item">
+					<include item="documentationTitle" />
 				</div>
-				<div id="LangFilterSearchContainer" class="level-right">
-					<div id="ProjectLink" class="level-item" title="Project website" aria-label="Project website">
-						<!-- Project website link
-						<a href="https://github.com/EWSoftware/SHFB" rel="noopener noreferrer" target="_blank"><span class="icon"><i class="fa-brands fa-github"></i></span></a>
-					  -->
-					</div>
-					<div id="ThemeSwitcher" class="level-item" title="Toggle theme" aria-label="Toggle theme">
-						<span class="icon">
-							<i class="fa fa-regular fa-moon theme-icon-dark"></i>
-							<i class="fa fa-sun theme-icon-light"></i>
-						</span>
-					</div>
-					<div class="level-item">
-						<div class="dropdown is-hoverable">
-							<div class="dropdown-trigger">
-								<button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-									<span id="CurrentLanguage"></span>
-									<span class="icon is-small">
-										<i class="fa fa-angle-down" aria-hidden="true"></i>
-									</span>
-								</button>
-							</div>
-							<div class="dropdown-menu" role="menu">
-								<div id="LanguageSelections" class="dropdown-content">
-									<!-- These are added by the transformation when the topic is rendered based on the user
-											 selected syntax generators.
-									<a class="dropdown-item" data-languageId="cs">C#</a>
-									<a class="dropdown-item" data-languageId="vb">VB</a>
-									<a class="dropdown-item" data-languageId="cpp">C++</a>
-									<a class="dropdown-item" data-languageId="fs">F#</a> -->
-								</div>
+			</div>
+			<div id="LangFilterSearchContainer" class="level-right">
+				<div id="ProjectLink" class="level-item" title="Project website" aria-label="Project website">
+					<!-- Project website link
+					<a href="https://github.com/EWSoftware/SHFB" rel="noopener noreferrer" target="_blank"><span class="icon"><i class="fa-brands fa-github"></i></span></a>
+					-->
+				</div>
+				<div id="ThemeSwitcher" class="level-item" title="Toggle theme" aria-label="Toggle theme">
+					<span class="icon">
+						<i class="fa fa-regular fa-moon theme-icon-dark"></i>
+						<i class="fa fa-sun theme-icon-light"></i>
+					</span>
+				</div>
+				<div class="level-item">
+					<div class="dropdown is-hoverable">
+						<div class="dropdown-trigger">
+							<button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+								<span id="CurrentLanguage"></span>
+								<span class="icon is-small">
+									<i class="fa fa-angle-down" aria-hidden="true"></i>
+								</span>
+							</button>
+						</div>
+						<div class="dropdown-menu" role="menu">
+							<div id="LanguageSelections" class="dropdown-content">
+								<!-- These are added by the transformation when the topic is rendered based on the user
+										 selected syntax generators.
+								<a class="dropdown-item" data-languageId="cs">C#</a>
+								<a class="dropdown-item" data-languageId="vb">VB</a>
+								<a class="dropdown-item" data-languageId="cpp">C++</a>
+								<a class="dropdown-item" data-languageId="fs">F#</a> -->
 							</div>
 						</div>
 					</div>
-					<div class="level-item">
-						<form id="SearchForm" action="#" onsubmit="TransferToSearchPage(); return false;">
-							<div class="field">
-								<div class="control has-icons-left">
-									<input id="SearchTerms" class="input" type="text" maxlength="200">
-										<includeAttribute name="placeholder" item="searchPlaceHolder" />
-									</input>
-									<span class="icon is-small is-left">
-										<i class="fa fa-search"></i>
-									</span>
-									<button id="SearchButton" type="submit" class="is-hidden"></button>
-								</div>
-							</div>
-						</form>
-					</div>
-					<!-- Logo right example
-					<div class="level-item">
-							<img class="image" style="height: 32px;" src="Sandcastle.jpg" />
-					</div>-->
 				</div>
+				<div class="level-item">
+					<form id="SearchForm" action="#" onsubmit="TransferToSearchPage(); return false;">
+						<div class="field">
+							<div class="control has-icons-left">
+								<input id="SearchTerms" class="input" type="text" maxlength="200">
+								<includeAttribute name="placeholder" item="searchPlaceHolder" />
+								</input>
+								<span class="icon is-small is-left">
+									<i class="fa fa-search"></i>
+								</span>
+								<button id="SearchButton" type="submit" class="is-hidden"></button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<!-- Logo right example
+				<div class="level-item">
+						<img class="image" style="height: 32px;" src="Sandcastle.jpg" />
+				</div>-->
 			</div>
 		</div>
+	</header>
 
-		<div>
+	<main>
+		<article>
 			<!-- This will be removed if there is no header text and it is not preliminary.  The header text or
-				   preliminary text container will be removed separately if one is used but not the other. -->
+					 preliminary text container will be removed separately if one is used but not the other. -->
 			<div id="HeaderPrelimContainer" class="level my-1 px-2">
 				<div id="HeaderTextContainer" class="level-left">
 					<div class="level-item">
@@ -146,7 +146,7 @@
 				</div>
 
 				<div id="Resizer" class="{@ResizerStyle}"></div>
-				
+
 				<div id="TopicContent" class="column content is-7{@ResizableContentStyle}">
 					<!-- Topic content will go here -->
 				</div>
@@ -160,22 +160,20 @@
 						</ul>
 					</nav>
 				</div>
-
 			</div>
+		</article>
+	</main>
 
+	<!-- Footer content will go here.  Like the article header elements, these will be removed if not used. -->
+	<footer id="PageFooter" class="footer border-top py-3">
+		<div class="columns">
+			<div id="FooterContent" class="column">
+				<include item="footer_content" />
+			</div>
+			<div id="AdContent" class="column">
+				<include item="websiteAdContent" />
+			</div>
 		</div>
-
-		<footer id="PageFooter" class="footer border-top py-3">
-			<!-- Footer content will go here -->
-			<div class="columns">
-				<div id="FooterContent" class="column">
-					<include item="footer_content" />&#160;
-				</div>
-				<div id="AdContent" class="column">
-					<include item="websiteAdContent" />&#160;
-				</div>
-			</div>
-		</footer>
-	</div>
+	</footer>
 </body>
 </html>
