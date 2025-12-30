@@ -29,6 +29,9 @@
     --theme-hljs-addition-text: #22863a;
     --theme-hljs-deletion-background: #ffeef0;
     --theme-hljs-deletion-text: #b31d28;
+    --theme-scrollbar-track: #f0f0f0;
+    --theme-scrollbar-thumb: #c0c0c0;
+    --theme-scrollbar-thumb-hover: #a0a0a0;
 }
 
 :root[data-theme="dark"] {
@@ -61,6 +64,38 @@
     --theme-hljs-addition-text: #aff5b4;
     --theme-hljs-deletion-background: #67060c;
     --theme-hljs-deletion-text: #ffdcd7;
+    --theme-scrollbar-track: #2a2a2a;
+    --theme-scrollbar-thumb: #4a4a4a;
+    --theme-scrollbar-thumb-hover: #5a5a5a;
+}
+
+/* Scrollbar styles */
+* {
+    scrollbar-color: var(--theme-scrollbar-thumb) var(--theme-scrollbar-track);
+}
+
+/* WebKit/Blink scrollbar styles */
+*::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--theme-scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--theme-scrollbar-thumb);
+    border-radius: 6px;
+    border: 2px solid var(--theme-scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: var(--theme-scrollbar-thumb-hover);
+}
+
+*::-webkit-scrollbar-corner {
+    background: var(--theme-scrollbar-track);
 }
 
 /* Hide the TOC and In This Article columns when printed */
