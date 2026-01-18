@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/28/2025
-// Note    : Copyright 2015-2025, Eric Woodruff, All rights reserved
+// Updated : 01/18/2026
+// Note    : Copyright 2015-2026, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
 //
@@ -623,6 +623,28 @@ public class SubstitutionTagReplacement : ISubstitutionTags
             lunrLanguageScript = $"lunr.multiLanguage('en', '{sandcastleProject.Language.TwoLetterISOLanguageName}');";
 
         return lunrLanguageScript;
+    }
+
+    /// <summary>
+    /// A cache ID value for invalidating things like presentation style scripts, style sheets, etc.
+    /// </summary>
+    /// <returns>The release cache ID, typically the hash code for the core assembly's last write date/time which
+    /// will remain unchanged until a new release of the help file builder.</returns>
+    [SubstitutionTag]
+    private string ReleaseCacheIdentifier()
+    {
+        return currentBuild.PresentationStyle.TopicTransformation.ReleaseCacheId;
+    }
+
+    /// <summary>
+    /// A cache ID value for invalidating things like search index data, TOC data, etc.
+    /// </summary>
+    /// <returns>The build cache ID, typically the hash code for the current date/time which will change each
+    /// time the help file project is built.</returns>
+    [SubstitutionTag]
+    private string BuildCacheIdentifier()
+    {
+        return currentBuild.PresentationStyle.TopicTransformation.BuildCacheId;
     }
     #endregion
 

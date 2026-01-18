@@ -139,6 +139,10 @@ body {
     }
 }
 
+ul#InThisArticleMenu {
+    font-size: .9rem;
+}
+
 div#ProjectLink a {
     color: var(--theme-header-text);
 }
@@ -485,7 +489,7 @@ sup.citation a:link a:visited a:active {
 
 /* Table of contents styles */
 .toc {
-    font-size: 1rem;
+    font-size: .9rem;
 }
 
 .toc-menu {

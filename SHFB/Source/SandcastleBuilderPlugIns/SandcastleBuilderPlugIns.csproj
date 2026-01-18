@@ -29,6 +29,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="System.Text.Json" />
+
 		<ProjectReference Include="..\SandcastleCore\SandcastleCore.csproj">
 			<Private>False</Private>
 		</ProjectReference>

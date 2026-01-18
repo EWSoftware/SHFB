@@ -2,9 +2,9 @@
 // System  : Sandcastle Help File Builder
 // File    : presentationStyle.js
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/29/2025
-// Note    : Copyright 2014-2025, Eric Woodruff, All rights reserved
-//           Portions Copyright 2010-2025 Microsoft, All rights reserved
+// Updated : 01/18/2026
+// Note    : Copyright 2014-2026, Eric Woodruff, All rights reserved
+//           Portions Copyright 2010-2026 Microsoft, All rights reserved
 //
 // This file contains the methods necessary to implement the language filtering, copy to clipboard, searching, and
 // table of contents options.
@@ -32,7 +32,7 @@
 // for all languages to which it does not apply.
 var allLSTSetIds = new Object();
 
-var clipboardHandler = null, searchIndex = null, fileIndex = null;
+var clipboardHandler = null, searchIndex = null, fileIndex = null, toc = null;
 
 // Set the default language
 function SetDefaultLanguage(defaultLanguage)
@@ -288,62 +288,93 @@ function QuickLinkScrollHandler()
 //===============================================================================================================
 // This section contains the methods necessary to implement the TOC and search functionality.
 
-// Toggle a TOC entry between its collapsed and expanded state loading the child elements if necessary
-function ToggleExpandCollapse(item)
+// Load the TOC information
+function LoadToc()
 {
-    $(item).toggleClass("toggleExpanded");
+    $("#ShowHideTOC").click(function () {
+        $("#TOCColumn").toggleClass("is-hidden-mobile");
+    });
 
-    if($(item).parent().next().children().length === 0)
-    {
-        LoadTocFile($(item).attr("data-tocFile"), $(item).parent().next());
-    }
-
-    $(item).parent().next().toggleClass("is-hidden");
-}
-
-// Load a TOC fragment file and add it to the page's TOC
-function LoadTocFile(tocFile, parentElement)
-{
-    var selectedTopicId = null;
-
-    if(tocFile === null)
-    {
-        $("#ShowHideTOC").click(function () {
-            $("#TOCColumn").toggleClass("is-hidden-mobile");
-        });
-
-        tocFile = $("meta[name='tocFile']").attr("content");
-        selectedTopicId = $("meta[name='guid']").attr("content");
-    }
+    const tocParentId = $("meta[name='tocParentId']").attr("content");
+    const selectedTopicId = $("meta[name='guid']").attr("content");
 
     $.ajax({
-        url: tocFile,
-        cache: false,
-        async: true,
-        dataType: "xml",
+        url: "../toc.json?v={@BuildCacheIdentifier}",
+        dataType: "json",
         success: function (data)
         {
-            ParentTocElement(parentElement, selectedTopicId, data);
+            tocInfo = data;
+            ParentTocElements(null, selectedTopicId, tocParentId);
         }
-    });
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        $("#TopicBreadcrumbs").append("<strong>Unable to load TOC information: " + errorThrown + "</strong>");
+        $("#TableOfContents").empty();
+        $("#TableOfContents").append("This will not work if loaded from the file system directly.  Use the " +
+            "View Help option to view it using a local web server instance.");
+    });;
 }
 
 // Parent the TOC elements to the given element.  If null, the elements represent the root TOC for the page and
 // it will also set the breadcrumb trail.
-function ParentTocElement(parentElement, selectedTopicId, tocElements)
+function ParentTocElements(parentElement, selectedTopicId, tocParentId)
 {
-    var toc = $(tocElements).find("tocItems").html();
+    const toc = tocInfo.fragments[tocParentId];
+    var root, rootTopic;
 
-    if(parentElement === null)
-    {
+    if (parentElement === null) {
+        // Add the breadcrumb links.  The first is always a root link to the first topic.
+        root = tocInfo.topics[0];
+
+        for (var i = 0; i < tocInfo.topics.length; i++) {
+            if (tocInfo.topics[i].f) {
+                rootTopic = tocInfo.topics[i];
+                break;
+            }
+        }
+
+        $("#TopicBreadcrumbs").append($("<li><a href=\"" + rootTopic.f + ".htm\">" +
+            insertWordBreakOpportunities(tocInfo.titles[root.t]) + "</a></li>"));
+
+        toc.b.forEach((i) => {
+            var t = tocInfo.topics[i];
+
+            if (t.f) {
+                $("#TopicBreadcrumbs").append($("<li><a href=\"" + t.f + ".htm\">" +
+                    insertWordBreakOpportunities(tocInfo.titles[t.t]) + "</a></li>"));
+            }
+            else {
+                $("#TopicBreadcrumbs").append($("<li><p>" + insertWordBreakOpportunities(tocInfo.titles[t.t]) +
+                    "</a></li>"));
+            }
+        });
+
         var topicTitle = $("meta[name='Title']").attr("content");
 
-        $("#TopicBreadcrumbs").append($(tocElements).find("breadcrumbs").html());
         $("#TopicBreadcrumbs").append($("<li><p>" + topicTitle + "</p></li>"));
-        $("#TableOfContents").append(toc);
+
+        root = $("#TableOfContents");
+        root.empty();
     }
     else
-        parentElement.append(toc);
+        root = parentElement;
+
+    // Add the TOC child elements
+    toc.t.forEach((i) => {
+        var t = tocInfo.topics[i];
+
+        if (t.c) {
+            // This is a parent node with children.  They will be loaded on demand.
+            root.append($("<li><a id=\"" + t.f + "\" class=\"has-submenu\" href=\"" + t.f + ".htm\">" +
+                "<span data-tocParentId=\"" + t.c + "\" class=\"icon toggle\" " +
+                "onclick=\"ToggleExpandCollapse(this); return false;\"><i class=\"fa fa-angle-right\"> </i></span>" +
+                insertWordBreakOpportunities(tocInfo.titles[t.t]) + "</a><ul class=\"toc-menu is-hidden\"></ul></li>"));
+        }
+        else {
+            // Just a topic, no children.
+            root.append($("<li><a id=\"" + t.f + "\" href=\"" + t.f + ".htm\">" +
+                insertWordBreakOpportunities(tocInfo.titles[t.t]) + "</a></li>"));
+        }
+    });
 
     if(selectedTopicId !== null)
     {
@@ -357,6 +388,51 @@ function ParentTocElement(parentElement, selectedTopicId, tocElements)
             ToggleExpandCollapse($(selectedEntry).children()[0]);
         }
     }
+}
+
+// Toggle a TOC entry between its collapsed and expanded state loading the child elements if necessary
+function ToggleExpandCollapse(item) {
+    $(item).toggleClass("toggleExpanded");
+
+    if ($(item).parent().next().children().length === 0) {
+        ParentTocElements($(item).parent().next(), null, $(item).attr("data-tocParentId"))
+    }
+
+    $(item).parent().next().toggleClass("is-hidden");
+}
+
+// Insert word break opportunities into long strings to allow better wrapping in the TOC pane
+function insertWordBreakOpportunities(text) {
+    if (!text || text.trim() === '') {
+        return text || '';
+    }
+
+    let result = '';
+    let start = 0;
+    let end = 0;
+
+    while (end < text.length) {
+        if (end !== 0 && end < text.length - 1) {
+            const curr = text[end], next = text[end + 1], prev = text[end - 1];
+
+            // Split between camel case words, digits, and punctuation with no intervening whitespace
+            if ((/[a-z]/.test(curr) && /[A-Z]/.test(next)) ||
+                (/[a-zA-Z]/.test(curr) && /\d/.test(next)) ||
+                (!/[a-zA-Z0-9]/.test(curr) && !/\s/.test(prev) && /[a-zA-Z0-9]/.test(next))) {
+
+                result += text.substring(start, end + 1) + '<wbr>';
+                start = end + 1;
+            }
+        }
+
+        // Skip over non-word/non-punctuation characters
+        do {
+            end++;
+        } while (end < text.length && !/[a-zA-Z0-9]/.test(text[end]) && !/[^\w\s]/.test(text[end]));
+    }
+
+    result += text.substring(start);
+    return result;
 }
 
 // Transfer to the search page from a topic
@@ -415,40 +491,42 @@ function PerformSearch()
         return;
     }
 
-    // Get the index data if not already loaded
-    if(!searchIndex || !fileIndex)
+    // Get the search and file index data if not already loaded
+    if(!searchIndex)
     {
         searchResults.innerHTML = "Loading index...";
 
         $.ajax({
-            type: "GET",
-            url: "searchIndex.json",
-            cache: false,
+            url: "searchIndex.json?v={@BuildCacheIdentifier}",
             dataType: "json",
-            async: false,
             success: function (data)
             {
                 {@LunrUseLanguagExtension}
                 searchIndex = lunr.Index.load(data)
+                PerformSearch();
             }
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            searchResults.innerHTML = "<strong>Unable to load index information: " + errorThrown +"</strong>";
         });
 
+        return;
+    }
+
+    if(!fileIndex)
+    {
         $.ajax({
-            type: "GET",
-            url: "fileIndex.json",
-            cache: false,
+            url: "fileIndex.json?v={@BuildCacheIdentifier}",
             dataType: "json",
-            async: false,
             success: function (data)
             {
                 fileIndex = data;
+                PerformSearch();
             }
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            searchResults.innerHTML = "<strong>Unable to load index information: " + errorThrown +"</strong>";
         });
 
-        if(!searchIndex || !fileIndex) {
-            searchResults.innerHTML = "<strong>Unable to load index information</strong>";
-            return;
-        }
+        return;
     }
 
     searchResults.innerHTML = "Searching...";

@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : TopicTransformationCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/28/2025
-// Note    : Copyright 2022-2025, Eric Woodruff, All rights reserved
+// Updated : 01/18/2026
+// Note    : Copyright 2022-2026, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class that is used to define the settings and common functionality for a
 // specific presentation style topic transformation.
@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 
@@ -190,6 +191,22 @@ public abstract class TopicTransformationCore
     public string Locale { get; set; } = "en-US";
 
     /// <summary>
+    /// This is used to get or set the release cache ID for use in the presentation style templates
+    /// </summary>
+    /// <value>The default value is the hash code for the core assembly's last write date/time.  As such,
+    /// it will only change when a new version of the help file builder is released.  This is useful for things
+    /// like scripts and style sheets that will not change very often.</value>
+    public string ReleaseCacheId { get; set; }
+
+    /// <summary>
+    /// This is used to get or set the build cache ID for use in the presentation style templates
+    /// </summary>
+    /// <value>The default is the hash code for the current date/time and it will change each time a help file
+    /// project is built.  This is useful for search and table of contents data files which will likely change
+    /// with each build.</value>
+    public string BuildCacheId { get; set; }
+
+    /// <summary>
     /// This read-only property returns the help file formats supported by the presentation style
     /// </summary>
     public HelpFileFormats SupportedFormats { get; }
@@ -316,6 +333,11 @@ public abstract class TopicTransformationCore
     /// <param name="resolvePath">The function used to resolve content file paths for the presentation style</param>
     protected TopicTransformationCore(HelpFileFormats supportedFormats, Func<string, string> resolvePath)
     {
+        var di = new DirectoryInfo(Assembly.GetExecutingAssembly().Location);
+
+        this.ReleaseCacheId = $"{di.LastWriteTime.GetHashCode():X}";
+        this.BuildCacheId = $"{DateTime.Now.GetHashCode():X}";
+
         elementHandlers = [];
         languageSpecificText = [];
         languageFilter = [];

@@ -7,18 +7,18 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<!-- Substitution tags will be replaced by the transformation. -->
 	<link rel="shortcut icon" href="{@IconPath}favicon.ico" />
-	<link rel="stylesheet" href="{@StyleSheetPath}bulma.min.css" />
-	<link rel="stylesheet" href="{@StyleSheetPath}fontawesome.min.css" />
-	<link rel="stylesheet" href="{@StyleSheetPath}solid.min.css" />
-	<link rel="stylesheet" href="{@StyleSheetPath}regular.min.css" />
-	<link rel="stylesheet" href="{@StyleSheetPath}brands.min.css" />
-	<link rel="stylesheet" href="{@StyleSheetPath}presentationStyle.css" />
+	<link rel="stylesheet" href="{@StyleSheetPath}bulma.min.css?v={@ReleaseCacheIdentifier}" />
+	<link rel="stylesheet" href="{@StyleSheetPath}fontawesome.min.css?v={@ReleaseCacheIdentifier}" />
+	<link rel="stylesheet" href="{@StyleSheetPath}solid.min.css?v={@ReleaseCacheIdentifier}" />
+	<link rel="stylesheet" href="{@StyleSheetPath}regular.min.css?v={@ReleaseCacheIdentifier}" />
+	<link rel="stylesheet" href="{@StyleSheetPath}brands.min.css?v={@ReleaseCacheIdentifier}" />
+	<link rel="stylesheet" href="{@StyleSheetPath}presentationStyle.css?v={@ReleaseCacheIdentifier}" />
 	{@LocaleSpecificStyleSheet}
 	<script src="{@ScriptPath}jquery-3.5.1.min.js"></script>
-	<script src="{@ScriptPath}clipboard.min.js"></script>
-	<script src="{@ScriptPath}highlight.min.js"></script>
-	<script src="{@ScriptPath}themeSwitcher.js"></script>
-	<script src="{@ScriptPath}presentationStyle.js"></script>
+	<script src="{@ScriptPath}clipboard.min.js?v={@ReleaseCacheIdentifier}"></script>
+	<script src="{@ScriptPath}highlight.min.js?v={@ReleaseCacheIdentifier}"></script>
+	<script src="{@ScriptPath}themeSwitcher.js?v={@ReleaseCacheIdentifier}"></script>
+	<script src="{@ScriptPath}presentationStyle.js?v={@ReleaseCacheIdentifier}"></script>
 	<!-- Other metadata will be added by the presentation style transformation -->
 </head>
 <body>
@@ -141,6 +141,7 @@
 					<nav class="toc">
 						<ul id="TableOfContents" class="toc-menu">
 							<!-- TOC entries will be added client-side from the TOC fragment file -->
+							<li>Loading...</li>
 						</ul>
 					</nav>
 				</div>

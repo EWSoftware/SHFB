@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Themed2026Transformation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/29/2025
-// Note    : Copyright 2025, Eric Woodruff, All rights reserved
+// Updated : 01/18/2026
+// Note    : Copyright 2025-2026, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to generate a MAML or API HTML topic from the raw topic XML data for the
 // Themed 2026 presentation style.
@@ -707,6 +707,7 @@ public class Themed2026Transformation : TopicTransformationCore
                 ("{@ResizableTocStyle}", resizableTocStyle),
                 ("{@ResizerStyle}", resizerStyle),
                 ("{@ResizableContentStyle}", resizableContentStyle),
+                ("{@ReleaseCacheIdentifier}", this.ReleaseCacheId)
             ]);
         }
 

@@ -21,7 +21,10 @@
         <Component Id="cmp3736ADC603721DCDE91FDB598DED71C6" Guid="{641F0307-89AB-4C48-87B9-00D175B4009C}">
           <File Id="fil814893D8717F14C1A972BF60AED9B3E2" KeyPath="yes" Source="$(var.RootFolder)\Components\Markdig.Signed.dll" />
         </Component>
-        <Component Id="cmp2FF65A3BC55BA48C3225694394F28E30" Guid="{5F1134FD-79E3-45EB-B1FE-E6B057BDF772}">
+        <Component Id="cmp8DC8E502113A421740C2E7A953988C4D" Guid="{484E1F46-3D14-4DE8-9044-5DEF811E2BCF}">
+          <File Id="fil36BBFDE4114C30B563AB4148AC67AC90" KeyPath="yes" Source="$(var.RootFolder)\Components\Microsoft.Bcl.AsyncInterfaces.dll" />
+        </Component>
+        <Component Id="cmp2FF65A3BC55BA48C3225694394F28E30" Guid="{D172879D-A2D4-4DC1-A8D5-6EBA7122149F}">
           <File Id="fil96CA1E954A1F8C905108B3428F6E13D9" KeyPath="yes" Source="$(var.RootFolder)\Components\Sandcastle.PresentationStyles.deps.json" />
         </Component>
         <Component Id="cmp2DFA91CF528F199B00ABBE1C368F0CA3" Guid="{2E77E63C-2370-4BC8-BCEF-8D48A32ABCD9}">
@@ -78,7 +81,10 @@
         <Component Id="cmp79D897BF4BF4D3CDE06FAAAFD793B7F6" Guid="{3ADB1A74-4438-46D1-8FC0-3A4D35180866}">
           <File Id="fil61951FC4FE103D1EC21E4E2300FF294A" KeyPath="yes" Source="$(var.RootFolder)\Components\System.Buffers.dll" />
         </Component>
-        <Component Id="cmpDA133495101008784D97F6CAE32FE8D9" Guid="{FCA1B349-50E5-4987-9867-E3B9CB714EC6}">
+        <Component Id="cmp63DA954085D05737EFCCC820DAB47EC6" Guid="{CBFE0E43-B1E2-4A35-8248-575E21544CB3}">
+          <File Id="fil65C8514258E2A9B23563356A1DAF2F2B" KeyPath="yes" Source="$(var.RootFolder)\Components\System.IO.Pipelines.dll" />
+        </Component>
+        <Component Id="cmpDA133495101008784D97F6CAE32FE8D9" Guid="{D4083B49-7BAA-4B17-A4C8-5861D8655475}">
           <File Id="fil9DDBBA4201F47B54CC6BD76A5751203F" KeyPath="yes" Source="$(var.RootFolder)\Components\System.Memory.dll" />
         </Component>
         <Component Id="cmp61F4E65B1A3BB2D8B85FC6A9C2942E9F" Guid="{D3A537A2-45D1-4C24-B279-7C4A683BF89F}">
@@ -86,6 +92,18 @@
         </Component>
         <Component Id="cmp022AE3946F8373D7789F80133DB6AD07" Guid="{730D51AF-DCFC-428C-8D94-DD89344BB167}">
           <File Id="fil9B1A66D9A12BEC70810F462D7230B20B" KeyPath="yes" Source="$(var.RootFolder)\Components\System.Runtime.CompilerServices.Unsafe.dll" />
+        </Component>
+        <Component Id="cmp3D66DC1F76DAA1172FAFFE66B6C4D26F" Guid="{04F96E5B-A408-4795-BC76-4A1669D3BBC3}">
+          <File Id="fil84C96FA90145065E3E9F9BE672627753" KeyPath="yes" Source="$(var.RootFolder)\Components\System.Text.Encodings.Web.dll" />
+        </Component>
+        <Component Id="cmpBC36D468255EB2B5F0DE1E842FACDF69" Guid="{81E50C2C-B882-46F1-98C8-22771DFBCBF0}">
+          <File Id="fil28E39DDCE5C7F5654D9BAC2D145B3ECE" KeyPath="yes" Source="$(var.RootFolder)\Components\System.Text.Json.dll" />
+        </Component>
+        <Component Id="cmp67B4872C1B22CD64E79C941D86966FCF" Guid="{DA000A39-FCDE-4013-90E3-82B3BA2B34D2}">
+          <File Id="filF5B9ECE1EA97EC5B3467A15C006DE5B2" KeyPath="yes" Source="$(var.RootFolder)\Components\System.Threading.Tasks.Extensions.dll" />
+        </Component>
+        <Component Id="cmp89DAA8C5C3333A35AC9DBB648EBFD33F" Guid="{D9011DF4-3BF5-4537-B3C2-709318AFC220}">
+          <File Id="fil6AD5627ACEB63AB129F9E8B78DE0D24A" KeyPath="yes" Source="$(var.RootFolder)\Components\System.ValueTuple.dll" />
         </Component>
         <Directory Id="dir44CA5F22CD0EFF88C80CAFA08F0CEE93" Name="Colorizer">
           <Component Id="cmpC903DF8883FD5571C4E1E2CF65DF6E9D" Guid="{435A1CF5-E66A-41BA-9875-42FF5A79CD27}">
@@ -4161,6 +4179,7 @@
       <ComponentRef Id="cmp8662B7FC808FD5BE2E80CED737AD9009" />
       <ComponentRef Id="cmp66C3A3C93EDE5F500BCA07968B9EC585" />
       <ComponentRef Id="cmp3736ADC603721DCDE91FDB598DED71C6" />
+      <ComponentRef Id="cmp8DC8E502113A421740C2E7A953988C4D" />
       <ComponentRef Id="cmp2FF65A3BC55BA48C3225694394F28E30" />
       <ComponentRef Id="cmp2DFA91CF528F199B00ABBE1C368F0CA3" />
       <ComponentRef Id="cmp2BADB1DADC045C0ADEC44BBF1B24FDFD" />
@@ -4180,9 +4199,14 @@
       <ComponentRef Id="cmp86BB6A5C8CF7938AF3B0BEDB075D75F3" />
       <ComponentRef Id="cmpC40B1F5CC1790CA6A0CCB90B4DD13CA6" />
       <ComponentRef Id="cmp79D897BF4BF4D3CDE06FAAAFD793B7F6" />
+      <ComponentRef Id="cmp63DA954085D05737EFCCC820DAB47EC6" />
       <ComponentRef Id="cmpDA133495101008784D97F6CAE32FE8D9" />
       <ComponentRef Id="cmp61F4E65B1A3BB2D8B85FC6A9C2942E9F" />
       <ComponentRef Id="cmp022AE3946F8373D7789F80133DB6AD07" />
+      <ComponentRef Id="cmp3D66DC1F76DAA1172FAFFE66B6C4D26F" />
+      <ComponentRef Id="cmpBC36D468255EB2B5F0DE1E842FACDF69" />
+      <ComponentRef Id="cmp67B4872C1B22CD64E79C941D86966FCF" />
+      <ComponentRef Id="cmp89DAA8C5C3333A35AC9DBB648EBFD33F" />
       <ComponentRef Id="cmpC903DF8883FD5571C4E1E2CF65DF6E9D" />
       <ComponentRef Id="cmpDF4D72118AD7724EA5E1924710400F1D" />
       <ComponentRef Id="cmp14AC831E280EA6D14DC8044B3D6CE573" />

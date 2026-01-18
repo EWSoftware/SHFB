@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Themed2026PresentationStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/28/2025
-// Note    : Copyright 2025, Eric Woodruff, All rights reserved
+// Updated : 01/17/2026
+// Note    : Copyright 2025-2026, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Themed 2026 presentation style.
 //
@@ -71,7 +71,7 @@ public sealed class Themed2026PresentationStyle : PresentationStyleSettings
             Path.Combine("RootWebsiteContent", "*.*"), String.Empty, [".aspx", ".htm", ".html", ".php"]));
 
         // Add the plug-in dependencies
-        this.PlugInDependencies.Add(new PlugInDependency("Website Table of Contents Generator", null));
+        this.PlugInDependencies.Add(new PlugInDependency("Compact Table of Contents Generator", null));
     }
 
     /// <inheritdoc />
