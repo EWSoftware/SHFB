@@ -204,8 +204,8 @@
             <Component Id="cmp21C8DEAA115D8EB2714B1F978FE36974" Guid="{BC944775-BA95-4135-88E4-CE2FB76E5A50}">
               <File Id="fil85C91A57F4707F4B55F87269C79FA4A9" KeyPath="yes" Source="$(var.RootFolder)\Components\Default2022\scripts\highlight.min.js" />
             </Component>
-            <Component Id="cmpC2E654D08FE89DA0A19E0186FDC6B54C" Guid="{CBCE40AB-993E-49EB-A1C1-E394CB4B9D65}">
-              <File Id="filF7892BCD52DA4EE042E2DC97220DA19C" KeyPath="yes" Source="$(var.RootFolder)\Components\Default2022\scripts\jquery-3.5.1.min.js" />
+            <Component Id="cmp4F4F87D412F1E60F0381F211B541CE7F" Guid="{EBBEDC0D-3CEA-401E-9667-E942DAD4ABB9}">
+              <File Id="filEBCF4A0FFF3E3D0A7EE4BF8CD5021B64" KeyPath="yes" Source="$(var.RootFolder)\Components\Default2022\scripts\jquery-3.7.1.min.js" />
             </Component>
             <Component Id="cmp0D93B31B3CB97444D3403A7F45127199" Guid="{551D4DA2-BE58-44F3-B05A-D16D6DA42440}">
               <File Id="filB65B0C73F6F21A49F406CB41FFBE26F2" KeyPath="yes" Source="$(var.RootFolder)\Components\Default2022\scripts\presentationStyle.js" />
@@ -741,8 +741,8 @@
             <Component Id="cmp0C7A1D8E65F82294EC73D3E262861FA8" Guid="{9D3CEC7C-9472-4235-9C1E-98F1E7D3617D}">
               <File Id="fil75B0E9834157E9601B9FD266EB7EF189" KeyPath="yes" Source="$(var.RootFolder)\Components\Themed2026\scripts\highlight.min.js" />
             </Component>
-            <Component Id="cmpBA93C2873E5B13A41647E694F09DEC61" Guid="{660D51B1-FB68-4EC8-83C4-5BA6B50FEBDB}">
-              <File Id="fil99CB3C778C2AC970D64C46A6ED43F98B" KeyPath="yes" Source="$(var.RootFolder)\Components\Themed2026\scripts\jquery-3.5.1.min.js" />
+            <Component Id="cmpF5B2F64BDB5D97EAC63DCD9E31519ACF" Guid="{C6A52ED4-66A4-4E41-BE3E-9F3293B66F0C}">
+              <File Id="filC4D9E8E9DCD9F42872CCC4C9781ABD32" KeyPath="yes" Source="$(var.RootFolder)\Components\Themed2026\scripts\jquery-3.7.1.min.js" />
             </Component>
             <Component Id="cmp301D5EC72EA5E159BDCCC27BA474B61B" Guid="{DC7D8870-F157-4B69-A9EF-F3B1A1608B33}">
               <File Id="fil06E3A0BFD97B4D5A671DA421B42FB2DE" KeyPath="yes" Source="$(var.RootFolder)\Components\Themed2026\scripts\lunr.de.js" />
@@ -1097,8 +1097,8 @@
               <Component Id="cmpB125535183F091CE9D2E60043FF282D5" Guid="{99A27CBE-5A50-460B-919A-8CC54AAE5C43}">
                 <File Id="fil359CBCEB92C8029682BB4F963EF7190E" KeyPath="yes" Source="$(var.RootFolder)\Components\VS2013\Web\scripts\clipboard.min.js" />
               </Component>
-              <Component Id="cmp4F629A7600BB10ABFF787A6D87C40F98" Guid="{7C9999B6-608E-448D-A488-F4A989A07619}">
-                <File Id="fil2CDCEB61DFC861CFD621D8B2D6012EEC" KeyPath="yes" Source="$(var.RootFolder)\Components\VS2013\Web\scripts\jquery-3.5.1.min.js" />
+              <Component Id="cmp0171087EF1D300C20607D634343960F2" Guid="{2AE5598C-870B-48DA-A4C1-E1273FAEDC41}">
+                <File Id="fil930634FF1A4E1C1DD860ED7AA5BED518" KeyPath="yes" Source="$(var.RootFolder)\Components\VS2013\Web\scripts\jquery-3.7.1.min.js" />
               </Component>
             </Directory>
           </Directory>
@@ -4236,7 +4236,7 @@
       <ComponentRef Id="cmp100A69B0C30047DB955CEFFC05413273" />
       <ComponentRef Id="cmpE3A3F7F6C4083003805C2416FC56C5B9" />
       <ComponentRef Id="cmp21C8DEAA115D8EB2714B1F978FE36974" />
-      <ComponentRef Id="cmpC2E654D08FE89DA0A19E0186FDC6B54C" />
+      <ComponentRef Id="cmp4F4F87D412F1E60F0381F211B541CE7F" />
       <ComponentRef Id="cmp0D93B31B3CB97444D3403A7F45127199" />
       <ComponentRef Id="cmpF599308BB8B7B4FEA7DF39C12C027DE6" />
       <ComponentRef Id="cmpC5E68655A56CE622A60177563FA1A4D6" />
@@ -4395,7 +4395,7 @@
       <ComponentRef Id="cmp01AE45B3AB328DED0B25335DAE14C032" />
       <ComponentRef Id="cmp896DF34C219E0D92FE5283E865379238" />
       <ComponentRef Id="cmp0C7A1D8E65F82294EC73D3E262861FA8" />
-      <ComponentRef Id="cmpBA93C2873E5B13A41647E694F09DEC61" />
+      <ComponentRef Id="cmpF5B2F64BDB5D97EAC63DCD9E31519ACF" />
       <ComponentRef Id="cmp301D5EC72EA5E159BDCCC27BA474B61B" />
       <ComponentRef Id="cmpF09009F2AF061E28F18711580913851C" />
       <ComponentRef Id="cmpDC46E58B65406C2893F57968A997A948" />
@@ -4506,7 +4506,7 @@
       <ComponentRef Id="cmp8A7D9D72A60891B104B9EB560A90608E" />
       <ComponentRef Id="cmpBB29AAB4810CF091E75D524291221E8F" />
       <ComponentRef Id="cmpB125535183F091CE9D2E60043FF282D5" />
-      <ComponentRef Id="cmp4F629A7600BB10ABFF787A6D87C40F98" />
+      <ComponentRef Id="cmp0171087EF1D300C20607D634343960F2" />
       <ComponentRef Id="cmpAE0CC5B288EC72FA2D60B03199172CED" />
       <ComponentRef Id="cmpF6E89573D4179CE57D760FE0D7E0BBA3" />
       <ComponentRef Id="cmpBE27464EB907C506340CB16E9FA176E0" />

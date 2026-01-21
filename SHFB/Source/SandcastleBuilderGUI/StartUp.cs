@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : StartUp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2025
-// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
+// Updated : 01/19/2026
+// Note    : Copyright 2006-2026, Eric Woodruff, All rights reserved
 //
 // This application provides a GUI that is used to edit configuration files that can be used to build HTML
 // documentation help files using Sandcastle.
@@ -19,6 +19,7 @@
 //===============================================================================================================
 
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 using Microsoft.Build.Locator;
@@ -26,48 +27,51 @@ using Microsoft.Build.Locator;
 using Sandcastle.Core;
 using SandcastleBuilder.Gui.Properties;
 
-namespace SandcastleBuilder.Gui
+namespace SandcastleBuilder.Gui;
+
+/// <summary>
+/// This class contains the main entry point and other start up code.
+/// </summary>
+public static class StartUp
 {
     /// <summary>
-    /// This class contains the main entry point and other start up code.
+    /// The main entry point for the application.
     /// </summary>
-    public static class StartUp
+    /// <param name="args">Command line arguments</param>
+    [STAThread]
+    private static void Main(string[] args)
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        /// <param name="args">Command line arguments</param>
-        [STAThread]
-        private static void Main(string[] args)
+        string projectToLoad = (args.Length == 0) ? null : args[0];
+
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
+
+        // Bring forward user preferences after a version update
+        if(!Settings.Default.SettingsUpgraded)
         {
-            string projectToLoad = (args.Length == 0) ? null : args[0];
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            // Bring forward user preferences after a version update
-            if(!Settings.Default.SettingsUpgraded)
-            {
-                Settings.Default.Upgrade();
-                Settings.Default.SettingsUpgraded = true;
-                Settings.Default.Save();
-            }
-
-            try
-            {
-                MSBuildLocator.RegisterDefaults();
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Unable to register MSBuild defaults: " + ex.Message + "\r\n\r\nYou probably " +
-                    "need to install the Microsoft Build Tools for Visual Studio 2022 or later.\r\n\r\n" +
-                    "As an alternative, if you have Visual Studio 2022 or later and have installed the help " +
-                    "file builder package, use it to manage the project.", Constants.AppName,
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-
-            Application.Run(new MainForm(projectToLoad));
+            Settings.Default.Upgrade();
+            Settings.Default.SettingsUpgraded = true;
+            Settings.Default.Save();
         }
+
+        try
+        {
+            // We only support Visual Studio 2022 or later
+            var instance = MSBuildLocator.QueryVisualStudioInstances().FirstOrDefault(i => i.Version.Major >= 17) ??
+                throw new InvalidOperationException("Minimum version not found");
+
+            MSBuildLocator.RegisterInstance(instance);
+        }
+        catch(Exception ex)
+        {
+            MessageBox.Show("Unable to register MSBuild defaults: " + ex.Message + "\r\n\r\nYou probably " +
+                "need to install the Microsoft Build Tools for Visual Studio 2022 or later.\r\n\r\n" +
+                "As an alternative, if you have Visual Studio 2022 or later and have installed the help " +
+                "file builder package, use it to manage the project.", Constants.AppName,
+                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            return;
+        }
+
+        Application.Run(new MainForm(projectToLoad));
     }
 }

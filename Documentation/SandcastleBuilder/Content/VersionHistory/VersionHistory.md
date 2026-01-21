@@ -14,6 +14,7 @@ project such as modifications to build component and plug-in configurations.
 See the [](@bc933f8f-e792-45bf-afec-62aa2c46aa3b) topic for information on updating third-party components,
 plug-ins, presentation styles, and syntax generators for use with the latest version of the help file builder.
 
+- [](@v2026.1.20.0)
 - [](@v2025.12.18.0)
 - [](@45d01e39-8086-4e10-85e6-69591d26a032)
 - [](@4ba0d138-85d4-4bb5-8b65-08a77f6ee0b3)

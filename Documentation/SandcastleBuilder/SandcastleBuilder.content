@@ -348,7 +348,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" visible="True" isSelected="true" title="Build Process Plug-Ins">
+  <Topic id="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" visible="True" title="Build Process Plug-Ins">
     <HelpKeywords>
       <HelpKeyword index="K" term="plug-ins, configuring" />
       <HelpKeyword index="K" term="plug-ins, overview" />
@@ -1277,6 +1277,7 @@
     </HelpKeywords>
   </Topic>
   <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true">
+    <Topic id="v2026.1.20.0" visible="True" isSelected="true" />
     <Topic id="v2025.12.18.0" visible="True" />
     <Topic id="45d01e39-8086-4e10-85e6-69591d26a032" visible="True" title="Version 2025.9.30.0">
       <HelpKeywords>

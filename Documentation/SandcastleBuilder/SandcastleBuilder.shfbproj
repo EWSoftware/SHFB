@@ -31,11 +31,11 @@
     <FrameworkVersion>.NET Core/.NET Standard/.NET 5.0+</FrameworkVersion>
     <HelpTitle>Sandcastle Help File Builder Documentation</HelpTitle>
     <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
-    <CopyrightText>[v{%40HelpFileVersion}] Copyright \xA9 2006-2025, Eric Woodruff, All rights reserved</CopyrightText>
+    <CopyrightText>[v{%40HelpFileVersion}] Copyright \xA9 2006-2026, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>Themed2026</PresentationStyle>
     <SyntaxFilters>Standard</SyntaxFilters>
-    <HelpFileVersion>2025.12.18.0</HelpFileVersion>
+    <HelpFileVersion>2026.1.20.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -274,6 +274,7 @@
     <None Include="Content\License.md" />
     <None Include="Content\GettingStarted\GeneralPreferences.md" />
     <None Include="Content\VersionHistory\v2025.12.18.0.md" />
+    <None Include="Content\VersionHistory\v2026.1.20.0.md" />
     <None Include="Content\VisualStudio\GoToDefinition.md" />
     <None Include="Content\VisualStudio\VisualStudioTextEditor.md" />
     <None Include="Content\VersionHistory\VersionHistory.md" />

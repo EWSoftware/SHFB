@@ -33,8 +33,8 @@ namespace Sandcastle.PresentationStyles.Themed2026;
 /// </summary>
 [PresentationStyleExport("Themed2026", "Themed 2026", Version = AssemblyInfo.ProductVersion,
   Copyright = AssemblyInfo.Copyright, Description = "This is the default presentation style.  It generates " +
-    "website output with a responsive layout, supports switching between light and dark themes, and has an " +
-    "improved full-text search option.")]
+    "website output with a responsive layout, supports switching between light and dark themes, has an " +
+    "improved full-text search option, and stores the table of contents information in a more compact format.")]
 public sealed class Themed2026PresentationStyle : PresentationStyleSettings
 {
     /// <inheritdoc />
