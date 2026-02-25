@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : StandardDocumentModel.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/30/2025
-// Note    : Copyright 2021-2025, Eric Woodruff, All rights reserved
+// Updated : 02/24/2026
+// Note    : Copyright 2021-2026, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to modify the reflection information file by adding elements needed for the
 // standard documentation model.
@@ -318,8 +318,8 @@ public class StandardDocumentModel : IApplyDocumentModel
         var typeNode = apiMembers[type.Attribute("api").Value];
         string overloadId = DetermineOverloadId(typeNode, memberNode);
 
-        if(typeNode.Node.Element("elements").Elements("element").Any(
-          el => el.Attribute("api").Value == overloadId))
+        if(typeNode.Node.Element("elements")?.Elements("element").Any(
+          el => el.Attribute("api").Value == overloadId) ?? false)
         {
             memberData.Add(new XAttribute("overload", overloadId));
         }

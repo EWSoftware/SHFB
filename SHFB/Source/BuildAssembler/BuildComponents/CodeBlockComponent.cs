@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/03/2025
-// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
+// Updated : 02/24/2026
+// Note    : Copyright 2006-2026, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to search for <code> XML comment tags and colorize the code
 // within them.  It can also include code from an external file or a region within the file.
@@ -264,6 +264,10 @@ public class CodeBlockComponent : BuildComponentCore
     // XPath queries
     private XPathExpression referenceRoot, referenceCode, conceptualRoot, conceptualCode, nestedRefCode,
         nestedConceptCode;
+
+    private static readonly HashSet<string> codeContainers = new(["alert", "content", "definition", "entry",
+        "example", "introduction", "listItem"]);
+
     #endregion
 
     #region Constructor
@@ -377,13 +381,8 @@ public class CodeBlockComponent : BuildComponentCore
         }
 
         // The <colorizer> element is required and defines the defaults for the code colorizer
-        nav = configuration.SelectSingleNode("colorizer");
-
-        if(nav == null)
-        {
-            throw new ArgumentException("You must specify a <colorizer> element to define the code " +
-                "colorizer options.", nameof(configuration));
-        }
+        nav = configuration.SelectSingleNode("colorizer") ?? throw new ArgumentException(
+            "You must specify a <colorizer> element to define the code colorizer options.", nameof(configuration));
 
         // The file and URL values are all required
         syntaxFile = nav.GetAttribute("syntaxFile", String.Empty).CorrectFilePathSeparators();
@@ -610,9 +609,12 @@ public class CodeBlockComponent : BuildComponentCore
             code = ((IHasXmlNode)navCode).GetNode();
 
             // If the parent is null, it was a nested node and has already been handled.  If there are no
-            // attributes, assume it's a code inline element and skip it.
-            if(code.ParentNode == null || code.Attributes.Count == 0)
+            // attributes and it's not in a code container, assume it's a code inline element and skip it.
+            if(code.ParentNode == null || (code.Attributes.Count == 0 && !codeContainers.Contains(
+              code.ParentNode.LocalName)))
+            {
                 continue;
+            }
 
             // Set the defaults
             language = defaultLanguage;
