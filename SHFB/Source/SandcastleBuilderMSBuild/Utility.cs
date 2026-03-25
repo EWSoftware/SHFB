@@ -91,7 +91,7 @@ namespace SandcastleBuilder.MSBuild
                 /*
                 netstandardx.x  .NETStandard vx.x
                 netcoreappx.x   .NETCoreApp vx.x
-                netx.x          .NETCoreApp vx.x
+                netxx.x          .NETCoreApp vxx.x
                 netxxx          .NETFramework vx.x[.x]  (.NET 1.0 - 4.8, may be three digits such as net451)
                 */
                 if(targetFramework.StartsWith("netstandard", StringComparison.OrdinalIgnoreCase))
@@ -103,7 +103,9 @@ namespace SandcastleBuilder.MSBuild
                 if(targetFramework.StartsWith("net", StringComparison.OrdinalIgnoreCase) &&
                   targetFramework.Length > 3 && Char.IsDigit(targetFramework[3]))
                 {
-                    if(targetFramework.Length > 5 && targetFramework[4] == '.')
+                    if(targetFramework.Length > 5 && (
+                        targetFramework[4] == '.' || /*<=net8*/
+                        targetFramework[5] == '.'))/*>=net10*/
                     {
                         string version = targetFramework.Substring(3);
                         int pos = version.IndexOf('-');
