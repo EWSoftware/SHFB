@@ -60,6 +60,7 @@
 		<PackageReference Include="Microsoft.Build.Utilities.Core">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
+		<PackageReference Include="NuGet.Frameworks" />
 		<PackageReference Include="SixLabors.ImageSharp" />
 		<PackageReference Include="System.IO.Compression" />
 	</ItemGroup>

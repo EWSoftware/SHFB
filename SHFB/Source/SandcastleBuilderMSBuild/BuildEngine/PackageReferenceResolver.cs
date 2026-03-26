@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : PackageReferenceResolver.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/30/2025
-// Note    : Copyright 2017-2025, Eric Woodruff, All rights reserved
+// Updated : 03/25/2026
+// Note    : Copyright 2017-2026, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to resolve PackageReference elements in MSBuild project files
 //
@@ -24,6 +24,8 @@ using System.Linq;
 using System.Text.Json;
 
 using Microsoft.Build.Evaluation;
+
+using NuGet.Frameworks;
 
 using Sandcastle.Core;
 using Sandcastle.Core.BuildEngine;
@@ -97,9 +99,9 @@ public class PackageReferenceResolver
     {
         this.buildProcess = buildProcess;
 
-        resolvedDependencies = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        packageReferences = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        implicitPackageFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        resolvedDependencies = new(StringComparer.OrdinalIgnoreCase);
+        packageReferences = new(StringComparer.OrdinalIgnoreCase);
+        implicitPackageFolders = new(StringComparer.OrdinalIgnoreCase);
     }
     #endregion
 
@@ -163,11 +165,9 @@ public class PackageReferenceResolver
 
                         if(!allTargets.TryGetValue(targetFramework, out JsonProperty match))
                         {
-                            var (tfi, v) = targetFramework.IdentifierAndVersionFromTargetFramework();
+                            var tfi = NuGetFramework.Parse(targetFramework);
 
-                            string tfName = $"{tfi},Version=v{v}";
-
-                            if(!allTargets.TryGetValue(tfName, out match))
+                            if(!allTargets.TryGetValue(tfi.DotNetFrameworkName, out match))
                             {
                                 // Try for a key that starts with the target framework (e.g net6.0-windows7.0
                                 // for net6.0-windows.
@@ -331,7 +331,7 @@ public class PackageReferenceResolver
                 }
             }
         }
-        
+
         return packages != null && packageReferences.Count != 0 || implicitPackageFolders.Count != 0;
     }
 
@@ -347,6 +347,7 @@ public class PackageReferenceResolver
         HashSet<string> references = new(StringComparer.OrdinalIgnoreCase);
 
         foreach(var p in referencesToResolve)
+        {
             try
             {
                 JsonElement? match = null;
@@ -448,6 +449,7 @@ public class PackageReferenceResolver
                 buildProcess.ReportWarning("BE0011", "Unable to load package reference information for " +
                     "'{0}' in '{1}'.  Reason: {2}", p, projectFilename, ex.Message);
             }
+        }
 
         return references;
     }

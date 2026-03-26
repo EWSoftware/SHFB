@@ -3751,7 +3751,10 @@
         <Component Id="cmp98CD188F65B09C44664E9A82F367ED64" Guid="{FAFCE673-4DA1-4CEE-9A37-B63A5DDB44FD}">
           <File Id="filEC09CACF16C9A7400B173834BA594324" KeyPath="yes" Source="$(var.RootFolder)\net48\MRefBuilder.dll" />
         </Component>
-        <Component Id="cmpD4DD6A0F554001D24CB088FFAF22DBC9" Guid="{05172011-8401-4632-8F91-381D84D9989D}">
+        <Component Id="cmp74FA4B250BDD1736BE64599E249552C4" Guid="{2A0FC49E-4EE7-4516-AFEA-3B642491EE97}">
+          <File Id="fil581411B387D74FF17657EDFDBE140435" KeyPath="yes" Source="$(var.RootFolder)\net48\NuGet.Frameworks.dll" />
+        </Component>
+        <Component Id="cmpD4DD6A0F554001D24CB088FFAF22DBC9" Guid="{98959A92-822B-4CE1-84B1-1020D63D9B9B}">
           <File Id="fil6A561A1F867842902908E3CE1D257BD6" KeyPath="yes" Source="$(var.RootFolder)\net48\Sandcastle.Core.dll" />
         </Component>
         <Component Id="cmpD431A71524C3C5ED3856E62C8657C65B" Guid="{4E47005F-2634-42CC-A2C7-5E95C473F50D}">
@@ -3813,7 +3816,10 @@
         <Component Id="cmp40D52A21DD389FF12B61A3C0BC419AD3" Guid="{4A922670-C2CB-4CA8-8E07-0040F20A68D4}">
           <File Id="fil2A1C7F96F5093AA52F1D73D269B978FE" KeyPath="yes" Source="$(var.RootFolder)\net9.0\MRefBuilder.dll" />
         </Component>
-        <Component Id="cmpE8FCEED428548D4FF06A54DF8745D2EC" Guid="{0E19BB40-7165-421E-AC59-2CD983F3BD3E}">
+        <Component Id="cmp853ACB41CD15B7CF4EBEFAF320B1164D" Guid="{D9A792A6-9538-4BE8-A58B-68ED233D7BF8}">
+          <File Id="filEBD4DB022ABED825BF38C4389B7CDC41" KeyPath="yes" Source="$(var.RootFolder)\net9.0\NuGet.Frameworks.dll" />
+        </Component>
+        <Component Id="cmpE8FCEED428548D4FF06A54DF8745D2EC" Guid="{392E9463-E3D4-4DC9-90D5-EB3E4739305F}">
           <File Id="filB5E8FA181E28BD3907F5A3A5D94EDCEA" KeyPath="yes" Source="$(var.RootFolder)\net9.0\Sandcastle.Core.dll" />
         </Component>
         <Component Id="cmpC72657182B30465C93EDE66D134B3C5E" Guid="{24410164-4FA1-41DE-87C7-1C8A06EE495F}">
@@ -4000,7 +4006,10 @@
         <Component Id="cmp1648D9011F1DF438EA0379A68B298A4D" Guid="{CF3793E1-F947-4BDF-BEF2-68DEFA1A18C8}">
           <File Id="fil0D7B36F515D9E4FA8386CEF5C5571C44" KeyPath="yes" Source="$(var.RootFolder)\Tools\Microsoft.Build.Locator.dll" />
         </Component>
-        <Component Id="cmpED76CEFAEC1A46A71C661A9DC3031FD8" Guid="{03B4B186-EBD4-41B6-804A-5E45C81F30A6}">
+        <Component Id="cmpA8F3944BF0360C5A5CAC068833CE76B8" Guid="{C0B92ED3-B4A1-4912-A7A1-B304D24AAFDE}">
+          <File Id="fil7870B9D4463725E11BF431FB6F42C97E" KeyPath="yes" Source="$(var.RootFolder)\Tools\NuGet.Frameworks.dll" />
+        </Component>
+        <Component Id="cmpED76CEFAEC1A46A71C661A9DC3031FD8" Guid="{97EE3FFE-731B-4CFC-A25D-986BCEB9BF0C}">
           <File Id="filD1CC484F1F26D68FD333EB06D5B34732" KeyPath="yes" Source="$(var.RootFolder)\Tools\ReflectionDataManager.exe" />
         </Component>
         <Component Id="cmp5A0463A71AC132665A24DD699DE72ED3" Guid="{B634914C-3E45-4B80-BF35-BC5D0CB09C6B}">
@@ -5387,6 +5396,7 @@
       <ComponentRef Id="cmp74627384903BFAF08036746A139121A1" />
       <ComponentRef Id="cmp8D58BD8FA081274AAA8A851E8C21BBE2" />
       <ComponentRef Id="cmp98CD188F65B09C44664E9A82F367ED64" />
+      <ComponentRef Id="cmp74FA4B250BDD1736BE64599E249552C4" />
       <ComponentRef Id="cmpD4DD6A0F554001D24CB088FFAF22DBC9" />
       <ComponentRef Id="cmpD431A71524C3C5ED3856E62C8657C65B" />
       <ComponentRef Id="cmp3065F7D29A202A6A8F944BF0E98CDF4E" />
@@ -5407,6 +5417,7 @@
       <ComponentRef Id="cmp0441D9D28E970D628D93FF7FE7221BCC" />
       <ComponentRef Id="cmpCA2E647DA77D1A13C28FC3D10455F5F9" />
       <ComponentRef Id="cmp40D52A21DD389FF12B61A3C0BC419AD3" />
+      <ComponentRef Id="cmp853ACB41CD15B7CF4EBEFAF320B1164D" />
       <ComponentRef Id="cmpE8FCEED428548D4FF06A54DF8745D2EC" />
       <ComponentRef Id="cmpC72657182B30465C93EDE66D134B3C5E" />
       <ComponentRef Id="cmpFDA20BE2BBED9B031BD83B5DB0A7EED9" />
@@ -5464,6 +5475,7 @@
       <ComponentRef Id="cmp6229A4FA3841C39EB954F9793B838087" />
       <ComponentRef Id="cmp3C825E3EB374C2F2BD453301A81B405D" />
       <ComponentRef Id="cmp1648D9011F1DF438EA0379A68B298A4D" />
+      <ComponentRef Id="cmpA8F3944BF0360C5A5CAC068833CE76B8" />
       <ComponentRef Id="cmpED76CEFAEC1A46A71C661A9DC3031FD8" />
       <ComponentRef Id="cmp5A0463A71AC132665A24DD699DE72ED3" />
       <ComponentRef Id="cmpA0DFA4D0EB2E147AFD38AA333303754C" />
