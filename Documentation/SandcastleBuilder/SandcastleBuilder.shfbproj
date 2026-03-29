@@ -35,7 +35,7 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>Themed2026</PresentationStyle>
     <SyntaxFilters>Standard</SyntaxFilters>
-    <HelpFileVersion>2026.1.20.0</HelpFileVersion>
+    <HelpFileVersion>2026.3.29.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -275,6 +275,7 @@
     <None Include="Content\GettingStarted\GeneralPreferences.md" />
     <None Include="Content\VersionHistory\v2025.12.18.0.md" />
     <None Include="Content\VersionHistory\v2026.1.20.0.md" />
+    <None Include="Content\VersionHistory\v2026.3.29.0.md" />
     <None Include="Content\VisualStudio\GoToDefinition.md" />
     <None Include="Content\VisualStudio\VisualStudioTextEditor.md" />
     <None Include="Content\VersionHistory\VersionHistory.md" />

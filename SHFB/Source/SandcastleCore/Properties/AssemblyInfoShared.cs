@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AssemblyInfoShared.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/20/2026
+// Updated : 03/29/2026
 // Note    : Copyright 2006-2026, Eric Woodruff, All rights reserved
 //
 // Sandcastle Tools common assembly attributes.
@@ -69,13 +69,13 @@ internal static partial class AssemblyInfo
     //
     // This is used to set the assembly file version.  This will change with each new release.  MSIs only
     // support a Major value between 0 and 255 so we drop the century from the year on this one.
-    public const string FileVersion = "26.1.20.0";
+    public const string FileVersion = "26.3.29.0";
 
     // Common product version
     //
     // This may contain additional text to indicate Alpha or Beta states.  The version number will always match
     // the file version above but includes the century on the year.
-    public const string ProductVersion = "2026.1.20.0";
+    public const string ProductVersion = "2026.3.29.0";
 
     // Assembly copyright information
     public const string Copyright = "Portions Copyright \xA9 2006-2026, Microsoft Corporation, All Rights Reserved.\r\n" +
