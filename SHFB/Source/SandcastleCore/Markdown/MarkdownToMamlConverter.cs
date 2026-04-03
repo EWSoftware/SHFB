@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : MarkdownToMamlConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/03/2025
-// Note    : Copyright 2025, Eric Woodruff, All rights reserved
+// Updated : 04/02/2026
+// Note    : Copyright 2025-2026, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to convert Markdown content to MAML format for the build
 //
@@ -130,7 +130,9 @@ public class MarkdownToMamlConverter
     /// <returns>The MAML representation of the Markdown content</returns>
     public string ConvertFromFile(string id, string markdownFile)
     {
-        return ConvertFromMarkdown(id, File.ReadAllText(markdownFile));
+        var m = new MarkdownFile(markdownFile);
+
+        return ConvertFromMarkdown(id, m.Content);
     }
 
     /// <summary>

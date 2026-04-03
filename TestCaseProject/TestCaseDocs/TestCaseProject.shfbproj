@@ -270,6 +270,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Bibliography.xml" />
+    <None Include="Content\BlockIncludeContent.md" />
+    <None Include="Content\InlineIncludeContent.md" />
+    <None Include="Content\TestMarkdownContent.md" />
     <None Include="Content\CommonInline\lineBreak.aml" />
     <None Include="Content\GlossaryWithDivs.aml" />
     <None Include="Content\MiscElements\markup.aml" />

@@ -2,10 +2,11 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : MarkdownFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/26/2025
-// Note    : Copyright 2025, Eric Woodruff, All rights reserved
+// Updated : 04/02/2026
+// Note    : Copyright 2025-2026, Eric Woodruff, All rights reserved
 //
-// This file contains a class used to parse metadata from a Markdown file
+// This file contains a class used to parse metadata from a Markdown file and resolve any includes in the
+// content recursively.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
@@ -21,14 +22,24 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Sandcastle.Core.Markdown;
 
 /// <summary>
-/// This class is used to parse metadata from a Markdown file
+/// This class is used to parse metadata from a Markdown file and resolve any includes in the content
+/// recursively.
 /// </summary>
 public class MarkdownFile
 {
+    #region Private data members
+    //=====================================================================
+
+    private static readonly Regex reInclude = new(@"\\?\[!INCLUDE\s+(\[.*?\])?\((?<FilePath>.*?)\)\]",
+        RegexOptions.IgnoreCase);
+
+    #endregion
+
     #region Properties
     //=====================================================================
 
@@ -72,19 +83,63 @@ public class MarkdownFile
     /// </summary>
     public List<string> Keywords { get; set; } = [];
 
+    /// <summary>
+    /// This read-only property is used to get the file content with any includes resolved.
+    /// </summary>
+    public string Content
+    {
+        get
+        {
+            if(String.IsNullOrWhiteSpace(field))
+                this.LoadContent(true);
+
+            return field;
+        }
+        private set;
+    }
+
+    /// <summary>
+    /// This is read-only property returns true if the markdown file has any missing includes
+    /// </summary>
+    public bool HasMissingIncludes { get; private set; }
+
+    /// <summary>
+    /// This is read-only property returns true if the markdown file has any circular reference includes
+    /// </summary>
+    public bool HasCircularReferenceIncludes { get; private set; }
+
     #endregion
 
-    #region Constructor
+    #region Constructors
     //=====================================================================
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="filename">The full path to the Markdown file from which to extract metadata</param>
+    /// <overloads>There are two overloads for the constructor</overloads>
     public MarkdownFile(string filename)
     {
         this.Filename = filename;
         this.ParseMetadata();
+
+        // We don't keep the content since this is typically only called to edit the content layout file which
+        // doesn't need to keep the content around after it has been parsed.
+        this.Content = null;
+    }
+
+    /// <summary>
+    /// This constructor is used for the preview tool window
+    /// </summary>
+    /// <param name="filename">The full path to the Markdown file from which to extract metadata</param>
+    /// <param name="content">The content to use instead of the file content</param>
+    /// <remarks>This allows previewing content from an open editor window while still allowing for resolution
+    /// of include directives.</remarks>
+    public MarkdownFile(string filename, string content)
+    {
+        this.Filename = filename;
+        this.Content = content;
+        this.LoadContent(false);
     }
     #endregion
 
@@ -128,12 +183,19 @@ public class MarkdownFile
     {
         if(File.Exists(this.Filename))
         {
-            var lines = File.ReadAllLines(this.Filename);
-            int lineIndex = 1, endIndex = lines.Length;
+            this.LoadContent(true);
+
+            using var sr = new StringReader(this.Content);
+            var lines = new List<string>();
+
+            while(sr.Peek() != -1)
+                lines.Add(sr.ReadLine());
+
+            int lineIndex = 1, endIndex = lines.Count;
 
             if(lines[0] == "---")
             {
-                while(lineIndex < lines.Length)
+                while(lineIndex < lines.Count)
                 {
                     if(lines[lineIndex] == "---")
                     {
@@ -201,12 +263,12 @@ public class MarkdownFile
 
             if(String.IsNullOrWhiteSpace(this.Title))
             {
-                lineIndex = (endIndex == lines.Length) ? 0 : endIndex + 1;
+                lineIndex = (endIndex == lines.Count) ? 0 : endIndex + 1;
 
-                while(lineIndex < lines.Length && lines[lineIndex].Length > 1 && lines[lineIndex][0] != '#')
+                while(lineIndex < lines.Count && lines[lineIndex].Length > 1 && lines[lineIndex][0] != '#')
                     lineIndex++;
 
-                if(lineIndex < lines.Length)
+                if(lineIndex < lines.Count)
                 {
                     endIndex = 1;
 
@@ -301,6 +363,72 @@ public class MarkdownFile
                 yield return lastItem;
 
         }
+    }
+
+    /// <summary>
+    /// Load the file content and resolve any includes recursively
+    /// </summary>
+    /// <param name="fromFile">True to load the content from the file or false to use the assigned content</param>
+    private void LoadContent(bool fromFile)
+    {
+        if(fromFile && !String.IsNullOrWhiteSpace(this.Filename))
+            this.Content = File.ReadAllText(this.Filename);
+
+        HashSet<string> includeChain = new(StringComparer.OrdinalIgnoreCase) { this.Filename };
+
+        this.Content = this.ResolveIncludes(this.Content, Path.GetDirectoryName(this.Filename)!, includeChain);
+    }
+
+    /// <summary>
+    /// Recursively resolve includes in the given content, skipping missing files and any files already in the
+    /// include chain to prevent circular references.
+    /// </summary>
+    /// <param name="content">The content in which to resolve includes</param>
+    /// <param name="basePath">The directory of the file that owns this content.  Any relative paths are
+    /// assumed to be relative to this base path.</param>
+    /// <param name="includeChain">The set of files that have already been seen.  This is used to detect circular
+    /// references.</param>
+    /// <returns>The content with all includes resolved</returns>
+    private string ResolveIncludes(string content, string basePath, HashSet<string> includeChain)
+    {
+        if(String.IsNullOrWhiteSpace(content))
+            return String.Empty;
+
+        // A match evaluator is used so that each include directive can be processed and replaced without
+        // affecting any others that may be present in the content (i.e. includes and escaped includes that
+        // reference the same file).
+        return reInclude.Replace(content, match =>
+        {
+            // Ignore escaped include directives and let them pass through as a literal
+            if(match.Value.StartsWith("\\", StringComparison.Ordinal))
+                return match.Value.Substring(1);
+
+            string includeFile = match.Groups["FilePath"].Value.CorrectFilePathSeparators();
+
+            if(!Path.IsPathRooted(includeFile))
+                includeFile = Path.GetFullPath(Path.Combine(basePath, includeFile));
+
+            if(!File.Exists(includeFile))
+            {
+                this.HasMissingIncludes = true;
+                return $"**!! Missing include file: {includeFile}**";
+            }
+
+            if(includeChain.Contains(includeFile))
+            {
+                this.HasCircularReferenceIncludes = true;
+                return $"**!! Circular reference detected for file: {includeFile}\r\n" +
+                    $"File chain:{String.Join("\r\n  -> ", includeChain)}**";
+            }
+
+            string includeContent = File.ReadAllText(includeFile);
+
+            includeChain.Add(includeFile);
+            includeContent = ResolveIncludes(includeContent, Path.GetDirectoryName(includeFile)!, includeChain);
+            includeChain.Remove(includeFile);
+
+            return includeContent;
+        });
     }
     #endregion
 }

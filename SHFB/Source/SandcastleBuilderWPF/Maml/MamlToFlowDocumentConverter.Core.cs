@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Core.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/08/2025
-// Note    : Copyright 2012-2025, Eric Woodruff, All rights reserved
+// Updated : 04/02/2026
+// Note    : Copyright 2012-2026, Eric Woodruff, All rights reserved
 //
 // This file contains the core methods of the class used to convert a MAML topic file to a flow document so that
 // it can be previewed in the standalone GUI and Visual Studio.
@@ -142,14 +142,14 @@ public partial class MamlToFlowDocumentConverter
     /// </summary>
     public MamlToFlowDocumentConverter(IEnumerable<string> blockTags, IEnumerable<string> doNotParseTags)
     {
-        this.Tokens = new Dictionary<string, XElement>(StringComparer.OrdinalIgnoreCase);
-        this.TopicTitles = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        this.MediaFiles = new Dictionary<string, KeyValuePair<string, string>>(StringComparer.OrdinalIgnoreCase);
+        this.Tokens = new(StringComparer.OrdinalIgnoreCase);
+        this.TopicTitles = new(StringComparer.OrdinalIgnoreCase);
+        this.MediaFiles = new(StringComparer.OrdinalIgnoreCase);
 
-        parentBlocks = new Stack<TextElement>();
-        parentSpans = new Stack<Span>();
+        parentBlocks = [];
+        parentSpans = [];
 
-        markdownToMaml = new MarkdownToMamlConverter(true, blockTags, doNotParseTags);
+        markdownToMaml = new(true, blockTags, doNotParseTags);
         markdownToMaml.SetUpPipeline();
     }
     #endregion
@@ -185,7 +185,10 @@ public partial class MamlToFlowDocumentConverter
                     if(String.IsNullOrEmpty(content))
                         mamlDoc = XDocument.Parse(markdownToMaml.ConvertFromFile(id, filename));
                     else
-                        mamlDoc = XDocument.Parse(markdownToMaml.ConvertFromMarkdown(id, content));
+                    {
+                        var m = new MarkdownFile(filename, content);
+                        mamlDoc = XDocument.Parse(markdownToMaml.ConvertFromMarkdown(id, m.Content));
+                    }
                 }
                 else
                 {

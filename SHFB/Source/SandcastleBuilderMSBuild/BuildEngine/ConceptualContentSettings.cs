@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : ConceptualContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/05/2025
-// Note    : Copyright 2008-2025, Eric Woodruff, All rights reserved
+// Updated : 04/02/2026
+// Note    : Copyright 2008-2026, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to hold the conceptual content for a project during a build
 //
@@ -373,7 +373,23 @@ public class ConceptualContentSettings : IConceptualContentSettings
                 File.SetAttributes(destFile, FileAttributes.Normal);
             }
             else
-                File.WriteAllText(destFile, builder.MarkdownToMamlConverter.ConvertFromFile(t.Id, t.TopicFile.FullPath));
+            {
+                if(t.TopicFile.MarkdownFile.HasMissingIncludes)
+                {
+                    builder.ReportWarning("BE0076", "The conceptual topic file '{0}' with ID '{1}' has missing " +
+                        "includes.  The generated topic file may be incomplete.", t.TopicFile.FullPath, t.Id);
+                }
+
+                if(t.TopicFile.MarkdownFile.HasCircularReferenceIncludes)
+                {
+                    builder.ReportWarning("BE0077", "The conceptual topic file '{0}' with ID '{1}' has circular " +
+                        "reference includes.  The generated topic file may be incomplete.", t.TopicFile.FullPath,
+                        t.Id);
+                }
+
+                File.WriteAllText(destFile, builder.MarkdownToMamlConverter.ConvertFromMarkdown(t.Id,
+                    t.TopicFile.MarkdownFile.Content));
+            }
 
             // Add referenced namespaces to the build process
             var rn = builder.ReferencedNamespaces;

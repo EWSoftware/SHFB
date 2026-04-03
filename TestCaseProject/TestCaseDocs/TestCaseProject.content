@@ -16,6 +16,7 @@
       <HelpKeyword index="K" term="Issues" />
     </HelpKeywords>
   </Topic>
+  <Topic id="TestMarkdownContent" visible="True" isSelected="true" />
   <Topic id="86752a38-eba3-4174-bcbf-79ec8428ecf9" visible="True" title="Conceptual Content File Types">
     <HelpKeywords>
       <HelpKeyword index="K" term="File Types" />
@@ -141,7 +142,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="b32a73b8-fc26-4c98-912c-d595fc1a17c2" visible="True" isExpanded="true" title="Block Elements">
+  <Topic id="b32a73b8-fc26-4c98-912c-d595fc1a17c2" visible="True" title="Block Elements">
     <HelpKeywords>
       <HelpKeyword index="K" term="Block Elements" />
     </HelpKeywords>
@@ -209,7 +210,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="b96d95c0-ec3c-4846-998a-4b43548bfa0e" visible="True" isExpanded="true" title="Common Inline Elements">
+  <Topic id="b96d95c0-ec3c-4846-998a-4b43548bfa0e" visible="True" title="Common Inline Elements">
     <HelpKeywords>
       <HelpKeyword index="K" term="Common Inline Elements" />
     </HelpKeywords>
@@ -228,7 +229,7 @@
         <HelpKeyword index="K" term="Common Inline Elements, command" />
       </HelpKeywords>
     </Topic>
-    <Topic id="3d8f783c-27b7-4172-b496-cde4fa57b40b" visible="True" noFile="true" isExpanded="true" isSelected="true" title="Test Empty Container Node">
+    <Topic id="3d8f783c-27b7-4172-b496-cde4fa57b40b" visible="True" noFile="true" title="Test Empty Container Node">
       <Topic id="b433ede9-8813-4020-b5dd-74b3204ebe0c" visible="True" title="computerOutputInline">
         <HelpKeywords>
           <HelpKeyword index="K" term="Common Inline Elements, computerOutputInline" />
@@ -391,7 +392,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="9d0dc122-7829-4b22-af2e-6685867116f8" visible="True" isExpanded="true" title="Miscellaneous Elements">
+  <Topic id="9d0dc122-7829-4b22-af2e-6685867116f8" visible="True" title="Miscellaneous Elements">
     <HelpKeywords>
       <HelpKeyword index="K" term="Miscellaneous Elements" />
     </HelpKeywords>
@@ -438,7 +439,7 @@
       <HelpKeyword index="K" term="support, tools" />
     </HelpKeywords>
   </Topic>
-  <Topic id="ba47a67c-4825-4fcd-b806-2b2e02d4373a" visible="True" title="Version History">
+  <Topic id="ba47a67c-4825-4fcd-b806-2b2e02d4373a" visible="True" isExpanded="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version history" />
