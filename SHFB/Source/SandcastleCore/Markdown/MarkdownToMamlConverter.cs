@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : MarkdownToMamlConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/03/2025
-// Note    : Copyright 2025, Eric Woodruff, All rights reserved
+// Updated : 04/05/2026
+// Note    : Copyright 2025-2026, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to convert Markdown content to MAML format for the build
 //
@@ -15,6 +15,7 @@
 //    Date     Who  Comments
 // ==============================================================================================================
 // 11/25/2025  EFW  Created the code
+// 04/05/2026  JMC  Updated to use the new inclusion extension
 //===============================================================================================================
 
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ using Markdig;
 using Markdig.Parsers;
 
 using Sandcastle.Core.Markdown.Extensions;
+using Sandcastle.Core.Markdown.Extensions.Inclusion;
 using Sandcastle.Core.Markdown.Parsers;
 using Sandcastle.Core.Markdown.Renderers;
 
@@ -95,6 +97,7 @@ public class MarkdownToMamlConverter
             .UseAutoLinks()
             .UseReferralLinks("noopener", "noreferrer")
             .UseEmojiAndSmiley()
+            .Use(new InclusionExtension())
             .UseGenericAttributes();    // This one must be added last
 
         // Register the new extension to post-process HtmlBlock contents
@@ -130,6 +133,7 @@ public class MarkdownToMamlConverter
     /// <returns>The MAML representation of the Markdown content</returns>
     public string ConvertFromFile(string id, string markdownFile)
     {
+        InclusionFiles.PushFile(markdownFile);
         return ConvertFromMarkdown(id, File.ReadAllText(markdownFile));
     }
 
