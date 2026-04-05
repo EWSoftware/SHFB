@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace Sandcastle.Core.Markdown.Extensions.Inclusion;
 
@@ -37,6 +38,12 @@ public static class InclusionFiles
 {
     private static readonly HashSet<string> files = new(StringComparer.InvariantCultureIgnoreCase);
     private static readonly Stack<string> stack = new();
+
+    /// <summary>
+    /// Gets a list of warnings when parsing this node.
+    /// </summary>
+    /// <value>The list of warnings.</value>
+    public static IList<ParseMessages> Warnings { get; } = [];
 
     /// <summary>
     /// Initialises the stack with the first file to be included. This should be called once for the main file.
@@ -87,14 +94,29 @@ public static class InclusionFiles
 
         string prevPath = stack.Peek();
         string newPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(prevPath), fileName));
+
         if(files.Contains(newPath))
         {
-            // TODO: Provide the circular reference.
+            string[] files = stack.ToArray();
+            StringBuilder circularReferences = new();
+            for (int s = files.Length - 1; s > 0; s--) {
+                if(s != files.Length) circularReferences.Append("<-- ");
+                circularReferences.AppendLine(files[s]);
+            }
+            Warnings.Add(new("BE0077",
+                $"The conceptual topic file '{files[0]}' has circular references includes. " + 
+                $"The generated topic file may be incomplete.\n{circularReferences}"));
+
             throw new ArgumentException("Circular reference detected", nameof(fileName));
         }
 
         if(!File.Exists(newPath))
         {
+            string[] files = stack.ToArray();
+            Warnings.Add(new("BE0076",
+                $"The conceptual topic file '{files[0]}' has missing includes. " +
+                $"The generated topic file may be incomplete. Missing file {newPath} " +
+                $"from file {prevPath}"));
             throw new ArgumentException($"File not found: '{newPath}'", nameof(fileName));
         }
 

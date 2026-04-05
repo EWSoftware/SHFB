@@ -69,6 +69,18 @@ public class MarkdownToMamlConverter
     }
     #endregion
 
+    #region Properties
+    //=====================================================================
+
+    private List<ParseMessages> markdownWarnings = new();
+
+    /// <summary>
+    /// Gets a list of warnings when parsing this node.
+    /// </summary>
+    /// <value>The list of warnings.</value>
+    public IList<ParseMessages> Warnings { get { return markdownWarnings; } }
+    #endregion
+
     #region Methods
     //=====================================================================
 
@@ -133,8 +145,11 @@ public class MarkdownToMamlConverter
     /// <returns>The MAML representation of the Markdown content</returns>
     public string ConvertFromFile(string id, string markdownFile)
     {
+        markdownWarnings.Clear();
         InclusionFiles.PushFile(markdownFile);
-        return ConvertFromMarkdown(id, File.ReadAllText(markdownFile));
+        string maml = ConvertFromMarkdown(id, File.ReadAllText(markdownFile));
+        markdownWarnings.AddRange(InclusionFiles.Warnings);
+        return maml;
     }
 
     /// <summary>

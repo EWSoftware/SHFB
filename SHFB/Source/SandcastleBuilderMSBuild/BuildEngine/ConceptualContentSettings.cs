@@ -32,6 +32,7 @@ using System.Xml;
 using Sandcastle.Core;
 using Sandcastle.Core.BuildEngine;
 using Sandcastle.Core.ConceptualContent;
+using Sandcastle.Core.Markdown.Extensions.Inclusion;
 using Sandcastle.Core.Project;
 
 using SandcastleBuilder.MSBuild.HelpProject;
@@ -373,7 +374,13 @@ public class ConceptualContentSettings : IConceptualContentSettings
                 File.SetAttributes(destFile, FileAttributes.Normal);
             }
             else
+            {
                 File.WriteAllText(destFile, builder.MarkdownToMamlConverter.ConvertFromFile(t.Id, t.TopicFile.FullPath));
+                foreach (ParseMessages message in builder.MarkdownToMamlConverter.Warnings)
+                {
+                    builder.ReportWarning(message.Code, message.Message);
+                }
+            }
 
             // Add referenced namespaces to the build process
             var rn = builder.ReferencedNamespaces;

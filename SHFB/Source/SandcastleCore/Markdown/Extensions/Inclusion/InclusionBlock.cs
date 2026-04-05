@@ -98,9 +98,11 @@ public class InclusionBlock : ContainerBlock
         }
         catch(ArgumentException ex)
         {
-            // TODO: To add 
-            //   builder.ReportWarning("BE0076", ex.Message);
-            Console.WriteLine(ex.Message);
+            return;
+        }
+        catch(Exception ex)
+        {
+            InclusionFiles.Warnings.Add(new("BE0076", ex.Message));
             return;
         }
     }
