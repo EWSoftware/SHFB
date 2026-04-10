@@ -10,6 +10,7 @@
 		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
 		<Title>Sandcastle Help File Builder Project Launcher</Title>
 		<AssemblyTitle>Sandcastle Help File Builder Project Launcher</AssemblyTitle>
 		<Description>This utility is used to open Sandcastle Help File Builder project files using either the standalone GUI or Visual Studio</Description>
@@ -61,6 +62,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="System.Resources.Extensions" />
 		<PackageReference Include="Microsoft.CSharp" />
 		<PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop">
 			<ExcludeAssets>Runtime</ExcludeAssets>

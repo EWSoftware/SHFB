@@ -25,5 +25,6 @@
     <PackageVersion Include="System.IO.Compression" Version="4.3.0" />
 		<PackageVersion Include="System.Text.Json" Version="9.0.10" />
     <PackageVersion Include="WeCantSpell.Hunspell" Version="6.0.3" />
+    <PackageVersion Include="System.Resources.Extensions" Version="9.0.0" />
   </ItemGroup>
 </Project>
