@@ -1,0 +1,8 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Setup/Setup.wixproj">
+    <Build />
+  </Project>
+</Solution>

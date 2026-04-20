@@ -6,7 +6,8 @@
 		<Product>Sandcastle Help File Builder and Tools</Product>
 
 		<!-- Using 14.0 for the field keyword.  If you only have VS 2022, setting it to preview should work too. -->
-		<LangVersion>14.0</LangVersion>
+		<LangVersion Condition=" '$(MSBuildVersion)' &lt; '18' ">preview</LangVersion>
+		<LangVersion Condition=" '$(MSBuildVersion)' &gt;= '18' ">14.0</LangVersion>
 
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
