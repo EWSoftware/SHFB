@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : MarkdownToMamlConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/02/2026
+// Updated : 04/20/2026
 // Note    : Copyright 2025-2026, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to convert Markdown content to MAML format for the build
@@ -17,6 +17,7 @@
 // 11/25/2025  EFW  Created the code
 //===============================================================================================================
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -32,7 +33,7 @@ namespace Sandcastle.Core.Markdown;
 /// <summary>
 /// This class is used to convert Markdown content to MAML format for the build
 /// </summary>
-public class MarkdownToMamlConverter
+public sealed class MarkdownToMamlConverter
 {
     #region Private data members
     //=====================================================================
@@ -67,6 +68,23 @@ public class MarkdownToMamlConverter
     }
     #endregion
 
+    #region Events
+    //=====================================================================
+
+    /// <summary>
+    /// This event is raised prior to building and setting up the Markdown pipeline.  It can be used to add
+    /// additional extensions or take other actions before the pipeline is built.
+    /// </summary>
+    public event EventHandler<PipelineEventArgs> BeforePipelineBuild;
+
+    /// <summary>
+    /// This event is raised after the pipeline is set up for rendering.  It can be used to make changes to the
+    /// pipeline or take other actions after the pipeline is set up for rendering.
+    /// </summary>
+    public event EventHandler<PipelineEventArgs> AfterPipelineSetup;
+
+    #endregion
+
     #region Methods
     //=====================================================================
 
@@ -74,7 +92,7 @@ public class MarkdownToMamlConverter
     /// Set up the Markdown pipeline
     /// </summary>
     /// <remarks>This should only be called once prior to converting any topics</remarks>
-    public void SetUpPipeline()
+    private void SetUpPipeline()
     {
         builder
             .UseYamlFrontMatter()
@@ -105,21 +123,19 @@ public class MarkdownToMamlConverter
         // Insert our alert block parser before the default QuoteBlockParser so it is tried first.
         builder.BlockParsers.InsertBefore<QuoteBlockParser>(new AlertBlockParser());
 
-        // TODO: Perhaps raise an event to allow other components to modify the pipeline as needed
+        // Allow other components to make changes to the pipeline before it is built
+        this.BeforePipelineBuild?.Invoke(this, new PipelineEventArgs(builder, null));
 
         pipeline = builder.Build();
+
         renderer = new MamlTopicRenderer(forPreview, new StringWriter());
-
-        // TODO: Perhaps raise an event to allow other components to modify the pipeline as needed
-        // prior to setting up the renderer.
-
         pipeline.Setup(renderer);
 
         // Replace the alert block renderer with our custom one
         renderer.ObjectRenderers.Add(new AlertBlockRenderer());
 
-        // TODO: Perhaps raise an event to allow other components to modify the pipeline as needed
-        // after setting up the renderer.
+        // Allow other components to make changes to the renderer after it is built
+        this.AfterPipelineSetup?.Invoke(this, new PipelineEventArgs(builder, renderer));
     }
 
     /// <summary>
@@ -143,6 +159,9 @@ public class MarkdownToMamlConverter
     /// <returns>The MAML representation of the Markdown content</returns>
     public string ConvertFromMarkdown(string id, string markdown)
     {
+        if(pipeline == null)
+            this.SetUpPipeline();
+
         var document = MarkdownParser.Parse(markdown, pipeline);
 
         renderer.Id = id;

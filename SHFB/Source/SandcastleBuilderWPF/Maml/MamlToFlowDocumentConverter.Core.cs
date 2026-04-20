@@ -150,7 +150,6 @@ public partial class MamlToFlowDocumentConverter
         parentSpans = [];
 
         markdownToMaml = new(true, blockTags, doNotParseTags);
-        markdownToMaml.SetUpPipeline();
     }
     #endregion
 

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/03/2025
-// Note    : Copyright 2006-2025, Eric Woodruff, All rights reserved
+// Updated : 04/20/2026
+// Note    : Copyright 2006-2026, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
 //
@@ -459,7 +459,6 @@ public partial class BuildProcess : IBuildProcess
                 var (blockTags, doNotParseTags) = this.PresentationStyle.TopicTransformation.HtmlBlockAndDoNotParseTags;
 
                 field = new MarkdownToMamlConverter(false, blockTags, doNotParseTags);
-                field.SetUpPipeline();
             }
 
             return field;
