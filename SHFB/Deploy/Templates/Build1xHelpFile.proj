@@ -2,7 +2,7 @@
 	<!-- Sandcastle Help File Builder Tasks.  https://GitHub.com/EWSoftware/SHFB -->
 	<PropertyGroup>
 		<SHFBTaskFolder Condition=" '$(MSBuildRuntimeType)' != 'Core' ">net48\</SHFBTaskFolder>
-		<SHFBTaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' ">net9.0\</SHFBTaskFolder>
+		<SHFBTaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' ">net10.0\</SHFBTaskFolder>
 	</PropertyGroup>
 	<UsingTask TaskName="SandcastleBuilder.MSBuild.Build1xHelpFile"
     AssemblyFile="{@SHFBRoot}$(SHFBTaskFolder)SandcastleBuilder.MSBuild.dll" />

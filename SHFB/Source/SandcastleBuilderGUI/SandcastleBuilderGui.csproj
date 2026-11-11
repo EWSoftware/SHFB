@@ -80,6 +80,7 @@
 	<ItemGroup>
 		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" />
 		<PackageReference Include="Microsoft.Build.Locator" />
+		<PackageReference Include="NuGet.Frameworks" ExcludeAssets="runtime" PrivateAssets="all" />
 		<PackageReference Include="ICSharpCode.TextEditor" />
 		<PackageReference Include="WeCantSpell.Hunspell" />
 	</ItemGroup>
