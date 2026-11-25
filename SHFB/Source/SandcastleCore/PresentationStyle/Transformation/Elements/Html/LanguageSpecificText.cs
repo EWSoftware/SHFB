@@ -15,6 +15,7 @@
 //    Date     Who  Comments
 // ==============================================================================================================
 // 01/25/2022  EFW  Created the code
+// 11/25/2026  RvdH X# values
 //===============================================================================================================
 
 using System.Collections.Generic;
@@ -67,6 +68,11 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         public const string FSharp = "fs";
 
         /// <summary>
+        /// This represents the X# language identifier
+        /// </summary>
+        public const string XSharp = "xs";
+
+        /// <summary>
         /// This represents the neutral language identifier
         /// </summary>
         /// <value>The text for this value will be used if it doesn't have a specific match in the topic's
@@ -91,6 +97,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             (CPlusPlus, "<"),
             (CSharp, "<"),
             (FSharp, "<"),
+            (XSharp, "<"),
             (VisualBasic, "(Of "),
             (Neutral, "("),
         ]);
@@ -103,6 +110,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
             (CPlusPlus, ">"),
             (CSharp, ">"),
             (FSharp, ">"),
+            (XSharp, ">"),
             (VisualBasic, ")"),
             (Neutral, ")"),
         ]);

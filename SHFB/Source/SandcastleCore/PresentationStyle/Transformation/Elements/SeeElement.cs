@@ -15,6 +15,7 @@
 //    Date     Who  Comments
 // ==============================================================================================================
 // 01/25/2022  EFW  Created the code
+// 11/25/2026  RvdH X# values
 //===============================================================================================================
 
 using System;
@@ -99,7 +100,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                 {
                     if(apiMemberId.StartsWith("Overload:", StringComparison.Ordinal))
                     {
-                        link.Add(new XElement("include", 
+                        link.Add(new XElement("include",
                             new XAttribute("item", "boilerplate_seeAlsoOverloadLink"),
                             new XElement("parameter", "{0}")));
                     }
@@ -221,6 +222,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements
                                 break;
 
                             case "this":
+                            case "self":
                             case "Me":
                                 includeItem = "devlang_thisKeyword";
                                 break;

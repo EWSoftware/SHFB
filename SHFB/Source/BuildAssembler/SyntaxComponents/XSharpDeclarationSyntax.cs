@@ -6,6 +6,7 @@
 // Change history:
 // 03/20/2017 - RvdH Created initial X# language support
 // 05/10/2018 - RvdH Adjusted X# type names and replaced reference links with keywords
+// 11/25/2026 - RvdH Additional X# type names
 
 using System;
 using System.Globalization;
@@ -426,6 +427,12 @@ namespace Sandcastle.Tools.SyntaxGenerators
                     writer.WriteKeyword("LOGIC");
                     break;
 
+                case "T:XSharp.__Currency":
+                    writer.WriteKeyword("CURRENCY");
+                    break;
+                case "T:XSharp.__Binary":
+                    writer.WriteKeyword("BINARY");
+                    break;
                 default:
                     writer.WriteReferenceLink(api);
                     break;

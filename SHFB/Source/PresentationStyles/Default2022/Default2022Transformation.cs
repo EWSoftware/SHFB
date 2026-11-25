@@ -16,6 +16,7 @@
 //    Date     Who  Comments
 // ==============================================================================================================
 // 03/16/2022  EFW  Created the code
+// 11/25/2026  RvdH Added SELF keyword for X#
 //===============================================================================================================
 
 // Ignore Spelling: fa resizer
@@ -364,6 +365,7 @@ public class Default2022Transformation : TopicTransformationCore
             new LanguageSpecificText(true,
             [
                 (LanguageSpecificText.VisualBasic, "Me"),
+                (LanguageSpecificText.XSharp, "self"),
                 (LanguageSpecificText.Neutral, "this"),
             ])
         ]);
@@ -840,7 +842,7 @@ public class Default2022Transformation : TopicTransformationCore
         if(this.StartupScriptBlockItemIds.Any())
         {
             var scriptItems = new XElement("script");
-            
+
             body.Add(scriptItems);
 
             foreach(string id in this.StartupScriptBlockItemIds)
@@ -953,7 +955,7 @@ $("".toggleSection"").keypress(function () {
     private void RenderHeaderMetadata()
     {
         string topicDesc;
-        
+
         if(!String.IsNullOrWhiteSpace(this.RobotsMetadata))
         {
             this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "robots"),
@@ -2557,7 +2559,7 @@ $("".toggleSection"").keypress(function () {
                         parent = parent.Elements().Last();
 
                     var ul = new XElement("ul", new XAttribute("class", "menu"));
-                    
+
                     parent.Add(ul);
                     parent = ul;
                 }

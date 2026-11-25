@@ -15,6 +15,7 @@
 //    Date     Who  Comments
 // ==============================================================================================================
 // 01/25/2022  EFW  Created the code
+// 11/25/2026  RvdH X# values
 //===============================================================================================================
 
 using System;
@@ -90,6 +91,7 @@ public class LanguageKeywordElement : Element
                         case "let!":
                         case "this":
                         case "Me":
+                        case "self":
                             languageSpecificText = ':';
                             break;
 
@@ -178,6 +180,7 @@ public class LanguageKeywordElement : Element
                                 break;
 
                             case "this":
+                            case "self":
                             case "Me":
                                 includeItem = "devlang_thisKeyword";
                                 break;
