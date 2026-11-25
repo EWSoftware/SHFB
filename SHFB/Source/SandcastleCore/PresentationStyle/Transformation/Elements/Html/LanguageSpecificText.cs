@@ -70,7 +70,7 @@ namespace Sandcastle.Core.PresentationStyle.Transformation.Elements.Html
         /// <summary>
         /// This represents the X# language identifier
         /// </summary>
-        public const string XSharp = "cs";
+        public const string XSharp = "xs";
 
         /// <summary>
         /// This represents the neutral language identifier
