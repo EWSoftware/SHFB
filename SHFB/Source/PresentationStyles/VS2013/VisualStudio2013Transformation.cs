@@ -16,6 +16,7 @@
 //    Date     Who  Comments
 // ==============================================================================================================
 // 01/14/2022  EFW  Created the code
+// 11/25/2026  RvdH Added SELF keyword for X#
 //===============================================================================================================
 
 using System;
@@ -330,6 +331,7 @@ public class VisualStudio2013Transformation : TopicTransformationCore
             new LanguageSpecificText(true,
             [
                 (LanguageSpecificText.VisualBasic, "Me"),
+                (LanguageSpecificText.XSharp, "self"),
                 (LanguageSpecificText.Neutral, "this"),
             ])
         ]);
@@ -643,7 +645,7 @@ public class VisualStudio2013Transformation : TopicTransformationCore
         preliminary.TagStyleClasses = experimental.TagStyleClasses = "preliminary tag";
         obsolete.NoticeStyleClasses = "obsolete";
         obsolete.TagStyleClasses = "tag";
-            
+
         this.AddNoticeDefinitions([preliminary, obsolete, experimental]);
     }
 
@@ -804,7 +806,7 @@ public class VisualStudio2013Transformation : TopicTransformationCore
     private void RenderHeaderMetadata()
     {
         string topicDesc;
-        
+
         if(!String.IsNullOrWhiteSpace(this.RobotsMetadata))
         {
             this.CurrentElement.Add(new XElement("meta", new XAttribute("name", "robots"),
@@ -1408,7 +1410,7 @@ public class VisualStudio2013Transformation : TopicTransformationCore
         }
 
         var tr = new XElement("tr");
-        
+
         table.Add(tr);
 
         if(image != null && placement == LogoPlacement.Left)
@@ -2047,7 +2049,7 @@ public class VisualStudio2013Transformation : TopicTransformationCore
                         transformation.RenderChildElements(summaryCell, summary.Nodes());
 
                     RenderNoticeTags(transformation, e, summaryCell);
-                    
+
                     if(summaryCell.IsEmpty)
                         summaryCell.Add(Element.NonBreakingSpace);
                 }
